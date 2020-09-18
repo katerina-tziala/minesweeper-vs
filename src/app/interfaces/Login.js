@@ -1,5 +1,6 @@
 'use strict';
-import { Interface } from './Interface.js';
+import { Interface } from './Interface';
+import { Form } from '../components/form/Form';
 
 export class Login extends Interface {
 
@@ -14,6 +15,7 @@ export class Login extends Interface {
       this.getClearedMainContainer()
          .then(mainContainer => {
             console.log(mainContainer);
+            const as =  new Form();
             // mainContainer.append(this.loginForm.generateLoginForm());
             this.hideLoader();
          });

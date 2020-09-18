@@ -1,7 +1,7 @@
 'use strict';
 import { ElementHandler } from '../shared/ui-utils/ElementHandler';
 import { MainContainerID } from '../shared/ui-utils/ui.constants';
-import { Loader } from '../components/loader/Loader';
+import { Loader } from '../shared/ui-utils/loader/Loader';
 
 export class Interface {
 

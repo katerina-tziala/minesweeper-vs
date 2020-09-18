@@ -1,6 +1,6 @@
 'use strict';
-import { ElementHandler } from '../../shared/ui-utils/ElementHandler';
-import { LoaderConstants } from './loader.constants.js';
+import { ElementHandler } from '../ElementHandler';
+import { LoaderConstants } from './loader.constants';
 
 export class Loader {
 
