@@ -2,26 +2,30 @@
 import { ElementHandler } from '../../shared/ui-utils/ElementHandler';
 import { FormConstants } from './form.constants';
 import { AppHelper } from '../../shared/AppHelper';
-
+import './form.scss';
 
 export class Form {
-    // #inputControllers;
+    #inputControllers;
     // #submissionBtnId;
 
     constructor() {
-        console.log("form");
+        console.log('form');
         // this.submissionBtnId = submissionBtnId;
         // this.#inputControllers = {};
     }
 
-    // set inputControllers(controller) {
-    //     delete this.#inputControllers[controller.name];
-    //     this.#inputControllers[controller.name] = controller;
-    // }
+    set inputControllers(controller) {
+        delete this.#inputControllers[controller.name];
+        this.#inputControllers[controller.name] = controller;
+    }
 
-    // get inputControllers() {
-    //     return Object.values(this.#inputControllers);
-    // }
+    get inputControllers() {
+        return Object.values(this.#inputControllers);
+    }
+
+    getInputController(key) {
+        return this.#inputControllers[key];
+    }
 
     // set submissionBtnId(submissionBtnId) {
     //     this.#submissionBtnId = submissionBtnId;
@@ -38,20 +42,18 @@ export class Form {
     // get submissionButton() {
     //     return ElementHandler.getElementByID(this.submissionBtnId);
     // }
-    
-    // getInputController(key) {
-    //     return this.#inputControllers[key];
-    // }
 
-    // generateForm(formParams) {
-    //     const form = document.createElement('form');
-    //     ElementHandler.addElementStyleClass(form, FormConstants.styleClassList.form);
-    //     ElementHandler.setElementId(form, formParams.id);
-    //     if (formParams.title) {
-    //         form.innerHTML = this.generateFormTitle(formParams.title);
-    //     }
-    //     return form;
-    // }
+
+    renderForm(params) {
+        console.log(params);
+        const form = document.createElement('form');
+        ElementHandler.addElementStyleClass(form, FormConstants.styleClassList.form);
+        // ElementHandler.setElementId(form, formParams.id);
+        // if (formParams.title) {
+        //     form.innerHTML = this.generateFormTitle(formParams.title);
+        // }
+        return form;
+    }
 
     // generateFormTitle(title) {
     //     return `<p class='${FormConstants.styleClassList.formTitle}'>${title}</p>`;

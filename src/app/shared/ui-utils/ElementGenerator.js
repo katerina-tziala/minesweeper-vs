@@ -1,7 +1,7 @@
 'use strict';
-import { StyleClassList } from './ui.constants.js';
-import { ElementHandler } from './ElementHandler.js';
-import { Typography } from '../shared/constants/typography.constants.js';
+import { StyleClassList } from './ui.constants';
+import { ElementHandler } from './ElementHandler';
+import { Typography } from '../shared/constants/typography.constants';
 
 export class ElementGenerator {
 

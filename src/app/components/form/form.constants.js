@@ -3,8 +3,8 @@
 export const FormConstants = {
     styleClassList: {
         form: 'form',
-        formTitle: 'form-title',
-        formSection: 'form-section',
-        formActions: 'form-actions'
+        formTitle: 'form__title',
+        formSection: 'form__section',
+        formActions: 'form__actions'
     }
 };

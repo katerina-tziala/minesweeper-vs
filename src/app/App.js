@@ -1,6 +1,6 @@
 'use strict';
 
-import { Login } from './interfaces/Login';
+import { Login } from './views/login/Login';
 
 export class App {
 
