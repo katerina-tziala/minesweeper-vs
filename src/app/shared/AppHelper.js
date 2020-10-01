@@ -9,7 +9,7 @@ export class AppHelper {
     }
 
     static sortNumbersArrayAsc(arrayToSort) {
-        return [...arrayToSort].sort((itemA, itemB) => { return itemA - itemB });
+        return [...arrayToSort].sort((itemA, itemB) => { return itemA - itemB; });
     }
 
     static getRandomValueFromArray(arrayToChooseFrom) {

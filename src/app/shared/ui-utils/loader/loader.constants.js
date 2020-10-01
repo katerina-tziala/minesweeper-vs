@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 export const LoaderConstants = {
     elementsIDs: {
-        loader: "app__loader",
-        spinner: "loader__spinner"
+        loader: 'loader',
+        spinner: 'spinner'
     },
     styleClassList: {
-        spin: "spin"
+        spin: 'spin'
     }
 };

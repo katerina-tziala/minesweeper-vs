@@ -5,27 +5,27 @@ import { Loader } from '../shared/ui-utils/loader/Loader';
 
 export class View {
 
-   constructor() {
+    constructor() {
       
-   }
+    }
 
-   get mainContainer() {
-      return ElementHandler.getElementByID(MainContainerID);
-   }
+    get mainContainer() {
+        return ElementHandler.getElementByID(MainContainerID);
+    }
 
-   getClearedMainContainer() {
-      return this.mainContainer.then(mainContainer => {
-         ElementHandler.clearElementContent(mainContainer);
-         return mainContainer;
-      });
-   }
+    getClearedMainContainer() {
+        return this.mainContainer.then(mainContainer => {
+            ElementHandler.clearElementContent(mainContainer);
+            return mainContainer;
+        });
+    }
 
-   displayLoader() {
-      Loader.display();
-   }
+    displayLoader() {
+        Loader.display();
+    }
 
-   hideLoader() {
-      Loader.hide();
-   }
+    hideLoader() {
+        Loader.hide();
+    }
 
 }

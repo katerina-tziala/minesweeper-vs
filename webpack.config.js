@@ -1,15 +1,15 @@
-const path = require("path");
+const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isDevServer = require.main.filename.includes('webpack-dev-server');
 
 const plugins = [
     new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "src", "index.html")
+        template: path.resolve(__dirname, 'src', 'index.html')
     }),
     // new MiniCssExtractPlugin(),
     //new webpack.SourceMapDevToolPlugin({})
@@ -21,14 +21,14 @@ if (isDevServer) {
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname, "src", "index.js")
+        index: path.resolve(__dirname, 'src', 'index.js')
     },
     output: {
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, 'dist')
     },
     optimization: {
         splitChunks: {
-            chunks: "all",
+            chunks: 'all',
         },
         noEmitOnErrors: true,
         minimize: true,
@@ -57,15 +57,15 @@ module.exports = {
             {
                 test: /\.(ttf|eot|woff|woff2|svg)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 100000,
-                        name: "[name]-[hash].[ext]",
+                        name: '[name]-[hash].[ext]',
                         outputPath: (url, resourcePath, context) => {
-                            if (resourcePath.match("fonts/nunito")) {
+                            if (resourcePath.match('fonts/nunito')) {
                                 return `./assets/fonts/nunito/${url}`;
                             }
-                            if (resourcePath.match("fonts/fontawesome")) {
+                            if (resourcePath.match('fonts/fontawesome')) {
                                 return `./assets/fonts/fontawesome/${url}`;
                             }
                         }
@@ -79,12 +79,12 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             limit: 100000,
-                            name: "[name]-[hash].[ext]",
+                            name: '[name]-[hash].[ext]',
                             outputPath: (url, resourcePath, context) => {
-                                if (resourcePath.match("fonts/nunito")) {
+                                if (resourcePath.match('fonts/nunito')) {
                                     return `./assets/fonts/nunito/${url}`;
                                 }
-                                if (resourcePath.match("fonts/fontawesome")) {
+                                if (resourcePath.match('fonts/fontawesome')) {
                                     return `./assets/fonts/fontawesome/${url}`;
                                 }
                             }
@@ -104,6 +104,7 @@ module.exports = {
     plugins,
     devServer: {
         hot: true,
+        watchContentBase: true
     },
     devtool: 'source-map',
 };

@@ -14,9 +14,9 @@ export class App {
 
     init() {
         if (this.user) {
-
+            console.log(this.user);
         } else {
-            console.log('login');
+            console.log('login re malaka');
             this.interfaceController = new Login(this.loginUser.bind(this));
             // .then((user) => {
             //     console.log(user);
@@ -33,7 +33,7 @@ export class App {
     }
 
     loginUser() {
-        console.log("loginUser");
+        console.log('loginUser');
     }
 
 

@@ -1,17 +1,30 @@
 @charset 'utf-8';
-@import './assets/styles/fonts/fonts.scss';
+// @import './assets/styles/fonts/fonts.scss';
+
+@import './assets/styles/variables';
+
 @import './assets/styles/common.scss';
-@import './assets/styles/critical/loader.scss';
+// @import './assets/styles/critical/loader.scss';
 @import './assets/styles/themes/default.scss';
 
+@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/fontawesome.scss';
 
-$font: 'Nunito', sans-serif;
+
+@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/regular.scss';
+
+
+@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/solid.scss';
+
+
+@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/brands.scss';
+
+
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Nunito', sans-serif;
+  font-family: $font;
   user-select: none;
 }
 

@@ -1,6 +1,8 @@
-// @mixin centered-box() {
-//     display        : flex;
-//     justify-content: center;
-//     align-items    : center;
-//     align-content  : center;
-// }
+@mixin circle($size) {
+    min-width: $size;
+    max-width: $size;
+    width: $size;
+    min-height: $size;
+    max-height: $size;
+    height: $size;
+}

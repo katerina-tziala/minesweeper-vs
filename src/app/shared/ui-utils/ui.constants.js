@@ -1,35 +1,34 @@
-"use strict";
+'use strict';
 
 export const StyleClassList = {
-    hidden: "hidden",
-    centeredFlexbox: "centered-flexbox",
-    icon: {
-        user: ["app__icon", "app__icon--user"]
-    },
+    hidden: 'hidden',
+    // icon: {
+    //     user: ['app__icon', 'app__icon--user']
+    // },
 };
 
 
-export const MainContainerID = "app__main";
+export const MainContainerID = 'app__main';
 
 
 export const TextButtons = {
-    cancel: {
-        ariaLabel: "cancel",
-        text: "cancel",
-        className: "app__btn app__text-btn",
-        actionType: "click"
-    },
-    clear: {
-        ariaLabel: "clear",
-        text: "clear",
-        className: "app__btn app__text-btn",
-        actionType: "click"
-    },
-    join: {
-        id: "btn__join",
-        ariaLabel: "join",
-        text: "join",
-        className: "app__btn app__text-btn",
-        actionType: "click"
-    }
+    // cancel: {
+    //     ariaLabel: 'cancel',
+    //     text: 'cancel',
+    //     className: 'app__btn app__text-btn',
+    //     actionType: 'click'
+    // },
+    // clear: {
+    //     ariaLabel: 'clear',
+    //     text: 'clear',
+    //     className: 'app__btn app__text-btn',
+    //     actionType: 'click'
+    // },
+    // join: {
+    //     id: 'btn__join',
+    //     ariaLabel: 'join',
+    //     text: 'join',
+    //     className: 'app__btn app__text-btn',
+    //     actionType: 'click'
+    // }
 };
