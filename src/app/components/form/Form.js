@@ -1,5 +1,5 @@
 'use strict';
-import { ElementHandler } from '../../shared/ui-utils/ElementHandler';
+import { ElementHandler } from '../../ui-utils/element-handler';
 import { FormConstants } from './form.constants';
 import { AppHelper } from '../../shared/AppHelper';
 import './form.scss';

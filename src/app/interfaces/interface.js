@@ -1,9 +1,9 @@
 'use strict';
-import { ElementHandler } from '../shared/ui-utils/ElementHandler';
-import { MainContainerID } from '../shared/ui-utils/ui.constants';
-import { Loader } from '../shared/ui-utils/loader/Loader';
+import { ElementHandler } from '../ui-utils/element-handler';
+import { MainContainerID } from '../ui-utils/ui.constants';
+import { Loader } from '../components/loader/loader';
 
-export class View {
+export class Interface {
 
     constructor() {
       

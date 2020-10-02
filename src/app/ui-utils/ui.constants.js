@@ -8,7 +8,7 @@ export const StyleClassList = {
 };
 
 
-export const MainContainerID = 'app__main';
+export const MainContainerID = 'main';
 
 
 export const TextButtons = {

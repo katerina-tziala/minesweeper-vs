@@ -1,6 +1,6 @@
 'use strict';
 import { StyleClassList } from './ui.constants.js';
-import { Typography } from '../constants/typography.constants.js';
+import { Typography } from '../shared/constants/typography.constants.js';
 
 export class ElementHandler {
 

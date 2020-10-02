@@ -1,5 +1,5 @@
 'use strict';
-import { ElementHandler } from '../ElementHandler';
+import { ElementHandler } from '../../ui-utils/element-handler';
 import { LoaderConstants } from './loader.constants';
 
 export class Loader {

@@ -1,25 +1,16 @@
 'use strict';
 import { StyleClassList } from './ui.constants';
-import { ElementHandler } from './ElementHandler';
+import { ElementHandler } from './element-handler';
 import { Typography } from '../shared/constants/typography.constants';
 
 export class ElementGenerator {
 
-    // static generateCenteredFlexboxContainer(additionalStyle) {
-    //     const container = document.createElement('div');
-    //     container.className = StyleClassList.centeredFlexbox;
-    //     if (additionalStyle) {
-    //         ElementHandler.addElementStyleClass(container, additionalStyle);
-    //     }
-    //     return container;
+    // static generatePlayerIcon(iconStyles = []) {
+    //     const icon = document.createElement('div');
+    //     const iconStyle = StyleClassList.icon.user.concat(iconStyles);
+    //     ElementHandler.setElementClassName(icon, iconStyle.join(Typography.space));
+    //     return icon;
     // }
-
-    static generatePlayerIcon(iconStyles = []) {
-        const icon = document.createElement('div');
-        const iconStyle = StyleClassList.icon.user.concat(iconStyles);
-        ElementHandler.setElementClassName(icon, iconStyle.join(Typography.space));
-        return icon;
-    }
 
     static generateButton(params, action) {
         const buttonParams = { ...params };

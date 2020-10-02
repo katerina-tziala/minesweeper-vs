@@ -1,22 +1,20 @@
 @charset 'utf-8';
-// @import './assets/styles/fonts/fonts.scss';
 
 @import './assets/styles/variables';
+@import './assets/styles/theming';
+
 
 @import './assets/styles/common.scss';
-// @import './assets/styles/critical/loader.scss';
-@import './assets/styles/themes/default.scss';
-
-@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/fontawesome.scss';
+@import './app/components/loader/loader.scss';
 
 
-@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/regular.scss';
 
 
-@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/solid.scss';
 
-
-@import './assets/fonts/fontawesome-web-free-v5.14.0/scss/brands.scss';
+// @import './assets/fonts/fontawesome-web-free-v5.14.0/scss/fontawesome.scss';
+// @import './assets/fonts/fontawesome-web-free-v5.14.0/scss/regular.scss';
+// @import './assets/fonts/fontawesome-web-free-v5.14.0/scss/solid.scss';
+// @import './assets/fonts/fontawesome-web-free-v5.14.0/scss/brands.scss';
 
 
 
@@ -45,16 +43,17 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  font-size: 16px;
 }
 
-.app__header {
+.header {
   height: 46px;
   width: 100%;
   justify-content: flex-start;
   padding: 0 10px;
 }
 
-#app__main {
+#main {
   @extend %centered-box;
   width: 100%;
   height: 100%;
@@ -62,8 +61,29 @@ body {
   position: relative;
 }
 
-
 .hidden {
   display: none !important;
   visibility: hidden !important;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.app {
+  background-color: getColor(base);
+  color: getColor(primary);
+
+  .header {
+    background-color: getColor(primary);
+    color: getColor(base);
+  }
+
+}
+
+.app--dark {
+  background-color: getColor(base, dark);
+  color: getColor(primary, dark);
+
+  .header {
+    background-color: getColor(primary, dark);
+    color: getColor(base, dark);
+  }
 }

@@ -1,0 +1,13 @@
+@use "sass:map";
+
+@import './themes/dark';
+@import './themes/default';
+
+$themes: (
+    default: $default,
+    dark: $dark
+);
+
+@function getColor($color, $scheme: default) {
+    @return map-get(map-get($themes, $scheme), $color);
+}

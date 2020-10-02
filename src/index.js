@@ -1,7 +1,7 @@
 
 
 import './index.scss';
-import { App } from './app/App';
+import { App } from './app/app';
 
 document.addEventListener('DOMContentLoaded', () => {
     new App();
