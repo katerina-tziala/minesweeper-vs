@@ -7,7 +7,7 @@
   left: 0;
   flex-flow: column nowrap;
   z-index: 10000;
-  @extend %centered-box;
+  @extend %centered-flexbox;
 }
 
 .spinner {
