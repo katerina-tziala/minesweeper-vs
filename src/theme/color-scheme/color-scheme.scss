@@ -1,7 +1,7 @@
 @use "sass:map";
 
-@import './themes/dark';
-@import './themes/default';
+@import './dark';
+@import './default';
 
 $themes: (
     default: $default,

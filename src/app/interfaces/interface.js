@@ -1,21 +1,21 @@
 'use strict';
-import { ElementHandler } from '../ui-utils/element-handler';
-import { MainContainerID } from '../ui-utils/ui.constants';
+
+import { DOM_ELEMENT_ID } from '../utilities/constants/ui.constants';
+
+import { ElementHandler } from '../utilities/element-handler';
 import { Loader } from '../components/loader/loader';
 
 export class Interface {
 
-    constructor() {
-      
-    }
+    constructor() {}
 
     get mainContainer() {
-        return ElementHandler.getElementByID(MainContainerID);
+        return ElementHandler.getByID(DOM_ELEMENT_ID.main);
     }
 
     getClearedMainContainer() {
         return this.mainContainer.then(mainContainer => {
-            ElementHandler.clearElementContent(mainContainer);
+            ElementHandler.clearContent(mainContainer);
             return mainContainer;
         });
     }

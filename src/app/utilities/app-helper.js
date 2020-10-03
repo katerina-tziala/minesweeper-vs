@@ -26,7 +26,7 @@ export class AppHelper {
     }
 
     static isDefined(valueToCheck) {
-        return valueToCheck !== undefined;
+        return valueToCheck !== undefined && valueToCheck !== null;
     }
 
 }

@@ -11,7 +11,7 @@ export class Validator {
         return (!isNaN(value) && value !== null);
     }
 
-    static valueInLimits(value, limits) {
+    static isValueInLimits(value, limits) {
         return (limits.min <= value && value <= limits.max);
     }
 }

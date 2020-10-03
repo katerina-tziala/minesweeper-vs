@@ -1,7 +1,7 @@
 'use strict';
-import { ElementHandler } from '../../ui-utils/element-handler';
-import { FormConstants } from './form.constants';
-import { AppHelper } from '../../shared/AppHelper';
+// import { ElementHandler } from '../../ui-utils/element-handler';
+// import { FormConstants } from './form.constants';
+// import { AppHelper } from '../../shared/AppHelper';
 import './form.scss';
 
 export class Form {
@@ -44,16 +44,16 @@ export class Form {
     // }
 
 
-    renderForm(params) {
-        console.log(params);
-        const form = document.createElement('form');
-        ElementHandler.addElementStyleClass(form, FormConstants.styleClassList.form);
-        // ElementHandler.setElementId(form, formParams.id);
-        // if (formParams.title) {
-        //     form.innerHTML = this.generateFormTitle(formParams.title);
-        // }
-        return form;
-    }
+    // renderForm(params) {
+    //     console.log(params);
+    //     const form = document.createElement('form');
+    //     ElementHandler.addElementStyleClass(form, FormConstants.styleClassList.form);
+    //     // ElementHandler.setElementId(form, formParams.id);
+    //     // if (formParams.title) {
+    //     //     form.innerHTML = this.generateFormTitle(formParams.title);
+    //     // }
+    //     return form;
+    // }
 
     // generateFormTitle(title) {
     //     return `<p class='${FormConstants.styleClassList.formTitle}'>${title}</p>`;

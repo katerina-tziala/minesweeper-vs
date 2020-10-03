@@ -1,5 +1,18 @@
 
-@import 'mixins';
+$font-path: '../../assets/fonts/nunito-v14-latin/nunito-v14-latin-' !default;
+
+@mixin setFontFace($name, $secondaryName, $extension) {
+  font-family: 'Nunito';
+  font-display: swap;
+  src: url('#{$font-path}#{$extension}.eot');
+  src: local('Nunito #{$name}'),
+  local('Nunito-#{$secondaryName}'),
+  url('#{$font-path}#{$extension}.eot?#iefix') format('embedded-opentype'),
+  url('#{$font-path}#{$extension}.woff2') format('woff2'),
+  url('#{$font-path}#{$extension}.woff') format('woff'),
+  url('#{$font-path}#{$extension}.ttf') format('truetype'),
+  url('#{$font-path}#{$extension}.svg#Nunito') format('svg');
+}
 
 /* nunito-200 - latin */
 @font-face {

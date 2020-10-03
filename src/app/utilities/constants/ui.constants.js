@@ -1,10 +1,9 @@
 'use strict';
 
 export const DOM_ELEMENT_ID = {
-    loader: 'loader',
-    spinner: 'spinner'
+    main: 'main',
 };
 
 export const DOM_ELEMENT_CLASS = {
-    spin: 'spin'
+    hidden: 'hidden'
 };

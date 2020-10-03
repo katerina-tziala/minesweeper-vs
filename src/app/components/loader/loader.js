@@ -1,14 +1,15 @@
 'use strict';
-import { ElementHandler } from '../../ui-utils/element-handler';
-import { LoaderConstants } from './loader.constants';
 
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from './loader.constants';
+
+import { ElementHandler } from '../../utilities/element-handler';
 export class Loader {
 
     static get loader() {
-        return ElementHandler.getElementByID(LoaderConstants.elementsIDs.loader);
+        return ElementHandler.getByID(DOM_ELEMENT_ID.loader);
     }
     static get spinner() {
-        return ElementHandler.getElementByID(LoaderConstants.elementsIDs.spinner);
+        return ElementHandler.getByID(DOM_ELEMENT_ID.spinner);
     }
 
     static display() {
@@ -22,19 +23,19 @@ export class Loader {
     }
 
     static hideLoader() {
-        Loader.loader.then(loader => ElementHandler.hideElement(loader));
+        Loader.loader.then(loader => ElementHandler.hide(loader));
     }
 
     static displayLoader() {
-        Loader.loader.then(loader => ElementHandler.displayElement(loader));
+        Loader.loader.then(loader => ElementHandler.display(loader));
     }
 
     static stopSpinner() {
-        Loader.spinner.then(spinner => ElementHandler.removeElementStyleClass(spinner, LoaderConstants.styleClassList.spin));
+        Loader.spinner.then(spinner => ElementHandler.removeStyleClass(spinner, DOM_ELEMENT_CLASS.spin));
     }
 
     static startSpinner() {
-        Loader.spinner.then(spinner => ElementHandler.addElementStyleClass(spinner, LoaderConstants.styleClassList.spin));
+        Loader.spinner.then(spinner => ElementHandler.addStyleClass(spinner, DOM_ELEMENT_CLASS.spin));
     }
 
 }

@@ -1,9 +1,16 @@
 'use strict';
+
+import './login.scss';
+
+import { DOM_ELEMENT_CLASS } from './login.constants';
+
 import { Interface } from '../interface';
+import { ElementGenerator } from '../../utilities/element-generator';
+// import { ElementHandler } from '../../utilities/element-handler';
 import { Form } from '../../components/form/form';
 
-import { LoginConstants } from './login.constants';
-import { ElementHandler } from '../../ui-utils/element-handler';
+
+
 export class Login extends Interface {
 
     constructor() {
@@ -17,19 +24,20 @@ export class Login extends Interface {
 
     init() {
         this.displayLoader();
-        this.getClearedMainContainer().then(mainContainer => {
-            console.log(mainContainer);
-            //mainContainer.append(this.renderLoginForm());
-            this.hideLoader();
-        });
+        this.getClearedMainContainer()
+            .then(mainContainer => {
+                mainContainer.append(this.renderLoginForm());
+                this.hideLoader();
+            });
     }
 
-    // renderLoginForm() {
-    //     const container = document.createElement('div');
-    //     ElementHandler.addElementStyleClass(container, LoginConstants.styleClassList.loginContainer);
-    //     container.append(this.loginForm.renderForm(LoginConstants.formParams));
-    //     return container;
-    // }
+    renderLoginForm() {
+        const container = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.loginContainer);
+   
+        
+        // container.append(this.loginForm.renderForm(LoginConstants.formParams));
+        return container;
+    }
 
 
     // getNewUser(user) {
