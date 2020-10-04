@@ -1,6 +1,6 @@
 'use strict';
 
-import { Typography } from './constants/typography.constants.js';
+import { TYPOGRAPHY } from './constants/typography.constants.js';
 
 export class AppHelper {
 
@@ -21,7 +21,7 @@ export class AppHelper {
         event.stopPropagation();
     }
 
-    static replaceStringParameter(stringToUpdate, value, replacePart = Typography.tripleHashtag) {
+    static replaceStringParameter(stringToUpdate, value, replacePart = TYPOGRAPHY.tripleHashtag) {
         return stringToUpdate.replace(replacePart, value);
     }
 

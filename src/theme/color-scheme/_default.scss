@@ -1,5 +1,11 @@
 @use "sass:map";
 $default: (
     base: #f2f2f2,
-    primary: #262626
+    base-intense: #ffffff,
+    primary: #262626,
+    primary-dark: #000000,
+    line: #bfbfbf,
+    error-intense: #ff0000,
+    error-subtle: #e60000,
+    error-pale: #ff9999,
 );

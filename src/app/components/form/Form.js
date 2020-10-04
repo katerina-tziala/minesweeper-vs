@@ -1,17 +1,20 @@
 'use strict';
-// import { ElementHandler } from '../../ui-utils/element-handler';
-// import { FormConstants } from './form.constants';
-// import { AppHelper } from '../../shared/AppHelper';
+
 import './form.scss';
+
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CLEAR_BTN } from './form.constants';
+
+import { ElementGenerator } from '../../utilities/element-generator';
+import { ElementHandler } from '../../utilities/element-handler';
+import { AppHelper } from '../../utilities/app-helper';
 
 export class Form {
     #inputControllers;
-    // #submissionBtnId;
+    #submitAction;
 
-    constructor() {
-        console.log('form');
-        // this.submissionBtnId = submissionBtnId;
-        // this.#inputControllers = {};
+    constructor(submitAction) {
+        this.#submitAction = submitAction;
+        this.#inputControllers = {};
     }
 
     set inputControllers(controller) {
@@ -23,80 +26,94 @@ export class Form {
         return Object.values(this.#inputControllers);
     }
 
+    get submissionBtnId() {
+        return DOM_ELEMENT_ID.submitBtn;
+    }
+
+    get submitBtn() {
+        return ElementHandler.getByID(this.submissionBtnId);
+    }
+
+    get isValid() {
+        return this.inputControllers.every(inputController => inputController.valid);
+    }
+
     getInputController(key) {
         return this.#inputControllers[key];
     }
 
-    // set submissionBtnId(submissionBtnId) {
-    //     this.#submissionBtnId = submissionBtnId;
-    // }
+    renderFormTitle(title) {
+        return `<h2 class='${DOM_ELEMENT_CLASS.formTitle}'>${title}</h2>`;
+    }
 
-    // get submissionBtnId() {
-    //     return this.#submissionBtnId;
-    // }
+    renderFormSection() {
+        return ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.formSection);
+    }
 
-    // get inputControllers() {
-    //     return Object.values(this.#inputControllers);
-    // }
+    renderForm(params) {
+        const form = document.createElement('form');
+        this.setFormmActionOnEnter(form);
+        ElementHandler.addStyleClass(form, DOM_ELEMENT_CLASS.form);
+        ElementHandler.setID(form, params.id);
+        if (params.title) {
+            form.innerHTML = this.renderFormTitle(params.title);
+        }
+        this.renderFormFields(form);
+        this.renderFormActions(form, params.submitBtn);
+        return form;
+    }
 
-    // get submissionButton() {
-    //     return ElementHandler.getElementByID(this.submissionBtnId);
-    // }
+    setFormmActionOnEnter(form) {
+        form.onkeypress = (event) => {
+            const key = event.keyIdentifier || event.keyCode || 0;
+            if (key === 13) {
+                AppHelper.preventInteraction(event);
+              
+                console.log('on enter');
+            }
+        }
+    }
+
+    renderFormActions(form, submitBtnParams) {
+        const actionsContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.formActions);
+        const clearBtn = ElementGenerator.generateButton(CLEAR_BTN, this.clearForm.bind(this));
+        const submitBtn = ElementGenerator.generateButton(submitBtnParams, this.submitForm.bind(this));
+        ElementHandler.setDisabled(submitBtn, !this.isValid);
+        ElementHandler.setID(submitBtn, this.submissionBtnId);
+        actionsContainer.append(clearBtn, submitBtn);
+        form.append(actionsContainer);
+    }
 
 
-    // renderForm(params) {
-    //     console.log(params);
-    //     const form = document.createElement('form');
-    //     ElementHandler.addElementStyleClass(form, FormConstants.styleClassList.form);
-    //     // ElementHandler.setElementId(form, formParams.id);
-    //     // if (formParams.title) {
-    //     //     form.innerHTML = this.generateFormTitle(formParams.title);
-    //     // }
-    //     return form;
-    // }
+    submitForm() {
+        console.log('submitForm');
 
-    // generateFormTitle(title) {
-    //     return `<p class='${FormConstants.styleClassList.formTitle}'>${title}</p>`;
-    // }
+    }
 
-    // setFormmActionOnEnter(form, action) {
-    //     form.onkeypress = (event) => {
-    //         const key = event.keyIdentifier || event.keyCode || 0;
-    //         if (key === 13) {
-    //             AppHelper.preventInteraction(event);
-    //             if (action) {
-    //                 action();
-    //             }
-    //         }
-    //     }
-    // }
 
-    // generateFormSection() {
-    //     const formSection = document.createElement('div');
-    //     ElementHandler.addElementStyleClass(formSection, FormConstants.styleClassList.formSection);
-    //     return formSection;
-    // }
 
-    // generateFormButtonsContainer() {
-    //     const formSection = this.generateFormSection();
-    //     ElementHandler.addElementStyleClass(formSection, FormConstants.styleClassList.formActions);
-    //     return formSection;
-    // }
+    clearForm() {
+        this.inputControllers.forEach(inputController => inputController.clear());
+        this.toggleSubmission();
+    }
 
-    // generateFormActionButtons() {
-    //     const formSection = this.generateFormButtonsContainer();
-    //     const clearBtn = ElementGenerator.generateTextButton(TextButtons.clear, this.clearForm.bind(this));
-    //     formSection.append(clearBtn);
-    //     return formSection;
-    // }
+    toggleSubmission() {
+        this.submitBtn.then(button => ElementHandler.setDisabled(button, !this.isValid));
+    }
 
-    // clearForm() {
-    //     this.inputControllers.forEach(inputController => inputController.clearField());
-    //     this.toggleSubmission();
-    // }
+    /* ~~~~~~~~~~~~~~~~~~~~ ABSTRACT FUNCTIONS ~~~~~~~~~~~~~~~~~~~~ */
+    renderFormFields(form) { }
 
-    // toggleSubmission() {
-    //     const validForm = this.inputControllers.every(inputController => inputController.valid);
-    //     this.submissionButton.then(button => ElementHandler.setDisabled(button, !validForm));
-    // }
+
+
+
+
+
+
+
+
+
+
+
+
 }

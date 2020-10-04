@@ -1,8 +1,13 @@
-@mixin circle($size) {
+@mixin rectangle($size) {
+    width: $size;
+    height: $size;
     min-width: $size;
     max-width: $size;
-    width: $size;
     min-height: $size;
     max-height: $size;
-    height: $size;
+}
+
+@mixin circle($size) {
+    @include rectangle($size);
+    border-radius: 50%;
 }

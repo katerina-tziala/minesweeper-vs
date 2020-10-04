@@ -1,6 +1,6 @@
 'use strict';
 
-export const Typography = {
+export const TYPOGRAPHY = {
     emptyString: '',
     hyphen: '-',
     space: ' ',

@@ -1,41 +1,14 @@
-// .login__container {
-//     min-width: 320px;
-//     padding  : 15px;
-//     border: 2px solid red;
-// }
+
+@import '../../../theme/card.scss';
+
 
 
 .login-container {
-    border: 2px solid red;
+    @extend .card;
+    min-width: 320px;
 
-    
+    padding: 0.5rem;
+
+    padding: 15px;
 }
 
-
-// .form__title {
-//   margin-bottom : 20px;
-//   font-size     : 16px;
-//   text-align    : center;
-//   font-weight   : 600;
-//   user-select   : none;
-//   text-transform: capitalize;
-// }
-
-// .form__section {
-//   width          : 100%;
-//   display        : flex;
-//   justify-content: flex-start;
-//   align-items    : center;
-//   align-content  : center;
-//   position       : relative;
-// }
-
-// .form__section--actions {
-//   width          : 100%;
-//   display        : flex;
-//   justify-content: space-between;
-//   align-items    : center;
-//   align-content  : center;
-//   position       : relative;
-//   margin-top     : 20px;
-// }

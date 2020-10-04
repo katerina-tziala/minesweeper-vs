@@ -1,0 +1,53 @@
+@import "./variables";
+@import "./utilities";
+@import "./color-scheme/color-scheme.scss";
+
+.button {
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    border: none;
+    overflow: hidden;
+}
+
+.button-text {
+    @extend .button;
+    padding: 3px 8px;
+    font-size: $font-size-btn;
+    border-radius: 5px;
+    min-width: 46px;
+    text-align: center;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.app {
+    .button {
+        color: getColor(base);
+        &:hover,
+        &:focus {
+            background-color: getColor(base-intense);
+        }
+    }
+
+    .button-text {
+        background-color: getColor(primary);
+        &:hover,
+        &:focus {
+            background-color: getColor(primary-dark);
+        }
+        &:disabled {
+            &:hover,
+            &:focus {
+                background-color: getColor(primary);
+            }
+        }
+    }
+}
+
+.app--dark {
+}

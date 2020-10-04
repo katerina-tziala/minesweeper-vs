@@ -1,0 +1,84 @@
+@import '../../../../theme/variables';
+@import '../../../../theme/utilities';
+@import '../../../../theme/mixins';
+@import '../../../../theme/color-scheme/color-scheme.scss';
+@import '../../../../theme/iconography/iconography.scss';
+@import '../../../../theme/button.scss';
+
+.error-container {
+  background-color: transparent;
+  z-index: 5;
+  width: 100%;
+}
+
+.error-toggle-btn {
+  @extend .button;
+  @include circle(22px);
+  position: absolute;
+  right: 0;
+  top: 1px;
+  &:after {
+    @extend .icon-exclamation;
+  }
+}
+
+.error-message {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 100%;
+  font-size: $font-size-info;
+  padding: 5px 10px;
+  border-radius: 5px;
+  @extend %card-shadow;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
+
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 6px;
+    top: -7px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid transparent;
+  }
+}
+
+.input-error {
+  padding-right: 25px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.app {
+  .error-toggle-btn {
+    background-color: getColor(error-subtle);
+
+    &:hover,
+    &:focus {
+      background-color: getColor(error-intense);
+    }
+  }
+
+  .error-message {
+    background-color: getColor(error-pale);
+    color: getColor(primary-dark);
+    &:after {
+      border-bottom-color: getColor(error-pale);
+    }
+  }
+
+  .input-error {
+    border-color: getColor(error-subtle)!important;
+    &:focus {
+      border-color: getColor(error-intense)!important;
+    }
+  }
+}
+
+.app--dark {
+}

@@ -1,10 +1,10 @@
 'use strict';
-import { Typography } from './constants/typography.constants.js';
+import { TYPOGRAPHY } from './constants/typography.constants.js';
 
 export class Validator {
 
     static isEmptyString(value) {
-        return (value === Typography.emptyString || value.replace(/\s+/, Typography.emptyString) === Typography.emptyString) ? true : false;
+        return (value === TYPOGRAPHY.emptyString || value.replace(/\s+/, TYPOGRAPHY.emptyString) === TYPOGRAPHY.emptyString) ? true : false;
     }
 
     static isValidNumber(value) {

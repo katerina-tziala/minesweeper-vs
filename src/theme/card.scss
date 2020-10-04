@@ -1,0 +1,23 @@
+@import './utilities';
+@import './color-scheme/color-scheme.scss';
+
+.card {
+    @extend %centered-flexbox;
+    @extend %card-shadow;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.app {
+
+    .card {
+        background-color: getColor(base-intense);
+    }
+}
+
+.app--dark {
+
+    .card {
+        background-color: getColor(base-intense, dark);
+    }
+}

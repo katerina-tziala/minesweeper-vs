@@ -2,12 +2,13 @@
 
 import './login.scss';
 
-import { DOM_ELEMENT_CLASS } from './login.constants';
+import { DOM_ELEMENT_CLASS, FORM_PARAMS} from './login.constants';
 
 import { Interface } from '../interface';
 import { ElementGenerator } from '../../utilities/element-generator';
-// import { ElementHandler } from '../../utilities/element-handler';
-import { Form } from '../../components/form/form';
+// // import { ElementHandler } from '../../utilities/element-handler';
+
+import { FormUsername } from '../../components/form/form-username/form-username';
 
 
 
@@ -15,10 +16,7 @@ export class Login extends Interface {
 
     constructor() {
         super();
-        // this.loginForm = new LoginForm(this.getNewUser.bind(this));
-
-        this.loginForm = new Form();
-
+        this.loginForm = new FormUsername(this.getFormValues.bind(this));
         this.init();
     }
 
@@ -33,16 +31,13 @@ export class Login extends Interface {
 
     renderLoginForm() {
         const container = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.loginContainer);
-   
-        
-        // container.append(this.loginForm.renderForm(LoginConstants.formParams));
+        container.append(this.loginForm.renderForm(FORM_PARAMS));
         return container;
     }
 
-
-    // getNewUser(user) {
-    //     console.log(user);
-    //     // this.interfaceActionHandler(user);
-    // }
+    getFormValues(formValues) {
+        console.log(formValues);
+        // this.interfaceActionHandler(user);
+    }
 
 }

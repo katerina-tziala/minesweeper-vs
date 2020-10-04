@@ -1,0 +1,26 @@
+
+
+@import '../../../../theme/sizes';
+
+@import '../../../../theme/mixins';
+@import '../../../../theme/iconography/iconography.scss';
+
+
+
+
+
+
+.form-username-icon {
+    @include rectangle($input-size);
+    line-height: 27px;
+    font-size: 24px;
+    // background-color: pink;
+
+
+    margin-right: 5px;
+    &:after {
+        @extend .icon-user;
+    }
+
+    
+}

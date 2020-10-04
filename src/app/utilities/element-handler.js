@@ -1,6 +1,7 @@
 'use strict';
-import { StyleClassList } from '../ui-utils/ui.constants.js';
-import { Typography } from './constants/typography.constants.js';
+
+import { TYPOGRAPHY } from './constants/typography.constants.js';
+import { DOM_ELEMENT_CLASS } from './constants/ui.constants';
 
 export class ElementHandler {
 
@@ -12,7 +13,7 @@ export class ElementHandler {
     }
 
     static clearContent(element) {
-        ElementHandler.setContent(element, Typography.emptyString);
+        ElementHandler.setContent(element, TYPOGRAPHY.emptyString);
     }
 
     static setContent(element, content) {
@@ -20,11 +21,11 @@ export class ElementHandler {
     }
 
     static hide(element) {
-        ElementHandler.addStyleClass(element, StyleClassList.hidden);
+        ElementHandler.addStyleClass(element, DOM_ELEMENT_CLASS.hidden);
     }
 
     static display(element) {
-        ElementHandler.removeStyleClass(element, StyleClassList.hidden);
+        ElementHandler.removeStyleClass(element, DOM_ELEMENT_CLASS.hidden);
     }
 
     static addStyleClass(element, className) {
@@ -35,56 +36,52 @@ export class ElementHandler {
         element.classList.remove(className);
     }
 
+    static setAttributes(element, attributes) {
+        Object.keys(attributes).forEach(key => element[key] = attributes[key]);
+    }
+
     static setID(element, id) {
         element.setAttribute('id', id);
+    }
+
+    static setAlertRole(element) {
+        ElementHandler.setRole(element, 'alert');
+    }
+
+    static setAriaAssertive(element) {
+        element.setAttribute('aria-live', 'assertive');
+    }
+
+    static setRole(element, role) {
+        element.setAttribute('role', role);
+    }
+
+    static removeAriaLive(element) {
+        element.removeAttribute('aria-live');
+    }
+
+    static removeRole(element) {
+        element.removeAttribute('role');
     }
 
     static setAriaLabel(element, ariaLabel) {
         element.setAttribute('aria-label', ariaLabel);
     }
 
+    static setColor(element, color) {
+        if (color && color.length) {
+            element.style.color = color;
+        }
+    }
 
+    static setBackgroundColor(element, color) {
+        if (color && color.length) {
+            element.style.backgroundColor = color;
+        }
+    }
 
-
-    // static setElementClassName(element, className) {
-    //     element.className = className;
-    // }
-
-    // static setColor(element, color) {
-    //     if (color && color.length) {
-    //         element.style.color = color;
-    //     }
-    // }
-
-    // static setBackgroundColor(element, color) {
-    //     if (color && color.length) {
-    //         element.style.backgroundColor = color;
-    //     }
-    // }
-
-
-    // static setElementAriaAssertive(element) {
-    //     element.setAttribute('aria-live', 'assertive');
-    // }
-
-    // static setElementAlertRole(element) {
-    //     ElementHandler.setElementRole(element, 'alert');
-    // }
-
-    // static setElementRole(element, role) {
-    //     element.setAttribute('role', role);
-    // }
-
-    // static removeElementAriaLive(element) {
-    //     element.removeAttribute('aria-live');
-    // }
-
-    // static removeElementRole(element) {
-    //     element.removeAttribute('role');
-    // }
-
-    // static setDisabled(element, isDisabled) {
-    //     element.disabled = isDisabled;
-    // }
+    static setDisabled(element, isDisabled) {
+        element.disabled = isDisabled;
+    }
 
 }
