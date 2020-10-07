@@ -15,25 +15,19 @@ export class App {
     init() {
         if (this.user) {
             console.log(this.user);
+
+
         } else {
-            console.log('login re malaka');
             this.interfaceController = new Login(this.loginUser.bind(this));
-            // .then((user) => {
-            //     console.log(user);
-            //     // this.user.setUsername(username);
-            //     // LocalStorageHelper.setUser(this.user);
-            //     // if (this.conn) {
-            //     //     this.handleConnectionOnLogin();
-            //     // } else {
-            //     //     console.log('login without connection');
-            //     //     this.initInterface();
-            //     // }
-            // });
         }
     }
 
-    loginUser() {
+    loginUser(formValues) {
+
         console.log('loginUser');
+        console.log(formValues);
+
+
     }
 
 

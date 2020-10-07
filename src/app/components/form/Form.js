@@ -1,19 +1,19 @@
 'use strict';
 
-import './form.scss';
-
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CLEAR_BTN } from './form.constants';
-
 import { ElementGenerator } from '../../utilities/element-generator';
 import { ElementHandler } from '../../utilities/element-handler';
 import { AppHelper } from '../../utilities/app-helper';
 
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CLEAR_BTN } from './form.constants';
+
+import './form.scss';
+
 export class Form {
     #inputControllers;
-    #submitAction;
+    #onFormSubmission;
 
-    constructor(submitAction) {
-        this.#submitAction = submitAction;
+    constructor(formSubmission) {
+        this.#onFormSubmission = formSubmission;
         this.#inputControllers = {};
     }
 
@@ -36,6 +36,12 @@ export class Form {
 
     get isValid() {
         return this.inputControllers.every(inputController => inputController.valid);
+    }
+
+    get formValues() {
+        const formValues = {};
+        this.inputControllers.forEach(input => formValues[input.name] = input.value);
+        return formValues
     }
 
     getInputController(key) {
@@ -68,8 +74,7 @@ export class Form {
             const key = event.keyIdentifier || event.keyCode || 0;
             if (key === 13) {
                 AppHelper.preventInteraction(event);
-              
-                console.log('on enter');
+                this.submitForm();
             }
         }
     }
@@ -84,14 +89,6 @@ export class Form {
         form.append(actionsContainer);
     }
 
-
-    submitForm() {
-        console.log('submitForm');
-
-    }
-
-
-
     clearForm() {
         this.inputControllers.forEach(inputController => inputController.clear());
         this.toggleSubmission();
@@ -101,19 +98,13 @@ export class Form {
         this.submitBtn.then(button => ElementHandler.setDisabled(button, !this.isValid));
     }
 
+    submitForm() {
+        if (this.isValid && this.#onFormSubmission) {
+            this.#onFormSubmission(this.formValues);
+        }
+    }
+
     /* ~~~~~~~~~~~~~~~~~~~~ ABSTRACT FUNCTIONS ~~~~~~~~~~~~~~~~~~~~ */
     renderFormFields(form) { }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

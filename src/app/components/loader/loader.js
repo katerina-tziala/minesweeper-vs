@@ -1,8 +1,9 @@
 'use strict';
 
+import { ElementHandler } from '../../utilities/element-handler';
+
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from './loader.constants';
 
-import { ElementHandler } from '../../utilities/element-handler';
 export class Loader {
 
     static get loader() {

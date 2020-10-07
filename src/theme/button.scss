@@ -12,11 +12,13 @@
 
 .button-text {
     @extend .button;
-    padding: 3px 8px;
     font-size: $font-size-btn;
     border-radius: 5px;
     min-width: 46px;
     text-align: center;
+    height: 28px;
+    line-height: 19px;
+    padding: 0 10px;
 
     &:disabled {
         opacity: 0.5;

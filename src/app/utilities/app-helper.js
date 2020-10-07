@@ -25,8 +25,4 @@ export class AppHelper {
         return stringToUpdate.replace(replacePart, value);
     }
 
-    static isDefined(valueToCheck) {
-        return valueToCheck !== undefined && valueToCheck !== null;
-    }
-
 }

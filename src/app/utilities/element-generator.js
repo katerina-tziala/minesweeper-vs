@@ -19,10 +19,4 @@ export class ElementGenerator {
         return button;
     }
 
-    // static generateTextButton(params, action) {
-    //     const button = ElementGenerator.generateButton(params, action);
-    //     ElementHandler.setContent(button, params.text);
-    //     return button;
-    // }
-
 }

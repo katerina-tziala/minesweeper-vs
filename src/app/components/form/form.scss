@@ -1,9 +1,6 @@
 @import "../../../theme/variables";
 @import "../../../theme/utilities";
 
-
-
-
 .form {
     width: 100%;
     margin: auto;
@@ -26,25 +23,4 @@
     @extend %centered-flexbox;
     justify-content: space-between;
     margin-top: 20px;
-    // border: 1px solid green;
 }
-
-
-// .form__section {
-//   width          : 100%;
-//   display        : flex;
-//   justify-content: flex-start;
-//   align-items    : center;
-//   align-content  : center;
-//   position       : relative;
-// }
-
-// .form__section--actions {
-//   width          : 100%;
-//   display        : flex;
-//   justify-content: space-between;
-//   align-items    : center;
-//   align-content  : center;
-//   position       : relative;
-//   margin-top     : 20px;
-// }

@@ -1,4 +1,5 @@
 'use strict';
+
 import { TYPOGRAPHY } from './constants/typography.constants.js';
 
 export class Validator {
