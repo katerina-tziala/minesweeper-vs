@@ -15,6 +15,7 @@ export class App {
         this.user = undefined;
         this.interfaceController = undefined;
         this.conn = undefined;
+        this.peers = [];
         this.init();
     }
 
@@ -47,9 +48,8 @@ export class App {
                 onMessage: this.onConnectionMessage.bind(this),
             });
         } else {
-            console.log('connection exists');
+            this.conn.loginToWebsocket(userParams);
         }
-
     }
 
 
@@ -63,11 +63,6 @@ export class App {
             console.log('login error');
             this.conn = undefined;
             self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
-    
-            // setTimeout(() => {
-            //     self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameError);
-    
-            // }, 5000)
         }
     }
 
@@ -79,12 +74,40 @@ export class App {
 
     }
 
-    onConnectionMessage(data) {
-
-        console.log('onConnectionMessage');
-        console.log(data);
-
+    onConnectionMessage(message) {
+        switch (message.type) {
+            case "username-in-use":
+                self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUse);
+                break;
+            case "broadcast":
+                console.log("--- broadcast -----");
+                console.log(message.data);
+                break;
+            default:
+                console.log('onConnectionMessage');
+                console.log(message);
+                break;
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

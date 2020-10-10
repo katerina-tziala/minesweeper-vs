@@ -17,9 +17,9 @@ export const NOTIFICATION_MESSAGE = {
         title: "Connection Error",
         content: ["Connection to online gaming failed!", "Please refresh and try again."]
     },
-    usernameError: {
+    usernameInUse: {
         type: "error",
-        title: "Connection Error",
+        title: "Oups!",
         content: ["Username is not available!", "Please login with a different username."]
     }
 };

@@ -28,37 +28,13 @@ export class OnlineConnection {
     }
 
     init(userParams) {
-        console.log(userParams);
-
         this.webSocket = new WebSocket(CONNECTION_CONFIG.url, CONNECTION_CONFIG.protocols);
         this.webSocket.addEventListener('error', event => this.actions.onError(event));
-
-
-        this.webSocket.addEventListener('open', event => {
-            console.log('open--------');
-            console.log(event);
-
-
-            this.webSocket.addEventListener('message', event => {
-                const data = JSON.parse(event.data);
-                console.log(data);
-                console.log('message--------');
-                console.log(data);
-                // if (data.type) {
-                //    this.connectionMessageHandler(data);
-                // }
-            });
-            this.webSocket.addEventListener('close', event => {
-                console.log('close--------');
-                console.log(event);
-
-            });
-
-            this.send("login", userParams);
+        this.webSocket.addEventListener('open', () => {
+            this.webSocket.addEventListener('message', event => this.actions.onMessage(JSON.parse(event.data)));
+            this.webSocket.addEventListener('close', event => this.actions.onClose(event));
+            this.loginToWebsocket(userParams);
         });
-
-
-
     }
 
     send(type, data) {
@@ -69,11 +45,13 @@ export class OnlineConnection {
             };
             this.webSocket.send(JSON.stringify(message));
         } else {
-            console.log("no this.webSocket");
+            console.log('no this.webSocket');
         }
     }
 
-
+    loginToWebsocket(userParams) {
+        this.send('login', userParams);
+    }
 
 
 
