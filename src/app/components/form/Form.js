@@ -1,10 +1,12 @@
 'use strict';
 
+import { CLEAR_BTN } from '../../utilities/constants/btn-text.constants';
+
 import { ElementGenerator } from '../../utilities/element-generator';
 import { ElementHandler } from '../../utilities/element-handler';
 import { AppHelper } from '../../utilities/app-helper';
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CLEAR_BTN } from './form.constants';
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from './form.constants';
 
 import './form.scss';
 

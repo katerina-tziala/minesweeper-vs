@@ -68,6 +68,14 @@ export class ElementHandler {
         element.setAttribute('aria-label', ariaLabel);
     }
 
+    static setDisabled(element, isDisabled) {
+        element.disabled = isDisabled;
+    }
+
+    static getID(element) {
+        return element.getAttribute("id");
+    }
+
     static setColor(element, color) {
         if (color && color.length) {
             element.style.color = color;
@@ -79,9 +87,4 @@ export class ElementHandler {
             element.style.backgroundColor = color;
         }
     }
-
-    static setDisabled(element, isDisabled) {
-        element.disabled = isDisabled;
-    }
-
 }

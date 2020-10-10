@@ -11,10 +11,15 @@ export class ElementGenerator {
     }
 
     static generateButton(params, action) {
+        // console.log(params);
+        params = { ...params };
+        
         const button = document.createElement('button');
         button.type = 'button';
+
         button.addEventListener(params.actionType, action);
         delete params.actionType;
+
         ElementHandler.setAttributes(button, params);
         return button;
     }

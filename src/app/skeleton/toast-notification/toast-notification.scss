@@ -1,0 +1,61 @@
+@import '../../../theme/utilities';
+@import '../../../theme/card.scss';
+@import '../../../theme/iconography/iconography.scss';
+
+.toast-notification {
+    @extend .card;
+    width: 260px;
+
+    max-height: 1400px;
+    overflow  : hidden;
+    position  : absolute;
+
+    padding      : 5px 10px 8px;
+    border-radius: 10px;
+    z-index      : 2000;
+    transition   : top 0.3s ease-in-out;
+    top          : -100px;
+    right        : 10px;
+
+    .button-icon--close {
+        position: absolute;
+        top     : 5px;
+        right   : 5px;
+    }
+}
+
+.toast-notification--show {
+    top: 60px !important;
+}
+
+.toast-notification-title {
+    font-weight: 800;
+    @extend %start-flexbox;
+    height: 24px;
+}
+
+.toast-notification-title-icon {
+    display     : inline-block;
+    margin-right: 5px;
+}
+
+.toast-notification--error {
+    .toast-notification-title-icon {
+        &:after {
+            @extend .icon-exclamation-triangle;
+        }
+    }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.app {
+
+    .toast-notification--error {
+        background-color: getColor(error-pale);
+        color           : getColor(primary-dark);
+    }
+
+
+}
+
+.app--dark {}

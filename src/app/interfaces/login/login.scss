@@ -4,7 +4,7 @@
 
 
 .login-container {
-    @extend .card;
+    @extend .bordered-card;
     min-width: 320px;
 
     padding: 0.5rem;

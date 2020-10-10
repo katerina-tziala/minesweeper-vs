@@ -10,10 +10,3 @@ export const DOM_ELEMENT_CLASS = {
     formSection: 'form-section',
     formActions: 'form-actions'
 };
-
-export const CLEAR_BTN = {
-    ariaLabel: 'clear form',
-    innerHTML: 'clear',
-    className: 'button-text',
-    actionType: 'click'
-};

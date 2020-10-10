@@ -1,17 +1,17 @@
-@import "./fontawesome-web-free-v5.14.0/fontawesome.scss";
-@import "./fontawesome-web-free-v5.14.0/regular.scss";
-@import "./fontawesome-web-free-v5.14.0/solid.scss";
-@import "./fontawesome-web-free-v5.14.0/brands.scss";
+@import './fontawesome-web-free-v5.14.0/fontawesome.scss';
+@import './fontawesome-web-free-v5.14.0/regular.scss';
+@import './fontawesome-web-free-v5.14.0/solid.scss';
+@import './fontawesome-web-free-v5.14.0/brands.scss';
 
 .icon {
-    display: inline-block;
-    margin: auto;
+    display       : inline-block;
+    margin        : auto;
     vertical-align: middle;
-    width: 100%;
-    font-style: normal;
-    text-align: center;
-    font-weight: 900;
-    font-family: "Font Awesome 5 Free";
+    width         : 100%;
+    font-style    : normal;
+    text-align    : center;
+    font-weight   : 900;
+    font-family   : 'Font Awesome 5 Free';
 }
 
 .icon-user {
@@ -24,3 +24,12 @@
     content: fa-content($fa-var-exclamation);
 }
 
+.icon-exclamation-triangle {
+    @extend .icon;
+    content: fa-content($fa-var-exclamation-triangle);
+}
+
+.icon-x {
+    @extend .icon;
+    content: fa-content($fa-var-times);
+}

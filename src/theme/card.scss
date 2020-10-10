@@ -2,16 +2,22 @@
 @import './color-scheme/color-scheme.scss';
 
 .card {
-    @extend %centered-flexbox;
     @extend %card-shadow;
 }
 
-
+.bordered-card {
+    @extend .card;
+}
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .app {
 
     .card {
         background-color: getColor(base-intense);
+
+    }
+
+    .bordered-card {
+        border: 1px solid getColor(line-light);
     }
 }
 

@@ -1,13 +1,11 @@
 'use strict';
 
 import { DOM_ELEMENT_ID } from '../utilities/constants/ui.constants';
-
 import { ElementHandler } from '../utilities/element-handler';
-import { Loader } from '../components/loader/loader';
 
 export class Interface {
 
-    constructor() {}
+    constructor() { }
 
     get mainContainer() {
         return ElementHandler.getByID(DOM_ELEMENT_ID.main);
@@ -21,11 +19,11 @@ export class Interface {
     }
 
     displayLoader() {
-        Loader.display();
+        self.Loader.display();
     }
 
     hideLoader() {
-        Loader.hide();
+        self.Loader.hide();
     }
 
 }
