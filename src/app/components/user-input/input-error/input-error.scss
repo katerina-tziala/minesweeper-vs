@@ -7,7 +7,7 @@
 
 .error-container {
   background-color: transparent;
-  z-index: 5;
+  z-index: 100;
   width: 100%;
 }
 
@@ -30,6 +30,7 @@
   font-size: $font-size-info;
   padding: 5px 10px;
   border-radius: 5px;
+  z-index: inherit;
   @extend %card-shadow;
 
   &:first-letter {
@@ -81,4 +82,28 @@
 }
 
 .app--dark {
+  .error-toggle-btn {
+    background-color: getColor(error-subtle);
+  
+    &:hover,
+    &:focus {
+      background-color: getColor(error-intense);
+    }
+  }
+  
+  .error-message {
+    background-color: getColor(error-pale);
+    color: getColor(primary-dark);
+    &:after {
+      border-bottom-color: getColor(error-pale);
+    }
+  }
+  
+  .input-error {
+    border-color: getColor(error-subtle)!important;
+    &:focus {
+      border-color: getColor(error-intense)!important;
+    }
+  }
 }
+

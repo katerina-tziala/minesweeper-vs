@@ -1,5 +1,13 @@
 @use "sass:map";
 $dark: (
-    base: #262626,
-    primary: #f2f2f2
+    base: #1a1a1a,
+    primary: #000000,
+    base-font: #f2f2f2,
+    base-intense: #000000,
+    primary-dark: #000000,
+    line: #bfbfbf,
+    line-light: #e6e6e6,
+    error-intense: #ff0000,
+    error-subtle: #e60000,
+    error-pale: #ff9999,
 );

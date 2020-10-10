@@ -70,4 +70,22 @@
     }
 }
 
-.app--dark {}
+.app--dark {
+    .button {
+        color           : getColor(base, dark);
+        background-color: getColor(line, dark);
+
+        &:hover,
+        &:focus {
+            background-color: getColor(line-light, dark);
+        }
+
+        &:disabled {
+
+            &:hover,
+            &:focus {
+                background-color: getColor(line, dark);
+            }
+        }
+    }
+}

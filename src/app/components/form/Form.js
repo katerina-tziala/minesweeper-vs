@@ -91,7 +91,8 @@ export class Form {
         form.append(actionsContainer);
     }
 
-    clearForm() {
+    clearForm(event) {
+        event.target.blur();
         this.inputControllers.forEach(inputController => inputController.clear());
         this.toggleSubmission();
     }

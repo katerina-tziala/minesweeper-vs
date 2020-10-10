@@ -38,23 +38,43 @@ export class OnlineConnection {
             console.log('open--------');
             console.log(event);
 
-            // this.webSocket.addEventListener('message', event => {
-            //     const data = JSON.parse(event.data);
-            //     console.log(data);
-            //     console.log('message--------');
-            //     console.log(data);
-            //     // if (data.type) {
-            //     //    this.connectionMessageHandler(data);
-            //     // }
-            // });
-            // this.webSocket.addEventListener('close', event => {
-            //     console.log('close--------');
-            //     console.log(event);
 
-            // });
+            this.webSocket.addEventListener('message', event => {
+                const data = JSON.parse(event.data);
+                console.log(data);
+                console.log('message--------');
+                console.log(data);
+                // if (data.type) {
+                //    this.connectionMessageHandler(data);
+                // }
+            });
+            this.webSocket.addEventListener('close', event => {
+                console.log('close--------');
+                console.log(event);
+
+            });
+
+            this.send("login", userParams);
         });
 
 
 
     }
+
+    send(type, data) {
+        if (this.webSocket) {
+            const message = {
+                type: type,
+                data: data
+            };
+            this.webSocket.send(JSON.stringify(message));
+        } else {
+            console.log("no this.webSocket");
+        }
+    }
+
+
+
+
+
 }

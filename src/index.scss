@@ -22,7 +22,7 @@ body {
   position: relative;
 }
 
-.app {
+#app {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -65,7 +65,7 @@ body {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .app {
   background-color: getColor(base);
-  color: getColor(primary);
+  color: getColor(base-font);
 
   .header {
     background-color: getColor(primary);
@@ -76,10 +76,10 @@ body {
 
 .app--dark {
   background-color: getColor(base, dark);
-  color: getColor(primary, dark);
+  color: getColor(base-font, dark);
 
   .header {
     background-color: getColor(primary, dark);
-    color: getColor(base, dark);
+    color: getColor(base-font, dark);
   }
 }

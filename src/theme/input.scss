@@ -12,6 +12,7 @@
     min-height: $input-size;
     max-height: $input-size;
     padding: 0px 5px;
+    color: inherit;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -35,4 +36,20 @@
 }
 
 .app--dark {
+    .input {
+        border-color: getColor(line, dark);
+
+        &:focus {
+            border-color: getColor(base-font, dark);
+        }
+
+        &:read-only {
+            border-color: getColor(line, dark);
+            opacity: 0.5;
+        }
+
+        &:read-only:focus {
+            border-color: getColor(line, dark);
+        }
+    }
 }

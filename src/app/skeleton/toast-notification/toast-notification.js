@@ -11,7 +11,7 @@ export class ToastNotifications {
     #notificationTimeout;
     #duration;
 
-    constructor(duration = 3000) {
+    constructor(duration = 4000) {
         this.duration = duration;
         this.notificationTimeout = 0;
     }

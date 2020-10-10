@@ -16,21 +16,6 @@ export class App {
         this.interfaceController = undefined;
         this.conn = undefined;
         this.init();
-        // self.toastNotifications = new ToastNotifications();
-        
-        //self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
-
-
-        setTimeout(() => {
-            self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
-
-        }, 1000)
-
-        setTimeout(() => {
-            self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameError);
-
-        }, 5000)
-
     }
 
 
@@ -77,7 +62,12 @@ export class App {
         } else {// login error
             console.log('login error');
             this.conn = undefined;
-
+            self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
+    
+            // setTimeout(() => {
+            //     self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameError);
+    
+            // }, 5000)
         }
     }
 
