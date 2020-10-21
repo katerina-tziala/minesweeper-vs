@@ -6,6 +6,11 @@ import { Login } from './interfaces/login/login';
 
 import { NOTIFICATION_MESSAGE } from './skeleton/toast-notification/toast-notification.constants';
 
+import { AppSettingsModel } from './utilities/models/app-settings';
+
+import { Settings } from './skeleton/settings/settings';
+import { LocalStorageHelper } from './utilities/local-storage-helper';
+
 
 
 
@@ -16,8 +21,19 @@ export class App {
         this.interfaceController = undefined;
         this.conn = undefined;
         this.peers = [];
+        this.initSettings();
         this.init();
     }
+
+    initSettings() {
+        this.settings =  new AppSettingsModel();
+
+        console.log(LocalStorageHelper.retrieve('settings'));
+        console.log(this.settings);
+        //this.settingsController = new Settings();
+    }
+
+
 
 
     init() {
@@ -76,11 +92,11 @@ export class App {
 
     onConnectionMessage(message) {
         switch (message.type) {
-            case "username-in-use":
+            case 'username-in-use':
                 self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUse);
                 break;
-            case "broadcast":
-                console.log("--- broadcast -----");
+            case 'broadcast':
+                console.log('--- broadcast -----');
                 console.log(message.data);
                 break;
             default:

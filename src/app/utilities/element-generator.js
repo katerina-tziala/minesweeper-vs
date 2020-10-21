@@ -11,7 +11,6 @@ export class ElementGenerator {
     }
 
     static generateButton(params, action) {
-        // console.log(params);
         params = { ...params };
         
         const button = document.createElement('button');

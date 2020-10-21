@@ -3,7 +3,7 @@
 import { TYPOGRAPHY } from '../../../utilities/constants/typography.constants';
 import { ElementGenerator } from '../../../utilities/element-generator';
 import { Validator } from '../../../utilities/validator';
-import { AppHelper } from '../../../utilities/app-helper';
+import { preventInteraction, clone, replaceStringParameter } from '../../../utilities/utils';
 
 import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from './text-input.constants';
 
@@ -33,9 +33,9 @@ export class TextInput extends UserInput {
     }
 
     get inputParams() {
-        const params = AppHelper.clone(FIELD_PARAMS);
-        params.ariaLabel = AppHelper.replaceStringParameter(params.ariaLabel, this.name);
-        params.placeholder = AppHelper.replaceStringParameter(params.placeholder, this.name);
+        const params = clone(FIELD_PARAMS);
+        params.ariaLabel = replaceStringParameter(params.ariaLabel, this.name);
+        params.placeholder = replaceStringParameter(params.placeholder, this.name);
         params.className = `${DOM_ELEMENT_CLASS.inputField} ${this.inputClassBasedOnName}`;
         params.autocomplete = 'off';
         params.id = this.name;
@@ -43,7 +43,7 @@ export class TextInput extends UserInput {
     }
 
     get inputError() {
-        return AppHelper.replaceStringParameter(FIELD_ERROR, this.name);
+        return replaceStringParameter(FIELD_ERROR, this.name);
     }
 
     generateInput() {
@@ -55,7 +55,7 @@ export class TextInput extends UserInput {
     }
 
     onValueChange(event) {
-        AppHelper.preventInteraction(event);
+        preventInteraction(event);
         this.value = event.target.value;
         this.validateValue();
     }

@@ -1,14 +1,20 @@
-
 @import '../../../theme/card.scss';
-
-
 
 .login-container {
     @extend .bordered-card;
     min-width: 320px;
-
-    padding: 0.5rem;
-
     padding: 15px;
+    animation: fadein 0.8s ease;
 }
 
+@keyframes fadein {
+    from {
+        opacity    : 0;
+        margin-left: -200px;
+    }
+
+    to {
+        opacity    : 1;
+        margin-left: 0px;
+    }
+}

@@ -1,5 +1,5 @@
 @use "sass:map";
-$dark: (
+$dark     : (
     base: #1a1a1a,
     primary: #000000,
     base-font: #f2f2f2,
@@ -10,4 +10,13 @@ $dark: (
     error-intense: #ff0000,
     error-subtle: #e60000,
     error-pale: #ff9999,
+    // game colors
+    game-type-1: #4040e2,
+    game-type-2: #009900,
+    game-type-3: #ff6600,
+    game-type-4: #ff0000,
+    game-type-5: #9900cc,
+    game-type-6: #ff0000,
+    game-type-7: #e6b800,
+    game-type-8: #1a1a1a,
 );

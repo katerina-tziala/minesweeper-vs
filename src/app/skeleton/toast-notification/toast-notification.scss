@@ -1,6 +1,7 @@
 @import '../../../theme/utilities';
 @import '../../../theme/card.scss';
 @import '../../../theme/iconography/iconography.scss';
+@import '../../../theme/color-scheme/color-scheme.scss';
 
 .toast-notification {
     @extend .card;
@@ -51,7 +52,7 @@
 .app {
 
     .toast-notification--error {
-        background-color: getColor(error-pale);
+        background-color: getColor(error-pale)!important;
         color           : getColor(primary-dark);
     }
 

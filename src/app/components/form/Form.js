@@ -4,7 +4,7 @@ import { CLEAR_BTN } from '../../utilities/constants/btn-text.constants';
 
 import { ElementGenerator } from '../../utilities/element-generator';
 import { ElementHandler } from '../../utilities/element-handler';
-import { AppHelper } from '../../utilities/app-helper';
+import { preventInteraction } from '../../utilities/utils';
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from './form.constants';
 
@@ -75,7 +75,7 @@ export class Form {
         form.onkeypress = (event) => {
             const key = event.keyIdentifier || event.keyCode || 0;
             if (key === 13) {
-                AppHelper.preventInteraction(event);
+                preventInteraction(event);
                 this.submitForm();
             }
         }

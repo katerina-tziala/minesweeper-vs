@@ -76,15 +76,4 @@ export class ElementHandler {
         return element.getAttribute("id");
     }
 
-    static setColor(element, color) {
-        if (color && color.length) {
-            element.style.color = color;
-        }
-    }
-
-    static setBackgroundColor(element, color) {
-        if (color && color.length) {
-            element.style.backgroundColor = color;
-        }
-    }
 }
