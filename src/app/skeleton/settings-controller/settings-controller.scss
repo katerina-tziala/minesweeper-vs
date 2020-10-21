@@ -11,17 +11,17 @@
     // border: 2px solid red;
 }
 
-
+.settings-panel {
+    border  : 2px solid red;
+    position: absolute;
+    top     : 36px;
+}
 
 
 
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.app {
+.app {}
 
-}
-
-.app--dark {
-
-}
+.app--dark {}

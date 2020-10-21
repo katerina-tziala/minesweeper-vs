@@ -33,12 +33,17 @@ export class SettingsController {
         return ElementHandler.getByID(DOM_ELEMENT_ID.container);
     }
 
+    get settingsPanel() {
+        return ElementHandler.getByID(DOM_ELEMENT_ID.settingsPanel);
+    }
+
     initView() {
         this.settingsContainer.then(container => {
             console.log(container);
-
-
-            container.append(ElementGenerator.generateButton(SETTINGS_BTN, this.toggleSettingsDisplay.bind(this)))
+            const settingsBtn = ElementGenerator.generateButton(SETTINGS_BTN, this.toggleSettingsDisplay.bind(this));
+            const settingsPanel = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsPanel);
+            ElementHandler.setID(settingsPanel, DOM_ELEMENT_ID.settingsPanel);
+            container.append(settingsBtn, settingsPanel);
         });
     }
 
