@@ -60,7 +60,7 @@ export class Form {
 
     renderForm(params) {
         const form = document.createElement('form');
-        this.setFormmActionOnEnter(form);
+        this.setFormActionOnEnter(form);
         ElementHandler.addStyleClass(form, DOM_ELEMENT_CLASS.form);
         ElementHandler.setID(form, params.id);
         if (params.title) {
@@ -71,7 +71,7 @@ export class Form {
         return form;
     }
 
-    setFormmActionOnEnter(form) {
+    setFormActionOnEnter(form) {
         form.onkeypress = (event) => {
             const key = event.keyIdentifier || event.keyCode || 0;
             if (key === 13) {
@@ -107,7 +107,9 @@ export class Form {
         }
     }
 
-    /* ~~~~~~~~~~~~~~~~~~~~ ABSTRACT FUNCTIONS ~~~~~~~~~~~~~~~~~~~~ */
-    renderFormFields(form) { }
-
+    renderFormFields(form) {
+        const section = this.renderFormSection();
+        this.inputControllers.forEach(inputControler => section.append(inputControler.generateInput())); 
+        form.append(section);
+    }
 }

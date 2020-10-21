@@ -13,7 +13,7 @@ export class FormUsername extends Form {
 
     constructor(submitAction) {
         super(submitAction);
-        this.inputControllers = new TextInput(FIELD, this.onInputChange.bind(this));
+        this.inputControllers = new TextInput(FIELD, this.toggleSubmission.bind(this));
     }
     
     renderFormFields(form) {
@@ -21,10 +21,6 @@ export class FormUsername extends Form {
         section.append(ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.usernameIcon));
         this.inputControllers.forEach(inputControler => section.append(inputControler.generateInput())); 
         form.append(section);
-    }
-
-    onInputChange() {
-       this.toggleSubmission();
     }
 
 }

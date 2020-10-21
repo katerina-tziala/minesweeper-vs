@@ -7,6 +7,7 @@ import { ElementGenerator } from '../../utilities/element-generator';
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from './settings-controller.constants';
 import { THEME } from '../../utilities/enums/app-settings.enums';
+import { Form } from '../../components/form/form';
 
 
 export class SettingsController {
@@ -17,6 +18,7 @@ export class SettingsController {
         console.log(settings);
         this.settings = settings;
         this.initView();
+        // this.form = new Form(onFormSubmission);
     }
 
     get settings() {
@@ -26,7 +28,6 @@ export class SettingsController {
     set settings(settings) {
         return this.#settings = settings;
     }
-
 
     get settingsContainer() {
         return ElementHandler.getByID(DOM_ELEMENT_ID.container);
@@ -46,4 +47,8 @@ export class SettingsController {
         console.log("toggleSettingsDisplay");
     }
 
+
+    toggleSettingsDisplay() {
+        console.log("toggleSettingsDisplay");
+    }
 }
