@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-class LocalStorageHelper {
+export class LocalStorageHelper {
 
   static save(keyName, value) {
     localStorage.setItem(keyName, JSON.stringify(value));

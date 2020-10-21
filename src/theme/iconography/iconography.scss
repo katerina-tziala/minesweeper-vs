@@ -33,3 +33,8 @@
     @extend .icon;
     content: fa-content($fa-var-times);
 }
+
+.icon-settings {
+    @extend .icon;
+    content: fa-content($fa-var-cog);
+}

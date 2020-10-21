@@ -8,7 +8,7 @@ import { NOTIFICATION_MESSAGE } from './skeleton/toast-notification/toast-notifi
 
 import { AppSettingsModel } from './utilities/models/app-settings';
 
-import { Settings } from './skeleton/settings/settings';
+import { SettingsController } from './skeleton/settings-controller/settings-controller';
 import { LocalStorageHelper } from './utilities/local-storage-helper';
 
 
@@ -27,10 +27,11 @@ export class App {
 
     initSettings() {
         this.settings =  new AppSettingsModel();
-
-        console.log(LocalStorageHelper.retrieve('settings'));
-        console.log(this.settings);
-        //this.settingsController = new Settings();
+        const savedSettings = LocalStorageHelper.retrieve('settings');
+        if (savedSettings) {
+            this.settings.update(savedSettings);
+        }
+        this.settingsController = new SettingsController(this.settings);
     }
 
 

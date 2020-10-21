@@ -42,13 +42,23 @@
     line-height: 16px;
 }
 
+
+
+//  button-icon--settings
+
+
+
+
 .button-icon--close {
     &::after {
         @extend .icon-x;
     }
 }
-
-
+.button-icon--settings {
+    &::after {
+        @extend .icon-settings;
+    }
+}
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .app {
     .button {
@@ -65,6 +75,27 @@
             &:hover,
             &:focus {
                 background-color: getColor(primary);
+            }
+        }
+    }
+
+
+    .button-icon-header {
+        color           : getColor(base-dull);
+        background-color: getColor(primary);
+
+        &:hover,
+        &:focus {
+            background-color: getColor(primary);
+            color           : getColor(base-intense);
+        }
+
+        &:disabled {
+
+            &:hover,
+            &:focus {
+                background-color: getColor(primary);
+                color           : getColor(base);
             }
         }
     }
@@ -88,4 +119,7 @@
             }
         }
     }
+
+    .button-icon-header {}
+
 }
