@@ -37,7 +37,13 @@ export class ElementHandler {
     }
 
     static setAttributes(element, attributes) {
-        Object.keys(attributes).forEach(key => element[key] = attributes[key]);
+        Object.keys(attributes).forEach(key => {
+            if (key === 'role') {
+                ElementHandler.setRole(element, attributes[key]);
+            } else {
+                element[key] = attributes[key];
+            }
+        });
     }
 
     static setID(element, id) {

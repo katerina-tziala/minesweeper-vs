@@ -19,11 +19,11 @@ export class Interface {
     }
 
     displayLoader() {
-        self.Loader.display();
+        self.appLoader.display();
     }
 
     hideLoader() {
-        self.Loader.hide();
+        self.appLoader.hide();
     }
 
 }

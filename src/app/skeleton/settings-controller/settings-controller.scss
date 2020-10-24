@@ -12,9 +12,13 @@
 }
 
 .settings-panel {
-    border  : 2px solid red;
-    position: absolute;
-    top     : 36px;
+    border          : 2px solid red;
+    position        : absolute;
+    top             : 36px;
+    right           : -15px;
+    z-index         : 2000;
+    background-color: #ffffff;
+    padding         : 10px;
 }
 
 

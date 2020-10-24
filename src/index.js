@@ -8,7 +8,7 @@ import './index.scss';
 import './app/skeleton/skeleton.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-    self.Loader = Loader;
+    self.appLoader = Loader;
     self.toastNotifications = new ToastNotifications();
     new App();
 });
