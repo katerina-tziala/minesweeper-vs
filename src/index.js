@@ -3,9 +3,8 @@ import { ToastNotifications } from './app/skeleton/toast-notification/toast-noti
 import { Loader } from './app/skeleton/loader/loader';
 
 import { App } from './app/app';
-
 import './index.scss';
-import './app/skeleton/skeleton.scss';
+
 
 document.addEventListener('DOMContentLoaded', () => {
     self.appLoader = Loader;

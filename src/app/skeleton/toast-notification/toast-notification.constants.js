@@ -9,6 +9,7 @@ export const DOM_ELEMENT_CLASS = {
     toastNotification: 'toast-notification',
     title: 'toast-notification-title',
     titleIcon: 'toast-notification-title-icon',
+    toastCloseBtn: 'toast-close-btn',
 };
 
 export const NOTIFICATION_MESSAGE = {

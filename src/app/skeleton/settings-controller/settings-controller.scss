@@ -1,5 +1,5 @@
-@import '../../../theme/utilities';
-@import '../../../theme/card.scss';
+// @import '../../../theme/utilities';
+@import '../../../theme/elements/card.scss';
 @import '../../../theme/iconography/iconography.scss';
 
 
@@ -17,7 +17,7 @@
     top             : 36px;
     right           : -15px;
     z-index         : 2000;
-    background-color: #ffffff;
+    // background-color: #ffffff;
     padding         : 10px;
 }
 
@@ -26,6 +26,3 @@
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.app {}
-
-.app--dark {}

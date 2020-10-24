@@ -81,7 +81,7 @@ export class SettingsController {
 
 
     setAppTheme() {
-        const appStyles = `${SKELETON_DOM_ELEMENT_CLASS.app} ${SKELETON_DOM_ELEMENT_CLASS.appTheme}${this.settings.theme}`;
+        const appStyles = `${SKELETON_DOM_ELEMENT_CLASS.app} ${SKELETON_DOM_ELEMENT_CLASS.theme}${this.settings.theme}`;
         ElementHandler.getByID(SKELETON_DOM_ELEMENT_ID.app).then(appContainer => {
             appContainer.className = appStyles;
         });

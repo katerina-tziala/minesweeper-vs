@@ -1,85 +1,85 @@
 @charset 'utf-8';
 
-@import './theme/variables';
-@import './theme/mixins';
-@import './theme/utilities';
+@import './theme/typography/typography.scss';
+@import './theme/iconography/iconography.scss';
 @import './theme/color-scheme/color-scheme.scss';
-@import './theme/button.scss';
+@import './theme/layouts.scss';
+@import './theme/mixins.scss';
+@import './theme/elements/card.scss';
+
+@import './app/skeleton/skeleton.scss';
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: $font-family;
+  box-sizing : border-box;
+  margin     : 0;
+  padding    : 0;
+  font-family: $typography-face;
   user-select: none;
 }
 
 html,
 body {
-  width: 100vw;
-  height: 100vh;
+  width   : 100vw;
+  height  : 100vh;
   overflow: hidden;
   position: relative;
+}
+
+.hidden {
+  display   : none !important;
+  visibility: hidden !important;
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  font-size: $font-size-base;
+  @extend %start-column-flexbox;
+  width    : 100vw;
+  height   : 100vh;
+  overflow : hidden;
+  position : relative;
+  font-size: $typography-size-base;
 }
 
 .header {
-  height: 46px;
-  width: 100%;
+  height : 46px;
+  width  : 100%;
   padding: 0 15px;
   @extend %start-flexbox;
-  @extend %card-shadow;
+  @extend .card-shadow;
 
   >.header-title {
-    font-size: $font-size-app-header;
+    font-size  : $typography-size-app-header;
     font-weight: 500;
-    flex-grow: 1;
+    flex-grow  : 1;
   }
 }
 
 .main {
   @extend %centered-flexbox;
-  width: 100%;
-  height: 100%;
+  width     : 100%;
+  height    : 100%;
   max-height: calc(100% - 46px);
-  position: relative;
-  padding: 15px;
+  position  : relative;
+  padding   : 15px;
 }
 
-.hidden {
-  display: none !important;
-  visibility: hidden !important;
-}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.app {
-  background-color: getColor(base);
-  color: getColor(base-font);
+.theme-light {
+  background-color: getLightThemeColor(app-background);
+  color           : getLightThemeColor(app-color);
 
   .header {
-    background-color: getColor(primary);
-    color: getColor(base);
+    background-color: getLightThemeColor(header-background);
+    color: getLightThemeColor(header-color);
   }
-
 }
 
-.app--dark {
-  background-color: getColor(base, dark);
-  color: getColor(base-font, dark);
+.theme-dark {
+  background-color: getDarkThemeColor(app-background);
+  color           : getDarkThemeColor(bapp-color);
 
   .header {
-    background-color: getColor(primary, dark);
-    color: getColor(base-font, dark);
+    background-color: getDarkThemeColor(header-background);
+    color: getDarkThemeColor(header-color);
   }
 }

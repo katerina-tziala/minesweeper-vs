@@ -1,0 +1,61 @@
+@import '../sizes';
+@import '../utilities';
+@import '../typography/typography.scss';
+@import '../color-scheme/color-scheme.scss';
+
+.input {
+    outline         : none;
+    border          : none;
+    border-bottom   : 1px solid transparent;
+    background-color: inherit;
+    font-family     : $typography-face;
+    display         : block;
+    min-height      : $input-size;
+    max-height      : $input-size;
+    padding         : 0px 5px;
+    color           : inherit;
+
+    &:read-only {
+        @extend .disabled;
+    }
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+    .input {
+        border-color: getLightThemeColor(input-border);
+
+        &:focus {
+            border-color: getLightThemeColor(input-border-focused);
+            color       : getLightThemeColor(input-border-focused);
+        }
+
+        &:read-only {
+            border-color: getLightThemeColor(input-border);
+        }
+
+        &:read-only:focus {
+            border-color: getLightThemeColor(input-border);
+        }
+    }
+}
+
+.theme-dark {
+    .input {
+        border-color: getDarkThemeColor(input-border);
+
+        &:focus {
+            border-color: getDarkThemeColor(input-border-focused);
+            color       : getDarkThemeColor(input-border-focused);
+        }
+
+        &:read-only {
+            border-color: getDarkThemeColor(input-border);
+        }
+
+        &:read-only:focus {
+            border-color: getDarkThemeColor(input-border);
+        }
+    }
+}

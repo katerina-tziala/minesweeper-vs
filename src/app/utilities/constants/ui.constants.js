@@ -8,7 +8,7 @@ export const DOM_ELEMENT_ID = {
 export const DOM_ELEMENT_CLASS = {
     hidden: 'hidden',
     app: 'app',
-    appTheme: 'app-theme--',
+    theme: 'theme-',
     //colorType: 'color-type--'
 };
 

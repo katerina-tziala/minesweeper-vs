@@ -1,0 +1,133 @@
+@import '../typography/typography.scss';
+@import '../utilities';
+@import '../sizes';
+@import '../iconography/iconography.scss';
+@import '../color-scheme/color-scheme.scss';
+
+.button {
+    cursor  : pointer;
+    outline : none;
+    display : inline-block;
+    border  : none;
+    overflow: hidden;
+
+    &:disabled {
+        @extend .disabled;
+    }
+}
+
+.button-text {
+    @extend .button;
+    font-size    : $typography-size-btn;
+    border-radius: 5px;
+    min-width    : 46px;
+    text-align   : center;
+    height       : 28px;
+    line-height  : 19px;
+    padding      : 0 10px;
+}
+
+.button-icon {
+    @extend .button;
+    @include circle($btn);
+    border-radius: 50%;
+    font-size    : 21px;
+    line-height  : 22px;
+}
+
+.button-icon--small {
+    @include circle($btn-small);
+    font-size  : 12px;
+    line-height: 16px;
+}
+
+.button-icon--close {
+    &::after {
+        @extend .icon-x;
+    }
+}
+
+.button-icon--settings {
+    &::after {
+        @extend .icon-settings;
+    }
+}
+
+.button-icon.button-icon-header {
+    background-color: transparent !important;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+    .button-primary {
+        background-color: getLightThemeColor(button-background);
+        color           : getLightThemeColor(button-color);
+
+        &:hover,
+        &:focus {
+            background-color: getLightThemeColor(button-background-focused);
+        }
+
+        &:disabled {
+
+            &:hover,
+            &:focus {
+                background-color: getLightThemeColor(button-background);
+            }
+        }
+    }
+
+    .button-icon-header {
+        color: getLightThemeColor(button-header-color);
+
+        &:hover,
+        &:focus {
+            color: getLightThemeColor(button-header-color-focused);
+        }
+
+        &:disabled {
+
+            &:hover,
+            &:focus {
+                color: getLightThemeColor(button-header-color);
+            }
+        }
+    }
+}
+
+.theme-dark {
+    .button-primary {
+        background-color: getDarkThemeColor(button-background);
+        color           : getDarkThemeColor(button-color);
+
+        &:hover,
+        &:focus {
+            background-color: getDarkThemeColor(button-background-focused);
+        }
+
+        &:disabled {
+
+            &:hover,
+            &:focus {
+                background-color: getDarkThemeColor(button-background);
+            }
+        }
+    }
+
+    .button-icon-header {
+        color: getDarkThemeColor(button-header-color);
+
+        &:hover,
+        &:focus {
+            color: getDarkThemeColor(button-header-color-focused);
+        }
+
+        &:disabled {
+
+            &:hover,
+            &:focus {
+                color: getDarkThemeColor(button-header-color);
+            }
+        }
+    }
+}

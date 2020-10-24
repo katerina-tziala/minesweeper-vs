@@ -1,7 +1,7 @@
 'use strict';
 
 const THEME = {
-    Default: 'default',
+    Default: 'light',
     Dark: 'dark',
 }
 Object.freeze(THEME);

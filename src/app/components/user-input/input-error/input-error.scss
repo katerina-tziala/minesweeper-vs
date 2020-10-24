@@ -1,109 +1,68 @@
-@import '../../../../theme/variables';
-@import '../../../../theme/utilities';
+@import '../../../../theme/layouts';
 @import '../../../../theme/mixins';
-@import '../../../../theme/color-scheme/color-scheme.scss';
 @import '../../../../theme/iconography/iconography.scss';
-@import '../../../../theme/button.scss';
+@import '../../../../theme/typography/typography.scss';
+@import '../../../../theme/elements/button.scss';
+@import '../../../../theme/elements/card.scss';
+@import '../../../../theme/color-scheme/color-scheme.scss';
 
 .error-container {
   background-color: transparent;
-  z-index: 100;
-  width: 100%;
+  z-index         : 100;
+  width           : 100%;
 }
 
 .error-toggle-btn {
   @extend .button;
-  @include circle(22px);
-  position: absolute;
-  right: 0;
-  top: 1px;
+  @extend .button-icon--small;
+  position        : absolute;
+  right           : 0;
+  top             : 1px;
+  padding-left    : 1px;
+  background-color: getErrorColor(primary-subtle);
+  color           : getErrorColor(icon);
+
   &:after {
     @extend .icon-exclamation;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: getErrorColor(primary);
+    color           : getErrorColor(icon-focused);
   }
 }
 
 .error-message {
-  position: absolute;
-  right: 0;
-  top: 30px;
-  width: 100%;
-  font-size: $font-size-info;
-  padding: 5px 10px;
-  border-radius: 5px;
-  z-index: inherit;
-  @extend %card-shadow;
+  @extend .card-shadow;
+  position        : absolute;
+  right           : 0;
+  top             : 30px;
+  width           : 100%;
+  font-size       : $typography-size-info;
+  padding         : 5px 10px;
+  border-radius   : 5px;
+  z-index         : inherit;
+  background-color: getErrorColor(secondary);
+  color           : getErrorColor(text);
 
   &:first-letter {
     text-transform: uppercase;
   }
 
   &:after {
-    content: '';
-    width: 0;
-    height: 0;
-    position: absolute;
-    right: 6px;
-    top: -7px;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 8px solid transparent;
+    content      : '';
+    width        : 0;
+    height       : 0;
+    position     : absolute;
+    right        : 5px;
+    top          : -8px;
+    border-left  : 5px solid transparent;
+    border-right : 5px solid transparent;
+    border-bottom: 8px solid getErrorColor(secondary);
   }
 }
 
 .input-error {
   padding-right: 25px;
 }
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.app {
-  .error-toggle-btn {
-    background-color: getColor(error-subtle);
-
-    &:hover,
-    &:focus {
-      background-color: getColor(error-intense);
-    }
-  }
-
-  .error-message {
-    background-color: getColor(error-pale);
-    color: getColor(primary-dark);
-    &:after {
-      border-bottom-color: getColor(error-pale);
-    }
-  }
-
-  .input-error {
-    border-color: getColor(error-subtle)!important;
-    &:focus {
-      border-color: getColor(error-intense)!important;
-    }
-  }
-}
-
-.app--dark {
-  .error-toggle-btn {
-    background-color: getColor(error-subtle);
-  
-    &:hover,
-    &:focus {
-      background-color: getColor(error-intense);
-    }
-  }
-  
-  .error-message {
-    background-color: getColor(error-pale);
-    color: getColor(primary-dark);
-    &:after {
-      border-bottom-color: getColor(error-pale);
-    }
-  }
-  
-  .input-error {
-    border-color: getColor(error-subtle)!important;
-    &:focus {
-      border-color: getColor(error-intense)!important;
-    }
-  }
-}
-

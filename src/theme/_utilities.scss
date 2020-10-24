@@ -1,17 +1,5 @@
-%centered-flexbox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-}
 
-%start-flexbox {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: center;
-}
-
-%card-shadow {
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+.disabled {
+    opacity: 0.5;
+    cursor : not-allowed;
 }

@@ -1,17 +1,17 @@
-@import "../../../theme/variables";
-@import "../../../theme/utilities";
+@import '../../../theme/typography/typography.scss';
+@import '../../../theme/layouts';
 
 .form {
-    width: 100%;
-    margin: auto;
-    font-size: 14px;
-    position: relative;
+    width           : 100%;
+    margin          : auto;
+    font-size       : 14px;
+    position        : relative;
     background-color: transparent;
 }
 
 .form-title {
-    margin-bottom: 15px;
-    font-size: $font-size-h2;
+    margin-bottom : 15px;
+    font-size     : $typography-size-h2;
     text-transform: capitalize;
 }
 
@@ -22,5 +22,5 @@
 .form-actions {
     @extend %centered-flexbox;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top     : 20px;
 }

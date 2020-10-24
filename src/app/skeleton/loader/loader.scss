@@ -1,18 +1,19 @@
-@import '../../../theme/color-scheme/color-scheme.scss';
+@import '../../../theme/layouts';
+@import '../../../theme/color-scheme/color-scheme';
 
 #loader {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+  height   : 100%;
+  width    : 100%;
+  position : absolute;
+  top      : 0;
+  left     : 0;
   flex-flow: column nowrap;
-  z-index: 2500;
+  z-index  : 2500;
   @extend %centered-flexbox;
 }
 
 .spinner {
-  stroke-width: 3px;
+  stroke-width    : 3px;
   transform-origin: 50%;
 }
 
@@ -33,41 +34,40 @@
 @keyframes line {
   0% {
     stroke-dasharray: 2, 85.964;
-    transform: rotate(0);
+    transform       : rotate(0);
   }
 
   50% {
-    stroke-dasharray: 65.973, 21.9911;
+    stroke-dasharray : 65.973, 21.9911;
     stroke-dashoffset: 0;
   }
 
   100% {
-    stroke-dasharray: 2, 85.964;
+    stroke-dasharray : 2, 85.964;
     stroke-dashoffset: -65.973;
-    transform: rotate(90deg);
+    transform        : rotate(90deg);
   }
 }
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.app {
+.theme-light {
 
   .loader {
-    background-color: getColor(base);
+    background-color: getLightThemeColor(loader-background);
   }
 
   .spinner {
-    stroke: getColor(primary);
+    stroke: getLightThemeColor(loader-stroke);
   }
-
 }
 
-.app--dark {
+.theme-dark {
   .loader {
-    background-color: getColor(base, dark);
+    background-color: getDarkThemeColor(loader-background);
   }
 
   .spinner {
-    stroke: getColor(primary, dark);
+    stroke: getDarkThemeColor(loader-stroke);
   }
-
 }
