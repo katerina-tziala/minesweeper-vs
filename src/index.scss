@@ -3,6 +3,7 @@
 @import './theme/typography/typography.scss';
 @import './theme/iconography/iconography.scss';
 @import './theme/color-scheme/color-scheme.scss';
+@import './theme/utilities';
 @import './theme/layouts.scss';
 @import './theme/mixins.scss';
 @import './theme/elements/card.scss';
@@ -23,11 +24,6 @@ body {
   height  : 100vh;
   overflow: hidden;
   position: relative;
-}
-
-.hidden {
-  display   : none !important;
-  visibility: hidden !important;
 }
 
 #app {
