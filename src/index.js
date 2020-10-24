@@ -1,9 +1,11 @@
 
+import './index.scss';
+
 import { ToastNotifications } from './app/skeleton/toast-notification/toast-notification';
 import { Loader } from './app/skeleton/loader/loader';
 
 import { App } from './app/app';
-import './index.scss';
+
 
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -21,11 +21,15 @@ $dark: (app-background: $base,
     input-border: #595959,
     input-border-focused: #e6e6e6,
     //button
-    button-background: #595959,
+    button-background: #b3b3b3,
     button-color: #1a1a1a,
-    button-background-focused: #d9d9d9,
+    button-background-focused: #e6e6e6,
     button-color-focused: #000000,
     //button header
     button-header-color: #bfbfbf,
     button-header-color-focused: #f2f2f2,
+    //switcher
+    switcher-background-on: #e6e6e6,
+    switcher-background-off: #b3b3b3,
+    switcher-circle: #000000,
 );

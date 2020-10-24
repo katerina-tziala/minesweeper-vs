@@ -53,6 +53,10 @@ export class SettingsController {
             container.append(settingsBtn, settingsPanel);
 
 
+            // setTimeout(() => {
+            //     console.log('NOW DISABLED');
+            //     this.themeSwitcher.disable();
+            // }, 2000);
         }, 1000);
     }
 

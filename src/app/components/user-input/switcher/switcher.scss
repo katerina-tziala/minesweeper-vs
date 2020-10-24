@@ -1,4 +1,5 @@
-@charset "utf-8";
+@import '../../../../theme/utilities';
+@import '../../../../theme/color-scheme/color-scheme.scss';
 
 .switcher {
     width        : 34px;
@@ -8,47 +9,56 @@
     outline      : none;
     cursor       : pointer;
     position     : relative;
+
+    &:disabled {
+        @extend .disabled;
+    }
+
+    &::after {
+        content      : '';
+        width        : 10px;
+        height       : 10px;
+        position     : absolute;
+        border-radius: 50%;
+        top          : 3px;
+        transition   : .3s linear;
+    }
 }
 
-.switcher:disabled {
-    cursor : not-allowed !important;
-    opacity: 0.5 !important;
-}
-
-.switcher::after {
-    content           : "";
-    width             : 10px;
-    height            : 10px;
-    position          : absolute;
-    border-radius     : 50%;
-    top               : 3px;
-    -webkit-transition: .3s linear;
-    transition        : .3s linear;
-}
-
-[role="switch"][aria-checked="false"]::after {
+[role='switch'][aria-checked='false']::after {
     left: 3px;
 }
 
-[role="switch"][aria-checked="true"]::after {
+[role='switch'][aria-checked='true']::after {
     left: 21px;
 }
 
-// TODO: THEMING
 
-/* THEME */
-.switcher:disabled {
-    background-color: #d9d9d9 !important;
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+    .switcher::after {
+        background-color: getLightThemeColor(switcher-circle);
+    }
+    
+    [role='switch'][aria-checked='false'] {
+        background-color: getLightThemeColor(switcher-background-off);
+    }
+    
+    [role='switch'][aria-checked='true'] {
+        background-color: getLightThemeColor(switcher-background-on);
+    }
 }
 
-.switcher::after {
-    background-color: #ffffff;
-}
-
-[role="switch"][aria-checked="false"] {
-    background-color: #b3b3b3;
-}
-
-[role="switch"][aria-checked="true"] {
-    background-color: #262626;
+.theme-dark {
+    .switcher::after {
+        background-color: getDarkThemeColor(switcher-circle);
+    }
+    
+    [role='switch'][aria-checked='false'] {
+        background-color: getDarkThemeColor(switcher-background-off);
+    }
+    
+    [role='switch'][aria-checked='true'] {
+        background-color: getDarkThemeColor(switcher-background-on);
+    }
 }
