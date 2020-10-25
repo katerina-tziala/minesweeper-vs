@@ -17,17 +17,11 @@ export class SettingsController {
 	#settings;
 
 	constructor(settings) {
-
-		console.log(settings);
 		this.settings = settings;
-
-
-		this.initView();
-		this.themeSwitcher = new Switcher("theme", this.settings.theme === THEME.Dark, this.onDarkThemeChange.bind(this));
-		// this.form = new Form(onFormSubmission);
-
 		this.saveSettings();
 		this.setAppTheme();
+		this.themeSwitcher = new Switcher("theme", this.settings.theme === THEME.Dark, this.onDarkThemeChange.bind(this));
+		this.initView();
 	}
 
 	get settings() {
