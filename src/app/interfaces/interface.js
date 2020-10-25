@@ -1,29 +1,29 @@
-'use strict';
+"use strict";
 
-import { DOM_ELEMENT_ID } from '../utilities/constants/ui.constants';
-import { ElementHandler } from '../utilities/element-handler';
+import { DOM_ELEMENT_ID } from "../utilities/constants/ui.constants";
+import { ElementHandler } from "../utilities/element-handler";
 
 export class Interface {
 
-    constructor() { }
+	constructor() { }
 
-    get mainContainer() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.main);
-    }
+	get mainContainer() {
+		return ElementHandler.getByID(DOM_ELEMENT_ID.main);
+	}
 
-    getClearedMainContainer() {
-        return this.mainContainer.then(mainContainer => {
-            ElementHandler.clearContent(mainContainer);
-            return mainContainer;
-        });
-    }
+	getClearedMainContainer() {
+		return this.mainContainer.then(mainContainer => {
+			ElementHandler.clearContent(mainContainer);
+			return mainContainer;
+		});
+	}
 
-    displayLoader() {
-        self.appLoader.display();
-    }
+	displayLoader() {
+		self.appLoader.display();
+	}
 
-    hideLoader() {
-        self.appLoader.hide();
-    }
+	hideLoader() {
+		self.appLoader.hide();
+	}
 
 }

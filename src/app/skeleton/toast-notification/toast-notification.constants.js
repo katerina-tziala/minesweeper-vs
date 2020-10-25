@@ -1,26 +1,26 @@
-'use strict';
+"use strict";
 
 export const DOM_ELEMENT_ID = {
-    container: 'toast-notification'
+	container: "toast-notification"
 };
 
 export const DOM_ELEMENT_CLASS = {
-    show: 'toast-notification--show',
-    toastNotification: 'toast-notification',
-    title: 'toast-notification-title',
-    titleIcon: 'toast-notification-title-icon',
-    toastCloseBtn: 'toast-close-btn',
+	show: "toast-notification--show",
+	toastNotification: "toast-notification",
+	title: "toast-notification-title",
+	titleIcon: "toast-notification-title-icon",
+	toastCloseBtn: "toast-close-btn",
 };
 
 export const NOTIFICATION_MESSAGE = {
-    connectionError: {
-        type: "error",
-        title: "Connection Error",
-        content: ["Connection to online gaming failed!", "Please refresh and try again."]
-    },
-    usernameInUse: {
-        type: "error",
-        title: "Oups!",
-        content: ["Username is not available!", "Please login with a different username."]
-    }
+	connectionError: {
+		type: "error",
+		title: "Connection Error",
+		content: ["Connection to online gaming failed!", "Please refresh and try again."]
+	},
+	usernameInUse: {
+		type: "error",
+		title: "Oups!",
+		content: ["Username is not available!", "Please login with a different username."]
+	}
 };

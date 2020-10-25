@@ -1,73 +1,73 @@
-'use strict';
+"use strict";
 
-import { ElementHandler } from '../../utilities/element-handler';
+import { ElementHandler } from "../../utilities/element-handler";
 
 export class UserInput {
-    #name;
-    #value;
-    #valid;
-    #onValueChange;
+	#name;
+	#value;
+	#valid;
+	#onValueChange;
 
-    constructor(name, value, onValueChange) {
-        this.name = name;
-        this.value = value;
-        this.#onValueChange = onValueChange;
-    }
+	constructor(name, value, onValueChange) {
+		this.name = name;
+		this.value = value;
+		this.#onValueChange = onValueChange;
+	}
 
-    set name(value) {
-        this.#name = value;
-    }
+	set name(value) {
+		this.#name = value;
+	}
 
-    get name() {
-        return this.#name;
-    }
+	get name() {
+		return this.#name;
+	}
 
-    set value(value) {
-        this.#value = value;
-    }
+	set value(value) {
+		this.#value = value;
+	}
 
-    get value() {
-        return this.#value;
-    }
+	get value() {
+		return this.#value;
+	}
 
-    set valid(value) {
-        this.#valid = value;
-    }
+	set valid(value) {
+		this.#valid = value;
+	}
 
-    get valid() {
-        return this.#valid;
-    }
+	get valid() {
+		return this.#valid;
+	}
 
-    get inputField() {
-        return ElementHandler.getByID(this.name);
-    }
+	get inputField() {
+		return ElementHandler.getByID(this.name);
+	}
 
-    notifyForChanges() {
-        if (this.#onValueChange) {
-            this.#onValueChange({
-                name: this.name,
-                value: this.value,
-                valid: this.valid
-            });
-        }
-    }
+	notifyForChanges() {
+		if (this.#onValueChange) {
+			this.#onValueChange({
+				name: this.name,
+				value: this.value,
+				valid: this.valid
+			});
+		}
+	}
 
-    generateInputField(inputAction) {
-        const inputField = document.createElement('input');
-        inputField.name = this.name;
-        inputField.value = this.value;
+	generateInputField(inputAction) {
+		const inputField = document.createElement("input");
+		inputField.name = this.name;
+		inputField.value = this.value;
 
-        const params = this.inputParams;
-        if (inputAction) {
-            inputField.addEventListener(params.actionType, inputAction);
-        }
-        delete params.actionType;
+		const params = this.inputParams;
+		if (inputAction) {
+			inputField.addEventListener(params.actionType, inputAction);
+		}
+		delete params.actionType;
 
-        ElementHandler.setAttributes(inputField, params);
-        return inputField;
-    }
+		ElementHandler.setAttributes(inputField, params);
+		return inputField;
+	}
 
-    /* ~~~~~~~~~~~~~~~~~~~~ ABSTRACT FUNCTIONS ~~~~~~~~~~~~~~~~~~~~ */
-    get inputParams() { }
+	/* ~~~~~~~~~~~~~~~~~~~~ ABSTRACT FUNCTIONS ~~~~~~~~~~~~~~~~~~~~ */
+	get inputParams() { return undefined; }
 
 }

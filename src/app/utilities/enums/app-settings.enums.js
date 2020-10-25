@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
 const THEME = {
-    Default: 'light',
-    Dark: 'dark',
-}
+	Default: "light",
+	Dark: "dark",
+};
 Object.freeze(THEME);
 
 const MINETYPE = {
-    Bomb: 'bomb',
-    Bahai: 'bahai',
-    Virus: 'virus',
-}
+	Bomb: "bomb",
+	Bahai: "bahai",
+	Virus: "virus",
+};
 Object.freeze(MINETYPE);
 
-export { THEME, MINETYPE};
+export { THEME, MINETYPE };

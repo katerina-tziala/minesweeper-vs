@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 export const SWITCH_BNT = {
-    className: "switcher",
-    actionType: "click",
-    role: "switch"
+	className: "switcher",
+	actionType: "click",
+	role: "switch"
 };

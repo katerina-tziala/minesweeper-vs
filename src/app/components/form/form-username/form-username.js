@@ -1,26 +1,26 @@
-'use strict';
+"use strict";
 
-import { ElementGenerator } from '../../../utilities/element-generator';
+import "./form-username.scss";
 
-import { Form } from '../form';
-import { TextInput } from '../../user-input/text-input/text-input';
+import { ElementGenerator } from "../../../utilities/element-generator";
 
-import { DOM_ELEMENT_CLASS, FIELD } from './form-username.constants';
+import { Form } from "../form";
+import { TextInput } from "../../user-input/text-input/text-input";
 
-import './form-username.scss';
+import { DOM_ELEMENT_CLASS, FIELD } from "./form-username.constants";
 
 export class FormUsername extends Form {
 
-    constructor(submitAction) {
-        super(submitAction);
-        this.inputControllers = new TextInput(FIELD, this.toggleSubmission.bind(this));
-    }
-    
-    renderFormFields(form) {
-        const section = this.renderFormSection();
-        section.append(ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.usernameIcon));
-        this.inputControllers.forEach(inputControler => section.append(inputControler.generateInput())); 
-        form.append(section);
-    }
+	constructor(submitAction) {
+		super(submitAction);
+		this.inputControllers = new TextInput(FIELD, this.toggleSubmission.bind(this));
+	}
+
+	renderFormFields(form) {
+		const section = this.renderFormSection();
+		section.append(ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.usernameIcon));
+		this.inputControllers.forEach(inputControler => section.append(inputControler.generateInput()));
+		form.append(section);
+	}
 
 }
