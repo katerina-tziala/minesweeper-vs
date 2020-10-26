@@ -12,7 +12,7 @@ import { Form } from "../../components/form/form";
 import { Switcher } from "../../components/user-input/switcher/switcher";
 import { LocalStorageHelper } from "../../utilities/local-storage-helper";
 import { clone } from "../../utilities/utils";
-import { DOM_ELEMENT_ID as SKELETON_DOM_ELEMENT_ID, DOM_ELEMENT_CLASS as SKELETON_DOM_ELEMENT_CLASS } from "../../utilities/constants/ui.constants";
+import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utilities/constants/ui.constants";
 export class SettingsController {
 	#settings;
 
@@ -53,7 +53,21 @@ export class SettingsController {
 	renderSettingsOptions(settingsPanel) {
 		console.log(settingsPanel);
 		console.log(Object.keys(this.settings));
-		settingsPanel.append(this.themeSwitcher.generateInput());
+		Object.keys(this.settings).forEach(key => {
+			const settingsSection = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsSection);
+
+
+			const settingTag = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsTag);
+			settingTag.innerHTML = CONTENT[key];
+		
+
+
+			const settingContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingContainer);
+			settingsSection.append(settingTag, settingContainer);
+			settingsPanel.append(settingsSection);
+
+		});
+		//settingsPanel.append(this.themeSwitcher.generateInput());
 	}
 
 
@@ -79,17 +93,13 @@ export class SettingsController {
 		this.setAppTheme();
 	}
 
-
 	saveSettings() {
 		LocalStorageHelper.save("settings", clone(this.settings));
 	}
 
-
 	setAppTheme() {
-		const appStyles = `${SKELETON_DOM_ELEMENT_CLASS.app} ${SKELETON_DOM_ELEMENT_CLASS.theme}${this.settings.theme}`;
-		ElementHandler.getByID(SKELETON_DOM_ELEMENT_ID.app).then(appContainer => {
-			appContainer.className = appStyles;
-		});
+		const appStyles = `${APP_STYLE_CLASS.app} ${APP_STYLE_CLASS.theme}${this.settings.theme}`;
+		ElementHandler.getByID(APP_ELEMENTS_IDS.app).then(appContainer => appContainer.className = appStyles);
 	}
 
 }

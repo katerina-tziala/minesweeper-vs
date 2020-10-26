@@ -6,12 +6,15 @@ export const DOM_ELEMENT_ID = {
 };
 
 export const DOM_ELEMENT_CLASS = {
-	settingsPanel: "settings-panel"
+	settingsPanel: "settings-panel",
+	settingsSection: "settings-section",
+	settingsTag: "settings-tag",
+	settingContainer: "setting-container",
 };
 
 
 export const CONTENT = {
-	theme: "dark theme",
+	theme: "dark mode",
 	mineType: "mine type",
 	playerColorType: "my color",
 	opponentColorType: "opponent's color"

@@ -5,24 +5,36 @@
 
 
 .settings {
-    position: relative;
+	position: relative;
 
 
-    // border: 2px solid red;
+	// border: 2px solid red;
 }
 
 .settings-panel {
-    border          : 2px solid red;
-    position        : absolute;
-    top             : 36px;
-    right           : -15px;
-    z-index         : 2000;
-    // background-color: #ffffff;
-    padding         : 10px;
+	border             : 2px solid red;
+	position           : absolute;
+	top                : 36px;
+	right              : -15px;
+	z-index            : 2000;
+	// background-color: #ffffff;
+	padding            : 10px;
+	@extend .card;
 }
 
+.settings-section {
+	border   : 1px solid blue;
+	min-width: 200px;
+}
 
+.settings-tag {
+	background-color: lightcoral;
+}
 
-
+.setting-container {
+	background-color: aquamarine;
+	min-width       : 20px;
+	min-height      : 20px;
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
