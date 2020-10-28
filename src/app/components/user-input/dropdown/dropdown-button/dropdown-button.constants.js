@@ -14,4 +14,3 @@ export const DROPDOWN_BNT = {
 	className: "dropdown-btn",
 	actionType: "click"
 };
-
