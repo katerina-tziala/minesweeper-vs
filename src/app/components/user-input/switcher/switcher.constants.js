@@ -3,5 +3,6 @@
 export const SWITCH_BNT = {
 	className: "switcher",
 	actionType: "click",
-	role: "switch"
+	role: "switch",
+	ariaLabel: "switcher"
 };

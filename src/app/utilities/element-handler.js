@@ -82,4 +82,7 @@ export class ElementHandler {
 		return element.getAttribute("id");
 	}
 
+	static setTabindex(element, value) {
+		element.setAttribute("tabindex", value);
+	}
 }

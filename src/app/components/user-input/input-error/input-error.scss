@@ -1,4 +1,5 @@
 @import '../../../../theme/layouts';
+@import '../../../../theme/utilities';
 @import '../../../../theme/mixins';
 @import '../../../../theme/iconography/iconography.scss';
 @import '../../../../theme/typography/typography.scss';
@@ -46,9 +47,7 @@
   background-color: getErrorColor(secondary);
   color           : getErrorColor(text);
 
-  &:first-letter {
-    text-transform: uppercase;
-  }
+  @extend .capitalize-first-letter;
 
   &:after {
     content      : '';

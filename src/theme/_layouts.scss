@@ -1,19 +1,24 @@
-%centered-flexbox {
+
+%flexbox {
     display: flex;
+}
+
+%centered-flexbox {
+	@extend %flexbox;
     justify-content: center;
     align-items: center;
     align-content: center;
 }
 
 %start-flexbox {
-    display: flex;
+	@extend %flexbox;
     justify-content: flex-start;
     align-items: center;
-    align-content: center;
+	align-content: center;
 }
 
 %start-column-flexbox {
-    display: flex;
+	@extend %flexbox;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;

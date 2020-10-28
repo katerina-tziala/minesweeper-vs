@@ -38,3 +38,23 @@
     @extend .icon;
     content: fa-content($fa-var-cog);
 }
+
+.icon-caret-down {
+    @extend .icon;
+    content: fa-content($fa-var-caret-down);
+}
+
+.icon-bomb {
+    @extend .icon;
+    content: fa-content($fa-var-bomb);
+}
+
+.icon-bahai {
+    @extend .icon;
+    content: fa-content($fa-var-bahai);
+}
+
+.icon-virus {
+    @extend .icon;
+    content: fa-content($fa-var-virus);
+}

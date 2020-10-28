@@ -1,4 +1,5 @@
-// @import '../../../theme/utilities';
+@import '../../../theme/layouts';
+
 @import '../../../theme/elements/card.scss';
 @import '../../../theme/iconography/iconography.scss';
 
@@ -23,18 +24,44 @@
 }
 
 .settings-section {
-	border   : 1px solid blue;
+	//border   : 1px solid blue;
+
 	min-width: 200px;
+	@extend %start-flexbox;
+	justify-content: space-between;
+
+
 }
 
 .settings-tag {
 	background-color: lightcoral;
 }
 
-.setting-container {
-	background-color: aquamarine;
-	min-width       : 20px;
-	min-height      : 20px;
+
+.mine-type-option {
+	height: 22px;
+    width: 22px;
+    line-height: 21px;
+    font-size: 1.1rem;
+  //  background: red;
+}
+
+.mine-type-option--bomb {
+	&::after {
+		@extend .icon-bomb;
+	}
+}
+
+.mine-type-option--bahai {
+	&::after {
+		@extend .icon-bahai;
+	}
+}
+
+.mine-type-option--virus {
+	&::after {
+		@extend .icon-virus;
+	}
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

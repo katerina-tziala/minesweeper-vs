@@ -67,7 +67,4 @@ export class UserInput {
 		return inputField;
 	}
 
-	/* ~~~~~~~~~~~~~~~~~~~~ ABSTRACT FUNCTIONS ~~~~~~~~~~~~~~~~~~~~ */
-	get inputParams() { return undefined; }
-
 }

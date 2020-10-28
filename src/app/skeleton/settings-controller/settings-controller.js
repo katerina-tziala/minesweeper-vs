@@ -6,10 +6,12 @@ import { ElementHandler } from "../../utilities/element-handler";
 import { ElementGenerator } from "../../utilities/element-generator";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./settings-controller.constants";
-import { THEME } from "../../utilities/enums/app-settings.enums";
+import { MINETYPE, THEME } from "../../utilities/enums/app-settings.enums";
 import { Form } from "../../components/form/form";
 
 import { Switcher } from "../../components/user-input/switcher/switcher";
+
+import { Dropdown } from "../../components/user-input/dropdown/dropdown";
 import { LocalStorageHelper } from "../../utilities/local-storage-helper";
 import { clone } from "../../utilities/utils";
 import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utilities/constants/ui.constants";
@@ -21,6 +23,8 @@ export class SettingsController {
 		this.saveSettings();
 		this.setAppTheme();
 		this.themeSwitcher = new Switcher("theme", this.settings.theme === THEME.Dark, this.onDarkThemeChange.bind(this));
+	
+		this.initMineTypeController();
 		this.initView();
 	}
 
@@ -50,32 +54,62 @@ export class SettingsController {
 		}, 1000);
 	}
 
-	renderSettingsOptions(settingsPanel) {
-		console.log(settingsPanel);
-		console.log(Object.keys(this.settings));
-		Object.keys(this.settings).forEach(key => {
-			const settingsSection = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsSection);
+	initMineTypeController() {
+		const options = {
+			name: "mineType",
+			value: this.settings.mineType,
+			selectLabel: CONTENT.mineType,
+			options: this.getMineTypeOptions(),
+		};
+		this.mineTypeController = new Dropdown(options, this.onMineTypeChange.bind(this));
+	}
 
-
-			const settingTag = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsTag);
-			settingTag.innerHTML = CONTENT[key];
-		
-
-
-			const settingContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingContainer);
-			settingsSection.append(settingTag, settingContainer);
-			settingsPanel.append(settingsSection);
-
+	getMineTypeOptions() {
+		const options = [];
+		Object.values(MINETYPE).forEach(type => {
+			options.push({
+				value: type,
+				label: `<div class="mine-type-option mine-type-option--${type}"></div>`
+			});
 		});
-		//settingsPanel.append(this.themeSwitcher.generateInput());
+		return options;
+	}
+
+	renderSettingsOptions(settingsPanel) {
+		settingsPanel.append(this.renderThemeOption());
+		settingsPanel.append(this.renderMineTypeOption());
+	}
+
+	renderThemeOption() {
+		const settingsSection = this.generateSettingSection("theme");
+		settingsSection.append(this.themeSwitcher.generateInput());
+		return settingsSection;
+	}
+
+	renderMineTypeOption() {
+		const settingsSection = this.generateSettingSection("mineType");
+		ElementHandler.addStyleClass(settingsSection, DOM_ELEMENT_CLASS.gameSettings);
+
+
+		settingsSection.append(this.mineTypeController.generateInput());
+
+		return settingsSection;
 	}
 
 
 
+	generateSettingSection(key) {
+		const settingsSection = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsSection);
+		const settingTag = this.generateSettingTag(key);
+		settingsSection.append(settingTag);
+		return settingsSection;
+	}
 
-
-
-
+	generateSettingTag(settingKey) {
+		const settingTag = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsTag);
+		settingTag.innerHTML = CONTENT[settingKey];
+		return settingTag;
+	}
 
 	toggleSettingsDisplay() {
 		console.log("toggleSettingsDisplay");
@@ -100,6 +134,11 @@ export class SettingsController {
 	setAppTheme() {
 		const appStyles = `${APP_STYLE_CLASS.app} ${APP_STYLE_CLASS.theme}${this.settings.theme}`;
 		ElementHandler.getByID(APP_ELEMENTS_IDS.app).then(appContainer => appContainer.className = appStyles);
+	}
+
+
+	onMineTypeChange(params) {
+		console.log(params);
 	}
 
 }

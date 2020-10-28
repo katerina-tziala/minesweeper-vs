@@ -1,4 +1,5 @@
 @import '../utilities';
+@import '../mixins';
 @import '../sizes';
 @import '../iconography/iconography.scss';
 @import '../color-scheme/color-scheme.scss';
@@ -6,7 +7,7 @@
 .button {
     cursor  : pointer;
     outline : none;
-    display : inline-block;
+
     border  : none;
     overflow: hidden;
 
@@ -16,7 +17,8 @@
 }
 
 .button-text {
-    @extend .button;
+	@extend .button;
+	display : inline-block;
     font-size    : 0.9rem;
     border-radius: 8px;
     min-width    : 46px;
@@ -27,7 +29,8 @@
 }
 
 .button-icon {
-    @extend .button;
+	@extend .button;
+	display : inline-block;
     @include circle($btn);
     border-radius: 50%;
     font-size    : 21px;

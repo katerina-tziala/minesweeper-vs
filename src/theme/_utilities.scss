@@ -1,9 +1,15 @@
 .hidden {
-    display   : none !important;
-    visibility: hidden !important;
+	display   : none !important;
+	visibility: hidden !important;
 }
 
 .disabled {
-    cursor : not-allowed !important;
-    opacity: 0.5 !important;
+	cursor : not-allowed !important;
+	opacity: 0.5 !important;
+}
+
+.capitalize-first-letter {
+	&:first-letter {
+		text-transform: uppercase;
+	}
 }

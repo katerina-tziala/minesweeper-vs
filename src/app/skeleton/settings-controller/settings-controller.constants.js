@@ -9,7 +9,7 @@ export const DOM_ELEMENT_CLASS = {
 	settingsPanel: "settings-panel",
 	settingsSection: "settings-section",
 	settingsTag: "settings-tag",
-	settingContainer: "setting-container",
+	gameSettings: "game-settings",
 };
 
 
