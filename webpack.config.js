@@ -81,10 +81,10 @@ module.exports = {
                             limit: 100000,
                             name: '[name]-[hash].[ext]',
                             outputPath: (url, resourcePath, context) => {
-                                if (resourcePath.match('fonts/nunito')) {
+                                if (resourcePath.toString().match('nunito')) {
                                     return `./assets/fonts/nunito/${url}`;
                                 }
-                                if (resourcePath.match('fonts/fontawesome')) {
+                                if (resourcePath.match('fontawesome')) {
                                     return `./assets/fonts/fontawesome/${url}`;
                                 }
                             }
@@ -92,13 +92,6 @@ module.exports = {
                     }
                 ]
             },
-            // {
-            //     test: /\.css$/,
-            //     use: [
-            //         MiniCssExtractPlugin.loader,
-            //         'css-loader'
-            //     ]
-            // }
         ]
     },
     plugins,

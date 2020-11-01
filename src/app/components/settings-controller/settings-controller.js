@@ -1,42 +1,66 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../utilities/constants/typography.constants";
+import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utilities/constants/ui.constants";
+import { THEME } from "../../utilities/enums/app-settings.enums";
 import { SETTINGS_BTN } from "../../utilities/constants/btn-icon.constants";
 import { ElementHandler } from "../../utilities/element-handler";
 import { ElementGenerator } from "../../utilities/element-generator";
-
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS } from "./settings-controller.constants";
-import { MINETYPE, THEME } from "../../utilities/enums/app-settings.enums";
-import { Form } from "../../components/form/form";
-
-import { Switcher } from "../../components/user-input/switcher/switcher";
-
-import { DropdownSelect } from "../../components/user-input/dropdown-select/dropdown-select";
+import { AriaHandler } from "../../utilities/aria-handler";
 import { LocalStorageHelper } from "../../utilities/local-storage-helper";
 import { clone } from "../../utilities/utils";
-import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utilities/constants/ui.constants";
 
+import { Switcher } from "../../components/user-input/switcher/switcher";
+import { DropdownSelect } from "../../components/user-input/dropdown-select/dropdown-select";
+
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS } from "./settings-controller.constants";
 import { SettingsOptionsHelper } from "./settings-options-helper";
-
-
-
-
-
+import { SettingsViewHelper } from "./settings-view-helper";
 
 export class SettingsController {
 	#inputControllers;
 	#settings;
+	#gameSettingsHidden;
+	#expanded;
 
-	constructor(settings) {
+	constructor(settings, gameSettingsHidden = true) {
 		this.settings = settings;
 		this.saveSettings();
 		this.setAppTheme();
 		this.#inputControllers = {};
+		this.gameSettingsHidden = gameSettingsHidden;
+		this.expanded = false;
 		this.initThemeTypeController();
 		this.initMineTypeController();
 		this.initPlayerColorController();
 		this.initOpponentColorController();
 		this.initView();
+	}
+
+	get settings() {
+		return this.#settings;
+	}
+
+	set settings(settings) {
+		this.#settings = settings;
+	}
+
+	get expanded() {
+		return this.#expanded;
+	}
+
+	set expanded(state) {
+		this.#expanded = state;
+	}
+
+	get gameSettingsHidden() {
+		return this.#gameSettingsHidden;
+	}
+
+	set gameSettingsHidden(state) {
+		if (this.expanded) {
+			this.collapseSettings();
+		}
+		this.#gameSettingsHidden = state;
 	}
 
 	set inputControllers(controller) {
@@ -48,24 +72,20 @@ export class SettingsController {
 		return Object.values(this.#inputControllers);
 	}
 
-	getInputController(key) {
-		return this.#inputControllers[key];
-	}
-
-	get settings() {
-		return this.#settings;
-	}
-
-	set settings(settings) {
-		this.#settings = settings;
-	}
-
 	get settingsContainer() {
 		return ElementHandler.getByID(DOM_ELEMENT_ID.container);
 	}
 
 	get settingsPanel() {
 		return ElementHandler.getByID(DOM_ELEMENT_ID.settingsPanel);
+	}
+
+	get settingsBtn() {
+		return ElementHandler.getByID(DOM_ELEMENT_ID.settingsBtn);
+	}
+
+	getInputController(key) {
+		return this.#inputControllers[key];
 	}
 
 	initView() {
@@ -75,7 +95,7 @@ export class SettingsController {
 			ElementHandler.setID(settingsPanel, DOM_ELEMENT_ID.settingsPanel);
 			this.renderSettingsOptions(settingsPanel);
 			container.append(settingsBtn, settingsPanel);
-		}, 1000);
+		});
 	}
 
 	getThemeTypeControllerParams(type) {
@@ -94,92 +114,76 @@ export class SettingsController {
 
 	initMineTypeController() {
 		const params = this.getThemeTypeControllerParams("mineType");
-		params.options = this.getMineTypeOptions();
-		this.inputControllers = new DropdownSelect(params, this.onMineTypeChange.bind(this), this.onDropdownExpanded.bind(this));
+		params.options = SettingsOptionsHelper.getMineTypeOptions();
+		this.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
 	}
 
 	initPlayerColorController() {
 		const params = this.getThemeTypeControllerParams("playerColorType");
-		const options = SettingsOptionsHelper.getAllowedColorOptions(this.settings.opponentColorType);
-		params.options = options;
-		this.inputControllers = new DropdownSelect(params, this.onMineTypeChange.bind(this), this.onDropdownExpanded.bind(this));
+		params.options = SettingsOptionsHelper.getAllowedColorOptions(this.settings.opponentColorType);
+		this.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
 	}
 
 	initOpponentColorController() {
 		const params = this.getThemeTypeControllerParams("opponentColorType");
-		const options = SettingsOptionsHelper.getAllowedColorOptions(this.settings.playerColorType);
-		params.options = options;
-		this.inputControllers = new DropdownSelect(params, this.onMineTypeChange.bind(this), this.onDropdownExpanded.bind(this));
-	}
-
-
-
-	getMineTypeOptions() {
-		const options = [];
-		Object.values(MINETYPE).forEach(type => {
-			options.push({
-				value: type,
-				innerHTML: `<div class="mine-type-option mine-type-option--${type}"></div>`
-			});
-		});
-		return options;
+		params.options = SettingsOptionsHelper.getAllowedColorOptions(this.settings.playerColorType);
+		this.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
 	}
 
 	renderSettingsOptions(settingsPanel) {
 		settingsPanel.append(this.renderThemeOption());
-		settingsPanel.append(this.renderMineTypeOption());
-		settingsPanel.append(this.renderColorOptions("playerColorType"));
-		settingsPanel.append(this.renderColorOptions("opponentColorType"));
+		DROPDOWNS.forEach(type => settingsPanel.append(this.renderDropdownSetting(type)));
 	}
 
 	renderThemeOption() {
-		const settingsSection = this.generateSettingSection("theme");
-		console.log(this.getInputController("theme"));
+		const settingsSection = SettingsViewHelper.generateSettingSection("theme");
 		settingsSection.append(this.getInputController("theme").generateInputField());
 		return settingsSection;
 	}
 
-	renderMineTypeOption() {
-		const settingsSection = this.generateSettingSection("mineType");
-		ElementHandler.addStyleClass(settingsSection, DOM_ELEMENT_CLASS.gameSettings);
-		settingsSection.append(this.getInputController("mineType").generateInputField());
-		return settingsSection;
-	}
-	renderColorOptions(key) {
-		const settingsSection = this.generateSettingSection(key);
-		ElementHandler.addStyleClass(settingsSection, DOM_ELEMENT_CLASS.gameSettings);
+	renderDropdownSetting(key) {
+		const settingsSection = SettingsViewHelper.generateSettingSection(key);
 		settingsSection.append(this.getInputController(key).generateInputField());
 		return settingsSection;
 	}
 
-
-	generateSettingSection(key) {
-		const settingsSection = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsSection);
-		const settingTag = this.generateSettingTag(key);
-		settingsSection.append(settingTag);
-		return settingsSection;
-	}
-
-	generateSettingTag(settingKey) {
-		const settingTag = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsTag);
-		settingTag.innerHTML = CONTENT[settingKey];
-		return settingTag;
-	}
-
 	toggleSettingsDisplay() {
-		console.log("toggleSettingsDisplay");
+		this.expanded = !this.expanded;
+		this.expanded ? this.expandSettings() : this.collapseSettings();
 	}
 
+	expandSettings() {
+		let height = 10;
+		this.settingsPanel.then(panel => {
+			const settingsSections = panel.childNodes;
+			height += settingsSections[0].getBoundingClientRect().height;
+			for (let index = 1; index < settingsSections.length; index++) {
+				const settingsSection = settingsSections[index];
+				if (this.gameSettingsHidden) {
+					ElementHandler.hide(settingsSection);
+				} else {
+					ElementHandler.display(settingsSection);
+					height += settingsSection.getBoundingClientRect().height;
+				}
+				panel.style.height = `${height}px`;
+			}
+		});
+		this.setSettingsButtonState();
+	}
 
+	collapseSettings() {
+		this.settingsPanel.then(panel => panel.style.height = "0px");
+		this.setSettingsButtonState();
+	}
+
+	setSettingsButtonState() {
+		this.settingsBtn.then(btn => AriaHandler.setAriaExpanded(btn, this.expanded));
+	}
 
 	onDropdownExpanded(expandedName) {
 		const toCollapse = DROPDOWNS.filter(type => type !== expandedName);
-	//	toCollapse.forEach(type => this.getInputController(type).collapseDropdown());
-
-		console.log(expandedName);
-		//DROPDOWNS
+		toCollapse.forEach(type => this.getInputController(type).collapseDropdown());
 	}
-
 
 	onDarkThemeChange(params) {
 		const selectedTheme = params.value ? THEME.Dark : THEME.Default;
@@ -197,9 +201,19 @@ export class SettingsController {
 		ElementHandler.getByID(APP_ELEMENTS_IDS.app).then(appContainer => appContainer.className = appStyles);
 	}
 
+	onDropdownChange(params) {
+		this.settings[params.name] = params.value;
+		if (params.name === "playerColorType") {
+			this.updateColorDropdown("playerColorType", "opponentColorType");
+		} else if (params.name === "opponentColorType") {
+			this.updateColorDropdown("opponentColorType", "playerColorType");
+		}
+		this.saveSettings();
+	}
 
-	onMineTypeChange(params) {
-		console.log(params);
+	updateColorDropdown(changedField, fieldToUpdate) {
+		const newOptions = SettingsOptionsHelper.getAllowedColorOptions(this.settings[changedField]);
+		this.getInputController(fieldToUpdate).updateOptions(newOptions);
 	}
 
 }

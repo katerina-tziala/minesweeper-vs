@@ -50,7 +50,7 @@ export class App {
 	}
 
 	login(formValues) {
-
+		self.appLoader.display();
 		console.log("login");
 		// console.log(formValues);
 		this.setUpOnlineConnection(formValues);
@@ -80,6 +80,7 @@ export class App {
 			console.log("login error");
 			this.conn = undefined;
 			self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
+			self.appLoader.hide();
 		}
 	}
 

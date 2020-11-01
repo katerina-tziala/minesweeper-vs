@@ -2,7 +2,8 @@
 
 export const DOM_ELEMENT_ID = {
 	container: "settings",
-	settingsPanel: "settings-panel"
+	settingsPanel: "settings-panel",
+	settingsBtn: "settings-toggle-btn"
 };
 
 export const DOM_ELEMENT_CLASS = {
@@ -11,7 +12,6 @@ export const DOM_ELEMENT_CLASS = {
 	settingsTag: "settings-tag",
 	gameSettings: "game-settings",
 };
-
 
 export const CONTENT = {
 	theme: "dark mode",

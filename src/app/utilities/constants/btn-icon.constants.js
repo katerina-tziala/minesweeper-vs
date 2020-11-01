@@ -11,7 +11,9 @@ export const CLOSE_BTN = {
 export const SETTINGS_BTN = {
 	className: "_btn-icon header-btn header-btn--settings",
 	attributes: {
-		"aria-label": "display settings"
+		"aria-label": "display settings",
+		"aria-expanded": false,
+		"id": "settings-toggle-btn"
 	},
 	actionType: "click"
 };

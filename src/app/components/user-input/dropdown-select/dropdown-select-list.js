@@ -19,7 +19,7 @@ export class DropdownSelectList {
 
 	constructor(onSelection, name, maxHeight = 150) {
 		this.onSelection = onSelection;
-		this.listboxID = name;
+		this.listboxId = name;
 		this.maxHeight = maxHeight;
 		this.listHeight = 0;
 	}
@@ -40,7 +40,7 @@ export class DropdownSelectList {
 		this.#listHeight = height > this.maxHeight ? this.maxHeight : height;
 	}
 
-	set listboxID(name) {
+	set listboxId(name) {
 		this.#listboxId = DOM_ELEMENT_ID.listbox + name;
 	}
 
@@ -52,16 +52,24 @@ export class DropdownSelectList {
 		return this.#listHeight;
 	}
 
-	get listboxID() {
+	get listboxId() {
 		return this.#listboxId;
 	}
 
 	get listbox() {
-		return ElementHandler.getByID(this.listboxID);
+		return ElementHandler.getByID(this.listboxId);
 	}
 
 	get isScrollable() {
 		return this.listHeight === this.maxHeight;
+	}
+
+	updateOptions(options) {
+		this.listHeight = 0;
+		this.listbox.then(listbox => {
+			ElementHandler.clearContent(listbox);
+			listbox.append(DropdownSelectOptionsHandler.generateOptionsList(options, this.onOptionClick.bind(this)));
+		});
 	}
 
 	setUpListHeight(listbox) {
@@ -72,7 +80,7 @@ export class DropdownSelectList {
 	getListBoxAttributes(options, selectText) {
 		const selectedOption = DropdownSelectOptionsHandler.getSelectedOptionBySelected(options);
 		const attributes = clone(LISTBOX_ATTRIBUTES);
-		attributes["id"] = this.listboxID;
+		attributes["id"] = this.listboxId;
 		attributes["aria-label"] = selectText;
 		if (selectedOption) {
 			attributes["aria-activedescendant"] = selectedOption.attributes.id;
@@ -83,19 +91,19 @@ export class DropdownSelectList {
 	generateDropdownListbox(options, selectText) {
 		const listboxContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.listboxContainer);
 		const attributes = this.getListBoxAttributes(options, selectText);
-		const listBox = this.generateOptionsListbox(options, attributes);
-		AriaHandler.setTabindex(listBox, -1);
-		listboxContainer.append(listBox);
+		const listbox = this.generateOptionsListbox(options, attributes);
+		AriaHandler.setTabindex(listbox, -1);
+		listboxContainer.append(listbox);
 		return listboxContainer;
 	}
 
 	generateOptionsListbox(options, attributes) {
-		const listBox = document.createElement("ul");
-		listBox.className = DOM_ELEMENT_CLASS.listbox;
-		listBox.addEventListener("keydown", (event) => DropdownSelectNavigation.manageNavigation(event, listBox, this.onEscape.bind(this), this.onEnter.bind(this)));
-		ElementHandler.setAttributes(listBox, attributes);
-		listBox.append(DropdownSelectOptionsHandler.generateOptionsList(options, this.onOptionClick.bind(this)));
-		return listBox;
+		const listbox = document.createElement("ul");
+		listbox.className = DOM_ELEMENT_CLASS.listbox;
+		listbox.addEventListener("keydown", (event) => DropdownSelectNavigation.manageNavigation(event, listbox, this.onEscape.bind(this), this.onEnter.bind(this)));
+		ElementHandler.setAttributes(listbox, attributes);
+		listbox.append(DropdownSelectOptionsHandler.generateOptionsList(options, this.onOptionClick.bind(this)));
+		return listbox;
 	}
 
 	onEscape() {

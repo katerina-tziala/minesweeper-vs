@@ -77,13 +77,21 @@ export class DropdownSelect extends UserInput {
 		return DropdownSelectOptionsHandler.getSelectedOptionByValue(this.options, this.value);
 	}
 
+	updateOptions(options) {
+		this.options = options;
+		console.log(this.options, this.value);
+		this.btnDisabled ? this.#dropdownBtn.disable() : this.#dropdownBtn.enable();
+		this.#dropdownList.updateOptions(this.options);
+	}
+
+
 	generateInputField() {
 		const dorpdownFragment = document.createDocumentFragment();
 		const dropdownContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.container);
 		ElementHandler.setID(dropdownContainer, this.containerID);
 		const button = this.generateDropdownButton();
-		const listBox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
-		dropdownContainer.append(button, listBox);
+		const listbox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
+		dropdownContainer.append(button, listbox);
 		dorpdownFragment.append(dropdownContainer);
 		return dorpdownFragment;
 	}
@@ -99,9 +107,11 @@ export class DropdownSelect extends UserInput {
 	}
 
 	onDropdownBtnClick(expand) {
+		if (expand) {
+			this.onExpand(this.name);
+		}
 		this.expanded = expand;
 		this.#dropdownList.toggleList(this.expanded, this.selectedOption);
-		this.onExpand(this.name);
 	}
 
 	onOptionSelected(selectedValue) {

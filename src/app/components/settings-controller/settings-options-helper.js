@@ -1,12 +1,20 @@
 "use strict";
 
 import { COLOR_TYPES, DOM_ELEMENT_CLASS } from "../../utilities/constants/ui.constants";
-
+import { MINETYPE} from "../../utilities/enums/app-settings.enums";
 
 export class SettingsOptionsHelper {
 	
-
-
+	static getMineTypeOptions() {
+		const options = [];
+		Object.values(MINETYPE).forEach(type => {
+			options.push({
+				value: type,
+				innerHTML: `<div class="mine-type-option mine-type-option--${type}"></div>`
+			});
+		});
+		return options;
+	}
 
 	static getAllowedColorOptions(colorToExclude) {
 		const colors = COLOR_TYPES.filter(color => color !== colorToExclude);
@@ -19,6 +27,5 @@ export class SettingsOptionsHelper {
 		});
 		return options;
 	}
-
 
 }
