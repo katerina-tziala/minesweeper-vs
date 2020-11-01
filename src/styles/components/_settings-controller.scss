@@ -22,7 +22,6 @@
   right: -15px;
   z-index: z-index.getIndex(settings-panel);
   height: 0;
-  overflow: hidden;
   transition: height 0.5s;
 }
 
@@ -47,7 +46,7 @@
   line-height: 17px;
   font-size: 1.1rem;
   @include circle(22px);
-  border: 1px solid #ccc;
+  border: 1px solid #c0c0c0;
   background: #e6e6e6;
   color: #1a1a1a;
 }
@@ -66,7 +65,7 @@
 
 .game-color-option {
   @include circle(22px);
-  border: 1px solid #ccc;
+  border: 1px solid #c0c0c0;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

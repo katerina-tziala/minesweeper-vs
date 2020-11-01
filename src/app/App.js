@@ -31,7 +31,7 @@ export class App {
 		if (savedSettings) {
 			this.settings.update(savedSettings);
 		}
-		this.settingsController = new SettingsController(this.settings);
+		this.settingsController = new SettingsController(this.settings, false);
 	}
 
 

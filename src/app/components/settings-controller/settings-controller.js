@@ -93,6 +93,7 @@ export class SettingsController {
 			const settingsBtn = ElementGenerator.generateButton(SETTINGS_BTN, this.toggleSettingsDisplay.bind(this));
 			const settingsPanel = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsPanel);
 			ElementHandler.setID(settingsPanel, DOM_ELEMENT_ID.settingsPanel);
+			this.setPanelStyle(settingsPanel, 0);
 			this.renderSettingsOptions(settingsPanel);
 			container.append(settingsBtn, settingsPanel);
 		});
@@ -165,15 +166,29 @@ export class SettingsController {
 					ElementHandler.display(settingsSection);
 					height += settingsSection.getBoundingClientRect().height;
 				}
-				panel.style.height = `${height}px`;
+				this.setPanelStyle(panel, height);
 			}
 		});
 		this.setSettingsButtonState();
 	}
 
 	collapseSettings() {
-		this.settingsPanel.then(panel => panel.style.height = "0px");
+		this.settingsPanel.then(panel => this.setPanelStyle(panel, 0));
 		this.setSettingsButtonState();
+	}
+
+	setPanelStyle(panel, height) {
+		clearTimeout(this.transitionTimeout);
+		panel.style.height = `${height}px`;
+		if (height) {
+			this.transitionTimeout = setTimeout(() => {
+				panel.style.overflow = "visible";
+
+			}, 500);
+		} else {
+			panel.style.overflow = "hidden";
+		}
+		panel.style.height = `${height}px`;
 	}
 
 	setSettingsButtonState() {

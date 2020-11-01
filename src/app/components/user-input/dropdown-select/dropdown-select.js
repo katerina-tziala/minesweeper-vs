@@ -79,11 +79,9 @@ export class DropdownSelect extends UserInput {
 
 	updateOptions(options) {
 		this.options = options;
-		console.log(this.options, this.value);
 		this.btnDisabled ? this.#dropdownBtn.disable() : this.#dropdownBtn.enable();
 		this.#dropdownList.updateOptions(this.options);
 	}
-
 
 	generateInputField() {
 		const dorpdownFragment = document.createDocumentFragment();

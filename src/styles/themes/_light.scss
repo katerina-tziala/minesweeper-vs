@@ -16,6 +16,7 @@ $theme-base-intense   : #ffffff;
 $theme-primary-intense: #000000;
 $theme-primary-subtle : #4d4d4d;
 
+$silver : #c0c0c0;
 
 
 $app : theme-utils.generateBoxTheming($theme-base, $app-primary);
@@ -32,8 +33,8 @@ $input        : theme-utils.generateInputTheming($theme-primary-subtle);
 
 
 $dropdown-select-option-focused : theme-utils.generateBoxTheming(#0d0d0d, #fff);
-$dropdown-select-option-selected: theme-utils.generateBoxTheming(#cccccc, #1a1a1a);
-$dropdown-select-option         : (border-bottom: 1px solid #ccc);
+$dropdown-select-option-selected: theme-utils.generateBoxTheming($silver, #1a1a1a);
+$dropdown-select-option         : (border-bottom: 1px solid $silver);
 
 $btn-primary: (
 	background-color: #262626,
