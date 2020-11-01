@@ -2,6 +2,17 @@
 @import "../layouts/scrollbar.scss";
 @import "./switcher/switcher";
 @import "./dropdown-select/dropdown-select";
+@import "../abstract/mixins";
+
+@mixin applyGameStyle($theme) {
+	@for $i from 1 through 8 {
+
+		.color-type--#{$i} {
+			background-color: theme.getGameColor($theme, "type-#{$i}");
+		}
+
+	}
+}
 
 .settings {
 	position: relative;
@@ -30,8 +41,7 @@
 
 
 .mine-type-option {
-	height     : 22px;
-	width      : 22px;
+	@include rectangle(22px);
 	line-height: 21px;
 	font-size  : 1.1rem;
 }
@@ -48,6 +58,10 @@
 	@include iconography.afterIcon("virus");
 }
 
+.game-color-option {
+	@include circle(22px);
+	border: 1px solid #ccc;
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
@@ -56,6 +70,7 @@
 		@include theme.applyTheme("light", "card");
 	}
 
+	@include applyGameStyle("light");
 }
 
 .theme-dark {
@@ -64,4 +79,5 @@
 		@include theme.applyTheme("dark", "card");
 	}
 
+	@include applyGameStyle("dark");
 }

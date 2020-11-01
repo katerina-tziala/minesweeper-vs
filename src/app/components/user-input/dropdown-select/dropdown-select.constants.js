@@ -1,7 +1,7 @@
 "use strict";
 
 export const DOM_ELEMENT_ID = {
-	container: "dropdown-container__",
+	dropdownContainer: "dropdown-container__",
 	listbox: "dropdown-listbox__",
 };
 

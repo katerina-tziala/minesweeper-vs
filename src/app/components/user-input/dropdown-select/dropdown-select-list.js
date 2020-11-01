@@ -1,14 +1,14 @@
 "use strict";
 
-import { ElementGenerator } from "../../../../utilities/element-generator";
-import { ElementHandler } from "../../../../utilities/element-handler";
-import { AriaHandler } from "../../../../utilities/aria-handler";
-import { clone } from "../../../../utilities/utils";
+import { ElementGenerator } from "../../../utilities/element-generator";
+import { ElementHandler } from "../../../utilities/element-handler";
+import { AriaHandler } from "../../../utilities/aria-handler";
+import { clone } from "../../../utilities/utils";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, LISTBOX_ATTRIBUTES } from "../dropdown-select.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, LISTBOX_ATTRIBUTES } from "./dropdown-select.constants";
 
-import { DropdownSelectOptionsHandler } from "../dropdown-select-options-handler";
-import { DropdownSelectOption } from "../dropdown-select-option/dropdown-select-option";
+import { DropdownSelectOptionsHandler } from "./dropdown-select-options-handler";
+import { DropdownSelectOption } from "./dropdown-select-option";
 import { DropdownSelectNavigation } from "./dropdown-select-navigation";
 
 export class DropdownSelectList {

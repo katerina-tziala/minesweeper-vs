@@ -32,4 +32,8 @@ $_themes: (
 	@return map-get($theme-pallete, $colorKey);
 }
 
+@function getGameColor($theme, $colorKey) {
+	$theme-pallete: getThemeProperties($theme, "game-pallete");
+	@return map-get($theme-pallete, $colorKey);
+}
 

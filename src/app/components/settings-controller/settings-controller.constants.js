@@ -19,3 +19,5 @@ export const CONTENT = {
 	playerColorType: "my color",
 	opponentColorType: "opponent's color"
 };
+
+export const DROPDOWNS = ["mineType", "playerColorType", "opponentColorType"];

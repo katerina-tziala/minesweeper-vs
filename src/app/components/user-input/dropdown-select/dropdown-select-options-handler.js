@@ -1,6 +1,6 @@
 "use strict";
 
-import { DropdownSelectOption } from "./dropdown-select-option/dropdown-select-option";
+import { DropdownSelectOption } from "./dropdown-select-option";
 
 export class DropdownSelectOptionsHandler {
 

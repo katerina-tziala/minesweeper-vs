@@ -8,27 +8,28 @@ import { replaceStringParameter } from "../../../utilities/utils";
 
 import { UserInput } from "../user-input";
 import { DropdownSelectButton } from "./dropdown-select-button/dropdown-select-button";
-import { DropdownSelectList } from "./dropdown-select-list/dropdown-select-list";
+import { DropdownSelectList } from "./dropdown-select-list";
 import { DropdownSelectOptionsHandler } from "./dropdown-select-options-handler";
 
 export class DropdownSelect extends UserInput {
 	#options;
 	#expanded;
 	#selectLabel;
+	#dropdownBtn;
+	#dropdownList;
 
-	constructor(params, onValueChange) {
+	constructor(params, onValueChange, onExpand) {
 		super(params.name, params.value, onValueChange);
 		this.valid = true;
 		this.selectLabel = params.selectLabel;
 		this.expanded = false;
 		this.options = params.options || [];
-		this.dropdownBtn = new DropdownSelectButton(this.onDropdownBtnClick.bind(this), this.name);
-		this.dropdownList = new DropdownSelectList(this.onOptionSelected.bind(this), this.name);
+		this.#dropdownBtn = new DropdownSelectButton(this.onDropdownBtnClick.bind(this), this.name);
+		this.#dropdownList = new DropdownSelectList(this.onOptionSelected.bind(this), this.name);
 		document.addEventListener("click", () => {
-			if (this.expanded) {
-				this.dropdownList.collapseListOnOutsideClick();
-			}
+			this.collapseDropdown();
 		});
+		this.onExpand = onExpand;
 	}
 
 	set options(options) {
@@ -55,8 +56,6 @@ export class DropdownSelect extends UserInput {
 		return this.#selectLabel;
 	}
 
-
-
 	get containerID() {
 		return DOM_ELEMENT_ID.dropdownContainer + this.name;
 	}
@@ -64,7 +63,6 @@ export class DropdownSelect extends UserInput {
 	get selectText() {
 		return this.selectLabel ? replaceStringParameter(CONTENT.selectText, this.selectLabel) : CONTENT.defaultSelectText;
 	}
-
 
 	get btnDisabled() {
 		return DropdownSelectOptionsHandler.getOptionsListSize(this.options) ? false : true;
@@ -84,8 +82,7 @@ export class DropdownSelect extends UserInput {
 		const dropdownContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.container);
 		ElementHandler.setID(dropdownContainer, this.containerID);
 		const button = this.generateDropdownButton();
-		const listBox = this.dropdownList.generateDropdownListbox(this.options, this.selectText);
-
+		const listBox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
 		dropdownContainer.append(button, listBox);
 		dorpdownFragment.append(dropdownContainer);
 		return dorpdownFragment;
@@ -98,22 +95,29 @@ export class DropdownSelect extends UserInput {
 			expanded: this.btnDisabled ? false : this.expanded,
 			disabled: this.btnDisabled
 		};
-		return this.dropdownBtn.generateDropdownBtn(dropdownParams);
+		return this.#dropdownBtn.generateDropdownBtn(dropdownParams);
 	}
 
 	onDropdownBtnClick(expand) {
 		this.expanded = expand;
-		this.dropdownList.toggleList(this.expanded, this.selectedOption);
+		this.#dropdownList.toggleList(this.expanded, this.selectedOption);
+		this.onExpand(this.name);
 	}
 
 	onOptionSelected(selectedValue) {
 		if (selectedValue) {
 			this.value = selectedValue;
-			this.dropdownBtn.setButtonLabel(this.btnDisplayValue);
+			this.#dropdownBtn.setButtonLabel(this.btnDisplayValue);
 			this.notifyForChanges();
 		}
 		this.expanded = false;
-		this.dropdownBtn.toggleButtonExpandState(this.expanded);
+		this.#dropdownBtn.toggleButtonExpandState(this.expanded);
 	}
 
+	collapseDropdown() {
+		if (this.expanded) {
+			this.#dropdownList.collapseListOnOutsideClick();
+		}
+		this.#dropdownBtn.blur();
+	}
 }

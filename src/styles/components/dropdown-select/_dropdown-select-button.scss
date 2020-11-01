@@ -28,12 +28,12 @@
 
 .theme-light {
 	.dropdown-btn {
-		@include applyDropdownOptionTheme("light");
+		@include theme.applyTheme("light", "dropdown-select-option");
 	}
 }
 
 .theme-dark {
 	.dropdown-btn {
-		@include applyDropdownOptionTheme("dark");
+		@include theme.applyTheme("dark", "dropdown-select-option");
 	}
 }

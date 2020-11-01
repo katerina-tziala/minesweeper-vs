@@ -12,7 +12,14 @@
 	@extend .dropdown-listbox-option--selected;
 }
 
+@mixin applyDropdownOptionTheme($theme) {
+	@include theme.applyTheme($theme, "dropdown-select-option");
 
+	&:hover,
+	&:focus {
+		@include theme.applyTheme($theme, "dropdown-select-option-focused");
+	}
+}
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @mixin applyDropdownSelectedOptionTheme($theme) {
 	.dropdown-listbox-option--selected {

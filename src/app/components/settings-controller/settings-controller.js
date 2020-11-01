@@ -5,7 +5,7 @@ import { SETTINGS_BTN } from "../../utilities/constants/btn-icon.constants";
 import { ElementHandler } from "../../utilities/element-handler";
 import { ElementGenerator } from "../../utilities/element-generator";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./settings-controller.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS } from "./settings-controller.constants";
 import { MINETYPE, THEME } from "../../utilities/enums/app-settings.enums";
 import { Form } from "../../components/form/form";
 
@@ -15,21 +15,41 @@ import { DropdownSelect } from "../../components/user-input/dropdown-select/drop
 import { LocalStorageHelper } from "../../utilities/local-storage-helper";
 import { clone } from "../../utilities/utils";
 import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utilities/constants/ui.constants";
+
+import { SettingsOptionsHelper } from "./settings-options-helper";
+
+
+
+
+
+
 export class SettingsController {
+	#inputControllers;
 	#settings;
 
 	constructor(settings) {
 		this.settings = settings;
 		this.saveSettings();
 		this.setAppTheme();
-		this.themeSwitcher = new Switcher({
-			name: "theme",
-			value: this.settings.theme === THEME.Dark,
-			ariaLabel: CONTENT.theme
-		}, this.onDarkThemeChange.bind(this));
-	
+		this.#inputControllers = {};
+		this.initThemeTypeController();
 		this.initMineTypeController();
+		this.initPlayerColorController();
+		this.initOpponentColorController();
 		this.initView();
+	}
+
+	set inputControllers(controller) {
+		delete this.#inputControllers[controller.name];
+		this.#inputControllers[controller.name] = controller;
+	}
+
+	get inputControllers() {
+		return Object.values(this.#inputControllers);
+	}
+
+	getInputController(key) {
+		return this.#inputControllers[key];
 	}
 
 	get settings() {
@@ -58,15 +78,41 @@ export class SettingsController {
 		}, 1000);
 	}
 
-	initMineTypeController() {
-		const options = {
-			name: "mineType",
-			value: this.settings.mineType,
-			selectLabel: CONTENT.mineType,
-			options: this.getMineTypeOptions(),
+	getThemeTypeControllerParams(type) {
+		return {
+			name: type,
+			value: this.settings[type],
+			selectLabel: CONTENT[type],
 		};
-		this.mineTypeController = new DropdownSelect(options, this.onMineTypeChange.bind(this));
 	}
+
+	initThemeTypeController() {
+		const params = this.getThemeTypeControllerParams("theme");
+		params.value = this.settings.theme === THEME.Dark;
+		this.inputControllers = new Switcher(params, this.onDarkThemeChange.bind(this));
+	}
+
+	initMineTypeController() {
+		const params = this.getThemeTypeControllerParams("mineType");
+		params.options = this.getMineTypeOptions();
+		this.inputControllers = new DropdownSelect(params, this.onMineTypeChange.bind(this), this.onDropdownExpanded.bind(this));
+	}
+
+	initPlayerColorController() {
+		const params = this.getThemeTypeControllerParams("playerColorType");
+		const options = SettingsOptionsHelper.getAllowedColorOptions(this.settings.opponentColorType);
+		params.options = options;
+		this.inputControllers = new DropdownSelect(params, this.onMineTypeChange.bind(this), this.onDropdownExpanded.bind(this));
+	}
+
+	initOpponentColorController() {
+		const params = this.getThemeTypeControllerParams("opponentColorType");
+		const options = SettingsOptionsHelper.getAllowedColorOptions(this.settings.playerColorType);
+		params.options = options;
+		this.inputControllers = new DropdownSelect(params, this.onMineTypeChange.bind(this), this.onDropdownExpanded.bind(this));
+	}
+
+
 
 	getMineTypeOptions() {
 		const options = [];
@@ -76,31 +122,35 @@ export class SettingsController {
 				innerHTML: `<div class="mine-type-option mine-type-option--${type}"></div>`
 			});
 		});
-		//return [...options, ...options, ...options, ...options, ...options, ...options];
 		return options;
 	}
 
 	renderSettingsOptions(settingsPanel) {
 		settingsPanel.append(this.renderThemeOption());
 		settingsPanel.append(this.renderMineTypeOption());
+		settingsPanel.append(this.renderColorOptions("playerColorType"));
+		settingsPanel.append(this.renderColorOptions("opponentColorType"));
 	}
 
 	renderThemeOption() {
 		const settingsSection = this.generateSettingSection("theme");
-		settingsSection.append(this.themeSwitcher.generateInputField());
+		console.log(this.getInputController("theme"));
+		settingsSection.append(this.getInputController("theme").generateInputField());
 		return settingsSection;
 	}
 
 	renderMineTypeOption() {
 		const settingsSection = this.generateSettingSection("mineType");
 		ElementHandler.addStyleClass(settingsSection, DOM_ELEMENT_CLASS.gameSettings);
-
-
-		settingsSection.append(this.mineTypeController.generateInputField());
-
+		settingsSection.append(this.getInputController("mineType").generateInputField());
 		return settingsSection;
 	}
-
+	renderColorOptions(key) {
+		const settingsSection = this.generateSettingSection(key);
+		ElementHandler.addStyleClass(settingsSection, DOM_ELEMENT_CLASS.gameSettings);
+		settingsSection.append(this.getInputController(key).generateInputField());
+		return settingsSection;
+	}
 
 
 	generateSettingSection(key) {
@@ -122,7 +172,13 @@ export class SettingsController {
 
 
 
+	onDropdownExpanded(expandedName) {
+		const toCollapse = DROPDOWNS.filter(type => type !== expandedName);
+	//	toCollapse.forEach(type => this.getInputController(type).collapseDropdown());
 
+		console.log(expandedName);
+		//DROPDOWNS
+	}
 
 
 	onDarkThemeChange(params) {

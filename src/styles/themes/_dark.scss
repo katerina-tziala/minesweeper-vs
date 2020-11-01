@@ -6,6 +6,7 @@
 
 
 @use "./palletes/error-pallete";
+@use "./palletes/dark-pallete";
 
 
 $app-primary : #0d0d0d;
@@ -60,6 +61,7 @@ $switcher: (on: #00cccc,
 
 
 $theme: (pallete: $pallete,
+game-pallete: dark-pallete.$game-pallete,
 	app: $app,
 	shadow: $shadow,
 	loader: $loader,

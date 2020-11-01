@@ -1,10 +1,10 @@
 "use strict";
 
-import { ElementHandler } from "../../../../utilities/element-handler";
-import { AriaHandler } from "../../../../utilities/aria-handler";
-import { extractIdValue, preventInteraction } from "../../../../utilities/utils";
+import { ElementHandler } from "../../../utilities/element-handler";
+import { AriaHandler } from "../../../utilities/aria-handler";
+import { extractIdValue, preventInteraction } from "../../../utilities/utils";
 
-import { DropdownSelectOption } from "../dropdown-select-option/dropdown-select-option";
+import { DropdownSelectOption } from "./dropdown-select-option";
 
 export class DropdownSelectNavigation {
 

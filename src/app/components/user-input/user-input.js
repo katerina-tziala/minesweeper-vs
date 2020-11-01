@@ -44,12 +44,16 @@ export class UserInput {
 
 	notifyForChanges() {
 		if (this.#onValueChange) {
-			this.#onValueChange({
-				name: this.name,
-				value: this.value,
-				valid: this.valid
-			});
+			this.#onValueChange(this.submissionProperties);
 		}
+	}
+
+	get submissionProperties() {
+		return {
+			name: this.name,
+			value: this.value,
+			valid: this.valid
+		};
 	}
 
 	generateInputField(inputAction) {

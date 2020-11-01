@@ -4,6 +4,7 @@
 @use "../abstract/functions";
 @use "./theme-utils";
 @use "./palletes/error-pallete";
+@use "./palletes/light-pallete";
 
 
 $app-primary : #0d0d0d;
@@ -54,7 +55,9 @@ $pallete: error-pallete.$pallete;
 
 
 
-$theme: (pallete: $pallete,
+$theme: (
+	pallete: $pallete,
+	game-pallete: light-pallete.$game-pallete,
 	app: $app,
 	shadow: $shadow,
 	loader: $loader,
