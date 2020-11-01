@@ -1,3 +1,11 @@
+@use "../abstract/functions";
+
+@use "../base/z-index";
+@use "../base/iconography";
+
+@use "../themes/theme";
+
+
 @import "../layouts/button";
 
 .toast-notification {
@@ -49,11 +57,21 @@
 		@include theme.applyTheme("light", "error-pale");
 		@include theme.applyTheme("light", "shadow");
 	}
+
+	.toast-close-btn {
+		@include applyButtonTheme("light", "btn-on-error");
+	}
 }
 
 .theme-dark {
+
 	.toast-notification--error {
 		@include theme.applyTheme("dark", "error-pale");
 		@include theme.applyTheme("dark", "shadow");
 	}
+
+	.toast-close-btn {
+		@include applyButtonTheme("dark", "btn-on-error");
+	}
+
 }

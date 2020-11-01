@@ -1,75 +1,66 @@
 @use "sass:map";
+@use "sass:color";
 
 @use "../abstract/functions";
+@use "./theme-utils";
 
-$app: (background-color: #f2f2f2,
+
+@use "./palletes/error-pallete";
+
+
+$app-primary : #0d0d0d;
+
+$theme-base    : #262626;
+$theme-primary : #00cccc;
+
+$theme-base-intense    : #000000;
+$theme-primary-intense : #00ffff;
+$theme-primary-subtle  :#009999;
+
+
+$app : theme-utils.generateBoxTheming($theme-base, $theme-primary);
+$loader: theme-utils.generateLoaderTheming($theme-base, $theme-primary);
+
+$shadow: (box-shadow: functions.shadow($theme-primary-intense));
+
+$card-colors: theme-utils.generateBoxTheming($theme-base-intense, $theme-primary);
+$card       : map.merge($card-colors, $shadow);
+
+$input-focused: theme-utils.generateInputTheming($theme-primary-intense);
+$input        : theme-utils.generateInputTheming($theme-primary-subtle);
+
+
+
+
+
+$dropdown-select-option-focused : theme-utils.generateBoxTheming(#00cccc ,#000000);
+$dropdown-select-option-selected: theme-utils.generateBoxTheming(#009999, #0d0d0d);
+$dropdown-select-option         : (border-bottom: 1px solid #00cccc);
+
+
+
+$btn-primary: (background-color: #00cccc,
+	color: #1a1a1a);
+
+$btn-primary-focused: (background-color: #00ffff,
 	color: #0d0d0d);
 
-$header: (background-color: #0d0d0d,
-	color: #f2f2f2);
-
-$shadow: (box-shadow: functions.shadow(#000000));
-
-$loader: (background-color: #f2f2f2,
-	stroke: #0d0d0d);
-
-$card-colors: (background-color: #ffffff,
-	color: #0d0d0d);
-
-$card: map.merge($card-colors, $shadow);
 
 
-$input: (border-color: #8c8c8c,
-	color: #8c8c8c);
-
-$input-focused: (border-color: #0d0d0d,
-	color: #0d0d0d);
-
-$btn-primary: (background-color: #262626,
-	color: #e6e6e6);
-
-$btn-primary-focused: (background-color: #000000,
-	color: #ffffff);
-
-$error-primary: (background-color: #ff0000,
-	color: #ffffff);
-
-
-$error-secondary: (background-color: #e60000,
-	color: #f2f2f2);
-
-$error-pale: (background-color: #fa8072,
-	color: #0d0d0d);
-
-$error-inpt: (border-bottom: 1px solid #ff0000,
-	color: #ff0000);
-
-
-
-$pallete: (error-primary: #ff0000,
-	error-pale: #fa8072,
-);
-
-$switcher: (on: #000000,
+$switcher: (on: #00cccc,
 	off: #cccccc);
 
 
-$header-btn: (color: #e6e6e6);
 
-$header-btn-focused: (color: #ffffff);
+	
 
 
-$dropdown-select-option-focused: (background-color: #1a1a1a,
-	color : #f2f2f2);
-$dropdown-select-option-selected: (background-color: #ccc,
-	color : #1a1a1a);
+	$pallete: error-pallete.$pallete;
 
-$dropdown-select-option: (border-bottom: 1px solid #ccc);
 
 
 $theme: (pallete: $pallete,
 	app: $app,
-	header: $header,
 	shadow: $shadow,
 	loader: $loader,
 	card: $card,
@@ -78,14 +69,17 @@ $theme: (pallete: $pallete,
 	input-focused: $input-focused,
 	btn-primary: $btn-primary,
 	btn-primary-focused: $btn-primary-focused,
-	error-primary: $error-primary,
-	error-secondary: $error-secondary,
-	error-pale: $error-pale,
-	error-inpt: $error-inpt,
 	switcher: $switcher,
-	header-btn: $header-btn,
-	header-btn-focused: $header-btn-focused,
 	dropdown-select-option: $dropdown-select-option,
 	dropdown-select-option-selected: $dropdown-select-option-selected,
 	dropdown-select-option-focused: $dropdown-select-option-focused,
 );
+
+
+$header-theme: theme-utils.generateHeaderTheming($app-primary, $theme-primary, $theme-primary-intense);
+$theme      : map.merge($theme, $header-theme);
+$theme      : map.merge($theme, error-pallete.$pallete-theming);
+
+
+// @debug $theme ;
+

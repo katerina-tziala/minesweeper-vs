@@ -1,7 +1,7 @@
 "use strict";
 
 export const CLOSE_BTN = {
-	className: "_btn-icon _btn-primary button-icon--close",
+	className: "_btn-icon button-icon--close",
 	attributes: {
 		"aria-label": "close"
 	},

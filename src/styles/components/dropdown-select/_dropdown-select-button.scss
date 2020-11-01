@@ -1,9 +1,11 @@
 .dropdown-btn {
 	@extend ._btn;
 	@extend %start-center;
-	background-color: inherit;
-	color           : inherit;
-	padding         : 3px 5px;
+	background-color       : inherit;
+	color                  : inherit;
+	padding                : 3px 5px;
+	border-top-left-radius : 3px;
+	border-top-right-radius: 3px;
 
 	>.dropdown-btn-label {
 		@extend ._capitalize-first-letter;
