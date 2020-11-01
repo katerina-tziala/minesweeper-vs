@@ -1,0 +1,46 @@
+@use "../themes/theme";
+@use "../base/iconography";
+@use "../base/sizes";
+
+
+@import "../base/flexbox";
+@import "../base/utils";
+@import "../abstract/mixins";
+
+
+@import "../base/typography/typography";
+
+
+@import "../components/form_username";
+
+
+.login-container {
+    min-width: 320px;
+    padding: 15px;
+    animation: fadein 0.8s ease;
+}
+
+@keyframes fadein {
+    from {
+        opacity    : 0;
+        margin-left: -200px;
+    }
+
+    to {
+        opacity    : 1;
+        margin-left: 0px;
+    }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+	.login-container {
+		@include theme.applyTheme("light", "card");
+	}
+}
+
+.theme-dark {
+	.login-container {
+		@include theme.applyTheme("dark", "card");
+	}
+}

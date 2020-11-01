@@ -1,0 +1,10 @@
+@use "sass:map";
+
+$_indexes: (
+	loader: 2500,
+	toast-notification: 3000
+);
+
+@function getIndex($key) {
+    @return map-get($_indexes, $key);
+}

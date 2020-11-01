@@ -19,7 +19,7 @@ export class ElementGenerator {
 		button.addEventListener(params.actionType, action);
 		delete params.actionType;
 
-		ElementHandler.setAttributes(button, params);
+		ElementHandler.setParams(button, params);
 		return button;
 	}
 

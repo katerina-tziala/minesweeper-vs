@@ -10,8 +10,6 @@ import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from "./text-input.const
 import { UserInput } from "../user-input";
 import { InputError } from "../input-error/input-error";
 
-import "./text-input.scss";
-
 export class TextInput extends UserInput {
 	#errorController;
 
@@ -34,11 +32,11 @@ export class TextInput extends UserInput {
 
 	get inputParams() {
 		const params = clone(FIELD_PARAMS);
-		params.ariaLabel = replaceStringParameter(params.ariaLabel, this.name);
 		params.placeholder = replaceStringParameter(params.placeholder, this.name);
 		params.className = `${DOM_ELEMENT_CLASS.inputField} ${this.inputClassBasedOnName}`;
 		params.autocomplete = "off";
-		params.id = this.name;
+		params.attributes["aria-label"] = replaceStringParameter(params.attributes["aria-label"], this.name);
+		params.attributes.id = this.name;
 		return params;
 	}
 

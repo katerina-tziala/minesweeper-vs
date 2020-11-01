@@ -8,9 +8,11 @@ export const DOM_ELEMENT_CLASS = {
 export const FIELD_PARAMS = {
 	type: "text",
 	name: undefined,
-	ariaLabel: "enter ###",
+	actionType: "keyup",
 	placeholder: "enter ###",
-	actionType: "keyup"
+	attributes: {
+		"aria-label": "enter ###",
+	}
 };
 
 export const FIELD_ERROR = "### is not valid!";

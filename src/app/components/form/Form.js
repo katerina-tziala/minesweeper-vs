@@ -8,8 +8,6 @@ import { preventInteraction } from "../../utilities/utils";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./form.constants";
 
-import "./form.scss";
-
 export class Form {
 	#inputControllers;
 	#onFormSubmission;

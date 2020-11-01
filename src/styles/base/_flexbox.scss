@@ -1,0 +1,34 @@
+
+%flexbox {
+    display: flex;
+}
+
+%first-axis-centered {
+	justify-content: center;
+}
+
+%first-axis-start {
+	justify-content: flex-start;
+}
+
+%second-axis-centered {
+    align-items: center;
+    align-content: center;
+}
+
+%second-axis-start {
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+%centered-centered {
+	@extend %flexbox;
+    @extend %first-axis-centered;
+	@extend %second-axis-centered;
+}
+
+%start-center {
+	@extend %flexbox;
+	@extend %first-axis-start;
+    @extend %second-axis-centered;
+}

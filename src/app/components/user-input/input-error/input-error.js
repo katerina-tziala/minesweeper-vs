@@ -3,6 +3,7 @@
 import { TYPOGRAPHY } from "../../../utilities/constants/typography.constants";
 import { ElementGenerator } from "../../../utilities/element-generator";
 import { ElementHandler } from "../../../utilities/element-handler";
+import { AriaHandler } from "../../../utilities/aria-handler";
 
 import {
 	DOM_ELEMENT_ID,
@@ -10,8 +11,6 @@ import {
 	TOGGLE_BTN,
 	TOGGLE_BTN_ARIA
 } from "./input-error.constants";
-
-import "./input-error.scss";
 
 export class InputError {
 	#messageDisplayed;
@@ -95,15 +94,15 @@ export class InputError {
 	}
 
 	updateToggleBtnAria() {
-		this.toggleBtn.then(button => ElementHandler.setAriaLabel(button, TOGGLE_BTN_ARIA[JSON.stringify(this.messageDisplayed)]));
+		this.toggleBtn.then(button => AriaHandler.setAriaLabel(button, TOGGLE_BTN_ARIA[JSON.stringify(this.messageDisplayed)]));
 	}
 
 	show(message) {
 		this.toggleBtn.then(button => {
 			this.hideErrorMessage();
 			ElementHandler.display(button);
-			ElementHandler.setAlertRole(button);
-			ElementHandler.setAriaAssertive(button);
+			AriaHandler.setAlertRole(button);
+			AriaHandler.setAriaAssertive(button);
 			this.setErrorMessage(message);
 			this.inputField.then(inputField => ElementHandler.addStyleClass(inputField, DOM_ELEMENT_CLASS.errorInput));
 		});
@@ -113,8 +112,8 @@ export class InputError {
 		this.toggleBtn.then(button => {
 			this.hideErrorMessage();
 			ElementHandler.hide(button);
-			ElementHandler.removeRole(button);
-			ElementHandler.removeAriaLive(button);
+			AriaHandler.removeRole(button);
+			AriaHandler.removeAriaLive(button);
 			this.setErrorMessage(TYPOGRAPHY.emptyString);
 			this.inputField.then(inputField => ElementHandler.removeStyleClass(inputField, DOM_ELEMENT_CLASS.errorInput));
 		});

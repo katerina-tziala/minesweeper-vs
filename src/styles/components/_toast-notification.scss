@@ -1,0 +1,59 @@
+@import "../layouts/button";
+
+.toast-notification {
+	width        : 260px;
+	max-height   : 140px;
+	overflow     : hidden;
+	position     : absolute;
+	top          : -100px;
+	right        : 10px;
+	padding      : 5px 10px 8px;
+	border-radius: 10px;
+	z-index      : z-index.getIndex(toast-notification);
+	transition   : top 0.3s ease-in-out;
+}
+
+.toast-close-btn {
+	@extend ._btn-icon;
+	@extend ._btn-icon--small;
+	position: absolute;
+	top     : 5px;
+	right   : 5px;
+}
+
+.toast-notification--show {
+	top: 60px !important;
+}
+
+.toast-notification-title {
+	@extend %start-center;
+	font-weight: 800;
+	height     : 24px;
+}
+
+.toast-notification-title-icon {
+	display       : inline-block;
+	margin-right  : 5px;
+	padding-bottom: 1px;
+}
+
+.toast-notification--error {
+	.toast-notification-title-icon {
+		@include iconography.afterIcon(exclamation-triangle);
+	}
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+	.toast-notification--error {
+		@include theme.applyTheme("light", "error-pale");
+		@include theme.applyTheme("light", "shadow");
+	}
+}
+
+.theme-dark {
+	.toast-notification--error {
+		@include theme.applyTheme("dark", "error-pale");
+		@include theme.applyTheme("dark", "shadow");
+	}
+}

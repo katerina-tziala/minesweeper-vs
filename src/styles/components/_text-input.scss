@@ -1,0 +1,13 @@
+@import "../layouts/input";
+@import "./input-error";
+
+.text-input-container {
+	width   : 100%;
+	position: relative;
+}
+
+.text-input {
+	@extend .input;
+	width    : 100%;
+	min-width: 200px;
+}

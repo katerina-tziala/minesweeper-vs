@@ -63,7 +63,7 @@ export class UserInput {
 		}
 		delete params.actionType;
 
-		ElementHandler.setAttributes(inputField, params);
+		ElementHandler.setParams(inputField, params);
 		return inputField;
 	}
 

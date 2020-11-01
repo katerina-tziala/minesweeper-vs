@@ -8,12 +8,14 @@ export const DOM_ELEMENT_ID = {
 export const DOM_ELEMENT_CLASS = {
 	errorContainer: "error-container",
 	errorMessage: "error-message",
-	errorInput: "input-error",
+	errorInput: "error-inpt",
 };
 
 export const TOGGLE_BTN = {
-	ariaLabel: "display error",
 	className: "error-toggle-btn",
+	attributes: {
+		"aria-label": "display error",
+	},
 	actionType: "click"
 };
 

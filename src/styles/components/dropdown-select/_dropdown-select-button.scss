@@ -1,0 +1,37 @@
+.dropdown-btn {
+	@extend ._btn;
+	@extend %start-center;
+	background-color: inherit;
+	color           : inherit;
+	padding         : 3px 5px;
+
+	>.dropdown-btn-label {
+		@extend ._capitalize-first-letter;
+	}
+
+	>.dropdown-btn-caret {
+		margin-left: 10px;
+		height     : 12px;
+		line-height: 11px;
+		transition : transform .3s ease-in-out;
+		@include iconography.afterIcon("caret-down");
+	}
+}
+
+.dropdown-btn[aria-expanded="true"]>.dropdown-btn-caret {
+	transform: rotate(-180deg);
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.theme-light {
+	.dropdown-btn {
+		@include applyDropdownOptionTheme("light");
+	}
+}
+
+.theme-dark {
+	.dropdown-btn {
+		@include applyDropdownOptionTheme("dark");
+	}
+}

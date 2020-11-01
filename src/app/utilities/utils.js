@@ -22,3 +22,7 @@ export const preventInteraction = (event) => {
 export const replaceStringParameter = (stringToUpdate, value, replacePart = TYPOGRAPHY.tripleHashtag) => {
 	return stringToUpdate.replace(replacePart, value);
 };
+
+export const extractIdValue = (elementId) => {
+	return elementId.split(TYPOGRAPHY.doubleUnderscore).pop();
+};

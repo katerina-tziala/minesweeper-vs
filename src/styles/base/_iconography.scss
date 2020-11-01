@@ -1,0 +1,66 @@
+@import "../vendor/fontawesome/fontawesome.scss";
+@import "../vendor/fontawesome/regular.scss";
+@import "../vendor/fontawesome/solid.scss";
+@import "../vendor/fontawesome/brands.scss";
+
+%icon {
+	display       : inline-block;
+	margin        : auto;
+	vertical-align: middle;
+	width         : 100%;
+	font-style    : normal;
+	text-align    : center;
+	font-weight   : 900;
+	font-family   : "Font Awesome 5 Free";
+}
+
+.icon-user {
+	@extend %icon;
+	content: fa-content($fa-var-user);
+}
+
+.icon-exclamation {
+	@extend %icon;
+	content: fa-content($fa-var-exclamation);
+}
+
+.icon-x {
+	@extend %icon;
+	content: fa-content($fa-var-times);
+}
+
+.icon-exclamation-triangle {
+	@extend %icon;
+	content: fa-content($fa-var-exclamation-triangle);
+}
+
+.icon-settings {
+	@extend %icon;
+	content: fa-content($fa-var-cog);
+}
+
+.icon-caret-down {
+	@extend %icon;
+	content: fa-content($fa-var-caret-down);
+}
+
+.icon-bomb {
+	@extend %icon;
+	content: fa-content($fa-var-bomb);
+}
+
+.icon-bahai {
+	@extend %icon;
+	content: fa-content($fa-var-bahai);
+}
+
+.icon-virus {
+	@extend %icon;
+	content: fa-content($fa-var-virus);
+}
+
+@mixin afterIcon($key) {
+	&:after {
+		@extend .icon-#{$key};
+	}
+}

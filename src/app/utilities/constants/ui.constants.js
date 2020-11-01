@@ -6,7 +6,7 @@ export const DOM_ELEMENT_ID = {
 };
 
 export const DOM_ELEMENT_CLASS = {
-	hidden: "hidden",
+	hidden: "_hidden",
 	app: "app",
 	theme: "theme-",
 	//colorType: "color-type--"

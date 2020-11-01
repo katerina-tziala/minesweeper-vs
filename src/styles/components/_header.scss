@@ -1,0 +1,53 @@
+@use "../themes/theme";
+@use "../base/z-index";
+@use "../base/sizes";
+@use "../base/iconography";
+
+@import "../layouts/button";
+
+.header {
+	@extend %start-center;
+	height : 46px;
+	width  : 100%;
+	padding: 0 15px;
+}
+
+.header-title {
+	font-weight: 500;
+	flex-grow  : 1;
+}
+
+.header-btn {
+	@extend ._btn-icon;
+	@extend ._btn-icon--normal;
+	@include iconography.afterIcon("settings");
+	background-color: transparent;
+	color           : #f2f2f2;
+}
+
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+
+	.header {
+		@include theme.applyTheme("light", "header");
+		@include theme.applyTheme("light", "shadow");
+	}
+
+	.header-btn {
+		@include applyButtonTheme("light", "header-btn");
+	}
+}
+
+.theme-dark {
+
+	.header {
+		@include theme.applyTheme("dark", "header");
+		@include theme.applyTheme("dark", "shadow");
+	}
+
+	.header-btn {
+		@include applyButtonTheme("dark", "header-btn");
+	}
+}

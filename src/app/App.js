@@ -1,14 +1,14 @@
 "use strict";
 import { OnlineConnection } from "./online-connection/online-connection";
 
-import { Login } from "./interfaces/login/login";
+import { Login } from "./pages/login/login";
 
 
-import { NOTIFICATION_MESSAGE } from "./skeleton/toast-notification/toast-notification.constants";
+import { NOTIFICATION_MESSAGE } from "./components/toast-notification/toast-notification.constants";
 
 import { AppSettingsModel } from "./utilities/models/app-settings";
 
-import { SettingsController } from "./skeleton/settings-controller/settings-controller";
+import { SettingsController } from "./components/settings-controller/settings-controller";
 import { LocalStorageHelper } from "./utilities/local-storage-helper";
 
 

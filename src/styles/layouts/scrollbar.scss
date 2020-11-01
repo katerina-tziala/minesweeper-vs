@@ -1,0 +1,19 @@
+
+$scrollbar-size: 5px;
+
+._scrollbar {
+	&::-webkit-scrollbar-track {
+		background-color: #e6e6e6;
+	}
+
+	&::-webkit-scrollbar {
+		width: $scrollbar-size;
+		height: $scrollbar-size;
+		background-color: #e6e6e6;
+	}
+	
+	&::-webkit-scrollbar-thumb {
+		background-color: #595959;
+		border-radius: $scrollbar-size;
+	}
+}

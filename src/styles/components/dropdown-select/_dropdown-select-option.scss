@@ -1,0 +1,41 @@
+.dropdown-listbox-option {
+	padding: 3px 5px;
+	cursor : pointer;
+	outline: none;
+
+	&:last-of-type {
+		border-bottom: none;
+	}
+}
+
+.dropdown-listbox-option[aria-selected="true"] {
+	@extend .dropdown-listbox-option--selected;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@mixin applyDropdownSelectedOptionTheme($theme) {
+	.dropdown-listbox-option--selected {
+		@include theme.applyTheme($theme, "dropdown-select-option-selected");
+
+		&:hover {
+			@include theme.applyTheme($theme, "dropdown-select-option-focused");
+		}
+	}
+}
+
+.theme-light {
+	.dropdown-listbox-option {
+		@include applyDropdownOptionTheme("light");
+	}
+
+	@include applyDropdownSelectedOptionTheme("light");
+}
+
+.theme-dark {
+	.dropdown-listbox-option {
+		@include applyDropdownOptionTheme("dark");
+	}
+
+	@include applyDropdownSelectedOptionTheme("dark");
+}

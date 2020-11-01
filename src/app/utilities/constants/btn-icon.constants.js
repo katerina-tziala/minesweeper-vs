@@ -1,13 +1,17 @@
 "use strict";
 
 export const CLOSE_BTN = {
-	ariaLabel: "close",
-	className: "button-icon button-icon--close",
+	className: "_btn-icon _btn-primary button-icon--close",
+	attributes: {
+		"aria-label": "close"
+	},
 	actionType: "click"
 };
 
 export const SETTINGS_BTN = {
-	ariaLabel: "display settings",
-	className: "button-icon button-icon-header button-icon--settings",
+	className: "_btn-icon header-btn header-btn--settings",
+	attributes: {
+		"aria-label": "display settings"
+	},
 	actionType: "click"
 };

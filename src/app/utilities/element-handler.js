@@ -2,6 +2,7 @@
 
 import { TYPOGRAPHY } from "./constants/typography.constants.js";
 import { DOM_ELEMENT_CLASS } from "./constants/ui.constants";
+import { clone } from "./utils.js";
 
 export class ElementHandler {
 
@@ -36,42 +37,22 @@ export class ElementHandler {
 		element.classList.remove(className);
 	}
 
+	static setParams(element, params) {
+		params = clone(params);
+		const attributes = params.attributes;
+		delete params.attributes;
+		Object.keys(params).forEach(key => element[key] = params[key]);
+		if (attributes) {
+			this.setAttributes(element, attributes);
+		}
+	}
+
 	static setAttributes(element, attributes) {
-		Object.keys(attributes).forEach(key => {
-			if (key === "role") {
-				ElementHandler.setRole(element, attributes[key]);
-			} else {
-				element[key] = attributes[key];
-			}
-		});
+		Object.keys(attributes).forEach(key => element.setAttribute(key, attributes[key]));
 	}
 
 	static setID(element, id) {
 		element.setAttribute("id", id);
-	}
-
-	static setAlertRole(element) {
-		ElementHandler.setRole(element, "alert");
-	}
-
-	static setAriaAssertive(element) {
-		element.setAttribute("aria-live", "assertive");
-	}
-
-	static setRole(element, role) {
-		element.setAttribute("role", role);
-	}
-
-	static removeAriaLive(element) {
-		element.removeAttribute("aria-live");
-	}
-
-	static removeRole(element) {
-		element.removeAttribute("role");
-	}
-
-	static setAriaLabel(element, ariaLabel) {
-		element.setAttribute("aria-label", ariaLabel);
 	}
 
 	static setDisabled(element, isDisabled) {
@@ -82,7 +63,4 @@ export class ElementHandler {
 		return element.getAttribute("id");
 	}
 
-	static setTabindex(element, value) {
-		element.setAttribute("tabindex", value);
-	}
 }

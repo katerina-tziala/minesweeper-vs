@@ -1,7 +1,5 @@
 "use strict";
 
-import "./form-username.scss";
-
 import { ElementGenerator } from "../../../utilities/element-generator";
 
 import { Form } from "../form";

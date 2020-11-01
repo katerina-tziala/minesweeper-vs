@@ -1,0 +1,67 @@
+@import "../layouts/button";
+@import "../layouts/scrollbar.scss";
+@import "./switcher/switcher";
+@import "./dropdown-select/dropdown-select";
+
+.settings {
+	position: relative;
+}
+
+.settings-panel {
+	position: absolute;
+	top     : 36px;
+	right   : -15px;
+	z-index : 2000;
+	padding : 10px;
+}
+
+.settings-section {
+	@extend %start-center;
+	min-width      : 200px;
+	justify-content: space-between;
+}
+
+.settings-tag {
+	text-transform: capitalize;
+	font-style    : italic;
+	font-weight   : 600;
+	border        : 1px solid red;
+}
+
+
+.mine-type-option {
+	height     : 22px;
+	width      : 22px;
+	line-height: 21px;
+	font-size  : 1.1rem;
+}
+
+.mine-type-option--bomb {
+	@include iconography.afterIcon("bomb");
+}
+
+.mine-type-option--bahai {
+	@include iconography.afterIcon("bahai");
+}
+
+.mine-type-option--virus {
+	@include iconography.afterIcon("virus");
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+
+	.settings-panel {
+		@include theme.applyTheme("light", "card");
+	}
+
+}
+
+.theme-dark {
+
+	.settings-panel {
+		@include theme.applyTheme("dark", "card");
+	}
+
+}

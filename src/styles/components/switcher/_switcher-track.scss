@@ -1,0 +1,9 @@
+._track {
+	@include fullyRoundedBar($size);
+	@extend %transition;
+	height  : #{$track-height}px;
+	position: relative;
+	border  : none;
+	outline : none;
+	cursor  : pointer;
+}

@@ -1,8 +1,8 @@
 
 import "./index.scss";
 
-import { ToastNotifications } from "./app/skeleton/toast-notification/toast-notification";
-import { Loader } from "./app/skeleton/loader/loader";
+import { ToastNotifications } from "./app/components/toast-notification/toast-notification";
+import { Loader } from "./app/components/loader/loader";
 
 import { App } from "./app/app";
 

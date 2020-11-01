@@ -1,0 +1,8 @@
+$size                  : 44;
+
+$thumb-track-difference: 10;
+// thumb
+$thumb-size        : ($size / 2);
+$thumb-position-top: - ($thumb-track-difference / 2) - 1;
+// track
+$track-height: $thumb-size - $thumb-track-difference;

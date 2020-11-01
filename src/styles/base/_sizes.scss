@@ -1,0 +1,11 @@
+@use "sass:map";
+
+$_sizes: (
+	input-height: 26px,
+	btn-height: 26px,
+	btn-height-small: 20px,
+);
+
+@function getSize($key) {
+    @return map-get($_sizes, $key);
+}
