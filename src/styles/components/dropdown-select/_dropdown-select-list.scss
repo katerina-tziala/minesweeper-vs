@@ -13,7 +13,7 @@
 	border-bottom-left-radius : 3px;
 	border-bottom-right-radius: 3px;
 	transition                : height .5s;
-	z-index                   : 500;
+	z-index         :  z-index.getIndex(input);
 }
 
 .dropdown-listbox--expanded {

@@ -1,6 +1,8 @@
 @use "sass:map";
 
 $_indexes: (
+	input: 500,
+	settings-panel: 1000,
 	loader: 2500,
 	toast-notification: 3000
 );

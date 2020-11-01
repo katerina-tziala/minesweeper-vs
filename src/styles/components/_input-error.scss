@@ -1,7 +1,7 @@
 .error-container {
 	width           : 100%;
 	background-color: transparent;
-	z-index         : 500;
+	z-index         :  z-index.getIndex(input);
 }
 
 .error-toggle-btn {

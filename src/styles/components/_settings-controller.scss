@@ -20,8 +20,7 @@
   position: absolute;
   top: 36px;
   right: -15px;
-  z-index: 2000;
-  //   padding: 10px;
+  z-index: z-index.getIndex(settings-panel);
   height: 0;
   overflow: hidden;
   transition: height 0.5s;
