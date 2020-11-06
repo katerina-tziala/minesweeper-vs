@@ -1,12 +1,12 @@
 import "./index.scss";
-import { Loader } from "./app/components/loader/loader";
+import { AppLoader } from "./app/components/app-loader/app-loader";
 
 const loadApp = () => import("./app/app");
 const loadNotifications = () => import("./app/components/toast-notification/toast-notification");
 
 document.addEventListener("DOMContentLoaded", () => {
-	self.appLoader = Loader;
-	
+	self.appLoader = AppLoader;
+
 
 	loadNotifications().then(({ToastNotifications}) => {
 

@@ -1,52 +1,52 @@
 .dropdown-listbox-container {
-	position: relative;
+    position: relative;
 }
 
 .dropdown-listbox {
-	width                     : 100%;
-	height                    : 0px;
-	position                  : absolute;
-	top                       : 0px;
-	list-style-type           : none;
-	overflow-x                : hidden;
-	overflow-y                : hidden;
-	border-bottom-left-radius : 3px;
-	border-bottom-right-radius: 3px;
-	transition                : height .5s;
-	z-index         :  z-index.getIndex(input);
+    width                     : 100%;
+    height                    : 0px;
+    position                  : absolute;
+    top                       : 0px;
+    list-style-type           : none;
+    overflow-x                : hidden;
+    overflow-y                : hidden;
+    border-bottom-left-radius : 3px;
+    border-bottom-right-radius: 3px;
+    transition                : height .5s;
+    z-index                   : 3;
 }
 
 .dropdown-listbox--expanded {
-	box-shadow: none;
+    box-shadow: none;
 }
 
 .dropdown-listbox--scrollable {
-	@extend ._scrollbar;
-	overflow-y: scroll;
+    @extend ._scrollbar;
+    overflow-y: scroll;
 }
 
 .dropdown-listbox[aria-expanded="true"] {
-	@extend .dropdown-listbox--expanded;
+    @extend .dropdown-listbox--expanded;
 }
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-	.dropdown-listbox {
-		@include theme.applyTheme("light", "card-colors");
-	}
+    .dropdown-listbox {
+        @include theme.applyTheme("light", "card-colors");
+    }
 
-	.dropdown-listbox--expanded {
-		@include theme.applyTheme("light", "shadow");
-	}
+    .dropdown-listbox--expanded {
+        @include theme.applyTheme("light", "shadow");
+    }
 }
 
 .theme-dark {
-	.dropdown-listbox {
-		@include theme.applyTheme("dark", "card-colors");
-	}
+    .dropdown-listbox {
+        @include theme.applyTheme("dark", "card-colors");
+    }
 
-	.dropdown-listbox--expanded {
-		@include theme.applyTheme("dark", "shadow");
-	}
+    .dropdown-listbox--expanded {
+        @include theme.applyTheme("dark", "shadow");
+    }
 }

@@ -59,6 +59,12 @@
 	content: fa-content($fa-var-virus);
 }
 
+.icon-spinner {
+	@extend %icon;
+	content: fa-content($fa-var-spinner);
+}
+
+
 @mixin afterIcon($key) {
 	&:after {
 		@extend .icon-#{$key};

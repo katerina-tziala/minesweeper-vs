@@ -89,7 +89,7 @@ export class DropdownSelectList {
 	}
 
 	generateDropdownListbox(options, selectText) {
-		const listboxContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.listboxContainer);
+		const listboxContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.listboxContainer]);
 		const attributes = this.getListBoxAttributes(options, selectText);
 		const listbox = this.generateOptionsListbox(options, attributes);
 		AriaHandler.setTabindex(listbox, -1);

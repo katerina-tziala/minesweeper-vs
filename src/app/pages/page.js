@@ -26,4 +26,8 @@ export class Page {
 		self.appLoader.hide();
 	}
 
+	onConnectionError(errorMessage) {
+		self.toastNotifications.show(errorMessage);
+	}
+
 }

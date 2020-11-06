@@ -1,12 +1,18 @@
 "use strict";
 
+import { TYPOGRAPHY } from "./constants/typography.constants";
 import { ElementHandler } from "./element-handler";
 
 export class ElementGenerator {
 
-	static generateContainer(containerClass) {
-		const container = document.createElement("div");
-		ElementHandler.addStyleClass(container, containerClass);
+	static generateContainer(styleClasses, elementId) {
+        const container = document.createElement("div");
+        if (styleClasses && styleClasses.length) {
+            container.className = styleClasses.join(TYPOGRAPHY.space);
+        }
+        if (elementId) {
+            ElementHandler.setID(container, elementId);
+        }
 		return container;
 	}
 

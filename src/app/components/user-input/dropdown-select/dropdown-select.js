@@ -85,8 +85,7 @@ export class DropdownSelect extends UserInput {
 
 	generateInputField() {
 		const dorpdownFragment = document.createDocumentFragment();
-		const dropdownContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.container);
-		ElementHandler.setID(dropdownContainer, this.containerID);
+		const dropdownContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.containerID);
 		const button = this.generateDropdownButton();
 		const listbox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
 		dropdownContainer.append(button, listbox);

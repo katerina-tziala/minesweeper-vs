@@ -11,102 +11,51 @@ import { AppSettingsModel } from "./utilities/models/app-settings";
 import { SettingsController } from "./components/settings-controller/settings-controller";
 import { LocalStorageHelper } from "./utilities/local-storage-helper";
 
+import { User } from "./utilities/models/user";
 
 
 
 export class App {
 
-	constructor() {
-		this.user = undefined;
-		this.interfaceController = undefined;
-		this.conn = undefined;
-		this.peers = [];
-		this.initSettings();
-		this.init();
-	}
+    constructor() {
+        this.user = undefined;
+        this.interfaceController = undefined;
 
-	initSettings() {
-		this.settings = new AppSettingsModel();
-		const savedSettings = LocalStorageHelper.retrieve("settings");
-		if (savedSettings) {
-			this.settings.update(savedSettings);
-		}
-		this.settingsController = new SettingsController(this.settings, false);
-	}
+        self.onlineConnection = new OnlineConnection({
+            onError: this.onConnectionError.bind(this),
+            onClose: this.onConnectionClose.bind(this),
+            onMessage: this.onConnectionMessage.bind(this),
+        });
 
 
+        this.initSettings();
 
+        this.init();
 
-	init() {
-		if (this.user) {
-			console.log(this.user);
+        self.user = undefined;
+        this.peers = [];
 
+        // self.user = new User("kateID", "kate", null);
+        // this.setInterface("home");
+    }
 
-		} else {
-			this.interfaceController = new Login(this.login.bind(this));
-		}
-
-
-	}
-
-	login(formValues) {
-		self.appLoader.display();
-		console.log("login");
-		// console.log(formValues);
-		this.setUpOnlineConnection(formValues);
-	}
-
-
-	setUpOnlineConnection(userParams) {
-		if (!this.conn) {
-			this.conn = new OnlineConnection(userParams, {
-				onError: this.onConnectionError.bind(this),
-				onClose: this.onConnectionClose.bind(this),
-				onMessage: this.onConnectionMessage.bind(this),
-			});
-		} else {
-			this.conn.loginToWebsocket(userParams);
-		}
-	}
+    initSettings() {
+        this.settings = new AppSettingsModel();
+        const savedSettings = LocalStorageHelper.retrieve("settings");
+        if (savedSettings) {
+            this.settings.update(savedSettings);
+        }
+        this.settingsController = new SettingsController(this.settings, false);
+    }
 
 
 
-	onConnectionError(event) {
-		if (this.user) {
-			console.log("onConnectionError");
-			console.log(event);
 
-		} else {// login error
-			console.log("login error");
-			this.conn = undefined;
-			self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
-			self.appLoader.hide();
-		}
-	}
+    init() {
 
+        this.interfaceController = new Login();
 
-	onConnectionClose(event) {
-
-		console.log("onConnectionClose");
-		console.log(event);
-
-	}
-
-	onConnectionMessage(message) {
-		switch (message.type) {
-			case "username-in-use":
-				self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUse);
-				break;
-			case "broadcast":
-				console.log("--- broadcast -----");
-				console.log(message.data);
-				break;
-			default:
-				console.log("onConnectionMessage");
-				console.log(message);
-				break;
-		}
-	}
+    }
 
 
 
@@ -115,7 +64,79 @@ export class App {
 
 
 
+    onConnectionError(event) {
+        console.log("onConnectionError from app");
+        console.log(event);
 
+        this.interfaceController.onConnectionError(NOTIFICATION_MESSAGE.connectionError);
+        // if (this.user) {
+        // 	console.log("onConnectionError");
+        // } else {// login error
+        // 	console.log("login error");
+        // 	self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
+        // 	self.appLoader.hide();
+        // }
+    }
+
+
+    onConnectionClose(event) {
+
+        console.log("onConnectionClose from app");
+        console.log(event);
+
+    }
+
+    onConnectionMessage(message) {
+        console.log("onConnectionMessage from app");
+        switch (message.type) {
+            case "username-in-use":
+                this.interfaceController.onConnectionError(NOTIFICATION_MESSAGE.usernameInUse);
+                break;
+            case "broadcast":
+                this.handleConnectionBroadcast(message.data);
+                break;
+            default:
+                console.log("onConnectionMessage");
+                console.log(message);
+                break;
+        }
+    }
+
+    handleConnectionBroadcast(data) {
+        if (self.user) {
+            console.log("user is here");
+            console.log("--- broadcast -----");
+            console.log(data);
+        } else { // user just joined
+            self.user = this.generateUser(data.user);
+            this.setPeers(data.peers);
+            LocalStorageHelper.save("username", self.user.username);
+            this.setInterface("home");
+        }
+    }
+
+    setPeers(peers) {
+        this.peers = peers.map(peerData => this.generateUser(peerData));
+    }
+
+
+    generateUser(userData) {
+        return new User(userData.id, userData.username, userData.gameRoomId);
+    }
+
+    setInterface(interfaceName) {
+        switch (interfaceName) {
+            case "home":
+                console.log("land on home");
+                break;
+
+            // default:
+
+            //     break;
+        }
+
+
+    }
 
 
 

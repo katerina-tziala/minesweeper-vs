@@ -58,7 +58,7 @@ export class InputError {
 	}
 
 	generateInputError() {
-		const container = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.errorContainer);
+		const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.errorContainer]);
 		container.append(this.generateErrorToggle(), this.generateErrorMessage());
 		return container;
 	}
@@ -71,8 +71,7 @@ export class InputError {
 	}
 
 	generateErrorMessage() {
-		const errorMessage = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.errorMessage);
-		ElementHandler.setID(errorMessage, this.messageID);
+		const errorMessage = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.errorMessage], this.messageID);
 		ElementHandler.hide(errorMessage);
 		return errorMessage;
 	}

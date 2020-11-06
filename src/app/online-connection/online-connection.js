@@ -6,9 +6,8 @@ export class OnlineConnection {
 	#actions;
 	#webSocket;
 
-	constructor(userParams, actions) {
+	constructor(actions) {
 		this.actions = actions;
-		this.init(userParams);
 	}
 
 	set actions(actions) {
@@ -27,17 +26,17 @@ export class OnlineConnection {
 		return this.#webSocket;
 	}
 
-	init(userParams) {
+	establishConnection(userParams) {
 		this.webSocket = new WebSocket(CONNECTION_CONFIG.url, CONNECTION_CONFIG.protocols);
 		this.webSocket.addEventListener("error", event => this.actions.onError(event));
 		this.webSocket.addEventListener("open", () => {
 			this.webSocket.addEventListener("message", event => this.actions.onMessage(JSON.parse(event.data)));
 			this.webSocket.addEventListener("close", event => this.actions.onClose(event));
-			this.loginToWebsocket(userParams);
+			this.joinOnlineGaming(userParams);
 		});
 	}
 
-	send(type, data) {
+	sendData(type, data) {
 		if (this.webSocket) {
 			const message = {
 				type: type,
@@ -49,8 +48,8 @@ export class OnlineConnection {
 		}
 	}
 
-	loginToWebsocket(userParams) {
-		this.send("login", userParams);
+	joinOnlineGaming(userParams) {
+		this.sendData("join", userParams);
 	}
 
 

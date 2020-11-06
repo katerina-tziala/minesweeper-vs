@@ -13,12 +13,16 @@
 
 
 @import "../components/form_username";
+@import "../components/state-loader";
 
 
 .login-container {
-    min-width: 320px;
-    padding: 15px;
-    animation: fadein 0.8s ease;
+    min-width    : 320px;
+    padding      : 15px;
+    border-radius: 8px;
+    animation    : fadein 0.8s ease;
+    position     : relative;
+    overflow: hidden;
 }
 
 @keyframes fadein {
@@ -35,13 +39,13 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-	.login-container {
-		@include theme.applyTheme("light", "card");
-	}
+    .login-container {
+        @include theme.applyTheme("light", "card");
+    }
 }
 
 .theme-dark {
-	.login-container {
-		@include theme.applyTheme("dark", "card");
-	}
+    .login-container {
+        @include theme.applyTheme("dark", "card");
+    }
 }

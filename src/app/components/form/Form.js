@@ -53,7 +53,7 @@ export class Form {
 	}
 
 	renderFormSection() {
-		return ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.formSection);
+		return ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.formSection]);
 	}
 
 	renderForm(params) {
@@ -80,7 +80,7 @@ export class Form {
 	}
 
 	renderFormActions(form, submitBtnParams) {
-		const actionsContainer = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.formActions);
+		const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.formActions]);
 		const clearBtn = ElementGenerator.generateButton(CLEAR_BTN, this.clearForm.bind(this));
 		const submitBtn = ElementGenerator.generateButton(submitBtnParams, this.submitForm.bind(this));
 		ElementHandler.setDisabled(submitBtn, !this.isValid);

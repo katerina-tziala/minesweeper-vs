@@ -91,8 +91,7 @@ export class SettingsController {
 	initView() {
 		this.settingsContainer.then(container => {
 			const settingsBtn = ElementGenerator.generateButton(SETTINGS_BTN, this.toggleSettingsDisplay.bind(this));
-			const settingsPanel = ElementGenerator.generateContainer(DOM_ELEMENT_CLASS.settingsPanel);
-			ElementHandler.setID(settingsPanel, DOM_ELEMENT_ID.settingsPanel);
+			const settingsPanel = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.settingsPanel], DOM_ELEMENT_ID.settingsPanel);
 			this.setPanelStyle(settingsPanel, 0);
 			this.renderSettingsOptions(settingsPanel);
 			container.append(settingsBtn, settingsPanel);
@@ -201,10 +200,10 @@ export class SettingsController {
 	}
 
 	onDarkThemeChange(params) {
-		const selectedTheme = params.value ? THEME.Dark : THEME.Default;
-		this.settings.theme = selectedTheme;
-		this.saveSettings();
-		this.setAppTheme();
+		// const selectedTheme = params.value ? THEME.Dark : THEME.Default;
+		// this.settings.theme = selectedTheme;
+		// this.saveSettings();
+		// this.setAppTheme();
 	}
 
 	saveSettings() {
