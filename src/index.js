@@ -1,5 +1,5 @@
 import "./index.scss";
-import { AppLoader } from "./app/components/app-loader/app-loader";
+import { AppLoader } from "./app/components/loaders/app-loader/app-loader";
 
 const loadApp = () => import("./app/app");
 const loadNotifications = () => import("./app/components/toast-notification/toast-notification");

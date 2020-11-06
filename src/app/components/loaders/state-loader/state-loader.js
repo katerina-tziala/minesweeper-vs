@@ -1,7 +1,7 @@
 "use strict";
 
-import { ElementHandler } from "../../utilities/element-handler";
-import { ElementGenerator } from "../../utilities/element-generator";
+import { ElementHandler } from "../../../utilities/element-handler";
+import { ElementGenerator } from "../../../utilities/element-generator";
 
 import { DOM_ELEMENT_CLASS } from "./state-loader.constants";
 

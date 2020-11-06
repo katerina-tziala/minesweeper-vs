@@ -30,8 +30,6 @@ $card       : map.merge($card-colors, $shadow);
 $input-focused: theme-utils.generateInputTheming($theme-primary-intense);
 $input        : theme-utils.generateInputTheming($theme-primary-subtle);
 
-
-
 $dropdown-select-option-focused : theme-utils.generateBoxTheming(#0d0d0d, #fff);
 $dropdown-select-option-selected: theme-utils.generateBoxTheming($silver, #1a1a1a);
 $dropdown-select-option         : (border-bottom: 1px solid $silver);
