@@ -1,52 +1,52 @@
-// @charset "utf-8";
+@charset "utf-8";
 
-// @use "./styles/themes/theme";
-// @use "./styles/base/z-index";
-// @use "./styles/base/sizes";
-// @use "./styles/base/iconography";
-
-
-// @import "./styles/base/flexbox";
-// @import "./styles/base/utils";
-// @import "./styles/abstract/mixins";
-
-// @import "./styles/base/typography/typography";
+@use "./styles/themes/theme";
+@use "./styles/base/z-index";
+@use "./styles/base/sizes";
+@use "./styles/base/iconography";
 
 
+@import "./styles/base/flexbox";
+@import "./styles/base/utils";
+@import "./styles/abstract/mixins";
 
-// @import "./styles/components/header";
-// @import "./styles/components/main";
-// @import "./styles/components/loaders/app-loader";
-// @import "./styles/components/toast-notification";
-
-// @import "./styles/components/settings-controller";
+@import "./styles/base/typography/typography";
 
 
 
-// * {
-// 	box-sizing : border-box;
-// 	margin     : 0;
-// 	padding    : 0;
-// 	user-select: none;
-// }
+@import "./styles/components/header";
+@import "./styles/components/main";
+@import "./styles/components/loaders/app-loader";
+@import "./styles/components/toast-notification";
 
-// html,
-// body,
-// .app {
-// 	width   : 100vw;
-// 	height  : 100vh;
-// 	overflow: hidden;
-// 	position: relative;
-// 	@extend %start-center;
-// 	flex-direction: column;
-// }
+@import "./styles/components/settings-controller";
 
 
-// /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-// .theme-light {
-// 	@include theme.applyTheme(light, app);
-// }
 
-// .theme-dark {
-// 	@include theme.applyTheme(dark, app);
-// }
+* {
+	box-sizing : border-box;
+	margin     : 0;
+	padding    : 0;
+	user-select: none;
+}
+
+html,
+body,
+.app {
+	width   : 100vw;
+	height  : 100vh;
+	overflow: hidden;
+	position: relative;
+	@extend %start-center;
+	flex-direction: column;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+	@include theme.applyTheme(light, app);
+}
+
+.theme-dark {
+	@include theme.applyTheme(dark, app);
+}

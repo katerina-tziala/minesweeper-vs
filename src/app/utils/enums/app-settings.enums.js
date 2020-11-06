@@ -2,15 +2,23 @@
 
 const THEME = {
 	Default: "light",
-	Dark: "dark",
+	Dark: "dark"
 };
 Object.freeze(THEME);
 
-const MINETYPE = {
+const MINE_TYPE = {
 	Bomb: "bomb",
 	Bahai: "bahai",
-	Virus: "virus",
+	Virus: "virus"
 };
-Object.freeze(MINETYPE);
+Object.freeze(MINE_TYPE);
 
-export { THEME, MINETYPE };
+const SETTINGS_TYPE = {
+	Theme: "theme",
+    MineType: "mineType",
+    PlayerColorType: "playerColorType",
+	OpponentColorType: "opponentColorType"
+};
+Object.freeze(SETTINGS_TYPE);
+
+export { THEME, MINE_TYPE, SETTINGS_TYPE };

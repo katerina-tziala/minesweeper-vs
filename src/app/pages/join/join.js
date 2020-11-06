@@ -8,14 +8,14 @@ import { ElementHandler } from "../../utils/element-handler";
 import { LocalStorageHelper } from "../../utils/local-storage-helper";
 
 import { Page } from "../page";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, FORM_PARAMS } from "./login.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, FORM_PARAMS } from "./join.constants";
 
 import { FormUsername } from "../../components/form/form-username/form-username";
 import { StateLoader } from "../../components/loaders/state-loader/state-loader";
 
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
-export class Login extends Page {
+export class Join extends Page {
     #loginForm;
 
     constructor() {

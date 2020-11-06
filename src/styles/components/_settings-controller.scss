@@ -7,7 +7,7 @@
 @mixin applyGameStyle($theme) {
     @for $i from 1 through 8 {
         .color-type--#{$i} {
-            background-color: theme.getGameColor($theme, "type-#{$i}");
+            background-color: theme.getGameColor($theme, "game-type-#{$i}");
         }
     }
 }

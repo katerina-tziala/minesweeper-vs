@@ -26,3 +26,7 @@ export const replaceStringParameter = (stringToUpdate, value, replacePart = TYPO
 export const extractIdValue = (elementId) => {
 	return elementId.split(TYPOGRAPHY.doubleUnderscore).pop();
 };
+
+export const roundUpToNextDecade = (number) => {
+    return Math.ceil(parseInt(number) / 10) * 10;
+};

@@ -1,15 +1,12 @@
 @use "sass:map";
-@use "../../abstract/functions";
-@use "../theme-utils";
-
 
 $game-pallete: (
-	type-1: #00ffff,
-	type-2: #00ff00,
-	type-3: #ff3333,
-	type-4: #ff8300,
-	type-5: #ffff00,
-	type-6: #b84dff,
-	type-7: #ff00bf,
-	type-8: #ffffff
+	game-type-1: #00ffff,
+	game-type-2: #00ff00,
+	game-type-3: #ff3333,
+	game-type-4: #ff8300,
+	game-type-5: #ffff00,
+	game-type-6: #b84dff,
+	game-type-7: #ff00bf,
+	game-type-8: #ffffff
 );

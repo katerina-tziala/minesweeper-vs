@@ -20,10 +20,4 @@ export class SettingsViewHelper {
 		return settingTag;
 	}
 
-	static generateGameSettingSection(key) {
-		const settingsSection = this.generateSettingSection(key);
-		ElementHandler.addStyleClass(settingsSection, DOM_ELEMENT_CLASS.gameSettings);
-		return settingsSection;
-	}
-
 }

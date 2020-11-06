@@ -1,18 +1,17 @@
 "use strict";
 import { OnlineConnection } from "./online-connection/online-connection";
 
-import { Login } from "./pages/login/login";
 
 
 import { NOTIFICATION_MESSAGE } from "./components/toast-notification/toast-notification.constants";
 
-import { AppSettingsModel } from "./utils/models/app-settings";
 
 import { SettingsController } from "./components/settings-controller/settings-controller";
+
 import { LocalStorageHelper } from "./utils/local-storage-helper";
 
 import { User } from "./utils/models/user";
-
+import { INTERFACE_TYPE } from "./utils/enums/app-interface.enum";
 
 
 export class App {
@@ -28,36 +27,17 @@ export class App {
         });
 
 
-        this.initSettings();
+        self.settingsController = new SettingsController(this.settings, false);
 
-        this.init();
+
 
         self.user = undefined;
-        this.peers = [];
+        self.peers = [];
 
-        // self.user = new User("kateID", "kate", null);
-        // this.setInterface("home");
+        self.user = new User("kateID", "kate", null);
+        this.setInterface(INTERFACE_TYPE.Home);
+        // this.setInterface();
     }
-
-    initSettings() {
-        this.settings = new AppSettingsModel();
-        const savedSettings = LocalStorageHelper.retrieve("settings");
-        if (savedSettings) {
-            this.settings.update(savedSettings);
-        }
-        this.settingsController = new SettingsController(this.settings, false);
-    }
-
-
-
-
-    init() {
-
-        this.interfaceController = new Login();
-
-    }
-
-
 
 
 
@@ -116,7 +96,7 @@ export class App {
     }
 
     setPeers(peers) {
-        this.peers = peers.map(peerData => this.generateUser(peerData));
+        self.peers = peers.map(peerData => this.generateUser(peerData));
     }
 
 
@@ -125,20 +105,34 @@ export class App {
     }
 
     setInterface(interfaceName) {
+
         switch (interfaceName) {
-            case "home":
-                console.log("land on home");
+
+            case INTERFACE_TYPE.Home:
+
+                this.loadControllerModule(interfaceName).then(({ Home }) => {
+
+                    this.interfaceController = new Home();
+
+                    self.settingsController.gameSettingsHidden = false;
+                });
+
                 break;
 
-            // default:
+            default:
+                this.loadControllerModule(interfaceName).then(({ Join }) => {
 
-            //     break;
+                    this.interfaceController = new Join();
+                });
+                break;
         }
 
 
     }
 
-
+    loadControllerModule(interfaceName) {
+        return import(`./pages/${interfaceName}/${interfaceName}`);
+    }
 
 
 
