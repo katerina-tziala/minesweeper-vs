@@ -6,12 +6,12 @@ import { Login } from "./pages/login/login";
 
 import { NOTIFICATION_MESSAGE } from "./components/toast-notification/toast-notification.constants";
 
-import { AppSettingsModel } from "./utilities/models/app-settings";
+import { AppSettingsModel } from "./utils/models/app-settings";
 
 import { SettingsController } from "./components/settings-controller/settings-controller";
-import { LocalStorageHelper } from "./utilities/local-storage-helper";
+import { LocalStorageHelper } from "./utils/local-storage-helper";
 
-import { User } from "./utilities/models/user";
+import { User } from "./utils/models/user";
 
 
 

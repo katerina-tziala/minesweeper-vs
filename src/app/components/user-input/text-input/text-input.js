@@ -1,9 +1,9 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../utilities/constants/typography.constants";
-import { ElementGenerator } from "../../../utilities/element-generator";
-import { Validator } from "../../../utilities/validator";
-import { preventInteraction, clone, replaceStringParameter } from "../../../utilities/utils";
+import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
+import { ElementGenerator } from "../../../utils/element-generator";
+import { Validator } from "../../../utils/validator";
+import { clone, replaceStringParameter } from "../../../utils/utils";
 
 import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from "./text-input.constants";
 
@@ -54,7 +54,6 @@ export class TextInput extends UserInput {
     }
 
     onValueChange(event) {
-        preventInteraction(event);
         this.value = event.target.value;
         this.validateValue();
     }

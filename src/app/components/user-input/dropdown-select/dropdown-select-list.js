@@ -1,9 +1,9 @@
 "use strict";
 
-import { ElementGenerator } from "../../../utilities/element-generator";
-import { ElementHandler } from "../../../utilities/element-handler";
-import { AriaHandler } from "../../../utilities/aria-handler";
-import { clone } from "../../../utilities/utils";
+import { ElementGenerator } from "../../../utils/element-generator";
+import { ElementHandler } from "../../../utils/element-handler";
+import { AriaHandler } from "../../../utils/aria-handler";
+import { clone } from "../../../utils/utils";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, LISTBOX_ATTRIBUTES } from "./dropdown-select.constants";
 

@@ -1,13 +1,13 @@
 "use strict";
 
-import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utilities/constants/ui.constants";
-import { THEME } from "../../utilities/enums/app-settings.enums";
-import { SETTINGS_BTN } from "../../utilities/constants/btn-icon.constants";
-import { ElementHandler } from "../../utilities/element-handler";
-import { ElementGenerator } from "../../utilities/element-generator";
-import { AriaHandler } from "../../utilities/aria-handler";
-import { LocalStorageHelper } from "../../utilities/local-storage-helper";
-import { clone } from "../../utilities/utils";
+import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utils/constants/ui.constants";
+import { THEME } from "../../utils/enums/app-settings.enums";
+import { SETTINGS_BTN } from "../../utils/constants/btn-icon.constants";
+import { ElementHandler } from "../../utils/element-handler";
+import { ElementGenerator } from "../../utils/element-generator";
+import { AriaHandler } from "../../utils/aria-handler";
+import { LocalStorageHelper } from "../../utils/local-storage-helper";
+import { clone } from "../../utils/utils";
 
 import { Switcher } from "../../components/user-input/switcher/switcher";
 import { DropdownSelect } from "../../components/user-input/dropdown-select/dropdown-select";

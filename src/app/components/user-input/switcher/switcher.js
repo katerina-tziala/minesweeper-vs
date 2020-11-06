@@ -2,12 +2,12 @@
 
 import { SWITCH_BNT } from "./switcher.constants";
 
-import { ElementGenerator } from "../../../utilities/element-generator";
-import { ElementHandler } from "../../../utilities/element-handler";
-import { clone } from "../../../utilities/utils";
+import { ElementGenerator } from "../../../utils/element-generator";
+import { ElementHandler } from "../../../utils/element-handler";
+import { clone } from "../../../utils/utils";
+import { AriaHandler } from "../../../utils/aria-handler";
 
 import { UserInput } from "../user-input";
-import { AriaHandler } from "../../../utilities/aria-handler";
 
 export class Switcher extends UserInput {
     #ariaLabel;

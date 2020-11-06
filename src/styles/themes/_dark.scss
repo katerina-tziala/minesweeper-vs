@@ -20,6 +20,8 @@ $theme-primary-subtle  :#009999;
 
 
 $app : theme-utils.generateBoxTheming($theme-base, $theme-primary);
+
+
 $loader: theme-utils.generateLoaderTheming($theme-base, $theme-primary);
 
 $shadow: (box-shadow: functions.shadow($theme-primary-intense));
@@ -53,7 +55,7 @@ $switcher: (on: #00cccc,
 
 
 
-	
+
 
 
 	$pallete: error-pallete.$pallete;

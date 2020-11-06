@@ -1,6 +1,6 @@
 "use strict";
 
-import { ElementHandler } from "../../utilities/element-handler";
+import { ElementHandler } from "../../utils/element-handler";
 
 export class UserInput {
 	#name;

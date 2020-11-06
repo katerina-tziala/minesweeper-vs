@@ -2,10 +2,10 @@
 
 import "../../../styles/pages/_login.scss";
 
-import { TYPOGRAPHY } from "../../utilities/constants/typography.constants";
-import { ElementGenerator } from "../../utilities/element-generator";
-import { ElementHandler } from "../../utilities/element-handler";
-import { LocalStorageHelper } from "../../utilities/local-storage-helper";
+import { TYPOGRAPHY } from "../../utils/constants/typography.constants";
+import { ElementGenerator } from "../../utils/element-generator";
+import { ElementHandler } from "../../utils/element-handler";
+import { LocalStorageHelper } from "../../utils/local-storage-helper";
 
 import { Page } from "../page";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, FORM_PARAMS } from "./login.constants";

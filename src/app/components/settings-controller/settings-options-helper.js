@@ -1,10 +1,10 @@
 "use strict";
 
-import { COLOR_TYPES, DOM_ELEMENT_CLASS } from "../../utilities/constants/ui.constants";
-import { MINETYPE} from "../../utilities/enums/app-settings.enums";
+import { COLOR_TYPES, DOM_ELEMENT_CLASS } from "../../utils/constants/ui.constants";
+import { MINETYPE} from "../../utils/enums/app-settings.enums";
 
 export class SettingsOptionsHelper {
-	
+
 	static getMineTypeOptions() {
 		const options = [];
 		Object.values(MINETYPE).forEach(type => {

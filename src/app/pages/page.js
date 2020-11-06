@@ -1,7 +1,7 @@
 "use strict";
 
-import { DOM_ELEMENT_ID } from "../utilities/constants/ui.constants";
-import { ElementHandler } from "../utilities/element-handler";
+import { DOM_ELEMENT_ID } from "../utils/constants/ui.constants";
+import { ElementHandler } from "../utils/element-handler";
 
 export class Page {
 

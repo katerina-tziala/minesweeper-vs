@@ -2,9 +2,9 @@
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./dropdown-select.constants";
 
-import { ElementGenerator } from "../../../utilities/element-generator";
-import { ElementHandler } from "../../../utilities/element-handler";
-import { replaceStringParameter } from "../../../utilities/utils";
+import { ElementGenerator } from "../../../utils/element-generator";
+import { ElementHandler } from "../../../utils/element-handler";
+import { replaceStringParameter } from "../../../utils/utils";
 
 import { UserInput } from "../user-input";
 import { DropdownSelectButton } from "./dropdown-select-button/dropdown-select-button";

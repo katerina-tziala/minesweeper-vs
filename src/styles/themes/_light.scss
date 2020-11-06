@@ -20,12 +20,18 @@ $silver : #c0c0c0;
 
 
 $app : theme-utils.generateBoxTheming($theme-base, $app-primary);
-$loader: theme-utils.generateLoaderTheming($theme-base, $app-primary);
+
+
+$loader: theme-utils.generateLoaderTheming($theme-base, $theme-primary);
 
 $shadow: (box-shadow: functions.shadow($theme-primary-intense));
 
 $card-colors: theme-utils.generateBoxTheming($theme-base-intense, $theme-primary);
 $card       : map.merge($card-colors, $shadow);
+
+
+
+
 
 $input-focused: theme-utils.generateInputTheming($theme-primary-intense);
 $input        : theme-utils.generateInputTheming($theme-primary-subtle);

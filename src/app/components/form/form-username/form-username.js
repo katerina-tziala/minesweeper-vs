@@ -1,6 +1,6 @@
 "use strict";
 
-import { ElementGenerator } from "../../../utilities/element-generator";
+import { ElementGenerator } from "../../../utils/element-generator";
 
 import { Form } from "../form";
 import { TextInput } from "../../user-input/text-input/text-input";

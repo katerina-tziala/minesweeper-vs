@@ -1,9 +1,9 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../utilities/constants/typography.constants";
-import { ElementGenerator } from "../../../utilities/element-generator";
-import { ElementHandler } from "../../../utilities/element-handler";
-import { AriaHandler } from "../../../utilities/aria-handler";
+import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
+import { ElementGenerator } from "../../../utils/element-generator";
+import { ElementHandler } from "../../../utils/element-handler";
+import { AriaHandler } from "../../../utils/aria-handler";
 
 import {
 	DOM_ELEMENT_ID,

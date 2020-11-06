@@ -1,10 +1,10 @@
 "use strict";
 
-import { CLEAR_BTN } from "../../utilities/constants/btn-text.constants";
+import { CLEAR_BTN } from "../../utils/constants/btn-text.constants";
 
-import { ElementGenerator } from "../../utilities/element-generator";
-import { ElementHandler } from "../../utilities/element-handler";
-import { preventInteraction } from "../../utilities/utils";
+import { ElementGenerator } from "../../utils/element-generator";
+import { ElementHandler } from "../../utils/element-handler";
+import { preventInteraction } from "../../utils/utils";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./form.constants";
 

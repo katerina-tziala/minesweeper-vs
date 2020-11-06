@@ -1,6 +1,11 @@
 @import "../layouts/form";
 @import "../layouts/button";
-@import "./text-input";
+
+
+
+
+
+@import "./input/text-input";
 
 .form-username-icon {
 	@include rectangle(sizes.getSize(input-height));
