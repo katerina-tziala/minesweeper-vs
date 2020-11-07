@@ -1,3 +1,6 @@
+@use "../../theming/theming";
+@import "../scrollbar/scrollbar";
+
 .dropdown-listbox-container {
     position: relative;
 }
@@ -29,24 +32,21 @@
     @extend .dropdown-listbox--expanded;
 }
 
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
+@mixin setDropdownListThemeStyles($theme) {
     .dropdown-listbox {
-        @include theme.applyTheme("light", "card-colors");
+        @include theming.setThemeCard($theme);
     }
 
     .dropdown-listbox--expanded {
-        @include theme.applyTheme("light", "shadow");
+        @include theming.setThemeBoxShadow($theme);
     }
 }
 
-.theme-dark {
-    .dropdown-listbox {
-        @include theme.applyTheme("dark", "card-colors");
-    }
+.theme-light {
+    @include setDropdownListThemeStyles("light");
+}
 
-    .dropdown-listbox--expanded {
-        @include theme.applyTheme("dark", "shadow");
-    }
+.theme-dark {
+    @include setDropdownListThemeStyles("dark");
 }

@@ -1,0 +1,72 @@
+@use "../../theming/theming";
+@use "./button-theming";
+
+@import "../../utils/_module-utils";
+@import "../../global/utils";
+
+._btn {
+    cursor    : pointer;
+    outline   : none;
+    border    : none;
+    overflow  : hidden;
+    text-align: center;
+
+    &:disabled {
+        @extend .disabled;
+    }
+}
+
+.btn-text {
+    @extend ._btn;
+    display      : inline-block;
+    height       : getSize("btn-height");
+    min-width    : 46px;
+    padding      : 0 10px;
+    border-radius: 6px;
+    font-size    : 0.9rem;
+    font-weight  : 500;
+    line-height  : 18px;
+}
+
+.btn-icon {
+    @extend ._btn;
+    display: inline-block;
+}
+
+.btn-icon--normal {
+    @include circle(getSize("btn-height"));
+    font-size  : 21px;
+    line-height: 22px;
+}
+
+.btn-icon--small {
+    @include circle(getSize("btn-height-small"));
+    font-size  : 15px;
+    line-height: 15px;
+}
+
+.btn-icon--close {
+    @include afterIcon(x);
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+    .btn-primary {
+        @include button-theming.applyPrimaryButtonThemeStyles("light");
+    }
+
+    .btn-secondary {
+        @include button-theming.applySecondaryButtonThemeStyles("light");
+    }
+}
+
+.theme-dark {
+    .btn-primary {
+        @include button-theming.applyPrimaryButtonThemeStyles("dark");
+    }
+
+    .btn-secondary {
+        @include button-theming.applySecondaryButtonThemeStyles("dark");
+    }
+}

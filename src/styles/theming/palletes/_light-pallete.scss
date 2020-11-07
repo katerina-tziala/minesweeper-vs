@@ -1,0 +1,22 @@
+@use "sass:map";
+
+$theme-pallete: (
+	theme-base: #e6e6e6,
+	theme-primary: #1a1a1a,
+	theme-primary-intense: #000000,
+	theme-primary-subtle: #4d4d4d,
+	theme-secondary: #f2f2f2,
+	theme-secondary-intense: #ffffff,
+    theme-secondary-subtle: #c0c0c0
+);
+
+$game-pallete: (
+	game-type-1: #0039e6,
+	game-type-2: #009900,
+	game-type-3: #ff0000,
+	game-type-4: #ff6600,
+	game-type-5: #ffd11a,
+	game-type-6: #9900cc,
+	game-type-7: #ff00bf,
+	game-type-8: #1a1a1a
+);

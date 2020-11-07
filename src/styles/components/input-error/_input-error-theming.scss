@@ -1,0 +1,48 @@
+@use "sass:map";
+@use "../../utils/shapes";
+@use "../../theming/theming";
+@use "../button/button-theming";
+@use "../input/input-theming";
+
+@mixin setToggleButtonStyles($theme) {
+    $base: (
+        background-color: theming.getThemeColor($theme, "error-secondary"),
+        color: theming.getThemeColor($theme, "error-secondary-contrast")
+    );
+    $hovered: (
+        background-color: theming.getThemeColor($theme, "error-primary"),
+        color: theming.getThemeColor($theme, "error-primary-contrast")
+    );
+    @include button-theming.setButtonStyles($base, $hovered);
+}
+
+@mixin setErrorInputStyles($theme) {
+    $color        : theming.getThemeColor($theme, "error-secondary");
+    $color-hovered: theming.getThemeColor($theme, "error-primary");
+    @include input-theming.setInputThemeStyles($color, $color-hovered);
+}
+
+@mixin setErrorMessageStyles($theme) {
+    $background: theming.getThemeColor($theme, "error-pale");
+    $color     : theming.getThemeColor($theme, "error-pale-contrast");
+    @include theming.setBoxTheming($background, $color);
+    @include theming.setThemeBoxShadow($theme);
+
+    &:after {
+        @include shapes.pseudoIsoscelesTriangle(5, 8, $background);
+    }
+}
+
+@mixin applyInputErrorThemeStyles($theme) {
+    .error-toggle-btn {
+        @include setToggleButtonStyles($theme);
+    }
+
+    .error-inpt {
+        @include setErrorInputStyles($theme);
+    }
+
+    .error-message {
+        @include setErrorMessageStyles($theme);
+    }
+}

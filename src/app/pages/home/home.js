@@ -1,6 +1,6 @@
 "use strict";
 
-import "../../../styles/pages/_login.scss";
+import "../../../styles/pages/_home.scss";
 
 import { TYPOGRAPHY } from "../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../utils/element-generator";

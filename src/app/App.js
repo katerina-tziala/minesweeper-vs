@@ -10,8 +10,8 @@ import { SettingsController } from "./components/settings-controller/settings-co
 
 import { LocalStorageHelper } from "./utils/local-storage-helper";
 
-import { User } from "./utils/models/user";
-import { INTERFACE_TYPE } from "./utils/enums/app-interface.enum";
+import { User } from "./_models/user";
+import { InterfaceType } from "./_enums/app-interface.enum";
 
 
 export class App {
@@ -31,11 +31,11 @@ export class App {
 
 
 
-        self.user = undefined;
-        self.peers = [];
+       self.user = undefined;
+       self.peers = [];
 
-        self.user = new User("kateID", "kate", null);
-        this.setInterface(INTERFACE_TYPE.Home);
+       self.user = new User("kateID", "kate", null);
+       this.setInterface(InterfaceType.Home);
         // this.setInterface();
     }
 
@@ -108,7 +108,7 @@ export class App {
 
         switch (interfaceName) {
 
-            case INTERFACE_TYPE.Home:
+            case InterfaceType.Home:
 
                 this.loadControllerModule(interfaceName).then(({ Home }) => {
 
@@ -120,7 +120,7 @@ export class App {
                 break;
 
             default:
-                this.loadControllerModule(interfaceName).then(({ Join }) => {
+                this.loadControllerModule(InterfaceType.Join).then(({ Join }) => {
 
                     this.interfaceController = new Join();
                 });

@@ -1,44 +1,28 @@
+@use "../../theming/theming";
+@use "./input-theming";
+
 .input {
 	outline         : none;
 	border          : none;
-	border-bottom   : 1px solid transparent;
 	background-color: inherit;
 	display         : block;
-	min-height      : sizes.getSize(input-height);
-	max-height      : sizes.getSize(input-height);
+	min-height      : getSize("input-height");
+	max-height      : getSize("input-height");
 	padding         : 0px 5px;
 	color           : inherit;
+    border-bottom   : 1px solid transparent;
 
 	&:read-only {
-		@extend ._disabled;
+		@extend .disabled;
 	}
 }
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-@mixin applyTheme($theme) {
-	.input {
-		@include theme.applyTheme($theme, "input");
-
-		&:focus {
-			@include theme.applyTheme($theme, "input-focused");
-		}
-
-		&:read-only {
-			@include theme.applyTheme($theme, "input");
-		}
-
-		&:read-only:focus {
-			@include theme.applyTheme($theme, "input");
-		}
-	}
-}
-
 .theme-light {
-	@include applyTheme("light");
+	@include input-theming.applyInputThemeStyles("light");
 }
 
 .theme-dark {
-	@include applyTheme("dark");
+	@include input-theming.applyInputThemeStyles("dark");
 }
-

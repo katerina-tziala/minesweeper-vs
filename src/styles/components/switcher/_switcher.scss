@@ -1,93 +1,74 @@
-@use "sass:color";
-@use "sass:map";
-@use "../../themes/theme";
+@use "./switcher-theming";
+// track
+$track-height        : 14;
+$track-width         : 40;
+// thumb
+$thumb-size          : 22;
+$thumb-position-top  : -5;
+$thumb-position-left : 0;
+$thumb-position-right: 16;
 
-@import "./switcher-base";
-@import "./switcher-thumb";
-@import "./switcher-track";
+._track {
+    @include fullyRoundedBar($track-width);
+    height : #{$track-height}px;
+}
 
-%transition {
-	transition: all .3s linear;
+._thumb {
+    @include pseudoCircle($thumb-size);
+    position: absolute;
+    top     : #{$thumb-position-top}px;
+    border  : 1px solid transparent;
+}
+
+._thumb--off {
+    left: #{$thumb-position-left}px;
+}
+
+._thumb--on {
+    left: #{$thumb-position-right}px;
 }
 
 .switcher {
-	@extend ._track;
+    transition: all .3s linear;
+    position  : relative;
+    border    : none;
+    outline   : none;
+    cursor    : pointer;
+    @extend ._track;
 
-	&:disabled {
-		@extend ._disabled;
-	}
+    &:disabled {
+        @extend .disabled;
+    }
 
-	&:after {
-		transition: all .3s linear;
-		@extend ._thumb;
-	}
+    &:after {
+        transition: all .3s linear;
+        @extend ._thumb;
+    }
 
 }
 
 [role="switch"][aria-checked="false"] {
-	@extend ._track--off;
-	&:after {
-		@extend ._thumb--off;
-		z-index: 4;
-	}
+    @extend ._track--off;
+
+    &:after {
+        @extend ._thumb--off;
+    }
 }
 
 [role="switch"][aria-checked="true"] {
-	@extend ._track--on;
-	&:after {
-		@extend ._thumb--on;
-	}
+    @extend ._track--on;
+
+    &:after {
+        @extend ._thumb--on;
+    }
 }
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-@mixin applySwitcherTheme($theme) {
-	$theme-colors: theme.getThemeProperties($theme, "switcher");
-	$color--on   : map-get($theme-colors, "on");
-	$color--off  : map-get($theme-colors, "off");
-
-	._thumb {
-		@include theme.applyTheme($theme, "shadow");
-
-		&:hover,
-		&:focus {
-			box-shadow: none;
-		}
-	}
-
-	// on
-	._thumb--on {
-		background-color: $color--on;
-
-		&:hover,
-		&:focus {
-			border-color: color.adjust($color--off, $lightness: 45%, $alpha: 0);
-		}
-	}
-
-	._track--on {
-		background-color: color.adjust($color--on, $lightness: 45%, $alpha: 0);
-	}
-
-	// off
-	._thumb--off {
-		background-color: color.adjust($color--off, $lightness: 10%, $alpha: 0);
-
-		&:hover,
-		&:focus {
-			border-color: color.adjust($color--on, $lightness: 45%, $alpha: 0);
-		}
-	}
-
-	._track--off {
-		background-color: $color--off;
-	}
-}
-
 .theme-light {
-	@include applySwitcherTheme("light");
+    @include switcher-theming.applySwitcherTheme("light", 30%, 20%, 10%);
 }
 
 .theme-dark {
-	@include applySwitcherTheme("dark");
+    @include switcher-theming.applySwitcherTheme("dark", -30%, -20%, -10%);
 }

@@ -1,0 +1,51 @@
+@use "sass:map";
+@use "sass:list";
+
+@use "./themes/light";
+@use "./themes/dark";
+
+@function generateThemePallete($palleteList) {
+    $theme: ();
+
+    @each $pallete in $palleteList {
+        $theme: map.merge($theme, $pallete);
+    }
+
+    @return $theme;
+}
+
+$_themes: (
+    light: generateThemePallete(light.$palleteList),
+    dark: generateThemePallete(dark.$palleteList),
+);
+
+@function getTheme($key) {
+    @return map-get($_themes, $key);
+}
+
+@function getThemeColor($theme-key, $color-key) {
+    $theme: getTheme($theme-key);
+    @return map-get($theme, $color-key);
+}
+
+@mixin applyStyle($style-properties) {
+	@each $property, $value in $style-properties {
+		#{$property}: $value
+	}
+}
+
+@mixin setBoxTheming($background, $color, $background-opacity: 1) {
+    background-color: rgba($background, $background-opacity);
+    color           : $color;
+}
+
+@mixin setThemeBoxShadow($theme) {
+    $color: getThemeColor($theme, "theme-primary");
+    box-shadow: 0 1px 2px 0 rgba($color, .3), 0 1px 3px 1px rgba($color, .15);
+}
+
+@mixin setThemeCard($theme, $opacity: 1) {
+    $background: getThemeColor($theme, "theme-secondary-intense");
+    $color     : getThemeColor($theme, "theme-primary");
+    @include setBoxTheming($background, $color, $opacity);
+}

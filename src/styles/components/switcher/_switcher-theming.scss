@@ -1,0 +1,34 @@
+@use "sass:color";
+@use "../../theming/theming";
+
+@mixin applySwitcherTheme($theme, $colorOffLightness, $trackOnLightness, $trackOffLightness) {
+    $color--on : theming.getThemeColor($theme, "theme-primary-intense");
+    $color--off: color.adjust($color--on, $lightness: $colorOffLightness, $alpha: 0);
+
+    ._thumb {
+        border-color: theming.getThemeColor($theme, "theme-secondary");
+
+        &:hover,
+        &:focus {
+            box-shadow: 0 0px 5px 0 $color--on;
+        }
+    }
+
+    // on
+    ._thumb--on {
+        background-color: $color--on;
+    }
+
+    ._track--on {
+        background-color: color.adjust($color--on, $lightness: $trackOnLightness, $alpha: 0);
+    }
+
+    // off
+    ._thumb--off {
+        background-color: $color--off;
+    }
+
+    ._track--off {
+        background-color: color.adjust($color--off, $lightness: $trackOffLightness, $alpha: 0);
+    }
+}

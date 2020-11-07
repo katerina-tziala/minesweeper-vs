@@ -1,3 +1,5 @@
+@use "../../theming/theming";
+
 .loader {
 	@extend %centered-centered;
 	flex-flow: column nowrap;
@@ -6,7 +8,7 @@
 	position : absolute;
 	top      : 0;
 	left     : 0;
-	z-index  : z-index.getIndex(loader);
+	z-index  : getIndex(loader);
 }
 
 .spinner {
@@ -46,15 +48,21 @@
 	}
 }
 
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@mixin setLoaderThemeStyles($theme) {
+    background-color: theming.getThemeColor($theme, "theme-base");
+    stroke: theming.getThemeColor($theme, "theme-primary");
+}
+
 .theme-light {
 	.loader {
-		@include theme.applyTheme(light, loader);
+        @include setLoaderThemeStyles("light");
 	}
 }
 
 .theme-dark {
 	.loader {
-		@include theme.applyTheme(dark, loader);
+		@include setLoaderThemeStyles("dark");
 	}
 }

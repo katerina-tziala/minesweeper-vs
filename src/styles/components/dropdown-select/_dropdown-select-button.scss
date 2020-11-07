@@ -1,39 +1,52 @@
+@use "../../theming/theming";
+
 .dropdown-btn {
-	@extend ._btn;
-	@extend %start-center;
-	background-color       : inherit;
-	color                  : inherit;
-	padding                : 3px 5px;
-	border-top-left-radius : 3px;
-	border-top-right-radius: 3px;
+    @extend ._btn;
+    @extend %start-center;
+    background-color       : inherit;
+    color                  : inherit;
+    padding                : 3px 5px;
+    border-top-left-radius : 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid transparent;
 
-	>.dropdown-btn-label {
-		@extend ._capitalize-first-letter;
-	}
+    >.dropdown-btn-label {
+        @extend ._capitalize-first-letter;
+    }
 
-	>.dropdown-btn-caret {
-		margin-left: 10px;
-		height     : 12px;
-		line-height: 11px;
-		transition : transform .3s ease-in-out;
-		@include iconography.afterIcon("caret-down");
-	}
+    >.dropdown-btn-caret {
+        margin-left: 10px;
+        height     : 12px;
+        line-height: 11px;
+        transition : transform .3s ease-in-out;
+        @include afterIcon("caret-down");
+    }
 }
 
 .dropdown-btn[aria-expanded="true"]>.dropdown-btn-caret {
-	transform: rotate(-180deg);
+    transform: rotate(-180deg);
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 .theme-light {
 	.dropdown-btn {
-		@include theme.applyTheme("light", "dropdown-select-option");
+        border-bottom-color: theming.getThemeColor("light", "theme-secondary-subtle");
+        &:hover,
+        &:focus {
+            border-bottom-color: theming.getThemeColor("light", "theme-primary-intense");
+            color: theming.getThemeColor("light", "theme-primary-intense");
+        }
 	}
 }
 
 .theme-dark {
-	.dropdown-btn {
-		@include theme.applyTheme("dark", "dropdown-select-option");
-	}
+    .dropdown-btn {
+        border-bottom-color: theming.getThemeColor("dark", "theme-primary-subtle");
+
+        &:hover,
+        &:focus {
+            border-bottom-color: theming.getThemeColor("dark", "theme-primary-intense");
+            color: theming.getThemeColor("dark", "theme-primary-intense");
+        }
+    }
 }

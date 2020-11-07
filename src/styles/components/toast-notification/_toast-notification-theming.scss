@@ -1,0 +1,7 @@
+@use "../../theming/theming";
+
+@mixin setErrorNotificationStyles($theme) {
+    $background: theming.getThemeColor($theme, "error-pale");
+    $color     : theming.getThemeColor($theme, "error-pale-contrast");
+    @include theming.setBoxTheming($background, $color);
+}

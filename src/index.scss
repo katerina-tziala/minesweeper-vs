@@ -1,52 +1,46 @@
 @charset "utf-8";
 
-@use "./styles/themes/theme";
-@use "./styles/base/z-index";
-@use "./styles/base/sizes";
-@use "./styles/base/iconography";
+@use "./styles/theming/theming";
 
+@import "./styles/global/_module-global";
+@import "./styles/utils/_module-utils";
 
-@import "./styles/base/flexbox";
-@import "./styles/base/utils";
-@import "./styles/abstract/mixins";
-
-@import "./styles/base/typography/typography";
-
-
-
-@import "./styles/components/header";
-@import "./styles/components/main";
+@import "./styles/components/header/header";
+@import "./styles/components/main/main";
 @import "./styles/components/loaders/app-loader";
-@import "./styles/components/toast-notification";
-
-@import "./styles/components/settings-controller";
-
-
+@import "./styles/components/toast-notification/toast-notification";
+@import "./styles/components/settings-controller/settings-controller";
 
 * {
-	box-sizing : border-box;
-	margin     : 0;
-	padding    : 0;
-	user-select: none;
+    box-sizing : border-box;
+    margin     : 0;
+    padding    : 0;
+    user-select: none;
 }
 
 html,
 body,
 .app {
-	width   : 100vw;
-	height  : 100vh;
-	overflow: hidden;
-	position: relative;
-	@extend %start-center;
-	flex-direction: column;
+    width   : 100vw;
+    height  : 100vh;
+    overflow: hidden;
+    position: relative;
+    @extend %start-center;
+    flex-direction: column;
 }
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@mixin setThemeStyles($theme) {
+    $background: theming.getThemeColor($theme, "theme-base");
+    $color     : theming.getThemeColor($theme, "theme-primary");
+    @include theming.setBoxTheming($background, $color);
+}
+
 .theme-light {
-	@include theme.applyTheme(light, app);
+    @include setThemeStyles("light");
 }
 
 .theme-dark {
-	@include theme.applyTheme(dark, app);
+    @include setThemeStyles("dark");
 }

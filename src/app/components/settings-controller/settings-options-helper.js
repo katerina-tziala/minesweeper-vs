@@ -1,13 +1,13 @@
 "use strict";
 
 import { COLOR_TYPES, DOM_ELEMENT_CLASS } from "../../utils/constants/ui.constants";
-import { MINE_TYPE} from "../../utils/enums/app-settings.enums";
+import { MineType} from "../../_enums/app-settings.enums";
 
 export class SettingsOptionsHelper {
 
 	static getMineTypeOptions() {
 		const options = [];
-		Object.values(MINE_TYPE).forEach(type => {
+		Object.values(MineType).forEach(type => {
 			options.push({
 				value: type,
 				innerHTML: `<div class="mine-type-option mine-type-option--${type}"></div>`

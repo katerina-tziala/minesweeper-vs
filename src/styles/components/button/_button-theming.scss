@@ -1,0 +1,42 @@
+@use "../../theming/theming";
+
+@mixin setButtonStyles($base, $hovered) {
+    @include theming.applyStyle($base);
+
+    &:hover,
+    &:focus {
+        @include theming.applyStyle($hovered);
+    }
+
+    &:disabled {
+
+        &:hover,
+        &:focus {
+            @include theming.applyStyle($base);
+        }
+    }
+}
+
+@mixin applyPrimaryButtonThemeStyles($theme) {
+    $base: (
+        color: theming.getThemeColor($theme, "theme-secondary"),
+        background-color: theming.getThemeColor($theme, "theme-primary")
+    );
+    $hovered: (
+        color: theming.getThemeColor($theme, "theme-secondary-intense"),
+        background-color: theming.getThemeColor($theme, "theme-primary-intense")
+    );
+    @include setButtonStyles($base, $hovered);
+}
+
+@mixin applySecondaryButtonThemeStyles($theme) {
+    $base: (
+        color: theming.getThemeColor($theme, "theme-primary"),
+        background-color: theming.getThemeColor($theme, "theme-secondary")
+    );
+    $hovered: (
+        color: theming.getThemeColor($theme, "theme-primary-intense"),
+        background-color: theming.getThemeColor($theme, "theme-secondary-intense")
+    );
+    @include setButtonStyles($base, $hovered);
+}

@@ -1,20 +1,10 @@
-@use "../themes/theme";
-@use "../base/iconography";
-@use "../base/sizes";
-@use "../base/z-index";
+@use "../theming/theming";
 
+@import "../global/_module-global";
+@import "../utils/_module-utils";
 
-@import "../base/flexbox";
-@import "../base/utils";
-@import "../abstract/mixins";
-
-
-@import "../base/typography/typography";
-
-
-@import "../components/form_username";
+@import "../components/form/form_username";
 @import "../components/loaders/state-loader";
-
 
 .login-container {
     min-width    : 320px;
@@ -22,7 +12,7 @@
     border-radius: 8px;
     animation    : fadein 0.8s ease;
     position     : relative;
-    overflow: hidden;
+    overflow     : hidden;
 }
 
 @keyframes fadein {
@@ -40,12 +30,14 @@
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
     .login-container {
-        @include theme.applyTheme("light", "card");
+        @include theming.setThemeCard("light");
+        @include theming.setThemeBoxShadow("light");
     }
 }
 
 .theme-dark {
     .login-container {
-        @include theme.applyTheme("dark", "card");
+        @include theming.setThemeCard("dark");
+        @include theming.setThemeBoxShadow("dark");
     }
 }

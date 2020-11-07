@@ -1,8 +1,8 @@
 "use strict";
 
 import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utils/constants/ui.constants";
-import { THEME, SETTINGS_TYPE } from "../../utils/enums/app-settings.enums";
-import { AppSettingsModel } from "../../utils/models/app-settings";
+import { Theme, SettingType } from "../../_enums/app-settings.enums";
+import { AppSettingsModel } from "../../_models/app-settings";
 import { SETTINGS_BTN } from "../../utils/constants/btn-icon.constants";
 import { ElementHandler } from "../../utils/element-handler";
 import { ElementGenerator } from "../../utils/element-generator";
@@ -86,8 +86,8 @@ export class SettingsController {
         this.initSettings();
         this.initThemeTypeController();
         this.initMineTypeController();
-        this.initColorController(SETTINGS_TYPE.PlayerColorType, SETTINGS_TYPE.OpponentColorType);
-        this.initColorController(SETTINGS_TYPE.OpponentColorType, SETTINGS_TYPE.PlayerColorType);
+        this.initColorController(SettingType.PlayerColorType, SettingType.OpponentColorType);
+        this.initColorController(SettingType.OpponentColorType, SettingType.PlayerColorType);
         this.initView();
     }
 
@@ -106,7 +106,7 @@ export class SettingsController {
             const settingsBtn = ElementGenerator.generateButton(SETTINGS_BTN, this.toggleSettingsDisplay.bind(this));
             const settingsPanel = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.settingsPanel], DOM_ELEMENT_ID.settingsPanel);
             this.setPanelStyle(settingsPanel, 0);
-            Object.values(SETTINGS_TYPE).forEach(settingType => settingsPanel.append(this.renderSetting(settingType)));
+            Object.values(SettingType).forEach(settingType => settingsPanel.append(this.renderSetting(settingType)));
             container.append(settingsBtn, settingsPanel);
         });
     }
@@ -120,13 +120,13 @@ export class SettingsController {
     }
 
     initThemeTypeController() {
-        const params = this.getThemeTypeControllerParams(SETTINGS_TYPE.Theme);
-        params.value = this.settings.theme === THEME.Dark;
+        const params = this.getThemeTypeControllerParams(SettingType.Theme);
+        params.value = this.settings.theme === Theme.Dark;
         this.inputControllers = new Switcher(params, this.onDarkThemeChange.bind(this));
     }
 
     initMineTypeController() {
-        const params = this.getThemeTypeControllerParams(SETTINGS_TYPE.MineType);
+        const params = this.getThemeTypeControllerParams(SettingType.MineType);
         params.options = SettingsOptionsHelper.getMineTypeOptions();
         this.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
     }
@@ -198,7 +198,7 @@ export class SettingsController {
     }
 
     onDarkThemeChange(params) {
-        const selectedTheme = params.value ? THEME.Dark : THEME.Default;
+        const selectedTheme = params.value ? Theme.Dark : Theme.Default;
         this.settings.theme = selectedTheme;
         this.saveSettings();
         this.setAppTheme();
@@ -215,10 +215,10 @@ export class SettingsController {
 
     onDropdownChange(params) {
         this.settings[params.name] = params.value;
-        if (params.name === SETTINGS_TYPE.PlayerColorType) {
-            this.updateColorDropdown(SETTINGS_TYPE.PlayerColorType, SETTINGS_TYPE.OpponentColorType);
-        } else if (params.name === SETTINGS_TYPE.OpponentColorType) {
-            this.updateColorDropdown(SETTINGS_TYPE.OpponentColorType, SETTINGS_TYPE.PlayerColorType);
+        if (params.name === SettingType.PlayerColorType) {
+            this.updateColorDropdown(SettingType.PlayerColorType, SettingType.OpponentColorType);
+        } else if (params.name === SettingType.OpponentColorType) {
+            this.updateColorDropdown(SettingType.OpponentColorType, SettingType.PlayerColorType);
         }
         this.saveSettings();
     }

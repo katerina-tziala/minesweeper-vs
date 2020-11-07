@@ -1,0 +1,52 @@
+@use "../button/button";
+@use "./input-error-theming";
+
+.error-container {
+    width           : 100%;
+    background-color: transparent;
+    z-index         : getIndex(input);
+}
+
+.error-toggle-btn {
+    @extend .btn-icon;
+    @extend .btn-icon--small;
+    @include afterIcon("exclamation");
+    position   : absolute;
+    right      : 0;
+    top        : 1px;
+    font-size  : 13px;
+    line-height: 15px;
+}
+
+.error-message {
+    @extend ._capitalize-first-letter;
+    position     : absolute;
+    right        : 0;
+    top          : 30px;
+    width        : 100%;
+    padding      : 5px 10px;
+    border-radius: 5px;
+    z-index      : inherit;
+    font-size    : 0.9rem;
+    font-weight  : bold;
+
+    &:after {
+        position: absolute;
+        right   : 5px;
+        top     : -8px;
+    }
+}
+
+.error-inpt {
+    padding-right: 23px;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+    @include input-error-theming.applyInputErrorThemeStyles("light");
+}
+
+.theme-dark {
+    @include input-error-theming.applyInputErrorThemeStyles("dark");
+}

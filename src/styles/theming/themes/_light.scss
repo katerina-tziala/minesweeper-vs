@@ -1,0 +1,11 @@
+@use "sass:map";
+@use "sass:list";
+
+@use "../palletes/app-pallete";
+@use "../palletes/error-pallete";
+@use "../palletes/light-pallete";
+
+$palleteList: app-pallete.$pallete,
+error-pallete.$pallete,
+light-pallete.$game-pallete,
+light-pallete.$theme-pallete;

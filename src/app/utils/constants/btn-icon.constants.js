@@ -1,7 +1,7 @@
 "use strict";
 
 export const CLOSE_BTN = {
-	className: "_btn-icon button-icon--close",
+	className: "btn-icon btn-icon--close",
 	attributes: {
 		"aria-label": "close"
 	},
@@ -9,7 +9,7 @@ export const CLOSE_BTN = {
 };
 
 export const SETTINGS_BTN = {
-	className: "_btn-icon header-btn header-btn--settings",
+	className: "btn-icon header-btn header-btn--settings",
 	attributes: {
 		"aria-label": "display settings",
 		"aria-expanded": false,

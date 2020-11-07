@@ -2,7 +2,7 @@
 
 export const CLEAR_BTN = {
 	innerHTML: "clear",
-	className: "_btn-text _btn-primary",
+	className: "btn-text btn-primary",
 	attributes: {
 		"aria-label": "clear form",
 	},
@@ -11,7 +11,7 @@ export const CLEAR_BTN = {
 
 export const JOIN_BTN = {
 	innerHTML: "join",
-	className: "_btn-text _btn-primary",
+	className: "btn-text btn-primary",
 	attributes: {
 		"aria-label": "join minesweepervs",
 	},
