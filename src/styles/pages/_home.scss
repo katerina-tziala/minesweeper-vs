@@ -1,9 +1,128 @@
+@use "sass:list";
 @use "../theming/theming";
 
 @import "../global/_module-global";
 @import "../utils/_module-utils";
 
 
+$menu-icons: "online",
+"bot",
+"friend",
+"original";
+$menu-content-height: 65px;
+
+.menu {
+    // border: 2px solid red;
+}
+
+.menu-item {
+    @extend %start-center;
+    max-width    : 300px;
+    margin-bottom: 30px;
+    padding      : 8px;
+    cursor       : pointer;
+    border: 1px solid transparent;
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+
+.menu-item-icon {
+    @include rectangle($menu-content-height);
+    line-height  : 60px;
+    font-size    : 40px;
+    text-align   : center;
+    border-radius: 10px;
+    margin-right : 8px;
+    @include setIdentifierIcons("&.menu-item-icon", $menu-icons);
+
+    &.menu-item-icon--online {
+        font-size: 42px;
+    }
+
+    &.menu-item-icon--original {
+        line-height: 62px;
+    }
+
+    &.menu-item-icon--bot {
+        line-height: 57px;
+    }
+}
+
+.menu-item-content {
+    @extend %start-center;
+    flex-direction: column;
+    width         : 100%;
+    height        : $menu-content-height;
+    padding       : 2px 0;
+
+    >h2 {
+        @extend ._menu-item-title;
+    }
+
+    >p {
+        @extend ._menu-item-details;
+    }
+}
+
+._menu-item-title {
+    width: 100%;
+}
+
+._menu-item-details {
+    @extend %start-center;
+    flex-grow : 1;
+    width     : 100%;
+    font-style: italic;
+
+    >.span {
+        display: inline-block;
+        width  : 100%;
+    }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@mixin setMenuIconThemeStyles($theme) {
+    $background: theming.getThemeColor($theme, "theme-primary");
+    $color     : theming.getThemeColor($theme, "theme-secondary");
+    @include theming.setBoxTheming($background, $color);
+}
 
 
+.theme-light {
+    .menu-item {
+        @include theming.setThemeCard("light");
+        @include theming.setThemeBoxShadow("light");
+        &:hover, &:focus {
+            color: theming.getThemeColor("light", "theme-primary-intense");
+            border-color: theming.getThemeColor("light", "theme-primary-intense");
+            >.menu-item-icon {
+                background-color: theming.getThemeColor("light", "theme-primary-intense");
+            }
+        }
+    }
 
+    .menu-item-icon {
+        @include setMenuIconThemeStyles("light");
+    }
+
+}
+
+.theme-dark {
+    .menu-item {
+        @include theming.setThemeCard("dark");
+        @include theming.setThemeBoxShadow("dark");
+
+        &:hover, &:focus {
+            color: theming.getThemeColor("dark", "theme-primary-intense");
+            border-color: theming.getThemeColor("dark", "theme-primary-intense");
+            >.menu-item-icon {
+                background-color: theming.getThemeColor("dark", "theme-primary-intense");
+            }
+        }
+    }
+
+    .menu-item-icon {
+        @include setMenuIconThemeStyles("dark");
+    }
+}

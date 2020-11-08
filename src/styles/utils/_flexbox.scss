@@ -21,7 +21,7 @@
     align-content: flex-start;
 }
 
-%centered-centered {
+%center-center {
 	@extend %flexbox;
     @extend %first-axis-centered;
 	@extend %second-axis-centered;

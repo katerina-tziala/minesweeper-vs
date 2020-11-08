@@ -6,77 +6,115 @@
 @import "../vendor/fontawesome/brands.scss";
 
 %icon {
-	display       : inline-block;
-	margin        : auto;
-	vertical-align: middle;
-	width         : 100%;
-	font-style    : normal;
-	text-align    : center;
-	font-weight   : 900;
-	font-family   : "Font Awesome 5 Free";
+    display       : inline-block;
+    margin        : auto;
+    vertical-align: middle;
+    width         : 100%;
+    font-style    : normal;
+    text-align    : center;
+    font-weight   : 900;
+}
+
+%icon-regular {
+    @extend %icon;
+    font-family: "Font Awesome 5 Free";
+}
+
+%icon-brand {
+    @extend %icon;
+    font-family: "Font Awesome 5 Brands";
 }
 
 .icon-user {
-	@extend %icon;
-	content: fa-content($fa-var-user);
+    @extend %icon-regular;
+    content: fa-content($fa-var-user);
 }
 
 .icon-exclamation {
-	@extend %icon;
-	content: fa-content($fa-var-exclamation);
+    @extend %icon-regular;
+    content: fa-content($fa-var-exclamation);
 }
 
 .icon-x {
-	@extend %icon;
-	content: fa-content($fa-var-times);
+    @extend %icon-regular;
+    content: fa-content($fa-var-times);
 }
 
 .icon-exclamation-triangle {
-	@extend %icon;
-	content: fa-content($fa-var-exclamation-triangle);
+    @extend %icon-regular;
+    content: fa-content($fa-var-exclamation-triangle);
 }
 
 .icon-settings {
-	@extend %icon;
-	content: fa-content($fa-var-cog);
+    @extend %icon-regular;
+    content: fa-content($fa-var-cog);
 }
 
 .icon-caret-down {
-	@extend %icon;
-	content: fa-content($fa-var-caret-down);
+    @extend %icon-regular;
+    content: fa-content($fa-var-caret-down);
 }
 
 .icon-bomb {
-	@extend %icon;
-	content: fa-content($fa-var-bomb);
+    @extend %icon-regular;
+    content: fa-content($fa-var-bomb);
 }
 
 .icon-bahai {
-	@extend %icon;
-	content: fa-content($fa-var-bahai);
+    @extend %icon-regular;
+    content: fa-content($fa-var-bahai);
 }
 
 .icon-virus {
-	@extend %icon;
-	content: fa-content($fa-var-virus);
+    @extend %icon-regular;
+    content: fa-content($fa-var-virus);
 }
 
 .icon-spinner {
-	@extend %icon;
-	content: fa-content($fa-var-spinner);
+    @extend %icon-regular;
+    content: fa-content($fa-var-spinner);
+}
+
+
+.icon-online {
+    @extend %icon-regular;
+    content: fa-content($fa-var-globe);
+}
+
+.icon-bot {
+    @extend %icon-regular;
+    content: fa-content($fa-var-robot);
+}
+
+.icon-friend {
+    @extend %icon-regular;
+    content: fa-content($fa-var-user-friends);
+}
+
+.icon-flag {
+    @extend %icon-brand;
+    content: fa-content($fa-var-font-awesome-flag);
+}
+
+.icon-original {
+    @extend.icon-flag;
 }
 
 @mixin afterIcon($key) {
-	&:after {
-		@extend .icon-#{$key};
-	}
+    &:after {
+        @extend .icon-#{$key};
+    }
 }
 
-@mixin applyMineTypeIcons($base-selector) {
-    $mine-types: "bomb", "bahai", "virus";
-    @each $icon in $mine-types {
-		#{$base-selector}--#{$icon} {
+@mixin setIdentifierIcons($base-selector, $icons-list) {
+    @each $icon in $icons-list {
+        #{$base-selector}--#{$icon} {
             @include afterIcon($icon);
         }
-	}
+    }
+}
+
+@mixin setMineTypeIcons($base-selector) {
+    $mine-types: "bomb", "bahai", "virus";
+    @include setIdentifierIcons($base-selector, $mine-types);
 }

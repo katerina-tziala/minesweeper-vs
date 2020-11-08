@@ -1,7 +1,7 @@
 @use "../../theming/theming";
 
 .state-loader {
-    @extend %centered-centered;
+    @extend %center-center;
     height  : 100%;
     width   : 100%;
     position: absolute;

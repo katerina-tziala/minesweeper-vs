@@ -109,6 +109,18 @@ export class SettingsController {
             Object.values(SettingType).forEach(settingType => settingsPanel.append(this.renderSetting(settingType)));
             container.append(settingsBtn, settingsPanel);
         });
+        this.collapseOnOutsideClick();
+    }
+
+    collapseOnOutsideClick() {
+        document.addEventListener("click", (event) => {
+            const settingsPanel = event.target.closest(".settings-panel");
+            const toggleBtn = event.target.closest("#settings-toggle-btn");
+            if (!toggleBtn && !settingsPanel && this.expanded) {
+                this.expanded = false;
+                this.collapseSettings();
+            }
+        });
     }
 
     getThemeTypeControllerParams(type) {

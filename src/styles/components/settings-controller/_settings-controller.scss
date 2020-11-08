@@ -41,7 +41,7 @@
     @include circle(22px);
     line-height: 17px;
     font-size  : 1.1rem;
-    @include applyMineTypeIcons("&.mine-type-option");
+    @include setMineTypeIcons("&.mine-type-option");
 }
 
 .game-color-option {

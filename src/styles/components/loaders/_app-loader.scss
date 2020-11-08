@@ -1,7 +1,7 @@
 @use "../../theming/theming";
 
 .loader {
-	@extend %centered-centered;
+    @extend %center-center;
 	flex-flow: column nowrap;
 	height   : 100%;
 	width    : 100%;
