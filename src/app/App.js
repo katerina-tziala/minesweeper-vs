@@ -12,6 +12,7 @@ import { LocalStorageHelper } from "./utils/local-storage-helper";
 
 import { User } from "./_models/user";
 import { InterfaceType } from "./_enums/app-interface.enum";
+import { GameType } from "./_enums/game-type.enum";
 
 
 export class App {
@@ -31,12 +32,19 @@ export class App {
 
 
 
-       self.user = undefined;
-       self.peers = [];
+        self.user = undefined;
+        self.peers = [];
 
-       self.user = new User("kateID", "kate", null);
-       this.setInterface(InterfaceType.Home);
+        self.user = new User("kateID", "kate", null);
+        // this.setInterface(InterfaceType.Home);
         // this.setInterface();
+
+        this.loadInterfaceController(InterfaceType.Game).then(({ GamePage }) => {
+
+            this.interfaceController = new GamePage("original");
+
+
+        });
     }
 
 
@@ -110,19 +118,19 @@ export class App {
 
             case InterfaceType.Home:
 
-                this.loadControllerModule(interfaceName).then(({ Home }) => {
+                this.loadInterfaceController(interfaceName).then(({ HomePage }) => {
 
-                    this.interfaceController = new Home();
+                    this.interfaceController = new HomePage(this.onGameTypeSelected.bind(this));
 
-                    self.settingsController.gameSettingsHidden = false;
+
                 });
 
                 break;
 
             default:
-                this.loadControllerModule(InterfaceType.Join).then(({ Join }) => {
+                this.loadInterfaceController(InterfaceType.Join).then(({ JoinPage }) => {
 
-                    this.interfaceController = new Join();
+                    this.interfaceController = new JoinPage();
                 });
                 break;
         }
@@ -130,11 +138,23 @@ export class App {
 
     }
 
-    loadControllerModule(interfaceName) {
-        return import(`./pages/${interfaceName}/${interfaceName}`);
+    loadInterfaceController(interfaceName) {
+        return import(`./pages/${interfaceName}-page/${interfaceName}-page`);
     }
 
+    onGameTypeSelected(gameType) {
 
+        if (gameType === GameType.Online) {
+            console.log("go to lobby");
+        } else {
+            this.loadInterfaceController(InterfaceType.Game).then(({ GamePage }) => {
+
+                this.interfaceController = new GamePage(gameType);
+
+
+            });
+        }
+    }
 
 
 

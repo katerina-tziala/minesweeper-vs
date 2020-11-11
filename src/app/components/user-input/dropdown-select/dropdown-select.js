@@ -104,7 +104,7 @@ export class DropdownSelect extends UserInput {
 	}
 
 	onDropdownBtnClick(expand) {
-		if (expand) {
+		if (expand && this.onExpand) {
 			this.onExpand(this.name);
 		}
 		this.expanded = expand;

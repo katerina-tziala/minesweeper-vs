@@ -1,30 +1,15 @@
 @use "../theming/theming";
-
 @import "../global/_module-global";
 @import "../utils/_module-utils";
-
 @import "../components/form/form_username";
 @import "../components/loaders/state-loader";
 
 .login-container {
     min-width    : 320px;
     padding      : 15px;
-    border-radius: 8px;
-    animation    : fadein 0.8s ease;
+    animation    : fade-in 0.8s ease;
     position     : relative;
     overflow     : hidden;
-}
-
-@keyframes fadein {
-    from {
-        opacity    : 0;
-        margin-left: -200px;
-    }
-
-    to {
-        opacity    : 1;
-        margin-left: 0px;
-    }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

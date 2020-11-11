@@ -8,10 +8,13 @@
     padding                : 3px 5px;
     border-top-left-radius : 3px;
     border-top-right-radius: 3px;
-    border-bottom: 1px solid transparent;
+    border-bottom          : 1px solid transparent;
+    width                  : 100%;
 
     >.dropdown-btn-label {
         @extend ._capitalize-first-letter;
+        flex-grow: 1;
+        text-align: left;
     }
 
     >.dropdown-btn-caret {
@@ -29,14 +32,15 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-	.dropdown-btn {
+    .dropdown-btn {
         border-bottom-color: theming.getThemeColor("light", "theme-secondary-subtle");
+
         &:hover,
         &:focus {
             border-bottom-color: theming.getThemeColor("light", "theme-primary-intense");
-            color: theming.getThemeColor("light", "theme-primary-intense");
+            color              : theming.getThemeColor("light", "theme-primary-intense");
         }
-	}
+    }
 }
 
 .theme-dark {
@@ -46,7 +50,7 @@
         &:hover,
         &:focus {
             border-bottom-color: theming.getThemeColor("dark", "theme-primary-intense");
-            color: theming.getThemeColor("dark", "theme-primary-intense");
+            color              : theming.getThemeColor("dark", "theme-primary-intense");
         }
     }
 }

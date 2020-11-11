@@ -2,7 +2,8 @@
 
 const InterfaceType = {
 	Join: "join",
-	Home: "home"
+    Home: "home",
+    Game: "game"
 };
 Object.freeze(InterfaceType);
 

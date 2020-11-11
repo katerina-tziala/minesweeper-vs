@@ -60,12 +60,13 @@ export class Form {
 		const form = document.createElement("form");
 		this.setFormActionOnEnter(form);
 		ElementHandler.addStyleClass(form, DOM_ELEMENT_CLASS.form);
-		ElementHandler.setID(form, params.id);
 		if (params.title) {
 			form.innerHTML = this.renderFormTitle(params.title);
 		}
-		this.renderFormFields(form);
-		this.renderFormActions(form, params.submitBtn);
+        this.renderFormFields(form);
+        if (params.submitBtn) {
+            this.renderFormActions(form, params.submitBtn);
+        }
 		return form;
 	}
 
