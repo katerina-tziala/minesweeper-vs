@@ -1,11 +1,11 @@
 @use "./switcher-theming";
 // track
-$track-height        : 14;
-$track-width         : 40;
+$track-height        : 18;
+$track-width         : 32;
 // thumb
-$thumb-size          : 22;
-$thumb-position-top  : -5;
-$thumb-position-left : 0;
+$thumb-size          : 14;
+$thumb-position-top  : 2;
+$thumb-position-left : 2;
 $thumb-position-right: 16;
 
 ._track {
@@ -18,6 +18,8 @@ $thumb-position-right: 16;
     position: absolute;
     top     : #{$thumb-position-top}px;
     border  : 1px solid transparent;
+    border  : none;
+    transition: all .3s linear;
 }
 
 ._thumb--off {
@@ -29,7 +31,6 @@ $thumb-position-right: 16;
 }
 
 .switcher {
-    transition: all .3s linear;
     position  : relative;
     border    : none;
     outline   : none;
@@ -66,9 +67,9 @@ $thumb-position-right: 16;
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    @include switcher-theming.applySwitcherTheme("light", 30%, 20%, 10%);
+    @include switcher-theming.applySwitcherTheme("light");
 }
 
 .theme-dark {
-    @include switcher-theming.applySwitcherTheme("dark", -30%, -20%, -10%);
+    @include switcher-theming.applySwitcherTheme("dark");
 }

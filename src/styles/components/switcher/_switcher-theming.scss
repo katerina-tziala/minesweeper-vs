@@ -1,34 +1,35 @@
 @use "sass:color";
 @use "../../theming/theming";
 
-@mixin applySwitcherTheme($theme, $colorOffLightness, $trackOnLightness, $trackOffLightness) {
-    $color--on : theming.getThemeColor($theme, "theme-primary-intense");
-    $color--off: color.adjust($color--on, $lightness: $colorOffLightness, $alpha: 0);
+@mixin applySwitcherFocusedTrackTheme($theme) {
+
+    &:hover,
+    &:focus {
+        @include theming.setThemeBoxShadow($theme);
+        background-color: theming.getThemeColor($theme, "theme-primary-intense");
+    }
+}
+
+@mixin applySwitcherTheme($theme) {
 
     ._thumb {
-        border-color: theming.getThemeColor($theme, "theme-secondary");
+        background-color: theming.getThemeColor($theme, "theme-base");
 
         &:hover,
         &:focus {
-            box-shadow: 0 0px 5px 0 $color--on;
+            background-color: theming.getThemeColor($theme, "theme-secondary-intense");
         }
-    }
 
-    // on
-    ._thumb--on {
-        background-color: $color--on;
     }
 
     ._track--on {
-        background-color: color.adjust($color--on, $lightness: $trackOnLightness, $alpha: 0);
-    }
-
-    // off
-    ._thumb--off {
-        background-color: $color--off;
+        background-color: theming.getThemeColor($theme, "theme-primary-intense");
+        @include applySwitcherFocusedTrackTheme($theme);
     }
 
     ._track--off {
-        background-color: color.adjust($color--off, $lightness: $trackOffLightness, $alpha: 0);
+        background-color: theming.getThemeColor($theme, "theme-primary-subtle");
+        @include applySwitcherFocusedTrackTheme($theme);
     }
+
 }
