@@ -26,6 +26,10 @@ export class NumberInput extends TextInput {
         return params;
     }
 
+    get valueInteger() {
+        return (this.value.trim().match(/^[0-9]+$/) !== null) ? parseInt(this.value, 10) : undefined;
+    }
+
     get inputError() {
         return replaceStringParameter(FIELD_ERROR, this.name);
     }
@@ -38,9 +42,7 @@ export class NumberInput extends TextInput {
         return inputContainer;
     }
 
-    get valueInteger() {
-        return (this.value.trim().match(/^[0-9]+$/) !== null) ? parseInt(this.value, 10) : undefined;
-    }
+
 
     validateInputTypeValue() {
         const numberValue = this.valueInteger;
