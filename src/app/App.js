@@ -37,14 +37,14 @@ export class App {
 
         self.user = new User("kateID", "kate", null);
         // this.setInterface(InterfaceType.Home);
-        this.setInterface();
+        // this.setInterface();
 
-        // this.loadInterfaceController(InterfaceType.Game).then(({ GamePage }) => {
+        this.loadInterfaceController(InterfaceType.Game).then(({ GamePage }) => {
 
-        //     this.interfaceController = new GamePage("original");
+            this.interfaceController = new GamePage("original");
 
 
-        // });
+        });
     }
 
 
