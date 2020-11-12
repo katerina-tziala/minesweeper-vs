@@ -1,9 +1,10 @@
 @import "../form/form";
 @import "../button/button";
 @import "../input/text-input";
-@import "../dropdown-select/dropdown-select";
+// @import "../dropdown-select/dropdown-select";
 @import "../switcher/switcher";
 
+@import "./level-wizard/level-wizard";
 
 .game-wizard-container {
     min-width   : 320px;
@@ -11,12 +12,12 @@
     animation   : fade-in 0.8s ease;
     position    : relative;
     // overflow : hidden;
-    border      : 2px solid red;
+
 }
 
-.level-option {
-    text-transform: capitalize;
-}
+// .level-option {
+//     text-transform: capitalize;
+// }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {

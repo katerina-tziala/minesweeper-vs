@@ -1,0 +1,26 @@
+@import "../../button/button";
+@import "../../dropdown-select/dropdown-select";
+
+.level-wizard-container {
+    border: 2px solid red;
+    display              : grid;
+    align-content        : start;
+    grid-template-columns: max-content auto;
+    grid-gap             : 10px;
+    // padding              : 0 10px;
+}
+
+
+
+.level-option {
+    text-transform: capitalize;
+}
+
+.level-property-tag {
+    border: 1px solid green;
+    text-transform: capitalize;
+}
+
+.level-property-container {
+    border: 1px solid blue;
+}
