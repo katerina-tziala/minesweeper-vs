@@ -9,12 +9,11 @@ import { preventInteraction } from "../../utils/utils";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./form.constants";
 
 export class Form {
-	#inputControllers;
+	#inputControllers = {};
 	#onFormSubmission;
 
 	constructor(formSubmission) {
 		this.#onFormSubmission = formSubmission;
-		this.#inputControllers = {};
 	}
 
 	set inputControllers(controller) {
@@ -108,7 +107,7 @@ export class Form {
 
 	renderFormFields(form) {
 		const section = this.renderFormSection();
-		this.inputControllers.forEach(inputControler => section.append(inputControler.generateInput()));
+		this.inputControllers.forEach(inputControler => section.append(inputControler.generateInputField()));
 		form.append(section);
 	}
 }

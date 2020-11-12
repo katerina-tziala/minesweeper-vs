@@ -9,11 +9,11 @@
 
 .error-toggle-btn {
     @extend .btn-icon;
-    @extend .btn-icon--small;
+    @include circle(18px);
     @include afterIcon("exclamation");
     position   : absolute;
     right      : 0;
-    top        : 1px;
+    top        : 4px;
     font-size  : 13px;
     line-height: 15px;
 }

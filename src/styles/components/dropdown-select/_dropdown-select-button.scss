@@ -31,26 +31,22 @@
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
+@mixin setThemeStyles($theme) {
     .dropdown-btn {
-        border-bottom-color: theming.getThemeColor("light", "theme-secondary-subtle");
+        border-bottom-color: theming.getThemeColor($theme, "theme-primary-subtle");
 
         &:hover,
         &:focus {
-            border-bottom-color: theming.getThemeColor("light", "theme-primary-intense");
-            color              : theming.getThemeColor("light", "theme-primary-intense");
+            border-bottom-color: theming.getThemeColor($theme, "theme-primary-intense");
+            color              : theming.getThemeColor($theme, "theme-primary-intense");
         }
     }
 }
 
-.theme-dark {
-    .dropdown-btn {
-        border-bottom-color: theming.getThemeColor("dark", "theme-primary-subtle");
+.theme-light {
+    @include setThemeStyles("light");
+}
 
-        &:hover,
-        &:focus {
-            border-bottom-color: theming.getThemeColor("dark", "theme-primary-intense");
-            color              : theming.getThemeColor("dark", "theme-primary-intense");
-        }
-    }
+.theme-dark {
+    @include setThemeStyles("dark");
 }

@@ -11,7 +11,6 @@ import { GameType } from "../../../_enums/game-type.enum";
 import { GameLevel } from "../../../_enums/game-level.enum";
 import { LevelSettings } from "../../../_models/level-settings/level-settings";
 
-import { DropdownSelect } from "../../user-input/dropdown-select/dropdown-select";
 
 export class LevelWizardViewManager {
 
@@ -31,4 +30,14 @@ export class LevelWizardViewManager {
         return propertyContainer;
     }
 
+    static levelOptions() {
+        const options = [];
+        Object.values(GameLevel).forEach(level => {
+            options.push({
+                value: level,
+                innerHTML: `<span class="level-option">${level}</span>`
+            });
+        });
+        return options;
+    }
 }

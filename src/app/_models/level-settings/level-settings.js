@@ -15,7 +15,6 @@ export class LevelSettings extends AppModel {
     setLevel(level) {
         this.level = level;
         this.update(LEVEL_PARAMS[this.level]);
-        console.log(this);
     }
 
 

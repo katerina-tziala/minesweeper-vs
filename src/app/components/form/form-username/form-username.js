@@ -17,7 +17,7 @@ export class FormUsername extends Form {
 	renderFormFields(form) {
 		const section = this.renderFormSection();
 		section.append(ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.usernameIcon]));
-		this.inputControllers.forEach(inputControler => section.append(inputControler.generateInput()));
+		this.inputControllers.forEach(inputControler => section.append(inputControler.generateInputField()));
 		form.append(section);
 	}
 

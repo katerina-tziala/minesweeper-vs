@@ -56,12 +56,12 @@ export class UserInput {
 		};
 	}
 
-	generateInputField(inputAction) {
+	generateField(inputAction) {
 		const inputField = document.createElement("input");
 		inputField.name = this.name;
 		inputField.value = this.value;
 
-		const params = this.inputParams;
+        const params = this.inputParams;
 		if (inputAction) {
 			inputField.addEventListener(params.actionType, inputAction);
 		}

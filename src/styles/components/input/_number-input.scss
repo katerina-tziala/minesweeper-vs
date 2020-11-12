@@ -1,0 +1,19 @@
+@import "./input";
+@import "../input-error/input-error";
+
+.number-input-container {
+    width   : 100%;
+    position: relative;
+
+
+    width: 60px;
+    // border: 2px solid green;
+    // min-width: 160px;
+    // max-width: 160px;
+}
+
+.number-input {
+    @extend .input;
+    width       : 100%;
+    // min-width: 200px;
+}

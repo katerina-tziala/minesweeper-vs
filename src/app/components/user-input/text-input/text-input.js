@@ -45,9 +45,9 @@ export class TextInput extends UserInput {
         return replaceStringParameter(FIELD_ERROR, this.name);
     }
 
-    generateInput() {
+    generateInputField() {
         const inputContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.inputContainer]);
-        const input = this.generateInputField(this.onValueChange.bind(this));
+        const input = this.generateField(this.onValueChange.bind(this));
         const error = this.errorController.generateInputError();
         inputContainer.append(input, error);
         return inputContainer;
@@ -65,6 +65,10 @@ export class TextInput extends UserInput {
             this.notifyForChanges();
             return;
         }
+        this.validateInputTypeValue();
+    }
+
+    validateInputTypeValue() {
         const trimmedValue = this.value.trim();
         if (!Validator.isEmptyString(trimmedValue) && trimmedValue.length > 1) {
             this.value = trimmedValue;

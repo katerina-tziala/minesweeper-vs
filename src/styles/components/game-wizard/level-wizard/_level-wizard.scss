@@ -1,5 +1,9 @@
 @import "../../button/button";
+@import "../../input/number-input";
+
+
 @import "../../dropdown-select/dropdown-select";
+//
 
 .level-wizard-container {
     border: 2px solid red;
@@ -17,10 +21,10 @@
 }
 
 .level-property-tag {
-    border: 1px solid green;
+    // border: 1px solid green;
     text-transform: capitalize;
 }
 
 .level-property-container {
-    border: 1px solid blue;
+    // border: 1px solid blue;
 }

@@ -3,11 +3,11 @@
 
 .text-input-container {
 	width   : 100%;
-	position: relative;
+    position: relative;
+    min-width: 200px;
 }
 
 .text-input {
 	@extend .input;
 	width    : 100%;
-	min-width: 200px;
 }
