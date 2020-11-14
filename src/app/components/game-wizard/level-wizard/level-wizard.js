@@ -4,14 +4,9 @@ import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../../utils/element-generator";
 import { ElementHandler } from "../../../utils/element-handler";
 import { AriaHandler } from "../../../utils/aria-handler";
+import { LocalStorageHelper } from "../../../utils/local-storage-helper";
 
 import { clone } from "../../../utils/utils";
-
-
-import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
-
-import { LevelWizardViewManager } from "./level-wizard-view-manager";
-
 
 import { GameType } from "../../../_enums/game-type.enum";
 import { GameLevel } from "../../../_enums/game-level.enum";
@@ -20,8 +15,8 @@ import { LevelSettings } from "../../../_models/level-settings/level-settings";
 import { DropdownSelect } from "../../user-input/dropdown-select/dropdown-select";
 import { NumberInput } from "../../user-input/number-input/number-input";
 
-
-
+import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
+import { LevelWizardViewManager } from "./level-wizard-view-manager";
 
 export class LevelWizard {
     #settings;
@@ -37,7 +32,7 @@ export class LevelWizard {
     set settings(settings) {
         this.#settings = new LevelSettings();
         if (settings) {
-            this.settings.update(settings);
+            this.#settings.update(settings);
         }
     }
 
@@ -53,15 +48,6 @@ export class LevelWizard {
         return this.#levelController;
     }
 
-    set levelSettingsControllers(controller) {
-        delete this.#levelSettingsControllers[controller.name];
-        this.#levelSettingsControllers[controller.name] = controller;
-    }
-
-    get levelSettingsControllers() {
-        return Object.values(this.#levelSettingsControllers);
-    }
-
     get levelProperties() {
         return Object.keys(LEVEL_SETTINGS_PROPERTIES).filter(key => LEVEL_SETTINGS_PROPERTIES[key] !== LEVEL_SETTINGS_PROPERTIES.level);
     }
@@ -75,15 +61,30 @@ export class LevelWizard {
             const numberOfBoardTiles = this.settings.rows * this.settings.columns;
             const boundaries = clone(LIMITS.numberOfMines);
             boundaries.max = Math.floor(numberOfBoardTiles * LIMITS.maxMinesPercentage);
+            boundaries.min = Math.ceil(numberOfBoardTiles * LIMITS.minMinesPercentage);
             return boundaries;
-        } else {
-            return undefined;
         }
-
+        return undefined;
     }
 
-    getLevelSettingController(key) {
-        return this.#levelSettingsControllers[key];
+    set levelSettingsControllers(controller) {
+        delete this.#levelSettingsControllers[controller.name];
+        this.#levelSettingsControllers[controller.name] = controller;
+    }
+
+    get levelSettingsControllers() {
+        return Object.values(this.#levelSettingsControllers);
+    }
+
+    getSettingsController(key) {
+		return this.#levelSettingsControllers[key];
+    }
+
+    getPropertyBoundaries(levelProperty) {
+        if (levelProperty !== LEVEL_SETTINGS_PROPERTIES.numberOfMines) {
+            return LIMITS.customLevelBoard;
+        }
+        return this.numberOfMinesBoundaries;
     }
 
     initLevelController() {
@@ -101,13 +102,6 @@ export class LevelWizard {
             controller.boundaries = this.getPropertyBoundaries(levelProperty);
             this.levelSettingsControllers = controller;
         });
-    }
-
-    getPropertyBoundaries(levelProperty) {
-        if (levelProperty !== LEVEL_SETTINGS_PROPERTIES.numberOfMines) {
-            return LIMITS.customLevelBoard;
-        }
-        return this.numberOfMinesBoundaries;
     }
 
     generateLevelWizard() {
@@ -129,7 +123,12 @@ export class LevelWizard {
 
     onLevelChange(params) {
         this.settings.setLevel(params.value);
-        //if custom check for previously set values
+        if (this.isCustomLevel) {
+            const currentCustomLevelSettings = LocalStorageHelper.retrieve("levelSettings");
+            if (currentCustomLevelSettings) {
+                this.settings.update(currentCustomLevelSettings);
+            }
+        }
         this.initLevelSettingsControllers();
         this.levelSettingsControllers.forEach(controller => {
             LevelWizardViewManager.updateControllerContainer(controller, this.isCustomLevel);
@@ -137,28 +136,29 @@ export class LevelWizard {
     }
 
     onCustomLevelParamChange(params) {
-        switch (params.name) {
-            case LEVEL_SETTINGS_PROPERTIES.rows:
-                console.log("its row");
-
-                console.log(params);
-
-                break;
-            case LEVEL_SETTINGS_PROPERTIES.columns:
-                console.log("its columns");
-
-                console.log(params);
-                break;
-
-            default:// number of mines
-                console.log("its number of mines");
-
-                console.log(params);
-                break;
+        const restSettingsControllers = this.levelSettingsControllers.filter(controller => controller.name !== params.name);
+        if (!params.valid) {
+            LocalStorageHelper.remove("levelSettings");
+            restSettingsControllers.forEach(controller => controller.disable());
+            return;
+        }
+        // valid input
+        this.updateCustomLevel(params);
+        const disabledControllers = restSettingsControllers.filter(controller => controller.disabled);
+        disabledControllers.forEach(controller => controller.enable());
+        if (params.name !== LEVEL_SETTINGS_PROPERTIES.numberOfMines) {
+            const numberOfMinesController = this.getSettingsController(LEVEL_SETTINGS_PROPERTIES.numberOfMines);
+            numberOfMinesController.boundaries = this.numberOfMinesBoundaries;
+            numberOfMinesController.validateInputTypeValue();
         }
     }
 
-
+    updateCustomLevel(params) {
+        const settingsUpdate = {};
+        settingsUpdate[params.name] = params.value;
+        this.settings.update(settingsUpdate);
+        LocalStorageHelper.save("levelSettings", this.settings);
+    }
 
 
 

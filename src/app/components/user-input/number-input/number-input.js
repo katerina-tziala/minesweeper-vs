@@ -2,14 +2,13 @@
 
 import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../../utils/element-generator";
+import { ElementHandler } from "../../../utils/element-handler";
 import { Validator } from "../../../utils/validator";
 import { clone, replaceStringParameter } from "../../../utils/utils";
 
-import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR, CONTROLL_BUTTONS } from "./number-input.constants";
-
 import { TextInput } from "../text-input/text-input";
-import { InputError } from "../input-error/input-error";
-import { ElementHandler } from "../../../utils/element-handler";
+
+import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR, CONTROLL_BUTTONS } from "./number-input.constants";
 
 export class NumberInput extends TextInput {
     #boundaries;
@@ -52,13 +51,21 @@ export class NumberInput extends TextInput {
     get boundariesError() {
         let message = FIELD_ERROR.outOfLimits;
         Object.keys(this.boundaries).forEach(key => {
-          message = replaceStringParameter(message, this.boundaries[key], key);
+            message = replaceStringParameter(message, this.boundaries[key], key);
         });
         return message;
-      }
+    }
 
     get controllsID() {
         return DOM_ELEMENT_CLASS.inputControls + TYPOGRAPHY.doubleUnderscore + this.name;
+    }
+
+    get submissionProperties() {
+        return {
+            name: this.name,
+            value: this.valueInteger,
+            valid: this.valid
+        };
     }
 
     generateInputField() {
@@ -156,7 +163,7 @@ export class NumberInput extends TextInput {
     }
 
     valueInLimits() {
-        return this.boundaries ? Validator.isValueInLimits(this.valueInteger, this.boundaries): true;
+        return this.boundaries ? Validator.isValueInLimits(this.valueInteger, this.boundaries) : true;
     }
 
     showError(message = this.inputError) {
@@ -177,22 +184,19 @@ export class NumberInput extends TextInput {
 
     disable() {
         this.disabled = true;
-        // this.dropdownBtn.then(button => {
-        // 	ElementHandler.setDisabled(button, true);
-        // 	AriaHandler.setAriaExpanded(button, false);
-        // });
+        this.inputField.then(inputField => { ElementHandler.setReadOnly(inputField, this.disabled) });
+        this.updateControllButtonsState();
     }
 
     enable() {
         this.disabled = false;
-        //this.dropdownBtn.then(button => ElementHandler.setDisabled(button, false));
+        this.inputField.then(inputField => { ElementHandler.setReadOnly(inputField, this.disabled) });
+        this.updateControllButtonsState();
     }
 
-
-
-    // updateControllButtonsState(disabled) {
-    //    // document.querySelectorAll(`.${DOM_ELEMENT_CLASS.inputControlBtn}`)
-    //    //     .forEach(button => ElementHandler.setDisabled(button, disabled));
-    // }
+    updateControllButtonsState() {
+        document.querySelectorAll(`.${DOM_ELEMENT_CLASS.inputControlBtn}`)
+            .forEach(button => ElementHandler.setDisabled(button, this.disabled));
+    }
 
 }

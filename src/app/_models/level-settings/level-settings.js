@@ -6,9 +6,9 @@ import { LEVEL_PARAMS } from "./level-setting-constants";
 
 export class LevelSettings extends AppModel {
 
-    constructor() {
+    constructor(level) {
         super();
-        this.setLevel(GameLevel.Beginner);
+        this.setLevel(level ? level : GameLevel.Beginner);
         this.minesPositions = [];
     }
 

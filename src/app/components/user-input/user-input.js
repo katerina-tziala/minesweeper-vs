@@ -51,18 +51,18 @@ export class UserInput {
 		return ElementHandler.getByID(this.name);
 	}
 
-	notifyForChanges() {
-		if (this.#onValueChange) {
-			this.#onValueChange(this.submissionProperties);
-		}
-	}
-
-	get submissionProperties() {
+    get submissionProperties() {
 		return {
 			name: this.name,
 			value: this.value,
 			valid: this.valid
 		};
+	}
+
+	notifyForChanges() {
+		if (this.#onValueChange) {
+			this.#onValueChange(this.submissionProperties);
+		}
 	}
 
 	generateField(inputAction) {
