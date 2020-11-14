@@ -1,9 +1,9 @@
 "use strict";
 
-import { ElementGenerator } from "../../../_utils/element-generator";
+import { ElementGenerator } from "HTML_DOM_Manager";
 
 import { Form } from "../form";
-import { TextInput } from "../../../_lib_user-inputs/user-inputs.module";
+import { TextInput } from "UserInputs";
 
 import { DOM_ELEMENT_CLASS, FIELD } from "./form-username.constants";
 

@@ -1,13 +1,11 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../_utils/constants/typography.constants";
-import { CLOSE_BTN } from "../../_utils/constants/btn-icon.constants";
-import { ElementHandler } from "../../_utils/element-handler";
-import { AriaHandler } from "../../_utils/aria-handler";
-import { ElementGenerator } from "../../_utils/element-generator";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
+import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./toast-notification.constants";
-import { clone } from "../../_utils/utils";
+import { clone } from "~/_utils/utils";
 
 export class ToastNotifications {
 	#notificationTimeout;

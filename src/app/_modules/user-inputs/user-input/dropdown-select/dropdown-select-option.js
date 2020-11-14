@@ -1,10 +1,10 @@
 "use strict";
 
+import { ElementHandler, AriaHandler } from "HTML_DOM_Manager";
+
 import { DOM_ELEMENT_CLASS, OPTION_ATTRIBUTES } from "./dropdown-select.constants";
 
-import { preventInteraction, clone, replaceStringParameter } from "../../../_utils/utils";
-import { ElementHandler } from "../../../_utils/element-handler";
-import { AriaHandler } from "../../../_utils/aria-handler";
+import { preventInteraction, clone, replaceStringParameter } from "~/_utils/utils";
 
 export class DropdownSelectOption {
 

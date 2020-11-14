@@ -1,18 +1,17 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../_utils/constants/typography.constants";
-import { ElementGenerator } from "../../../_utils/element-generator";
-import { ElementHandler } from "../../../_utils/element-handler";
-import { AriaHandler } from "../../../_utils/aria-handler";
-import { LocalStorageHelper } from "../../../_utils/local-storage-helper";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
-import { clone } from "../../../_utils/utils";
+import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
-import { GameType } from "../../../_enums/game-type.enum";
-import { GameLevel } from "../../../_enums/game-level.enum";
-import { LevelSettings } from "../../../_models/level-settings/level-settings";
+import { clone } from "~/_utils/utils";
 
-import { DropdownSelect, NumberInput } from "../../../_lib_user-inputs/user-inputs.module";
+import { GameType } from "~/_enums/game-type.enum";
+import { GameLevel } from "~/_enums/game-level.enum";
+import { LevelSettings } from "~/_models/level-settings/level-settings";
+
+import { DropdownSelect, NumberInput } from "UserInputs";
 
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 import { LevelWizardViewManager } from "./level-wizard-view-manager";

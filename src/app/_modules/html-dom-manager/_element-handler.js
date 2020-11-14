@@ -1,8 +1,8 @@
 "use strict";
 
-import { TYPOGRAPHY } from "./constants/typography.constants.js";
-import { DOM_ELEMENT_CLASS } from "./constants/ui.constants";
-import { clone } from "./utils.js";
+import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
+import { DOM_ELEMENT_CLASS } from "~/_constants/ui.constants";
+import { clone } from "~/_utils/utils.js";
 
 export class ElementHandler {
 

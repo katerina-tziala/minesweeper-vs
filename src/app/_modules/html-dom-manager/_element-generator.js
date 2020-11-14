@@ -1,7 +1,7 @@
 "use strict";
 
-import { TYPOGRAPHY } from "./constants/typography.constants";
-import { ElementHandler } from "./element-handler";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { ElementHandler } from "./_element-handler";
 
 export class ElementGenerator {
 

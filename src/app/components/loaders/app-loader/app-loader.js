@@ -1,7 +1,6 @@
 "use strict";
 
-import { ElementHandler } from "../../../_utils/element-handler";
-
+import { ElementHandler } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./app-loader.constants";
 
 export class AppLoader {

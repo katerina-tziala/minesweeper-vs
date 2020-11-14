@@ -2,14 +2,12 @@
 
 import "../../../styles/pages/_home.scss";
 
-import { TYPOGRAPHY } from "../../_utils/constants/typography.constants";
-import { ElementGenerator } from "../../_utils/element-generator";
-import { ElementHandler } from "../../_utils/element-handler";
-import { AriaHandler } from "../../_utils/aria-handler";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
 import { Page } from "../page";
 import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./home-page.constants";
-import { GameType } from "../../_enums/game-type.enum";
+import { GameType } from "~/_enums/game-type.enum";
 
 export class HomePage extends Page {
     constructor(selectGameType) {

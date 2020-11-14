@@ -1,9 +1,10 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../_utils/constants/typography.constants";
-import { ElementGenerator } from "../../../_utils/element-generator";
-import { emptyString } from "../../../_utils/validator";
-import { clone, replaceStringParameter } from "../../../_utils/utils";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { ElementGenerator } from "HTML_DOM_Manager";
+
+import { emptyString } from "~/_utils/validator";
+import { clone, replaceStringParameter } from "~/_utils/utils";
 
 import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from "./text-input.constants";
 

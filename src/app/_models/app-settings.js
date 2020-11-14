@@ -3,8 +3,8 @@
 import { AppModel } from "./_app-model";
 
 import { Theme, MineType } from "../_enums/app-settings.enums";
-import { getRandomValueFromArray } from "../_utils/utils";
-import { COLOR_TYPES } from "../_utils/constants/ui.constants";
+import { getRandomValueFromArray } from "~/_utils/utils";
+import { COLOR_TYPES } from "~/_constants/ui.constants";
 export class AppSettingsModel extends AppModel {
 
 	constructor() {

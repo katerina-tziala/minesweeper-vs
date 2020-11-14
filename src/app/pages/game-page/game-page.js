@@ -2,9 +2,8 @@
 
 import "../../../styles/pages/_game.scss";
 
-import { TYPOGRAPHY } from "../../_utils/constants/typography.constants";
-import { ElementGenerator } from "../../_utils/element-generator";
-import { ElementHandler } from "../../_utils/element-handler";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "../../_utils/local-storage-helper";
 
 import { Page } from "../page";

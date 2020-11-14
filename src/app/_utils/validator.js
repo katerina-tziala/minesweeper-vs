@@ -1,6 +1,6 @@
 "use strict";
 
-import { TYPOGRAPHY } from "./constants/typography.constants.js";
+import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
 
 export const emptyString = (value) => {
     return (value === TYPOGRAPHY.emptyString || value.replace(/\s+/, TYPOGRAPHY.emptyString) === TYPOGRAPHY.emptyString) ? true : false;

@@ -1,11 +1,8 @@
 "use strict";
 
 import { SWITCH_BNT } from "./switcher.constants";
-
-import { ElementGenerator } from "../../../_utils/element-generator";
-import { ElementHandler } from "../../../_utils/element-handler";
-import { clone } from "../../../_utils/utils";
-import { AriaHandler } from "../../../_utils/aria-handler";
+import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import { clone } from "~/_utils/utils";
 
 import { UserInput } from "../user-input";
 

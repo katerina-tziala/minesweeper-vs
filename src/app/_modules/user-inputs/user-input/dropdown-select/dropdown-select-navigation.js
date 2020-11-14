@@ -1,8 +1,7 @@
 "use strict";
 
-import { ElementHandler } from "../../../_utils/element-handler";
-import { AriaHandler } from "../../../_utils/aria-handler";
-import { extractIdValue, preventInteraction } from "../../../_utils/utils";
+import { ElementHandler, AriaHandler } from "HTML_DOM_Manager";
+import { extractIdValue, preventInteraction } from "~/_utils/utils";
 
 import { DropdownSelectOption } from "./dropdown-select-option";
 

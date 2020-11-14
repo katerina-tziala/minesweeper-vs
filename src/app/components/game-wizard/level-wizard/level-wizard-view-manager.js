@@ -1,9 +1,8 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../_utils/constants/typography.constants";
-import { ElementGenerator } from "../../../_utils/element-generator";
-import { ElementHandler } from "../../../_utils/element-handler";
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS, CONTENT } from "./level-wizard.constants";
 import { GameLevel } from "../../../_enums/game-level.enum";
 

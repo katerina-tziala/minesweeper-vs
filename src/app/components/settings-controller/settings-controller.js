@@ -1,15 +1,14 @@
 "use strict";
 
-import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../_utils/constants/ui.constants";
-import { Theme, SettingType } from "../../_enums/app-settings.enums";
+import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "~/_constants/ui.constants";
+import { Theme, SettingType } from "~/_enums/app-settings.enums";
 import { AppSettingsModel } from "../../_models/app-settings";
-import { ElementHandler } from "../../_utils/element-handler";
-import { ElementGenerator } from "../../_utils/element-generator";
-import { AriaHandler } from "../../_utils/aria-handler";
-import { LocalStorageHelper } from "../../_utils/local-storage-helper";
-import { clone, roundUpToNextDecade } from "../../_utils/utils";
 
-import { DropdownSelect, Switcher } from "../../_lib_user-inputs/user-inputs.module";
+import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+import { clone, roundUpToNextDecade } from "~/_utils/utils";
+
+import { DropdownSelect, Switcher } from "UserInputs";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS, SETTINGS_BTN } from "./settings-controller.constants";
 import { SettingsOptionsHelper } from "./settings-options-helper";

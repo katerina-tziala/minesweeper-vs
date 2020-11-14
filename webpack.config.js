@@ -19,7 +19,17 @@ if (isDevServer) {
     plugins.push(new webpack.HotModuleReplacementPlugin());
 }
 
+
+
 module.exports = {
+    resolve: {
+        extensions: ['.js'],
+        alias: {
+            ['~']: path.resolve(__dirname, 'src/app'),
+            UserInputs: path.resolve(__dirname, 'src/app/_modules/user-inputs/user-inputs.module.js'),
+            HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/html-dom-manager.module.js'),
+        }
+    },
     entry: {
         index: path.resolve(__dirname, 'src', 'index.js')
     },

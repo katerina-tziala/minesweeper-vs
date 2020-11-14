@@ -1,7 +1,7 @@
 "use strict";
 
-import { COLOR_TYPES, DOM_ELEMENT_CLASS } from "../../_utils/constants/ui.constants";
-import { MineType} from "../../_enums/app-settings.enums";
+import { COLOR_TYPES, DOM_ELEMENT_CLASS } from "~/_constants/ui.constants";
+import { MineType} from "~/_enums/app-settings.enums";
 
 export class SettingsOptionsHelper {
 

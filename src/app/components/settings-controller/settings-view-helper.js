@@ -1,8 +1,6 @@
 "use strict";
 
-import { ElementHandler } from "../../_utils/element-handler";
-import { ElementGenerator } from "../../_utils/element-generator";
-
+import { ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS, CONTENT } from "./settings-controller.constants";
 
 export class SettingsViewHelper {

@@ -1,6 +1,6 @@
 "use strict";
 
-import { TYPOGRAPHY } from "./constants/typography.constants.js";
+import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
 
 export const clone = (itemToClone) => {
 	return JSON.parse(JSON.stringify(itemToClone));
