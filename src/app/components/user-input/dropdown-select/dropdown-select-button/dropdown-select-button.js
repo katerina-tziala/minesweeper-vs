@@ -1,10 +1,10 @@
 "use strict";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, DROPDOWN_BNT } from "./dropdown-select-button.constants";
-import { ElementGenerator } from "../../../../utils/element-generator";
-import { ElementHandler } from "../../../../utils/element-handler";
-import { AriaHandler } from "../../../../utils/aria-handler";
-import { preventInteraction } from "../../../../utils/utils";
+import { ElementGenerator } from "../../../../_utils/element-generator";
+import { ElementHandler } from "../../../../_utils/element-handler";
+import { AriaHandler } from "../../../../_utils/aria-handler";
+import { preventInteraction } from "../../../../_utils/utils";
 
 export class DropdownSelectButton {
 	#buttonId;

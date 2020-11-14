@@ -1,5 +1,5 @@
 "use strict";
-import { JOIN_BTN } from "../../utils/constants/btn-text.constants";
+import { JOIN_BTN } from "../../_utils/constants/btn-text.constants";
 
 export const DOM_ELEMENT_ID = {
 	loginContainer: "login-container"

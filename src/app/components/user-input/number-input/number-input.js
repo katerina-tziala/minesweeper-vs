@@ -1,10 +1,10 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
-import { ElementGenerator } from "../../../utils/element-generator";
-import { ElementHandler } from "../../../utils/element-handler";
-import { valueInLimits, emptyString, validValue } from "../../../utils/validator";
-import { clone, replaceStringParameter } from "../../../utils/utils";
+import { TYPOGRAPHY } from "../../../_utils/constants/typography.constants";
+import { ElementGenerator } from "../../../_utils/element-generator";
+import { ElementHandler } from "../../../_utils/element-handler";
+import { valueInLimits, emptyString, validValue } from "../../../_utils/validator";
+import { clone, replaceStringParameter } from "../../../_utils/utils";
 
 import { TextInput } from "../text-input/text-input";
 

@@ -1,7 +1,7 @@
 "use strict";
 
-import { ElementHandler } from "../../utils/element-handler";
-import { ElementGenerator } from "../../utils/element-generator";
+import { ElementHandler } from "../../_utils/element-handler";
+import { ElementGenerator } from "../../_utils/element-generator";
 
 import { DOM_ELEMENT_CLASS, CONTENT } from "./settings-controller.constants";
 

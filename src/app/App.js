@@ -8,7 +8,7 @@ import { NOTIFICATION_MESSAGE } from "./components/toast-notification/toast-noti
 
 import { SettingsController } from "./components/settings-controller/settings-controller";
 
-import { LocalStorageHelper } from "./utils/local-storage-helper";
+import { LocalStorageHelper } from "./_utils/local-storage-helper";
 
 import { User } from "./_models/user";
 import { PageType } from "./_enums/page-type.enum";

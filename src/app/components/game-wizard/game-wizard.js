@@ -1,9 +1,9 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../utils/constants/typography.constants";
-import { ElementGenerator } from "../../utils/element-generator";
-import { ElementHandler } from "../../utils/element-handler";
-import { AriaHandler } from "../../utils/aria-handler";
+import { TYPOGRAPHY } from "../../_utils/constants/typography.constants";
+import { ElementGenerator } from "../../_utils/element-generator";
+import { ElementHandler } from "../../_utils/element-handler";
+import { AriaHandler } from "../../_utils/aria-handler";
 
 
 import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./game-wizard.constants";

@@ -2,9 +2,9 @@
 
 import { DOM_ELEMENT_CLASS, OPTION_ATTRIBUTES } from "./dropdown-select.constants";
 
-import { preventInteraction, clone, replaceStringParameter } from "../../../utils/utils";
-import { ElementHandler } from "../../../utils/element-handler";
-import { AriaHandler } from "../../../utils/aria-handler";
+import { preventInteraction, clone, replaceStringParameter } from "../../../_utils/utils";
+import { ElementHandler } from "../../../_utils/element-handler";
+import { AriaHandler } from "../../../_utils/aria-handler";
 
 export class DropdownSelectOption {
 

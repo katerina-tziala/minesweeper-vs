@@ -1,12 +1,12 @@
 "use strict";
 
-import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
-import { ElementGenerator } from "../../../utils/element-generator";
-import { ElementHandler } from "../../../utils/element-handler";
-import { AriaHandler } from "../../../utils/aria-handler";
-import { LocalStorageHelper } from "../../../utils/local-storage-helper";
+import { TYPOGRAPHY } from "../../../_utils/constants/typography.constants";
+import { ElementGenerator } from "../../../_utils/element-generator";
+import { ElementHandler } from "../../../_utils/element-handler";
+import { AriaHandler } from "../../../_utils/aria-handler";
+import { LocalStorageHelper } from "../../../_utils/local-storage-helper";
 
-import { clone } from "../../../utils/utils";
+import { clone } from "../../../_utils/utils";
 
 import { GameType } from "../../../_enums/game-type.enum";
 import { GameLevel } from "../../../_enums/game-level.enum";

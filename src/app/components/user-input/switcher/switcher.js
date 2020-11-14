@@ -2,10 +2,10 @@
 
 import { SWITCH_BNT } from "./switcher.constants";
 
-import { ElementGenerator } from "../../../utils/element-generator";
-import { ElementHandler } from "../../../utils/element-handler";
-import { clone } from "../../../utils/utils";
-import { AriaHandler } from "../../../utils/aria-handler";
+import { ElementGenerator } from "../../../_utils/element-generator";
+import { ElementHandler } from "../../../_utils/element-handler";
+import { clone } from "../../../_utils/utils";
+import { AriaHandler } from "../../../_utils/aria-handler";
 
 import { UserInput } from "../user-input";
 

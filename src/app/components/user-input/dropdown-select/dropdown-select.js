@@ -2,8 +2,8 @@
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./dropdown-select.constants";
 
-import { ElementGenerator } from "../../../utils/element-generator";
-import { replaceStringParameter } from "../../../utils/utils";
+import { ElementGenerator } from "../../../_utils/element-generator";
+import { replaceStringParameter } from "../../../_utils/utils";
 
 import { UserInput } from "../user-input";
 import { DropdownSelectButton } from "./dropdown-select-button/dropdown-select-button";
