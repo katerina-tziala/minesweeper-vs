@@ -3,7 +3,7 @@
 import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../../utils/element-generator";
 import { ElementHandler } from "../../../utils/element-handler";
-import { Validator } from "../../../utils/validator";
+import { valueInLimits, emptyString, validNumber } from "../../../utils/validator";
 import { clone, replaceStringParameter } from "../../../utils/utils";
 
 import { TextInput } from "../text-input/text-input";
@@ -40,8 +40,8 @@ export class NumberInput extends TextInput {
         return (this.value && this.value.trim().match(/^-?[0-9]+$/) !== null) ? parseInt(this.value, 10) : undefined;
     }
 
-    get isUndefined() {
-        return (this.valueInteger === undefined) ? true : false;
+    get validNumber() {
+        return validNumber(this.valueInteger);
     }
 
     get inputError() {
@@ -111,14 +111,14 @@ export class NumberInput extends TextInput {
     }
 
     updateValue(step) {
-        if (Validator.isEmptyString(this.value)) {
+        if (emptyString(this.value)) {
             const newValue = this.getInitialValueWhenFieldIsCleared(step);
             this.value = newValue.toString();
             this.setFieldValue();
             this.validateValue();
             return;
         }
-        if (!this.isUndefined) {
+        if (this.validNumber) {
             this.value = this.getValueBasedOnStep(step).toString();
             this.setFieldValue();
             this.validateValue();
@@ -145,7 +145,7 @@ export class NumberInput extends TextInput {
     }
 
     validateInputTypeValue() {
-        if (this.isUndefined) {
+        if (!this.validNumber) {
             this.valid = false;
             this.showError();
             this.notifyForChanges();
@@ -163,7 +163,7 @@ export class NumberInput extends TextInput {
     }
 
     valueInLimits() {
-        return this.boundaries ? Validator.isValueInLimits(this.valueInteger, this.boundaries) : true;
+        return this.boundaries ? valueInLimits(this.valueInteger, this.boundaries) : true;
     }
 
     showError(message = this.inputError) {

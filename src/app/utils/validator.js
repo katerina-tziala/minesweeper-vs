@@ -2,17 +2,14 @@
 
 import { TYPOGRAPHY } from "./constants/typography.constants.js";
 
-export class Validator {
+export const emptyString = (value) => {
+    return (value === TYPOGRAPHY.emptyString || value.replace(/\s+/, TYPOGRAPHY.emptyString) === TYPOGRAPHY.emptyString) ? true : false;
+};
 
-	static isEmptyString(value) {
-		return (value === TYPOGRAPHY.emptyString || value.replace(/\s+/, TYPOGRAPHY.emptyString) === TYPOGRAPHY.emptyString) ? true : false;
-	}
+export const validNumber = (value) => {
+    return (!isNaN(value) && value !== null);
+};
 
-	static isValidNumber(value) {
-		return (!isNaN(value) && value !== null);
-	}
-
-	static isValueInLimits(value, limits) {
-		return (limits.min <= value && value <= limits.max);
-	}
-}
+export const valueInLimits = (value, limits) => {
+    return (limits.min <= value && value <= limits.max);
+};

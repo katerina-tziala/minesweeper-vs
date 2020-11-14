@@ -2,7 +2,7 @@
 
 import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../../utils/element-generator";
-import { Validator } from "../../../utils/validator";
+import { emptyString } from "../../../utils/validator";
 import { clone, replaceStringParameter } from "../../../utils/utils";
 
 import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from "./text-input.constants";
@@ -77,7 +77,7 @@ export class TextInput extends UserInput {
 
     validateInputTypeValue() {
         const trimmedValue = this.value.trim();
-        if (!Validator.isEmptyString(trimmedValue) && trimmedValue.length > 1) {
+        if (!emptyString(trimmedValue) && trimmedValue.length > 1) {
             this.value = trimmedValue;
             this.hideError();
             this.valid = true;
