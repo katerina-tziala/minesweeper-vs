@@ -50,6 +50,10 @@
     content: fa-content($fa-var-cog);
 }
 
+.icon-caret-up {
+    @extend %icon-regular;
+    content: fa-content($fa-var-caret-up);
+}
 .icon-caret-down {
     @extend %icon-regular;
     content: fa-content($fa-var-caret-down);
@@ -74,7 +78,6 @@
     @extend %icon-regular;
     content: fa-content($fa-var-spinner);
 }
-
 
 .icon-online {
     @extend %icon-regular;

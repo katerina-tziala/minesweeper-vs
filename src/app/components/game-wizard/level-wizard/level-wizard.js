@@ -29,7 +29,7 @@ export class LevelWizard {
     constructor(settings) {
         this.settings = settings;
         this.initLevelController();
-        this.initLevelSettingsController();
+        this.initLevelSettingsControllers();
     }
 
     set settings(settings) {
@@ -60,6 +60,14 @@ export class LevelWizard {
         return Object.values(this.#levelSettingsControllers);
     }
 
+    get levelProperties() {
+        return Object.keys(LEVEL_SETTINGS_PROPERTIES).filter(key => LEVEL_SETTINGS_PROPERTIES[key] !== LEVEL_SETTINGS_PROPERTIES.level);
+    }
+
+    get isCustomLevel() {
+        return this.settings.level === GameLevel.Custom;
+    }
+
     getLevelSettingController(key) {
         return this.#levelSettingsControllers[key];
     }
@@ -73,8 +81,8 @@ export class LevelWizard {
         this.levelController = new DropdownSelect(params, this.onLevelChange.bind(this));
     }
 
-    initLevelSettingsController() {
-        Object.keys(LEVEL_SETTINGS_PROPERTIES).forEach(levelProperty => {
+    initLevelSettingsControllers() {
+        this.levelProperties.forEach(levelProperty => {
             this.levelSettingsControllers = new NumberInput(levelProperty, this.settings[levelProperty].toString(), this.onCustomLevelParamChange.bind(this));
         });
     }
@@ -87,24 +95,22 @@ export class LevelWizard {
 
     generateLevelWizardInputs() {
         const fragment = document.createDocumentFragment();
-        Object.keys(LEVEL_SETTINGS_PROPERTIES).forEach(levelProperty => {
-            const propertyTag = LevelWizardViewManager.generatePropertyTag(levelProperty);
-            const propertyContainer = LevelWizardViewManager.generatePropertyContainer(levelProperty);
-            let inputField;
-            if (levelProperty === LEVEL_SETTINGS_PROPERTIES.level) {
-                inputField = this.levelController.generateInputField();
-            } else {
-                inputField = this.getLevelSettingController(levelProperty).generateInputField();
-            }
-            propertyContainer.append(inputField);
-            fragment.append(propertyTag, propertyContainer);
+        LevelWizardViewManager.generateWizardInputSection(fragment, LEVEL_SETTINGS_PROPERTIES.level, this.levelController.generateInputField());
+        this.levelSettingsControllers.forEach(controller => {
+            controller.disabled = !this.isCustomLevel;
+            const inputField = controller.generateInputField();
+            LevelWizardViewManager.generateWizardInputSection(fragment, controller.name, inputField);
         });
         return fragment;
     }
 
-
-    onLevelChange(selectedlevel) {
-        console.log(selectedlevel);
+    onLevelChange(params) {
+        this.settings.setLevel(params.value);
+        //if custom check for previously set values
+        this.initLevelSettingsControllers();
+        this.levelSettingsControllers.forEach(controller => {
+            LevelWizardViewManager.updateControllerContainer(controller, this.isCustomLevel);
+        });
     }
 
     onCustomLevelParamChange(params) {

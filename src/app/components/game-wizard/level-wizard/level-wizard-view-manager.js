@@ -40,4 +40,22 @@ export class LevelWizardViewManager {
         });
         return options;
     }
+
+    static generateWizardInputSection(fragment, propertyName, inputField) {
+        const propertyTag = LevelWizardViewManager.generatePropertyTag(propertyName);
+        const propertyContainer = LevelWizardViewManager.generatePropertyContainer(propertyName);
+        propertyContainer.append(inputField);
+        fragment.append(propertyTag, propertyContainer);
+    }
+
+    static updateControllerContainer(controller, isCustomLevel) {
+        const propertyContainerID = LevelWizardViewManager.getPropertyContainerID(controller.name);
+        ElementHandler.getByID(propertyContainerID).then(propertyContainer => {
+            ElementHandler.clearContent(propertyContainer);
+            controller.disabled = !isCustomLevel;
+            const inputField = controller.generateInputField();
+            propertyContainer.append(inputField);
+        });
+    }
+
 }

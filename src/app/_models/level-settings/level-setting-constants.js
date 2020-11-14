@@ -3,7 +3,7 @@ export const LEVEL_PARAMS = {
     beginner: {
         rows: 9,
         columns: 9,
-        numberOfMines: 10
+        numberOfMines: 16
     },
     intermediate: {
         rows: 16,

@@ -5,7 +5,8 @@ import { ElementHandler } from "../../utils/element-handler";
 export class UserInput {
 	#name;
 	#value;
-	#valid;
+    #valid;
+    #disabled;
 	#onValueChange;
 
 	constructor(name, value, onValueChange) {
@@ -37,6 +38,14 @@ export class UserInput {
 	get valid() {
 		return this.#valid;
 	}
+
+    set disabled(state) {
+		this.#disabled = state;
+	}
+
+	get disabled() {
+		return this.#disabled;
+    }
 
 	get inputField() {
 		return ElementHandler.getByID(this.name);

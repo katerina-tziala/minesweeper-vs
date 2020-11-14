@@ -24,3 +24,16 @@ export const CONTENT = {
     columns: "minefield columns",
     numberOfMines: "number of mines"
 };
+
+export const LIMITS = {
+    customLevelBoard: {
+        max: 30,
+        min: 9
+    },
+    mines: {
+        max: 0,
+        min: 16
+    },
+    minMinesPercentage: 0.1,
+    maxMinesPercentage: 0.9,
+};

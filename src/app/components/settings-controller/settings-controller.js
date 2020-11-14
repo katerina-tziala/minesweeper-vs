@@ -3,7 +3,6 @@
 import { DOM_ELEMENT_ID as APP_ELEMENTS_IDS, DOM_ELEMENT_CLASS as APP_STYLE_CLASS } from "../../utils/constants/ui.constants";
 import { Theme, SettingType } from "../../_enums/app-settings.enums";
 import { AppSettingsModel } from "../../_models/app-settings";
-import { SETTINGS_BTN } from "../../utils/constants/btn-icon.constants";
 import { ElementHandler } from "../../utils/element-handler";
 import { ElementGenerator } from "../../utils/element-generator";
 import { AriaHandler } from "../../utils/aria-handler";
@@ -13,7 +12,7 @@ import { clone, roundUpToNextDecade } from "../../utils/utils";
 import { Switcher } from "../../components/user-input/switcher/switcher";
 import { DropdownSelect } from "../../components/user-input/dropdown-select/dropdown-select";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS } from "./settings-controller.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS, SETTINGS_BTN } from "./settings-controller.constants";
 import { SettingsOptionsHelper } from "./settings-options-helper";
 import { SettingsViewHelper } from "./settings-view-helper";
 

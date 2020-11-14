@@ -59,6 +59,10 @@ export class ElementHandler {
 		element.disabled = isDisabled;
 	}
 
+    static setReadOnly(element, readOnly) {
+		element.readOnly = readOnly;
+	}
+
 	static getID(element) {
 		return element.getAttribute("id");
 	}

@@ -4,6 +4,9 @@
 .error-container {
     width           : 100%;
     background-color: transparent;
+    position        : absolute;
+    right           : 0;
+    top             : 0;
     z-index         : getIndex(input);
 }
 
@@ -37,7 +40,7 @@
     }
 }
 
-.error-inpt {
+.error-inpt .text-input {
     padding-right: 23px;
 }
 

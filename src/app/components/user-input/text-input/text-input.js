@@ -54,15 +54,22 @@ export class TextInput extends UserInput {
     }
 
     onValueChange(event) {
-        this.value = event.target.value;
-        this.validateValue();
+        const newValue = event.target.value;
+        if (this.value !== newValue) {
+            this.value = newValue;
+            this.validateValue();
+        }
+    }
+
+    onFieldCleared() {
+        this.hideError();
+        this.valid = false;
+        this.notifyForChanges();
     }
 
     validateValue() {
         if (this.value.length === 0) {
-            this.errorController.hide();
-            this.valid = false;
-            this.notifyForChanges();
+            this.onFieldCleared();
             return;
         }
         this.validateInputTypeValue();
@@ -72,25 +79,33 @@ export class TextInput extends UserInput {
         const trimmedValue = this.value.trim();
         if (!Validator.isEmptyString(trimmedValue) && trimmedValue.length > 1) {
             this.value = trimmedValue;
-            this.errorController.hide();
+            this.hideError();
             this.valid = true;
             this.notifyForChanges();
             return;
         }
         this.valid = false;
-        this.errorController.show(this.inputError);
+        this.showError(this.inputError);
         this.notifyForChanges();
     }
 
-    showInputError(message = this.inputError) {
+    showError(message = this.inputError) {
         this.errorController.show(message);
+    }
+
+    hideError() {
+        this.errorController.hide();
     }
 
     clear() {
         this.value = TYPOGRAPHY.emptyString;
-        this.inputField.then(inputField => inputField.value = this.value);
+        this.setFieldValue();
         this.valid = false;
-        this.errorController.hide();
+        this.hideError();
+    }
+
+    setFieldValue() {
+        this.inputField.then(field => field.value = this.value);
     }
 
 }

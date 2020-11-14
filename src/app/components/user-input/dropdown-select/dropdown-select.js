@@ -3,7 +3,6 @@
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./dropdown-select.constants";
 
 import { ElementGenerator } from "../../../utils/element-generator";
-import { ElementHandler } from "../../../utils/element-handler";
 import { replaceStringParameter } from "../../../utils/utils";
 
 import { UserInput } from "../user-input";
@@ -112,7 +111,7 @@ export class DropdownSelect extends UserInput {
 	}
 
 	onOptionSelected(selectedValue) {
-		if (selectedValue) {
+		if (selectedValue && this.value !== selectedValue) {
 			this.value = selectedValue;
 			this.#dropdownBtn.setButtonLabel(this.btnDisplayValue);
 			this.notifyForChanges();
