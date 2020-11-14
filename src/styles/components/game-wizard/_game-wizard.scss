@@ -4,20 +4,34 @@
 // @import "../dropdown-select/dropdown-select";
 @import "../switcher/switcher";
 
+@import "./game-wizard-utils";
+
+
+
 @import "./level-wizard/level-wizard";
+
+
+
 
 .game-wizard-container {
     min-width   : 320px;
     padding     : 15px;
     animation   : fade-in 0.8s ease;
     position    : relative;
-    // overflow : hidden;
-
 }
 
-// .level-option {
-//     text-transform: capitalize;
-// }
+.wizard-property-tag {
+    text-transform: capitalize;
+    height        : getSize("input-height");
+    line-height   : 40px;
+    grid-column   : 1 / span 2;
+}
+
+.wizard-property-container {
+    height   : getSize("input-height");
+    min-width: 134px;
+}
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {

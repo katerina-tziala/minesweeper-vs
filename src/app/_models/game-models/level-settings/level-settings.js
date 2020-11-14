@@ -1,7 +1,7 @@
 "use strict";
 
-import { AppModel } from "../_app-model";
-import { GameLevel } from "../../_enums/game-level.enum";
+import { AppModel } from "~/_models/_app-model";
+import { GameLevel } from "~/_enums/game-level.enum";
 import { LEVEL_PARAMS } from "./level-setting-constants";
 
 export class LevelSettings extends AppModel {

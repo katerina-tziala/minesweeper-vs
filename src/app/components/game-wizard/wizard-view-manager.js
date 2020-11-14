@@ -3,11 +3,10 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS, CONTENT } from "./level-wizard.constants";
-import { GameLevel } from "../../../_enums/game-level.enum";
+import { DOM_ELEMENT_CLASS, CONTENT } from "./game-wizard.constants";
+import { GameLevel } from "~/_enums/game-level.enum";
 
-export class LevelWizardViewManager {
-
+export class WizardViewManager {
 
     static generatePropertyTag(propertyName) {
         const propertyTag = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.propertyTag]);
@@ -24,26 +23,18 @@ export class LevelWizardViewManager {
         return propertyContainer;
     }
 
-    static levelOptions() {
-        const options = [];
-        Object.values(GameLevel).forEach(level => {
-            options.push({
-                value: level,
-                innerHTML: `<span class="level-option">${level}</span>`
-            });
-        });
-        return options;
-    }
-
-    static generateWizardInputSection(fragment, propertyName, inputField) {
-        const propertyTag = LevelWizardViewManager.generatePropertyTag(propertyName);
-        const propertyContainer = LevelWizardViewManager.generatePropertyContainer(propertyName);
+    static generateWizardInputSection(fragment, propertyName, inputField, propertyClass) {
+        const propertyTag = WizardViewManager.generatePropertyTag(propertyName);
+        const propertyContainer = WizardViewManager.generatePropertyContainer(propertyName);
+        if (propertyClass) {
+            ElementHandler.addStyleClass(propertyContainer, propertyClass);
+        }
         propertyContainer.append(inputField);
         fragment.append(propertyTag, propertyContainer);
     }
 
     static updateControllerContainer(controller, isCustomLevel) {
-        const propertyContainerID = LevelWizardViewManager.getPropertyContainerID(controller.name);
+        const propertyContainerID = WizardViewManager.getPropertyContainerID(controller.name);
         ElementHandler.getByID(propertyContainerID).then(propertyContainer => {
             ElementHandler.clearContent(propertyContainer);
             controller.disabled = !isCustomLevel;

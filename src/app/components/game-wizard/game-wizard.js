@@ -10,22 +10,21 @@ import { GameLevel } from "../../_enums/game-level.enum";
 
 import { Form } from "../form/form";
 import { LevelWizard } from "./level-wizard/level-wizard";
-import { LevelSettings } from "../../_models/level-settings/level-settings";
+import { LevelSettings, OptionsSettings } from "GameModels";
 
 
 export class GameWizard {
 
     constructor() {
+        this.levelWizard =  new LevelWizard();
 
     }
 
 
     generateWizard() {
         const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-        const tere = new LevelWizard(new LevelSettings(GameLevel.Custom));
 
-
-        wizardContainer.append(tere.generateLevelWizard());
+        wizardContainer.append(this.levelWizard.renderWizard());
 
         return wizardContainer;
     }

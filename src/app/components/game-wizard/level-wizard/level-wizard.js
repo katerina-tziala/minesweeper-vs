@@ -1,20 +1,17 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { ElementGenerator } from "HTML_DOM_Manager";
 
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-
 import { clone } from "~/_utils/utils";
-
-import { GameType } from "~/_enums/game-type.enum";
-import { GameLevel } from "~/_enums/game-level.enum";
-import { LevelSettings } from "~/_models/level-settings/level-settings";
 
 import { UserInputsGroupController, DropdownSelect, NumberInput } from "UserInputs";
 
+import { GameLevel } from "~/_enums/game-level.enum";
+import { LevelSettings } from "GameModels";
+
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
-import { LevelWizardViewManager } from "./level-wizard-view-manager";
+import { WizardViewManager } from "../wizard-view-manager";
 
 export class LevelWizard {
     #settings;
@@ -65,6 +62,17 @@ export class LevelWizard {
         return this.inputsGroup.inputControllers.filter(controller => controller.name !== LEVEL_SETTINGS_PROPERTIES.level);
     }
 
+    get levelOptions() {
+        const options = [];
+        Object.values(GameLevel).forEach(level => {
+            options.push({
+                value: level,
+                innerHTML: `<span class="level-option">${level}</span>`
+            });
+        });
+        return options;
+    }
+
     getPropertyBoundaries(levelProperty) {
         if (levelProperty !== LEVEL_SETTINGS_PROPERTIES.numberOfMines) {
             return LIMITS.customLevelBoard;
@@ -76,7 +84,7 @@ export class LevelWizard {
         const params = {
             name: LEVEL_SETTINGS_PROPERTIES.level,
             value: this.settings.level,
-            options: LevelWizardViewManager.levelOptions()
+            options: this.levelOptions
         };
         this.inputsGroup.inputControllers = new DropdownSelect(params, this.onLevelChange.bind(this));
     }
@@ -89,20 +97,20 @@ export class LevelWizard {
         });
     }
 
-    generateLevelWizard() {
+    renderWizard() {
         const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-        wizardContainer.append(this.generateLevelWizardInputs());
+        wizardContainer.append(this.renderlWizardInputs());
         return wizardContainer;
     }
 
-    generateLevelWizardInputs() {
+    renderlWizardInputs() {
         const fragment = document.createDocumentFragment();
         const levelInput = this.inputsGroup.getInputController(LEVEL_SETTINGS_PROPERTIES.level).generateInputField();
-        LevelWizardViewManager.generateWizardInputSection(fragment, LEVEL_SETTINGS_PROPERTIES.level, levelInput);
+        WizardViewManager.generateWizardInputSection(fragment, LEVEL_SETTINGS_PROPERTIES.level, levelInput, DOM_ELEMENT_CLASS.propertyContainer);
         this.levelSettingsControllers.forEach(controller => {
             controller.disabled = !this.isCustomLevel;
             const inputField = controller.generateInputField();
-            LevelWizardViewManager.generateWizardInputSection(fragment, controller.name, inputField);
+            WizardViewManager.generateWizardInputSection(fragment, controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
         });
         return fragment;
     }
@@ -117,7 +125,7 @@ export class LevelWizard {
         }
         this.initLevelSettingsControllers();
         this.levelSettingsControllers.forEach(controller => {
-            LevelWizardViewManager.updateControllerContainer(controller, this.isCustomLevel);
+            WizardViewManager.updateControllerContainer(controller, this.isCustomLevel);
         });
     }
 
@@ -128,7 +136,6 @@ export class LevelWizard {
             restSettingsControllers.forEach(controller => controller.disable());
             return;
         }
-        // valid input
         this.updateCustomLevel(params);
         const disabledControllers = restSettingsControllers.filter(controller => controller.disabled);
         disabledControllers.forEach(controller => controller.enable());
@@ -145,8 +152,5 @@ export class LevelWizard {
         this.settings.update(settingsUpdate);
         LocalStorageHelper.save("levelSettings", this.settings);
     }
-
-
-
 
 }
