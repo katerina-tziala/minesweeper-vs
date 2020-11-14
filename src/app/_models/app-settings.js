@@ -1,6 +1,6 @@
 "use strict";
 
-import { AppModel } from "./app-model";
+import { AppModel } from "./_app-model";
 
 import { Theme, MineType } from "../_enums/app-settings.enums";
 import { getRandomValueFromArray } from "../utils/utils";

@@ -6,7 +6,7 @@ export const emptyString = (value) => {
     return (value === TYPOGRAPHY.emptyString || value.replace(/\s+/, TYPOGRAPHY.emptyString) === TYPOGRAPHY.emptyString) ? true : false;
 };
 
-export const validNumber = (value) => {
+export const validValue = (value) => {
     return (!isNaN(value) && value !== null);
 };
 

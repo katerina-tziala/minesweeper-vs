@@ -1,6 +1,6 @@
 "use strict";
 
-import { AppModel } from "./app-model";
+import { AppModel } from "./_app-model";
 
 
 export class User extends AppModel {

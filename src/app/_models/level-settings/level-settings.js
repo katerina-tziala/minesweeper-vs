@@ -1,6 +1,6 @@
 "use strict";
 
-import { AppModel } from "../app-model";
+import { AppModel } from "../_app-model";
 import { GameLevel } from "../../_enums/game-level.enum";
 import { LEVEL_PARAMS } from "./level-setting-constants";
 

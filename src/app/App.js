@@ -11,7 +11,7 @@ import { SettingsController } from "./components/settings-controller/settings-co
 import { LocalStorageHelper } from "./utils/local-storage-helper";
 
 import { User } from "./_models/user";
-import { InterfaceType } from "./_enums/app-interface.enum";
+import { PageType } from "./_enums/page-type.enum";
 import { GameType } from "./_enums/game-type.enum";
 
 
@@ -36,10 +36,10 @@ export class App {
         self.peers = [];
 
         self.user = new User("kateID", "kate", null);
-        // this.setInterface(InterfaceType.Home);
+        // this.setInterface(PageType.Home);
         // this.setInterface();
 
-        this.loadInterfaceController(InterfaceType.Game).then(({ GamePage }) => {
+        this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
 
             this.interfaceController = new GamePage("original");
 
@@ -116,7 +116,7 @@ export class App {
 
         switch (interfaceName) {
 
-            case InterfaceType.Home:
+            case PageType.Home:
 
                 this.loadInterfaceController(interfaceName).then(({ HomePage }) => {
 
@@ -128,7 +128,7 @@ export class App {
                 break;
 
             default:
-                this.loadInterfaceController(InterfaceType.Join).then(({ JoinPage }) => {
+                this.loadInterfaceController(PageType.Join).then(({ JoinPage }) => {
 
                     this.interfaceController = new JoinPage();
                 });
@@ -147,7 +147,7 @@ export class App {
         if (gameType === GameType.Online) {
             console.log("go to lobby");
         } else {
-            this.loadInterfaceController(InterfaceType.Game).then(({ GamePage }) => {
+            this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
 
                 this.interfaceController = new GamePage(gameType);
 

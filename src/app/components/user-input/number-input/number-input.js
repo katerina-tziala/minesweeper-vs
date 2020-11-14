@@ -3,7 +3,7 @@
 import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../../utils/element-generator";
 import { ElementHandler } from "../../../utils/element-handler";
-import { valueInLimits, emptyString, validNumber } from "../../../utils/validator";
+import { valueInLimits, emptyString, validValue } from "../../../utils/validator";
 import { clone, replaceStringParameter } from "../../../utils/utils";
 
 import { TextInput } from "../text-input/text-input";
@@ -41,7 +41,7 @@ export class NumberInput extends TextInput {
     }
 
     get validNumber() {
-        return validNumber(this.valueInteger);
+        return validValue(this.valueInteger);
     }
 
     get inputError() {
