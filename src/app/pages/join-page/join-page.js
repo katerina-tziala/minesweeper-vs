@@ -31,13 +31,8 @@ export class JoinPage extends Page {
         return ElementHandler.getByID(DOM_ELEMENT_ID.loginContainer);
     }
 
-    init() {
-        this.displayLoader();
-        this.getClearedMainContainer()
-            .then(mainContainer => {
-                mainContainer.append(this.renderLoginForm());
-                this.hideLoader();
-            });
+    renderPage(mainContainer) {
+        mainContainer.append(this.renderLoginForm());
     }
 
     renderLoginForm() {

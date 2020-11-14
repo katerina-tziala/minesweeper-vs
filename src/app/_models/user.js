@@ -2,7 +2,6 @@
 
 import { AppModel } from "./_app-model";
 
-
 export class User extends AppModel {
 
 	constructor(id, username, gameRoomId) {
@@ -11,8 +10,5 @@ export class User extends AppModel {
         this.username = username;
         this.gameRoomId = gameRoomId;
 	}
-
-
-
 
 }

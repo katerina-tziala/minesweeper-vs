@@ -11,6 +11,15 @@ export class Page {
 		return ElementHandler.getByID(DOM_ELEMENT_ID.main);
 	}
 
+    init() {
+        this.displayLoader();
+        this.getClearedMainContainer()
+            .then(mainContainer => {
+                this.renderPage(mainContainer);
+                this.hideLoader();
+            });
+    }
+
 	getClearedMainContainer() {
 		return this.mainContainer.then(mainContainer => {
 			ElementHandler.clearContent(mainContainer);
@@ -30,4 +39,6 @@ export class Page {
 		self.toastNotifications.show(errorMessage);
 	}
 
+    //
+    renderPage(mainContainer) {}
 }

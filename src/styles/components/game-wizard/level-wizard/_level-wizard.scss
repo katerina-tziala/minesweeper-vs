@@ -1,7 +1,3 @@
-@import "../../button/button";
-@import "../../input/number-input";
-@import "../../dropdown-select/dropdown-select";
-
 .level-wizard-container {
     @extend %wizard-section;
 }

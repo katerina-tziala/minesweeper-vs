@@ -35,8 +35,8 @@
 
 .btn-icon--normal {
     @include circle(getSize("btn-height"));
-    font-size  : 21px;
-    line-height: 22px;
+    font-size  : 20px;
+    line-height: 19px;
 }
 
 .btn-icon--small {

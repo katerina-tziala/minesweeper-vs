@@ -12,7 +12,7 @@
     width                  : 100%;
 
     >.dropdown-btn-label {
-        @extend ._capitalize-first-letter;
+        @extend %capitalize-first-letter;
         flex-grow: 1;
         text-align: left;
     }

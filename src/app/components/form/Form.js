@@ -10,7 +10,6 @@ import { UserInputsGroupController } from "UserInputs";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./form.constants";
 
 export class Form {
-	#inputControllers = {};
 	#onFormSubmission;
     #inputsGroup;
 

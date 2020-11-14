@@ -17,13 +17,8 @@ export class HomePage extends Page {
         this.selectGameType = selectGameType;
     }
 
-    init() {
-        this.displayLoader();
-        this.getClearedMainContainer()
-            .then(mainContainer => {
-                mainContainer.append(this.generateMenu());
-                this.hideLoader();
-            });
+    renderPage(mainContainer) {
+        mainContainer.append(this.generateMenu());
     }
 
     generateMenu() {

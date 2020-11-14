@@ -15,7 +15,7 @@ import { StateLoader } from "../../components/loaders/state-loader/state-loader"
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
 
-import { GameWizard } from "../../components/game-wizard/game-wizard";
+import { GameWizard } from "./game-wizard/game-wizard";
 
 
 
@@ -39,17 +39,10 @@ export class GamePage extends Page {
         return this.#gameType;
     }
 
-    init() {
-        this.displayLoader();
-        this.getClearedMainContainer()
-            .then(mainContainer => {
-
-                mainContainer.append(this.gameWizard.generateWizard());
-                console.log("game page");
-                console.log(this.gameType);
-
-                this.hideLoader();
-            });
+    renderPage(mainContainer) {
+        mainContainer.append(this.gameWizard.generateWizard());
+        // console.log("game page");
+        console.log(this.gameType);
     }
 
 

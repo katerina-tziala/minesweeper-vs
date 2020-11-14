@@ -21,6 +21,11 @@
     align-content: flex-start;
 }
 
+%second-axis-end {
+    align-items: flex-end;
+    align-content: flex-end;
+}
+
 %center-center {
 	@extend %flexbox;
     @extend %first-axis-centered;
@@ -31,4 +36,10 @@
 	@extend %flexbox;
 	@extend %first-axis-start;
     @extend %second-axis-centered;
+}
+
+%center-end {
+	@extend %flexbox;
+    @extend %first-axis-centered;
+	@extend %second-axis-end;
 }

@@ -22,7 +22,7 @@
 }
 
 .error-message {
-    @extend ._capitalize-first-letter;
+    @extend %capitalize-first-letter;
     position     : absolute;
     right        : 0;
     top          : 30px;
