@@ -8,23 +8,27 @@ import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager"
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone, roundUpToNextDecade } from "~/_utils/utils";
 
-import { DropdownSelect, Switcher } from "UserInputs";
+import { UserInputsGroupController, DropdownSelect, Switcher } from "UserInputs";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS, SETTINGS_BTN } from "./settings-controller.constants";
 import { SettingsOptionsHelper } from "./settings-options-helper";
 import { SettingsViewHelper } from "./settings-view-helper";
 
 export class SettingsController {
-    #inputControllers;
     #settings;
     #gameSettingsHidden;
     #expanded;
+    #inputsGroup;
 
     constructor() {
-        this.#inputControllers = {};
+        this.#inputsGroup = new UserInputsGroupController();
         this.gameSettingsHidden = true;
         this.expanded = false;
         this.init();
+    }
+
+    get inputsGroup() {
+        return this.#inputsGroup;
     }
 
     get settings() {
@@ -54,15 +58,6 @@ export class SettingsController {
         this.#gameSettingsHidden = state;
     }
 
-    set inputControllers(controller) {
-        delete this.#inputControllers[controller.name];
-        this.#inputControllers[controller.name] = controller;
-    }
-
-    get inputControllers() {
-        return Object.values(this.#inputControllers);
-    }
-
     get settingsContainer() {
         return ElementHandler.getByID(DOM_ELEMENT_ID.container);
     }
@@ -73,10 +68,6 @@ export class SettingsController {
 
     get settingsBtn() {
         return ElementHandler.getByID(DOM_ELEMENT_ID.settingsBtn);
-    }
-
-    getInputController(key) {
-        return this.#inputControllers[key];
     }
 
     init() {
@@ -131,24 +122,24 @@ export class SettingsController {
     initThemeTypeController() {
         const params = this.getThemeTypeControllerParams(SettingType.Theme);
         params.value = this.settings.theme === Theme.Dark;
-        this.inputControllers = new Switcher(params, this.onDarkThemeChange.bind(this));
+        this.inputsGroup.inputControllers = new Switcher(params, this.onDarkThemeChange.bind(this));
     }
 
     initMineTypeController() {
         const params = this.getThemeTypeControllerParams(SettingType.MineType);
         params.options = SettingsOptionsHelper.getMineTypeOptions();
-        this.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
+        this.inputsGroup.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
     }
 
     initColorController(settingName, settingToCheckName) {
         const params = this.getThemeTypeControllerParams(settingName);
         params.options = SettingsOptionsHelper.getAllowedColorOptions(this.settings[settingToCheckName]);
-        this.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
+        this.inputsGroup.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
     }
 
     renderSetting(key) {
         const settingsSection = SettingsViewHelper.generateSettingSection(key);
-        settingsSection.append(this.getInputController(key).generateInputField());
+        settingsSection.append(this.inputsGroup.getInputController(key).generateInputField());
         return settingsSection;
     }
 
@@ -203,7 +194,7 @@ export class SettingsController {
 
     onDropdownExpanded(expandedName) {
         const toCollapse = DROPDOWNS.filter(type => type !== expandedName);
-        toCollapse.forEach(type => this.getInputController(type).collapseDropdown());
+        toCollapse.forEach(type => this.inputsGroup.getInputController(type).collapseDropdown());
     }
 
     onDarkThemeChange(params) {
@@ -234,7 +225,7 @@ export class SettingsController {
 
     updateColorDropdown(changedField, fieldToUpdate) {
         const newOptions = SettingsOptionsHelper.getAllowedColorOptions(this.settings[changedField]);
-        this.getInputController(fieldToUpdate).updateOptions(newOptions);
+        this.inputsGroup.getInputController(fieldToUpdate).updateOptions(newOptions);
     }
 
 }

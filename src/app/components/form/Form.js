@@ -5,24 +5,23 @@ import { CLEAR_BTN } from "~/_constants/btn-text.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { preventInteraction } from "~/_utils/utils";
 
+import { UserInputsGroupController } from "UserInputs";
+
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./form.constants";
 
 export class Form {
 	#inputControllers = {};
 	#onFormSubmission;
+    #inputsGroup;
 
 	constructor(formSubmission) {
+        this.#inputsGroup = new UserInputsGroupController();
 		this.#onFormSubmission = formSubmission;
 	}
 
-	set inputControllers(controller) {
-		delete this.#inputControllers[controller.name];
-		this.#inputControllers[controller.name] = controller;
-	}
-
-	get inputControllers() {
-		return Object.values(this.#inputControllers);
-	}
+    get inputsGroup() {
+        return this.#inputsGroup;
+    }
 
 	get submissionBtnId() {
 		return DOM_ELEMENT_ID.submitBtn;
@@ -33,17 +32,11 @@ export class Form {
 	}
 
 	get isValid() {
-		return this.inputControllers.every(inputController => inputController.valid);
+		return this.inputsGroup.isValid;
 	}
 
 	get formValues() {
-		const formValues = {};
-		this.inputControllers.forEach(input => formValues[input.name] = input.value);
-		return formValues;
-	}
-
-	getInputController(key) {
-		return this.#inputControllers[key];
+		return this.inputsGroup.inputData();
 	}
 
 	renderFormTitle(title) {

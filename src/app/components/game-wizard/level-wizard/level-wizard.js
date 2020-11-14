@@ -11,20 +11,24 @@ import { GameType } from "~/_enums/game-type.enum";
 import { GameLevel } from "~/_enums/game-level.enum";
 import { LevelSettings } from "~/_models/level-settings/level-settings";
 
-import { DropdownSelect, NumberInput } from "UserInputs";
+import { UserInputsGroupController, DropdownSelect, NumberInput } from "UserInputs";
 
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 import { LevelWizardViewManager } from "./level-wizard-view-manager";
 
 export class LevelWizard {
     #settings;
-    #levelController;
-    #levelSettingsControllers = {};
+    #inputsGroup;
 
     constructor(settings) {
         this.settings = settings;
+        this.#inputsGroup = new UserInputsGroupController();
         this.initLevelController();
         this.initLevelSettingsControllers();
+    }
+
+    get inputsGroup() {
+        return this.#inputsGroup;
     }
 
     set settings(settings) {
@@ -36,14 +40,6 @@ export class LevelWizard {
 
     get settings() {
         return this.#settings;
-    }
-
-    set levelController(controller) {
-        this.#levelController = controller;
-    }
-
-    get levelController() {
-        return this.#levelController;
     }
 
     get levelProperties() {
@@ -65,17 +61,8 @@ export class LevelWizard {
         return undefined;
     }
 
-    set levelSettingsControllers(controller) {
-        delete this.#levelSettingsControllers[controller.name];
-        this.#levelSettingsControllers[controller.name] = controller;
-    }
-
     get levelSettingsControllers() {
-        return Object.values(this.#levelSettingsControllers);
-    }
-
-    getSettingsController(key) {
-		return this.#levelSettingsControllers[key];
+        return this.inputsGroup.inputControllers.filter(controller => controller.name !== LEVEL_SETTINGS_PROPERTIES.level);
     }
 
     getPropertyBoundaries(levelProperty) {
@@ -91,14 +78,14 @@ export class LevelWizard {
             value: this.settings.level,
             options: LevelWizardViewManager.levelOptions()
         };
-        this.levelController = new DropdownSelect(params, this.onLevelChange.bind(this));
+        this.inputsGroup.inputControllers = new DropdownSelect(params, this.onLevelChange.bind(this));
     }
 
     initLevelSettingsControllers() {
         this.levelProperties.forEach(levelProperty => {
             const controller = new NumberInput(levelProperty, this.settings[levelProperty].toString(), this.onCustomLevelParamChange.bind(this));
             controller.boundaries = this.getPropertyBoundaries(levelProperty);
-            this.levelSettingsControllers = controller;
+            this.inputsGroup.inputControllers = controller;
         });
     }
 
@@ -110,7 +97,8 @@ export class LevelWizard {
 
     generateLevelWizardInputs() {
         const fragment = document.createDocumentFragment();
-        LevelWizardViewManager.generateWizardInputSection(fragment, LEVEL_SETTINGS_PROPERTIES.level, this.levelController.generateInputField());
+        const levelInput = this.inputsGroup.getInputController(LEVEL_SETTINGS_PROPERTIES.level).generateInputField();
+        LevelWizardViewManager.generateWizardInputSection(fragment, LEVEL_SETTINGS_PROPERTIES.level, levelInput);
         this.levelSettingsControllers.forEach(controller => {
             controller.disabled = !this.isCustomLevel;
             const inputField = controller.generateInputField();
@@ -145,7 +133,7 @@ export class LevelWizard {
         const disabledControllers = restSettingsControllers.filter(controller => controller.disabled);
         disabledControllers.forEach(controller => controller.enable());
         if (params.name !== LEVEL_SETTINGS_PROPERTIES.numberOfMines) {
-            const numberOfMinesController = this.getSettingsController(LEVEL_SETTINGS_PROPERTIES.numberOfMines);
+            const numberOfMinesController = this.inputsGroup.getInputController(LEVEL_SETTINGS_PROPERTIES.numberOfMines);
             numberOfMinesController.boundaries = this.numberOfMinesBoundaries;
             numberOfMinesController.validateInputTypeValue();
         }
