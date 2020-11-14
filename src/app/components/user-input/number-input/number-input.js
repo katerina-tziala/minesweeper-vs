@@ -49,6 +49,14 @@ export class NumberInput extends TextInput {
         return FIELD_ERROR.invalidNumber;
     }
 
+    get boundariesError() {
+        let message = FIELD_ERROR.outOfLimits;
+        Object.keys(this.boundaries).forEach(key => {
+          message = replaceStringParameter(message, this.boundaries[key], key);
+        });
+        return message;
+      }
+
     get controllsID() {
         return DOM_ELEMENT_CLASS.inputControls + TYPOGRAPHY.doubleUnderscore + this.name;
     }
@@ -97,53 +105,58 @@ export class NumberInput extends TextInput {
 
     updateValue(step) {
         if (Validator.isEmptyString(this.value)) {
-            if (this.boundaries) {
-                console.log(this.valueInteger);
-                console.log(this.value);
-                console.log(this.boundaries);
-                return;
-            }
-            this.value = "0";
+            const newValue = this.getInitialValueWhenFieldIsCleared(step);
+            this.value = newValue.toString();
             this.setFieldValue();
             this.validateValue();
             return;
         }
-
-
         if (!this.isUndefined) {
-            this.value = (this.valueInteger + step).toString();
+            this.value = this.getValueBasedOnStep(step).toString();
             this.setFieldValue();
             this.validateValue();
         }
     }
 
+    getInitialValueWhenFieldIsCleared(step) {
+        if (this.boundaries) {
+            const newValue = (step > 0) ? this.boundaries.max : this.boundaries.min;
+            return newValue;
+        }
+        return 0;
+    }
 
-
+    getValueBasedOnStep(step) {
+        let newValue = this.valueInteger + step;
+        if (this.boundaries && this.boundaries.max < newValue) {
+            return this.boundaries.min;
+        }
+        if (this.boundaries && this.boundaries.min > newValue) {
+            return this.boundaries.max;
+        }
+        return newValue;
+    }
 
     validateInputTypeValue() {
-        console.log("validateInputTypeValue");
-        console.log(this.isUndefined);
-        console.log(this.valueInteger);
-        console.log(this.value);
-
         if (this.isUndefined) {
             this.valid = false;
             this.showError();
             this.notifyForChanges();
             return;
         }
-
-
-        const numberValue = this.valueInteger;
-        if (this.boundaries) {
-            console.log(numberValue);
-            console.log(this.value);
-            console.log(this.boundaries);
+        if (!this.valueInLimits()) {
+            this.valid = false;
+            this.showError(this.boundariesError);
+            this.notifyForChanges();
             return;
         }
         this.valid = true;
         this.hideError();
         this.notifyForChanges();
+    }
+
+    valueInLimits() {
+        return this.boundaries ? Validator.isValueInLimits(this.valueInteger, this.boundaries): true;
     }
 
     showError(message = this.inputError) {
@@ -156,6 +169,11 @@ export class NumberInput extends TextInput {
         this.toggleControllButtons(true);
     }
 
+    toggleControllButtons(show = false) {
+        ElementHandler.getByID(this.controllsID).then(controllsContainer => {
+            show ? ElementHandler.display(controllsContainer) : ElementHandler.hide(controllsContainer);
+        });
+    }
 
     disable() {
         this.disabled = true;
@@ -170,11 +188,7 @@ export class NumberInput extends TextInput {
         //this.dropdownBtn.then(button => ElementHandler.setDisabled(button, false));
     }
 
-    toggleControllButtons(show = false) {
-        ElementHandler.getByID(this.controllsID).then(controllsContainer => {
-            show ? ElementHandler.display(controllsContainer) : ElementHandler.hide(controllsContainer);
-        });
-    }
+
 
     // updateControllButtonsState(disabled) {
     //    // document.querySelectorAll(`.${DOM_ELEMENT_CLASS.inputControlBtn}`)

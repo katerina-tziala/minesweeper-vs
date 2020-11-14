@@ -30,10 +30,9 @@ export const LIMITS = {
         max: 30,
         min: 9
     },
-    mines: {
-        max: 0,
-        min: 16
+    numberOfMines: {
+        min: 16,
+        max: 0
     },
-    minMinesPercentage: 0.1,
     maxMinesPercentage: 0.9,
 };

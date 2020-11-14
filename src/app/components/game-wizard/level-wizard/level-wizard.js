@@ -5,8 +5,10 @@ import { ElementGenerator } from "../../../utils/element-generator";
 import { ElementHandler } from "../../../utils/element-handler";
 import { AriaHandler } from "../../../utils/aria-handler";
 
+import { clone } from "../../../utils/utils";
 
-import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, CONTENT } from "./level-wizard.constants";
+
+import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 
 import { LevelWizardViewManager } from "./level-wizard-view-manager";
 
@@ -68,6 +70,18 @@ export class LevelWizard {
         return this.settings.level === GameLevel.Custom;
     }
 
+    get numberOfMinesBoundaries() {
+        if (this.isCustomLevel) {
+            const numberOfBoardTiles = this.settings.rows * this.settings.columns;
+            const boundaries = clone(LIMITS.numberOfMines);
+            boundaries.max = Math.floor(numberOfBoardTiles * LIMITS.maxMinesPercentage);
+            return boundaries;
+        } else {
+            return undefined;
+        }
+
+    }
+
     getLevelSettingController(key) {
         return this.#levelSettingsControllers[key];
     }
@@ -83,8 +97,17 @@ export class LevelWizard {
 
     initLevelSettingsControllers() {
         this.levelProperties.forEach(levelProperty => {
-            this.levelSettingsControllers = new NumberInput(levelProperty, this.settings[levelProperty].toString(), this.onCustomLevelParamChange.bind(this));
+            const controller = new NumberInput(levelProperty, this.settings[levelProperty].toString(), this.onCustomLevelParamChange.bind(this));
+            controller.boundaries = this.getPropertyBoundaries(levelProperty);
+            this.levelSettingsControllers = controller;
         });
+    }
+
+    getPropertyBoundaries(levelProperty) {
+        if (levelProperty !== LEVEL_SETTINGS_PROPERTIES.numberOfMines) {
+            return LIMITS.customLevelBoard;
+        }
+        return this.numberOfMinesBoundaries;
     }
 
     generateLevelWizard() {
@@ -114,7 +137,25 @@ export class LevelWizard {
     }
 
     onCustomLevelParamChange(params) {
-        console.log(params);
+        switch (params.name) {
+            case LEVEL_SETTINGS_PROPERTIES.rows:
+                console.log("its row");
+
+                console.log(params);
+
+                break;
+            case LEVEL_SETTINGS_PROPERTIES.columns:
+                console.log("its columns");
+
+                console.log(params);
+                break;
+
+            default:// number of mines
+                console.log("its number of mines");
+
+                console.log(params);
+                break;
+        }
     }
 
 

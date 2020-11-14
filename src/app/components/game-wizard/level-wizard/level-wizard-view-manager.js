@@ -3,14 +3,9 @@
 import { TYPOGRAPHY } from "../../../utils/constants/typography.constants";
 import { ElementGenerator } from "../../../utils/element-generator";
 import { ElementHandler } from "../../../utils/element-handler";
-import { AriaHandler } from "../../../utils/aria-handler";
 
-
-import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, CONTENT } from "./level-wizard.constants";
-import { GameType } from "../../../_enums/game-type.enum";
+import { DOM_ELEMENT_CLASS, CONTENT } from "./level-wizard.constants";
 import { GameLevel } from "../../../_enums/game-level.enum";
-import { LevelSettings } from "../../../_models/level-settings/level-settings";
-
 
 export class LevelWizardViewManager {
 

@@ -1,27 +1,19 @@
 @import "../../button/button";
 @import "../../input/number-input";
-
-
 @import "../../dropdown-select/dropdown-select";
-//
 
 .level-wizard-container {
-    // border: 2px solid red;
     display                 : grid;
     align-content           : start;
     grid-template-columns   : max-content auto auto;
     grid-gap                : 10px;
-    // padding              : 0 10px;
 }
-
-
 
 .level-option {
     text-transform: capitalize;
 }
 
 .level-property-tag {
-    // border: 1px solid green;
     text-transform: capitalize;
     height        : getSize("input-height");
     line-height   : 40px;
@@ -29,15 +21,17 @@
 }
 
 .level-property-container {
-    // border: 1px solid blue;
     height: getSize("input-height");
     min-width: 134px;
-    >.dropdown-container >.dropdown-listbox-container {
+
+    .dropdown-listbox-container {
         z-index: 500;
     }
+
     >.number-input-container {
         margin: auto;
+        .error-message {
+            width: 244px;
+        }
     }
-
-    // @extend %center-center;
 }
