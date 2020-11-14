@@ -8,7 +8,7 @@ import { clone, replaceStringParameter } from "../../../_utils/utils";
 import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from "./text-input.constants";
 
 import { UserInput } from "../user-input";
-import { InputError } from "../input-error/input-error";
+import { InputError } from "../../input-error/input-error";
 
 export class TextInput extends UserInput {
     #errorController;

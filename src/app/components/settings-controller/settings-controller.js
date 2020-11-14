@@ -9,8 +9,7 @@ import { AriaHandler } from "../../_utils/aria-handler";
 import { LocalStorageHelper } from "../../_utils/local-storage-helper";
 import { clone, roundUpToNextDecade } from "../../_utils/utils";
 
-import { Switcher } from "../../components/user-input/switcher/switcher";
-import { DropdownSelect } from "../../components/user-input/dropdown-select/dropdown-select";
+import { DropdownSelect, Switcher } from "../../_lib_user-inputs/user-inputs.module";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DROPDOWNS, SETTINGS_BTN } from "./settings-controller.constants";
 import { SettingsOptionsHelper } from "./settings-options-helper";

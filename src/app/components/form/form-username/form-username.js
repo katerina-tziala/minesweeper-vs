@@ -3,7 +3,7 @@
 import { ElementGenerator } from "../../../_utils/element-generator";
 
 import { Form } from "../form";
-import { TextInput } from "../../user-input/text-input/text-input";
+import { TextInput } from "../../../_lib_user-inputs/user-inputs.module";
 
 import { DOM_ELEMENT_CLASS, FIELD } from "./form-username.constants";
 

@@ -12,8 +12,7 @@ import { GameType } from "../../../_enums/game-type.enum";
 import { GameLevel } from "../../../_enums/game-level.enum";
 import { LevelSettings } from "../../../_models/level-settings/level-settings";
 
-import { DropdownSelect } from "../../user-input/dropdown-select/dropdown-select";
-import { NumberInput } from "../../user-input/number-input/number-input";
+import { DropdownSelect, NumberInput } from "../../../_lib_user-inputs/user-inputs.module";
 
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 import { LevelWizardViewManager } from "./level-wizard-view-manager";
