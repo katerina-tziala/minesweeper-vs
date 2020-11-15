@@ -7,8 +7,7 @@ import { clone } from "~/_utils/utils";
 
 import { UserInputsGroupController, DropdownSelect, NumberInput } from "UserInputs";
 
-import { GameLevel } from "~/_enums/game-level.enum";
-import { LevelSettings } from "Game";
+import { GameLevel, LevelSettings } from "Game";
 
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 import { WizardViewManager } from "../wizard-view-manager";

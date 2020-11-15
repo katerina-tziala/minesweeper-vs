@@ -128,6 +128,7 @@ export class GameWizard {
         console.log("onPlay");
         // console.log(self.user);
         // console.log(self.settingsController.settings);
+        //new GameOriginal();
         console.log(this.player);
     }
 

@@ -1,7 +1,7 @@
 "use strict";
 
 import { AppModel } from "~/_models/_app-model";
-import { GameLevel } from "~/_enums/game-level.enum";
+import { GameLevel } from "../../_enums/game-level.enum";
 import { LEVEL_PARAMS } from "./level-setting-constants";
 import { sortNumbersArrayAsc } from "~/_utils/utils";
 

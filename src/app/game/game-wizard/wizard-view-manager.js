@@ -4,7 +4,6 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS, CONTENT } from "./game-wizard.constants";
-import { GameLevel } from "~/_enums/game-level.enum";
 
 export class WizardViewManager {
 

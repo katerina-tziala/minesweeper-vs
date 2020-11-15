@@ -12,7 +12,7 @@ import { LocalStorageHelper } from "./_utils/local-storage-helper";
 
 import { User } from "./_models/user";
 import { PageType } from "./_enums/page-type.enum";
-import { GameType } from "./_enums/game-type.enum";
+import { GameType } from "Game";
 
 
 export class App {
