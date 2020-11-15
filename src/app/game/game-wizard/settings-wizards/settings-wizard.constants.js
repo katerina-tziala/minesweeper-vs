@@ -2,7 +2,8 @@
 
 export const DOM_ELEMENT_CLASS = {
     propertyTag: "wizard-property-tag",
-    propertyContainer: "wizard-property-container"
+    propertyContainer: "wizard-property-container",
+    sectionContainer: "wizard-section-container",
 };
 
 export const CONTENT = {
@@ -11,5 +12,6 @@ export const CONTENT = {
     columns: "minefield columns",
     numberOfMines: "number of mines",
     marks: "marks",
-    wrongFlagHint: "wrong flag hint"
+    wrongFlagHint: "wrong flag hint",
+    vsType: "VS mode"
 };

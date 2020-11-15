@@ -1,17 +1,21 @@
 @import "../button/button";
 
 @import "../input/number-input";
-@import "../dropdown-select/dropdown-select";
+
 @import "../switcher/switcher";
 
+@import "../../components/form/form_username";
+@import "../dropdown-select/dropdown-select";
 
-@import "./game-wizard-utils";
 @import "./level-wizard/level-wizard";
 @import "./options-wizard/options-wizard";
+
+@import "./vs-type-wizard/vs-type-wizard";
 
 
 .game-wizard-container {
     min-width: 320px;
+    max-width: 320px;
     padding  : 15px;
     animation: slide-in 0.8s ease;
     position : relative;
@@ -22,12 +26,11 @@
     position: relative;
 
     >h2 {
-        flex-grow     : 1;
-        text-transform: capitalize;
-        padding-right : 10px;
-        max-width     : 245px;
-        min-height    : 26px;
-        line-height   : 26px;
+        flex-grow    : 1;
+        padding-right: 10px;
+        max-width    : 245px;
+        min-height   : 26px;
+        line-height  : 26px;
 
     }
 
@@ -38,34 +41,49 @@
         position: absolute;
         right   : 0px;
         top     : -2px;
+
+        &::after {
+            max-width: 13px;
+        }
     }
 }
 
 .game-wizard-content {
-    padding: 0 10px;
-    margin : 10px 0 20px;
-}
+    padding      : 0 10px;
+    // margin-top: 20px;
 
+}
 
 
 
 .game-wizard-actions-container {
     width: 100%;
     @extend %between-center;
+
+    >.btn-text {
+        margin-top: 20px;
+    }
+}
+
+.wizard-section-container {
+    @extend %start-center;
+    margin-top: 10px;
 }
 
 .wizard-property-tag {
     text-transform: capitalize;
     height        : getSize("input-height");
     line-height   : 40px;
-    grid-column   : 1 / span 2;
     font-style    : italic;
     font-weight   : 700;
+    flex-grow     : 1;
 }
 
 .wizard-property-container {
     height   : getSize("input-height");
     min-width: 100px;
+    max-width: 120px;
+    min-width: 120px;
 }
 
 

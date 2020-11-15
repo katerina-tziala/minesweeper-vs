@@ -35,7 +35,7 @@ export class Form {
 	}
 
 	get formValues() {
-		return this.inputsGroup.inputData();
+		return this.inputsGroup.inputData;
 	}
 
 	renderFormTitle(title) {

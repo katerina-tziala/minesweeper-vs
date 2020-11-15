@@ -18,12 +18,11 @@ export const JOIN_BTN = {
 	actionType: "click"
 };
 
-export const PLAY_BTN = {
-	innerHTML: "play",
+export const ADD_PLAYER_BTN = {
+	innerHTML: "add",
 	className: "btn-text btn-primary",
 	attributes: {
-        "aria-label": "play game",
-        "id": "play_game",
+		"aria-label": "add player",
 	},
 	actionType: "click"
 };
@@ -36,3 +35,18 @@ export const RESET_BTN = {
 	},
 	actionType: "click"
 };
+
+
+
+export const PLAY_BTN = {
+	innerHTML: "play",
+	className: "btn-text btn-primary",
+	attributes: {
+        "aria-label": "play game",
+        "id": "play_game",
+	},
+	actionType: "click"
+};
+
+
+

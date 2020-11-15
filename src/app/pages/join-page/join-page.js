@@ -4,15 +4,15 @@ import "../../../styles/pages/_login.scss";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "../../_utils/local-storage-helper";
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 import { Page } from "../page";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, FORM_PARAMS } from "./join-page.constants";
 
-import { FormUsername } from "../../components/form/form-username/form-username";
-import { StateLoader } from "../../components/loaders/state-loader/state-loader";
+import { FormUsername } from "~/components/form/form-username/form-username";
+import { StateLoader } from "~/components/loaders/state-loader/state-loader";
 
-import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
+import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 
 export class JoinPage extends Page {
     #loginForm;

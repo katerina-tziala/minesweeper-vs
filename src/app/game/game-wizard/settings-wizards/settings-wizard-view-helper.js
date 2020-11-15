@@ -22,14 +22,16 @@ export class SettingsWizardViewHelper {
         return propertyContainer;
     }
 
-    static generateWizardInputSection(fragment, propertyName, inputField, propertyClass) {
+    static generateWizardInputSection(propertyName, inputField, propertyClass) {
+        const sectionContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.sectionContainer]);
         const propertyTag = SettingsWizardViewHelper.generatePropertyTag(propertyName);
         const propertyContainer = SettingsWizardViewHelper.generatePropertyContainer(propertyName);
         if (propertyClass) {
             ElementHandler.addStyleClass(propertyContainer, propertyClass);
         }
         propertyContainer.append(inputField);
-        fragment.append(propertyTag, propertyContainer);
+        sectionContainer.append(propertyTag, propertyContainer);
+        return sectionContainer;
     }
 
     static updateControllerContainer(controller, isCustomLevel) {

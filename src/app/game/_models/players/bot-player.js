@@ -1,21 +1,15 @@
 "use strict";
 
-import { AppModel } from "~/_models/_app-model";
+import { Player } from "./player";
 
-export class Player extends AppModel {
+export class BotPlayer extends Player {
 
-    constructor(id, name, opponent = false) {
-        super();
-        this.id = id;
-        this.name = name;
-        // this.colorType = colorType;
-        this.opponent = opponent;
-        // this.entered = true;
-        // this.initState();
+    constructor() {
+        super("minesweeperBot", "Minesweeper-Bot", true);
     }
 
     get isBot() {
-        return false;
+        return true;
     }
 
 

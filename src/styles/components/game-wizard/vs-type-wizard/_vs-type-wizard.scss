@@ -1,0 +1,23 @@
+.vstype-wizard-container {
+
+    .dropdown-container {
+        margin-top: 4px;
+
+        >.dropdown-listbox-container {
+            z-index: 800;
+        }
+    }
+}
+
+.vs-type-option {
+    text-transform: capitalize;
+}
+
+.vs-type-explanation {
+    // max-width       : 270px;
+    width: 100%;
+    padding         : 10px 10px 0;
+    text-align      : center;
+    font-style      : italic;
+    @extend %capitalize-first-letter;
+}

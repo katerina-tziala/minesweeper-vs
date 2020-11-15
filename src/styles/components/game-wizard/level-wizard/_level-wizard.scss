@@ -1,16 +1,17 @@
-.level-wizard-container {
-    @extend %wizard-section;
-}
-
 .level-option {
     text-transform: capitalize;
 }
 
 .level-property-container {
 
-    .dropdown-listbox-container {
-        z-index: 800;
+    .dropdown-container {
+        margin-top: 4px;
+
+        >.dropdown-listbox-container {
+            z-index  : 800;
+        }
     }
+
 
     >.number-input-container {
         margin: auto;

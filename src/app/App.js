@@ -41,7 +41,7 @@ export class App {
         // this.setInterface();
 
         //this.onGameNavigation(GameType.Bot);
-        this.onGameNavigation(GameType.Original);
+        this.onGameNavigation(GameType.Bot);
         // remove document listeners!!!
     }
 

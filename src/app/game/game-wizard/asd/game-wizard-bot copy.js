@@ -4,22 +4,42 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { Switcher } from "UserInputs";
 
-import { GameType, OptionsSettings, Player, GameOriginal } from "Game";
+import { GameType, OptionsSettings, BotPlayer, Player, GameOriginal } from "Game";
 
-import { LevelWizard, OptionsWizard } from "./settings-wizards/settings-wizards";
+import { LevelWizard, OptionsWizard } from "../settings-wizards/settings-wizards";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wizard.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "../game-wizard.constants";
 
-import { GameWizard } from "./game-wizard";
+import { GameWizardVS } from "../game-wizard-vs";
 
-export class GameWizardBot extends GameWizard {
+export class GameWizardBot extends GameWizardVS {
     #optionsSettings;
     #optionsWizard;
 
     constructor(onClose, submitGame) {
         super(onClose, submitGame)
-        this.init();
+       // this.init();
+        console.log(this.botPlayer);
     }
+
+    get type() {
+        return GameType.Bot;
+    }
+
+    get botPlayer() {
+        return new BotPlayer(self.settingsController.settings.opponentColorType);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     set optionsSettings(optionsSettings) {
         this.#optionsSettings = optionsSettings;

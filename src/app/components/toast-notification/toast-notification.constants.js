@@ -27,5 +27,10 @@ export const NOTIFICATION_MESSAGE = {
 		type: "error",
 		title: "Oups!",
 		content: ["Username is not available!", "Please join with a different username."]
+    },
+    opponentPlayerSameName: {
+		type: "error",
+		title: "Oups!",
+		content: ["Opponent's name is same as yours!", "Please add a different name for the opponent."]
 	}
 };

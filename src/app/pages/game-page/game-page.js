@@ -15,8 +15,10 @@ import { StateLoader } from "../../components/loaders/state-loader/state-loader"
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
 
-import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original";
-import { GameWizardBot } from "~/game/game-wizard/game-wizard-bot";
+import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original/game-wizard-original";
+import { GameWizardVS } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs";
+import { GameWizardBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-bot";
+
 
 
 
@@ -44,7 +46,9 @@ export class GamePage extends Page {
             case GameType.Bot:
                 this.gameWizard = new GameWizardBot(this.navigateToHome, this.onPlayGame.bind(this));
                 break;
-
+                case GameType.Friend:
+                    this.gameWizard = new GameWizardVS(this.navigateToHome, this.onPlayGame.bind(this));
+                    break;
             default:
                 console.log(gameType);
                 break;

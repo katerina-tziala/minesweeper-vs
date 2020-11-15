@@ -1,17 +1,15 @@
 "use strict";
 import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
-import { RESET_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
+import { ADD_PLAYER_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
 
 export const BUTTONS = {
     close: CLOSE_BTN,
-    reset: RESET_BTN,
+    // reset: RESET_BTN,
     play: PLAY_BTN
 };
 
 export const DOM_ELEMENT_ID = {
     wizardContent: "game-wizard-content",
-    wizardTitle: "game-wizard-title",
-    wizardActions: "game-wizard-actions",
     playButton: "play_game"
 };
 
@@ -23,6 +21,11 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const CONTENT = {
-    original: "set up minesweeper game",
-    bot: "set up minesweeper game VS bot",
+    addPlayer: "Add Opponent:",
+    vs: "Set Up Minesweeper Game VS ###",
 };
+
+export const FORM_PARAMS = {
+	submitBtn: ADD_PLAYER_BTN
+};
+export const WIZARDS_ORDER = ["vsTypeMode", "levelSettings", "turnSettings", "optionsSettings"];

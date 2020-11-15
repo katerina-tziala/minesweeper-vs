@@ -1,87 +1,148 @@
 "use strict";
-
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { Switcher } from "UserInputs";
-
-import { GameType, OptionsSettings, Player, GameOriginal } from "Game";
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+import { GameType, OptionsSettings, LevelSettings, Player, GameOriginal } from "Game";
 
 import { LevelWizard, OptionsWizard } from "./settings-wizards/settings-wizards";
-
+import { preventInteraction, clone, replaceStringParameter } from "~/_utils/utils";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wizard.constants";
 
 export class GameWizard {
-    #levelWizard;
-    #optionsSettings;
-    #optionsWizard;
+    #player;
+    #settingsWizards = {};
+    #gameSettings = {};
 
     constructor(onClose, submitGame) {
         this.onClose = onClose;
         this.submitGame = submitGame;
+        this.player = new Player(self.user.id, self.user.username);
+        this.init();
     }
 
-    set levelWizard(levelWizard) {
-        this.#levelWizard = levelWizard;
+    set player(player) {
+        this.#player = player;
     }
 
-    get levelWizard() {
-        return this.#levelWizard;
+    get player() {
+        return this.#player;
     }
 
-    set optionsSettings(optionsSettings) {
-        this.#optionsSettings = optionsSettings;
+    get wizardTitleElement() {
+        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardTitle);
     }
 
-    get optionsSettings() {
-        return this.#optionsSettings;
+    get wizardContentElement() {
+        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardContent);
     }
 
-    get optionsWizard() {
-        return this.#optionsWizard;
+    get wizardActionsElement() {
+        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardActions);
     }
 
     get playBtn() {
         return ElementHandler.getByID(DOM_ELEMENT_ID.playButton);
     }
 
-    get wizardContent() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardContent);
+    initGameSettings() {
+        this.setLevelSettings();
+        this.setOptionsSettings();
     }
 
-    get player() {
-        return new Player(self.user.id, self.user.username, self.settingsController.settings.playerColorType);
+    setLevelSettings() {
+        const currentLevelSettings = LocalStorageHelper.retrieve("levelSettings");
+        const levelSettings = new LevelSettings();
+        if (currentLevelSettings) {
+            levelSettings.update(currentLevelSettings);
+        }
+        this.setGameSettings("levelSettings", levelSettings);
+    }
+
+    setOptionsSettings() {
+        this.setGameSettings("optionsSettings", this.getInitialOptionsSettings());
+    }
+
+    getInitialOptionsSettings() {
+        const currentOptionsSettings = LocalStorageHelper.retrieve("optionsSettings");
+        const optionsSettings = new OptionsSettings();
+        if (currentOptionsSettings) {
+            const updateData = {};
+            Object.keys(optionsSettings).forEach(key => {
+                if (currentOptionsSettings[key] !== undefined) {
+                    updateData[key] = currentOptionsSettings[key];
+                }
+            });
+            optionsSettings.update(updateData);
+        }
+        return optionsSettings;
+    }
+
+    setGameSettings(name, settings) {
+        delete this.#gameSettings[name];
+        this.#gameSettings[name] = settings;
+    }
+
+    getGameSettings(name) {
+        return this.#gameSettings[name];
+    }
+
+    setSettingsWizards(name, wizard) {
+        delete this.#settingsWizards[name];
+        this.#settingsWizards[name] = wizard;
+    }
+
+    get settingsWizards() {
+        return Object.values(this.#settingsWizards);
     }
 
     get gameSettings() {
+        return this.#gameSettings;
+    }
+
+    getSettingsWizardByName(key) {
+        return this.#settingsWizards[key];
+    }
+
+    get optionsSettings() {
+        return this.getGameSettings("optionsSettings");
+    }
+
+    get levelSettings() {
+        return this.getSettingsWizardByName("levelSettings").settings;
+    }
+
+    get gameParams() {
         return {
             id: this.type,
-            levelSettings: this.levelWizard.getLevelSettings(),
-            optionsSettings: this.optionsWizard.settings
+            levelSettings: this.levelSettings,
+            optionsSettings: this.optionsSettings
         };
     }
 
-    // init() {
-    //     this.submissionPrevented = false;
-    //     this.#levelWizard = new LevelWizard(this.onLevelValidation.bind(this));
-    //     this.optionsSettings = new OptionsSettings();
-    //     this.#optionsWizard = new OptionsWizard(this.optionsSettings, this.generateOptionsControllers());
-    // }
+    getOptionsControllerParams(type) {
+        return {
+            name: type,
+            value: this.optionsSettings[type],
+        };
+    }
 
-    // getOptionsControllerParams(type) {
-    //     return {
-    //         name: type,
-    //         value: this.optionsSettings[type],
-    //     };
-    // }
+    generateOptionsControllers() {
+        const controllers = [];
+        Object.keys(this.optionsSettings).forEach(key => {
+            const params = this.getOptionsControllerParams(key);
+            controllers.push(new Switcher(params, this.onOptionSettingChange.bind(this)));
+        });
+        return controllers;
+    }
 
-    // generateOptionsControllers() {
-    //     const controllers = [];
-    //     Object.keys(this.optionsSettings).forEach(key => {
-    //         const params = this.getOptionsControllerParams(key);
-    //         controllers.push(new Switcher(params, this.onOptionSettingChange.bind(this)));
-    //     });
-    //     return controllers;
-    // }
+    onOptionSettingChange(params) {
+        const updateData = {};
+        updateData[params.name] = params.value;
+        this.optionsSettings.update(updateData);
+        LocalStorageHelper.save("optionsSettings", this.optionsSettings);
+    }
 
     generateWizard() {
         const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
@@ -93,20 +154,6 @@ export class GameWizard {
         return wizardContainer;
     }
 
-    // renderWizardContent(wizardContainer) {
-    //     ElementHandler.clearContent(wizardContainer);
-    //     wizardContainer.append(this.generateWizardHeader());
-    //     wizardContainer.append(this.levelWizard.renderWizard());
-    //     wizardContainer.append(this.optionsWizard.renderWizard());
-    //     wizardContainer.append(this.generateWizardActions());
-    // }
-
-    // onOptionSettingChange(params) {
-    //     const updateData = {};
-    //     updateData[params.name] = params.value;
-    //     this.optionsSettings.update(updateData);
-    // }
-
     generateWizardHeader() {
         const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);
         const closeBnt = ElementGenerator.generateButton(BUTTONS.close, this.onClose.bind(this));
@@ -116,19 +163,28 @@ export class GameWizard {
 
     generateWizardTitle() {
         const wizardTitle = document.createElement("h2");
-        wizardTitle.innerHTML = CONTENT[this.type];
+        ElementHandler.setID(wizardTitle, DOM_ELEMENT_ID.wizardTitle);
+        wizardTitle.innerHTML = this.title;
         return wizardTitle;
     }
 
-    renderResetButton() {
+    generateWizardActions() {
+        const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer], DOM_ELEMENT_ID.wizardActions);
+        this.addActions(actionsContainer);
+        return actionsContainer;
+    }
+
+    addActions(actionsContainer) {
+        const buttons = this.getWizardActionButtons();
+        buttons.forEach(button => actionsContainer.append(button));
+    }
+
+    generateResetButton() {
         return ElementGenerator.generateButton(BUTTONS.reset, this.onReset.bind(this));
     }
 
-    generateWizardActions() {
-        const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
-        const buttons = this.getWizardActionButtons();
-        buttons.forEach(button => actionsContainer.append(button));
-        return actionsContainer;
+    generatePlayButton() {
+        return ElementGenerator.generateButton(this.playButtonParams, this.onPlay.bind(this));
     }
 
     onLevelValidation(valid) {
@@ -138,4 +194,41 @@ export class GameWizard {
         }
     }
 
+    // OVERRIDEN FUNCTIONS
+    get title() {
+        return TYPOGRAPHY.emptyString;
+    }
+
+    get type() {
+        return undefined;
+    }
+
+    get playButtonParams() {
+        return BUTTONS.play;
+    }
+
+    init() {
+        this.submissionPrevented = false;
+        this.initGameSettings();
+        // level wizard
+        const levelWizard = new LevelWizard(this.onLevelValidation.bind(this), this.getGameSettings("levelSettings"));
+        this.setSettingsWizards("levelSettings", levelWizard);
+        // options wizard
+        const optionsWizard = new OptionsWizard(this.getGameSettings("optionsSettings"), this.generateOptionsControllers());
+        this.setSettingsWizards("optionsSettings", optionsWizard);
+    }
+
+    renderWizardContent(wizardContent) {}
+
+    getWizardActionButtons() {
+        return [];
+    }
+
+    resetWizard() { }
+
+    onReset() { }
+
+    onPlay() {}
+
+    updateSubmissionButton() { }
 }

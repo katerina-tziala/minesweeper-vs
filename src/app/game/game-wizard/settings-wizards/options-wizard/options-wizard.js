@@ -45,7 +45,8 @@ export class OptionsWizard {
         const fragment = document.createDocumentFragment();
         this.inputsGroup.inputControllers.forEach(controller => {
             const inputField = controller.generateInputField();
-            SettingsWizardViewHelper.generateWizardInputSection(fragment, controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+            const section =  SettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+            fragment.append(section);
         });
         return fragment;
     }

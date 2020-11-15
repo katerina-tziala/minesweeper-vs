@@ -107,11 +107,13 @@ export class LevelWizard {
     renderlWizardInputs() {
         const fragment = document.createDocumentFragment();
         const levelInput = this.inputsGroup.getInputController(LEVEL_SETTINGS_PROPERTIES.level).generateInputField();
-        SettingsWizardViewHelper.generateWizardInputSection(fragment, LEVEL_SETTINGS_PROPERTIES.level, levelInput, DOM_ELEMENT_CLASS.propertyContainer);
+        const levelSection = SettingsWizardViewHelper.generateWizardInputSection(LEVEL_SETTINGS_PROPERTIES.level, levelInput, DOM_ELEMENT_CLASS.propertyContainer);
+        fragment.append(levelSection);
         this.levelSettingsControllers.forEach(controller => {
             controller.disabled = !this.isCustomLevel;
             const inputField = controller.generateInputField();
-            SettingsWizardViewHelper.generateWizardInputSection(fragment, controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+             const section = SettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+            fragment.append(section);
         });
         return fragment;
     }
@@ -124,6 +126,7 @@ export class LevelWizard {
                 this.settings.update(currentCustomLevelSettings);
             }
         }
+        LocalStorageHelper.save("levelSettings", this.settings);
         this.initLevelSettingsControllers();
         this.levelSettingsControllers.forEach(controller => {
             SettingsWizardViewHelper.updateControllerContainer(controller, this.isCustomLevel);
@@ -154,11 +157,6 @@ export class LevelWizard {
         settingsUpdate[params.name] = params.value;
         this.settings.update(settingsUpdate);
         LocalStorageHelper.save("levelSettings", this.settings);
-    }
-
-    getLevelSettings() {
-        this.settings.setMinesPositions();
-        return this.settings;
     }
 
 }

@@ -5,3 +5,7 @@
     $color     : theming.getThemeColor($theme, "error-pale-contrast");
     @include theming.setBoxTheming($background, $color);
 }
+
+@mixin setNotificationStyles($theme) {
+    @include theming.setThemeBoxShadow($theme);
+}

@@ -10,8 +10,6 @@ export const BUTTONS = {
 
 export const DOM_ELEMENT_ID = {
     wizardContent: "game-wizard-content",
-    wizardTitle: "game-wizard-title",
-    wizardActions: "game-wizard-actions",
     playButton: "play_game"
 };
 
