@@ -5,17 +5,20 @@ import { AppModel } from "~/_models/_app-model";
 export class Player extends AppModel {
 
     constructor(id, username, colorType) {
+        super();
         this.id = id;
         this.username = username;
         this.colorType = colorType;
-
-
-        // this.isBot = false;
         // this.opponent = false;
         // this.color = undefined;
         // this.entered = true;
         // this.initState();
     }
+
+    get isBot() {
+        return false;
+    }
+
 
     // initState() {
     //     this.turn = false;

@@ -12,7 +12,8 @@ export const BUTTONS = {
 
 
 export const DOM_ELEMENT_ID = {
-	loginContainer: "login-container"
+    wizardContainer: "game-wizard-container",
+    playButton: "play_game"
 };
 
 export const DOM_ELEMENT_CLASS = {

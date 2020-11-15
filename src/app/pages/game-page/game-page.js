@@ -15,7 +15,7 @@ import { StateLoader } from "../../components/loaders/state-loader/state-loader"
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
 
-import { GameWizard } from "./game-wizard/game-wizard";
+import { GameWizard } from "~/game/game-wizard/game-wizard";
 
 
 

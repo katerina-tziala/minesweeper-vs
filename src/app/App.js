@@ -18,7 +18,8 @@ import { GameType } from "./_enums/game-type.enum";
 export class App {
 
     constructor() {
-        this.user = undefined;
+
+
         this.interfaceController = undefined;
 
         self.onlineConnection = new OnlineConnection({
@@ -28,7 +29,7 @@ export class App {
         });
 
 
-        self.settingsController = new SettingsController(this.settings, false);
+        self.settingsController = new SettingsController();
 
 
 

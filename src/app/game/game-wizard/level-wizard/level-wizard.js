@@ -8,7 +8,7 @@ import { clone } from "~/_utils/utils";
 import { UserInputsGroupController, DropdownSelect, NumberInput } from "UserInputs";
 
 import { GameLevel } from "~/_enums/game-level.enum";
-import { LevelSettings } from "GameModels";
+import { LevelSettings } from "Game";
 
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 import { WizardViewManager } from "../wizard-view-manager";
@@ -17,7 +17,8 @@ export class LevelWizard {
     #settings;
     #inputsGroup;
 
-    constructor(settings) {
+    constructor(onLevelValidation, settings) {
+        this.onLevelValidation = onLevelValidation;
         this.settings = settings;
         this.#inputsGroup = new UserInputsGroupController();
         this.initLevelController();
@@ -134,8 +135,10 @@ export class LevelWizard {
         if (!params.valid) {
             LocalStorageHelper.remove("levelSettings");
             restSettingsControllers.forEach(controller => controller.disable());
+            this.onLevelValidation(false);
             return;
         }
+        this.onLevelValidation(true);
         this.updateCustomLevel(params);
         const disabledControllers = restSettingsControllers.filter(controller => controller.disabled);
         disabledControllers.forEach(controller => controller.enable());
