@@ -113,8 +113,6 @@ export class GameWizardVS extends GameWizard {
         return ElementGenerator.generateButton(BUTTONS.next, this.onNext.bind(this));
     }
 
-
-
     init() {
         this.currentStep = 0;
 
@@ -123,7 +121,6 @@ export class GameWizardVS extends GameWizard {
         // vs-type wizard
         const vsTypeWizard = new VSTypeWizard(this.onVSTypeChange.bind(this), this.vsType);
         this.setSettingsWizards("vsTypeMode", vsTypeWizard);
-
 
         super.init();
     }
@@ -150,12 +147,9 @@ export class GameWizardVS extends GameWizard {
         return this.getSettingsWizardByName(this.currentStepWizardType);
     }
 
-
     updateCurrentStep(value) {
         this.currentStep = this.currentStep + value;
     }
-
-
 
     togglePreviousButton(disabled) {
         this.toggleButton(DOM_ELEMENT_ID.previousButton, disabled);
@@ -177,11 +171,11 @@ export class GameWizardVS extends GameWizard {
         this.playBtn.then(button => button.remove());
         this.wizardActionsElement.then(wizardActions => wizardActions.append(this.generateNextButton()));
     }
+
     setLastStepButton() {
         this.nextButton.then(button => button.remove());
         this.wizardActionsElement.then(wizardActions => wizardActions.append(this.generatePlayButton()));
     }
-
 
     saveCurrentStepSettings() {
         const stepSettings = this.getGameSettings(this.currentStepWizardType);
