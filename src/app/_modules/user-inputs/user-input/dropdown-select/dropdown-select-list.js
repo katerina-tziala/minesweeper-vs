@@ -146,6 +146,7 @@ export class DropdownSelectList {
 	}
 
 	expandList(listbox, selectedOption) {
+        clearTimeout(this.transitionTimeout);
 		listbox.style.height = `${this.listHeight}px`;
 		AriaHandler.setAriaExpanded(listbox, true);
 		AriaHandler.setListTabindex(listbox.childNodes, 0);
@@ -159,12 +160,12 @@ export class DropdownSelectList {
 
 	collapseList(listbox) {
 		listbox.style.height = "0px";
-		AriaHandler.setAriaExpanded(listbox, false);
 		AriaHandler.setListTabindex(listbox.childNodes, -1);
 		const activeDescendantID = AriaHandler.getActiveDescendant(listbox);
 		ElementHandler.getByID(activeDescendantID).then(activeDescendant => {
 			DropdownSelectOption.deselectOption(activeDescendant);
-		});
+        });
+        this.transitionTimeout = setTimeout(() => AriaHandler.setAriaExpanded(listbox, false), 500);
 	}
 
 	collapseListOnOutsideClick() {

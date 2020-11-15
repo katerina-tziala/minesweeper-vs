@@ -42,6 +42,7 @@ export class App {
 
         //this.onGameNavigation(GameType.Bot);
         this.onGameNavigation(GameType.Original);
+        // remove document listeners!!!
     }
 
 

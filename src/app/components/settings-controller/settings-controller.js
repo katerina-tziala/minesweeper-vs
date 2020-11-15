@@ -97,18 +97,6 @@ export class SettingsController {
             Object.values(SettingType).forEach(settingType => settingsPanel.append(this.renderSetting(settingType)));
             container.append(settingsBtn, settingsPanel);
         });
-        this.collapseOnOutsideClick();
-    }
-
-    collapseOnOutsideClick() {
-        document.addEventListener("click", (event) => {
-            const settingsPanel = event.target.closest(".settings-panel");
-            const toggleBtn = event.target.closest("#settings-toggle-btn");
-            if (!toggleBtn && !settingsPanel && this.expanded) {
-                this.expanded = false;
-                this.collapseSettings();
-            }
-        });
     }
 
     getThemeTypeControllerParams(type) {
@@ -157,6 +145,7 @@ export class SettingsController {
             this.setPanelStyle(panel, height);
         });
         this.setSettingsButtonState();
+        this.detectOusideClick();
     }
 
     getGameSettingsHeight(settingsSections) {
@@ -171,6 +160,20 @@ export class SettingsController {
             }
         }
         return (height === 0) ? 12 : height;
+    }
+
+    detectOusideClick() {
+        document.addEventListener("click", this.collapseOnOutsideClick.bind(this));
+    }
+
+    collapseOnOutsideClick(event) {
+        const settingsPanel = event.target.closest(".settings-panel");
+        const toggleBtn = event.target.closest("#settings-toggle-btn");
+        if (!toggleBtn && !settingsPanel && this.expanded) {
+            this.expanded = false;
+            this.collapseSettings();
+        }
+        document.removeEventListener("click", this.collapseOnOutsideClick.bind(this));
     }
 
     collapseSettings() {

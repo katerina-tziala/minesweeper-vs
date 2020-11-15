@@ -16,6 +16,12 @@ import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-
 
 
 import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original";
+import { GameWizardBot } from "~/game/game-wizard/game-wizard-bot";
+
+
+
+
+
 
 import { GameType } from "Game";
 
@@ -34,6 +40,9 @@ export class GamePage extends Page {
         switch (gameType) {
             case GameType.Original:
                 this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
+                break;
+            case GameType.Bot:
+                this.gameWizard = new GameWizardBot(this.navigateToHome, this.onPlayGame.bind(this));
                 break;
 
             default:

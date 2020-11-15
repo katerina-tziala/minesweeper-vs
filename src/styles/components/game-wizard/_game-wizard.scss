@@ -24,6 +24,7 @@
     >h2 {
         flex-grow     : 1;
         text-transform: capitalize;
+        padding-right : 10px;
     }
 
     .btn-icon--close {
@@ -44,8 +45,8 @@
     height        : getSize("input-height");
     line-height   : 40px;
     grid-column   : 1 / span 2;
-    font-style: italic;
-    font-weight: 700;
+    font-style    : italic;
+    font-weight   : 700;
 }
 
 .wizard-property-container {

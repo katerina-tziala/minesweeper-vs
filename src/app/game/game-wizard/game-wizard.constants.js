@@ -20,5 +20,6 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const CONTENT = {
-    wizardTitle: "set up minesweeper game",
+    original: "set up minesweeper game",
+    bot: "set up minesweeper game VS bot",
 };

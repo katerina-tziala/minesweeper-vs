@@ -12,7 +12,7 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wiza
 
 import { GameWizard } from "./game-wizard";
 
-export class GameWizardOriginal extends GameWizard {
+export class GameWizardBot extends GameWizard {
     #optionsSettings;
     #optionsWizard;
 
@@ -42,7 +42,7 @@ export class GameWizardOriginal extends GameWizard {
     }
 
     get type() {
-        return GameType.Original;
+        return GameType.Bot;
     }
 
 
