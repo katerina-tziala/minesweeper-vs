@@ -10,15 +10,19 @@ import { LevelWizard, OptionsWizard } from "./settings-wizards/settings-wizards"
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wizard.constants";
 
-export class GameWizard {
+import { GameWizard } from "./game-wizard";
+
+
+
+
+export class GameWizardOriginal extends GameWizard {
     #levelWizard;
     #optionsSettings;
     #optionsWizard;
 
     constructor(onClose, submitGame) {
-        this.onClose = onClose;
-        this.submitGame = submitGame;
-
+        super(onClose, submitGame)
+        this.init();
     }
 
     get levelWizard() {

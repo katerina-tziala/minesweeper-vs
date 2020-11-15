@@ -4,9 +4,10 @@ import { ElementGenerator } from "HTML_DOM_Manager";
 
 import { UserInputsGroupController } from "UserInputs";
 
+import { SettingsWizardViewHelper } from "../settings-wizard-view-helper";
+
 import { DOM_ELEMENT_CLASS } from "./options-wizard.constants";
 
-import { WizardViewManager } from "../wizard-view-manager";
 
 export class OptionsWizard {
     #settings;
@@ -44,7 +45,7 @@ export class OptionsWizard {
         const fragment = document.createDocumentFragment();
         this.inputsGroup.inputControllers.forEach(controller => {
             const inputField = controller.generateInputField();
-            WizardViewManager.generateWizardInputSection(fragment, controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+            SettingsWizardViewHelper.generateWizardInputSection(fragment, controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
         });
         return fragment;
     }

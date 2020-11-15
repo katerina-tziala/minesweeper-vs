@@ -40,8 +40,8 @@ export class App {
         // this.setInterface(PageType.Home);
         // this.setInterface();
 
-
-        this.onGameNavigation("original");
+        //this.onGameNavigation(GameType.Bot);
+        this.onGameNavigation(GameType.Original);
     }
 
 

@@ -3,9 +3,9 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS, CONTENT } from "./game-wizard.constants";
+import { DOM_ELEMENT_CLASS, CONTENT } from "./settings-wizard.constants";
 
-export class WizardViewManager {
+export class SettingsWizardViewHelper {
 
     static generatePropertyTag(propertyName) {
         const propertyTag = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.propertyTag]);
@@ -23,8 +23,8 @@ export class WizardViewManager {
     }
 
     static generateWizardInputSection(fragment, propertyName, inputField, propertyClass) {
-        const propertyTag = WizardViewManager.generatePropertyTag(propertyName);
-        const propertyContainer = WizardViewManager.generatePropertyContainer(propertyName);
+        const propertyTag = SettingsWizardViewHelper.generatePropertyTag(propertyName);
+        const propertyContainer = SettingsWizardViewHelper.generatePropertyContainer(propertyName);
         if (propertyClass) {
             ElementHandler.addStyleClass(propertyContainer, propertyClass);
         }
@@ -33,7 +33,7 @@ export class WizardViewManager {
     }
 
     static updateControllerContainer(controller, isCustomLevel) {
-        const propertyContainerID = WizardViewManager.getPropertyContainerID(controller.name);
+        const propertyContainerID = SettingsWizardViewHelper.getPropertyContainerID(controller.name);
         ElementHandler.getByID(propertyContainerID).then(propertyContainer => {
             ElementHandler.clearContent(propertyContainer);
             controller.disabled = !isCustomLevel;

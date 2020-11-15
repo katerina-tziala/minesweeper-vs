@@ -15,8 +15,9 @@ import { StateLoader } from "../../components/loaders/state-loader/state-loader"
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
 
-import { GameWizard } from "~/game/game-wizard/game-wizard";
+import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original";
 
+import { GameType } from "Game";
 
 
 export class GamePage extends Page {
@@ -28,8 +29,21 @@ export class GamePage extends Page {
         self.settingsController.gameSettingsHidden = false;
         this.init();
         this.navigateToHome = navigateToHome;
-        this.gameWizard = new GameWizard(this.navigateToHome, this.onPlayGame.bind(this));
+
         this.game = undefined;
+        switch (gameType) {
+            case GameType.Original:
+                this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
+                break;
+
+            default:
+                console.log(gameType);
+                break;
+        }
+
+
+
+
     }
 
     set gameType(type) {
@@ -42,8 +56,6 @@ export class GamePage extends Page {
 
     renderPage(mainContainer) {
         mainContainer.append(this.gameWizard.generateWizard());
-        // console.log("game page");
-        console.log(this.gameType);
     }
 
     onPlayGame(game) {
