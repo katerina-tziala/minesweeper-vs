@@ -44,6 +44,8 @@
     height        : getSize("input-height");
     line-height   : 40px;
     grid-column   : 1 / span 2;
+    font-style: italic;
+    font-weight: 700;
 }
 
 .wizard-property-container {

@@ -12,21 +12,13 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wiza
 
 import { GameWizard } from "./game-wizard";
 
-
-
-
 export class GameWizardOriginal extends GameWizard {
-    #levelWizard;
     #optionsSettings;
     #optionsWizard;
 
     constructor(onClose, submitGame) {
         super(onClose, submitGame)
         this.init();
-    }
-
-    get levelWizard() {
-        return this.#levelWizard;
     }
 
     set optionsSettings(optionsSettings) {
@@ -62,7 +54,7 @@ export class GameWizardOriginal extends GameWizard {
 
     init() {
         this.submissionPrevented = false;
-        this.#levelWizard = new LevelWizard(this.onLevelValidation.bind(this));
+        this.levelWizard = new LevelWizard(this.onLevelValidation.bind(this));
         this.optionsSettings = new OptionsSettings();
         this.#optionsWizard = new OptionsWizard(this.optionsSettings, this.generateOptionsControllers());
     }
@@ -132,6 +124,7 @@ export class GameWizardOriginal extends GameWizard {
     onPlay() {
         const gameParams = this.gameSettings;
         gameParams.player = this.player;
+        gameParams.id = GameType.Original;
         this.submitGame(new GameOriginal(gameParams));
     }
 

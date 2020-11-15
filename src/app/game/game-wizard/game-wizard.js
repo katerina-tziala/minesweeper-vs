@@ -18,7 +18,10 @@ export class GameWizard {
     constructor(onClose, submitGame) {
         this.onClose = onClose;
         this.submitGame = submitGame;
+    }
 
+    set levelWizard(levelWizard) {
+        this.#levelWizard = levelWizard;
     }
 
     get levelWizard() {

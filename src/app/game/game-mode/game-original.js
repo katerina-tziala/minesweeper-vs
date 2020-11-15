@@ -7,7 +7,6 @@ export class GameOriginal extends Game {
     //#player;
 
     constructor(params) {
-        params.id = GameType.Original;
         super(params);
         this.player = params.player;
         // this.setMode(GameModeTypeEnum.Original);
