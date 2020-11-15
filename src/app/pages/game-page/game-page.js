@@ -22,13 +22,15 @@ import { GameWizard } from "./game-wizard/game-wizard";
 export class GamePage extends Page {
     #gameType;
 
-    constructor(gameType) {
+    constructor(gameType, navigateToHome) {
         super();
         this.gameType = gameType;
         self.settingsController.gameSettingsHidden = false;
         this.init();
+        this.navigateToHome = navigateToHome;
+        this.gameWizard = new GameWizard(this.navigateToHome);
 
-        this.gameWizard = new GameWizard();
+
     }
 
     set gameType(type) {

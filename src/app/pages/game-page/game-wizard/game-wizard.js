@@ -7,17 +7,18 @@ import { Switcher } from "UserInputs";
 import { LevelWizard } from "./level-wizard/level-wizard";
 import { OptionsWizard } from "./options-wizard/options-wizard";
 
-import { DOM_ELEMENT_CLASS, CONTENT, CLOSE_BTN } from "./game-wizard.constants";
+import { DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wizard.constants";
 
 export class GameWizard {
     #levelWizard;
     #optionsSettings;
     #optionsWizard;
 
-    constructor() {
+    constructor(onClose) {
         this.#levelWizard = new LevelWizard();
         this.optionsSettings = new OptionsSettings();
         this.#optionsWizard = new OptionsWizard(this.optionsSettings, this.generateOptionsControllers());
+        this.onClose = onClose;
     }
 
     get levelWizard() {
@@ -57,6 +58,7 @@ export class GameWizard {
         wizardContainer.append(this.generateWizardHeader());
         wizardContainer.append(this.levelWizard.renderWizard());
         wizardContainer.append(this.optionsWizard.renderWizard());
+        wizardContainer.append(this.generateWizardActions());
         return wizardContainer;
     }
 
@@ -68,7 +70,7 @@ export class GameWizard {
 
     generateWizardHeader() {
         const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);
-        const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, this.closeWizard.bind(this));
+        const closeBnt = ElementGenerator.generateButton(BUTTONS.close, this.onClose.bind(this));
         wizardHeader.append(this.generateWizardTitle(), closeBnt);
         return wizardHeader;
     }
@@ -79,10 +81,20 @@ export class GameWizard {
         return wizardTitle;
     }
 
-    closeWizard() {
-      console.log("closeWizard");
+
+    generateWizardActions() {
+        const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
+        const clearBtn = ElementGenerator.generateButton(BUTTONS.clear, this.onReset.bind(this));
+        const playBtn = ElementGenerator.generateButton(BUTTONS.play, this.onPlay.bind(this));
+        actionsContainer.append(clearBtn, playBtn);
+        return actionsContainer;
     }
 
+    onReset() {
+        console.log("onReset");
+    }
 
-
+    onPlay() {
+        console.log("onPlay");
+    }
 }

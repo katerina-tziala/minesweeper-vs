@@ -39,14 +39,9 @@ export class App {
         // this.setInterface(PageType.Home);
         // this.setInterface();
 
-        this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
 
-            this.interfaceController = new GamePage("original");
-
-
-        });
+        this.onGameNavigation("original");
     }
-
 
 
 
@@ -112,47 +107,44 @@ export class App {
         return new User(userData.id, userData.username, userData.gameRoomId);
     }
 
+
     setInterface(interfaceName) {
-
         switch (interfaceName) {
-
             case PageType.Home:
-
-                this.loadInterfaceController(interfaceName).then(({ HomePage }) => {
-
-                    this.interfaceController = new HomePage(this.onGameTypeSelected.bind(this));
-
-
-                });
-
+                this.onHomeNavigation();
                 break;
-
             default:
                 this.loadInterfaceController(PageType.Join).then(({ JoinPage }) => {
-
                     this.interfaceController = new JoinPage();
                 });
                 break;
         }
-
-
     }
 
     loadInterfaceController(interfaceName) {
         return import(`./pages/${interfaceName}-page/${interfaceName}-page`);
     }
 
+    onHomeNavigation() {
+        this.loadInterfaceController(PageType.Home).then(({ HomePage }) => {
+            this.interfaceController = new HomePage(this.onGameTypeSelected.bind(this));
+        });
+    }
+
+    onGameNavigation(gameType) {
+        this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
+            this.interfaceController = new GamePage(gameType, this.onHomeNavigation.bind(this));
+        });
+    }
+
+
+
     onGameTypeSelected(gameType) {
 
         if (gameType === GameType.Online) {
             console.log("go to lobby");
         } else {
-            this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
-
-                this.interfaceController = new GamePage(gameType);
-
-
-            });
+            this.onGameNavigation(gameType);
         }
     }
 

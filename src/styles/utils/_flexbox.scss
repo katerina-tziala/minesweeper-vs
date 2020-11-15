@@ -11,6 +11,10 @@
 	justify-content: flex-start;
 }
 
+%first-axis-between {
+	justify-content: space-between;
+}
+
 %second-axis-centered {
     align-items: center;
     align-content: center;
@@ -25,6 +29,7 @@
     align-items: flex-end;
     align-content: flex-end;
 }
+
 
 %center-center {
 	@extend %flexbox;
@@ -42,4 +47,11 @@
 	@extend %flexbox;
     @extend %first-axis-centered;
 	@extend %second-axis-end;
+}
+
+
+%between-center {
+	@extend %flexbox;
+	@extend %first-axis-between ;
+    @extend %second-axis-centered;
 }

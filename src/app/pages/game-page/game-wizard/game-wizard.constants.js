@@ -1,5 +1,15 @@
 "use strict";
-export { CLOSE_BTN } from "~/_constants/btn-icon.constants";
+import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
+import { CLEAR_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
+
+
+export const BUTTONS = {
+    close: CLOSE_BTN,
+    clear: CLEAR_BTN,
+    play: PLAY_BTN
+};
+
+
 
 export const DOM_ELEMENT_ID = {
 	loginContainer: "login-container"
@@ -12,6 +22,7 @@ export const DOM_ELEMENT_CLASS = {
     propertyContainer: "wizard-property-container",
     wizardOptionsContainer: "options-wizard-container",
     optionsPropertyContainer: "options-property-container",
+    actionsContainer: "game-wizard-actions-container",
 };
 
 export const CONTENT = {
