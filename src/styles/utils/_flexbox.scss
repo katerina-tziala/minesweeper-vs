@@ -1,57 +1,61 @@
-
 %flexbox {
     display: flex;
 }
 
 %first-axis-centered {
-	justify-content: center;
+    justify-content: center;
 }
 
 %first-axis-start {
-	justify-content: flex-start;
+    justify-content: flex-start;
 }
 
 %first-axis-between {
-	justify-content: space-between;
+    justify-content: space-between;
 }
 
 %second-axis-centered {
-    align-items: center;
+    align-items  : center;
     align-content: center;
 }
 
 %second-axis-start {
-    align-items: flex-start;
+    align-items  : flex-start;
     align-content: flex-start;
 }
 
 %second-axis-end {
-    align-items: flex-end;
+    align-items  : flex-end;
     align-content: flex-end;
 }
 
 
 %center-center {
-	@extend %flexbox;
+    @extend %flexbox;
     @extend %first-axis-centered;
-	@extend %second-axis-centered;
+    @extend %second-axis-centered;
 }
 
 %start-center {
-	@extend %flexbox;
-	@extend %first-axis-start;
+    @extend %flexbox;
+    @extend %first-axis-start;
     @extend %second-axis-centered;
 }
 
 %center-end {
-	@extend %flexbox;
+    @extend %flexbox;
     @extend %first-axis-centered;
-	@extend %second-axis-end;
+    @extend %second-axis-end;
 }
 
-
 %between-center {
-	@extend %flexbox;
-	@extend %first-axis-between ;
+    @extend %flexbox;
+    @extend %first-axis-between;
     @extend %second-axis-centered;
+}
+
+%between-start {
+    @extend %flexbox;
+    @extend %first-axis-between;
+    @extend %second-axis-start;
 }
