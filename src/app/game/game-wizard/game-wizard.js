@@ -44,8 +44,8 @@ export class GameWizard {
         return ElementHandler.getByID(DOM_ELEMENT_ID.playButton);
     }
 
-    get wizardContainer() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardContainer);
+    get wizardContent() {
+        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardContent);
     }
 
     get player() {
@@ -84,8 +84,12 @@ export class GameWizard {
     // }
 
     generateWizard() {
-        const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer], DOM_ELEMENT_ID.wizardContainer);
-        this.renderWizardContent(wizardContainer);
+        const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
+        wizardContainer.append(this.generateWizardHeader());
+        const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
+        this.renderWizardContent(wizardContent);
+        wizardContainer.append(wizardContent);
+        wizardContainer.append(this.generateWizardActions());
         return wizardContainer;
     }
 
@@ -120,25 +124,12 @@ export class GameWizard {
         return ElementGenerator.generateButton(BUTTONS.reset, this.onReset.bind(this));
     }
 
-
-    // generateWizardActions() {
-    //     const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
-    //     const clearBtn = ElementGenerator.generateButton(BUTTONS.clear, this.onReset.bind(this));
-    //     const playBtn = ElementGenerator.generateButton(BUTTONS.play, this.onPlay.bind(this));
-    //     actionsContainer.append(clearBtn, playBtn);
-    //     return actionsContainer;
-    // }
-
-    // onReset() {
-    //     this.init();
-    //     this.wizardContainer.then(wizardContainer => this.renderWizardContent(wizardContainer));
-    // }
-
-    // onPlay() {
-    //     const gameParams = this.gameSettings;
-    //     gameParams.player = this.player;
-    //     this.submitGame(new GameOriginal(gameParams));
-    // }
+    generateWizardActions() {
+        const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
+        const buttons = this.getWizardActionButtons();
+        buttons.forEach(button => actionsContainer.append(button));
+        return actionsContainer;
+    }
 
     onLevelValidation(valid) {
         if (this.submissionPrevented !== !valid) {
@@ -146,11 +137,5 @@ export class GameWizard {
             this.updateSubmissionButton();
         }
     }
-
-    // updatePlayButton() {
-    //     this.playBtn.then(btn => {
-    //         ElementHandler.setDisabled(btn, this.submissionPrevented);
-    //     });
-    // }
 
 }

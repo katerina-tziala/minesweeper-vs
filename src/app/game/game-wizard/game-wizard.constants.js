@@ -9,7 +9,7 @@ export const BUTTONS = {
 };
 
 export const DOM_ELEMENT_ID = {
-    wizardContainer: "game-wizard-container",
+    wizardContent: "game-wizard-content",
     playButton: "play_game"
 };
 
@@ -17,6 +17,7 @@ export const DOM_ELEMENT_CLASS = {
     wizardContainer: "game-wizard-container",
     wizardHeader: "game-wizard-header",
     actionsContainer: "game-wizard-actions-container",
+    wizardContent: "game-wizard-content"
 };
 
 export const CONTENT = {

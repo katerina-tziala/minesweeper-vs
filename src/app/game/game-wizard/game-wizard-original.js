@@ -70,18 +70,12 @@ export class GameWizardOriginal extends GameWizard {
         return controllers;
     }
 
-    generateWizard() {
-        const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer], DOM_ELEMENT_ID.wizardContainer);
-        this.renderWizardContent(wizardContainer);
-        return wizardContainer;
-    }
+
 
     renderWizardContent(wizardContainer) {
         ElementHandler.clearContent(wizardContainer);
-        wizardContainer.append(this.generateWizardHeader());
         wizardContainer.append(this.levelWizard.renderWizard());
         wizardContainer.append(this.optionsWizard.renderWizard());
-        wizardContainer.append(this.generateWizardActions());
     }
 
     onOptionSettingChange(params) {
@@ -90,33 +84,26 @@ export class GameWizardOriginal extends GameWizard {
         this.optionsSettings.update(updateData);
     }
 
-
-
-
-    generateWizardActions() {
-        const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
-        const resetButton = this.renderResetButton();
-        const playBtn = ElementGenerator.generateButton(BUTTONS.play, this.onPlay.bind(this));
-        actionsContainer.append(resetButton, playBtn);
-        return actionsContainer;
+    getWizardActionButtons() {
+        const actionButtons = [];
+        actionButtons.push(this.renderResetButton());
+        actionButtons.push(ElementGenerator.generateButton(BUTTONS.play, this.onPlay.bind(this)));
+        return actionButtons;
     }
 
     onReset() {
         this.init();
-        this.wizardContainer.then(wizardContainer => this.renderWizardContent(wizardContainer));
+        this.wizardContent.then(wizardContent => this.renderWizardContent(wizardContent));
     }
 
     onPlay() {
         const gameParams = this.gameSettings;
         gameParams.player = this.player;
-
         this.submitGame(new GameOriginal(gameParams));
     }
 
     updateSubmissionButton() {
-        this.playBtn.then(btn => {
-            ElementHandler.setDisabled(btn, this.submissionPrevented);
-        });
+        this.playBtn.then(btn => ElementHandler.setDisabled(btn, this.submissionPrevented));
     }
 
 }
