@@ -1,16 +1,18 @@
 "use strict";
-import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
-import { ADD_PLAYER_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
+
+import { ADD_PLAYER_BTN, PLAY_BTN, PREVIOUS_BTN, NEXT_BTN } from "~/_constants/btn-text.constants";
 
 export const BUTTONS = {
-    close: CLOSE_BTN,
-    // reset: RESET_BTN,
+    previous: PREVIOUS_BTN,
+    next: NEXT_BTN,
     play: PLAY_BTN
 };
 
 export const DOM_ELEMENT_ID = {
     wizardContent: "game-wizard-content",
-    playButton: "play_game"
+    playButton: "play_game",
+    nextButton: "btn__next",
+    previousButton: "btn__previous"
 };
 
 export const DOM_ELEMENT_CLASS = {

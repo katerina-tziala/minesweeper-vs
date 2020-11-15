@@ -35,10 +35,6 @@ export class GameWizardOriginal extends GameWizard {
         return actionButtons;
     }
 
-    resetWizard() {
-        this.wizardContentElement.then(wizardContainer => this.renderWizardContent(wizardContainer));
-    }
-
     onReset() {
         Object.keys(this.gameSettings).forEach(settingKey => LocalStorageHelper.remove(settingKey));
         this.init();
@@ -52,7 +48,4 @@ export class GameWizardOriginal extends GameWizard {
         this.submitGame(new GameOriginal(gameParams));
     }
 
-    updateSubmissionButton() {
-        this.playBtn.then(btn => ElementHandler.setDisabled(btn, this.submissionPrevented));
-    }
 }

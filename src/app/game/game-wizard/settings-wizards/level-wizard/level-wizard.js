@@ -120,13 +120,13 @@ export class LevelWizard {
 
     onLevelChange(params) {
         this.settings.setLevel(params.value);
+        LocalStorageHelper.save("levelSettings", this.settings);
         if (this.isCustomLevel) {
             const currentCustomLevelSettings = LocalStorageHelper.retrieve("levelSettings");
             if (currentCustomLevelSettings) {
                 this.settings.update(currentCustomLevelSettings);
             }
         }
-        LocalStorageHelper.save("levelSettings", this.settings);
         this.initLevelSettingsControllers();
         this.levelSettingsControllers.forEach(controller => {
             SettingsWizardViewHelper.updateControllerContainer(controller, this.isCustomLevel);

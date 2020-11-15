@@ -36,8 +36,6 @@ export const RESET_BTN = {
 	actionType: "click"
 };
 
-
-
 export const PLAY_BTN = {
 	innerHTML: "play",
 	className: "btn-text btn-primary",
@@ -48,5 +46,23 @@ export const PLAY_BTN = {
 	actionType: "click"
 };
 
+export const NEXT_BTN = {
+	innerHTML: "next",
+	className: "btn-text btn-primary",
+	attributes: {
+        "aria-label": "next",
+        "id": "btn__next",
+	},
+	actionType: "click"
+};
 
+export const PREVIOUS_BTN = {
+	innerHTML: "previous",
+	className: "btn-text btn-primary",
+	attributes: {
+        "aria-label": "next",
+        "id": "btn__previous",
+	},
+	actionType: "click"
+};
 

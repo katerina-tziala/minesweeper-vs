@@ -1,14 +1,15 @@
 "use strict";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
+
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { Switcher } from "UserInputs";
+
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-import { GameType, OptionsSettings, LevelSettings, Player, GameOriginal } from "Game";
+import { OptionsSettings, LevelSettings, Player } from "Game";
 
 import { LevelWizard, OptionsWizard } from "./settings-wizards/settings-wizards";
-import { preventInteraction, clone, replaceStringParameter } from "~/_utils/utils";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wizard.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard.constants";
 
 export class GameWizard {
     #player;
@@ -19,7 +20,6 @@ export class GameWizard {
         this.onClose = onClose;
         this.submitGame = submitGame;
         this.player = new Player(self.user.id, self.user.username);
-        this.init();
     }
 
     set player(player) {
@@ -65,8 +65,12 @@ export class GameWizard {
     }
 
     getInitialOptionsSettings() {
-        const currentOptionsSettings = LocalStorageHelper.retrieve("optionsSettings");
         const optionsSettings = new OptionsSettings();
+        return this.updateOptionSettingsWithSelectedValues(optionsSettings);
+    }
+
+    updateOptionSettingsWithSelectedValues(optionsSettings) {
+        const currentOptionsSettings = LocalStorageHelper.retrieve("optionsSettings");
         if (currentOptionsSettings) {
             const updateData = {};
             Object.keys(optionsSettings).forEach(key => {
@@ -145,6 +149,7 @@ export class GameWizard {
     }
 
     generateWizard() {
+        this.init();
         const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
         wizardContainer.append(this.generateWizardHeader());
         const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
@@ -218,17 +223,27 @@ export class GameWizard {
         this.setSettingsWizards("optionsSettings", optionsWizard);
     }
 
-    renderWizardContent(wizardContent) {}
+    renderWizardContent(wizardContent) {
+        return;
+    }
 
     getWizardActionButtons() {
         return [];
     }
 
-    resetWizard() { }
+    resetWizard() {
+        this.wizardContentElement.then(wizardContainer => this.renderWizardContent(wizardContainer));
+    }
+    onReset() {
+        return;
+    }
 
-    onReset() { }
+    onPlay() {
+        return;
+    }
 
-    onPlay() {}
+    updateSubmissionButton() {
+        this.playBtn.then(btn => ElementHandler.setDisabled(btn, this.submissionPrevented));
+    }
 
-    updateSubmissionButton() { }
 }

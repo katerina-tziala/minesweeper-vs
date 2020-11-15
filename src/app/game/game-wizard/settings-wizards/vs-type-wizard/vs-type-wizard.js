@@ -11,21 +11,21 @@ import { SettingsWizardViewHelper } from "../settings-wizard-view-helper";
 import { DOM_ELEMENT_CLASS, CONTENT } from "./vs-type-wizard.constants";
 
 export class VSTypeWizard {
-    #vsType;
+    #settings;
     #inputController;
 
     constructor(onVsTypeChange, vsType) {
         this.onVsTypeChange = onVsTypeChange;
-        this.vsType = vsType;
+        this.settings = vsType;
         this.initInputController();
     }
 
-    set vsType(vsType) {
-        this.#vsType = vsType;
+    set settings(vsType) {
+        this.#settings = vsType;
     }
 
-    get vsType() {
-        return this.#vsType;
+    get settings() {
+        return this.#settings;
     }
 
     set inputController(inputController) {
@@ -39,7 +39,7 @@ export class VSTypeWizard {
     initInputController() {
         const params = {
             name: "vsType",
-            value: this.vsType,
+            value: this.settings,
             options: this.typeOptions
         };
         this.inputController = new DropdownSelect(params, this.onVsTpeSelection.bind(this));
@@ -61,7 +61,7 @@ export class VSTypeWizard {
     }
 
     get selectedTypeExplanation() {
-        return CONTENT[this.vsType].explanation;
+        return CONTENT[this.settings].explanation;
     }
 
     renderWizard() {
@@ -90,9 +90,9 @@ export class VSTypeWizard {
     }
 
     onVsTpeSelection(params) {
-        this.vsType = params.value;
+        this.settings = params.value;
         this.explanationContainer.then(explanationContainer => this.renderExplanation(explanationContainer));
-        this.onVsTypeChange(this.vsType);
+        this.onVsTypeChange(this.settings);
     }
 
 }
