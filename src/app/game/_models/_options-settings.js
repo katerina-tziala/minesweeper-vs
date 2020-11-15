@@ -20,7 +20,7 @@ export class OptionsSettings extends AppModel {
         if (vsMode && vsMode === GameVSMode.Clear) {
             this.unlimitedFlags = true;
             this.openStrategy = false;
-            this.sneakPeekTimer = false;
+            this.sneakPeek = false;
             this.sneakPeekDuration = 0;
         }
         if (vsMode && vsMode === GameVSMode.Detect) {

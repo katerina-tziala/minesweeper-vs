@@ -13,5 +13,10 @@ export const CONTENT = {
     numberOfMines: "number of mines",
     marks: "marks",
     wrongFlagHint: "wrong flag hint",
-    vsType: "VS mode"
+    vsType: "VS mode",
+    unlimitedFlags: "unlimited flags",
+    openStrategy: "open strategy",
+    sneakPeek: "sneak peek",
+    sneakPeekDuration: "sneak peek duration",
+    tileRevealing: "reveal tiles"
 };

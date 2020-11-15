@@ -42,7 +42,7 @@ export class VSTypeWizard {
             value: this.settings,
             options: this.typeOptions
         };
-        this.inputController = new DropdownSelect(params, this.onVsTpeSelection.bind(this));
+        this.inputController = new DropdownSelect(params, this.onVsTypeSelection.bind(this));
     }
 
     getTypeLabel(mode) {
@@ -89,7 +89,7 @@ export class VSTypeWizard {
         return fragment;
     }
 
-    onVsTpeSelection(params) {
+    onVsTypeSelection(params) {
         this.settings = params.value;
         this.explanationContainer.then(explanationContainer => this.renderExplanation(explanationContainer));
         this.onVsTypeChange(this.settings);

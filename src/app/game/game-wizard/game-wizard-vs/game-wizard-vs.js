@@ -115,19 +115,65 @@ export class GameWizardVS extends GameWizard {
 
     init() {
         this.currentStep = 0;
-
         this.setVSTypeSettings();
-
-        // vs-type wizard
-        const vsTypeWizard = new VSTypeWizard(this.onVSTypeChange.bind(this), this.vsType);
-        this.setSettingsWizards("vsTypeMode", vsTypeWizard);
-
         super.init();
     }
 
+    setFirstStepWizards() {
+        const vsTypeWizard = new VSTypeWizard(this.onVSTypeChange.bind(this), this.vsType);
+        this.setSettingsWizards("vsTypeMode", vsTypeWizard, true);
+    }
+
+    setSecondStepWizards() {
+        // level wizard
+        this.setSettingsWizards("levelSettings", this.generateLevelWizard(), true);
+        if (this.vsType === GameVSMode.Parallel) {
+            // options wizard
+            this.setSettingsWizards("optionsSettings", this.generateOptionsWizard());
+        }
+    }
+
+    setThirdStepWizards() {
+
+        console.log("setThirdStepWizards");
+    }
+
+
+    setCurrentWizards() {
+        this.submissionPrevented = false;
+        switch (this.currentStep) {
+            case 1:
+                this.setSecondStepWizards();
+                break;
+            case 2:
+                this.setThirdStepWizards();
+                break;
+            case 3:
+                this.setSettingsWizards("optionsSettings", this.generateOptionsWizard(), true);
+                break;
+            default: // first step
+                this.setFirstStepWizards();
+                break;
+        }
+    }
+
+
+
+
+
+
+    renderStepWizard(wizardContent) {
+        ElementHandler.clearContent(wizardContent);
+        this.settingsWizards.forEach(wizard => wizardContent.append(wizard.renderWizard()));
+    }
+
+
+
     setVSTypeSettings() {
-        const vsTypeMode = LocalStorageHelper.retrieve("vsTypeMode");
-        this.setGameSettings("vsTypeMode", vsTypeMode ? vsTypeMode : GameVSMode.Clear);
+        let vsTypeMode = LocalStorageHelper.retrieve("vsTypeMode");
+        vsTypeMode = vsTypeMode ? vsTypeMode : GameVSMode.Clear;
+        this.wizardsOrder = WIZARDS_ORDER[vsTypeMode];
+        this.setGameSettings("vsTypeMode", vsTypeMode);
     }
 
     get vsType() {
@@ -140,7 +186,7 @@ export class GameWizardVS extends GameWizard {
     }
 
     get currentStepWizardType() {
-        return WIZARDS_ORDER[this.currentStep];
+        return this.wizardsOrder[this.currentStep];
     }
 
     get currentStepWizard() {
@@ -164,7 +210,7 @@ export class GameWizardVS extends GameWizard {
     }
 
     get onLastStep() {
-        return this.currentStep === WIZARDS_ORDER.length - 1;
+        return this.currentStep === this.wizardsOrder.length - 1;
     }
 
     setNextStepButton() {
@@ -179,8 +225,10 @@ export class GameWizardVS extends GameWizard {
 
     saveCurrentStepSettings() {
         const stepSettings = this.getGameSettings(this.currentStepWizardType);
-        this.setGameSettings(this.currentStepWizardType, stepSettings);
-        LocalStorageHelper.save(this.currentStepWizardType, this.optionsSettings);
+        if (stepSettings) {
+            this.setGameSettings(this.currentStepWizardType, stepSettings);
+            LocalStorageHelper.save(this.currentStepWizardType, stepSettings);
+        }
     }
 
     onPrevious() {
@@ -192,7 +240,12 @@ export class GameWizardVS extends GameWizard {
         if (this.currentStep === 0) {
             this.togglePreviousButton(true);
         }
+        this.setCurrentWizards();
         this.resetWizard();
+    }
+
+    resetWizard() {
+        this.wizardContentElement.then(wizardContainer => this.renderStepWizard(wizardContainer));
     }
 
     onNext() {
@@ -204,32 +257,16 @@ export class GameWizardVS extends GameWizard {
         if (this.onLastStep) {
             this.setLastStepButton();
         }
+        this.setCurrentWizards();
         this.resetWizard();
     }
-
 
     onVSTypeChange(selectedVSType) {
         LocalStorageHelper.save("vsTypeMode", selectedVSType);
         this.setVSTypeSettings();
         this.setOptionsSettings();
         LocalStorageHelper.save("optionsSettings", this.optionsSettings);
-
-        //
-        console.log("update optionsSettings wizard");
     }
-
-    renderStepWizard(wizardContent) {
-        ElementHandler.clearContent(wizardContent);
-        const stepWizard = this.currentStepWizard;
-        if (stepWizard) {
-            wizardContent.append(stepWizard.renderWizard());
-        }
-        // console.log("renderStepWizard re");
-        // console.log(this.currentStep);
-        // console.log(this.currentStepWizardType);
-        // console.log(stepWizard);
-    }
-
 
     onReset() {
         console.log("onReset");

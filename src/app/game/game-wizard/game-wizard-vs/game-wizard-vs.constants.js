@@ -30,4 +30,9 @@ export const CONTENT = {
 export const FORM_PARAMS = {
 	submitBtn: ADD_PLAYER_BTN
 };
-export const WIZARDS_ORDER = ["vsTypeMode", "levelSettings", "turnSettings", "optionsSettings"];
+
+export const WIZARDS_ORDER = {
+    clear: ["vsTypeMode", "levelSettings", "turnSettings", "optionsSettings"],
+    detect: ["vsTypeMode", "levelSettings", "turnSettings", "optionsSettings"],
+    parallel: ["vsTypeMode", "levelSettings"],
+};

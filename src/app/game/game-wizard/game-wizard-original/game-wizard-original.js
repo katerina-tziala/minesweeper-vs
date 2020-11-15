@@ -48,4 +48,14 @@ export class GameWizardOriginal extends GameWizard {
         this.submitGame(new GameOriginal(gameParams));
     }
 
+    resetWizard() {
+        this.wizardContentElement.then(wizardContainer => this.renderWizardContent(wizardContainer));
+    }
+
+    setCurrentWizards() {
+         // level wizard
+         this.setSettingsWizards("levelSettings", this.generateLevelWizard());
+         // options wizard
+         this.setSettingsWizards("optionsSettings", this.generateOptionsWizard());
+    }
 }

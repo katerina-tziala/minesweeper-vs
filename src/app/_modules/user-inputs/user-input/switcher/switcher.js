@@ -36,6 +36,7 @@ export class Switcher extends UserInput {
     generateInputField() {
         const switcher = ElementGenerator.generateButton(this.inputParams, this.onSwitchChange.bind(this));
         this.setSwitcherState(switcher);
+        ElementHandler.setDisabled(switcher, this.disabled)
         return switcher;
     }
 
@@ -54,11 +55,17 @@ export class Switcher extends UserInput {
     }
 
     disable() {
-        this.inputField.then(switcher => ElementHandler.setDisabled(switcher, true));
+        this.disabled = true;
+        this.toggleSwitcherDisabled();
     }
 
     enable() {
-        this.inputField.then(switcher => ElementHandler.setDisabled(switcher, false));
+        this.disabled = false;
+        this.toggleSwitcherDisabled();
+    }
+
+    toggleSwitcherDisabled() {
+        this.inputField.then(switcher => ElementHandler.setDisabled(switcher, this.disabled));
     }
 
 }

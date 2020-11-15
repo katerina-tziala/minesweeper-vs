@@ -37,13 +37,13 @@
     .btn-icon--close {
         @extend .btn-icon--normal;
         @extend .btn-primary;
-        padding : 2px;
+        // padding : 2px;
         position: absolute;
         right   : 0px;
         top     : -2px;
 
         &::after {
-            max-width: 13px;
+            max-width: 14px;
         }
     }
 }

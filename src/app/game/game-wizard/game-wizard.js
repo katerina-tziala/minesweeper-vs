@@ -46,6 +46,52 @@ export class GameWizard {
         return ElementHandler.getByID(DOM_ELEMENT_ID.playButton);
     }
 
+    setSettingsWizards(name, wizard, keepOne = false) {
+        if (keepOne) {
+            this.#settingsWizards = {};
+        } else {
+            delete this.#settingsWizards[name];
+        }
+        this.#settingsWizards[name] = wizard;
+    }
+
+    get settingsWizards() {
+        return Object.values(this.#settingsWizards);
+    }
+
+    setGameSettings(name, settings) {
+        delete this.#gameSettings[name];
+        this.#gameSettings[name] = settings;
+    }
+
+    getGameSettings(name) {
+        return this.#gameSettings[name];
+    }
+
+    get gameSettings() {
+        return this.#gameSettings;
+    }
+
+    getSettingsWizardByName(key) {
+        return this.#settingsWizards[key];
+    }
+
+    get optionsSettings() {
+        return this.getGameSettings("optionsSettings");
+    }
+
+    get levelSettings() {
+        return this.getSettingsWizardByName("levelSettings").settings;
+    }
+
+    get gameParams() {
+        return {
+            id: this.type,
+            levelSettings: this.levelSettings,
+            optionsSettings: this.optionsSettings
+        };
+    }
+
     initGameSettings() {
         this.setLevelSettings();
         this.setOptionsSettings();
@@ -81,64 +127,6 @@ export class GameWizard {
             optionsSettings.update(updateData);
         }
         return optionsSettings;
-    }
-
-    setGameSettings(name, settings) {
-        delete this.#gameSettings[name];
-        this.#gameSettings[name] = settings;
-    }
-
-    getGameSettings(name) {
-        return this.#gameSettings[name];
-    }
-
-    setSettingsWizards(name, wizard) {
-        delete this.#settingsWizards[name];
-        this.#settingsWizards[name] = wizard;
-    }
-
-    get settingsWizards() {
-        return Object.values(this.#settingsWizards);
-    }
-
-    get gameSettings() {
-        return this.#gameSettings;
-    }
-
-    getSettingsWizardByName(key) {
-        return this.#settingsWizards[key];
-    }
-
-    get optionsSettings() {
-        return this.getGameSettings("optionsSettings");
-    }
-
-    get levelSettings() {
-        return this.getSettingsWizardByName("levelSettings").settings;
-    }
-
-    get gameParams() {
-        return {
-            id: this.type,
-            levelSettings: this.levelSettings,
-            optionsSettings: this.optionsSettings
-        };
-    }
-
-    getOptionsControllerParams(type) {
-        return {
-            name: type,
-            value: this.optionsSettings[type],
-        };
-    }
-
-    generateOptionsControllers() {
-        const controllers = [];
-        Object.keys(this.optionsSettings).forEach(key => {
-            const params = this.getOptionsControllerParams(key);
-            controllers.push(new Switcher(params, this.onOptionSettingChange.bind(this)));
-        });
-        return controllers;
     }
 
     onOptionSettingChange(params) {
@@ -192,7 +180,7 @@ export class GameWizard {
         return ElementGenerator.generateButton(this.playButtonParams, this.onPlay.bind(this));
     }
 
-    onLevelValidation(valid) {
+    onValidation(valid) {
         if (this.submissionPrevented !== !valid) {
             this.submissionPrevented = !valid;
             this.updateSubmissionButton();
@@ -215,12 +203,19 @@ export class GameWizard {
     init() {
         this.submissionPrevented = false;
         this.initGameSettings();
-        // level wizard
-        const levelWizard = new LevelWizard(this.onLevelValidation.bind(this), this.getGameSettings("levelSettings"));
-        this.setSettingsWizards("levelSettings", levelWizard);
-        // options wizard
-        const optionsWizard = new OptionsWizard(this.getGameSettings("optionsSettings"), this.generateOptionsControllers());
-        this.setSettingsWizards("optionsSettings", optionsWizard);
+        this.setCurrentWizards();
+    }
+
+    generateLevelWizard() {
+        return new LevelWizard(this.onValidation.bind(this), this.getGameSettings("levelSettings"));
+    }
+
+    generateOptionsWizard() {
+        return new OptionsWizard(this.optionsSettings, this.onValidation.bind(this));
+    }
+
+    setCurrentWizards() {
+        return;
     }
 
     renderWizardContent(wizardContent) {
@@ -232,8 +227,9 @@ export class GameWizard {
     }
 
     resetWizard() {
-        this.wizardContentElement.then(wizardContainer => this.renderWizardContent(wizardContainer));
+        return;
     }
+
     onReset() {
         return;
     }

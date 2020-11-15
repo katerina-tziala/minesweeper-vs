@@ -132,7 +132,7 @@ export class NumberInput extends TextInput {
         return 0;
     }
 
-    getValueBasedOnStep(step) {
+    getValueBasedOnStep(step = 0) {
         let newValue = this.valueInteger + step;
         if (this.boundaries && this.boundaries.max < newValue) {
             return this.boundaries.min;
@@ -156,9 +156,11 @@ export class NumberInput extends TextInput {
             this.notifyForChanges();
             return;
         }
+        this.value = this.valueInteger.toString();
         this.valid = true;
         this.hideError();
         this.notifyForChanges();
+        this.setFieldValue();
     }
 
     valueInLimits() {
