@@ -4,7 +4,7 @@ export const CLEAR_BTN = {
 	innerHTML: "clear",
 	className: "btn-text btn-primary",
 	attributes: {
-		"aria-label": "clear",
+		"aria-label": "clear form",
 	},
 	actionType: "click"
 };
@@ -24,6 +24,15 @@ export const PLAY_BTN = {
 	attributes: {
         "aria-label": "play game",
         "id": "play_game",
+	},
+	actionType: "click"
+};
+
+export const RESET_BTN = {
+	innerHTML: "reset",
+	className: "btn-text btn-primary",
+	attributes: {
+		"aria-label": "reset",
 	},
 	actionType: "click"
 };

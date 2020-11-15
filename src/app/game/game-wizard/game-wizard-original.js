@@ -95,9 +95,9 @@ export class GameWizardOriginal extends GameWizard {
 
     generateWizardActions() {
         const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
-        const clearBtn = ElementGenerator.generateButton(BUTTONS.clear, this.onReset.bind(this));
+        const resetButton = this.renderResetButton();
         const playBtn = ElementGenerator.generateButton(BUTTONS.play, this.onPlay.bind(this));
-        actionsContainer.append(clearBtn, playBtn);
+        actionsContainer.append(resetButton, playBtn);
         return actionsContainer;
     }
 

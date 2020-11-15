@@ -116,6 +116,11 @@ export class GameWizard {
         return wizardTitle;
     }
 
+    renderResetButton() {
+        return ElementGenerator.generateButton(BUTTONS.reset, this.onReset.bind(this));
+    }
+
+
     // generateWizardActions() {
     //     const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer]);
     //     const clearBtn = ElementGenerator.generateButton(BUTTONS.clear, this.onReset.bind(this));

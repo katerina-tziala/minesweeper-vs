@@ -1,10 +1,10 @@
 "use strict";
 import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
-import { CLEAR_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
+import { RESET_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
 
 export const BUTTONS = {
     close: CLOSE_BTN,
-    clear: CLEAR_BTN,
+    reset: RESET_BTN,
     play: PLAY_BTN
 };
 
