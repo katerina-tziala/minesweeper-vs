@@ -28,9 +28,8 @@ export class GamePage extends Page {
         self.settingsController.gameSettingsHidden = false;
         this.init();
         this.navigateToHome = navigateToHome;
-        this.gameWizard = new GameWizard(this.navigateToHome);
-
-
+        this.gameWizard = new GameWizard(this.navigateToHome, this.onPlayGame.bind(this));
+        this.game = undefined;
     }
 
     set gameType(type) {
@@ -47,12 +46,25 @@ export class GamePage extends Page {
         console.log(this.gameType);
     }
 
-
+    onPlayGame(game) {
+        //super.onConnectionError(errorMessage);
+        console.log(game);
+        this.displayLoader();
+        this.getClearedMainContainer().then(mainContainer => {
+            console.log(mainContainer);
+            console.log("game ooon");
+            this.hideLoader();
+        });
+    }
 
     // Overridden functions
     onConnectionError(errorMessage) {
         //super.onConnectionError(errorMessage);
 
     }
+
+
+
+
 
 }

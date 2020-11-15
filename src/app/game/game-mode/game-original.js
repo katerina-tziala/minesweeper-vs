@@ -1,15 +1,15 @@
 "use strict";
 
 import { Game } from "./game"
-
+import { GameType } from "Game";
 
 export class GameOriginal extends Game {
     //#player;
 
     constructor(params) {
+        params.id = GameType.Original;
         super(params);
         this.player = params.player;
-        console.log(this);
         // this.setMode(GameModeTypeEnum.Original);
     }
 

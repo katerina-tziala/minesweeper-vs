@@ -155,4 +155,9 @@ export class LevelWizard {
         LocalStorageHelper.save("levelSettings", this.settings);
     }
 
+    getLevelSettings() {
+        this.settings.setMinesPositions();
+        return this.settings;
+    }
+
 }

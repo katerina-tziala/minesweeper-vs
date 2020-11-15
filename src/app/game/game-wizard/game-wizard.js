@@ -1,16 +1,13 @@
 "use strict";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { OptionsSettings, Player, GameOriginal } from "Game";
-
 
 import { Switcher } from "UserInputs";
 
+import { OptionsSettings, Player, GameOriginal } from "Game";
+
 import { LevelWizard } from "./level-wizard/level-wizard";
 import { OptionsWizard } from "./options-wizard/options-wizard";
-
-
-
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "./game-wizard.constants";
 
@@ -19,8 +16,9 @@ export class GameWizard {
     #optionsSettings;
     #optionsWizard;
 
-    constructor(onClose) {
+    constructor(onClose, submitGame) {
         this.onClose = onClose;
+        this.submitGame = submitGame;
         this.init();
     }
 
@@ -50,6 +48,13 @@ export class GameWizard {
 
     get player() {
         return new Player(self.user.id, self.user.username, self.settingsController.settings.playerColorType);
+    }
+
+    get gameSettings() {
+        return {
+            levelSettings: this.levelWizard.getLevelSettings(),
+            optionsSettings: this.optionsWizard.settings
+        };
     }
 
     init() {
@@ -121,15 +126,10 @@ export class GameWizard {
         this.wizardContainer.then(wizardContainer => this.renderWizardContent(wizardContainer));
     }
 
-
-
-
     onPlay() {
-        console.log("onPlay");
-        // console.log(self.user);
-        // console.log(self.settingsController.settings);
-        //new GameOriginal();
-        console.log(this.player);
+        const gameParams = this.gameSettings;
+        gameParams.player = this.player;
+        this.submitGame(new GameOriginal(gameParams));
     }
 
     onLevelValidation(valid) {
