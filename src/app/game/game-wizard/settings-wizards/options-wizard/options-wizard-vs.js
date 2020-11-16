@@ -1,84 +1,62 @@
 "use strict";
 
-import { ElementGenerator } from "HTML_DOM_Manager";
+import { Switcher, NumberInput } from "UserInputs";
 
-import { UserInputsGroupController, Switcher, NumberInput } from "UserInputs";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone } from "~/_utils/utils.js";
 
-import { SettingsWizardViewHelper } from "../settings-wizard-view-helper";
+import { LIMITS } from "./options-wizard.constants";
 
-import { DOM_ELEMENT_CLASS, LIMITS } from "./options-wizard.constants";
+import { OptionsWizard } from "./options-wizard";
 
-
-export class OptionsWizard {
-    #settings;
-    #inputsGroup;
+export class OptionsWizardVS extends OptionsWizard {
 
     constructor(settings, onValidation) {
-        this.settings = settings;
-        this.inputsGroup = this.initOptionsControllers();
-        this.onValidation = onValidation;
+        super(settings, onValidation);
     }
 
-    getOptionsControllerParams(type) {
-        return {
-            name: type,
-            value: this.settings[type],
-        };
+    generateOpenStrategySwitcher() {
+        const params = this.getOptionsControllerParams("openStrategy");
+        return new Switcher(params, this.onOpenStrategyChange.bind(this));
     }
 
-    generateDefaultSwitcher(key) {
-        const params = this.getOptionsControllerParams(key);
-        return new Switcher(params, this.onOptionSettingChange.bind(this));
+    generateSneakPeekSwitcher() {
+        const params = this.getOptionsControllerParams("sneakPeek");
+        const controller = new Switcher(params, this.onSneakPeekChange.bind(this));
+        controller.disabled = this.settings.openStrategy;
+        return controller;
+    }
+
+    generateSneakPeekDurationInput() {
+        const controller = new NumberInput("sneakPeekDuration", this.settings.sneakPeekDuration.toString(), this.onSneakPeekDurationChange.bind(this));
+        controller.boundaries = this.getSneekPeakDurationLimits();
+        controller.disabled = this.settings.openStrategy ? true : !this.settings.sneakPeek;
+        return controller;
+    }
+
+    generateSettingController(key) {
+        let controller;
+        switch (key) {
+            case "openStrategy":
+                controller = this.generateOpenStrategySwitcher();
+                return controller;
+            case "sneakPeek":
+                controller = this.generateSneakPeekSwitcher();
+                return controller;
+            case "sneakPeekDuration":
+                controller = this.generateSneakPeekDurationInput();
+                return controller;
+            default:
+                controller = this.generateDefaultSwitcher(key);
+                return controller;
+        }
     }
 
     initOptionsControllers() {
         const controllers = [];
-        Object.keys(this.settings).forEach(key => controllers.push(this.generateDefaultSwitcher(key)));
+        Object.keys(this.settings).forEach(key => controllers.push(this.generateSettingController(key)));
         return controllers;
     }
 
-    set inputsGroup(controllers) {
-        this.#inputsGroup = new UserInputsGroupController();
-        controllers.forEach(controller => this.#inputsGroup.inputControllers = controller);
-    }
-
-    get inputsGroup() {
-        return this.#inputsGroup;
-    }
-
-    set settings(settings) {
-        this.#settings = settings;
-    }
-
-    get settings() {
-        return this.#settings;
-    }
-
-    renderWizard() {
-        const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-        wizardContainer.append(this.renderlOptionsInputs());
-        return wizardContainer;
-    }
-
-    renderlOptionsInputs() {
-        const fragment = document.createDocumentFragment();
-        this.inputsGroup.inputControllers.forEach(controller => {
-            const inputField = controller.generateInputField();
-            const section = SettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
-            fragment.append(section);
-        });
-        return fragment;
-    }
-
-    onOptionSettingChange(params) {
-        const updateData = {};
-        updateData[params.name] = params.value;
-        this.settings.update(updateData);
-        LocalStorageHelper.save("optionsSettings", this.settings);
-    }
 
     onSneakPeekDurationChange(params) {
         if (params.valid) {
@@ -102,7 +80,6 @@ export class OptionsWizard {
         this.onOptionSettingChange(params);
         this.updateSneakPeekProperties();
     }
-
 
     updateSneakPeekProperties() {
         const sneakPeekController = this.inputsGroup.getInputController("sneakPeek");
@@ -144,7 +121,5 @@ export class OptionsWizard {
             this.onNumberInputChange(sneakPeekDurationController.submissionProperties);
         }
     }
-
-
 
 }

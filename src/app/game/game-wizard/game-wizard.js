@@ -129,13 +129,6 @@ export class GameWizard {
         return optionsSettings;
     }
 
-    onOptionSettingChange(params) {
-        const updateData = {};
-        updateData[params.name] = params.value;
-        this.optionsSettings.update(updateData);
-        LocalStorageHelper.save("optionsSettings", this.optionsSettings);
-    }
-
     generateWizard() {
         this.init();
         const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);

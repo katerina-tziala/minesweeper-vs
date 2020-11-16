@@ -6,7 +6,7 @@ import { Switcher } from "UserInputs";
 
 import { GameType, GameVSMode, OptionsSettings, Player, GameOriginal } from "Game";
 
-import { LevelWizard, OptionsWizard, VSTypeWizard } from "../settings-wizards/settings-wizards";
+import { LevelWizard, OptionsWizard, OptionsWizardVS, VSTypeWizard } from "../settings-wizards/settings-wizards";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS, FORM_PARAMS, WIZARDS_ORDER } from "./game-wizard-vs.constants";
 import { preventInteraction, clone, replaceStringParameter } from "~/_utils/utils";
@@ -138,6 +138,12 @@ export class GameWizardVS extends GameWizard {
         console.log("setThirdStepWizards");
     }
 
+    generateOptionsWizard() {
+        if (this.vsType !== GameVSMode.Parallel) {
+            return new OptionsWizardVS(this.optionsSettings, this.onValidation.bind(this));
+        }
+        return new OptionsWizard(this.optionsSettings, this.onValidation.bind(this));
+    }
 
     setCurrentWizards() {
         this.submissionPrevented = false;
@@ -275,7 +281,7 @@ export class GameWizardVS extends GameWizard {
     }
 
     updateSubmissionButton() {
-
+        console.log("updateSubmissionButton");
         console.log(this.currentStep);
         //this.playBtn.then(btn => ElementHandler.setDisabled(btn, this.submissionPrevented));
     }
