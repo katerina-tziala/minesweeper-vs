@@ -6,7 +6,8 @@ import { Switcher } from "UserInputs";
 
 import { GameType, GameVSMode, OptionsSettings, Player, GameOriginal } from "Game";
 
-import { LevelWizard, OptionsWizard, OptionsWizardVS, VSTypeWizard } from "../settings-wizards/settings-wizards";
+import { LevelWizard, OptionsWizard, OptionsWizardVS, VSTypeWizard } from "../game-settings-wizards/game-settings-wizards";
+
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS, FORM_PARAMS, WIZARDS_ORDER } from "./game-wizard-vs.constants";
 import { preventInteraction, clone, replaceStringParameter } from "~/_utils/utils";

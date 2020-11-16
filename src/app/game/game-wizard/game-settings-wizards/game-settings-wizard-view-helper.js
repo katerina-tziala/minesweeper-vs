@@ -3,9 +3,9 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS, CONTENT } from "./settings-wizard.constants";
+import { DOM_ELEMENT_CLASS, CONTENT } from "./game-settings-wizards.constants";
 
-export class SettingsWizardViewHelper {
+export class GameSettingsWizardViewHelper {
 
     static generatePropertyTag(propertyName) {
         const propertyTag = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.propertyTag]);

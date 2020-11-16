@@ -6,7 +6,7 @@ import { Switcher } from "UserInputs";
 
 import { GameType, OptionsSettings, BotPlayer, Player, GameOriginal } from "Game";
 
-import { LevelWizard, OptionsWizard } from "../settings-wizards/settings-wizards";
+
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, BUTTONS } from "../game-wizard.constants";
 

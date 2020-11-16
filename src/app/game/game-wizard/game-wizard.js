@@ -8,7 +8,7 @@ import { Switcher } from "UserInputs";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { OptionsSettings, LevelSettings, Player } from "Game";
 
-import { LevelWizard, OptionsWizard } from "./settings-wizards/settings-wizards";
+import { LevelWizard, OptionsWizard } from "./game-settings-wizards/game-settings-wizards";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard.constants";
 
 export class GameWizard {

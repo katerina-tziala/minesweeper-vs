@@ -6,7 +6,7 @@ import { DropdownSelect } from "UserInputs";
 
 import { GameVSMode } from "Game";
 
-import { SettingsWizardViewHelper } from "../settings-wizard-view-helper";
+import { GameSettingsWizardViewHelper } from "../game-settings-wizard-view-helper";
 
 import { DOM_ELEMENT_CLASS, CONTENT } from "./vs-type-wizard.constants";
 
@@ -84,7 +84,7 @@ export class VSTypeWizard {
     renderlWizardInputs() {
         const fragment = document.createDocumentFragment();
         const dropdownInputField = this.inputController.generateInputField();
-        const section = SettingsWizardViewHelper.generateWizardInputSection(this.inputController.name, dropdownInputField);
+        const section = GameSettingsWizardViewHelper.generateWizardInputSection(this.inputController.name, dropdownInputField);
         fragment.append(section);
         return fragment;
     }

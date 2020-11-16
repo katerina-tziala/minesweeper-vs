@@ -2,12 +2,12 @@
 
 import { ElementGenerator } from "HTML_DOM_Manager";
 
-import { UserInputsGroupController, Switcher, NumberInput } from "UserInputs";
+import { UserInputsGroupController, Switcher } from "UserInputs";
 
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone } from "~/_utils/utils.js";
 
-import { SettingsWizardViewHelper } from "../settings-wizard-view-helper";
+import { GameSettingsWizardViewHelper } from "../game-settings-wizard-view-helper";
 
 import { DOM_ELEMENT_CLASS, LIMITS } from "./options-wizard.constants";
 
@@ -67,7 +67,7 @@ export class OptionsWizard {
         const fragment = document.createDocumentFragment();
         this.inputsGroup.inputControllers.forEach(controller => {
             const inputField = controller.generateInputField();
-            const section = SettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+            const section = GameSettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
             fragment.append(section);
         });
         return fragment;

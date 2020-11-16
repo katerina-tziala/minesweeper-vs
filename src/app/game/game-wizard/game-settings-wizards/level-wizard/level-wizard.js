@@ -9,7 +9,7 @@ import { UserInputsGroupController, DropdownSelect, NumberInput } from "UserInpu
 
 import { GameLevel, LevelSettings } from "Game";
 
-import { SettingsWizardViewHelper } from "../settings-wizard-view-helper";
+import { GameSettingsWizardViewHelper } from "../game-settings-wizard-view-helper";
 
 import { DOM_ELEMENT_CLASS, LEVEL_SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 
@@ -107,12 +107,12 @@ export class LevelWizard {
     renderlWizardInputs() {
         const fragment = document.createDocumentFragment();
         const levelInput = this.inputsGroup.getInputController(LEVEL_SETTINGS_PROPERTIES.level).generateInputField();
-        const levelSection = SettingsWizardViewHelper.generateWizardInputSection(LEVEL_SETTINGS_PROPERTIES.level, levelInput, DOM_ELEMENT_CLASS.propertyContainer);
+        const levelSection = GameSettingsWizardViewHelper.generateWizardInputSection(LEVEL_SETTINGS_PROPERTIES.level, levelInput, DOM_ELEMENT_CLASS.propertyContainer);
         fragment.append(levelSection);
         this.levelSettingsControllers.forEach(controller => {
             controller.disabled = !this.isCustomLevel;
             const inputField = controller.generateInputField();
-             const section = SettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
+             const section = GameSettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
             fragment.append(section);
         });
         return fragment;
@@ -129,7 +129,7 @@ export class LevelWizard {
         }
         this.initLevelSettingsControllers();
         this.levelSettingsControllers.forEach(controller => {
-            SettingsWizardViewHelper.updateControllerContainer(controller, this.isCustomLevel);
+            GameSettingsWizardViewHelper.updateControllerContainer(controller, this.isCustomLevel);
         });
     }
 
