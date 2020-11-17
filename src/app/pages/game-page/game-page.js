@@ -18,6 +18,7 @@ import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-
 import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original/game-wizard-original";
 import { GameWizardVS } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs";
 import { GameWizardBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-bot";
+import { GameWizard } from "~/game/game-wizard/game-wizard";
 
 
 
@@ -39,20 +40,23 @@ export class GamePage extends Page {
         this.navigateToHome = navigateToHome;
 
         this.game = undefined;
-        switch (gameType) {
-            case GameType.Original:
-                this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
-                break;
-            case GameType.Bot:
-                this.gameWizard = new GameWizardBot(this.navigateToHome, this.onPlayGame.bind(this));
-                break;
-                case GameType.Friend:
-                    this.gameWizard = new GameWizardVS(this.navigateToHome, this.onPlayGame.bind(this));
-                    break;
-            default:
-                console.log(gameType);
-                break;
-        }
+
+        console.log("show me wizard");
+        this.gameWizard = new GameWizard(this.navigateToHome, this.onPlayGame.bind(this));
+        // switch (gameType) {
+        //     case GameType.Original:
+        //         this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
+        //         break;
+        //     case GameType.Bot:
+        //         this.gameWizard = new GameWizardBot(this.navigateToHome, this.onPlayGame.bind(this));
+        //         break;
+        //         case GameType.Friend:
+        //             this.gameWizard = new GameWizardVS(this.navigateToHome, this.onPlayGame.bind(this));
+        //             break;
+        //     default:
+        //         console.log(gameType);
+        //         break;
+        // }
 
 
 
@@ -68,7 +72,7 @@ export class GamePage extends Page {
     }
 
     renderPage(mainContainer) {
-        mainContainer.append(this.gameWizard.generateWizard());
+        mainContainer.append(this.gameWizard.renderWizard());
     }
 
     onPlayGame(game) {

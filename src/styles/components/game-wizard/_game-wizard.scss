@@ -1,17 +1,11 @@
-@import "../button/button";
 
-@import "../input/number-input";
 
-@import "../switcher/switcher";
+// @import "./level-wizard/level-wizard";
+// @import "./options-wizard/options-wizard";
 
-@import "../../components/form/form_username";
-@import "../dropdown-select/dropdown-select";
+// @import "./vs-type-wizard/vs-type-wizard";
 
-@import "./level-wizard/level-wizard";
-@import "./options-wizard/options-wizard";
-
-@import "./vs-type-wizard/vs-type-wizard";
-
+@import "../game-settings-wizard/game-settings-wizard";
 
 .game-wizard-container {
     min-width: 320px;
@@ -56,35 +50,35 @@
 
 
 
-.game-wizard-actions-container {
-    width: 100%;
-    @extend %between-center;
+// .game-wizard-actions-container {
+//     width: 100%;
+//     @extend %between-center;
 
-    >.btn-text {
-        margin-top: 20px;
-    }
-}
+//     >.btn-text {
+//         margin-top: 20px;
+//     }
+// }
 
-.wizard-section-container {
-    @extend %start-center;
-    margin-top: 10px;
-}
+// .wizard-section-container {
+//     @extend %start-center;
+//     margin-top: 10px;
+// }
 
-.wizard-property-tag {
-    text-transform: capitalize;
-    height        : getSize("input-height");
-    line-height   : 40px;
-    font-style    : italic;
-    font-weight   : 700;
-    flex-grow     : 1;
-}
+// .wizard-property-tag {
+//     text-transform: capitalize;
+//     height        : getSize("input-height");
+//     line-height   : 40px;
+//     font-style    : italic;
+//     font-weight   : 700;
+//     flex-grow     : 1;
+// }
 
-.wizard-property-container {
-    height   : getSize("input-height");
-    min-width: 100px;
-    max-width: 120px;
-    min-width: 120px;
-}
+// .wizard-property-container {
+//     height   : getSize("input-height");
+//     min-width: 100px;
+//     max-width: 120px;
+//     min-width: 120px;
+// }
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

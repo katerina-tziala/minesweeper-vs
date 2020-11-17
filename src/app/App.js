@@ -38,7 +38,7 @@ export class App {
 
         self.user = new User("kateID", "kate", null);
         // this.setInterface(PageType.Home);
-        // this.setInterface();
+      //  this.setInterface();
 
         //this.onGameNavigation(GameType.Bot);
         this.onGameNavigation(GameType.Bot);

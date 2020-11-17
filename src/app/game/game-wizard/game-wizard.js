@@ -3,236 +3,254 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
-import { Switcher } from "UserInputs";
+import { DropdownSelect, Switcher } from "UserInputs";
 
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { OptionsSettings, LevelSettings, Player } from "Game";
 
-import { LevelWizard, OptionsWizard } from "./game-settings-wizards/game-settings-wizards";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard.constants";
 
+import { LevelWizard, OptionsWizard, VSTypeWizard } from "../game-settings-wizard/game-settings-wizard.module";
+
 export class GameWizard {
-    #player;
-    #settingsWizards = {};
-    #gameSettings = {};
+  #player;
+  #settingsWizards = {};
+  #gameSettings = {};
 
-    constructor(onClose, submitGame) {
-        this.onClose = onClose;
-        this.submitGame = submitGame;
-        this.player = new Player(self.user.id, self.user.username);
-    }
+  constructor(onClose, submitGame) {
+    this.onClose = onClose;
+    this.submitGame = submitGame;
+    this.player = new Player(self.user.id, self.user.username);
+  }
 
-    set player(player) {
-        this.#player = player;
-    }
+  set player(player) {
+    this.#player = player;
+  }
 
-    get player() {
-        return this.#player;
-    }
+  get player() {
+    return this.#player;
+  }
 
-    get wizardTitleElement() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardTitle);
-    }
+  // get wizardTitleElement() {
+  //     return ElementHandler.getByID(DOM_ELEMENT_ID.wizardTitle);
+  // }
 
-    get wizardContentElement() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardContent);
-    }
+  // get wizardContentElement() {
+  //     return ElementHandler.getByID(DOM_ELEMENT_ID.wizardContent);
+  // }
 
-    get wizardActionsElement() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.wizardActions);
-    }
+  // get wizardActionsElement() {
+  //     return ElementHandler.getByID(DOM_ELEMENT_ID.wizardActions);
+  // }
 
-    get playBtn() {
-        return ElementHandler.getByID(DOM_ELEMENT_ID.playButton);
-    }
+  // get playBtn() {
+  //     return ElementHandler.getByID(DOM_ELEMENT_ID.playButton);
+  // }
 
-    setSettingsWizards(name, wizard, keepOne = false) {
-        if (keepOne) {
-            this.#settingsWizards = {};
-        } else {
-            delete this.#settingsWizards[name];
-        }
-        this.#settingsWizards[name] = wizard;
-    }
+  // setSettingsWizards(name, wizard, keepOne = false) {
+  //     if (keepOne) {
+  //         this.#settingsWizards = {};
+  //     } else {
+  //         delete this.#settingsWizards[name];
+  //     }
+  //     this.#settingsWizards[name] = wizard;
+  // }
 
-    get settingsWizards() {
-        return Object.values(this.#settingsWizards);
-    }
+  // get settingsWizards() {
+  //     return Object.values(this.#settingsWizards);
+  // }
 
-    setGameSettings(name, settings) {
-        delete this.#gameSettings[name];
-        this.#gameSettings[name] = settings;
-    }
+  // setGameSettings(name, settings) {
+  //     delete this.#gameSettings[name];
+  //     this.#gameSettings[name] = settings;
+  // }
 
-    getGameSettings(name) {
-        return this.#gameSettings[name];
-    }
+  // getGameSettings(name) {
+  //     return this.#gameSettings[name];
+  // }
 
-    get gameSettings() {
-        return this.#gameSettings;
-    }
+  // get gameSettings() {
+  //     return this.#gameSettings;
+  // }
 
-    getSettingsWizardByName(key) {
-        return this.#settingsWizards[key];
-    }
+  // getSettingsWizardByName(key) {
+  //     return this.#settingsWizards[key];
+  // }
 
-    get optionsSettings() {
-        return this.getGameSettings("optionsSettings");
-    }
+  // get optionsSettings() {
+  //     return this.getGameSettings("optionsSettings");
+  // }
 
-    get levelSettings() {
-        return this.getSettingsWizardByName("levelSettings").settings;
-    }
+  // get levelSettings() {
+  //     return this.getSettingsWizardByName("levelSettings").settings;
+  // }
 
-    get gameParams() {
-        return {
-            id: this.type,
-            levelSettings: this.levelSettings,
-            optionsSettings: this.optionsSettings
-        };
-    }
+  // get gameParams() {
+  //     return {
+  //         id: this.type,
+  //         levelSettings: this.levelSettings,
+  //         optionsSettings: this.optionsSettings
+  //     };
+  // }
 
-    initGameSettings() {
-        this.setLevelSettings();
-        this.setOptionsSettings();
-    }
+  // initGameSettings() {
+  //     this.setLevelSettings();
+  //     this.setOptionsSettings();
+  // }
 
-    setLevelSettings() {
-        const currentLevelSettings = LocalStorageHelper.retrieve("levelSettings");
-        const levelSettings = new LevelSettings();
-        if (currentLevelSettings) {
-            levelSettings.update(currentLevelSettings);
-        }
-        this.setGameSettings("levelSettings", levelSettings);
-    }
+  // setLevelSettings() {
+  //     const currentLevelSettings = LocalStorageHelper.retrieve("levelSettings");
+  //     const levelSettings = new LevelSettings();
+  //     if (currentLevelSettings) {
+  //         levelSettings.update(currentLevelSettings);
+  //     }
+  //     this.setGameSettings("levelSettings", levelSettings);
+  // }
 
-    setOptionsSettings() {
-        this.setGameSettings("optionsSettings", this.getInitialOptionsSettings());
-    }
+  // setOptionsSettings() {
+  //     this.setGameSettings("optionsSettings", this.getInitialOptionsSettings());
+  // }
 
-    getInitialOptionsSettings() {
-        const optionsSettings = new OptionsSettings();
-        return this.updateOptionSettingsWithSelectedValues(optionsSettings);
-    }
+  // getInitialOptionsSettings() {
+  //     const optionsSettings = new OptionsSettings();
+  //     return this.updateOptionSettingsWithSelectedValues(optionsSettings);
+  // }
 
-    updateOptionSettingsWithSelectedValues(optionsSettings) {
-        const currentOptionsSettings = LocalStorageHelper.retrieve("optionsSettings");
-        if (currentOptionsSettings) {
-            const updateData = {};
-            Object.keys(optionsSettings).forEach(key => {
-                if (currentOptionsSettings[key] !== undefined) {
-                    updateData[key] = currentOptionsSettings[key];
-                }
-            });
-            optionsSettings.update(updateData);
-        }
-        return optionsSettings;
-    }
+  // updateOptionSettingsWithSelectedValues(optionsSettings) {
+  //     const currentOptionsSettings = LocalStorageHelper.retrieve("optionsSettings");
+  //     if (currentOptionsSettings) {
+  //         const updateData = {};
+  //         Object.keys(optionsSettings).forEach(key => {
+  //             if (currentOptionsSettings[key] !== undefined) {
+  //                 updateData[key] = currentOptionsSettings[key];
+  //             }
+  //         });
+  //         optionsSettings.update(updateData);
+  //     }
+  //     return optionsSettings;
+  // }
 
-    generateWizard() {
-        this.init();
-        const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-        wizardContainer.append(this.generateWizardHeader());
-        const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
-        this.renderWizardContent(wizardContent);
-        wizardContainer.append(wizardContent);
-        wizardContainer.append(this.generateWizardActions());
-        return wizardContainer;
-    }
+  renderWizard() {
+    // this.init();
+    const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
+    const sdf = new LevelWizard(this.onLevelSettingsChange.bind(this));
+    wizardContainer.append(sdf.generateSettingsWizard());
+    const asd = new VSTypeWizard(this.onVSModeChange.bind(this));
+    wizardContainer.append(asd.generateSettingsWizard());
 
-    generateWizardHeader() {
-        const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);
-        const closeBnt = ElementGenerator.generateButton(BUTTONS.close, this.onClose.bind(this));
-        wizardHeader.append(this.generateWizardTitle(), closeBnt);
-        return wizardHeader;
-    }
+    // wizardContainer.append(this.generateWizardHeader());
+    // const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
+    // this.renderWizardContent(wizardContent);
+    // wizardContainer.append(wizardContent);
+    // wizardContainer.append(this.generateWizardActions());
+    console.log("wizard");
+    return wizardContainer;
+  }
 
-    generateWizardTitle() {
-        const wizardTitle = document.createElement("h2");
-        ElementHandler.setID(wizardTitle, DOM_ELEMENT_ID.wizardTitle);
-        wizardTitle.innerHTML = this.title;
-        return wizardTitle;
-    }
 
-    generateWizardActions() {
-        const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer], DOM_ELEMENT_ID.wizardActions);
-        this.addActions(actionsContainer);
-        return actionsContainer;
-    }
+  onLevelSettingsChange(params) {
+    console.log(params);
+    // params.value.setMinesPositions();
+    // console.log(params.value);
+  }
 
-    addActions(actionsContainer) {
-        const buttons = this.getWizardActionButtons();
-        buttons.forEach(button => actionsContainer.append(button));
-    }
+  onVSModeChange(params) {
+    console.log(params);
+  }
 
-    generateResetButton() {
-        return ElementGenerator.generateButton(BUTTONS.reset, this.onReset.bind(this));
-    }
+  // generateWizardHeader() {
+  //     const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);
+  //     const closeBnt = ElementGenerator.generateButton(BUTTONS.close, this.onClose.bind(this));
+  //     wizardHeader.append(this.generateWizardTitle(), closeBnt);
+  //     return wizardHeader;
+  // }
 
-    generatePlayButton() {
-        return ElementGenerator.generateButton(this.playButtonParams, this.onPlay.bind(this));
-    }
+  // generateWizardTitle() {
+  //     const wizardTitle = document.createElement("h2");
+  //     ElementHandler.setID(wizardTitle, DOM_ELEMENT_ID.wizardTitle);
+  //     wizardTitle.innerHTML = this.title;
+  //     return wizardTitle;
+  // }
 
-    onValidation(valid) {
-        if (this.submissionPrevented !== !valid) {
-            this.submissionPrevented = !valid;
-            this.updateSubmissionButton();
-        }
-    }
+  // generateWizardActions() {
+  //     const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actionsContainer], DOM_ELEMENT_ID.wizardActions);
+  //     this.addActions(actionsContainer);
+  //     return actionsContainer;
+  // }
 
-    // OVERRIDEN FUNCTIONS
-    get title() {
-        return TYPOGRAPHY.emptyString;
-    }
+  // addActions(actionsContainer) {
+  //     const buttons = this.getWizardActionButtons();
+  //     buttons.forEach(button => actionsContainer.append(button));
+  // }
 
-    get type() {
-        return undefined;
-    }
+  // generateResetButton() {
+  //     return ElementGenerator.generateButton(BUTTONS.reset, this.onReset.bind(this));
+  // }
 
-    get playButtonParams() {
-        return BUTTONS.play;
-    }
+  // generatePlayButton() {
+  //     return ElementGenerator.generateButton(this.playButtonParams, this.onPlay.bind(this));
+  // }
 
-    init() {
-        this.submissionPrevented = false;
-        this.initGameSettings();
-        this.setCurrentWizards();
-    }
+  // onValidation(valid) {
+  //     if (this.submissionPrevented !== !valid) {
+  //         this.submissionPrevented = !valid;
+  //         this.updateSubmissionButton();
+  //     }
+  // }
 
-    generateLevelWizard() {
-        return new LevelWizard(this.onValidation.bind(this), this.getGameSettings("levelSettings"));
-    }
+  // // OVERRIDEN FUNCTIONS
+  // get title() {
+  //     return TYPOGRAPHY.emptyString;
+  // }
 
-    generateOptionsWizard() {
-        return new OptionsWizard(this.optionsSettings, this.onValidation.bind(this));
-    }
+  // get type() {
+  //     return undefined;
+  // }
 
-    setCurrentWizards() {
-        return;
-    }
+  // get playButtonParams() {
+  //     return BUTTONS.play;
+  // }
 
-    renderWizardContent(wizardContent) {
-        return;
-    }
+  // init() {
+  //     this.submissionPrevented = false;
+  //     this.initGameSettings();
+  //     this.setCurrentWizards();
+  // }
 
-    getWizardActionButtons() {
-        return [];
-    }
+  // generateLevelWizard() {
+  //     return new LevelWizard(this.onValidation.bind(this), this.getGameSettings("levelSettings"));
+  // }
 
-    resetWizard() {
-        return;
-    }
+  // generateOptionsWizard() {
+  //     return new OptionsWizard(this.optionsSettings, this.onValidation.bind(this));
+  // }
 
-    onReset() {
-        return;
-    }
+  // setCurrentWizards() {
+  //     return;
+  // }
 
-    onPlay() {
-        return;
-    }
+  // renderWizardContent(wizardContent) {
+  //     return;
+  // }
 
-    updateSubmissionButton() {
-        this.playBtn.then(btn => ElementHandler.setDisabled(btn, this.submissionPrevented));
-    }
+  // getWizardActionButtons() {
+  //     return [];
+  // }
+
+  // resetWizard() {
+  //     return;
+  // }
+
+  // onReset() {
+  //     return;
+  // }
+
+  // onPlay() {
+  //     return;
+  // }
+
+  // updateSubmissionButton() {
+  //     this.playBtn.then(btn => ElementHandler.setDisabled(btn, this.submissionPrevented));
+  // }
 
 }

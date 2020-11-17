@@ -5,7 +5,7 @@
     cursor       : pointer;
     outline      : none;
     border-bottom: 1px solid transparent;
-
+    text-transform: capitalize;
     &:last-of-type {
         border-bottom-color: transparent !important;
     }

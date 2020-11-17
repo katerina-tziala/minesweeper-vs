@@ -1,0 +1,54 @@
+@import "../button/button";
+
+@import "../../components/form/form_username";
+
+@import "../input/number-input";
+@import "../switcher/switcher";
+@import "../dropdown-select/dropdown-select";
+
+
+.settings-wizard {
+  // min-width: 320px;
+  // max-width: 320px;
+  // padding  : 15px;
+  // animation: slide-in 0.8s ease;
+  // position : relative;
+}
+
+.settings-wizard-section {
+  @extend %start-center;
+  margin-top: 10px;
+}
+
+.settings-wizard-label {
+  text-transform: capitalize;
+  height        : getSize("input-height");
+  line-height   : 40px;
+  font-style    : italic;
+  font-weight   : 700;
+  flex-grow     : 1;
+}
+
+.settings-wizard-field-container {
+  height   : getSize("input-height");
+  min-width: 100px;
+  max-width: 120px;
+  min-width: 120px;
+
+  .dropdown-container {
+    margin-top: 4px;
+
+    >.dropdown-listbox-container {
+      z-index: 800;
+    }
+  }
+
+
+  .number-input-container {
+    margin: auto;
+
+    .error-message {
+      width: 258px;
+    }
+  }
+}
