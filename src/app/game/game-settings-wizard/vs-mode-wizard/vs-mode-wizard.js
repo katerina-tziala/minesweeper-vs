@@ -7,11 +7,11 @@ import { DropdownSelect } from "UserInputs";
 import { GameVSMode } from "Game";
 
 
-import { DOM_ELEMENT_CLASS, CONTENT } from "./vs-type-wizard.constants";
+import { DOM_ELEMENT_CLASS, CONTENT } from "./vs-mode-wizard.constants";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 
-export class VSTypeWizard extends GameSettingsWizard {
+export class VSModeWizard extends GameSettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
     this.init();
@@ -25,7 +25,7 @@ export class VSTypeWizard extends GameSettingsWizard {
   // }
 
   init() {
-    console.log("hey VSTypeWizard wizard");
+    console.log("hey VSModeWizard wizard");
 
 
   }
