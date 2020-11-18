@@ -3,33 +3,56 @@
 
 @mixin applySwitcherFocusedTrackTheme($theme) {
 
+  &:hover,
+  &:focus {
+    @include theming.setThemeBoxShadow($theme);
+    background-color: theming.getThemeColor($theme, "theme-primary-intense");
+  }
+
+  &:disabled {
+
     &:hover,
     &:focus {
-        @include theming.setThemeBoxShadow($theme);
-        background-color: theming.getThemeColor($theme, "theme-primary-intense");
+      box-shadow: none;
     }
+  }
 }
 
 @mixin applySwitcherTheme($theme) {
 
-    ._thumb {
-        background-color: theming.getThemeColor($theme, "theme-base");
+  ._thumb {
+    background-color: theming.getThemeColor($theme, "theme-base");
 
-        &:hover,
-        &:focus {
-            background-color: theming.getThemeColor($theme, "theme-secondary-intense");
-        }
-
+    &:hover,
+    &:focus {
+      background-color: theming.getThemeColor($theme, "theme-secondary-intense");
     }
+  }
 
-    ._track--on {
+  ._track--on {
+    background-color: theming.getThemeColor($theme, "theme-primary-intense");
+    @include applySwitcherFocusedTrackTheme($theme);
+
+    &:disabled {
+
+      &:hover,
+      &:focus {
         background-color: theming.getThemeColor($theme, "theme-primary-intense");
-        @include applySwitcherFocusedTrackTheme($theme);
+      }
     }
+  }
 
-    ._track--off {
-        background-color: theming.getThemeColor($theme, "theme-primary-subtle");
-        @include applySwitcherFocusedTrackTheme($theme);
+  ._track--off {
+    background-color: theming.getThemeColor($theme, "theme-primary-subtle");
+    @include applySwitcherFocusedTrackTheme($theme);
+
+    &:disabled {
+
+      &:hover,
+      &:focus {
+        background-color: theming.getThemeColor($theme, "theme-primary-intense");
+      }
     }
+  }
 
 }

@@ -133,9 +133,11 @@ export class GameWizard {
   renderWizard() {
     // this.init();
     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-    const sdf = new LevelWizard(this.onLevelSettingsChange.bind(this));
-    wizardContainer.append(sdf.generateSettingsWizard());
-    const asd = new VSModeWizard(this.onVSModeChange.bind(this));
+    // const sdf = new LevelWizard(this.onLevelSettingsChange.bind(this));
+    // wizardContainer.append(sdf.generateSettingsWizard());
+    // const asd = new VSModeWizard(this.onVSModeChange.bind(this));
+    // wizardContainer.append(asd.generateSettingsWizard());
+    const asd = new OptionsWizard(this.onOptionsChange.bind(this));
     wizardContainer.append(asd.generateSettingsWizard());
 
     // wizardContainer.append(this.generateWizardHeader());
@@ -149,6 +151,7 @@ export class GameWizard {
 
 
   onLevelSettingsChange(params) {
+    this.settings[params.name] = params.value;
     console.log(params);
     // params.value.setMinesPositions();
     // console.log(params.value);
@@ -158,6 +161,9 @@ export class GameWizard {
     console.log(params);
   }
 
+  onOptionsChange(params) {
+    console.log(params);
+  }
   // generateWizardHeader() {
   //     const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);
   //     const closeBnt = ElementGenerator.generateButton(BUTTONS.close, this.onClose.bind(this));

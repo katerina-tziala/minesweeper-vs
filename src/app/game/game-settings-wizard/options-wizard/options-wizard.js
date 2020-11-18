@@ -1,160 +1,131 @@
 "use strict";
 
-import { ElementGenerator } from "HTML_DOM_Manager";
+import { Switcher, NumberInput } from "UserInputs";
 
-import { UserInputsGroupController, Switcher } from "UserInputs";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone } from "~/_utils/utils.js";
 
+import { GameVSMode, OptionsSettings } from "Game";
 
-import { DOM_ELEMENT_CLASS, LIMITS } from "./options-wizard.constants";
+import { SETTINGS_PROPERTIES, FIELD_NAME, LIMITS } from "./options-wizard.constants";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 
 export class OptionsWizard extends GameSettingsWizard {
+
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
     this.init();
   }
 
-  set settings(settings) {
-    super.settings = new LevelSettings();
-    if (settings) {
-      super.settings.update(settings);
+  get vsModeSelected() {
+    return this.settings && this.settings.vsMode !== null;
+  }
+
+  get settingsProperties() {
+    let params = SETTINGS_PROPERTIES.default;
+    if (this.settings && this.settings.vsMode === GameVSMode.Clear) {
+      params = params.concat(SETTINGS_PROPERTIES[GameVSMode.Clear]);
     }
+    if (this.settings && this.settings.vsMode === GameVSMode.Detect) {
+      params = params.concat(SETTINGS_PROPERTIES[GameVSMode.Detect]);
+    }
+    return params;
+  }
+
+  get sneakPeakDisabled() {
+    return this.settings.openStrategy;
+  }
+
+  get sneakPeakDurationDisabled() {
+    return this.settings.openStrategy ? true : !this.settings.sneakPeek;
+  }
+
+  get sneakPeakDurationLimits() {
+    const limits = clone(LIMITS.sneakPeekDuration);
+    if (this.sneakPeakDurationDisabled) {
+      limits.min = 0;
+    }
+    return limits;
   }
 
   init() {
-    console.log("hey level wizard");
-
-
+    if (!this.settings) {
+      this.settings = new OptionsSettings(GameVSMode.Clear);
+    }
+    this.settings.openStrategy = false;
+    this.settings.sneakPeek = true;
+    this.initControllers();
   }
 
-  // Î
-  // getOptionsControllerParams(type) {
-  //   return {
-  //     name: type,
-  //     value: this.settings[type],
-  //   };
-  // }
+  initControllers() {
+    this.settingsProperties.forEach(property => {
+      this.inputsGroup.inputControllers = this.generateSettingController(property);
+    });
+  }
 
-  // generateDefaultSwitcher(key) {
-  //   const params = this.getOptionsControllerParams(key);
-  //   return new Switcher(params, this.onOptionSettingChange.bind(this));
-  // }
+  generateSettingController(key) {
+    let controller;
+    switch (key) {
+      case FIELD_NAME.openStrategy:
+        controller = this.generateSwitcher(key, this.onOpenStrategyChange.bind(this));
+        return controller;
+      case FIELD_NAME.sneakPeek:
+        controller = this.generateSwitcher(key, this.onSneakPeekChange.bind(this), this.sneakPeakDisabled);
+        return controller;
+      case FIELD_NAME.sneakPeekDuration:
+        controller = this.generateSneakPeekDurationInput();
+        return controller;
+      default:
+        controller = this.generateSwitcher(key);
+        return controller;
+    }
+  }
 
-  // initOptionsControllers() {
-  //   const controllers = [];
-  //   Object.keys(this.settings).forEach(key => controllers.push(this.generateDefaultSwitcher(key)));
-  //   return controllers;
-  // }
+  generateSwitcher(key, action = this.onOptionSettingChange.bind(this), disabled = false) {
+    const params = this.getControllerParams(key);
+    const controller = new Switcher(params, action);
+    controller.disabled = disabled;
+    return controller;
+  }
 
-  // set inputsGroup(controllers) {
-  //   this.#inputsGroup = new UserInputsGroupController();
-  //   controllers.forEach(controller => this.#inputsGroup.inputControllers = controller);
-  // }
+  generateSneakPeekDurationInput() {
+    const controller = new NumberInput(FIELD_NAME.sneakPeekDuration, this.settings.sneakPeekDuration.toString(), this.onSneakPeekDurationChange.bind(this));
+    controller.boundaries = this.sneakPeakDurationLimits;
+    controller.disabled = this.sneakPeakDurationDisabled;
+    return controller;
+  }
 
-  // get inputsGroup() {
-  //   return this.#inputsGroup;
-  // }
+  onOptionSettingChange(params) {
+    this.settings[params.name] = params.value;
+    this.emitChanges();
+  }
 
-  // set settings(settings) {
-  //   this.#settings = settings;
-  // }
+  onOpenStrategyChange(params) {
+    this.settings[params.name] = params.value;
+    const controller = this.inputsGroup.getInputController(FIELD_NAME.sneakPeek);
+    this.sneakPeakDisabled ? controller.disable() : controller.enable();
+    this.updateSneakPeekDuration();
+  }
 
-  // get settings() {
-  //   return this.#settings;
-  // }
+  onSneakPeekChange(params) {
+    this.settings[params.name] = params.value;
+    this.updateSneakPeekDuration();
+  }
 
-  // renderWizard() {
-  //   const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-  //   wizardContainer.append(this.renderlOptionsInputs());
-  //   return wizardContainer;
-  // }
+  onSneakPeekDurationChange(params) {
+    if (!params.valid) {
+      this.emitChanges();
+      return;
+    }
+    this.onOptionSettingChange(params);
+  }
 
-  // renderlOptionsInputs() {
-  //   const fragment = document.createDocumentFragment();
-  //   this.inputsGroup.inputControllers.forEach(controller => {
-  //     const inputField = controller.generateInputField();
-  //     const section = GameSettingsWizardViewHelper.generateWizardInputSection(controller.name, inputField, DOM_ELEMENT_CLASS.propertyContainer);
-  //     fragment.append(section);
-  //   });
-  //   return fragment;
-  // }
-
-  // onOptionSettingChange(params) {
-  //   const updateData = {};
-  //   updateData[params.name] = params.value;
-  //   this.settings.update(updateData);
-  //   LocalStorageHelper.save("optionsSettings", this.settings);
-  // }
-
-  // onSneakPeekDurationChange(params) {
-  //   if (params.valid) {
-  //     this.onOptionSettingChange(params);
-  //   }
-  //   this.onValidation(params.valid);
-  // }
-
-  // onOpenStrategyChange(params) {
-  //   this.onOptionSettingChange(params);
-  //   if (params.value) {
-  //     this.inputsGroup.getInputController("sneakPeek").disable();
-  //     this.updateSneakPeekProperties();
-  //   } else {
-  //     this.inputsGroup.getInputController("sneakPeek").enable();
-  //     this.updateSneakPeekProperties();
-  //   }
-  // }
-
-  // onSneakPeekChange(params) {
-  //   this.onOptionSettingChange(params);
-  //   this.updateSneakPeekProperties();
-  // }
-
-
-  // updateSneakPeekProperties() {
-  //   const sneakPeekController = this.inputsGroup.getInputController("sneakPeek");
-  //   if (sneakPeekController.disabled) {
-  //     this.disbleSneakPeekDurationController();
-  //   } else {
-  //     this.updateDurationControllerBasedOnSneakPeekValue();
-  //   }
-  // }
-
-  // updateDurationControllerBasedOnSneakPeekValue() {
-  //   const sneakPeekController = this.inputsGroup.getInputController("sneakPeek");
-  //   const sneakPeekDurationController = this.inputsGroup.getInputController("sneakPeekDuration");
-  //   sneakPeekDurationController.boundaries = this.getSneekPeakDurationLimits();
-  //   if (sneakPeekController.value) {
-  //     sneakPeekDurationController.enable();
-  //   } else {
-  //     this.disbleSneakPeekDurationController();
-  //   }
-  // }
-
-  // getSneekPeakDurationLimits() {
-  //   const limits = clone(LIMITS.sneakPeekDuration);
-  //   if (!this.settings.sneakPeek) {
-  //     limits.min = 0;
-  //     this.settings.sneakPeekDuration = 0;
-  //   }
-  //   return limits;
-  // }
-
-  // disbleSneakPeekDurationController() {
-  //   const sneakPeekDurationController = this.inputsGroup.getInputController("sneakPeekDuration");
-  //   sneakPeekDurationController.disable();
-  //   if (!sneakPeekDurationController.valid) {
-  //     sneakPeekDurationController.value = this.settings.sneakPeekDuration.toString();
-  //     sneakPeekDurationController.value = sneakPeekDurationController.getValueBasedOnStep().toString();
-  //     sneakPeekDurationController.setFieldValue();
-  //     sneakPeekDurationController.validateInputTypeValue();
-  //     this.onNumberInputChange(sneakPeekDurationController.submissionProperties);
-  //   }
-  // }
-
-
+  updateSneakPeekDuration() {
+    const controller = this.inputsGroup.getInputController(FIELD_NAME.sneakPeekDuration);
+    this.sneakPeakDurationDisabled ? controller.disable() : controller.enable();
+    controller.boundaries = this.sneakPeakDurationLimits;
+    controller.value = this.settings.sneakPeekDuration.toString();
+    controller.validateInputTypeValue();
+  }
 
 }

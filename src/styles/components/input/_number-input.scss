@@ -13,6 +13,7 @@
 .number-input {
     @extend .input;
     width       : 100%;
+    user-select     : none;
 }
 
 .number-input-controls {

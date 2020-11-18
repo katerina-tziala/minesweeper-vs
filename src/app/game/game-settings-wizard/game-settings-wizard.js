@@ -32,12 +32,21 @@ export class GameSettingsWizard {
     return this.#settings;
   }
 
-  getDropdownSelectParams(name, enumObject) {
+  settingsPropertyExists(propertyName) {
+    return Object.keys(this.settings).includes(propertyName);
+  }
+
+  getControllerParams(name) {
     return {
       name: name,
-      value: this.settings[name] ? this.settings[name] : TYPOGRAPHY.emptyString,
-      options: this.getEnumOptions(enumObject)
+      value: this.settingsPropertyExists(name) ? this.settings[name] : TYPOGRAPHY.emptyString
     };
+  }
+
+  getDropdownSelectParams(name, enumObject) {
+    const params = this.getControllerParams(name);
+    params.options = this.getEnumOptions(enumObject);
+    return params;
   }
 
   getEnumOptions(enumObject) {
@@ -56,7 +65,7 @@ export class GameSettingsWizard {
   }
 
   generateSettingsWizard() {
-    const wizardContainer = ElementGenerator.generateContainer();
+    const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
     wizardContainer.append(this.generateWizardInputs());
     return wizardContainer;
   }

@@ -1,10 +1,7 @@
 // enums
-export { GameLevel } from "./_enums/game-level.enum";
-export { GameType } from "./_enums/game-type.enum";
-export { GameVSMode } from "./_enums/game-vs-mode.enum";
-
+export * from "./_enums/_game-enums.module";
 // models
-export * from "./_models/game-models.module";
+export * from "./_models/_game-models.module";
 
 // game modes
 export { GameOriginal } from "./game-mode/game-original";

@@ -6,13 +6,9 @@
 @import "../switcher/switcher";
 @import "../dropdown-select/dropdown-select";
 
-
 .settings-wizard {
-  // min-width: 320px;
-  // max-width: 320px;
-  // padding  : 15px;
-  // animation: slide-in 0.8s ease;
-  // position : relative;
+  position: relative;
+  padding : 0 10px;
 }
 
 .settings-wizard-section {
@@ -30,6 +26,7 @@
 }
 
 .settings-wizard-field-container {
+  @extend %end-end;
   height   : getSize("input-height");
   min-width: 100px;
   max-width: 120px;
@@ -44,7 +41,6 @@
   }
 
   .number-input-container {
-    margin: auto;
 
     .error-message {
       width: 258px;

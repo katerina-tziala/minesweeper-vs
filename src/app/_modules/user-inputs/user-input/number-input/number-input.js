@@ -152,6 +152,8 @@ export class NumberInput extends TextInput {
     }
     if (!this.valueInLimits()) {
       this.valid = false;
+      this.value = this.valueInteger.toString();
+      this.setFieldValue();
       this.showError(this.boundariesError);
       this.notifyForChanges();
       return;
@@ -198,8 +200,8 @@ export class NumberInput extends TextInput {
   }
 
   updateValidFieldValue() {
-    this.value = this.valueInteger.toString();
     this.valid = true;
+    this.value = this.valueInteger.toString();
     this.setFieldValue();
     this.hideError();
   }
