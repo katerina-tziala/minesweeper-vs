@@ -4,113 +4,52 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DropdownSelect } from "UserInputs";
 
-import { GameVSMode } from "Game";
+import { GameVSMode, OptionsSettings } from "Game";
 
 
-import { DOM_ELEMENT_CLASS, CONTENT } from "./vs-mode-wizard.constants";
+import { CONTENT } from "./vs-mode-wizard.constants";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 
 export class VSModeWizard extends GameSettingsWizard {
+
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
     this.init();
   }
 
-  // set settings(settings) {
-  //   super.settings = new LevelSettings();
-  //   if (settings) {
-  //     super.settings.update(settings);
-  //   }
-  // }
+  get vsModeSelected() {
+    return this.settings && this.settings.vsMode !== null;
+  }
+
+  get modeExplanation() {
+    return `<div>${CONTENT[this.settings.vsMode].explanation}</div>`;
+  }
+
+
 
   init() {
-    console.log("hey VSModeWizard wizard");
-
-
+    this.settings = new OptionsSettings(this.vsModeSelected ? this.settings.vsMode : GameVSMode.Clear);
+    const params = this.getDropdownSelectParams("vsMode", GameVSMode);
+    this.inputsGroup.inputControllers = new DropdownSelect(params, this.onVsModeChange.bind(this));
   }
-  // #settings;
-  // #inputController;
 
-  // constructor(onVsTypeChange, vsType) {
-  //     this.onVsTypeChange = onVsTypeChange;
-  //     this.settings = vsType;
-  //     this.initInputController();
-  // }
+  onVsModeChange(params) {
+    this.settings = new OptionsSettings(params.value);
+    this.getFieldExplanationContainer("vsMode").then(container => container.innerHTML = this.modeExplanation);
+    //this.emitChanges();
+  }
 
-  // set settings(vsType) {
-  //     this.#settings = vsType;
-  // }
+  // OVERIDDEN FUNCTIONS
+  generateSettingsWizard() {
+    const wizardContainer = super.generateSettingsWizard();
+    wizardContainer.append(this.generateFieldExplanation("vsMode", this.modeExplanation));
+    return wizardContainer;
+  }
 
-  // get settings() {
-  //     return this.#settings;
-  // }
+  getModeLabel(enumValue) {
+    return CONTENT[enumValue].label;
+  }
 
-  // set inputController(inputController) {
-  //     this.#inputController = inputController;
-  // }
-
-  // get inputController() {
-  //     return this.#inputController;
-  // }
-
-  // initInputController() {
-  //     const params = {
-  //         name: "vsType",
-  //         value: this.settings,
-  //         options: this.typeOptions
-  //     };
-  //     this.inputController = new DropdownSelect(params, this.onVsTypeSelection.bind(this));
-  // }
-
-  // getTypeLabel(mode) {
-  //     return CONTENT[mode].label;
-  // }
-
-  // get typeOptions() {
-  //     const options = [];
-  //     Object.values(GameVSMode).forEach(mode => {
-  //         options.push({
-  //             value: mode,
-  //             innerHTML: `<span class="${DOM_ELEMENT_CLASS.optionLabel}">${this.getTypeLabel(mode)}</span>`
-  //         });
-  //     });
-  //     return options;
-  // }
-
-  // get selectedTypeExplanation() {
-  //     return CONTENT[this.settings].explanation;
-  // }
-
-  // renderWizard() {
-  //     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-  //     wizardContainer.append(this.renderlWizardInputs());
-  //     const explanationContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.explanation], DOM_ELEMENT_CLASS.explanation);
-  //     this.renderExplanation(explanationContainer);
-  //     wizardContainer.append(explanationContainer);
-  //     return wizardContainer;
-  // }
-
-  // renderExplanation(explanationContainer) {
-  //     explanationContainer.innerHTML = this.selectedTypeExplanation;
-  // }
-
-  // get explanationContainer() {
-  //     return ElementHandler.getByID(DOM_ELEMENT_CLASS.explanation);
-  // }
-
-  // renderlWizardInputs() {
-  //     const fragment = document.createDocumentFragment();
-  //     const dropdownInputField = this.inputController.generateInputField();
-  //     const section = GameSettingsWizardViewHelper.generateWizardInputSection(this.inputController.name, dropdownInputField);
-  //     fragment.append(section);
-  //     return fragment;
-  // }
-
-  // onVsTypeSelection(params) {
-  //     this.settings = params.value;
-  //     this.explanationContainer.then(explanationContainer => this.renderExplanation(explanationContainer));
-  //     this.onVsTypeChange(this.settings);
-  // }
 
 }

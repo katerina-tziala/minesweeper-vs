@@ -6,7 +6,8 @@ export const DOM_ELEMENT_CLASS = {
     wizardContainer: "settings-wizard",
     sectionContainer: "settings-wizard-section",
     label: "settings-wizard-label",
-    fieldContainer: "settings-wizard-field-container"
+    fieldContainer: "settings-wizard-field-container",
+    fieldExplanation: "settings-wizard-field-explanation"
 };
 
 export const CONTENT = {
@@ -16,7 +17,7 @@ export const CONTENT = {
     numberOfMines: "number of mines",
     marks: "marks",
     wrongFlagHint: "wrong flag hint",
-    vsType: "VS mode",
+    vsMode: "VS mode",
     unlimitedFlags: "unlimited flags",
     openStrategy: "open strategy",
     sneakPeek: "sneak peek",

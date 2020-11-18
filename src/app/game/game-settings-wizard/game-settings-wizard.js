@@ -47,8 +47,12 @@ export class GameSettingsWizard {
   getDropdownOptions(enumValue) {
     return {
       value: enumValue,
-      innerHTML: `<span>${enumValue}</span>`
+      innerHTML: `<span>${this.getModeLabel(enumValue)}</span>`
     };
+  }
+
+  getModeLabel(enumValue) {
+    return enumValue;
   }
 
   generateSettingsWizard() {
@@ -72,6 +76,20 @@ export class GameSettingsWizard {
     fieldContainer.append(controller.generateInputField());
     sectionContainer.append(label, fieldContainer);
     return sectionContainer;
+  }
+
+  getFieldExplanationID(fieldName) {
+    return DOM_ELEMENT_CLASS.sectionContainer + TYPOGRAPHY.doubleUnderscore + fieldName;
+  }
+
+  getFieldExplanationContainer(fieldName) {
+    return ElementHandler.getByID(this.getFieldExplanationID(fieldName));
+  }
+
+  generateFieldExplanation(fieldName, explanation) {
+    const fieldExplanation = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.fieldExplanation], this.getFieldExplanationID(fieldName));
+    fieldExplanation.innerHTML = explanation;
+    return fieldExplanation;
   }
 
   generateSectionLabel(inputName) {

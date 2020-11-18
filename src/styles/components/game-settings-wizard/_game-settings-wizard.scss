@@ -43,12 +43,23 @@
     }
   }
 
-
   .number-input-container {
     margin: auto;
 
     .error-message {
       width: 258px;
     }
+  }
+}
+
+.settings-wizard-field-explanation {
+  @extend %center-center;
+  padding   : 10px 10px 0;
+  text-align: center;
+  font-style: italic;
+  height    : 48px;
+
+  >div {
+    @extend %capitalize-first-letter;
   }
 }
