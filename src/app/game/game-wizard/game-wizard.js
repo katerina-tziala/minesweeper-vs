@@ -10,7 +10,7 @@ import { OptionsSettings, LevelSettings, Player } from "Game";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard.constants";
 
-import { LevelWizard, OptionsWizard, VSModeWizard } from "../game-settings-wizard/game-settings-wizard.module";
+import { LevelWizard, OptionsWizard, VSModeWizard } from "Game";
 
 export class GameWizard {
   #player;
