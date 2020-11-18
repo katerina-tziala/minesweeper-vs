@@ -1,15 +1,12 @@
 "use strict";
 
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-
 import { DropdownSelect } from "UserInputs";
 
 import { GameVSMode, OptionsSettings } from "Game";
 
+import { GameSettingsWizard } from "../game-settings-wizard";
 
 import { CONTENT } from "./vs-mode-wizard.constants";
-
-import { GameSettingsWizard } from "../game-settings-wizard";
 
 export class VSModeWizard extends GameSettingsWizard {
 
@@ -26,8 +23,6 @@ export class VSModeWizard extends GameSettingsWizard {
     return `<div>${CONTENT[this.settings.vsMode].explanation}</div>`;
   }
 
-
-
   init() {
     this.settings = new OptionsSettings(this.vsModeSelected ? this.settings.vsMode : GameVSMode.Clear);
     const params = this.getDropdownSelectParams("vsMode", GameVSMode);
@@ -37,7 +32,7 @@ export class VSModeWizard extends GameSettingsWizard {
   onVsModeChange(params) {
     this.settings = new OptionsSettings(params.value);
     this.getFieldExplanationContainer("vsMode").then(container => container.innerHTML = this.modeExplanation);
-    //this.emitChanges();
+    this.emitChanges();
   }
 
   // OVERIDDEN FUNCTIONS
@@ -50,6 +45,5 @@ export class VSModeWizard extends GameSettingsWizard {
   getModeLabel(enumValue) {
     return CONTENT[enumValue].label;
   }
-
 
 }
