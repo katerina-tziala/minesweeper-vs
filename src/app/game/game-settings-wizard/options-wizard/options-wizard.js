@@ -50,10 +50,8 @@ export class OptionsWizard extends GameSettingsWizard {
 
   init() {
     if (!this.settings) {
-      this.settings = new OptionsSettings(GameVSMode.Clear);
+      this.settings = new OptionsSettings();
     }
-    this.settings.openStrategy = false;
-    this.settings.sneakPeek = true;
     this.initControllers();
   }
 
