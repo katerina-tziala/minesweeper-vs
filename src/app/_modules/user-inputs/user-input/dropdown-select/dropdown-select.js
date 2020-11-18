@@ -12,130 +12,130 @@ import { DropdownSelectList } from "./dropdown-select-list";
 import { DropdownSelectOptionsHandler } from "./dropdown-select-options-handler";
 
 export class DropdownSelect extends UserInput {
-    #options;
-    #expanded;
-    #selectLabel;
-    #dropdownBtn;
-    #dropdownList;
+  #options;
+  #expanded;
+  #selectLabel;
+  #dropdownBtn;
+  #dropdownList;
 
-    constructor(params, onValueChange, onExpand) {
-        super(params.name, params.value, onValueChange);
-        this.valid = true;
-        this.selectLabel = params.selectLabel;
-        this.expanded = false;
-        this.options = params.options || [];
-        this.#dropdownBtn = new DropdownSelectButton(this.onDropdownBtnClick.bind(this), this.name);
-        this.#dropdownList = new DropdownSelectList(this.onOptionSelected.bind(this), this.name);
-        this.onExpand = onExpand;
-    }
+  constructor(params, onValueChange, onExpand) {
+    super(params.name, params.value, onValueChange);
+    this.valid = true;
+    this.selectLabel = params.selectLabel;
+    this.expanded = false;
+    this.options = params.options || [];
+    this.#dropdownBtn = new DropdownSelectButton(this.onDropdownBtnClick.bind(this), this.name);
+    this.#dropdownList = new DropdownSelectList(this.onOptionSelected.bind(this), this.name);
+    this.onExpand = onExpand;
+  }
 
-    set options(options) {
-        this.#options = DropdownSelectOptionsHandler.getSelectOptions(options, this.name, this.value);
-    }
+  set options(options) {
+    this.#options = DropdownSelectOptionsHandler.getSelectOptions(options, this.name, this.value);
+  }
 
-    get options() {
-        return this.#options;
-    }
+  get options() {
+    return this.#options;
+  }
 
-    set expanded(expanded) {
-        this.#expanded = expanded;
-    }
+  set expanded(expanded) {
+    this.#expanded = expanded;
+  }
 
-    get expanded() {
-        return this.#expanded;
-    }
+  get expanded() {
+    return this.#expanded;
+  }
 
-    set selectLabel(selectLabel) {
-        this.#selectLabel = selectLabel;
-    }
+  set selectLabel(selectLabel) {
+    this.#selectLabel = selectLabel;
+  }
 
-    get selectLabel() {
-        return this.#selectLabel;
-    }
+  get selectLabel() {
+    return this.#selectLabel;
+  }
 
-    get containerID() {
-        return DOM_ELEMENT_ID.dropdownContainer + this.name;
-    }
+  get containerID() {
+    return DOM_ELEMENT_ID.dropdownContainer + this.name;
+  }
 
-    get selectText() {
-        return this.selectLabel ? replaceStringParameter(CONTENT.selectText, this.selectLabel) : CONTENT.defaultSelectText;
-    }
+  get selectText() {
+    return this.selectLabel ? replaceStringParameter(CONTENT.selectText, this.selectLabel) : CONTENT.defaultSelectText;
+  }
 
-    get btnDisabled() {
-        return DropdownSelectOptionsHandler.getOptionsListSize(this.options) ? false : true;
-    }
+  get btnDisabled() {
+    return DropdownSelectOptionsHandler.getOptionsListSize(this.options) ? false : true;
+  }
 
-    get btnDisplayValue() {
-        const selectedOption = this.selectedOption;
-        return selectedOption ? selectedOption.innerHTML : this.selectText;
-    }
+  get btnDisplayValue() {
+    const selectedOption = this.selectedOption;
+    return selectedOption ? selectedOption.innerHTML : this.selectText;
+  }
 
-    get selectedOption() {
-        return DropdownSelectOptionsHandler.getSelectedOptionByValue(this.options, this.value);
-    }
+  get selectedOption() {
+    return DropdownSelectOptionsHandler.getSelectedOptionByValue(this.options, this.value);
+  }
 
-    updateOptions(options) {
-        this.options = options;
-        this.btnDisabled ? this.#dropdownBtn.disable() : this.#dropdownBtn.enable();
-        this.#dropdownList.updateOptions(this.options);
-    }
+  updateOptions(options) {
+    this.options = options;
+    this.btnDisabled ? this.#dropdownBtn.disable() : this.#dropdownBtn.enable();
+    this.#dropdownList.updateOptions(this.options);
+  }
 
-    generateInputField() {
-        const dorpdownFragment = document.createDocumentFragment();
-        const dropdownContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.containerID);
-        const button = this.generateDropdownButton();
-        const listbox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
-        dropdownContainer.append(button, listbox);
-        dorpdownFragment.append(dropdownContainer);
-        return dorpdownFragment;
-    }
+  generateInputField() {
+    const dorpdownFragment = document.createDocumentFragment();
+    const dropdownContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.containerID);
+    const button = this.generateDropdownButton();
+    const listbox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
+    dropdownContainer.append(button, listbox);
+    dorpdownFragment.append(dropdownContainer);
+    return dorpdownFragment;
+  }
 
-    generateDropdownButton() {
-        const dropdownParams = {
-            displayValue: this.btnDisplayValue,
-            selectText: this.selectText,
-            expanded: this.btnDisabled ? false : this.expanded,
-            disabled: this.btnDisabled
-        };
-        return this.#dropdownBtn.generateDropdownBtn(dropdownParams);
-    }
+  generateDropdownButton() {
+    const dropdownParams = {
+      displayValue: this.btnDisplayValue,
+      selectText: this.selectText,
+      expanded: this.btnDisabled ? false : this.expanded,
+      disabled: this.btnDisabled
+    };
+    return this.#dropdownBtn.generateDropdownBtn(dropdownParams);
+  }
 
-    onDropdownBtnClick(expand) {
-        if (expand && this.onExpand) {
-            this.onExpand(this.name);
-        }
-        this.expanded = expand;
-        if (this.expanded) {
-            document.addEventListener("click", this.collapseDropdown.bind(this));
-        } else {
-            this.removeCollapseDropdownListener();
-        }
-        this.#dropdownList.toggleList(this.expanded, this.selectedOption);
+  onDropdownBtnClick(expand) {
+    if (expand && this.onExpand) {
+      this.onExpand(this.name);
     }
+    this.expanded = expand;
+    if (this.expanded) {
+      document.addEventListener("click", this.collapseDropdown.bind(this));
+    } else {
+      this.removeCollapseDropdownListener();
+    }
+    this.#dropdownList.toggleList(this.expanded, this.selectedOption);
+  }
 
-    onOptionSelected(selectedValue) {
-        if (selectedValue && this.value !== selectedValue) {
-            this.value = selectedValue;
-            this.#dropdownBtn.setButtonLabel(this.btnDisplayValue);
-            this.notifyForChanges();
-        }
-        this.expanded = false;
-        this.#dropdownBtn.toggleButtonExpandState(this.expanded);
+  onOptionSelected(selectedValue) {
+    if (selectedValue && this.value !== selectedValue) {
+      this.value = selectedValue;
+      this.#dropdownBtn.setButtonLabel(this.btnDisplayValue);
+      this.notifyForChanges();
     }
+    this.expanded = false;
+    this.#dropdownBtn.toggleButtonExpandState(this.expanded);
+  }
 
-    collapseDropdown() {
-        ElementHandler.getByID(this.containerID).then(() => {
-            if (this.expanded) {
-                this.#dropdownList.collapseListOnOutsideClick();
-            }
-            this.#dropdownBtn.blur();
-        }).catch(() => {
-            this.removeCollapseDropdownListener();
-        });
-    }
+  collapseDropdown() {
+    ElementHandler.getByID(this.containerID).then(() => {
+      if (this.expanded) {
+        this.#dropdownList.collapseListOnOutsideClick();
+      }
+      this.#dropdownBtn.blur();
+    }).catch(() => {
+      this.removeCollapseDropdownListener();
+    });
+  }
 
-    removeCollapseDropdownListener() {
-        document.removeEventListener("click", this.collapseDropdown.bind(this));
-    }
+  removeCollapseDropdownListener() {
+    document.removeEventListener("click", this.collapseDropdown.bind(this));
+  }
 
 }

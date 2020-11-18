@@ -26,8 +26,8 @@ module.exports = {
         extensions: ['.js'],
         alias: {
             ['~']: path.resolve(__dirname, 'src/app'),
-            UserInputs: path.resolve(__dirname, 'src/app/_modules/user-inputs/user-inputs.module.js'),
-            HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/html-dom-manager.module.js'),
+            UserInputs: path.resolve(__dirname, 'src/app/_modules/user-inputs/@user-inputs.module.js'),
+            HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/@html-dom-manager.module.js'),
             Game: path.resolve(__dirname, 'src/app/game/game-module.js')
         }
     },
