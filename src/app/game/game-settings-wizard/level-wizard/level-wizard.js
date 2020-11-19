@@ -84,13 +84,17 @@ export class LevelWizard extends GameSettingsWizard {
     });
   }
 
+  onCustomLevelChange() {
+    if (this.customLevelSettings) {
+      this.settings.update(this.customLevelSettings);
+    }
+    this.customLevelSettings = this.settings;
+  }
+
   onLevelChange(params) {
     this.settings = new LevelSettings(params.value);
     if (this.isCustomLevel) {
-      if (this.customLevelSettings) {
-        this.settings.update(this.customLevelSettings);
-      }
-      this.customLevelSettings = this.settings;
+      this.onCustomLevelChange();
     }
     this.updateLevelPropertiesControllers();
     this.emitChanges();

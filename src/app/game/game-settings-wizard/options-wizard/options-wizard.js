@@ -61,26 +61,21 @@ export class OptionsWizard extends GameSettingsWizard {
     });
   }
 
-  generateSettingController(key) {
-    let controller;
-    switch (key) {
+  generateSettingController(fieldName) {
+    switch (fieldName) {
       case FIELD_NAME.openStrategy:
-        controller = this.generateSwitcher(key, this.onOpenStrategyChange.bind(this));
-        return controller;
+        return this.generateSwitcher(fieldName, this.onOpenStrategyChange.bind(this));
       case FIELD_NAME.sneakPeek:
-        controller = this.generateSwitcher(key, this.onSneakPeekChange.bind(this), this.sneakPeakDisabled);
-        return controller;
+        return this.generateSwitcher(fieldName, this.onSneakPeekChange.bind(this), this.sneakPeakDisabled);
       case FIELD_NAME.sneakPeekDuration:
-        controller = this.generateSneakPeekDurationInput();
-        return controller;
+        return this.generateSneakPeekDurationInput();
       default:
-        controller = this.generateSwitcher(key);
-        return controller;
+        return this.generateSwitcher(fieldName);
     }
   }
 
-  generateSwitcher(key, action = this.onOptionSettingChange.bind(this), disabled = false) {
-    const params = this.getControllerParams(key);
+  generateSwitcher(fieldName, action = this.onOptionSettingChange.bind(this), disabled = false) {
+    const params = this.getControllerParams(fieldName);
     const controller = new Switcher(params, action);
     controller.disabled = disabled;
     return controller;

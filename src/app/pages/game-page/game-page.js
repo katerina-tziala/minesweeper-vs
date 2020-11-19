@@ -15,9 +15,9 @@ import { StateLoader } from "../../components/loaders/state-loader/state-loader"
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
 
-import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original/game-wizard-original";
-import { GameWizardVS } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs";
-import { GameWizardBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-bot";
+// import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original/game-wizard-original";
+// import { GameWizardVS } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs";
+// import { GameWizardBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-bot";
 import { GameWizard } from "~/game/game-wizard/game-wizard";
 
 

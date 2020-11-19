@@ -1,10 +1,10 @@
 "use strict";
 
 export const FIELD_NAME = {
-  consecutiveTurns: "consecutiveTurns",
-  missedTurnsLimit: "missedTurnsLimit",
-  turnDuration: "turnDuration",
   turnTimer: "turnTimer",
+  turnDuration: "turnDuration",
+  missedTurnsLimit: "missedTurnsLimit",
+  consecutiveTurns: "consecutiveTurns"
 };
 
 export const LIMITS = {

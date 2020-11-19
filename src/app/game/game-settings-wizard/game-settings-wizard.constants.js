@@ -22,5 +22,9 @@ export const CONTENT = {
   openStrategy: "open strategy",
   sneakPeek: "sneak peek",
   sneakPeekDuration: "sneak peek duration",
-  tileRevealing: "reveal tiles"
+  tileRevealing: "reveal tiles",
+  turnTimer: "turn timer",
+  turnDuration: "turn duration (sec)",
+  missedTurnsLimit: "allowed missed turns",
+  consecutiveTurns: "consecutive missed turns",
 };
