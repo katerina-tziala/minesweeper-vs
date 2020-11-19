@@ -13,7 +13,7 @@ export const LIMITS = {
     min: 0
   },
   turnDuration: {
-    max: 60,
+    max: 90,
     min: 3
   }
 };

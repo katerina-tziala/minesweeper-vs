@@ -151,14 +151,18 @@ export class NumberInput extends TextInput {
       return;
     }
     if (!this.valueInLimits()) {
-      this.valid = false;
-      this.value = this.valueInteger.toString();
-      this.setFieldValue();
-      this.showError(this.boundariesError);
-      this.notifyForChanges();
+      this.onValueOutOfLimits();
       return;
     }
     this.updateValidFieldValue();
+    this.notifyForChanges();
+  }
+
+  onValueOutOfLimits() {
+    this.valid = false;
+    this.value = this.valueInteger.toString();
+    this.setFieldValue();
+    this.showError(this.boundariesError);
     this.notifyForChanges();
   }
 
@@ -199,9 +203,9 @@ export class NumberInput extends TextInput {
       .forEach(button => ElementHandler.setDisabled(button, this.disabled));
   }
 
-  updateValidFieldValue() {
+  updateValidFieldValue(value = this.valueInteger) {
     this.valid = true;
-    this.value = this.valueInteger.toString();
+    this.value = value.toString();
     this.setFieldValue();
     this.hideError();
   }

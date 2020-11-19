@@ -137,8 +137,8 @@ export class GameWizard {
     // wizardContainer.append(sdf.generateSettingsWizard());
     // const asd = new VSModeWizard(this.onVSModeChange.bind(this));
     // wizardContainer.append(asd.generateSettingsWizard());
-    // const asd = new OptionsWizard(this.onOptionsChange.bind(this));
-    // wizardContainer.append(asd.generateSettingsWizard());
+    // const assd = new OptionsWizard(this.onOptionsChange.bind(this));
+    // wizardContainer.append(assd.generateSettingsWizard());
 
     const asds = new TurnSettingsWizard(this.onOptionsChange.bind(this));
     wizardContainer.append(asds.generateSettingsWizard());
