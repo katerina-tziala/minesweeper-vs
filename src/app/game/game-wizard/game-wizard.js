@@ -10,7 +10,7 @@ import { OptionsSettings, LevelSettings, Player } from "Game";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard.constants";
 
-import { LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "Game";
+import { LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "../game-settings-wizard/@game-settings-wizard.module";
 
 export class GameWizard {
   #player;
@@ -133,12 +133,15 @@ export class GameWizard {
   renderWizard() {
     // this.init();
     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-    // const sdf = new LevelWizard(this.onLevelSettingsChange.bind(this));
-    // wizardContainer.append(sdf.generateSettingsWizard());
-    // const asd = new VSModeWizard(this.onVSModeChange.bind(this));
-    // wizardContainer.append(asd.generateSettingsWizard());
-    // const assd = new OptionsWizard(this.onOptionsChange.bind(this));
-    // wizardContainer.append(assd.generateSettingsWizard());
+    //
+    const sdf = new LevelWizard(this.onLevelSettingsChange.bind(this));
+    wizardContainer.append(sdf.generateSettingsWizard());
+
+    const asd = new VSModeWizard(this.onVSModeChange.bind(this));
+    wizardContainer.append(asd.generateSettingsWizard());
+
+    const assd = new OptionsWizard(this.onOptionsChange.bind(this));
+    wizardContainer.append(assd.generateSettingsWizard());
 
     const asds = new TurnSettingsWizard(this.onOptionsChange.bind(this));
     wizardContainer.append(asds.generateSettingsWizard());

@@ -33,7 +33,7 @@
   font-size    : 0.9rem;
   font-weight  : bold;
 
-  &:after {
+  &::after {
     position: absolute;
     right   : 4px;
     top     : -8px;

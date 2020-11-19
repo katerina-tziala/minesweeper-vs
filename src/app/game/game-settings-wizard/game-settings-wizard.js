@@ -9,7 +9,7 @@ import { clone } from "~/_utils/utils";
 import { DropdownSelect, Switcher } from "UserInputs";
 
 import { UserInputsGroupController } from "UserInputs";
-import { DOM_ELEMENT_CLASS, CONTENT } from "./game-settings-wizard.constants";
+import { DOM_ELEMENT_CLASS, CONTENT, TITLES } from "./game-settings-wizard.constants";
 
 export class GameSettingsWizard {
   #settings;
@@ -30,6 +30,10 @@ export class GameSettingsWizard {
 
   get settings() {
     return this.#settings;
+  }
+
+  get name() {
+    return TYPOGRAPHY.emptyString;
   }
 
   settingsPropertyExists(propertyName) {
@@ -64,10 +68,31 @@ export class GameSettingsWizard {
     return enumValue;
   }
 
+  emitChanges() {
+    this.onSubmit({
+      name: this.name,
+      valid: this.inputsGroup.isValid,
+      value: this.settings
+    });
+  }
+
+  // INTERFACE
+  get titleStyleClass() {
+    return DOM_ELEMENT_CLASS.wizardTitleIcon + TYPOGRAPHY.doubleHyphen + this.name;
+  }
+
   generateSettingsWizard() {
     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
+    wizardContainer.append(this.generateWizardTitle());
     wizardContainer.append(this.generateWizardInputs());
     return wizardContainer;
+  }
+
+  generateWizardTitle() {
+    const titleContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardTitleContainer]);
+    titleContainer.innerHTML = `<div class="${DOM_ELEMENT_CLASS.wizardTitleIcon} ${this.titleStyleClass}"></div>
+    <div class="${DOM_ELEMENT_CLASS.wizardTitle}">${TITLES[this.name]}</div>`;
+    return titleContainer;
   }
 
   generateWizardInputs() {
@@ -107,11 +132,5 @@ export class GameSettingsWizard {
     return label;
   }
 
-  emitChanges() {
-    this.onSubmit({
-      valid: this.inputsGroup.isValid,
-      value: this.settings
-    });
-  }
 
 }

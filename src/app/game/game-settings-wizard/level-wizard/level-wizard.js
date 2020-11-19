@@ -7,6 +7,7 @@ import { clone } from "~/_utils/utils";
 import { GameLevel, LevelSettings } from "Game";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
+import { WIZARD_NAME } from "../game-settings-wizard.constants";
 
 import { SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
 
@@ -16,6 +17,10 @@ export class LevelWizard extends GameSettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit);
     this.init(settings);
+  }
+
+  get name() {
+    return WIZARD_NAME.levelSettings;
   }
 
   get customLevelSettings() {

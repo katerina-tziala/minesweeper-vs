@@ -6,15 +6,20 @@ import { clone } from "~/_utils/utils.js";
 
 import { GameVSMode, OptionsSettings } from "Game";
 
-import { SETTINGS_PROPERTIES, FIELD_NAME, LIMITS } from "./options-wizard.constants";
-
 import { GameSettingsWizard } from "../game-settings-wizard";
+import { WIZARD_NAME } from "../game-settings-wizard.constants";
+
+import { SETTINGS_PROPERTIES, FIELD_NAME, LIMITS } from "./options-wizard.constants";
 
 export class OptionsWizard extends GameSettingsWizard {
 
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
     this.init();
+  }
+
+  get name() {
+    return WIZARD_NAME.optionsSettings;
   }
 
   get vsModeSelected() {

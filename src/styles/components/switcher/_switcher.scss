@@ -41,7 +41,7 @@ $thumb-position-right: 16;
         @extend .disabled;
     }
 
-    &:after {
+    &::after {
         transition: all .3s linear;
         @extend ._thumb;
     }
@@ -51,7 +51,7 @@ $thumb-position-right: 16;
 [role="switch"][aria-checked="false"] {
     @extend ._track--off;
 
-    &:after {
+    &::after {
         @extend ._thumb--off;
     }
 }
@@ -59,7 +59,7 @@ $thumb-position-right: 16;
 [role="switch"][aria-checked="true"] {
     @extend ._track--on;
 
-    &:after {
+    &::after {
         @extend ._thumb--on;
     }
 }

@@ -1,39 +1,41 @@
 @use "../../theming/theming";
 
-$scrollbar-size: 5px;
+$scrollbar-size: 8px;
 
 ._scrollbar {
-	&::-webkit-scrollbar {
-		width: $scrollbar-size;
-		height: $scrollbar-size;
-	}
+  cursor: pointer;
 
-	&::-webkit-scrollbar-thumb {
-		border-radius: $scrollbar-size;
-	}
+  &::-webkit-scrollbar {
+    width        : $scrollbar-size;
+    height       : $scrollbar-size;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: $scrollbar-size;
+  }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @mixin setScrollbarThemeStyles($theme) {
-    ._scrollbar {
-        &::-webkit-scrollbar-track {
-            background-color: theming.getThemeColor($theme, "theme-base");
-        }
-
-        &::-webkit-scrollbar {
-            background-color: theming.getThemeColor($theme, "theme-base");
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background-color: theming.getThemeColor($theme, "theme-primary-subtle");
-        }
+  ._scrollbar {
+    &::-webkit-scrollbar-track {
+      background-color: theming.getThemeColor($theme, "theme-secondary");
     }
+
+    &::-webkit-scrollbar {
+      background-color: theming.getThemeColor($theme, "theme-secondary");
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: theming.getThemeColor($theme, "theme-primary-subtle");
+    }
+  }
 }
 
 .theme-light {
-    @include setScrollbarThemeStyles("light");
+  @include setScrollbarThemeStyles("light");
 }
 
 .theme-dark {
-    @include setScrollbarThemeStyles("dark");
+  @include setScrollbarThemeStyles("dark");
 }

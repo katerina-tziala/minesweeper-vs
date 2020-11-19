@@ -4,15 +4,20 @@ import { Switcher, NumberInput } from "UserInputs";
 
 import { TurnSettings } from "Game";
 
-import { FIELD_NAME, LIMITS } from "./turn-settings-wizard.constants";
-
 import { GameSettingsWizard } from "../game-settings-wizard";
+import { WIZARD_NAME } from "../game-settings-wizard.constants";
+
+import { FIELD_NAME, LIMITS } from "./turn-settings-wizard.constants";
 
 export class TurnSettingsWizard extends GameSettingsWizard {
 
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
     this.init();
+  }
+
+  get name() {
+    return WIZARD_NAME.turnSettings;
   }
 
   get turnProperties() {
@@ -50,7 +55,7 @@ export class TurnSettingsWizard extends GameSettingsWizard {
   generateNumberInput(fieldName) {
     const controller = new NumberInput(fieldName, this.settings[fieldName].toString(), this.onTurnSettingsChange.bind(this));
     controller.boundaries = LIMITS[fieldName];
-    this.controllerDisabledState = controller;
+    controller.disabled = this.controllerDisabledState;
     return controller;
   }
 

@@ -1,9 +1,10 @@
 "use strict";
 
-"use strict";
-
 export const DOM_ELEMENT_CLASS = {
   wizardContainer: "settings-wizard",
+  wizardTitleContainer: "settings-wizard-title-container",
+  wizardTitleIcon: "settings-wizard-title-icon",
+  wizardTitle: "settings-wizard-title",
   sectionContainer: "settings-wizard-section",
   label: "settings-wizard-label",
   fieldContainer: "settings-wizard-field-container",
@@ -26,5 +27,19 @@ export const CONTENT = {
   turnTimer: "turn timer",
   turnDuration: "turn duration (sec)",
   missedTurnsLimit: "allowed missed turns",
-  consecutiveTurns: "consecutive missed turns",
+  consecutiveTurns: "consecutive missed turns"
+};
+
+export const WIZARD_NAME = {
+  levelSettings: "levelSettings",
+  optionsSettings: "optionsSettings",
+  turnSettings: "turnSettings",
+  vsModeSettings: "vsModeSettings",
+};
+
+export const TITLES = {
+  levelSettings: "set up game level",
+  optionsSettings: "set up game options",
+  turnSettings: "set up turn options",
+  vsModeSettings: "set up VS mode",
 };

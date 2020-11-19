@@ -5,6 +5,7 @@ import { DropdownSelect } from "UserInputs";
 import { GameVSMode, OptionsSettings } from "Game";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
+import { WIZARD_NAME } from "../game-settings-wizard.constants";
 
 import { CONTENT } from "./vs-mode-wizard.constants";
 
@@ -13,6 +14,10 @@ export class VSModeWizard extends GameSettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
     this.init();
+  }
+
+  get name() {
+    return WIZARD_NAME.vsModeSettings;
   }
 
   get vsModeSelected() {
