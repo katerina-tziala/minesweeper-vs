@@ -1,90 +1,68 @@
 @import "../game-settings-wizard/game-settings-wizard";
 
+
 .game-wizard-container {
-    min-width: 320px;
-    max-width: 320px;
-    padding  : 15px;
-    animation: slide-in 0.8s ease;
-    position : relative;
+  min-width: 320px;
+  max-width: 320px;
+  padding  : 15px;
+  animation: slide-in 0.8s ease;
+  position : relative;
 }
 
 .game-wizard-header {
-    @extend %between-start;
-    position: relative;
+  @extend %between-start;
+  position: relative;
 
-    >h2 {
-        flex-grow    : 1;
-        padding-right: 10px;
-        max-width    : 245px;
-        min-height   : 26px;
-        line-height  : 26px;
+  >h2 {
+    flex-grow    : 1;
+    padding-right: 10px;
+    max-width    : 245px;
+    min-height   : 26px;
+    line-height  : 26px;
 
+  }
+
+  .btn-icon--close {
+    @extend .btn-icon--normal;
+    @extend .btn-primary;
+    // padding : 2px;
+    position: absolute;
+    right   : 0px;
+    top     : -2px;
+
+    &::after {
+      max-width: 14px;
     }
-
-    .btn-icon--close {
-        @extend .btn-icon--normal;
-        @extend .btn-primary;
-        // padding : 2px;
-        position: absolute;
-        right   : 0px;
-        top     : -2px;
-
-        &::after {
-            max-width: 14px;
-        }
-    }
+  }
 }
 
 .game-wizard-content {
-    padding      : 0 10px;
-    // margin-top: 20px;
+  padding      : 0 10px;
+  // margin-top: 20px;
 
 }
 
 
+.stepper-container {
+  @extend %between-center;
+  // border: 2px solid red;
 
-// .game-wizard-actions-container {
-//     width: 100%;
-//     @extend %between-center;
-
-//     >.btn-text {
-//         margin-top: 20px;
-//     }
-// }
-
-// .wizard-section-container {
-//     @extend %start-center;
-//     margin-top: 10px;
-// }
-
-// .wizard-property-tag {
-//     text-transform: capitalize;
-//     height        : getSize("input-height");
-//     line-height   : 40px;
-//     font-style    : italic;
-//     font-weight   : 700;
-//     flex-grow     : 1;
-// }
-
-// .wizard-property-container {
-//     height   : getSize("input-height");
-//     min-width: 100px;
-//     max-width: 120px;
-//     min-width: 120px;
-// }
-
+  // >.button {
+  //   //min-width: 86px;
+  // }
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    .game-wizard-container {
-        @include theming.setThemeCard("light");
-        @include theming.setThemeBoxShadow("light");
-    }
+  .game-wizard-container {
+    @include theming.setThemeCard("light");
+    @include theming.setThemeBoxShadow("light");
+  }
 }
 
 .theme-dark {
-    .game-wizard-container {
-        @include theming.setThemeCard("dark");
-        @include theming.setThemeBoxShadow("dark");
-    }
+  .game-wizard-container {
+    @include theming.setThemeCard("dark");
+    @include theming.setThemeBoxShadow("dark");
+  }
 }

@@ -27,42 +27,48 @@ export const ADD_PLAYER_BTN = {
   actionType: "click"
 };
 
-export const RESET_BTN = {
-  innerHTML: "reset",
-  className: "btn-text btn-primary",
-  attributes: {
-    "aria-label": "reset",
-  },
-  actionType: "click"
-};
+// export const RESET_BTN = {
+//   innerHTML: "reset",
+//   className: "btn-text btn-primary",
+//   attributes: {
+//     "aria-label": "reset",
+//   },
+//   actionType: "click"
+// };
 
-export const PLAY_BTN = {
-  innerHTML: "play",
-  className: "btn-text btn-primary",
-  attributes: {
-    "aria-label": "play game",
-    "id": "play_game",
-  },
-  actionType: "click"
-};
+// export const PLAY_BTN = {
+//   innerHTML: "play",
+//   className: "btn-text btn-primary",
+//   attributes: {
+//     "aria-label": "play"
+//   },
+//   actionType: "click"
+// };
 
-export const NEXT_BTN = {
-  innerHTML: "next",
-  className: "btn-text btn-primary",
-  attributes: {
-    "aria-label": "next",
-    "id": "btn__next",
-  },
-  actionType: "click"
-};
+// export const NEXT_BTN = {
+//   innerHTML: "next",
+//   className: "btn-text btn-primary",
+//   attributes: {
+//     "aria-label": "next"
+//   },
+//   actionType: "click"
+// };
 
-export const PREVIOUS_BTN = {
-  innerHTML: "previous",
-  className: "btn-text btn-primary",
-  attributes: {
-    "aria-label": "next",
-    "id": "btn__previous",
-  },
-  actionType: "click"
-};
+// export const PREVIOUS_BTN = {
+//   innerHTML: "previous",
+//   className: "btn-text btn-primary",
+//   attributes: {
+//     "aria-label": "previous",
+//     "id": "btn__previous",
+//   },
+//   actionType: "click"
+// };
 
+// export const INVITE_BTN = {
+//   innerHTML: "invite",
+//   className: "btn-text btn-primary",
+//   attributes: {
+//     "aria-label": "invite"
+//   },
+//   actionType: "click"
+// };

@@ -1,12 +1,11 @@
 "use strict";
-import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
-import { RESET_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
+export { CLOSE_BTN } from "~/_constants/btn-icon.constants";
+// import { RESET_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
 
-export const BUTTONS = {
-    close: CLOSE_BTN,
-    reset: RESET_BTN,
-    play: PLAY_BTN
-};
+// export const BUTTONS = {
+//     reset: RESET_BTN,
+//     play: PLAY_BTN
+// };
 
 export const DOM_ELEMENT_ID = {
     wizardContent: "game-wizard-content",
@@ -22,7 +21,9 @@ export const DOM_ELEMENT_CLASS = {
     wizardContent: "game-wizard-content"
 };
 
-export const CONTENT = {
-    original: "set up minesweeper game",
-    bot: "set up minesweeper game VS bot",
+export const TITLE = {
+    original: "original minesweeper game",
+    bot: "play minesweeper VS against bot",
+    friend: "play minesweeper VS against ###",
+    online: "invite ### to a minesweeper VS game",
 };

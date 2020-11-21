@@ -60,20 +60,6 @@
   content: fa-content($fa-var-caret-down);
 }
 
-.icon-bomb {
-  @extend %icon-regular;
-  content: fa-content($fa-var-bomb);
-}
-
-.icon-bahai {
-  @extend %icon-regular;
-  content: fa-content($fa-var-bahai);
-}
-
-.icon-virus {
-  @extend %icon-regular;
-  content: fa-content($fa-var-virus);
-}
 
 .icon-spinner {
   @extend %icon-regular;
@@ -124,6 +110,50 @@
   @extend.icon-flag;
 }
 
+// MINE TYPE ICONS
+.icon-bomb {
+  @extend %icon-regular;
+  content: fa-content($fa-var-bomb);
+}
+
+.icon-bahai {
+  @extend %icon-regular;
+  content: fa-content($fa-var-bahai);
+}
+
+.icon-virus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-virus);
+}
+
+// GAME PLAY ICONS
+.icon-play {
+  @extend %icon-regular;
+  content: fa-content($fa-var-play);
+}
+
+.icon-reset {
+  @extend %icon-regular;
+  content  : fa-content($fa-var-undo-alt);
+}
+
+.icon-previous {
+  @extend %icon-regular;
+  content: fa-content($fa-var-chevron-left);
+}
+
+.icon-next {
+  @extend %icon-regular;
+  content: fa-content($fa-var-chevron-right);
+}
+
+.icon-send {
+  @extend %icon-regular;
+  content: fa-content($fa-var-paper-plane);
+}
+
+
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};
@@ -146,5 +176,10 @@
 
 @mixin setMineTypeIcons($base-selector) {
   $mine-types: "bomb", "bahai", "virus";
+  @include setIdentifierIcons($base-selector, $mine-types);
+}
+
+@mixin setGamePlayIcons($base-selector) {
+  $mine-types: "play", "reset", "previous", "next", "send";
   @include setIdentifierIcons($base-selector, $mine-types);
 }

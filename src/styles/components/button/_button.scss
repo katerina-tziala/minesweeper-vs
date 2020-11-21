@@ -5,69 +5,97 @@
 @import "../../global/utils";
 
 ._btn {
-    cursor    : pointer;
-    outline   : none;
-    border    : none;
-    overflow  : hidden;
-    text-align: center;
+  cursor    : pointer;
+  outline   : none;
+  border    : none;
+  overflow  : hidden;
+  text-align: center;
 
-    &:disabled {
-        @extend .disabled;
-    }
+  &:disabled {
+    @extend .disabled;
+  }
 }
 
 .btn-text {
-    @extend ._btn;
-    display       : inline-block;
-    height        : getSize("btn-height");
-    min-width     : 46px;
-    padding       : 0 10px;
-    border-radius : 6px;
-    font-size     : 0.9rem;
-    font-weight   : 500;
-    line-height   : 28px;
-    text-transform: uppercase;
+  @extend ._btn;
+  display       : inline-block;
+  height        : getSize("btn-height");
+  min-width     : 46px;
+  padding       : 0 10px;
+  border-radius : 6px;
+  font-size     : 0.9rem;
+  font-weight   : 500;
+  line-height   : 28px;
+  text-transform: uppercase;
 }
 
 .btn-icon {
-    @extend ._btn;
-    display: inline-block;
+  @extend ._btn;
+  display: inline-block;
 }
 
 .btn-icon--normal {
-    @include circle(getSize("btn-height"));
-    font-size  : 20px;
-    line-height: 19px;
+  @include circle(getSize("btn-height"));
+  font-size  : 20px;
+  line-height: 19px;
 }
 
 .btn-icon--small {
-    @include circle(getSize("btn-height-small"));
-    font-size  : 15px;
-    line-height: 15px;
+  @include circle(getSize("btn-height-small"));
+  font-size  : 15px;
+  line-height: 15px;
 }
 
 .btn-icon--close {
-    @include afterIcon(x);
+  @include afterIcon(x);
 }
 
+.btn-gameplay {
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  @extend .btn-primary;
+  @include setGamePlayIcons("&.btn-icon");
+
+  &.btn-icon--previous {
+    padding-right: 2px;
+  }
+
+  &.btn-icon--reset {
+    font-size: 1.1rem;
+  }
+
+  &.btn-icon--play {
+    font-size   : 1.1rem;
+    padding-left: 3px;
+  }
+
+  &.btn-icon--next {
+    padding-left: 2px;
+  }
+
+  &.btn-icon--send {
+    font-size    : 1.1rem;
+    padding-right: 2px;
+  }
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    .btn-primary {
-        @include button-theming.applyPrimaryButtonThemeStyles("light");
-    }
+  .btn-primary {
+    @include button-theming.applyPrimaryButtonThemeStyles("light");
+  }
 
-    .btn-secondary {
-        @include button-theming.applySecondaryButtonThemeStyles("light");
-    }
+  .btn-secondary {
+    @include button-theming.applySecondaryButtonThemeStyles("light");
+  }
 }
 
 .theme-dark {
-    .btn-primary {
-        @include button-theming.applyPrimaryButtonThemeStyles("dark");
-    }
+  .btn-primary {
+    @include button-theming.applyPrimaryButtonThemeStyles("dark");
+  }
 
-    .btn-secondary {
-        @include button-theming.applySecondaryButtonThemeStyles("dark");
-    }
+  .btn-secondary {
+    @include button-theming.applySecondaryButtonThemeStyles("dark");
+  }
 }

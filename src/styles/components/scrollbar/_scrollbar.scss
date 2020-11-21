@@ -3,15 +3,15 @@
 $scrollbar-size: 8px;
 
 ._scrollbar {
-  cursor: pointer;
 
   &::-webkit-scrollbar {
-    width        : $scrollbar-size;
-    height       : $scrollbar-size;
+    width : $scrollbar-size;
+    height: $scrollbar-size;
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: $scrollbar-size;
+    cursor       : pointer;
   }
 }
 

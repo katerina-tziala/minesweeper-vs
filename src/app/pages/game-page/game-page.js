@@ -42,6 +42,7 @@ export class GamePage extends Page {
         this.game = undefined;
 
         console.log("show me wizard");
+        console.log(this.gameType);
         this.gameWizard = new GameWizard(this.navigateToHome, this.onPlayGame.bind(this));
         // switch (gameType) {
         //     case GameType.Original:

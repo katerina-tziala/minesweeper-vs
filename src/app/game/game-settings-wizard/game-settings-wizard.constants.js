@@ -27,7 +27,8 @@ export const CONTENT = {
   turnTimer: "turn timer",
   turnDuration: "turn duration (sec)",
   missedTurnsLimit: "allowed missed turns",
-  consecutiveTurns: "consecutive missed turns"
+  consecutiveTurns: "consecutive missed turns",
+  sameMinePositions: "identical minefield"
 };
 
 export const WIZARD_NAME = {
