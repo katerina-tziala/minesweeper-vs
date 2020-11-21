@@ -1,9 +1,9 @@
 "use strict";
 
 
-export class Game {
+export class GamePlay {
     // #id;
-    // #mode;
+    // #type;
     // #levelSettings;
     // #optionsSettings;
     // #mineDisplayType;

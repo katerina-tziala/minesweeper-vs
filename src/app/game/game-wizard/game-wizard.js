@@ -44,8 +44,9 @@ export class GameWizard {
     return this.#player;
   }
 
+
+
   renderWizard() {
-    // this.init();
     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
     //
     console.log("implement game wizards");
@@ -69,6 +70,8 @@ export class GameWizard {
     wizardContainer.append(this.stepper.generateStepper());
     return wizardContainer;
   }
+
+
 
   generateWizardHeader() {
     const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);

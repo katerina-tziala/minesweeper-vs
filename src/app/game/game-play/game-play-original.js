@@ -1,9 +1,9 @@
 "use strict";
 
-import { Game } from "./game"
+import { GamePlay } from "./game-play"
 import { GameType } from "Game";
 
-export class GameOriginal extends Game {
+export class GamePlayOriginal extends GamePlay {
     //#player;
 
     constructor(params) {

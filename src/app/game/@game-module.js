@@ -5,4 +5,4 @@ export * from "./_enums/@game-enums.module";
 export * from "./_models/@game-models.module";
 
 // game modes
-export { GameOriginal } from "./game-mode/game-original";
+export { GamePlayOriginal } from "./game-play/game-play-original";
