@@ -32,15 +32,15 @@ export const CONTENT = {
 };
 
 export const WIZARD_NAME = {
-  levelSettings: "levelSettings",
-  optionsSettings: "optionsSettings",
-  turnSettings: "turnSettings",
   vsModeSettings: "vsModeSettings",
+  levelSettings: "levelSettings",
+  turnSettings: "turnSettings",
+  optionsSettings: "optionsSettings"
 };
 
 export const TITLES = {
   levelSettings: "set up game level",
   optionsSettings: "set up game options",
   turnSettings: "set up turn options",
-  vsModeSettings: "set up VS mode",
+  vsModeSettings: "set up VS mode"
 };

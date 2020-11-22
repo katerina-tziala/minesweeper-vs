@@ -1,16 +1,18 @@
 "use strict";
 
-import { GameType } from "Game";
+import { replaceStringParameter } from "~/_utils/utils";
+
+import { GameType, GameVSMode, Game } from "Game";
+
+import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
 
 import { GameWizard } from "../game-wizard";
 import { TITLE } from "../game-wizard.constants";
-import { WIZARD_NAME, LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
-import { Game } from "Game";
 
 import { GameWizardStepper } from "../game-wizard-stepper/game-wizard-stepper";
-
 export class GameWizardVS extends GameWizard {
   #_opponent;
+  #_wizardSteps;
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
@@ -19,11 +21,21 @@ export class GameWizardVS extends GameWizard {
   }
 
   get gameType() {
-    return GameType.Bot;
+    return GameType.Friend;
   }
 
+  get stepperSubmissionType() {
+    return "play";
+  }
+
+
   get title() {
-    return TITLE[this.gameType];
+    let title = TITLE[this.gameType];
+    if (this.opponent) {
+      title = replaceStringParameter(title, this.opponent.name);
+      console.log(title, this.opponent);
+    }
+    return title;
   }
 
   get game() {
@@ -39,7 +51,20 @@ export class GameWizardVS extends GameWizard {
   }
 
   get opponent() {
+    if (this.#_opponent) {
+      this.#_opponent.colorType = self.settingsController.settings.opponentColorType;
+    }
     return this.#_opponent;
+  }
+
+  set wizardSteps(selectedMode) {
+    this.#_wizardSteps = selectedMode === GameVSMode.Parallel ?
+    [WIZARD_NAME.vsModeSettings, WIZARD_NAME.levelSettings, WIZARD_NAME.optionsSettings] :
+    Object.keys(WIZARD_NAME);
+  }
+
+  get wizardSteps() {
+    return this.#_wizardSteps;
   }
 
   get wizardStep() {
@@ -51,12 +76,12 @@ export class GameWizardVS extends GameWizard {
   }
 
   init() {
-    this.wizardSteps = [WIZARD_NAME.vsModeSettings, WIZARD_NAME.levelSettings, WIZARD_NAME.turnSettings, WIZARD_NAME.optionsSettings];
+    this.wizardSteps = undefined;
     this.stepper = new GameWizardStepper({
       onReset: this.onReset.bind(this),
       onSubmit: this.onSubmit.bind(this),
       onStepChange: this.onStepChange.bind(this),
-    }, this.wizardSteps.length);
+    }, this.wizardSteps.length, this.stepperSubmissionType);
   }
 
   initModeWizard() {
@@ -72,11 +97,18 @@ export class GameWizardVS extends GameWizard {
   onVSModeChange(params) {
     super.onGameSettingsChange(params);
     this.setOptionsBasedOnVSMode(params);
+    this.wizardSteps = params.value.vsMode;
+    if (params.value.vsMode === GameVSMode.Parallel) {
+      delete this.gameParams[GameVSMode.Parallel];
+      delete this.defaultGameParams[GameVSMode.Parallel];
+    }
+    this.stepper.updateNumberOfSteps(this.wizardSteps.length);
   }
 
   setOptionsBasedOnVSMode(params) {
     params.name = WIZARD_NAME.optionsSettings;
     this.gameParams = params;
+    this.defaultGameParams = params;
   }
 
   getSettingsController(wizardName) {
@@ -102,7 +134,6 @@ export class GameWizardVS extends GameWizard {
     return super.getSettingsController(wizardName);
   }
 
-
   generateContent() {
     const fragment = document.createDocumentFragment();
     const controller = this.getSettingsController(this.wizardStepName);
@@ -112,8 +143,12 @@ export class GameWizardVS extends GameWizard {
 
   onReset() {
     const wizardName = this.wizardStepName;
-    delete this.gameParams[wizardName];
-    delete this.defaultGameParams[wizardName];
+    if (wizardName === WIZARD_NAME.optionsSettings) {
+      this.gameParams[wizardName] = this.defaultGameParams[wizardName];
+    } else {
+      delete this.gameParams[wizardName];
+      delete this.defaultGameParams[wizardName];
+    }
     this.removeController(wizardName);
     this.updateWizardContent();
   }

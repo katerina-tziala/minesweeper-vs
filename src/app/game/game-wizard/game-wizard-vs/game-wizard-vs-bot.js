@@ -1,14 +1,9 @@
 "use strict";
-
 import { GameType } from "Game";
-
 import { GameWizardVS } from "./_game-wizard-vs";
 import { TITLE } from "../game-wizard.constants";
-import { WIZARD_NAME, LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
-import { Game, Player, BotPlayer } from "Game";
-
-import { GameWizardStepper } from "../game-wizard-stepper/game-wizard-stepper";
-
+import { WIZARD_NAME } from "../../game-settings-wizard/@game-settings-wizard.module";
+import { BotPlayer } from "Game";
 export class GameWizardVSBot extends GameWizardVS {
 
   constructor(onClose, submitGame) {
@@ -25,10 +20,12 @@ export class GameWizardVSBot extends GameWizardVS {
     return TITLE[this.gameType];
   }
 
+  generateContent() {
+    const fragment = super.generateContent();
+    if (this.wizardStepName === WIZARD_NAME.vsModeSettings) {
+      console.log("add vs bot difficulty");
+    }
+    return fragment;
+  }
 
-
-  // generateContent() {
-  //   const fragment = document.createDocumentFragment();
-  //   return fragment;
-  // }
 }

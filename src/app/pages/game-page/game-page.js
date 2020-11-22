@@ -21,8 +21,11 @@ import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-
 import { GameWizard } from "~/game/game-wizard/game-wizard";
 import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original";
 import { GameWizardVSBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs-bot";
+import { GameWizardVSFriend } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs-friend";
+import { GameWizardVSOnline } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs-online";
 
 
+import { User } from "~/_models/user";
 
 
 
@@ -47,7 +50,12 @@ export class GamePage extends Page {
     // console.log(this.gameType);
 
 
-    this.gameWizard = new GameWizardVSBot(this.navigateToHome, this.onPlayGame.bind(this));
+    //this.gameWizard = new GameWizardVSBot(this.navigateToHome, this.onPlayGame.bind(this));
+    const onlineTest =  new User("testId", "testClient", null);
+   // this.gameWizard = new GameWizardVSFriend(this.navigateToHome, this.onPlayGame.bind(this));
+    this.gameWizard = new GameWizardVSOnline(this.navigateToHome, this.onPlayGame.bind(this), onlineTest);
+
+
 
 
     // switch (gameType) {

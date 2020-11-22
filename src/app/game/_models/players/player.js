@@ -3,12 +3,13 @@
 import { AppModel } from "~/_models/app-model";
 
 export class Player extends AppModel {
+  #_colorType;
 
   constructor(id, name, opponent = false) {
     super();
     this.id = id;
     this.name = name;
-    // this.colorType = colorType;
+    //this.colorType = colorType;
     this.opponent = opponent;
     // this.entered = true;
     // this.initState();
@@ -18,6 +19,13 @@ export class Player extends AppModel {
     return false;
   }
 
+  set colorType(colorType) {
+    this.#_colorType = colorType;
+  }
+
+  get colorType() {
+    return this.#_colorType;
+  }
 
   // initState() {
   //     this.turn = false;

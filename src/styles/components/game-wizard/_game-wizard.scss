@@ -13,13 +13,12 @@
   position     : relative;
 
   >h2 {
+    @extend %ellipsis-text;
     flex-grow     : 1;
     padding-right : 10px;
-    max-width     : 245px;
+    max-width     : 270px;
     min-height    : 26px;
     line-height   : 26px;
-    text-transform: capitalize;
-
   }
 
   .btn-icon--close {

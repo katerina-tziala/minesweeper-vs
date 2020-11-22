@@ -7,7 +7,7 @@ import { DropdownSelect, Switcher } from "UserInputs";
 
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { Game, Player } from "Game";
-
+import { clone } from "~/_utils/utils.js";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard.constants";
 
 import { WIZARD_NAME, LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "../game-settings-wizard/@game-settings-wizard.module";
@@ -16,20 +16,15 @@ import { GameWizardStepper } from "./game-wizard-stepper/game-wizard-stepper";
 
 import { GroupController } from "~/_utils/group-controller";
 
-
 export class GameWizard {
   #_stepper;
-  #_player;
-  //
   #_gameParams;
   #_defaultGameParams = {};
-
   #_settingsControllers = new GroupController();
 
   constructor(onClose, submitGame) {
     this.onClose = onClose;
     this.submitGame = submitGame;
-    this.player = new Player(self.user.id, self.user.username);
     this.initGameParams();
   }
 
@@ -41,12 +36,10 @@ export class GameWizard {
     return this.#_stepper;
   }
 
-  set player(player) {
-    this.#_player = player;
-  }
-
   get player() {
-    return this.#_player;
+    const player = new Player(self.user.id, self.user.username);
+    player.colorType = self.settingsController.settings.playerColorType;
+    return player;
   }
 
   initGameParams() {
@@ -55,7 +48,7 @@ export class GameWizard {
 
   set gameParams(params) {
     if (params.valid) {
-      this.#_gameParams[params.name] = params.value;
+      this.#_gameParams[params.name] = clone(params.value);
     }
   }
 
@@ -65,7 +58,7 @@ export class GameWizard {
 
   set defaultGameParams(params) {
     if (params.valid) {
-      this.#_defaultGameParams[params.name] = params.value;
+      this.#_defaultGameParams[params.name] = clone(params.value);
     }
   }
 
@@ -105,7 +98,6 @@ export class GameWizard {
   }
 
   initOptionsWizard() {
-    //console.log(this.getGameParamsForWizard(WIZARD_NAME.optionsSettings));
     this.settingsControllers = new OptionsWizard(this.onGameSettingsChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.optionsSettings));
   }
 
@@ -136,34 +128,12 @@ export class GameWizard {
     return wizardContent;
   }
 
-
-
-
-
-
-
-
   onGameSettingsChange(params) {
-    // console.log("onGameSettingsChange");
-
-    // console.log("---------------------------");
-    // console.log("current: ", {...this.gameParams});
-
     this.stepper.submissionButtonDisabled = !params.valid;
-
     this.gameParams = params;
-    // console.log("---------------------------");
-    // console.log("new: ", this.gameParams);
-
-    //console.log(params);
-    //console.log("invalid re");
-    // onGameSettingsChange
-
-    // params.value.setMinesPositions();
-    // console.log(params.value);
   }
 
-  //
+  // OVERRIDEN FUNCTIONS
   get gameType() {
     return TYPOGRAPHY.emptyString;
   }
