@@ -110,24 +110,24 @@ export class SettingsController {
     initThemeTypeController() {
         const params = this.getThemeTypeControllerParams(SettingType.Theme);
         params.value = this.settings.theme === Theme.Dark;
-        this.inputsGroup.inputControllers = new Switcher(params, this.onDarkThemeChange.bind(this));
+        this.inputsGroup.controllers = new Switcher(params, this.onDarkThemeChange.bind(this));
     }
 
     initMineTypeController() {
         const params = this.getThemeTypeControllerParams(SettingType.MineType);
         params.options = SettingsOptionsHelper.getMineTypeOptions();
-        this.inputsGroup.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
+        this.inputsGroup.controllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
     }
 
     initColorController(settingName, settingToCheckName) {
         const params = this.getThemeTypeControllerParams(settingName);
         params.options = SettingsOptionsHelper.getAllowedColorOptions(this.settings[settingToCheckName]);
-        this.inputsGroup.inputControllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
+        this.inputsGroup.controllers = new DropdownSelect(params, this.onDropdownChange.bind(this), this.onDropdownExpanded.bind(this));
     }
 
     renderSetting(key) {
         const settingsSection = SettingsViewHelper.generateSettingSection(key);
-        settingsSection.append(this.inputsGroup.getInputController(key).generateInputField());
+        settingsSection.append(this.inputsGroup.getController(key).generateInputField());
         return settingsSection;
     }
 
@@ -197,7 +197,7 @@ export class SettingsController {
 
     onDropdownExpanded(expandedName) {
         const toCollapse = DROPDOWNS.filter(type => type !== expandedName);
-        toCollapse.forEach(type => this.inputsGroup.getInputController(type).collapseDropdown());
+        toCollapse.forEach(type => this.inputsGroup.getController(type).collapseDropdown());
     }
 
     onDarkThemeChange(params) {
@@ -228,7 +228,7 @@ export class SettingsController {
 
     updateColorDropdown(changedField, fieldToUpdate) {
         const newOptions = SettingsOptionsHelper.getAllowedColorOptions(this.settings[changedField]);
-        this.inputsGroup.getInputController(fieldToUpdate).updateOptions(newOptions);
+        this.inputsGroup.getController(fieldToUpdate).updateOptions(newOptions);
     }
 
 }

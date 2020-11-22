@@ -15,17 +15,22 @@ import { LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "..
 import { GameWizardStepper } from "./game-wizard-stepper/game-wizard-stepper";
 
 export class GameWizard {
-  #player;
+  #_player;
+  #_gameParams = {};
+
+
+
 
 
   constructor(onClose, submitGame) {
     this.onClose = onClose;
     this.submitGame = submitGame;
     this.player = new Player(self.user.id, self.user.username);
-    this.stepper = new GameWizardStepper({
-      onReset: this.onReset.bind(this),
-      onSubmit: this.onSubmit.bind(this)
-    });
+    //////
+    // this.stepper = new GameWizardStepper({
+    //   onReset: this.onReset.bind(this),
+    //   onSubmit: this.onSubmit.bind(this)
+    // });
 
 
     // this.stepper = new GameWizardStepper({
@@ -37,19 +42,28 @@ export class GameWizard {
 
 
   set player(player) {
-    this.#player = player;
+    this.#_player = player;
   }
 
   get player() {
-    return this.#player;
+    return this.#_player;
+  }
+
+  set gameParams(params) {
+    if (params.valid) {
+      this.#_gameParams[params.name] = params.value;
+    }
+  }
+
+  get gameParams() {
+    return this.#_gameParams;
   }
 
 
-
-  renderWizard() {
+  generateWizard() {
     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
     //
-    console.log("implement game wizards");
+    // console.log("implement game wizards");
     // const sdf = new LevelWizard(this.onGameSettingsChange.bind(this));
     // wizardContainer.append(sdf.generateSettingsWizard());
 
@@ -62,15 +76,23 @@ export class GameWizard {
     // const asds = new TurnSettingsWizard(this.onGameSettingsChange.bind(this));
     // wizardContainer.append(asds.generateSettingsWizard());
 
-    wizardContainer.append(this.generateWizardHeader());
-    // const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
+
+    //
     // this.renderWizardContent(wizardContent);
     // wizardContainer.append(wizardContent);
 
+    wizardContainer.append(this.generateWizardHeader());
+
+    const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
+
+    wizardContent.append(this.generateContent());
+    wizardContainer.append(wizardContent);
+
+
     wizardContainer.append(this.stepper.generateStepper());
+
     return wizardContainer;
   }
-
 
 
   generateWizardHeader() {
@@ -86,24 +108,44 @@ export class GameWizard {
     return wizardTitle;
   }
 
+
+  //
+  generateContent() {
+    const fragment = document.createDocumentFragment();
+    return fragment;
+  }
+
+
+
+
+
+
+
   onGameSettingsChange(params) {
     console.log("onGameSettingsChange");
+
+    this.stepper.submissionButtonDisabled = !params.valid;
+    this.gameParams = params;
+
     console.log(params);
+    console.log("invalid re");
+    // onGameSettingsChange
+
     // params.value.setMinesPositions();
     // console.log(params.value);
   }
 
-  onReset() {
-    console.log("onReset");
-  }
+  // onReset() {
+  //   console.log("onReset");
+  // }
 
-  onStepChange(step) {
-    console.log("onStepChange");
-    console.log(step);
-  }
+  // onStepChange(step) {
+  //   console.log("onStepChange");
+  //   console.log(step);
+  // }
 
-  onSubmit() {
-    console.log("onSubmit");
-  }
+  // onSubmit() {
+  //   console.log("onSubmit");
+  // }
 
 }

@@ -31,7 +31,7 @@ export class VSModeWizard extends GameSettingsWizard {
   init() {
     this.settings = new OptionsSettings(this.vsModeSelected ? this.settings.vsMode : GameVSMode.Clear);
     const params = this.getDropdownSelectParams("vsMode", GameVSMode);
-    this.inputsGroup.inputControllers = new DropdownSelect(params, this.onVsModeChange.bind(this));
+    this.inputsGroup.controllers = new DropdownSelect(params, this.onVsModeChange.bind(this));
   }
 
   onVsModeChange(params) {

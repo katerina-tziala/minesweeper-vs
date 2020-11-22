@@ -40,7 +40,7 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   get levelPropertiesControllers() {
-    return this.inputsGroup.inputControllers.filter(controller => controller.name !== SETTINGS_PROPERTIES.level);
+    return this.inputsGroup.controllers.filter(controller => controller.name !== SETTINGS_PROPERTIES.level);
   }
 
   get numberOfMinesBoundaries() {
@@ -77,7 +77,7 @@ export class LevelWizard extends GameSettingsWizard {
 
   initLevelController() {
     const params = this.getDropdownSelectParams(SETTINGS_PROPERTIES.level, GameLevel);
-    this.inputsGroup.inputControllers = new DropdownSelect(params, this.onLevelChange.bind(this));
+    this.inputsGroup.controllers = new DropdownSelect(params, this.onLevelChange.bind(this));
   }
 
   initLevelPropertiesControllers() {
@@ -85,7 +85,7 @@ export class LevelWizard extends GameSettingsWizard {
       const controller = new NumberInput(levelProperty, this.settings[levelProperty].toString(), this.onCustomLevelParamChange.bind(this));
       controller.boundaries = this.getPropertyBoundaries(levelProperty);
       controller.disabled = !this.isCustomLevel;
-      this.inputsGroup.inputControllers = controller;
+      this.inputsGroup.controllers = controller;
     });
   }
 
@@ -110,7 +110,7 @@ export class LevelWizard extends GameSettingsWizard {
       controller.value = this.settings[controller.name].toString();
       this.isCustomLevel ? controller.enable() : controller.disable();
       controller.updateValidFieldValue();
-      this.inputsGroup.inputControllers = controller;
+      this.inputsGroup.controllers = controller;
     });
   }
 
@@ -141,7 +141,7 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   updateNumberOfMinesBoundaries() {
-    const numberOfMinesController = this.inputsGroup.getInputController(SETTINGS_PROPERTIES.numberOfMines);
+    const numberOfMinesController = this.inputsGroup.getController(SETTINGS_PROPERTIES.numberOfMines);
     numberOfMinesController.boundaries = this.numberOfMinesBoundaries;
     numberOfMinesController.validateInputTypeValue();
   }

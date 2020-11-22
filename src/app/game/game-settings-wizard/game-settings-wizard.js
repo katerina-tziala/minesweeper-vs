@@ -69,11 +69,15 @@ export class GameSettingsWizard {
   }
 
   emitChanges() {
-    this.onSubmit({
+    this.onSubmit(this.data);
+  }
+
+  get data() {
+    return {
       name: this.name,
       valid: this.inputsGroup.isValid,
       value: this.settings
-    });
+    };
   }
 
   // INTERFACE
@@ -97,7 +101,7 @@ export class GameSettingsWizard {
 
   generateWizardInputs() {
     const fragment = document.createDocumentFragment();
-    this.inputsGroup.inputControllers.forEach(controller => {
+    this.inputsGroup.controllers.forEach(controller => {
       fragment.append(this.generateInputSection(controller));
     });
     return fragment;

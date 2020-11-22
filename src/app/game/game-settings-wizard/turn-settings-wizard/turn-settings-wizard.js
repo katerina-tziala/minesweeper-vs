@@ -38,11 +38,11 @@ export class TurnSettingsWizard extends GameSettingsWizard {
 
   init() {
     this.settings = new TurnSettings();
-    this.inputsGroup.inputControllers = this.generateSwitcher(FIELD_NAME.turnTimer, this.onTurnTimerChange.bind(this));
+    this.inputsGroup.controllers = this.generateSwitcher(FIELD_NAME.turnTimer, this.onTurnTimerChange.bind(this));
     this.turnNumberProperties.forEach(property => {
-      this.inputsGroup.inputControllers = this.generateNumberInput(property);
+      this.inputsGroup.controllers = this.generateNumberInput(property);
     });
-    this.inputsGroup.inputControllers = this.generateSwitcher(FIELD_NAME.consecutiveTurns, this.onTurnSettingsChange.bind(this), this.turnPropertyDisabled);
+    this.inputsGroup.controllers = this.generateSwitcher(FIELD_NAME.consecutiveTurns, this.onTurnSettingsChange.bind(this), this.turnPropertyDisabled);
   }
 
   generateSwitcher(fieldName, action, disabled = false) {
@@ -63,7 +63,7 @@ export class TurnSettingsWizard extends GameSettingsWizard {
     this.onTurnSettingsChange(params);
     this.setConsecutiveTurnsDisabledState();
     this.turnNumberProperties.forEach(property => {
-      const controller = this.inputsGroup.getInputController(property);
+      const controller = this.inputsGroup.getController(property);
       this.controllerDisabledState = controller;
       if (!controller.valid) {
         controller.updateValidFieldValue(this.settings[property]);
@@ -79,7 +79,7 @@ export class TurnSettingsWizard extends GameSettingsWizard {
   }
 
   setConsecutiveTurnsDisabledState() {
-    const controller = this.inputsGroup.getInputController(FIELD_NAME.consecutiveTurns);
+    const controller = this.inputsGroup.getController(FIELD_NAME.consecutiveTurns);
     this.controllerDisabledState = controller;
   }
 

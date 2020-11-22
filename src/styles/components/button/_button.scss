@@ -48,6 +48,7 @@
 
 .btn-icon--close {
   @include afterIcon(x);
+  line-height: 20px!important;
 }
 
 .btn-gameplay {
@@ -65,8 +66,9 @@
   }
 
   &.btn-icon--play {
-    font-size   : 1.1rem;
-    padding-left: 3px;
+    font-size   : 1rem;
+    line-height : 20px;
+    padding-left: 1px;
   }
 
   &.btn-icon--next {

@@ -62,7 +62,7 @@ export class OptionsWizard extends GameSettingsWizard {
 
   initControllers() {
     this.settingsProperties.forEach(property => {
-      this.inputsGroup.inputControllers = this.generateSettingController(property);
+      this.inputsGroup.controllers = this.generateSettingController(property);
     });
   }
 
@@ -100,7 +100,7 @@ export class OptionsWizard extends GameSettingsWizard {
 
   onOpenStrategyChange(params) {
     this.settings[params.name] = params.value;
-    const controller = this.inputsGroup.getInputController(FIELD_NAME.sneakPeek);
+    const controller = this.inputsGroup.getController(FIELD_NAME.sneakPeek);
     this.sneakPeakDisabled ? controller.disable() : controller.enable();
     this.updateSneakPeekDuration();
   }
@@ -119,7 +119,7 @@ export class OptionsWizard extends GameSettingsWizard {
   }
 
   updateSneakPeekDuration() {
-    const controller = this.inputsGroup.getInputController(FIELD_NAME.sneakPeekDuration);
+    const controller = this.inputsGroup.getController(FIELD_NAME.sneakPeekDuration);
     this.sneakPeakDurationDisabled ? controller.disable() : controller.enable();
     controller.boundaries = this.sneakPeakDurationLimits;
     controller.value = this.settings.sneakPeekDuration.toString();

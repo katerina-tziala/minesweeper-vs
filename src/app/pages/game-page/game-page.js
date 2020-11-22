@@ -19,6 +19,7 @@ import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-
 // import { GameWizardVS } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs";
 // import { GameWizardBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-bot";
 import { GameWizard } from "~/game/game-wizard/game-wizard";
+import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original";
 
 
 
@@ -43,7 +44,7 @@ export class GamePage extends Page {
 
         console.log("show me wizard");
         console.log(this.gameType);
-        this.gameWizard = new GameWizard(this.navigateToHome, this.onPlayGame.bind(this));
+        this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
         // switch (gameType) {
         //     case GameType.Original:
         //         this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
@@ -73,7 +74,7 @@ export class GamePage extends Page {
     }
 
     renderPage(mainContainer) {
-        mainContainer.append(this.gameWizard.renderWizard());
+        mainContainer.append(this.gameWizard.generateWizard());
     }
 
     onPlayGame(game) {
