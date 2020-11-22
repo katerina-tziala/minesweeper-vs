@@ -10,31 +10,28 @@ export class BotModeWizard extends GameSettingsWizard {
 
   constructor(onSubmit, botMode) {
     super(onSubmit, undefined);
-    this.setModeSettings(botMode)
-    this.init();
+    this.#setModeSettings(botMode)
+    this.#init();
   }
 
-  setModeSettings(botMode) {
+  #setModeSettings(botMode) {
     const settings = { botMode };
     this.settings = settings;
   }
 
+  #init() {
+    const params = this.getDropdownSelectParams("botMode", BotMode);
+    this.inputsGroup.controllers = new DropdownSelect(params, this.#onModeChange.bind(this));
+  }
+
+  #onModeChange(params) {
+    this.#setModeSettings(params.value);
+    this.emitChanges();
+  }
+
+  // OVERIDDEN FUNCTIONS
   get name() {
     return "botMode";
-  }
-
-  get modeSelected() {
-    return this.settings && this.settings.botMode !== null;
-  }
-
-  init() {
-    const params = this.getDropdownSelectParams("botMode", BotMode);
-    this.inputsGroup.controllers = new DropdownSelect(params, this.onModeChange.bind(this));
-  }
-
-  onModeChange(params) {
-    this.setModeSettings(params.value);
-    this.emitChanges();
   }
 
 }

@@ -60,11 +60,11 @@ export class GameSettingsWizard {
   getDropdownOptions(enumValue) {
     return {
       value: enumValue,
-      innerHTML: `<span>${this.getModeLabel(enumValue)}</span>`
+      innerHTML: `<span>${this.getOptionLabel(enumValue)}</span>`
     };
   }
 
-  getModeLabel(enumValue) {
+  getOptionLabel(enumValue) {
     return enumValue;
   }
 
@@ -135,5 +135,6 @@ export class GameSettingsWizard {
     label.innerHTML = CONTENT[inputName];
     return label;
   }
+
 
 }
