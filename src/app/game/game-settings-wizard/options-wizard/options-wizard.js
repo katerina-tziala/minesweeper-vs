@@ -14,8 +14,8 @@ import { SETTINGS_PROPERTIES, FIELD_NAME, LIMITS } from "./options-wizard.consta
 export class OptionsWizard extends GameSettingsWizard {
 
   constructor(onSubmit, settings) {
-    super(onSubmit, settings);
-    this.init();
+    super(onSubmit);
+    this.init(settings);
   }
 
   get name() {
@@ -28,11 +28,8 @@ export class OptionsWizard extends GameSettingsWizard {
 
   get settingsProperties() {
     let params = SETTINGS_PROPERTIES.default;
-    if (this.settings && this.settings.vsMode === GameVSMode.Clear) {
-      params = params.concat(SETTINGS_PROPERTIES[GameVSMode.Clear]);
-    }
-    if (this.settings && this.settings.vsMode === GameVSMode.Detect) {
-      params = params.concat(SETTINGS_PROPERTIES[GameVSMode.Detect]);
+    if (this.settings && this.settings.vsMode) {
+      params = params.concat(SETTINGS_PROPERTIES[this.settings.vsMode]);
     }
     return params;
   }
@@ -53,10 +50,12 @@ export class OptionsWizard extends GameSettingsWizard {
     return limits;
   }
 
-  init() {
-    if (!this.settings) {
-      this.settings = new OptionsSettings();
+  init(settings) {
+    let initialSettings = new OptionsSettings();
+    if (settings) {
+      initialSettings.update(settings);
     }
+    this.settings = initialSettings;
     this.initControllers();
   }
 

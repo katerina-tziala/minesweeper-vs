@@ -1,21 +1,27 @@
 "use strict";
 
 export class GroupController {
-  #_controllers = {};
+  #_controllers = new Map;
 
   constructor() { }
 
   set controllers(controller) {
-    delete this.#_controllers[controller.name];
-    this.#_controllers[controller.name] = controller;
+    this.removeController(controller.name);
+    this.#_controllers.set(controller.name, controller);
   }
 
   get controllers() {
-    return Object.values(this.#_controllers);
+    return Array.from(this.#_controllers.values());
   }
 
   getController(key) {
-    return this.#_controllers[key];
+    return this.#_controllers.get(key);
+  }
+
+  removeController(key) {
+    if (this.#_controllers.has(key)) {
+      this.#_controllers.delete(key);
+    }
   }
 
 }

@@ -11,6 +11,7 @@ export class Game extends AppModel {
 
 
   #player = undefined;
+  #opponent = undefined;
 
 
   // #minesToDetect;
@@ -20,11 +21,12 @@ export class Game extends AppModel {
   // #timerSeconds;
 
 
-  constructor(type, params, player) {
+  constructor(type, params, player, opponent) {
     super();
     this.id = type;
     this.type = type;
     this.player = player;
+    this.opponent = opponent;
     this.update(params);
   }
 
@@ -70,11 +72,21 @@ export class Game extends AppModel {
   }
 
   set player(player) {
-    this.#turnSettings = player;
+    this.#player = player;
   }
 
   get player() {
     return this.#player;
   }
+
+  set opponent(player) {
+    this.#opponent = player;
+  }
+
+  get opponent() {
+    return this.#opponent;
+  }
+
+
 
 }

@@ -136,5 +136,4 @@ export class GameSettingsWizard {
     return label;
   }
 
-
 }

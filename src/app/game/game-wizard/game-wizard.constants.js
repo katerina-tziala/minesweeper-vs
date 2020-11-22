@@ -1,11 +1,5 @@
 "use strict";
 export { CLOSE_BTN } from "~/_constants/btn-icon.constants";
-// import { RESET_BTN, PLAY_BTN } from "~/_constants/btn-text.constants";
-
-// export const BUTTONS = {
-//     reset: RESET_BTN,
-//     play: PLAY_BTN
-// };
 
 export const DOM_ELEMENT_ID = {
     wizardContent: "game-wizard-content",
@@ -23,7 +17,7 @@ export const DOM_ELEMENT_CLASS = {
 
 export const TITLE = {
     original: "original minesweeper game",
-    bot: "play minesweeper VS against bot",
-    friend: "play minesweeper VS against ###",
-    online: "invite ### to a minesweeper VS game",
+    bot: "play minesweeperVS against bot",
+    friend: "play minesweeperVS against ###",
+    online: "invite ### to a minesweeperVS game",
 };

@@ -59,10 +59,12 @@
 
   &.btn-icon--previous {
     padding-right: 2px;
+    padding-bottom: 2px;
   }
 
   &.btn-icon--reset {
     font-size: 1.1rem;
+    padding-bottom: 1px;
   }
 
   &.btn-icon--play {
@@ -73,6 +75,7 @@
 
   &.btn-icon--next {
     padding-left: 2px;
+    padding-bottom: 2px;
   }
 
   &.btn-icon--send {

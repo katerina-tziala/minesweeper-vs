@@ -20,6 +20,7 @@ import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-
 // import { GameWizardBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-bot";
 import { GameWizard } from "~/game/game-wizard/game-wizard";
 import { GameWizardOriginal } from "~/game/game-wizard/game-wizard-original";
+import { GameWizardVSBot } from "~/game/game-wizard/game-wizard-vs/game-wizard-vs-bot";
 
 
 
@@ -31,71 +32,72 @@ import { GameType } from "Game";
 
 
 export class GamePage extends Page {
-    #gameType;
+  #gameType;
 
-    constructor(gameType, navigateToHome) {
-        super();
-        this.gameType = gameType;
-        self.settingsController.gameSettingsHidden = false;
-        this.init();
-        this.navigateToHome = navigateToHome;
+  constructor(gameType, navigateToHome) {
+    super();
+    this.gameType = gameType;
+    self.settingsController.gameSettingsHidden = false;
+    this.init();
+    this.navigateToHome = navigateToHome;
 
-        this.game = undefined;
+    this.game = undefined;
 
-        console.log("show me wizard");
-        console.log(this.gameType);
-
-       // this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
+    // console.log("show me wizard");
+    // console.log(this.gameType);
 
 
-        // switch (gameType) {
-        //     case GameType.Original:
-        //         this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
-        //         break;
-        //     case GameType.Bot:
-        //         this.gameWizard = new GameWizardBot(this.navigateToHome, this.onPlayGame.bind(this));
-        //         break;
-        //         case GameType.Friend:
-        //             this.gameWizard = new GameWizardVS(this.navigateToHome, this.onPlayGame.bind(this));
-        //             break;
-        //     default:
-        //         console.log(gameType);
-        //         break;
-        // }
+    this.gameWizard = new GameWizardVSBot(this.navigateToHome, this.onPlayGame.bind(this));
+
+
+    // switch (gameType) {
+    //     case GameType.Original:
+    //         this.gameWizard = new GameWizardOriginal(this.navigateToHome, this.onPlayGame.bind(this));
+    //         break;
+    //     case GameType.Bot:
+    //         this.gameWizard = new GameWizardBot(this.navigateToHome, this.onPlayGame.bind(this));
+    //         break;
+    //         case GameType.Friend:
+    //             this.gameWizard = new GameWizardVS(this.navigateToHome, this.onPlayGame.bind(this));
+    //             break;
+    //     default:
+    //         console.log(gameType);
+    //         break;
+    // }
 
 
 
 
-    }
+  }
 
-    set gameType(type) {
-        this.#gameType = type;
-    }
+  set gameType(type) {
+    this.#gameType = type;
+  }
 
-    get gameType() {
-        return this.#gameType;
-    }
+  get gameType() {
+    return this.#gameType;
+  }
 
-    renderPage(mainContainer) {
-        mainContainer.append(this.gameWizard.generateWizard());
-    }
+  renderPage(mainContainer) {
+    mainContainer.append(this.gameWizard.generateWizard());
+  }
 
-    onPlayGame(game) {
-        //super.onConnectionError(errorMessage);
-        console.log(game);
-        this.displayLoader();
-        this.getClearedMainContainer().then(mainContainer => {
-            console.log(mainContainer);
-            console.log("game ooon");
-            this.hideLoader();
-        });
-    }
+  onPlayGame(game) {
+    //super.onConnectionError(errorMessage);
+    console.log(game);
+    this.displayLoader();
+    this.getClearedMainContainer().then(mainContainer => {
+      console.log(mainContainer);
+      console.log("game ooon");
+      this.hideLoader();
+    });
+  }
 
-    // Overridden functions
-    onConnectionError(errorMessage) {
-        //super.onConnectionError(errorMessage);
+  // Overridden functions
+  onConnectionError(errorMessage) {
+    //super.onConnectionError(errorMessage);
 
-    }
+  }
 
 
 

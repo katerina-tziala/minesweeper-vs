@@ -20,7 +20,7 @@ import { GroupController } from "~/_utils/group-controller";
 export class GameWizard {
   #_stepper;
   #_player;
-  // #_opponent;
+  //
   #_gameParams;
   #_defaultGameParams = {};
 
@@ -30,14 +30,7 @@ export class GameWizard {
     this.onClose = onClose;
     this.submitGame = submitGame;
     this.player = new Player(self.user.id, self.user.username);
-    // this.opponent = undefined;
     this.initGameParams();
-
-    // this.stepper = new GameWizardStepper({
-    //   onReset: this.onReset.bind(this),
-    //   onSubmit: this.onSubmit.bind(this),
-    //   onStepChange: this.onStepChange.bind(this),
-    // }, 3);
   }
 
   set stepper(stepper) {
@@ -55,17 +48,6 @@ export class GameWizard {
   get player() {
     return this.#_player;
   }
-
-
-  // set opponent(opponent) {
-  //   this.#_opponent = opponent;
-  // }
-
-  // get opponent() {
-  //   return this.#_opponent;
-  // }
-
-
 
   initGameParams() {
     this.#_gameParams = {};
@@ -101,6 +83,15 @@ export class GameWizard {
     return this.#_settingsControllers.controllers;
   }
 
+  removeController(wizardName) {
+    return this.#_settingsControllers.removeController(wizardName);
+  }
+
+
+  getSettingsController(wizardName) {
+    return this.#_settingsControllers.getController(wizardName);
+  }
+
   get contentContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_CLASS.wizardContent);
   }
@@ -114,18 +105,12 @@ export class GameWizard {
   }
 
   initOptionsWizard() {
+    //console.log(this.getGameParamsForWizard(WIZARD_NAME.optionsSettings));
     this.settingsControllers = new OptionsWizard(this.onGameSettingsChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.optionsSettings));
   }
 
-
   generateWizard() {
     const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
-    // const asd = new VSModeWizard(this.onGameSettingsChange.bind(this));
-    // wizardContainer.append(asd.generateSettingsWizard());
-
-    // const asds = new TurnSettingsWizard(this.onGameSettingsChange.bind(this));
-    // wizardContainer.append(asds.generateSettingsWizard());
-
     wizardContainer.append(this.generateWizardHeader());
     wizardContainer.append(this.generateContentSection());
     wizardContainer.append(this.stepper.generateStepper());
@@ -159,12 +144,18 @@ export class GameWizard {
 
 
   onGameSettingsChange(params) {
-    console.log("onGameSettingsChange");
+    // console.log("onGameSettingsChange");
+
+    // console.log("---------------------------");
+    // console.log("current: ", {...this.gameParams});
 
     this.stepper.submissionButtonDisabled = !params.valid;
-    this.gameParams = params;
 
-    console.log(params);
+    this.gameParams = params;
+    // console.log("---------------------------");
+    // console.log("new: ", this.gameParams);
+
+    //console.log(params);
     //console.log("invalid re");
     // onGameSettingsChange
 
@@ -172,33 +163,13 @@ export class GameWizard {
     // console.log(params.value);
   }
 
-
-
-  // onStepChange(step) {
-  //   console.log("onStepChange");
-  //   console.log(step);
-  // }
-
   //
-  generateContent() {
-    const fragment = document.createDocumentFragment();
-    return fragment;
-  }
-
   get gameType() {
     return TYPOGRAPHY.emptyString;
   }
 
-
   get title() {
     return TYPOGRAPHY.emptyString;
-  }
-
-  onReset() {
-    this.contentContainer.then(contentContainer => {
-      ElementHandler.clearContent(contentContainer);
-      contentContainer.append(this.generateContent());
-    });
   }
 
   get game() {
@@ -209,9 +180,26 @@ export class GameWizard {
     console.log("onSubmit");
 
     console.log(this.game);
-
-    this.submitGame(this.game)
+    //console.log(this.player);
+    // player color
+    //this.submitGame(this.game)
     return;
+  }
+
+  generateContent() {
+    const fragment = document.createDocumentFragment();
+    return fragment;
+  }
+
+  onReset() {
+    return;
+  }
+
+  updateWizardContent() {
+    this.contentContainer.then(contentContainer => {
+      ElementHandler.clearContent(contentContainer);
+      contentContainer.append(this.generateContent());
+    });
   }
 
 }

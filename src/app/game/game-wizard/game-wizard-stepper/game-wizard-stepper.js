@@ -90,7 +90,7 @@ export class GameWizardStepper {
   }
 
   #onPrevious() {
-    this.currentStep--;
+    this.#currentStep = this.currentStep-1;
     if (this.#onFirstStep) {
       this.#setPreviousButtonDisabled();
     }
@@ -109,7 +109,7 @@ export class GameWizardStepper {
   }
 
   #moveToNextStep() {
-    this.currentStep++;
+    this.#currentStep = this.currentStep+1;
     if (this.#onSecondStep) {
       this.#setPreviousButtonDisabled();
     }
@@ -162,7 +162,7 @@ export class GameWizardStepper {
   updateNumberOfSteps(steps) {
     if (this.#navigationAllowed) {
       this.#steps = steps;
-      this.currentStep = (this.steps < this.currentStep) ? this.steps : this.currentStep;
+      this.#currentStep = (this.steps < this.currentStep) ? this.steps : this.currentStep;
       if (this.#onFinalStep) {
         this.#setSubmissionStyle();
       }

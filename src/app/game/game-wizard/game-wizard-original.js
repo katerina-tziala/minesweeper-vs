@@ -39,7 +39,7 @@ export class GameWizardOriginal extends GameWizard {
   onReset() {
     this.initGameParams();
     this.init();
-    super.onReset();
+    this.updateWizardContent();
   }
 
 }

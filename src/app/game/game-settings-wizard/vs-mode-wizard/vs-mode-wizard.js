@@ -10,10 +10,28 @@ import { WIZARD_NAME } from "../game-settings-wizard.constants";
 import { CONTENT } from "./vs-mode-wizard.constants";
 
 export class VSModeWizard extends GameSettingsWizard {
+  #_parallelAllowed;
 
-  constructor(onSubmit, settings) {
+  constructor(onSubmit, settings, parallelAllowed = false) {
     super(onSubmit, settings);
+    this.parallelAllowed = parallelAllowed;
     this.init();
+  }
+
+  get parallelAllowed() {
+    return this._parallelAllowed;
+  }
+
+  set parallelAllowed(allowed) {
+    this._parallelAllowed = allowed;
+  }
+
+  get name() {
+    return WIZARD_NAME.vsModeSettings;
+  }
+
+  get vsModeSelected() {
+    return this.settings && this.settings.vsMode !== null;
   }
 
   get name() {
@@ -28,9 +46,17 @@ export class VSModeWizard extends GameSettingsWizard {
     return `<div>${CONTENT[this.settings.vsMode].explanation}</div>`;
   }
 
+  get initialSettingsMode() {
+    return (!this.parallelAllowed && this.settings.vsMode === GameVSMode.Parallel) ? GameVSMode.Clear : this.settings.vsMode;
+  }
+
   init() {
-    this.settings = new OptionsSettings(this.vsModeSelected ? this.settings.vsMode : GameVSMode.Clear);
+    this.settings = new OptionsSettings(this.vsModeSelected ? this.initialSettingsMode : GameVSMode.Clear);
     const params = this.getDropdownSelectParams("vsMode", GameVSMode);
+    if (!this.parallelAllowed) {
+      params.options = params.options.filter(option => option.value !== GameVSMode.Parallel);
+
+    }
     this.inputsGroup.controllers = new DropdownSelect(params, this.onVsModeChange.bind(this));
   }
 
