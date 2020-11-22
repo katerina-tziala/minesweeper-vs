@@ -50,10 +50,10 @@ export class GamePage extends Page {
     // console.log(this.gameType);
 
 
-    //this.gameWizard = new GameWizardVSBot(this.navigateToHome, this.onPlayGame.bind(this));
-    const onlineTest =  new User("testId", "testClient", null);
+    this.gameWizard = new GameWizardVSBot(this.navigateToHome, this.onPlayGame.bind(this));
+   //const onlineTest =  new User("testId", "testClient", null);
    // this.gameWizard = new GameWizardVSFriend(this.navigateToHome, this.onPlayGame.bind(this));
-    this.gameWizard = new GameWizardVSOnline(this.navigateToHome, this.onPlayGame.bind(this), onlineTest);
+    //this.gameWizard = new GameWizardVSOnline(this.navigateToHome, this.onPlayGame.bind(this), onlineTest);
 
 
 

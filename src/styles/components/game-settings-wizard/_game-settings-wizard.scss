@@ -48,6 +48,10 @@
     @include afterIcon("stopwatch");
   }
 
+  &.settings-wizard-title-icon--botMode {
+    @include afterIcon("bot");
+  }
+
 }
 
 .settings-wizard-title {

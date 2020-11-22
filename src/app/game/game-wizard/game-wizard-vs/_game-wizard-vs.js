@@ -28,7 +28,6 @@ export class GameWizardVS extends GameWizard {
     return "play";
   }
 
-
   get title() {
     let title = TITLE[this.gameType];
     if (this.opponent) {
@@ -141,7 +140,7 @@ export class GameWizardVS extends GameWizard {
     return fragment;
   }
 
-  onReset() {
+  resetStepValues() {
     const wizardName = this.wizardStepName;
     if (wizardName === WIZARD_NAME.optionsSettings) {
       this.gameParams[wizardName] = this.defaultGameParams[wizardName];
@@ -149,7 +148,11 @@ export class GameWizardVS extends GameWizard {
       delete this.gameParams[wizardName];
       delete this.defaultGameParams[wizardName];
     }
-    this.removeController(wizardName);
+  }
+
+  onReset() {
+    this.resetStepValues();
+    this.removeController(this.wizardStepName);
     this.updateWizardContent();
   }
 

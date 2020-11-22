@@ -19,19 +19,11 @@ export class VSModeWizard extends GameSettingsWizard {
   }
 
   get parallelAllowed() {
-    return this._parallelAllowed;
+    return this.#_parallelAllowed;
   }
 
   set parallelAllowed(allowed) {
-    this._parallelAllowed = allowed;
-  }
-
-  get name() {
-    return WIZARD_NAME.vsModeSettings;
-  }
-
-  get vsModeSelected() {
-    return this.settings && this.settings.vsMode !== null;
+    this.#_parallelAllowed = allowed;
   }
 
   get name() {

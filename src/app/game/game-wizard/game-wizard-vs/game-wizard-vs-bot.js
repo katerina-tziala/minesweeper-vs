@@ -1,9 +1,11 @@
 "use strict";
-import { GameType } from "Game";
+import { GameType, BotMode, BotPlayer } from "Game";
+
 import { GameWizardVS } from "./_game-wizard-vs";
+
 import { TITLE } from "../game-wizard.constants";
-import { WIZARD_NAME } from "../../game-settings-wizard/@game-settings-wizard.module";
-import { BotPlayer } from "Game";
+import { WIZARD_NAME, BotModeWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
+
 export class GameWizardVSBot extends GameWizardVS {
 
   constructor(onClose, submitGame) {
@@ -20,12 +22,32 @@ export class GameWizardVSBot extends GameWizardVS {
     return TITLE[this.gameType];
   }
 
+  get onVsMode() {
+    return this.wizardStepName === WIZARD_NAME.vsModeSettings;
+  }
+
+  initBotModeWizard() {
+    return new BotModeWizard(this.onBotModeChange.bind(this), this.opponent.mode);
+  }
+
   generateContent() {
     const fragment = super.generateContent();
-    if (this.wizardStepName === WIZARD_NAME.vsModeSettings) {
-      console.log("add vs bot difficulty");
+    if (this.onVsMode) {
+      const botWizard = this.initBotModeWizard();
+      fragment.append(botWizard.generateSettingsWizard());
     }
     return fragment;
+  }
+
+  onBotModeChange(params) {
+    this.opponent.mode = params.value.botMode;
+  }
+
+  resetStepValues() {
+    super.resetStepValues();
+    if (this.onVsMode) {
+      this.opponent.mode = BotMode.Easy;
+    }
   }
 
 }

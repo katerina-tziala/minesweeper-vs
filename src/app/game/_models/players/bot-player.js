@@ -1,11 +1,12 @@
 "use strict";
 
 import { Player } from "./player";
-
+import { BotMode } from "../../_enums/bot-mode.enum";
 export class BotPlayer extends Player {
 
   constructor() {
     super("minesweeperBot", "Minesweeper-Bot", true);
+    this.mode = BotMode.Easy;
   }
 
   get isBot() {

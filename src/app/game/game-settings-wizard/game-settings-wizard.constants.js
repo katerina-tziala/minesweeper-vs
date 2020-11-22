@@ -28,7 +28,8 @@ export const CONTENT = {
   turnDuration: "turn duration (sec)",
   missedTurnsLimit: "allowed missed turns",
   consecutiveTurns: "consecutive missed turns",
-  sameMinePositions: "identical minefield"
+  sameMinePositions: "identical minefield",
+  botMode: "bot mode"
 };
 
 export const WIZARD_NAME = {
@@ -42,5 +43,6 @@ export const TITLES = {
   levelSettings: "set up game level",
   optionsSettings: "set up game options",
   turnSettings: "set up turn options",
-  vsModeSettings: "set up VS mode"
+  vsModeSettings: "set up VS mode",
+  botMode: "set up bot mode"
 };
