@@ -118,7 +118,7 @@ export class LevelWizard extends GameSettingsWizard {
     this.levelPropertiesControllers.filter(controller => controller.disabled).forEach(controller => controller.enable());
   }
 
-  onInValidCustomLevel(invalidPropertyName) {
+  onInvalidCustomLevel(invalidPropertyName) {
     const restPropertiesControllers = this.levelPropertiesControllers.filter(controller => controller.name !== invalidPropertyName);
     restPropertiesControllers.forEach(controller => controller.disable());
     this.emitChanges();
@@ -127,7 +127,7 @@ export class LevelWizard extends GameSettingsWizard {
   onCustomLevelParamChange(params) {
     const fieldName = params.name;
     if (!params.valid) {
-      this.onInValidCustomLevel(fieldName);
+      this.onInvalidCustomLevel(fieldName);
       return;
     }
     this.settings[fieldName] = params.value;

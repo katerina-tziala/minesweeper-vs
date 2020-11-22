@@ -1,6 +1,5 @@
 @import "../game-settings-wizard/game-settings-wizard";
 
-
 .game-wizard-container {
   min-width: 320px;
   max-width: 320px;
@@ -11,21 +10,21 @@
 
 .game-wizard-header {
   @extend %between-start;
-  position: relative;
+  position     : relative;
 
   >h2 {
-    flex-grow    : 1;
-    padding-right: 10px;
-    max-width    : 245px;
-    min-height   : 26px;
-    line-height  : 26px;
+    flex-grow     : 1;
+    padding-right : 10px;
+    max-width     : 245px;
+    min-height    : 26px;
+    line-height   : 26px;
+    text-transform: capitalize;
 
   }
 
   .btn-icon--close {
     @extend .btn-icon--normal;
     @extend .btn-primary;
-    // padding : 2px;
     position: absolute;
     right   : 0px;
     top     : -2px;
@@ -37,26 +36,17 @@
 }
 
 .game-wizard-content {
-  padding: 0 10px;
+  padding: 30px 10px;
 
   >.settings-wizard {
     &:not(:first-of-type) {
-      margin-top: 15px;
+      margin-top: 30px;
     }
   }
 }
 
-
-
-
-
-
 .stepper-container {
   @extend %between-center;
-  margin-top      : 15px;
-  // >.button {
-  //   //min-width: 86px;
-  // }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
