@@ -12,6 +12,7 @@ export class GameWizardVSOnline extends GameWizardVS {
     this.init();
   }
 
+  // OVERIDDEN FUNCTIONS
   get gameType() {
     return GameType.Online;
   }

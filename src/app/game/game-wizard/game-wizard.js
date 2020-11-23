@@ -2,19 +2,14 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-
-import { DropdownSelect, Switcher } from "UserInputs";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-import { Game, Player } from "Game";
-import { clone } from "~/_utils/utils.js";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard.constants";
-
-import { WIZARD_NAME, LevelWizard, OptionsWizard, VSModeWizard, TurnSettingsWizard } from "../game-settings-wizard/@game-settings-wizard.module";
-
-import { GameWizardStepper } from "./game-wizard-stepper/game-wizard-stepper";
-
 import { GroupController } from "~/_utils/group-controller";
+import { clone } from "~/_utils/utils.js";
+
+import { Game, Player } from "Game";
+
+import { WIZARD_NAME, LevelWizard, OptionsWizard } from "../game-settings-wizard/@game-settings-wizard.module";
+
+import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard.constants";
 
 export class GameWizard {
   #_stepper;
@@ -89,6 +84,11 @@ export class GameWizard {
     return ElementHandler.getByID(DOM_ELEMENT_CLASS.wizardContent);
   }
 
+  get wizardContainer() {
+    return ElementHandler.getByID(DOM_ELEMENT_CLASS.wizardContainer);
+  }
+
+
   getGameParamsForWizard(wizardName) {
     return Object.keys(this.gameParams).includes(wizardName) ? this.gameParams[wizardName] : undefined;
   }
@@ -102,10 +102,15 @@ export class GameWizard {
   }
 
   generateWizard() {
-    const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
+    const wizardContainer = this.generateWizardContainer();
     wizardContainer.append(this.generateWizardHeader());
     wizardContainer.append(this.generateContentSection());
-    wizardContainer.append(this.stepper.generateStepper());
+    wizardContainer.append(this.generateStepperSection());
+    return wizardContainer;
+  }
+
+  generateWizardContainer() {
+    const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer], DOM_ELEMENT_CLASS.wizardContainer);
     return wizardContainer;
   }
 
@@ -128,9 +133,18 @@ export class GameWizard {
     return wizardContent;
   }
 
+  generateStepperSection() {
+    const fragment = document.createDocumentFragment();
+    return fragment;
+  }
+
   onGameSettingsChange(params) {
     this.stepper.submissionButtonDisabled = !params.valid;
     this.gameParams = params;
+  }
+
+  onSubmit() {
+    this.submitGame(this.game);
   }
 
   // OVERRIDEN FUNCTIONS
@@ -144,16 +158,6 @@ export class GameWizard {
 
   get game() {
     return new Game(this.gameType, this.gameParams, this.player);
-  }
-
-  onSubmit() {
-    console.log("onSubmit");
-
-    console.log(this.game);
-    //console.log(this.player);
-    // player color
-    //this.submitGame(this.game)
-    return;
   }
 
   generateContent() {

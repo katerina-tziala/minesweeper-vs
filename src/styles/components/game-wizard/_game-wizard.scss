@@ -35,7 +35,7 @@
 }
 
 .game-wizard-content {
-  padding: 30px 0px;
+  padding: 30px 0px 0px;
 
   >.settings-wizard {
     &:not(:first-of-type) {
@@ -46,6 +46,7 @@
 
 .stepper-container {
   @extend %between-center;
+  padding-top: 30px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

@@ -14,6 +14,19 @@ export class GameWizardVSBot extends GameWizardVS {
     this.init();
   }
 
+  get #onVsMode() {
+    return this.wizardStepName === WIZARD_NAME.vsModeSettings;
+  }
+
+  #initBotModeWizard() {
+    return new BotModeWizard(this.#onBotModeChange.bind(this), this.opponent.mode);
+  }
+
+  #onBotModeChange(params) {
+    this.opponent.mode = params.value.botMode;
+  }
+
+  // OVERIDDEN FUNCTIONS
   get gameType() {
     return GameType.Bot;
   }
@@ -22,30 +35,18 @@ export class GameWizardVSBot extends GameWizardVS {
     return TITLE[this.gameType];
   }
 
-  get onVsMode() {
-    return this.wizardStepName === WIZARD_NAME.vsModeSettings;
-  }
-
-  initBotModeWizard() {
-    return new BotModeWizard(this.onBotModeChange.bind(this), this.opponent.mode);
-  }
-
   generateContent() {
     const fragment = super.generateContent();
-    if (this.onVsMode) {
-      const botWizard = this.initBotModeWizard();
+    if (this.#onVsMode) {
+      const botWizard = this.#initBotModeWizard();
       fragment.append(botWizard.generateSettingsWizard());
     }
     return fragment;
   }
 
-  onBotModeChange(params) {
-    this.opponent.mode = params.value.botMode;
-  }
-
   resetStepValues() {
     super.resetStepValues();
-    if (this.onVsMode) {
+    if (this.#onVsMode) {
       this.opponent.mode = BotMode.Easy;
     }
   }

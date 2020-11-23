@@ -142,8 +142,8 @@ export class LevelWizard extends GameSettingsWizard {
     numberOfMinesController.validateInputTypeValue();
   }
 
-   // OVERIDDEN FUNCTIONS
-   get name() {
+  // OVERIDDEN FUNCTIONS
+  get name() {
     return WIZARD_NAME.levelSettings;
   }
 

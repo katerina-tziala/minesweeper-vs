@@ -20,27 +20,6 @@ export class GameWizardVS extends GameWizard {
     this.init();
   }
 
-  get gameType() {
-    return GameType.Friend;
-  }
-
-  get stepperSubmissionType() {
-    return "play";
-  }
-
-  get title() {
-    let title = TITLE[this.gameType];
-    if (this.opponent) {
-      title = replaceStringParameter(title, this.opponent.name);
-      console.log(title, this.opponent);
-    }
-    return title;
-  }
-
-  get game() {
-    return new Game(this.gameType, this.gameParams, this.player, this.opponent);
-  }
-
   get parallelAllowed() {
     return true;
   }
@@ -58,8 +37,8 @@ export class GameWizardVS extends GameWizard {
 
   set wizardSteps(selectedMode) {
     this.#_wizardSteps = selectedMode === GameVSMode.Parallel ?
-    [WIZARD_NAME.vsModeSettings, WIZARD_NAME.levelSettings, WIZARD_NAME.optionsSettings] :
-    Object.keys(WIZARD_NAME);
+      [WIZARD_NAME.vsModeSettings, WIZARD_NAME.levelSettings, WIZARD_NAME.optionsSettings] :
+      Object.keys(WIZARD_NAME);
   }
 
   get wizardSteps() {
@@ -140,6 +119,14 @@ export class GameWizardVS extends GameWizard {
     return fragment;
   }
 
+  generateStepperSection() {
+    const fragment = document.createDocumentFragment();
+    if (this.opponent) {
+      fragment.append(this.stepper.generateStepper());
+    }
+    return fragment;
+  }
+
   resetStepValues() {
     const wizardName = this.wizardStepName;
     if (wizardName === WIZARD_NAME.optionsSettings) {
@@ -166,4 +153,21 @@ export class GameWizardVS extends GameWizard {
     this.updateWizardContent();
   }
 
+  // OVERIDDEN FUNCTIONS
+  get stepperSubmissionType() {
+    return "play";
+  }
+
+  get title() {
+    let title = TITLE[this.gameType];
+    if (this.opponent) {
+      title = replaceStringParameter(title, this.opponent.name);
+      console.log(title, this.opponent);
+    }
+    return title;
+  }
+
+  get game() {
+    return new Game(this.gameType, this.gameParams, this.player, this.opponent);
+  }
 }
