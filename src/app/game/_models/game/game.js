@@ -14,7 +14,8 @@ export class Game extends AppModel {
   // #opponent = undefined;
 
 
-  // #minesToDetect;
+
+  //#minesToDetect;
   // #startedAt;
   // #completedAt;
   // #gameOver;
@@ -27,11 +28,19 @@ export class Game extends AppModel {
     this.type = type;
     this.player = player;
     this.opponent = opponent;
+    this.isOnline = false;
     this.update(params);
   }
 
   setMinesPositions() {
     this.levelSettings.setMinesPositions();
+    this.minesToDetect = this.levelSettings.minesPositions.length;
   }
+
+
+
+
+
+
 
 }

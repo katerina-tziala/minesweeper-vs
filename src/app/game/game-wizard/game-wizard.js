@@ -42,8 +42,9 @@ export class GameWizard {
   }
 
   set gameParams(params) {
+  //  console.log(params);
     if (params.valid) {
-      this.#_gameParams[params.name] = clone(params.value);
+      this.#_gameParams[params.name] = params.value;
     }
   }
 
@@ -53,7 +54,7 @@ export class GameWizard {
 
   set defaultGameParams(params) {
     if (params.valid) {
-      this.#_defaultGameParams[params.name] = clone(params.value);
+      this.#_defaultGameParams[params.name] = params.value;
     }
   }
 
@@ -140,11 +141,13 @@ export class GameWizard {
 
   onGameSettingsChange(params) {
     this.stepper.submissionButtonDisabled = !params.valid;
-    this.gameParams = params;
+    this.gameParams = params.value;
   }
 
   onSubmit() {
-    this.submitGame(this.game);
+    const game = this.game;
+    game.setMinesPositions();
+    this.submitGame(game);
   }
 
   // OVERRIDEN FUNCTIONS

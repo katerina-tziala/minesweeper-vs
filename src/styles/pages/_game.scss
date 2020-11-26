@@ -1,8 +1,21 @@
-@use "sass:list";
 @use "../theming/theming";
 
 @import "../global/_module-global";
 @import "../utils/_module-utils";
 
-@import "../components/game-wizard/game-wizard";
+@import "../components/game-board/game-board";
 
+
+.game-container {
+  width : 100%;
+  height: 100%;
+  //@extend %start-center;
+
+  @extend %center-center;
+
+
+  flex-direction: column;
+
+  // background-color: pink;
+  border: 2px solid red;
+}

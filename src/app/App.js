@@ -41,7 +41,7 @@ export class App {
     //  this.setInterface();
 
     //
-    this.onGameNavigation(GameType.Original);
+    this.onGameSetUpNavigation(GameType.Original);
     // this.onGameNavigation(GameType.Friend);
     // this.onGameNavigation(GameType.Online);
     // this.onGameNavigation(GameType.Bot);
@@ -136,25 +136,33 @@ export class App {
     });
   }
 
-  onGameNavigation(gameType) {
-    this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
-      this.interfaceController = new GamePage(gameType, this.onHomeNavigation.bind(this));
+  onGameSetUpNavigation(gameType) {
+    this.loadInterfaceController(PageType.GameSetup).then(({ GameSetupPage }) => {
+      this.interfaceController = new GameSetupPage(gameType, this.onHomeNavigation.bind(this), this.onPlayGame.bind(this));
     });
   }
 
 
 
-  onGameTypeSelected(gameType) {
 
+  onGameTypeSelected(gameType) {
     if (gameType === GameType.Online) {
       console.log("go to lobby");
     } else {
-      this.onGameNavigation(gameType);
+      this.onGameSetUpNavigation(gameType);
     }
   }
 
 
-
+  onPlayGame(game) {
+    //console.log(game);
+    this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
+      this.interfaceController = new GamePage(game, this.onHomeNavigation.bind(this));
+    });
+    // this.loadInterfaceController(PageType.GameSetup).then(({ GamePage }) => {
+    //   this.interfaceController = new GamePage(gameType, this.onHomeNavigation.bind(this));
+    // });
+  }
 
 
 
