@@ -60,9 +60,27 @@ export class GamePlay {
     // console.log(this.game);
 
 
-    this.mineField = new MineField(this.game.levelSettings);
+    this.mineField = new MineField(this.game.levelSettings, this.onActiveTileChange.bind(this), this.onTileAction.bind(this));
 
   }
+
+  onActiveTileChange(activeTile) {
+    // console.log("onActiveTileChange");
+    // console.log(activeTile);
+
+
+  }
+
+  onTileAction(action, tile) {
+    console.log(action, tile);
+    // console.log("onActiveTileChange");
+    // console.log(activeTile);
+
+
+  }
+
+
+
 
 
 
@@ -75,7 +93,7 @@ export class GamePlay {
       .then(mineFieldContainer => {
         ElementHandler.clearContent(mineFieldContainer);
         mineFieldContainer.append(this.mineField.generateMinefield);
-
+        this.mineField.toggleMinefieldFreezer();
       });
 
   }

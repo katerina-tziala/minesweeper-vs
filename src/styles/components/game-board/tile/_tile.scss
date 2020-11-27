@@ -1,7 +1,7 @@
 @use "sass:list";
 
 @use "../../../theming/theming";
-
+@use  "../game-board-styles";
 
 %tile-cell__content {
   text-align : center;
@@ -38,7 +38,7 @@
       .tile-cell.tile-cell__content--mine {
         &::after {
           @extend .icon-#{$type};
-          font-size: 1.1rem;
+          font-size  : 1.1rem;
           line-height: 20px;
         }
       }
@@ -46,17 +46,52 @@
   }
 }
 
+
+
+
 .tile-cell {
   @include rectangle(22px);
   position: relative;
   overflow: hidden;
+  border  : 1px solid;
   @include setNumberContent();
+  cursor    : pointer;
+}
 
 
-  border: 1px solid #bfbfbf;
 
+
+.tile-cell-btn {
+  @include rectangle(22px);
+  position: absolute;
+  top     : 0;
+  left    : 0;
+  outline   : none;
+  border    : none;
+  cursor    : pointer;
+  overflow  : hidden;
+  text-align: center;
+
+  // background-color: #d9d9d9;
+  // color           : #333333;
+  &:disabled {
+    // cursor: not-allowed;
+    // opacity: 0.5;
+  }
 
 }
+
+
+
+.tile-cell-btn--active {
+  border: 2px solid transparent !important;
+}
+
+
+
+
+
+
 
 @include setMineTypeIcons();
 
@@ -64,36 +99,39 @@
 .theme-light {
   .tile-cell {
     @include setNumberContentColors("light");
+    border-color: theming.getThemeColor("light", "board-grid");
   }
+
+
+  .tile-cell-btn {
+    @include game-board-styles.applyThemeBoardButtonStyle("light");
+
+    &:disabled {
+      // background-color: red;
+    }
+
+
+  }
+
+
 }
 
 .theme-dark {
   .tile-cell {
     @include setNumberContentColors("dark");
+    border-color: theming.getThemeColor("dark", "board-grid");
   }
+
+  .tile-cell-btn {
+    @include game-board-styles.applyThemeBoardButtonStyle("dark");
+
+    &:disabled {
+      // background-color: red;
+    }
+
+
+  }
+
+
+
 }
-
-
-
-
-
-
-
-// .game-board--virus {
-//   .tile-cell {
-//     @include setNumberContentColors("dark");
-//   }
-// }
-
-// .game-board--bomb
-//  {
-//   .tile-cell {
-//     @include setNumberContentColors("dark");
-//   }
-// }
-
-// .game-board--bahai {
-//   .tile-cell {
-//     @include setNumberContentColors("dark");
-//   }
-// }

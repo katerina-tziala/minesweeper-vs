@@ -99,7 +99,13 @@ export class DropdownSelectList {
   generateOptionsListbox(options, attributes) {
     const listbox = document.createElement("ul");
     listbox.className = DOM_ELEMENT_CLASS.listbox;
-    listbox.addEventListener("keydown", (event) => DropdownSelectNavigation.manageNavigation(event, listbox, this.onEscape.bind(this), this.onEnter.bind(this)));
+    listbox.addEventListener(
+      "keydown",
+      (event) => {
+        DropdownSelectNavigation.manageNavigation(event, listbox, this.onEscape.bind(this), this.onEnter.bind(this));
+      },
+      false
+    );
     ElementHandler.setAttributes(listbox, attributes);
     listbox.append(DropdownSelectOptionsHandler.generateOptionsList(options, this.onOptionClick.bind(this)));
     return listbox;

@@ -22,7 +22,7 @@ export class ElementGenerator {
     const button = document.createElement("button");
     button.type = "button";
 
-    button.addEventListener(params.actionType, action);
+    button.addEventListener(params.actionType, action, false);
     delete params.actionType;
 
     ElementHandler.setParams(button, params);

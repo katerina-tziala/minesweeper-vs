@@ -1,0 +1,28 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin twoSideBorderDirectionTopLeft($top-left-color, $bottom-right-color) {
+  border-width    : 2px;
+  border-style    : solid;
+  border-top-color   : $top-left-color;
+  border-left-color  : $top-left-color;
+  border-bottom-color: $bottom-right-color;
+  border-right-color : $bottom-right-color;
+}
+
+@mixin boardBorders($theme) {
+  @include twoSideBorderDirectionTopLeft(theming.getThemeColor($theme, "board-grid-light"), theming.getThemeColor($theme, "board-grid-dark"));
+}
+
+@mixin applyThemeBoardStyle($theme) {
+  background-color: theming.getThemeColor($theme, "board-background");
+  color           : theming.getThemeColor($theme, "board-color");
+  @include theming.setThemeBoxShadow($theme);
+  @include boardBorders($theme);
+}
+
+@mixin applyThemeBoardButtonStyle($theme) {
+  background-color: theming.getThemeColor($theme, "board-button-background");
+  color           : theming.getThemeColor($theme, "board-button-color");
+  @include boardBorders($theme);
+}

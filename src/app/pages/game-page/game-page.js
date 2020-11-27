@@ -36,6 +36,14 @@ export class GamePage extends Page {
   }
 
   renderPage(mainContainer) {
+
+    mainContainer.addEventListener("contextmenu", event => {
+      event.preventDefault();
+      //console.log(event);
+
+    }, false);
+
+
     const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);
     gameContainer.append(this.game.generateGameBoard());
     mainContainer.append(gameContainer);

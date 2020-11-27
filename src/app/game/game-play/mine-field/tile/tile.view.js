@@ -2,25 +2,21 @@
 
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
+import { clone } from "~/_utils/utils.js";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./tile.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TILE_BTN } from "./tile.constants";
 
+import { GameAction } from "Game";
 export class TileView {
   #_id;
-  // #mineDisplayType;
-  // #active;
-  #disabled;
-  // #styleClassList;
-  // #elementsIDs;
-  constructor(id) {
-    // this.#mineDisplayType = mineDisplayType;
-    this.#id = id;
-    // this.#active = false;
-    this.#disabled = false;
-    // this.#styleClassList = TileConstants.styleClassList;
-    // this.#elementsIDs = TileConstants.elementsIDs;
-  }
+  #_active;
+  #_disabled;
 
+  constructor(id) {
+    this.#id = id;
+    this.#active = false;
+    this.#disabled = false;
+  }
 
   set #id(id) {
     return this.#_id = id.toString();
@@ -30,152 +26,101 @@ export class TileView {
     return this.#_id;
   }
 
-
-  generateView(content, onActivation, onAction) {
-    const tileCell = ElementGenerator.generateTableDataCell();
-    ElementHandler.setID(tileCell, this.cellId);
-    ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.cell);
-    ElementHandler.addStyleClass(tileCell, this.getCellStyle(content));
-    // tileCell.append(this.generateTileContent(type, neighbors), this.generateTileButton(onActivation, onAction));
-    return tileCell;
+  set #active(active) {
+    return this.#_active = active;
   }
 
-  get cellId() {
+  get #active() {
+    return this.#_active;
+  }
+
+  set #disabled(disabled) {
+    return this.#_disabled = disabled;
+  }
+
+  get #disabled() {
+    return this.#_disabled;
+  }
+
+  get #cellId() {
     return DOM_ELEMENT_ID.cell + this.#id;
   }
 
-  getCellStyle(content) {
+  get #buttonId() {
+    return DOM_ELEMENT_ID.button + this.#id;
+  }
+
+  get #tileButtonParameters() {
+    const buttonParams = clone(TILE_BTN);
+    buttonParams.id = this.#buttonId;
+    return buttonParams;
+  }
+
+  get tileButton() {
+    return ElementHandler.getByID(this.#buttonId);
+  }
+
+  #getCellStyle(content) {
     return DOM_ELEMENT_CLASS.cellContent + content;
   }
 
-  // generateTileContent(type, neighbors) {
-  //   const tileContent = document.createElement("span");
-  //   switch (type) {
-  //     case TileTypeEnum.Mine:
-  //       ElementHandler.setElementClassName(tileContent, this.getMineStyle());
-  //       break;
-  //     case TileTypeEnum.Count:
-  //       const mineCount = neighbors.length;
-  //       tileContent.className = this.getCountStyle(mineCount);
-  //       ElementHandler.setElementContent(tileContent, mineCount);
-  //       break;
-  //   }
-  //   ElementHandler.addClassToElement(tileContent, this.#styleClassList.cellContent);
-  //   return tileContent;
-  // }
 
 
+  #generateTileButton(onActivation, onAction) {
+    const tileButton = ElementGenerator.generateButton(this.#tileButtonParameters);
+    this.#setMouseOverAction(tileButton, onActivation);
+    this.#setMouseLeaveAction(tileButton, onActivation);
+    this.#setMouseDownAction(tileButton, onActivation);
+    this.#setMouseUpAction(tileButton, onAction);
+    return tileButton;
+  }
 
+  #setMouseOverAction(tileButton, onActivation) {
+    tileButton.addEventListener("mouseover", (event) => {
+      if (event.which !== 0 && !this.#active) {
+        this.#activate();
+        onActivation(this.#active);
+      }
+    }, false);
+  }
 
+  #setMouseLeaveAction(tileButton, onActivation) {
+    tileButton.addEventListener("mouseleave", () => {
+      if (this.#active) {
+        this.#deActivate();
+        onActivation(this.#active);
+      }
+    }, false);
+  }
 
-  // getButtonID() {
-  //   return this.#elementsIDs.buttonID + this.getID().toString();
-  // }
+  #setMouseDownAction(tileButton, onActivation) {
+    tileButton.addEventListener("mousedown", () => {
+      if (!this.#active) {
+        this.#activate();
+        onActivation(this.#active);
+      }
+    }, false);
+  }
 
-  // getMineDisplayType() {
-  //   return this.#mineDisplayType;
-  // }
+  #setMouseUpAction(tileButton, onAction) {
+    tileButton.addEventListener("mouseup", (event) => {
+      if (this.#active) {
+        this.#deActivate();
+        switch (event.which) {
+          case 1: // left mouse click
+          case 2:// middle mouse click
+            onAction(GameAction.Reveal);
+            break;
+          case 3:// right mouse click
+            onAction(GameAction.Mark);
+            break;
+          default:
+            break;
+        }
+      }
+    }, false);
+  }
 
-  // isActive() {
-  //   return this.#active;
-  // }
-
-  // isDisabled() {
-  //   return this.#disabled;
-  // }
-
-  // setActive(active) {
-  //   return this.#active = active;
-  // }
-
-  // setDisabled(disabled) {
-  //   return this.#disabled = disabled;
-  // }
-
-  // getMineStyle() {
-  //   return `${this.#styleClassList.cellContentMine} ${this.#styleClassList.cellContentMine}${Typography.doubleHyphen}${this.getMineDisplayType()}`;
-  // }
-
-  // getCountStyle(mineCount) {
-  //   return `${this.#styleClassList.cellContentCount} ${this.#styleClassList.cellContentCount}${Typography.doubleHyphen}${mineCount}`;
-  // }
-
-
-
-
-  // generateTileButton(onActivation, onAction) {
-  //   const tileButton = ButtonGenerator.generateButton(this.getTileButtonParameters());
-  //   this.setBoardTileInteractions(tileButton, onActivation, onAction);
-  //   return tileButton;
-  // }
-
-  // getTileButtonParameters() {
-  //   const buttonParams = AppHelper.clone(TileConstants.tileButton);
-  //   buttonParams.id = this.getButtonID();
-  //   return buttonParams;
-  // }
-
-  // setBoardTileInteractions(tileButton, onActivation, onAction) {
-  //   this.setMouseOverAction(tileButton, onActivation);
-  //   this.setMouseLeaveAction(tileButton, onActivation);
-  //   this.setMouseDownAction(tileButton, onActivation);
-  //   this.setMouseUpAction(tileButton, onAction);
-  // }
-
-  // setMouseOverAction(tileButton, onActivation) {
-  //   tileButton.addEventListener("mouseover", (event) => {
-  //     if (event.which !== 0 && !this.isActive()) {
-  //       this.activate();
-  //       onActivation(true);
-  //     }
-  //   }, false);
-  // }
-
-  // setMouseLeaveAction(tileButton, onActivation) {
-  //   tileButton.addEventListener("mouseleave", () => {
-  //     if (this.isActive()) {
-  //       this.deActivate();
-  //       onActivation(false);
-  //     }
-  //   }, false);
-  // }
-
-  // setMouseDownAction(tileButton, onActivation) {
-  //   tileButton.addEventListener("mousedown", () => {
-  //     if (!this.isActive()) {
-  //       this.activate();
-  //       onActivation(true);
-  //     }
-  //   }, false);
-  // }
-
-  // setMouseUpAction(tileButton, onAction) {
-  //   tileButton.addEventListener("mouseup", (event) => {
-  //     if (this.isActive()) {
-  //       this.deActivate();
-  //       switch (event.which) {
-  //         case 1: // left mouse click
-  //         case 2:// middle mouse click
-  //           onAction(TileActionTypeEnum.Reveal);
-  //           break;
-  //         case 3:// right mouse click
-  //           onAction(TileActionTypeEnum.Mark);
-  //           break;
-  //         default:
-  //           break;
-  //       }
-  //     }
-  //   }, false);
-  // }
-
-  // getTileButton() {
-  //   return new Promise((resolve) => {
-  //     const button = document.getElementById(this.getButtonID());
-  //     if (button) {
-  //       resolve(button);
-  //     }
-  //   });
-  // }
 
   // getTileCellContent() {
   //   return new Promise((resolve) => {
@@ -186,15 +131,31 @@ export class TileView {
   //   });
   // }
 
-  // activate() {
-  //   this.setActive(true);
-  //   this.getTileButton().then(button => ElementHandler.addClassToElement(button, this.#styleClassList.activeTile));
-  // }
+  generateView(content, onActivation, onAction) {
+    const tileCell = ElementGenerator.generateTableDataCell();
+    ElementHandler.setID(tileCell, this.#cellId);
+    ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.cell);
+    ElementHandler.addStyleClass(tileCell, this.#getCellStyle(content));
+    tileCell.append(this.#generateTileButton(onActivation, onAction));
+    return tileCell;
+  }
 
-  // deActivate() {
-  //   this.setActive(false);
-  //   this.getTileButton().then(button => ElementHandler.removeClassFromElement(button, this.#styleClassList.activeTile));
-  // }
+  #activate() {
+    this.#active = true;
+    this.#setButtonActiveStyle();
+  }
+
+  #setButtonActiveStyle() {
+    this.tileButton.then(button => {
+      this.#active ? ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.activeButton) :
+        ElementHandler.removeStyleClass(button, DOM_ELEMENT_CLASS.activeButton);
+    });
+  }
+
+  #deActivate() {
+    this.#active = false;
+    this.#setButtonActiveStyle();
+  }
 
   // setRevealedView(isMineRevealed, userAction = true) {
   //   this.getTileButton().then(button => button.remove());

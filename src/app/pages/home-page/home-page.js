@@ -39,7 +39,7 @@ export class HomePage extends Page {
             if (event.keyCode === 13 || event.which === 13) {
                 this.selectGameType(gameType);
             }
-        });
+        }, false);
         return menuItem;
     }
 

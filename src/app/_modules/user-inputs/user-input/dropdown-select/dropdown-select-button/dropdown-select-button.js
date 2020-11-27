@@ -42,7 +42,7 @@ export class DropdownSelectButton {
 
   generateDropdownBtn(params) {
     const button = ElementGenerator.generateButton(DROPDOWN_BNT, this.onDropdownClick.bind(this));
-    button.addEventListener("keydown", this.onDropdownKey.bind(this));
+    button.addEventListener("keydown", this.onDropdownKey.bind(this), false);
     ElementHandler.setID(button, this.buttonID);
     AriaHandler.setAriaLabel(button, params.selectText);
     button.setAttribute("aria-haspopup", "listbox");
