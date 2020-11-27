@@ -1,4 +1,18 @@
+@use "sass:list";
+
 @use "../../theming/theming";
+
+@import "../table/table";
+
+@import "./tile/tile";
+
+
+%board-section-borders {
+  border-right : 2px solid #a6a6a6;
+  border-bottom: 2px solid #a6a6a6;
+  border-left  : 2px solid #f2f2f2;
+  border-top   : 2px solid #f2f2f2;
+}
 
 .game-board {
   // width: 100%;
@@ -6,37 +20,59 @@
 
 
 
- // background-color: pink;
-  border: 2px solid green;
+
+  // background-color: pink;
+  // border: 2px solid green;
 }
 
 .game-board__actions {
   // width: 100%;
   // height: 100%;
+  @extend %board-section-borders;
 
 
-
- // background-color: pink;
-  border: 2px solid orange;
+  // background-color: pink;
+  // border: 2px solid orange;
 }
 
 .game-board__dashboard {
   // width: 100%;
   // height: 100%;
+  @extend %board-section-borders;
 
 
 
- // background-color: pink;
-  border: 2px solid orange;
+  // background-color: pink;
+  // border: 2px solid orange;
 }
+
+
 
 .game-board__mine-field {
   // width: 100%;
   // height: 100%;
 
+  @extend %board-section-borders;
 
 
- // background-color: pink;
-  border: 2px solid orange;
+  // background-color: pink;
+
+  background-color: #d9d9d9;
+
+  //  box-shadow      : 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  .game-board {
+    // @include theming.setThemeCard("light");
+    @include theming.setThemeBoxShadow("light");
+  }
+}
+
+.theme-dark {
+  .game-board {
+    // @include theming.setThemeCard("dark");
+    @include theming.setThemeBoxShadow("dark");
+  }
+}

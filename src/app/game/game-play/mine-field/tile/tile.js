@@ -4,7 +4,7 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./tile.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./tile.constants";
 import { TileState } from "../../../_enums/tile-state.enum";
 import { TileView } from "./tile.view";
 
@@ -67,11 +67,11 @@ export class Tile {
     return this.#_modifiedBy;
   }
 
-generateView(onActivation, onAction) {
+  generateView(onActivation, onAction) {
     return this.#viewController.generateView(this.content);
-      // return this.#viewController.generateView(this.getType(), this.getNeighbors(),
-      // (activated => onActivation(activated)),
-      // (action) => onAction(this, action));
+    // return this.#viewController.generateView(this.getType(), this.getNeighbors(),
+    // (activated => onActivation(activated)),
+    // (action) => onAction(this, action));
   }
 
 

@@ -1,6 +1,5 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { sortNumbersArrayAsc, clone } from "~/_utils/utils";
 import { Tile } from "./tile/tile";
 
@@ -56,7 +55,7 @@ export class TileGenerator {
       const gridPositionsAround = this.getGridPositions(coordinates).filter(aroundPorition => aroundPorition !== position);
       const minesAround = this.getMinesAround(gridPositionsAround);
       neighbors = gridPositionsAround;
-      content = minesAround.length ? minesAround.length.toString() : TYPOGRAPHY.emptyString;
+      content = minesAround.length.toString();
     }
     return { content, neighbors };
   }

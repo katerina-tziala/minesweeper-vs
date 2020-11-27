@@ -42,8 +42,12 @@ export class GamePlay {
     return sectionName + TYPOGRAPHY.doubleHyphen + this.game.id;
   }
 
+  get boardMineTypeStyleClass() {
+    return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleHyphen + LocalStorageHelper.retrieve("settings").mineType;
+  }
+
   generateGameBoard() {
-    const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board], this.game.id);
+    const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, this.boardMineTypeStyleClass], this.game.id);
     Object.values(BOARD_SECTION).forEach(sectionName => {
       board.append(ElementGenerator.generateContainer([sectionName], this.getBoardSectionID(sectionName)));
     });
@@ -68,11 +72,11 @@ export class GamePlay {
     // console.log(this.game);
 
     ElementHandler.getByID(this.getBoardSectionID(BOARD_SECTION.mineField))
-    .then(mineFieldContainer => {
-      ElementHandler.clearContent(mineFieldContainer);
-      mineFieldContainer.append(this.mineField.generateMinefield);
+      .then(mineFieldContainer => {
+        ElementHandler.clearContent(mineFieldContainer);
+        mineFieldContainer.append(this.mineField.generateMinefield);
 
-    });
+      });
 
   }
 

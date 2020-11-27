@@ -1,0 +1,99 @@
+@use "sass:list";
+
+@use "../../../theming/theming";
+
+
+%tile-cell__content {
+  text-align : center;
+  width      : 100%;
+  display    : block;
+  font-weight: 700;
+  font-size  : 1.1rem;
+}
+
+@mixin setNumberContent() {
+  @for $number from 1 through 8 {
+    &.tile-cell__content--#{$number} {
+      &::after {
+        content : "#{$number}";
+        @extend %tile-cell__content;
+      }
+    }
+  }
+}
+
+@mixin setNumberContentColors($theme) {
+  @for $i from 1 through 8 {
+    &.tile-cell__content--#{$i} {
+      color: theming.getThemeColor($theme, "game-type-#{$i}");
+    }
+  }
+}
+
+@mixin setMineTypeIcons() {
+  $mine-types: "bomb", "bahai", "virus";
+
+  @each $type in $mine-types {
+    .game-board--#{$type} {
+      .tile-cell.tile-cell__content--mine {
+        &::after {
+          @extend .icon-#{$type};
+          font-size: 1.1rem;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+}
+
+.tile-cell {
+  @include rectangle(22px);
+  position: relative;
+  overflow: hidden;
+  @include setNumberContent();
+
+
+  border: 1px solid #bfbfbf;
+
+
+}
+
+@include setMineTypeIcons();
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  .tile-cell {
+    @include setNumberContentColors("light");
+  }
+}
+
+.theme-dark {
+  .tile-cell {
+    @include setNumberContentColors("dark");
+  }
+}
+
+
+
+
+
+
+
+// .game-board--virus {
+//   .tile-cell {
+//     @include setNumberContentColors("dark");
+//   }
+// }
+
+// .game-board--bomb
+//  {
+//   .tile-cell {
+//     @include setNumberContentColors("dark");
+//   }
+// }
+
+// .game-board--bahai {
+//   .tile-cell {
+//     @include setNumberContentColors("dark");
+//   }
+// }

@@ -3,6 +3,7 @@
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
 
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./tile.constants";
 
 export class TileView {
   #_id;
@@ -32,16 +33,20 @@ export class TileView {
 
   generateView(content, onActivation, onAction) {
     const tileCell = ElementGenerator.generateTableDataCell();
-    // ElementHandler.setID(tileCell, id.getCellID());
-    // ElementHandler.addClassToElement(tileCell, this.#styleClassList.cell);
+    ElementHandler.setID(tileCell, this.cellId);
+    ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.cell);
+    ElementHandler.addStyleClass(tileCell, this.getCellStyle(content));
     // tileCell.append(this.generateTileContent(type, neighbors), this.generateTileButton(onActivation, onAction));
     return tileCell;
   }
 
-  // getCellID() {
-  //   return this.#elementsIDs.cellID + this.getID().toString();
-  // }
+  get cellId() {
+    return DOM_ELEMENT_ID.cell + this.#id;
+  }
 
+  getCellStyle(content) {
+    return DOM_ELEMENT_CLASS.cellContent + content;
+  }
 
   // generateTileContent(type, neighbors) {
   //   const tileContent = document.createElement("span");

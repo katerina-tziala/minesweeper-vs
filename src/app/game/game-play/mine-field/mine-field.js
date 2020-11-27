@@ -34,21 +34,21 @@ export class MineField {
   }
 
   get generateMinefieldRows() {
-    const row = ElementGenerator.generateTableRow();
+    const fragment = document.createDocumentFragment();
     for (let index = 0; index < this.levelSettings.rows; index++) {
+      const row = ElementGenerator.generateTableRow();
       row.append(this.generateMinefieldColumns(index));
+      fragment.append(row);
     }
-    return row;
+    return fragment;
   }
 
   generateMinefieldColumns(rowIndex) {
     const fragment = document.createDocumentFragment();
-    //  console.log("row", rowIndex);
     for (let index = 0; index < this.levelSettings.columns; index++) {
-
       const tile = this.tilesGenerator.generateTile(rowIndex, index);
       this.#tiles.add(tile);
-      tile.generateView();
+      fragment.append(tile.generateView());
     }
     return fragment;
   }

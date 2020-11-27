@@ -22,7 +22,6 @@
     }
 }
 
-
 @mixin applySettingsControllerThemeStyle($theme) {
     .settings-panel {
         @include theming.setThemeCard($theme);
