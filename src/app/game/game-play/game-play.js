@@ -12,12 +12,18 @@ import { User } from "~/_models/user";
 
 import { GameType } from "Game";
 
+import { MineField } from "../game-play/mine-field/mine-field";
+
+
+
+
+
 export class GamePlay {
   #_game;
 
   constructor(game) {
     this.game = game;
-    // this.init();
+    this.init();
   }
 
   set game(game) {
@@ -28,25 +34,45 @@ export class GamePlay {
     return this.#_game;
   }
 
-
-  get board() {
+  get boardContainer() {
     return ElementHandler.getByID(this.game.id);
   }
 
+  getBoardSectionID(sectionName) {
+    return sectionName + TYPOGRAPHY.doubleHyphen + this.game.id;
+  }
 
   generateGameBoard() {
     const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board], this.game.id);
     Object.values(BOARD_SECTION).forEach(sectionName => {
-      board.append(ElementGenerator.generateContainer([sectionName], sectionName));
+      board.append(ElementGenerator.generateContainer([sectionName], this.getBoardSectionID(sectionName)));
     });
     return board;
   }
 
 
+  init() {
+    // console.log("init");
+    // console.log(this.game);
+
+
+    this.mineField = new MineField(this.game.levelSettings);
+
+  }
+
+
+
+
   startGame() {
     console.log("startGame");
-    console.log(this.game);
+    // console.log(this.game);
 
+    ElementHandler.getByID(this.getBoardSectionID(BOARD_SECTION.mineField))
+    .then(mineFieldContainer => {
+      ElementHandler.clearContent(mineFieldContainer);
+      mineFieldContainer.append(this.mineField.generateMinefield);
+
+    });
 
   }
 

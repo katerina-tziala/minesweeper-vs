@@ -29,4 +29,35 @@ export class ElementGenerator {
     return button;
   }
 
+  static generateTable() {
+    return document.createElement("table");
+  }
+
+  static generateTableHead() {
+    return document.createElement("thead");
+  }
+
+  static generateTableBody() {
+    return document.createElement("tbody");
+  }
+
+  static generateTableRow() {
+    return document.createElement("tr");
+  }
+
+  static generateTableHeaderCell(content) {
+    const tableHeader = document.createElement("th");
+    if (content) {
+      tableHeader.append(content);
+    }
+    return tableHeader;
+  }
+
+  static generateTableDataCell(content) {
+    const tableCell = document.createElement("td");
+    if (content) {
+      tableCell.innerHTML(content);
+    }
+    return tableCell;
+  }
 }
