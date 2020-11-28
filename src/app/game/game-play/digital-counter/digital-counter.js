@@ -43,8 +43,8 @@ export class DigitalCounter {
 
   #generateDigit(digitIndex) {
     const digit = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.digit], this.#getDigitId(digitIndex));
-    console.log("digitIndex", digitIndex);
-    console.log("this.digits", this.digits[digitIndex]);
+    // console.log("digitIndex", digitIndex);
+    // console.log("this.digits", this.digits[digitIndex]);
 
     for (let index = 1; index < 8; index++) {
       const digitLine = document.createElement("div");
