@@ -1,0 +1,31 @@
+@use "../game-board-styles";
+
+.mine-field {
+  @extend ._board-section;
+  @include game-board-styles.minefieldTable;
+  position: relative;
+
+  .mine-field__freezer {
+    position: absolute;
+    top     : 0px;
+    left    : 0px;
+    width   : 100%;
+    height  : 100%;
+    z-index : 5000;
+    cursor  : not-allowed;
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  .mine-field__freezer {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.theme-dark {
+  .mine-field__freezer {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+}

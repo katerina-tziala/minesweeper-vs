@@ -7,6 +7,12 @@ export const DOM_ELEMENT_CLASS = {
 
 export const BOARD_SECTION = {
   actions: "game-board__actions",
-  dashBoard: "game-board__dashboard",
-	mineField: "game-board__mine-field"
+  dashBoard: "dashboard",
+	mineField: "mine-field"
+};
+
+export const DASHBOARD_SECTION = {
+  timeCounter: "dashboard__time-counter",
+  actionStateIcon: "dashboard__face-icon",
+	mineCounter: "dashboard__mine-counter"
 };

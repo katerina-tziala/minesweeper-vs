@@ -5,14 +5,15 @@ import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager"
 import { LocalStorageHelper } from "../../_utils/local-storage-helper";
 
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-play.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./game-play.constants";
 
 import { User } from "~/_models/user";
 
 
 import { GameType, GameAction } from "Game";
 
-import { MineField } from "../game-play/mine-field/mine-field";
+import { MineField } from "./mine-field/mine-field";
+import { FaceIcon } from "./face-icon/face-icon";
 
 
 
@@ -23,7 +24,7 @@ export class GamePlay {
 
   constructor(game) {
     this.game = game;
-    this.init();
+
   }
 
   set game(game) {
@@ -38,10 +39,6 @@ export class GamePlay {
     return ElementHandler.getByID(this.game.id);
   }
 
-  getBoardSectionID(sectionName) {
-    return sectionName + TYPOGRAPHY.doubleHyphen + this.game.id;
-  }
-
   get boardMineTypeStyleClass() {
     return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleHyphen + LocalStorageHelper.retrieve("settings").mineType;
   }
@@ -49,29 +46,31 @@ export class GamePlay {
   generateGameBoard() {
     const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, this.boardMineTypeStyleClass], this.game.id);
     Object.values(BOARD_SECTION).forEach(sectionName => {
-      board.append(ElementGenerator.generateContainer([sectionName], this.getBoardSectionID(sectionName)));
+      board.append(this.#generateBoardSection(sectionName));
     });
     return board;
   }
 
 
-  init() {
+  #init() {
     // console.log("init");
     // console.log(this.game);
 
 
-    this.mineField = new MineField(this.game.levelSettings, this.onActiveTileChange.bind(this), this.onTileAction.bind(this));
-
+    this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
+    this.faceIcon = new FaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
   }
 
-  onActiveTileChange(activeTile) {
+
+  #onActiveTileChange(activeTile) {
     // console.log("onActiveTileChange");
     // console.log(activeTile);
 
 
   }
 
-  onTileAction(action, tile) {
+
+  #onTileAction(action, tile) {
     if (action === GameAction.Mark) {
       this.handleTileMarking(tile);
       return;
@@ -124,21 +123,20 @@ export class GamePlay {
 
   }
 
-
-
-
   startGame() {
-    // console.log("startGame");
-    // console.log(this.game);
-
-    ElementHandler.getByID(this.getBoardSectionID(BOARD_SECTION.mineField))
-      .then(mineFieldContainer => {
-        ElementHandler.clearContent(mineFieldContainer);
-        mineFieldContainer.append(this.mineField.generateMinefield);
-        this.startGameRound();
-      });
+    console.log("startGame");
+    this.#init();
+    this.#initGameView.then(() => {
+      this.startGameRound();
+      console.log(this.faceIcon);
+    });
 
   }
+
+
+
+
+
 
   onGameEnd() {
     console.log("onGameEnd");
@@ -152,6 +150,51 @@ export class GamePlay {
 
 
 
+  // PRIVATE FUNCTIONS
+  get #initGameView() {
+    const renderViewParts = [this.#renderMineField(), this.#renderDashboard()];
+    return Promise.all(renderViewParts);
+
+  }
+
+  #getBoardSectionID(sectionName) {
+    return sectionName + TYPOGRAPHY.doubleHyphen + this.game.id;
+  }
+
+  #renderMineField() {
+    const sectionId = this.#getBoardSectionID(BOARD_SECTION.mineField);
+    return this.#getClearedBoardSection(sectionId)
+      .then(mineFieldContainer => {
+        mineFieldContainer.append(this.mineField.generateMinefield);
+        return Promise.resolve();
+      });
+  }
+
+  #getClearedBoardSection(sectionId) {
+    return ElementHandler.getByID(sectionId)
+      .then(boardSection => {
+        ElementHandler.clearContent(boardSection);
+        return boardSection;
+      });
+  }
+
+  #renderDashboard() {
+    const sectionId = this.#getBoardSectionID(BOARD_SECTION.dashBoard);
+    return this.#getClearedBoardSection(sectionId)
+      .then(dashBoardContainer => {
+        console.log(dashBoardContainer);
+        const timeCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.timeCounter);
+        const actionStateIconContainer = this.#generateBoardSection(DASHBOARD_SECTION.actionStateIcon);
+        const mineCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.mineCounter);
 
 
+
+        dashBoardContainer.append(timeCounterContainer, actionStateIconContainer, mineCounterContainer);
+        return Promise.resolve();
+      });
+  }
+
+  #generateBoardSection(sectionName) {
+    return ElementGenerator.generateContainer([sectionName], this.#getBoardSectionID(sectionName));
+  }
 }

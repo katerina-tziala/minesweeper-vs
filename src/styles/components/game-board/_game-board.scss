@@ -3,18 +3,6 @@
 @use "../../theming/theming";
 @use "./game-board-styles";
 
-@import "../table/table";
-
-@import "./tile/tile";
-
-
-
-@mixin twoSideBorderDirectionTopLeft($top-left-color, $bottm-right-color) {
-  border-top-color   : $top-left-color;
-  border-left-color  : $top-left-color;
-  border-bottom-color: $bottm-right-color;
-  border-right-color : $bottm-right-color;
-}
 
 ._board-section {
   border-width: 2px;
@@ -23,55 +11,20 @@
   min-height: 30px;
 }
 
+._board-button {
+  height: 30px;
+  min-width: 30px;
+}
+
+@import "./dashboard/dashboard";
+@import "./minefield/minefield";
+@import "./tile/tile";
+
 .game-board__actions {
   @extend ._board-section;
 }
 
-.game-board__dashboard {
-  @extend ._board-section;
-}
 
-
-
-
-._game-board-table {
-  table>tr>td {
-    &:first-of-type {
-      border-left-color: transparent;
-    }
-
-    &:last-of-type {
-      border-right-color: transparent;
-    }
-  }
-
-  table>tr:first-of-type>td {
-    border-top-color: transparent;
-  }
-
-  table>tr:last-of-type>td {
-    border-bottom-color: transparent;
-  }
-}
-
-
-
-.game-board__mine-field {
-  @extend ._board-section;
-  @extend ._game-board-table;
-  position: relative;
-
-
-  .game-board-freezer {
-    position  : absolute;
-    top       : 0px;
-    left      : 0px;
-    width     : 100%;
-    height    : 100%;
-    z-index   : 5000;
-    cursor    : not-allowed;
-  }
-}
 
 
 
@@ -83,28 +36,29 @@
 .theme-light {
   .game-board {
     @include game-board-styles.applyThemeBoardStyle("light");
-
-    .game-board-freezer {
-      background: rgba(0, 0, 0, 0.1);
-    }
-
   }
 
   ._board-section {
     @include game-board-styles.twoSideBorderDirectionTopLeft(theming.getThemeColor("light", "board-grid-dark"), theming.getThemeColor("light", "board-grid-light"));
   }
+
+  ._board-button {
+    @include game-board-styles.applyThemeBoardButtonStyle("light");
+  }
+
 }
 
 .theme-dark {
   .game-board {
     @include game-board-styles.applyThemeBoardStyle("dark");
-
-    .game-board-freezer {
-      background: rgba(255, 255, 255, 0.05);
-    }
   }
 
   ._board-section {
     @include game-board-styles.twoSideBorderDirectionTopLeft(theming.getThemeColor("dark", "board-grid-dark"), theming.getThemeColor("dark", "board-grid-light"));
   }
+
+  ._board-button {
+    @include game-board-styles.applyThemeBoardButtonStyle("dark");
+  }
+
 }

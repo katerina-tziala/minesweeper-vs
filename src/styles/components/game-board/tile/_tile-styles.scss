@@ -1,0 +1,59 @@
+@use "sass:list";
+@use "../../../theming/theming";
+@use "../game-board-styles";
+
+%tile-cell__content {
+  text-align : center;
+  width      : 100%;
+  display    : block;
+  font-weight: 700;
+  font-size  : 1.1rem;
+  line-height: 21px;
+}
+
+@mixin setNumberContent() {
+  @for $number from 1 through 8 {
+    &.tile-cell__content--#{$number} {
+      &::after {
+        content : "#{$number}";
+        @extend %tile-cell__content;
+      }
+    }
+  }
+}
+
+@mixin setMineTypeIcons() {
+  $mine-types: "bomb", "bahai", "virus";
+
+  @each $type in $mine-types {
+    .game-board--#{$type} {
+      .tile-cell.tile-cell__content--mine {
+        &::after {
+          @extend .icon-#{$type};
+          @extend %tile-cell__content;
+        }
+      }
+    }
+  }
+}
+
+@mixin setTileTheme($theme) {
+  .tile-cell {
+    @include theming.applyGameColorsStyle($theme, "&.tile-cell__content", "color");
+    border-color: theming.getThemeColor($theme, "board-grid");
+
+    &.tile-cell--revealed-mine {
+      background-color: theming.getThemeColor($theme, "error-primary");
+      color           : theming.getThemeColor($theme, "error-pale-contrast");
+    }
+  }
+
+  .tile-cell-btn {
+    @include game-board-styles.applyThemeBoardButtonStyle($theme);
+    @include theming.applyGameColorsStyle($theme, "&.tile-cell-btn-color", "color");
+  }
+
+  ._wrong-flag-hint {
+    color      : theming.getThemeColor($theme, "error-primary");
+  }
+}

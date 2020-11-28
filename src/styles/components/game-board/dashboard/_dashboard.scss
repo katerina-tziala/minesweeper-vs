@@ -1,0 +1,11 @@
+@use "../game-board-styles";
+
+
+
+.dashboard {
+  @extend ._board-section;
+
+  .dashboard__time-counter, .dashboard__face-icon, .dashboard__mine-counter {
+    @extend ._board-button;
+  }
+}
