@@ -1,0 +1,93 @@
+@import "./iconography_utils";
+@import "./mine-type-icons";
+@import "./game-play-icons";
+@import "./face-icons";
+
+.icon-user {
+  @extend %icon-regular;
+  content: fa-content($fa-var-user);
+}
+
+.icon-exclamation {
+  @extend %icon-regular;
+  content: fa-content($fa-var-exclamation);
+}
+
+.icon-x {
+  @extend %icon-regular;
+  content: fa-content($fa-var-times);
+}
+
+.icon-exclamation-triangle {
+  @extend %icon-regular;
+  content: fa-content($fa-var-exclamation-triangle);
+}
+
+.icon-settings {
+  @extend %icon-regular;
+  content: fa-content($fa-var-cog);
+}
+
+.icon-caret-up {
+  @extend %icon-regular;
+  content: fa-content($fa-var-caret-up);
+}
+
+.icon-caret-down {
+  @extend %icon-regular;
+  content: fa-content($fa-var-caret-down);
+}
+
+.icon-question-mark {
+  @extend %icon-regular;
+  content: fa-content($fa-var-question);
+}
+
+.icon-spinner {
+  @extend %icon-regular;
+  content: fa-content($fa-var-spinner);
+}
+
+.icon-sliders {
+  @extend %icon-regular;
+  content: fa-content($fa-var-sliders-h);
+}
+
+.icon-level {
+  @extend %icon-regular;
+  content: fa-content($fa-var-stream);
+}
+
+.icon-stopwatch {
+  @extend %icon-regular;
+  content: fa-content($fa-var-stopwatch);
+}
+
+.icon-mode {
+  @extend %icon-regular;
+  content: fa-content($fa-var-dice-d6);
+}
+
+.icon-online {
+  @extend %icon-regular;
+  content: fa-content($fa-var-globe);
+}
+
+.icon-bot {
+  @extend %icon-regular;
+  content: fa-content($fa-var-robot);
+}
+
+.icon-friend {
+  @extend %icon-regular;
+  content: fa-content($fa-var-user-friends);
+}
+
+.icon-flag {
+  @extend %icon-brand;
+  content: fa-content($fa-var-font-awesome-flag);
+}
+
+.icon-original {
+  @extend.icon-flag;
+}

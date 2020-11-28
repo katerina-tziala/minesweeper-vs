@@ -63,10 +63,9 @@ export class GamePlay {
 
 
   #onActiveTileChange(activeTile) {
-    // console.log("onActiveTileChange");
-    // console.log(activeTile);
-
-
+    activeTile
+    ? this.dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
+    : this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
   }
 
 
@@ -121,8 +120,7 @@ export class GamePlay {
 
     this.game.startRound();
     this.mineField.toggleMinefieldFreezer(false);
-    console.log(this.dashboardFaceIcon);
-
+    this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
   }
 
   startGame() {
@@ -144,7 +142,8 @@ export class GamePlay {
   onGameEnd() {
     console.log("onGameEnd");
     console.log(this.game);
-
+    // this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
+    // this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor)
   }
 
 

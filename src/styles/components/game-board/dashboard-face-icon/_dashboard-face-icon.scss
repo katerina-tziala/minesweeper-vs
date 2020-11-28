@@ -1,0 +1,32 @@
+@use "../../../theming/theming";
+@use "./dashboard-face-icon-styles";
+
+.__face-icon {
+  @include circle(18px);
+}
+
+.dashboard__face-icon {
+  @extend ._board-button;
+  @extend %center-center;
+  @include setFaceIcons("&.face-icon");
+  font-size: 1.4rem;
+
+  &::after {
+    @extend .__face-icon;
+  }
+
+  &.dashboard__face-icon--player {
+    &::after {
+      @extend .__player-face-icon;
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  @include dashboard-face-icon-styles.applyThemStyles("light");
+}
+
+.theme-dark {
+  @include dashboard-face-icon-styles.applyThemStyles("dark");
+}

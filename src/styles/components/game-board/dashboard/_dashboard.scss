@@ -1,11 +1,12 @@
 @use "../game-board-styles";
 
+@import "../dashboard-face-icon/dashboard-face-icon";
 
 
 .dashboard {
   @extend ._board-section;
 
-  .dashboard__time-counter, .dashboard__face-icon, .dashboard__mine-counter {
+  .dashboard__time-counter, .dashboard__mine-counter {
     @extend ._board-button;
   }
 }

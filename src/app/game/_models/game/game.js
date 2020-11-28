@@ -143,16 +143,23 @@ export class Game extends AppModel {
       ? this.#setPlayerStatisticsOnTileUpdate(boardTiles[0])
       : this.#setPlayerStatisticsOnRevealedMines(boardTiles);
 
-      this.#setMinesToDetectAfterMove();
+    this.#setMinesToDetectAfterMove();
   }
 
   startRound() {
     this.#roundTiles = [];
 
-      console.log("startRound");
+    console.log("startRound");
 
   }
 
+
+  get dashboardIconColor() {
+    if (this.vsMode && this.vsMode !== GameVSMode.Parallel) {
+      return this.playerOnTurn.colorType;
+    }
+    return undefined;
+  }
 
 
 

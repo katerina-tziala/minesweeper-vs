@@ -1,0 +1,21 @@
+@use "../../../theming/theming";
+
+@mixin applyThemeDashboardIcon($theme) {
+  background-color: theming.getThemeColor($theme, "dashboard-icon-background");
+  color           : theming.getThemeColor($theme, "dashboard-icon-color");
+  @include theming.applyGameColorsStyle($theme, "&.face-icon-color", "color");
+}
+
+@mixin applyThemPlayerIcon($theme) {
+  background-color: theming.getThemeColor($theme, "dashboard-icon-user-background");
+}
+
+@mixin applyThemStyles($theme) {
+  .__face-icon {
+    @include applyThemeDashboardIcon($theme);
+  }
+
+  .__player-face-icon {
+    @include applyThemPlayerIcon($theme);
+  }
+}

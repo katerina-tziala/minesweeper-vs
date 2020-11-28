@@ -1,0 +1,50 @@
+@import "../../vendor/fontawesome/fontawesome.scss";
+@import "../../vendor/fontawesome/regular.scss";
+@import "../../vendor/fontawesome/solid.scss";
+@import "../../vendor/fontawesome/brands.scss";
+
+%icon {
+  display       : inline-block;
+  margin        : auto;
+  vertical-align: middle;
+  width         : 100%;
+  font-style    : normal;
+  text-align    : center;
+}
+
+%icon-regular-outline {
+  @extend %icon;
+  font-family: "Font Awesome 5 Free";
+}
+
+%icon-regular {
+  @extend %icon;
+  font-weight   : 900;
+  font-family: "Font Awesome 5 Free";
+}
+
+%icon-brand {
+  @extend %icon;
+  font-weight   : 900;
+  font-family: "Font Awesome 5 Brands";
+}
+
+@mixin beforeIcon($key) {
+  &::before {
+    @extend .icon-#{$key};
+  }
+}
+
+@mixin afterIcon($key) {
+  &::after {
+    @extend .icon-#{$key};
+  }
+}
+
+@mixin setIdentifierIcons($base-selector, $icons-list) {
+  @each $icon in $icons-list {
+    #{$base-selector}--#{$icon} {
+      @include afterIcon($icon);
+    }
+  }
+}

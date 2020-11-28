@@ -33,6 +33,10 @@ export class ElementHandler {
     element.classList.add(className);
   }
 
+  static setStyleClass(element, styleClasses) {
+    element.className = styleClasses.join(TYPOGRAPHY.space);
+  }
+
   static removeStyleClass(element, className) {
     element.classList.remove(className);
   }

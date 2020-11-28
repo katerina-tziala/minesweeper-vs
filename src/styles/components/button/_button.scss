@@ -2,7 +2,7 @@
 @use "./button-theming";
 
 @import "../../utils/_module-utils";
-@import "../../global/utils";
+@import "../../global/_module-global";
 
 ._btn {
   cursor    : pointer;

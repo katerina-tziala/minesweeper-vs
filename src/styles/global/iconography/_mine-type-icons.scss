@@ -1,0 +1,21 @@
+@use "sass:list";
+
+.icon-bomb {
+  @extend %icon-regular;
+  content: fa-content($fa-var-bomb);
+}
+
+.icon-bahai {
+  @extend %icon-regular;
+  content: fa-content($fa-var-bahai);
+}
+
+.icon-virus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-virus);
+}
+
+@mixin setMineTypeIcons($base-selector) {
+  $mine-types: "bomb", "bahai", "virus";
+  @include setIdentifierIcons($base-selector, $mine-types);
+}

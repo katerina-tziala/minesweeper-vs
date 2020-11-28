@@ -1,0 +1,26 @@
+@use "sass:list";
+
+.icon-smile {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-smile);
+}
+
+.icon-surprise {
+  @extend %icon-regular-outline;
+  content  : fa-content($fa-var-surprise);
+}
+
+.icon-lost {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-dizzy);
+}
+
+.icon-winner {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-grin-stars);
+}
+
+@mixin setFaceIcons($base-selector) {
+  $icon-types: "smile", "surprise", "lost", "winner";
+  @include setIdentifierIcons($base-selector, $icon-types);
+}

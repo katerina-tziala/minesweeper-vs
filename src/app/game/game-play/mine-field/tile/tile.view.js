@@ -189,7 +189,7 @@ export class TileView {
   }
 
   set buttonStyles(buttonStyles) {
-    this.tileButton.then(button => button.className = buttonStyles.join(TYPOGRAPHY.space));
+    this.tileButton.then(button => ElementHandler.setStyleClass(button, buttonStyles));
   }
 
   resetTileButtonStyling() {
