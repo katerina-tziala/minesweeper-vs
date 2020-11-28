@@ -27,30 +27,84 @@ export class Player extends AppModel {
   }
 
   initState() {
-      this.turn = false;
-      // this.revealdMine = false;
-      // this.exceededTurnsLimit = false;
-      // this.missedTurns = 0;
-      // this.allowedFlags = undefined;
-      // this.moves = 0;
-      // this.flagsPositions = [];
-      // this.marksPositions = [];
-      // this.tilesRevealed = 0;
-      // this.wronglyPlacedFlags = 0;
-      // this.minesDetected = 0;
+    this.turn = false;
+    this.moves = 0;
+    //
+    // this.exceededTurnsLimit = false;
+    // this.missedTurns = 0;
+    // this.allowedFlags = undefined;
+
+
+    this.detonatedMine = false;
+    this.revealedPositions = [];
+    this.flagsPositions = [];
+    this.marksPositions = [];
+    this.redundantFlagsPositions = [];
+    this.detectedMinesPositions = [];
   }
 
-  // getID() {
-  //     return this.id;
-  // }
+  increaseMoves() {
+    this.moves++;
+  }
 
-  // setColor(color) {
-  //     this.color = color;
-  // }
+  toggleTurn() {
+    this.turn = !this.turn;
+  }
 
-  // getColor() {
-  //     return this.color;
-  // }
+  get minesDetected() {
+    return this.detectedMinesPositions.length;
+  }
+
+  set inRevealedPositions(position) {
+    this.revealedPositions.push(position);
+  }
+
+  set #inFlagsPositions(position) {
+    this.flagsPositions.push(position);
+  }
+
+  set #inRedundantFlagsPositions(position) {
+    this.redundantFlagsPositions.push(position);
+  }
+
+  set #inDetectedMinesPositions(position) {
+    this.detectedMinesPositions.push(position);
+  }
+
+  set #inMarksPositions(position) {
+    this.marksPositions.push(position);
+  }
+
+  #removeFromPositionsArray(positionsArray, positionToRemove) {
+    return positionsArray.filter(position => position !== positionToRemove);
+  }
+
+  #removeFromBasePositionsStatistics(position) {
+    this.flagsPositions = this.#removeFromPositionsArray(this.flagsPositions, position);
+    this.redundantFlagsPositions = this.#removeFromPositionsArray(this.redundantFlagsPositions, position);
+    this.detectedMinesPositions = this.#removeFromPositionsArray(this.detectedMinesPositions, position);
+  }
+
+  onSetFlag(position, wronglyPlaced) {
+    this.#inFlagsPositions = position;
+    wronglyPlaced ? this.#inRedundantFlagsPositions = position : this.#inDetectedMinesPositions = position;
+  }
+
+  onTileReset(position) {
+    this.#removeFromBasePositionsStatistics(position);
+    this.marksPositions = this.#removeFromPositionsArray(this.marksPositions, position);
+  }
+
+  onSetMark(position) {
+    this.#removeFromBasePositionsStatistics(position);
+    this.#inMarksPositions = position;
+  }
+
+
+
+
+
+
 
   // setAllowedFlags(allowedFlags) {
   //     this.allowedFlags = allowedFlags;
@@ -84,9 +138,7 @@ export class Player extends AppModel {
   //     this.turn = turnStatus;
   // }
 
-  // toggleTurn() {
-  //     this.turn = !this.turn;
-  // }
+
 
   // setRevealedMine() {
   //     this.revealdMine = true;

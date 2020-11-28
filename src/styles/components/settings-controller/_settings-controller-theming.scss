@@ -14,19 +14,11 @@
     }
 }
 
-@mixin applyGameColorsStyle($theme, $base-selector) {
-    @for $i from 1 through 8 {
-        #{$base-selector}--#{$i} {
-            background-color: theming.getThemeColor($theme, "game-type-#{$i}");
-        }
-    }
-}
-
 @mixin applySettingsControllerThemeStyle($theme) {
     .settings-panel {
         @include theming.setThemeCard($theme);
         @include theming.setThemeBoxShadow($theme);
     }
 
-    @include applyGameColorsStyle($theme, ".color-type");
+    @include theming.applyGameColorsStyle($theme, ".color-type");
 }

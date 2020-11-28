@@ -3,8 +3,7 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { sortNumbersArrayAsc, uniqueArray, arrayDifference } from "~/_utils/utils";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./mine-field.constants";
-import { MapController } from "../../../_utils/map-controller";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./mine-field.constants";
 import { TileGenerator } from "./tile-generator";
 import { preventInteraction } from "~/_utils/utils";
 
@@ -69,6 +68,7 @@ export class MineField {
 
   get generateMinefield() {
     this.#tiles = [];
+    console.log(this.#levelSettings.minesPositions);
     this.#tilesGenerator = new TileGenerator(this.#levelSettings);
     const fragment = document.createDocumentFragment();
     const mineFieldTable = ElementGenerator.generateTable();
@@ -175,6 +175,10 @@ export class MineField {
   // }
 
 
+
+  get isCleared() {
+    return this.#tiles.every(tile => tile.isMine);
+  }
 
 
 

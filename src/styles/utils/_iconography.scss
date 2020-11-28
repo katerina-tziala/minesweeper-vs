@@ -60,6 +60,10 @@
   content: fa-content($fa-var-caret-down);
 }
 
+.icon-question-mark {
+  @extend %icon-regular;
+  content: fa-content($fa-var-question);
+}
 
 .icon-spinner {
   @extend %icon-regular;

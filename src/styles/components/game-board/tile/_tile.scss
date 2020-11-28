@@ -23,14 +23,6 @@
   }
 }
 
-@mixin setNumberContentColors($theme) {
-  @for $i from 1 through 8 {
-    &.tile-cell__content--#{$i} {
-      color: theming.getThemeColor($theme, "game-type-#{$i}");
-    }
-  }
-}
-
 @mixin setMineTypeIcons() {
   $mine-types: "bomb", "bahai", "virus";
 
@@ -46,9 +38,6 @@
   }
 }
 
-
-
-
 .tile-cell {
   @include rectangle(22px);
   position: relative;
@@ -56,10 +45,7 @@
   border  : 1px solid;
   @include setNumberContent();
   cursor: pointer;
-
-
 }
-
 
 .tile-cell-btn {
   @include rectangle(22px);
@@ -72,23 +58,48 @@
   overflow  : hidden;
   text-align: center;
 
-  // background-color: #d9d9d9;
-  // color           : #333333;
   &:disabled {
-    // cursor: not-allowed;
-    // opacity: 0.5;
+    cursor: not-allowed!important;
+    //opacity: 0.5;
   }
 
+  &.tile-cell-btn--active {
+    border: 2px solid transparent !important;
+  }
+
+  &.tile-cell-btn--flagged {
+    &::before {
+      @extend .icon-flag;
+      line-height: 19px;
+    }
+  }
+
+  &.tile-cell-btn--wrongly-flagged {
+    &::after {
+      @extend ._wrong-flag-hint;
+    }
+  }
+
+  &.tile-cell-btn--marked {
+    &::after {
+      @extend .icon-question-mark;
+      line-height: 19px;
+    }
+  }
 }
 
-
-
-.tile-cell-btn--active {
-  border: 2px solid transparent !important;
+._wrong-flag-hint {
+  content    : "X";
+  font-family: $font-family;
+  line-height: 19px;
+  position   : absolute;
+  top        : 1px;
+  left       : 3px;
+  z-index    : 5;
+  text-shadow: 0;
+  font-size  : 1.3rem;
+  text-shadow: -1px -1px 2px rgba(0, 0, 0, 0.9), 1px -1px 2px rgba(0, 0, 0, 0.9), -1px 1px 2px rgba(0, 0, 0, 0.9), 1px 1px 2px rgba(0, 0, 0, 0.9);
 }
-
-
-
 
 
 
@@ -97,55 +108,45 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-  .tile-cell {
-    @include setNumberContentColors("light");
-    border-color: theming.getThemeColor("light", "board-grid");
 
+  .tile-cell {
+    @include theming.applyGameColorsStyle("light", "&.tile-cell__content", "color");
+    border-color: theming.getThemeColor("light", "board-grid");
 
     &.tile-cell--revealed-mine {
       background-color: theming.getThemeColor("light", "error-primary");
-      color: theming.getThemeColor("light", "error-pale-contrast");
+      color           : theming.getThemeColor("light", "error-pale-contrast");
     }
-
-
   }
-
 
   .tile-cell-btn {
     @include game-board-styles.applyThemeBoardButtonStyle("light");
-
-    &:disabled {
-      // background-color: red;
-    }
-
-
+    @include theming.applyGameColorsStyle("light", "&.tile-cell-btn-color", "color");
   }
 
+  ._wrong-flag-hint {
+    color      : theming.getThemeColor("light", "error-primary");
+  }
 
 }
 
 .theme-dark {
   .tile-cell {
-    @include setNumberContentColors("dark");
+    @include theming.applyGameColorsStyle("dark", "&.tile-cell__content", "color");
     border-color: theming.getThemeColor("dark", "board-grid");
-
 
     &.tile-cell--revealed-mine {
       background-color: theming.getThemeColor("dark", "error-primary");
-      color: theming.getThemeColor("dark", "error-pale-contrast");
+      color           : theming.getThemeColor("dark", "error-pale-contrast");
     }
   }
 
   .tile-cell-btn {
     @include game-board-styles.applyThemeBoardButtonStyle("dark");
-
-    &:disabled {
-      // background-color: red;
-    }
-
-
+    @include theming.applyGameColorsStyle("dark", "&.tile-cell-btn-color", "color");
   }
 
-
-
+  ._wrong-flag-hint {
+    color      : theming.getThemeColor("dark", "error-primary");
+  }
 }

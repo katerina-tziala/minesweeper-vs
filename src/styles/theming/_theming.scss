@@ -50,3 +50,10 @@ $_themes: (
     @include setBoxTheming($background, $color, $opacity);
 }
 
+@mixin applyGameColorsStyle($theme, $base-selector, $property: "background-color") {
+  @for $i from 1 through 8 {
+      #{$base-selector}--#{$i} {
+        #{$property}: getThemeColor($theme, "game-type-#{$i}");
+      }
+  }
+}

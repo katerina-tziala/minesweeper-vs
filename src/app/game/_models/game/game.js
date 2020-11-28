@@ -1,27 +1,18 @@
 "use strict";
 import { AppModel } from "~/_models/app-model";
 import { getRandomValueFromArray } from "~/_utils/utils";
+import { GameEndType, GameVSMode } from "Game";
 
 export class Game extends AppModel {
-  // #id;
-  // #type;
-  // #levelSettings = undefined;
-  // #optionsSettings = undefined;
-  // #turnSettings = undefined;
-
-
   #players = [];
   #playerOnTurn;
-  // #opponent = undefined;
+  #roundTiles = [];
+  #startedAt;
+  #gameOver;
 
 
-
-  //#minesToDetect;
-  // #startedAt;
-  // #completedAt;
-  // #gameOver;
+  #minesToDetect;
   // #timerSeconds;
-
 
   constructor(type, params, player, opponent) {
     super();
@@ -45,27 +36,146 @@ export class Game extends AppModel {
     return this.#players;
   }
 
-
-  init() {
-    //console.log("init game");
-    this.setMinesPositions();
-    this.initTurns();
+  get playerOnTurn() {
+    return this.players.find(player => player.turn);
   }
 
-  setMinesPositions() {
+  set roundTiles(roundTiles) {
+    return this.#roundTiles = this.#roundTiles.concat(roundTiles);
+  }
+
+  get roundTiles() {
+    return this.#roundTiles;
+  }
+
+  set gameOver(gameOver) {
+    return this.#gameOver = gameOver;
+  }
+
+  get gameOver() {
+    return this.#gameOver;
+  }
+
+  get isOver() {
+    return this.#gameOver ? true : false;
+  }
+
+  set endGame(type) {
+    this.gameOver = type;
+    this.completedAt = new Date().toISOString();
+  }
+
+  get wrongFlagHint() {
+    return this.optionsSettings.wrongFlagHint;
+  }
+
+  get allowMarks() {
+    return this.optionsSettings.marks;
+  }
+
+  get vsMode() {
+    return this.optionsSettings.vsMode;
+  }
+
+  set minesToDetect(minesToDetect) {
+    this.#minesToDetect = minesToDetect;
+  }
+
+  get minesToDetect() {
+    return this.#minesToDetect;
+  }
+
+  init() {
+    this.#roundTiles = [];
+    this.gameOver = null;
+    this.completedAt = null;
+    this.#setMinesPositions();
+    this.#initTurns();
+  }
+
+
+
+
+
+  #setMinesPositions() {
     this.levelSettings.setMinesPositions();
     this.minesToDetect = this.levelSettings.minesPositions.length;
   }
 
-  initTurns() {
+  #initTurns() {
     const playerStartID = getRandomValueFromArray(this.players.map(player => player.id));
     this.players.find(player => player.id === playerStartID).turn = true;
   }
 
-
-  get playerOnTurn() {
-    return this.players.find(player => player.turn);
+  #setPlayerStatisticsOnRevealedMines(boardTiles, playerOnTurn = this.playerOnTurn) {
+    boardTiles.forEach(tile => {
+      playerOnTurn.inRevealedPositions = tile.id;
+    });
   }
+
+  #setPlayerStatisticsOnTileUpdate(tile, playerOnTurn = this.playerOnTurn) {
+    if (tile.isDetonatedMine) {
+      playerOnTurn.detonatedMine = true;
+      this.endGame = GameEndType.DetonatedMine;
+    } else if (tile.isRevealed) {
+      playerOnTurn.inRevealedPositions = tile.id;
+    } else if (tile.isFlagged) {
+      playerOnTurn.onSetFlag(tile.id, tile.isWronglyFlagged);
+    } else if (tile.isMarked) {
+      playerOnTurn.onSetMark(tile.id);
+    } else if (tile.isUntouched) {
+      playerOnTurn.onTileReset(tile.id);
+    }
+  }
+
+  #setMinesToDetectAfterMove() {
+    let detectedMines = 0;
+    this.#players.forEach(player => detectedMines = detectedMines + player.minesDetected);
+    this.minesToDetect = this.levelSettings.minesPositions.length = detectedMines;
+  }
+
+  updateOnPlayerMove(boardTiles) {
+    const playerOnTurn = this.playerOnTurn;
+    playerOnTurn.increaseMoves();
+    this.roundTiles = boardTiles;
+
+    (boardTiles.length === 1)
+      ? this.#setPlayerStatisticsOnTileUpdate(boardTiles[0])
+      : this.#setPlayerStatisticsOnRevealedMines(boardTiles);
+
+      this.#setMinesToDetectAfterMove();
+  }
+
+  startRound() {
+    this.#roundTiles = [];
+
+      console.log("startRound");
+
+  }
+
+
+
+
+
+
+  checkGameEnd(mineField) {
+    if (!this.isOver) {
+      this.#checkGameEndOnFieldState(mineField);
+    }
+  }
+
+  #checkGameEndOnFieldState(mineField) {
+    if (this.vsMode === GameVSMode.Detect) {
+      console.log("vsMode", this.vsMode);
+      return;
+    }
+    if (mineField.isCleared) {
+      this.endGame = GameEndType.Cleared;
+    }
+  }
+
+
+
 
 
 

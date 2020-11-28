@@ -1,5 +1,6 @@
 "use strict";
 
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
 import { clone } from "~/_utils/utils.js";
@@ -159,41 +160,47 @@ export class TileView {
     this.#setButtonActiveStyle();
   }
 
-  setRevealedView(isMineRevealed, userAction = true) {
+  setRevealedView(isDetonatedMine, userAction = true) {
     this.tileButton.then(button => button.remove());
-    if (isMineRevealed && userAction) {
+    if (isDetonatedMine && userAction) {
       this.tileCell.then(tileCell => ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.mineReveled));
     }
   }
 
-  // setFlag(flagColor) {
-  //   this.getTileButton().then(button => {
-  //     ElementHandler.setColor(button, flagColor);
-  //     this.updateTileButtonStyle(button, this.#styleClassList.flaggedTile);
-  //   });
-  // }
+  #colorTypeStyle(colorType) {
+    return DOM_ELEMENT_CLASS.buttonColor + colorType;
+  }
 
-  // setWrongFlagHint() {
-  //   this.getTileButton().then(button => this.updateTileButtonStyle(button, this.#styleClassList.wronglyFlaggedTile));
-  // }
 
-  // updateTileButtonStyle(button, styleClassName = this.#styleClassList.tileBtn) {
-  //   ElementHandler.setElementClassName(button, styleClassName);
-  // }
+  #getButtonStylesAfterAction(colorType) {
+    const buttonStyles = [DOM_ELEMENT_CLASS.button];
+    buttonStyles.push(this.#colorTypeStyle(colorType));
+    return buttonStyles;
+  }
 
-  // resetTileButtonStyling() {
-  //   this.getTileButton().then(button => {
-  //     this.updateTileButtonStyle(button);
-  //     ElementHandler.clearInlineStyling(button);
-  //   });
-  // }
 
-  // setMark(playerColor) {
-  //   this.getTileButton().then(button => {
-  //     this.updateTileButtonStyle(button, this.#styleClassList.markedTile);
-  //     ElementHandler.setColor(button, playerColor);
-  //   });
-  // }
+  setFlag(colorType, wrongFlagHint = false) {
+    const buttonStyles = this.#getButtonStylesAfterAction(colorType);
+    buttonStyles.push(DOM_ELEMENT_CLASS.buttonFlagged);
+    if (wrongFlagHint) {
+      buttonStyles.push(DOM_ELEMENT_CLASS.buttonWronglyFlagged);
+    }
+    this.buttonStyles = buttonStyles;
+  }
+
+  set buttonStyles(buttonStyles) {
+    this.tileButton.then(button => button.className = buttonStyles.join(TYPOGRAPHY.space));
+  }
+
+  resetTileButtonStyling() {
+    this.buttonStyles = [DOM_ELEMENT_CLASS.button];
+  }
+
+  setMark(colorType) {
+    const buttonStyles = this.#getButtonStylesAfterAction(colorType);
+    buttonStyles.push(DOM_ELEMENT_CLASS.buttonMarked);
+    this.buttonStyles = buttonStyles;
+  }
 
   // toggleButtonInteraction(disabled) {
   //   this.getTileButton().then(button => {

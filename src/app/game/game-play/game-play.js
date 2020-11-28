@@ -10,7 +10,7 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-play.co
 import { User } from "~/_models/user";
 
 
-import { GameType } from "Game";
+import { GameType, GameAction } from "Game";
 
 import { MineField } from "../game-play/mine-field/mine-field";
 
@@ -72,20 +72,54 @@ export class GamePlay {
   }
 
   onTileAction(action, tile) {
-    const playerOnTurn = this.game.playerOnTurn;
+    if (action === GameAction.Mark) {
+      this.handleTileMarking(tile);
+      return;
+    }
+    this.revealTile(tile);
+  }
 
+  handleTileMarking(tile, playerOnTurn = this.game.playerOnTurn) {
+    if (tile.isUntouched) {
+      tile.setFlag(playerOnTurn.id, playerOnTurn.colorType, this.game.wrongFlagHint);
+      this.onPlayerMove([tile]);
+    } else {
+      this.handleTileActionWhenTileTouched(tile, playerOnTurn);
+    }
+  }
 
+  handleTileActionWhenTileTouched(tile, playerOnTurn = this.game.playerOnTurn) {
+    if (this.game.allowMarks && !tile.isMarked) {
+      tile.setMark(playerOnTurn.id, playerOnTurn.colorType);
+    } else {
+      tile.resetState();
+    }
+    this.onPlayerMove([tile]);
+  }
+
+  revealTile(tile, playerOnTurn = this.game.playerOnTurn) {
     this.mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
-
-      console.log(boardTiles);
-
-
-      this.mineField.toggleMinefieldFreezer(false);
+      this.onPlayerMove(boardTiles);
     });
-    // console.log(action, tile);
-    // console.log();
-    // console.log("onActiveTileChange");
-    // console.log(activeTile);
+  }
+
+  onPlayerMove(boardTiles) {
+    this.game.updateOnPlayerMove(boardTiles);
+    this.game.checkGameEnd(this.mineField);
+    this.game.isOver ? this.onGameEnd() : this.onMoveEnd();
+  }
+
+  onMoveEnd() {
+    this.startGameRound();
+    // console.log("updateViewAfterPlayerMove");
+    // console.log(this.game);
+
+  }
+
+
+  startGameRound() {
+    this.game.startRound();
+    this.mineField.toggleMinefieldFreezer(false);
 
 
   }
@@ -93,22 +127,24 @@ export class GamePlay {
 
 
 
-
-
-
   startGame() {
-    console.log("startGame");
+    // console.log("startGame");
     // console.log(this.game);
 
     ElementHandler.getByID(this.getBoardSectionID(BOARD_SECTION.mineField))
       .then(mineFieldContainer => {
         ElementHandler.clearContent(mineFieldContainer);
         mineFieldContainer.append(this.mineField.generateMinefield);
-        this.mineField.toggleMinefieldFreezer();
+        this.startGameRound();
       });
 
   }
 
+  onGameEnd() {
+    console.log("onGameEnd");
+    console.log(this.game);
+
+  }
 
 
 

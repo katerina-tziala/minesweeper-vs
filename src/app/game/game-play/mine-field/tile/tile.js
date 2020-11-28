@@ -2,13 +2,9 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
-
-
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TILE_BTN } from "./tile.constants";
 import { TileState } from "../../../_enums/tile-state.enum";
 import { TileView } from "./tile.view";
-
-
 
 export class Tile {
   #_id;
@@ -19,15 +15,14 @@ export class Tile {
   #viewController;
 
   constructor(params) {
-    this.#id = params.id;
-    this.#neighbors = params.neighbors;
-    this.#content = params.content;
-    this.#state = TileState.Untouched;
-    this.#modifiedBy = null;
+    this.id = params.id;
+    this.neighbors = params.neighbors;
+    this.content = params.content;
+    this.initState();
     this.#viewController = new TileView(this.id);
   }
 
-  set #id(id) {
+  set id(id) {
     return this.#_id = id;
   }
 
@@ -35,7 +30,7 @@ export class Tile {
     return this.#_id;
   }
 
-  set #neighbors(neighbors) {
+  set neighbors(neighbors) {
     return this.#_neighbors = neighbors;
   }
 
@@ -43,15 +38,15 @@ export class Tile {
     return this.#_neighbors;
   }
 
-  set #content(content) {
+  set content(content) {
     return this.#_content = content;
   }
 
-  get #content() {
+  get content() {
     return this.#_content;
   }
 
-  set #state(state) {
+  set state(state) {
     return this.#_state = state;
   }
 
@@ -59,7 +54,7 @@ export class Tile {
     return this.#_state;
   }
 
-  set #modifiedBy(modifiedBy) {
+  set modifiedBy(modifiedBy) {
     return this.#_modifiedBy = modifiedBy;
   }
 
@@ -69,117 +64,86 @@ export class Tile {
 
   generateView(onActivation, onAction) {
     return this.#viewController.generateView(
-      this.#content,
+      this.content,
       onActivation,
       (action) => onAction(this, action)
     );
   }
 
+  initState() {
+    this.state = TileState.Untouched;
+    this.modifiedBy = null;
+  }
 
-
-
-  // initState() {
-  //   this.setState(TileStateEnum.Untouched);
-  //   this.setModifiedBy(null);
-  // }
-
-  // setState(state) {
-  //   return this.#state = state;
-  // }
-
-
-  // getReportData() {
-  //   return {
-  //     id: this.getID(),
-  //     type: this.getType(),
-  //     state: this.getState(),
-  //     modifiedBy: this.getModifiedBy(),
-  //   };
-  // }
-
-
-
-
-
-
-
-
-
-  // /* TYPE CHECKERS */
+  /* TYPE CHECKERS */
   get isBlank() {
-    return (this.#content.length === 1) && (parseInt(this.#_content, 10) === 0) ? true : false;
+    return (this.content.length === 1) && (parseInt(this.content, 10) === 0) ? true : false;
   }
 
   get isMine() {
-    return this.#content.length > 1;
+    return this.content.length > 1;
   }
 
   /* STATE CHECKERS */
   get isFlagged() {
-    return this.#state === TileState.Flagged;
+    return this.state === TileState.Flagged;
   }
 
   get isRevealed() {
-    return this.#state === TileState.Revealed;
+    return this.state === TileState.Revealed;
   }
 
   get isUntouched() {
-    return this.#state === TileState.Untouched;
+    return this.state === TileState.Untouched;
   }
 
   get isMarked() {
-    return this.#state === TileState.Marked;
+    return this.state === TileState.Marked;
   }
 
-  // isFlaggedBy(playerID) {
-  //   return this.isFlagged() && this.isModifiedBy(playerID);
-  // }
-
-  // isMarkedBy(playerID) {
-  //   return this.isMarked() && this.isModifiedBy(playerID);
-  // }
-
-  get isMineRevealed() {
+  get isDetonatedMine() {
     return this.isMine && this.isRevealed;
   }
 
-  // isWronglyFlagged() {
-  //   return (!this.isMine() && this.isFlagged());
-  // }
+  get isWronglyFlagged() {
+    return (!this.isMine && this.isFlagged);
+  }
+
+  isFlaggedBy(playerID) {
+    return this.isFlagged && this.isModifiedBy === playerID;
+  }
+
+  isMarkedBy(playerID) {
+    return this.isMarked && this.isModifiedBy === playerID;
+  }
 
   /* ACTIONS */
   reveal(playerID, userAction = true) {
-    this.#state = TileState.Revealed;
-    this.#modifiedBy = playerID;
-    this.#viewController.setRevealedView(this.isMineRevealed, userAction);
+    this.state = TileState.Revealed;
+    this.modifiedBy = playerID;
+    this.#viewController.setRevealedView(this.isDetonatedMine, userAction);
   }
 
-  // setFlag(playerID, flagColor, setWrongFlagHint = false) {
-  //   this.setState(TileStateEnum.Flagged);
-  //   this.setModifiedBy(playerID);
-  //   this.#viewController.setFlag(flagColor);
-  //   if (this.isWronglyFlagged() && setWrongFlagHint) {
-  //     this.#viewController.setWrongFlagHint();
-  //   }
-  // }
+  setFlag(playerID, colorType, setWrongFlagHint = false) {
+    this.state = TileState.Flagged;
+    this.modifiedBy = playerID;
+    const wrongFlagHint = this.isWronglyFlagged && setWrongFlagHint;
+    this.#viewController.setFlag(colorType, wrongFlagHint);
+  }
 
-  // setMark(playerID, playerColor) {
-  //   this.setState(TileStateEnum.Marked);
-  //   this.setModifiedBy(playerID);
-  //   this.#viewController.setMark(playerColor);
-  // }
+  resetState() {
+    this.initState();
+    this.#viewController.resetTileButtonStyling();
+  }
 
-  // removeFlag() {
-  //   this.resetStateAndStyle();
-  // }
+  setMark(playerID, colorType) {
+    this.state = TileState.Marked;
+    this.modifiedBy = playerID;
+    this.#viewController.setMark(colorType);
+  }
 
   // removeMark() {
   //   this.resetStateAndStyle();
-  // }
-
-  // resetStateAndStyle() {
-  //   this.initState();
-  //   this.#viewController.resetTileButtonStyling();
   // }
 
   // disable() {
@@ -193,18 +157,6 @@ export class Tile {
   // setWrongFlagHint() {
   //   this.#viewController.setWrongFlagHint(false);
   // }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
