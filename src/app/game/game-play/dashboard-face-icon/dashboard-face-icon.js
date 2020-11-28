@@ -3,10 +3,10 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { sortNumbersArrayAsc, uniqueArray, arrayDifference } from "~/_utils/utils";
-import { DOM_ELEMENT_CLASS } from "./face-icon.constants";
+import { DOM_ELEMENT_CLASS } from "./dashboard-face-icon.constants";
 import { preventInteraction } from "~/_utils/utils";
 
-export class FaceIcon {
+export class DashboardFaceIcon {
   #_id;
 
   constructor(id) {

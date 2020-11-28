@@ -13,7 +13,7 @@ import { User } from "~/_models/user";
 import { GameType, GameAction } from "Game";
 
 import { MineField } from "./mine-field/mine-field";
-import { FaceIcon } from "./face-icon/face-icon";
+import { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";
 
 
 
@@ -58,7 +58,7 @@ export class GamePlay {
 
 
     this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
-    this.faceIcon = new FaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
+    this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
   }
 
 
@@ -117,18 +117,21 @@ export class GamePlay {
 
 
   startGameRound() {
+    console.log("startGameRound");
+
     this.game.startRound();
     this.mineField.toggleMinefieldFreezer(false);
-
+    console.log(this.dashboardFaceIcon);
 
   }
 
   startGame() {
-    console.log("startGame");
+    //console.log("startGame");
+
     this.#init();
     this.#initGameView.then(() => {
       this.startGameRound();
-      console.log(this.faceIcon);
+
     });
 
   }
