@@ -138,8 +138,15 @@ export class Game extends AppModel {
     }
     if (mineField.isCleared) {
       this.endGame = GameEndType.Cleared;
+      if (this.#players.length === 1) {
+        console.log("single player completed clear goal");
+        this.playerOnTurn.completedGoal = true;
+      } else {
+
+      }
     }
   }
+
   #setMinesPositions() {
     this.levelSettings.setMinesPositions();
     this.minesToDetect = this.levelSettings.minesPositions.length;

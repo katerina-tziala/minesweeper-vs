@@ -142,8 +142,10 @@ export class GamePlay {
   onGameEnd() {
     console.log("onGameEnd");
     console.log(this.game);
-    // this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
-    // this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor)
+    console.log();
+    this.game.player.lost ?
+    this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
+    : this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);
   }
 
 

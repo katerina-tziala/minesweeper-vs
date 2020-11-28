@@ -29,19 +29,25 @@ export class Player extends AppModel {
   initState() {
     this.turn = false;
     this.moves = 0;
-    //
-    // this.exceededTurnsLimit = false;
-    // this.missedTurns = 0;
-    // this.allowedFlags = undefined;
-
-
     this.detonatedMine = false;
     this.revealedPositions = [];
     this.flagsPositions = [];
     this.marksPositions = [];
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
+    this.exceededTurnsLimit = false;
+    this.missedTurns = 0;
+    this.allowedFlags = null;
+    this.completedGoal = false;
   }
+
+  get lost() {
+    return (this.detonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
+  }
+
+
+
+
 
   increaseMoves() {
     this.moves++;
