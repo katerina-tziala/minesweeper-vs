@@ -72,7 +72,18 @@ export class GamePlay {
   }
 
   onTileAction(action, tile) {
-    console.log(action, tile);
+    const playerOnTurn = this.game.playerOnTurn;
+
+
+    this.mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
+
+      console.log(boardTiles);
+
+
+      this.mineField.toggleMinefieldFreezer(false);
+    });
+    // console.log(action, tile);
+    // console.log();
     // console.log("onActiveTileChange");
     // console.log(activeTile);
 

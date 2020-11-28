@@ -1,7 +1,7 @@
 @use "sass:list";
 
 @use "../../../theming/theming";
-@use  "../game-board-styles";
+@use "../game-board-styles";
 
 %tile-cell__content {
   text-align : center;
@@ -9,6 +9,7 @@
   display    : block;
   font-weight: 700;
   font-size  : 1.1rem;
+  line-height: 21px;
 }
 
 @mixin setNumberContent() {
@@ -38,8 +39,7 @@
       .tile-cell.tile-cell__content--mine {
         &::after {
           @extend .icon-#{$type};
-          font-size  : 1.1rem;
-          line-height: 20px;
+          @extend %tile-cell__content;
         }
       }
     }
@@ -55,17 +55,17 @@
   overflow: hidden;
   border  : 1px solid;
   @include setNumberContent();
-  cursor    : pointer;
+  cursor: pointer;
+
+
 }
-
-
 
 
 .tile-cell-btn {
   @include rectangle(22px);
-  position: absolute;
-  top     : 0;
-  left    : 0;
+  position  : absolute;
+  top       : 0;
+  left      : 0;
   outline   : none;
   border    : none;
   cursor    : pointer;
@@ -100,6 +100,14 @@
   .tile-cell {
     @include setNumberContentColors("light");
     border-color: theming.getThemeColor("light", "board-grid");
+
+
+    &.tile-cell--revealed-mine {
+      background-color: theming.getThemeColor("light", "error-primary");
+      color: theming.getThemeColor("light", "error-pale-contrast");
+    }
+
+
   }
 
 
@@ -120,6 +128,12 @@
   .tile-cell {
     @include setNumberContentColors("dark");
     border-color: theming.getThemeColor("dark", "board-grid");
+
+
+    &.tile-cell--revealed-mine {
+      background-color: theming.getThemeColor("dark", "error-primary");
+      color: theming.getThemeColor("dark", "error-pale-contrast");
+    }
   }
 
   .tile-cell-btn {

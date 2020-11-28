@@ -12,7 +12,8 @@ export const DOM_ELEMENT_ID = {
 export const DOM_ELEMENT_CLASS = {
   cell: "tile-cell",
   cellContent: "tile-cell__content--",
-  activeButton: "tile-cell-btn--active"
+  activeButton: "tile-cell-btn--active",
+  mineReveled: "tile-cell--revealed-mine",
 };
 
 export const TILE_BTN = {

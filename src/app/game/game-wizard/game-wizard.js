@@ -89,7 +89,6 @@ export class GameWizard {
     return ElementHandler.getByID(DOM_ELEMENT_CLASS.wizardContainer);
   }
 
-
   getGameParamsForWizard(wizardName) {
     return Object.keys(this.gameParams).includes(wizardName) ? this.gameParams[wizardName] : undefined;
   }
@@ -146,7 +145,7 @@ export class GameWizard {
 
   onSubmit() {
     const game = this.game;
-    game.setMinesPositions();
+    game.init();
     this.submitGame(game);
   }
 

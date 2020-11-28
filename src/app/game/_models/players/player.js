@@ -9,10 +9,9 @@ export class Player extends AppModel {
     super();
     this.id = id;
     this.name = name;
-    //this.colorType = colorType;
-    this.opponent = opponent;
-    // this.entered = true;
-    // this.initState();
+    this.isOpponent = opponent;
+    this.entered = true;
+    this.initState();
   }
 
   get isBot() {
@@ -27,19 +26,19 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-  // initState() {
-  //     this.turn = false;
-  //     this.revealdMine = false;
-  //     this.exceededTurnsLimit = false;
-  //     this.missedTurns = 0;
-  //     this.allowedFlags = undefined;
-  //     this.moves = 0;
-  //     this.flagsPositions = [];
-  //     this.marksPositions = [];
-  //     this.tilesRevealed = 0;
-  //     this.wronglyPlacedFlags = 0;
-  //     this.minesDetected = 0;
-  // }
+  initState() {
+      this.turn = false;
+      // this.revealdMine = false;
+      // this.exceededTurnsLimit = false;
+      // this.missedTurns = 0;
+      // this.allowedFlags = undefined;
+      // this.moves = 0;
+      // this.flagsPositions = [];
+      // this.marksPositions = [];
+      // this.tilesRevealed = 0;
+      // this.wronglyPlacedFlags = 0;
+      // this.minesDetected = 0;
+  }
 
   // getID() {
   //     return this.id;

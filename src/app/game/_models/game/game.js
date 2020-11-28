@@ -1,6 +1,6 @@
 "use strict";
 import { AppModel } from "~/_models/app-model";
-
+import { getRandomValueFromArray } from "~/_utils/utils";
 
 export class Game extends AppModel {
   // #id;
@@ -10,7 +10,8 @@ export class Game extends AppModel {
   // #turnSettings = undefined;
 
 
-  // #player = undefined;
+  #players = [];
+  #playerOnTurn;
   // #opponent = undefined;
 
 
@@ -30,6 +31,25 @@ export class Game extends AppModel {
     this.opponent = opponent;
     this.isOnline = false;
     this.update(params);
+    this.players = player;
+    this.players = opponent;
+  }
+
+  set players(player) {
+    if (player) {
+      this.#players.push(player);
+    }
+  }
+
+  get players() {
+    return this.#players;
+  }
+
+
+  init() {
+    //console.log("init game");
+    this.setMinesPositions();
+    this.initTurns();
   }
 
   setMinesPositions() {
@@ -37,8 +57,15 @@ export class Game extends AppModel {
     this.minesToDetect = this.levelSettings.minesPositions.length;
   }
 
+  initTurns() {
+    const playerStartID = getRandomValueFromArray(this.players.map(player => player.id));
+    this.players.find(player => player.id === playerStartID).turn = true;
+  }
 
 
+  get playerOnTurn() {
+    return this.players.find(player => player.turn);
+  }
 
 
 

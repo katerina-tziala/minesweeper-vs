@@ -30,3 +30,13 @@ export const extractIdValue = (elementId) => {
 export const roundUpToNextDecade = (number) => {
   return Math.ceil(parseInt(number) / 10) * 10;
 };
+
+export const uniqueArray = (arrayToClear) => {
+  return Array.from(new Set(arrayToClear));
+};
+
+export const arrayDifference = (arrayToFilter, arrayReference) => {
+  return arrayToFilter.filter(item => !arrayReference.includes(item));
+};
+
+

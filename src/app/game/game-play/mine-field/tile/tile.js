@@ -47,7 +47,7 @@ export class Tile {
     return this.#_content = content;
   }
 
-  get content() {
+  get #content() {
     return this.#_content;
   }
 
@@ -69,7 +69,7 @@ export class Tile {
 
   generateView(onActivation, onAction) {
     return this.#viewController.generateView(
-      this.content,
+      this.#content,
       onActivation,
       (action) => onAction(this, action)
     );
@@ -87,9 +87,6 @@ export class Tile {
   //   return this.#state = state;
   // }
 
-  // setModifiedBy(playerID) {
-  //   return this.#modifiedBy = playerID;
-  // }
 
   // getReportData() {
   //   return {
@@ -100,57 +97,39 @@ export class Tile {
   //   };
   // }
 
-  // getID() {
-  //   return this.#id;
-  // }
 
-  // getType() {
-  //   return this.#type;
-  // }
 
-  // getState() {
-  //   return this.#state;
-  // }
 
-  // getNeighbors() {
-  //   return this.#neighbors;
-  // }
 
-  // getModifiedBy() {
-  //   return this.#modifiedBy;
-  // }
 
-  // isModifiedBy(playerID) {
-  //   return this.getModifiedBy() === playerID;
-  // }
 
 
 
   // /* TYPE CHECKERS */
-  // isBlank() {
-  //   return this.getType() === TileTypeEnum.Blank;
-  // }
+  get isBlank() {
+    return (this.#content.length === 1) && (parseInt(this.#_content, 10) === 0) ? true : false;
+  }
 
-  // isMine() {
-  //   return this.getType() === TileTypeEnum.Mine;
-  // }
+  get isMine() {
+    return this.#content.length > 1;
+  }
 
-  // /* STATE CHECKERS */
-  // isFlagged() {
-  //   return this.getState() === TileStateEnum.Flagged;
-  // }
+  /* STATE CHECKERS */
+  get isFlagged() {
+    return this.#state === TileState.Flagged;
+  }
 
-  // isRevealed() {
-  //   return this.getState() === TileStateEnum.Revealed;
-  // }
+  get isRevealed() {
+    return this.#state === TileState.Revealed;
+  }
 
-  // isUntouched() {
-  //   return this.getState() === TileStateEnum.Untouched;
-  // }
+  get isUntouched() {
+    return this.#state === TileState.Untouched;
+  }
 
-  // isMarked() {
-  //   return this.getState() === TileStateEnum.Marked;
-  // }
+  get isMarked() {
+    return this.#state === TileState.Marked;
+  }
 
   // isFlaggedBy(playerID) {
   //   return this.isFlagged() && this.isModifiedBy(playerID);
@@ -160,20 +139,20 @@ export class Tile {
   //   return this.isMarked() && this.isModifiedBy(playerID);
   // }
 
-  // isMineRevealed() {
-  //   return this.isMine() && this.isRevealed();
-  // }
+  get isMineRevealed() {
+    return this.isMine && this.isRevealed;
+  }
 
   // isWronglyFlagged() {
   //   return (!this.isMine() && this.isFlagged());
   // }
 
-  // /* ACTIONS */
-  // reveal(playerID, userAction = true) {
-  //   this.setState(TileStateEnum.Revealed);
-  //   this.setModifiedBy(playerID);
-  //   this.#viewController.setRevealedView(this.isMineRevealed(), userAction);
-  // }
+  /* ACTIONS */
+  reveal(playerID, userAction = true) {
+    this.#state = TileState.Revealed;
+    this.#modifiedBy = playerID;
+    this.#viewController.setRevealedView(this.isMineRevealed, userAction);
+  }
 
   // setFlag(playerID, flagColor, setWrongFlagHint = false) {
   //   this.setState(TileStateEnum.Flagged);

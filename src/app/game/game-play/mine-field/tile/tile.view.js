@@ -56,6 +56,10 @@ export class TileView {
     return buttonParams;
   }
 
+  get tileCell() {
+    return ElementHandler.getByID(this.#cellId);
+  }
+
   get tileButton() {
     return ElementHandler.getByID(this.#buttonId);
   }
@@ -63,8 +67,6 @@ export class TileView {
   #getCellStyle(content) {
     return DOM_ELEMENT_CLASS.cellContent + content;
   }
-
-
 
   #generateTileButton(onActivation, onAction) {
     const tileButton = ElementGenerator.generateButton(this.#tileButtonParameters);
@@ -157,12 +159,12 @@ export class TileView {
     this.#setButtonActiveStyle();
   }
 
-  // setRevealedView(isMineRevealed, userAction = true) {
-  //   this.getTileButton().then(button => button.remove());
-  //   if (isMineRevealed && userAction) {
-  //     this.getTileCellContent().then(cellContent => ElementHandler.addClassToElement(cellContent, this.#styleClassList.revealedMine))
-  //   }
-  // }
+  setRevealedView(isMineRevealed, userAction = true) {
+    this.tileButton.then(button => button.remove());
+    if (isMineRevealed && userAction) {
+      this.tileCell.then(tileCell => ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.mineReveled));
+    }
+  }
 
   // setFlag(flagColor) {
   //   this.getTileButton().then(button => {
