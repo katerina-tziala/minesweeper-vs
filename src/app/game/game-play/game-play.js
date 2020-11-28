@@ -14,6 +14,8 @@ import { GameType, GameAction } from "Game";
 
 import { MineField } from "./mine-field/mine-field";
 import { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";
+import { DigitalCounter } from "./digital-counter/digital-counter";
+
 
 
 
@@ -59,6 +61,7 @@ export class GamePlay {
 
     this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
     this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
+    this.mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
   }
 
 
@@ -121,6 +124,10 @@ export class GamePlay {
     this.game.startRound();
     this.mineField.toggleMinefieldFreezer(false);
     this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
+
+
+   //console.log(this.mineCounter);
+
   }
 
   startGame() {
@@ -186,14 +193,12 @@ export class GamePlay {
     const sectionId = this.#getBoardSectionID(BOARD_SECTION.dashBoard);
     return this.#getClearedBoardSection(sectionId)
       .then(dashBoardContainer => {
-        console.log(dashBoardContainer);
+        // console.log(dashBoardContainer);
         const timeCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.timeCounter);
         const actionStateIconContainer = this.#generateBoardSection(DASHBOARD_SECTION.actionStateIcon);
-        const mineCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.mineCounter);
 
 
-
-        dashBoardContainer.append(timeCounterContainer, actionStateIconContainer, mineCounterContainer);
+        dashBoardContainer.append(timeCounterContainer, actionStateIconContainer, this.#generateMineCounter());
         return Promise.resolve();
       });
   }
@@ -201,4 +206,11 @@ export class GamePlay {
   #generateBoardSection(sectionName) {
     return ElementGenerator.generateContainer([sectionName], this.#getBoardSectionID(sectionName));
   }
+
+  #generateMineCounter() {
+    const mineCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.mineCounter);
+    mineCounterContainer.append(this.mineCounter.generateCounter);
+    return mineCounterContainer;
+  }
+
 }

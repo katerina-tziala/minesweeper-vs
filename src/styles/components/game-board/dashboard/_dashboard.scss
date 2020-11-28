@@ -1,6 +1,7 @@
 @use "../game-board-styles";
 
 @import "../dashboard-face-icon/dashboard-face-icon";
+@import "../digital-counter/digital-counter";
 
 
 .dashboard {
@@ -8,5 +9,6 @@
 
   .dashboard__time-counter, .dashboard__mine-counter {
     @extend ._board-button;
+
   }
 }
