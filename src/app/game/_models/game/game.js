@@ -93,47 +93,6 @@ export class Game extends AppModel {
     this.#initTurns();
   }
 
-
-
-
-
-  #setMinesPositions() {
-    this.levelSettings.setMinesPositions();
-    this.minesToDetect = this.levelSettings.minesPositions.length;
-  }
-
-  #initTurns() {
-    const playerStartID = getRandomValueFromArray(this.players.map(player => player.id));
-    this.players.find(player => player.id === playerStartID).turn = true;
-  }
-
-  #setPlayerStatisticsOnRevealedMines(boardTiles, playerOnTurn = this.playerOnTurn) {
-    boardTiles.forEach(tile => {
-      playerOnTurn.inRevealedPositions = tile.id;
-    });
-  }
-
-  #setPlayerStatisticsOnTileUpdate(tile, playerOnTurn = this.playerOnTurn) {
-    if (tile.isDetonatedMine) {
-      playerOnTurn.detonatedMine = true;
-      this.endGame = GameEndType.DetonatedMine;
-    } else if (tile.isRevealed) {
-      playerOnTurn.inRevealedPositions = tile.id;
-    } else if (tile.isFlagged) {
-      playerOnTurn.onSetFlag(tile.id, tile.isWronglyFlagged);
-    } else if (tile.isMarked) {
-      playerOnTurn.onSetMark(tile.id);
-    } else if (tile.isUntouched) {
-      playerOnTurn.onTileReset(tile.id);
-    }
-  }
-
-  #setMinesToDetectAfterMove() {
-    let detectedMines = 0;
-    this.#players.forEach(player => detectedMines = detectedMines + player.minesDetected);
-    this.minesToDetect = this.levelSettings.minesPositions.length = detectedMines;
-  }
-
   updateOnPlayerMove(boardTiles) {
     const playerOnTurn = this.playerOnTurn;
     playerOnTurn.increaseMoves();
@@ -171,6 +130,7 @@ export class Game extends AppModel {
     }
   }
 
+  // PRIVATE FUNCTIONS
   #checkGameEndOnFieldState(mineField) {
     if (this.vsMode === GameVSMode.Detect) {
       console.log("vsMode", this.vsMode);
@@ -180,11 +140,41 @@ export class Game extends AppModel {
       this.endGame = GameEndType.Cleared;
     }
   }
+  #setMinesPositions() {
+    this.levelSettings.setMinesPositions();
+    this.minesToDetect = this.levelSettings.minesPositions.length;
+  }
 
+  #initTurns() {
+    const playerStartID = getRandomValueFromArray(this.players.map(player => player.id));
+    this.players.find(player => player.id === playerStartID).turn = true;
+  }
 
+  #setPlayerStatisticsOnRevealedMines(boardTiles, playerOnTurn = this.playerOnTurn) {
+    boardTiles.forEach(tile => {
+      playerOnTurn.inRevealedPositions = tile.id;
+    });
+  }
 
+  #setPlayerStatisticsOnTileUpdate(tile, playerOnTurn = this.playerOnTurn) {
+    if (tile.isDetonatedMine) {
+      playerOnTurn.detonatedMine = true;
+      this.endGame = GameEndType.DetonatedMine;
+    } else if (tile.isRevealed) {
+      playerOnTurn.inRevealedPositions = tile.id;
+    } else if (tile.isFlagged) {
+      playerOnTurn.onSetFlag(tile.id, tile.isWronglyFlagged);
+    } else if (tile.isMarked) {
+      playerOnTurn.onSetMark(tile.id);
+    } else if (tile.isUntouched) {
+      playerOnTurn.onTileReset(tile.id);
+    }
+  }
 
-
-
+  #setMinesToDetectAfterMove() {
+    let detectedMines = 0;
+    this.#players.forEach(player => detectedMines = detectedMines + player.minesDetected);
+    this.minesToDetect = this.levelSettings.minesPositions.length = detectedMines;
+  }
 
 }
