@@ -162,13 +162,11 @@ export class GameWizardVS extends GameWizard {
     let title = TITLE[this.gameType];
     if (this.opponent) {
       title = replaceStringParameter(title, this.opponent.name);
-      console.log(title, this.opponent);
     }
     return title;
   }
 
   get game() {
-    console.log(this.gameParams);
     return new Game(this.gameType, this.gameParams, this.player, this.opponent);
   }
 }

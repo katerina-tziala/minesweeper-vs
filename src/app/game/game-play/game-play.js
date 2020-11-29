@@ -136,10 +136,6 @@ export class GamePlay {
     this.#_timerInterval = undefined;
   }
 
-  //   updateGameTimer() {
-  //     this.setTimerSeconds(this.getTimerSeconds() + 1);
-  //     this.upateTimeCounterDisplay();
-  // }
   setGameTimer() {
     this.timeCounter.value = 1;
     this.#_timerInterval = setInterval(() => {
@@ -147,8 +143,18 @@ export class GamePlay {
     }, 1000);
   }
 
+  setRoundTimer() {
+    this.timeCounter.value = this.game.roundDuration;
+    this.#_timerInterval = setInterval(() => {
 
+      this.timeCounter.value = this.timeCounter.value - 1;
 
+      if (this.timeCounter.value === 0) {
+        this.stopTimer();
+        console.log("turn ended");
+      }
+    }, 1000);
+  }
 
   #checkGameStart() {
     if (!this.timerStarted && !this.game.startedAt) {
@@ -157,22 +163,20 @@ export class GamePlay {
     }
   }
 
-
   startGameRound() {
     console.log("startGameRound");
 
     this.game.startRound();
-
-    this.mineField.toggleMinefieldFreezer(false);
     this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
     this.mineCounter.value = this.game.minesToDetect;
 
     if (this.game.roundTimer) {
-      console.log("set round timer");
-
-      console.log(this.game.playerOnTurn);
+      console.log("set round styles");
+      this.setRoundTimer();
+      //console.log(this.game.playerOnTurn);
     }
 
+    this.mineField.toggleMinefieldFreezer(false);
   }
 
 
@@ -182,9 +186,6 @@ export class GamePlay {
     this.#init();
     this.#initGameView.then(() => {
       this.timeCounter.value = 0;
-      this.startGameRound();
-
-
       if (this.game.roundTimer) {
         this.game.startedAt = new Date().toISOString();
         //console.log(this.game.playerOnTurn);
@@ -192,9 +193,7 @@ export class GamePlay {
       if (!this.game.singlePlayer) {
         console.log("show start modal");
       }
-
-
-
+      this.startGameRound();
     });
 
   }

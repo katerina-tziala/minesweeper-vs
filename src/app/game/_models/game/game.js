@@ -122,10 +122,11 @@ export class Game extends AppModel {
 
 
   get roundTimer() {
-
-    console.log(this.turnSettings);
-
     return this.turnSettings && this.turnSettings.turnTimer;
+  }
+
+  get roundDuration() {
+    return this.turnSettings.turnDuration;
   }
 
 
