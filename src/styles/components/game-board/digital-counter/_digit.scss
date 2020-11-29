@@ -1,0 +1,113 @@
+@use "../../../theming/theming";
+
+$line-space       : 2px;
+$line-thick-size  : 2px;
+$horizontal-space : 3px;
+
+%horizontal-line {
+  height      : 0px;
+  width       : 10px;
+  border      : none;
+  border-left : $line-thick-size solid transparent;
+  border-right: $line-thick-size solid transparent;
+  left        : $horizontal-space;
+}
+
+%vertical-line {
+  height       : 11px;
+  width        : 0px;
+  border       : none;
+  border-top   : $line-thick-size solid transparent;
+  border-bottom: $line-thick-size solid transparent;
+}
+
+._right__line {
+  right       : $line-space;
+  border-right: $line-thick-size solid transparent;
+}
+
+._left__line {
+  left       : $line-space;
+  border-left: $line-thick-size solid transparent;
+}
+
+
+._top__line {
+  @extend %horizontal-line;
+  border-top: $line-thick-size solid transparent;
+}
+
+._bottom__line {
+  @extend %horizontal-line;
+  border-bottom: $line-thick-size solid transparent;
+}
+
+._middle__line {
+  @extend %horizontal-line;
+  border-bottom: 1px solid transparent;
+
+  &::after {
+    content      : "";
+    position     : absolute;
+    top          : 1px;
+    right        : 0px;
+    left         : -#{$line-space};
+    width        : 7px;
+    display      : block;
+    border-right : 1px solid transparent;
+    border-left  : 2px solid transparent;
+    border-bottom: none;
+    border-top   : 1px solid transparent;
+  }
+}
+
+@mixin digitLineColors($color-off, $color-on, $position) {
+  border-#{$position}-color: $color-off;
+
+  &.digit__line--on {
+    border-#{$position}-color: $color-on;
+  }
+}
+
+@mixin applyThemeStyles($theme) {
+  $color-off: theming.getThemeColor($theme, "digit-off");
+  $color-on : theming.getThemeColor($theme, "digit-on");
+
+  ._right__line {
+    @include digitLineColors($color-off, $color-on, "right");
+  }
+
+  ._left__line {
+    @include digitLineColors($color-off, $color-on, "left");
+  }
+
+  ._top__line {
+    @include digitLineColors($color-off, $color-on, "top");
+  }
+
+  ._bottom__line {
+    @include digitLineColors($color-off, $color-on, "bottom");
+  }
+
+  ._middle__line {
+    @include digitLineColors($color-off, $color-on, "bottom");
+
+    &::after {
+      border-top-color: $color-off;
+    }
+    &.digit__line--on {
+      &::after {
+        border-top-color: $color-on;
+      }
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  @include applyThemeStyles("light");
+}
+
+.theme-dark {
+  @include applyThemeStyles("dark");
+}

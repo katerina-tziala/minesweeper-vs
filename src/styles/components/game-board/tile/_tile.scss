@@ -5,15 +5,17 @@
 
 .tile-cell {
   @include rectangle(22px);
-  position: relative;
-  overflow: hidden;
-  border  : 1px solid;
+  position   : relative;
+  // overflow: hidden;
+  box-sizing: border-box;
+  border     : 1px solid;
   @include tile-styles.setNumberContent();
   cursor: pointer;
 }
 
 .tile-cell-btn {
   @include rectangle(22px);
+  box-sizing: border-box;
   position  : absolute;
   top       : 0;
   left      : 0;
@@ -24,7 +26,7 @@
   text-align: center;
 
   &:disabled {
-    cursor: not-allowed!important;
+    cursor: not-allowed !important;
   }
 
   &.tile-cell-btn--active {

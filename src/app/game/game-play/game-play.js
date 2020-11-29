@@ -55,20 +55,17 @@ export class GamePlay {
 
 
   #init() {
-    // console.log("init");
-    // console.log(this.game);
-
-
     this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
     this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
     this.mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
+    this.timeCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.timeCounter));
   }
 
 
   #onActiveTileChange(activeTile) {
     activeTile
-    ? this.dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
-    : this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
+      ? this.dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
+      : this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
   }
 
 
@@ -125,8 +122,8 @@ export class GamePlay {
     this.mineField.toggleMinefieldFreezer(false);
     this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
 
-
-   //console.log(this.mineCounter);
+    this.mineCounter.value = 6;
+    //console.log();
 
   }
 
@@ -151,8 +148,8 @@ export class GamePlay {
     console.log(this.game);
     console.log();
     this.game.player.lost ?
-    this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
-    : this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);
+      this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
+      : this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);
   }
 
 
@@ -193,12 +190,10 @@ export class GamePlay {
     const sectionId = this.#getBoardSectionID(BOARD_SECTION.dashBoard);
     return this.#getClearedBoardSection(sectionId)
       .then(dashBoardContainer => {
-        // console.log(dashBoardContainer);
-        const timeCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.timeCounter);
         const actionStateIconContainer = this.#generateBoardSection(DASHBOARD_SECTION.actionStateIcon);
-
-
-        dashBoardContainer.append(timeCounterContainer, actionStateIconContainer, this.#generateMineCounter());
+        const timeCounter = this.#generateCounter(DASHBOARD_SECTION.timeCounter, this.timeCounter);
+        const mineCounter = this.#generateCounter(DASHBOARD_SECTION.mineCounter, this.mineCounter);
+        dashBoardContainer.append(timeCounter, actionStateIconContainer, mineCounter);
         return Promise.resolve();
       });
   }
@@ -207,10 +202,10 @@ export class GamePlay {
     return ElementGenerator.generateContainer([sectionName], this.#getBoardSectionID(sectionName));
   }
 
-  #generateMineCounter() {
-    const mineCounterContainer = this.#generateBoardSection(DASHBOARD_SECTION.mineCounter);
-    mineCounterContainer.append(this.mineCounter.generateCounter);
-    return mineCounterContainer;
+  #generateCounter(name, counter) {
+    const counterContainer = this.#generateBoardSection(name);
+    counterContainer.append(counter.generateCounter);
+    return counterContainer;
   }
 
 }

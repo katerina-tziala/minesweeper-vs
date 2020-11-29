@@ -2,25 +2,25 @@
 @use "../../theming/theming";
 @import "../table/table";
 
-@mixin minefieldTable {
-  table>tr>td {
-    &:first-of-type {
-      border-left-color: transparent;
-    }
+// @mixin minefieldTable {
+//   table>tr>td {
+//     &:first-of-type {
+//       border-left-color: transparent;
+//     }
 
-    &:last-of-type {
-      border-right-color: transparent;
-    }
-  }
+//     &:last-of-type {
+//       border-right-color: transparent;
+//     }
+//   }
 
-  table>tr:first-of-type>td {
-    border-top-color: transparent;
-  }
+//   table>tr:first-of-type>td {
+//     border-top-color: transparent;
+//   }
 
-  table>tr:last-of-type>td {
-    border-bottom-color: transparent;
-  }
-}
+//   table>tr:last-of-type>td {
+//     border-bottom-color: transparent;
+//   }
+// }
 
 @mixin twoSideBorderDirectionTopLeft($top-left-color, $bottom-right-color) {
   border-width    : 2px;

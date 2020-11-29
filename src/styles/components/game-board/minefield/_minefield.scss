@@ -2,7 +2,6 @@
 
 .mine-field {
   @extend ._board-section;
-  @include game-board-styles.minefieldTable;
   position: relative;
 
   .mine-field__freezer {
@@ -25,7 +24,6 @@
 
 .theme-dark {
   .mine-field__freezer {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.5);
   }
-
 }
