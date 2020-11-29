@@ -42,7 +42,6 @@ export class GameWizard {
   }
 
   set gameParams(params) {
-  //  console.log(params);
     if (params.valid) {
       this.#_gameParams[params.name] = params.value;
     }
@@ -140,7 +139,7 @@ export class GameWizard {
 
   onGameSettingsChange(params) {
     this.stepper.submissionButtonDisabled = !params.valid;
-    this.gameParams = params.value;
+    this.gameParams = params;
   }
 
   onSubmit() {

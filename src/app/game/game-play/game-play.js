@@ -23,6 +23,7 @@ import { DigitalCounter } from "./digital-counter/digital-counter";
 
 export class GamePlay {
   #_game;
+  #_timerInterval;
 
   constructor(game) {
     this.game = game;
@@ -45,6 +46,9 @@ export class GamePlay {
     return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleHyphen + LocalStorageHelper.retrieve("settings").mineType;
   }
 
+
+
+
   generateGameBoard() {
     const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, this.boardMineTypeStyleClass], this.game.id);
     Object.values(BOARD_SECTION).forEach(sectionName => {
@@ -55,6 +59,9 @@ export class GamePlay {
 
 
   #init() {
+    this.game.init();
+    this.stopTimer();
+    console.log(this.game.levelSettings);
     this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
     this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
     this.mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
@@ -70,9 +77,7 @@ export class GamePlay {
 
 
   #onTileAction(action, tile) {
-    // if (this.game.startedAt) {
-
-    // }
+    this.#checkGameStart();
     if (action === GameAction.Mark) {
       this.handleTileMarking(tile);
       return;
@@ -122,25 +127,72 @@ export class GamePlay {
   }
 
 
+  get timerStarted() {
+    return this.#_timerInterval ? true : false;
+  }
+
+  stopTimer() {
+    clearInterval(this.#_timerInterval);
+    this.#_timerInterval = undefined;
+  }
+
+  //   updateGameTimer() {
+  //     this.setTimerSeconds(this.getTimerSeconds() + 1);
+  //     this.upateTimeCounterDisplay();
+  // }
+  setGameTimer() {
+    this.timeCounter.value = 1;
+    this.#_timerInterval = setInterval(() => {
+      this.timeCounter.value = this.timeCounter.value + 1;
+    }, 1000);
+  }
+
+
+
+
+  #checkGameStart() {
+    if (!this.timerStarted && !this.game.startedAt) {
+      this.game.startedAt = new Date().toISOString();
+      this.setGameTimer();
+    }
+  }
+
+
   startGameRound() {
     console.log("startGameRound");
 
     this.game.startRound();
+
     this.mineField.toggleMinefieldFreezer(false);
     this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
-
     this.mineCounter.value = this.game.minesToDetect;
-    this.timeCounter.value = 0;
+
+    if (this.game.roundTimer) {
+      console.log("set round timer");
+
+      console.log(this.game.playerOnTurn);
+    }
 
   }
+
 
   startGame() {
     //console.log("startGame");
 
     this.#init();
     this.#initGameView.then(() => {
-
+      this.timeCounter.value = 0;
       this.startGameRound();
+
+
+      if (this.game.roundTimer) {
+        this.game.startedAt = new Date().toISOString();
+        //console.log(this.game.playerOnTurn);
+      }
+      if (!this.game.singlePlayer) {
+        console.log("show start modal");
+      }
+
 
 
     });
@@ -155,7 +207,8 @@ export class GamePlay {
   onGameEnd() {
     console.log("onGameEnd");
     console.log(this.game);
-    console.log();
+
+    this.stopTimer();
     this.game.player.lost ?
       this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
       : this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);

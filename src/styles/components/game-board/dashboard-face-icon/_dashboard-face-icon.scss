@@ -8,8 +8,9 @@
 .dashboard__face-icon {
   @extend ._board-button;
   @extend %center-center;
-  @include setFaceIcons("&.face-icon");
   font-size: 1.4rem;
+  padding-right: 1px;
+  @include setFaceIcons("&.face-icon");
 
   &::after {
     @extend .__face-icon;

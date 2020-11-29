@@ -2,7 +2,7 @@
 
 import { replaceStringParameter } from "~/_utils/utils";
 
-import { GameType, GameVSMode, Game } from "Game";
+import { GameVSMode, Game } from "Game";
 
 import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
 
@@ -168,6 +168,7 @@ export class GameWizardVS extends GameWizard {
   }
 
   get game() {
+    console.log(this.gameParams);
     return new Game(this.gameType, this.gameParams, this.player, this.opponent);
   }
 }

@@ -4,14 +4,13 @@
 @import "../switcher/switcher";
 @import "../dropdown-select/dropdown-select";
 
-
 .settings {
     position: relative;
 }
 
 .settings-panel {
     position  : absolute;
-    top       : 36px;
+    top       : 34px;
     right     : -15px;
     z-index   : getIndex(settings-panel);
     height    : 0;
@@ -46,7 +45,6 @@
 
 .game-color-option {
     @include circle(22px);
-    border: 1px solid #c0c0c0;
 }
 
 

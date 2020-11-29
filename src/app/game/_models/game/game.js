@@ -5,12 +5,10 @@ import { GameEndType, GameVSMode } from "Game";
 
 export class Game extends AppModel {
   #players = [];
-  #playerOnTurn;
   #roundTiles = [];
   #startedAt;
   #gameOver;
   #completedAt;
-
   #minesToDetect;
   // #timerSeconds;
 
@@ -98,13 +96,14 @@ export class Game extends AppModel {
   }
 
   get startedAt() {
-    return this.#completedAt;
+    return this.#startedAt;
   }
 
   init() {
     this.#roundTiles = [];
     this.gameOver = null;
     this.completedAt = null;
+    this.#players.forEach(player => player.initState());
     this.#setMinesPositions();
     this.#initTurns();
   }
@@ -122,19 +121,30 @@ export class Game extends AppModel {
   }
 
 
+  get roundTimer() {
+
+    console.log(this.turnSettings);
+
+    return this.turnSettings && this.turnSettings.turnTimer;
+  }
 
 
+  get singlePlayer() {
+    return this.#players.length === 1;
+  }
 
   startRound() {
     this.#roundTiles = [];
-
-   if (this.startedAt) {
-     console.log("started");
-   }
-    console.log("startRound");
-
+    if (this.startedAt) {
+      this.switchTurns();
+    }
   }
 
+  switchTurns() {
+    if (!this.singlePlayer) {
+      this.#players.forEach(player => player.toggleTurn());
+    }
+  }
 
   get dashboardIconColor() {
     if (this.vsMode && this.vsMode !== GameVSMode.Parallel) {
@@ -161,7 +171,7 @@ export class Game extends AppModel {
     }
     if (mineField.isCleared) {
       this.endGame = GameEndType.Cleared;
-      if (this.#players.length === 1) {
+      if (this.singlePlayer) {
         console.log("single player completed clear goal");
         this.playerOnTurn.completedGoal = true;
       } else {

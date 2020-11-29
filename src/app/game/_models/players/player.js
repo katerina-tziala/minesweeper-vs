@@ -5,11 +5,10 @@ import { AppModel } from "~/_models/app-model";
 export class Player extends AppModel {
   #_colorType;
 
-  constructor(id, name, opponent = false) {
+  constructor(id, name) {
     super();
     this.id = id;
     this.name = name;
-    this.isOpponent = opponent;
     this.entered = true;
     this.initState();
   }
@@ -35,19 +34,15 @@ export class Player extends AppModel {
     this.marksPositions = [];
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
+    this.completedGoal = false;
     this.exceededTurnsLimit = false;
     this.missedTurns = 0;
     this.allowedFlags = null;
-    this.completedGoal = false;
   }
 
   get lost() {
     return (this.detonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
   }
-
-
-
-
 
   increaseMoves() {
     this.moves++;
@@ -105,10 +100,6 @@ export class Player extends AppModel {
     this.#removeFromBasePositionsStatistics(position);
     this.#inMarksPositions = position;
   }
-
-
-
-
 
 
 
@@ -185,10 +176,6 @@ export class Player extends AppModel {
   //     return this.exceededTurnsLimit;
   // }
 
-  // isOpponent() {
-  //     return this.opponent;
-  // }
-
   // getPlayerReportData() {
   //     // return {
   //     //     id: this.getId(),
@@ -203,43 +190,5 @@ export class Player extends AppModel {
   //     //     minesDetected: this.minesDetected
   //     // };
   // }
-
-
-  // getUpdatedPositions(positions, newPositions, add = true) {
-  //     positions = [...positions].filter(position => !newPositions.includes(position));
-  //     if (add) {
-  //         positions = positions.concat(newPositions);
-  //     }
-  //     return positions;
-  // }
-
-  // updateFlagsPositions(newPositions, add = true) {
-  //     this.flagsPositions = this.getUpdatedPositions(this.flagsPositions, newPositions, add);
-  // }
-
-  // getFlagsPositions() {
-  //     return this.flagsPositions;
-  // }
-
-  // updateMarksPositions(newPositions, add = true) {
-  //     this.marksPositions = this.getUpdatedPositions(this.marksPositions, newPositions, add);
-  // }
-
-  // getMarksPositions() {
-  //     return this.marksPositions;
-  // }
-
-  // updateBlankTilesRevealed() {
-  //     // this.blankTilesRevealed++;
-  // }
-
-  // updateWronglyPlacedFlags() {
-  //     // this.wronglyPlacedFlags++;
-  // }
-
-  // updateMinesDetected() {
-  //     // this.minesDetected++;
-  // }
-
 
 }

@@ -6,7 +6,7 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const BOARD_SECTION = {
-  actions: "game-board__actions",
+  // actions: "game-board__actions",
   dashBoard: "dashboard",
 	mineField: "mine-field"
 };
