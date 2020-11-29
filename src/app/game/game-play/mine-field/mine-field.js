@@ -180,7 +180,9 @@ export class MineField {
     return this.#tiles.every(tile => tile.isMine);
   }
 
-
+  // get detectedMines() {
+  //   return this.#tiles.filter(tile => tile.isDetected).length;
+  // }
 
 
 

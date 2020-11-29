@@ -9,7 +9,7 @@ export class Game extends AppModel {
   #roundTiles = [];
   #startedAt;
   #gameOver;
-
+  #completedAt;
 
   #minesToDetect;
   // #timerSeconds;
@@ -85,6 +85,22 @@ export class Game extends AppModel {
     return this.#minesToDetect;
   }
 
+  set completedAt(completedAt) {
+    this.#completedAt = completedAt;
+  }
+
+  get completedAt() {
+    return this.#completedAt;
+  }
+
+  set startedAt(startedAt) {
+    this.#startedAt = startedAt;
+  }
+
+  get startedAt() {
+    return this.#completedAt;
+  }
+
   init() {
     this.#roundTiles = [];
     this.gameOver = null;
@@ -105,9 +121,16 @@ export class Game extends AppModel {
     this.#setMinesToDetectAfterMove();
   }
 
+
+
+
+
   startRound() {
     this.#roundTiles = [];
 
+   if (this.startedAt) {
+     console.log("started");
+   }
     console.log("startRound");
 
   }
@@ -181,7 +204,7 @@ export class Game extends AppModel {
   #setMinesToDetectAfterMove() {
     let detectedMines = 0;
     this.#players.forEach(player => detectedMines = detectedMines + player.minesDetected);
-    this.minesToDetect = this.levelSettings.minesPositions.length = detectedMines;
+    this.minesToDetect = this.levelSettings.minesPositions.length - detectedMines;
   }
 
 }

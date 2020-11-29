@@ -70,6 +70,9 @@ export class GamePlay {
 
 
   #onTileAction(action, tile) {
+    // if (this.game.startedAt) {
+
+    // }
     if (action === GameAction.Mark) {
       this.handleTileMarking(tile);
       return;
@@ -96,9 +99,13 @@ export class GamePlay {
   }
 
   revealTile(tile, playerOnTurn = this.game.playerOnTurn) {
-    this.mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
-      this.onPlayerMove(boardTiles);
-    });
+    if (tile.isUntouched) {
+      this.mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
+        this.onPlayerMove(boardTiles);
+      });
+    } else {
+      this.mineField.toggleMinefieldFreezer(false);
+    }
   }
 
   onPlayerMove(boardTiles) {
@@ -122,8 +129,8 @@ export class GamePlay {
     this.mineField.toggleMinefieldFreezer(false);
     this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
 
-    this.mineCounter.value = 6;
-    //console.log();
+    this.mineCounter.value = this.game.minesToDetect;
+    this.timeCounter.value = 0;
 
   }
 
@@ -132,7 +139,9 @@ export class GamePlay {
 
     this.#init();
     this.#initGameView.then(() => {
+
       this.startGameRound();
+
 
     });
 
@@ -193,7 +202,7 @@ export class GamePlay {
         const actionStateIconContainer = this.#generateBoardSection(DASHBOARD_SECTION.actionStateIcon);
         const timeCounter = this.#generateCounter(DASHBOARD_SECTION.timeCounter, this.timeCounter);
         const mineCounter = this.#generateCounter(DASHBOARD_SECTION.mineCounter, this.mineCounter);
-        dashBoardContainer.append(timeCounter, actionStateIconContainer, mineCounter);
+        dashBoardContainer.append(mineCounter, actionStateIconContainer, timeCounter);
         return Promise.resolve();
       });
   }

@@ -1,13 +1,9 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
-
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { clone } from "~/_utils/utils.js";
-
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TILE_BTN } from "./tile.constants";
-
 import { GameAction } from "Game";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TILE_BTN } from "./tile.constants";
 export class TileView {
   #_id;
   #_active;
@@ -124,16 +120,6 @@ export class TileView {
     }, false);
   }
 
-
-  // getTileCellContent() {
-  //   return new Promise((resolve) => {
-  //     const cell = document.getElementById(this.getCellID());
-  //     if (cell && cell.children[0]) {
-  //       resolve(cell.children[0]);
-  //     }
-  //   });
-  // }
-
   generateView(content, onActivation, onAction) {
     const tileCell = ElementGenerator.generateTableDataCell();
     ElementHandler.setID(tileCell, this.#cellId);
@@ -177,7 +163,6 @@ export class TileView {
     buttonStyles.push(this.#colorTypeStyle(colorType));
     return buttonStyles;
   }
-
 
   setFlag(colorType, wrongFlagHint = false) {
     const buttonStyles = this.#getButtonStylesAfterAction(colorType);

@@ -1,8 +1,4 @@
 "use strict";
-
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TILE_BTN } from "./tile.constants";
 import { TileState } from "../../../_enums/tile-state.enum";
 import { TileView } from "./tile.view";
 
@@ -109,6 +105,10 @@ export class Tile {
     return (!this.isMine && this.isFlagged);
   }
 
+  get isDetected() {
+    return (this.isMine && this.isFlagged);
+  }
+
   isFlaggedBy(playerID) {
     return this.isFlagged && this.isModifiedBy === playerID;
   }
@@ -142,10 +142,6 @@ export class Tile {
     this.#viewController.setMark(colorType);
   }
 
-  // removeMark() {
-  //   this.resetStateAndStyle();
-  // }
-
   // disable() {
   //   this.#viewController.toggleButtonInteraction(true);
   // }
@@ -153,11 +149,5 @@ export class Tile {
   // enable() {
   //   this.#viewController.toggleButtonInteraction(false);
   // }
-
-  // setWrongFlagHint() {
-  //   this.#viewController.setWrongFlagHint(false);
-  // }
-
-
 
 }
