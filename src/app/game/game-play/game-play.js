@@ -137,6 +137,7 @@ export class GamePlay {
   }
 
   setGameTimer() {
+    this.stopTimer();
     this.timeCounter.value = 1;
     this.#_timerInterval = setInterval(() => {
       this.timeCounter.value = this.timeCounter.value + 1;
@@ -144,11 +145,10 @@ export class GamePlay {
   }
 
   setRoundTimer() {
+    this.stopTimer();
     this.timeCounter.value = this.game.roundDuration;
     this.#_timerInterval = setInterval(() => {
-
       this.timeCounter.value = this.timeCounter.value - 1;
-
       if (this.timeCounter.value === 0) {
         this.stopTimer();
         console.log("turn ended");

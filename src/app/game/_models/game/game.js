@@ -18,7 +18,6 @@ export class Game extends AppModel {
     this.type = type;
     this.player = player;
     this.opponent = opponent;
-    this.isOnline = false;
     this.update(params);
     this.players = player;
     this.players = opponent;
