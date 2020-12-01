@@ -61,7 +61,14 @@ export class Tile {
   generateView(onActivation, onAction) {
     return this.#viewController.generateView(
       this.content,
-      onActivation,
+      (activated) => {
+        if (this.isUntouched) {
+          onActivation(activated)
+        } else {
+          this.#viewController.deActivate();
+          onActivation(false)
+        }
+      },
       (action) => onAction(this, action)
     );
   }

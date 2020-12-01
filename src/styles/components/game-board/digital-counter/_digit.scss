@@ -31,7 +31,6 @@ $horizontal-space : 3px;
   border-left: $line-thick-size solid transparent;
 }
 
-
 ._top__line {
   @extend %horizontal-line;
   border-top: $line-thick-size solid transparent;

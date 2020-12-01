@@ -7,7 +7,7 @@
 ._board-section {
   border-width: 2px;
   border-style: solid;
-  @extend %between-start;
+  @extend %between-center;
   min-height: 30px;
 }
 
@@ -16,14 +16,12 @@
   min-width: 30px;
 }
 
+@import "./board-actions/board-actions";
 @import "./dashboard/dashboard";
 @import "./minefield/minefield";
 @import "./tile/tile";
 
-.game-board__actions {
-  @extend ._board-section;
 
-}
 
 .game-board {
   padding: 5px;

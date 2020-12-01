@@ -10,5 +10,7 @@
 
   .dashboard__time-counter, .dashboard__mine-counter {
     @extend ._board-button;
+    min-height: 30px;
+    height: 100%;
   }
 }

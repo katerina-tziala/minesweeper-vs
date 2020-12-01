@@ -1,0 +1,60 @@
+@use "../game-board-styles";
+@use "../../../theming/theming";
+@import "../../button/button";
+
+.board-actions {
+  @extend ._board-section;
+  padding: 5px;
+}
+
+
+
+.board-action-btn {
+  @extend ._btn;
+  font-size: 1.2rem;
+  @include rectangle(30px);
+}
+
+.btn-icon--exit-game {
+  @include afterIcon("exit-game");
+
+  // &::after {
+
+  //   @extend .icon-exit-game;
+  // }
+
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+
+
+  .board-action-btn {
+    color: theming.getThemeColor("light", "theme-primary");
+    @include game-board-styles.boardBorders("light");
+    background-color: theming.getThemeColor("light", "board-button-background");
+    &:hover,
+    &:focus {
+      color: theming.getThemeColor("light", "theme-primary-intense");
+    }
+
+
+  }
+
+}
+
+.theme-dark {
+
+
+  .board-action-btn {
+    color: theming.getThemeColor("dark", "theme-primary");
+    background-color: theming.getThemeColor("dark", "board-button-background");
+    @include game-board-styles.boardBorders("dark");
+
+    &:hover,
+    &:focus {
+      color: theming.getThemeColor("dark", "theme-primary-intense");
+    }
+
+  }
+}

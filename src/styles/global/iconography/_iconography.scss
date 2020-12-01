@@ -91,3 +91,8 @@
 .icon-original {
   @extend.icon-flag;
 }
+
+.icon-exit-game {
+  @extend %icon-regular;
+  content: fa-content($fa-var-reply-all);
+}

@@ -5,7 +5,7 @@ import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager"
 import { LocalStorageHelper } from "../../_utils/local-storage-helper";
 
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./game-play.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "./game-play.constants";
 
 import { User } from "~/_models/user";
 
@@ -27,6 +27,7 @@ export class GamePlay {
 
   constructor(game) {
     this.game = game;
+    this.actionsAllowed = true;
 
   }
 
@@ -221,7 +222,7 @@ export class GamePlay {
 
   // PRIVATE FUNCTIONS
   get #initGameView() {
-    const renderViewParts = [this.#renderMineField(), this.#renderDashboard()];
+    const renderViewParts = [this.#renderMineField(), this.#renderDashboard(), this.#renderActionButtons()];
     return Promise.all(renderViewParts);
 
   }
@@ -259,6 +260,26 @@ export class GamePlay {
       });
   }
 
+
+  #renderActionButtons() {
+    const sectionId = this.#getBoardSectionID(BOARD_SECTION.boardActions);
+    return this.#getClearedBoardSection(sectionId)
+      .then(actionsContainer => {
+        if (this.actionsAllowed) {
+          const exitButton = ElementGenerator.generateButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
+          ElementHandler.addStyleClass(exitButton, DOM_ELEMENT_CLASS.actionButton);
+
+          actionsContainer.append(exitButton);
+          ElementHandler.display(actionsContainer);
+        } else {
+          ElementHandler.hide(actionsContainer);
+        }
+        return Promise.resolve();
+      });
+  }
+
+
+
   #generateBoardSection(sectionName) {
     return ElementGenerator.generateContainer([sectionName], this.#getBoardSectionID(sectionName));
   }
@@ -268,5 +289,24 @@ export class GamePlay {
     counterContainer.append(counter.generateCounter);
     return counterContainer;
   }
+
+
+
+
+  #onReset() {
+
+    console.log("onReset");
+  }
+
+  #onRestart() {
+    console.log("onRestart");
+
+  }
+
+  #onExit() {
+    console.log("onExit");
+
+  }
+
 
 }

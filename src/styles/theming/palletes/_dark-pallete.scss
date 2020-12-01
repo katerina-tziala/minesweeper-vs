@@ -1,7 +1,7 @@
 @use "sass:map";
 
 $theme-pallete: (
-	theme-base: #1a1a1a,
+	theme-base: #262626,
 	theme-primary: #00cccc,
 	theme-primary-intense: #00ffff,
 	theme-primary-subtle: #009999,
@@ -19,17 +19,17 @@ $game-pallete: (
 	game-type-6: #b84dff,
 	game-type-7: #ff00bf,
   game-type-8: #ffffff,
-  board-background: #1a1a1a,
+  board-background: #0d0d0d,
   board-color: #d9d9d9,
-  board-grid: #008080,
-  board-grid-light: #00b3b3,
-  board-grid-dark: #006666,
+  board-grid: #001a1a,
+  board-grid-light: #001a1a,
+  board-grid-dark: #000000,
   board-button-background: #000000,
   board-button-color: #d9d9d9,
   dashboard-icon-background: #00ffff,
   dashboard-icon-color: #000000,
   dashboard-icon-user-background: #000000,
-  digit-off: #004d4d,
+  digit-off: #001a1a,
   digit-on: #00e6e6,
   digit-background: #000000,
 );

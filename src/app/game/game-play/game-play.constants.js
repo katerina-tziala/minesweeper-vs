@@ -1,11 +1,21 @@
 "use strict";
 
+import { EXIT_GAME_BTN, RESTART_GAME_BTN, RESET_GAME_BTN} from "~/_constants/btn-icon.constants";
+
+export const ACTION_BUTTONS = {
+  exit: EXIT_GAME_BTN,
+  restart: RESTART_GAME_BTN,
+  reset: RESET_GAME_BTN
+};
+
 export const DOM_ELEMENT_CLASS = {
   container: "game-container",
-  board: "game-board"
+  board: "game-board",
+  actionButton: "board-action-btn"
 };
 
 export const BOARD_SECTION = {
+  boardActions: "board-actions",
   dashBoard: "dashboard",
 	mineField: "mine-field"
 };

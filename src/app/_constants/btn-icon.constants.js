@@ -48,3 +48,27 @@ export const RESET_BTN = {
   },
   actionType: "click"
 };
+
+export const EXIT_GAME_BTN = {
+  className: "btn-icon--exit-game",
+  attributes: {
+    "aria-label": "exit game"
+  },
+  actionType: "click"
+};
+
+export const RESTART_GAME_BTN = {
+  className: "btn-icon--restart-game",
+  attributes: {
+    "aria-label": "restart game"
+  },
+  actionType: "click"
+};
+
+export const RESET_GAME_BTN = {
+  className: "btn-icon--reset-game",
+  attributes: {
+    "aria-label": "reset game type"
+  },
+  actionType: "click"
+};

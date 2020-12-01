@@ -77,7 +77,7 @@ export class TileView {
   #setMouseOverAction(tileButton, onActivation) {
     tileButton.addEventListener("mouseover", (event) => {
       if (event.which !== 0 && !this.#active) {
-        this.#activate();
+        this.activate();
         onActivation(this.#active);
       }
     }, false);
@@ -86,7 +86,7 @@ export class TileView {
   #setMouseLeaveAction(tileButton, onActivation) {
     tileButton.addEventListener("mouseleave", () => {
       if (this.#active) {
-        this.#deActivate();
+        this.deActivate();
         onActivation(this.#active);
       }
     }, false);
@@ -95,7 +95,7 @@ export class TileView {
   #setMouseDownAction(tileButton, onActivation) {
     tileButton.addEventListener("mousedown", () => {
       if (!this.#active) {
-        this.#activate();
+        this.activate();
         onActivation(this.#active);
       }
     }, false);
@@ -104,7 +104,7 @@ export class TileView {
   #setMouseUpAction(tileButton, onAction) {
     tileButton.addEventListener("mouseup", (event) => {
       if (this.#active) {
-        this.#deActivate();
+        this.deActivate();
         switch (event.which) {
           case 1: // left mouse click
           case 2:// middle mouse click
@@ -129,21 +129,11 @@ export class TileView {
     return tileCell;
   }
 
-  #activate() {
-    this.#active = true;
-    this.#setButtonActiveStyle();
-  }
-
   #setButtonActiveStyle() {
     this.tileButton.then(button => {
       this.#active ? ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.activeButton) :
         ElementHandler.removeStyleClass(button, DOM_ELEMENT_CLASS.activeButton);
     });
-  }
-
-  #deActivate() {
-    this.#active = false;
-    this.#setButtonActiveStyle();
   }
 
   setRevealedView(isDetonatedMine, userAction = true) {
@@ -156,7 +146,6 @@ export class TileView {
   #colorTypeStyle(colorType) {
     return DOM_ELEMENT_CLASS.buttonColor + colorType;
   }
-
 
   #getButtonStylesAfterAction(colorType) {
     const buttonStyles = [DOM_ELEMENT_CLASS.button];
@@ -187,6 +176,15 @@ export class TileView {
     this.buttonStyles = buttonStyles;
   }
 
+  activate() {
+    this.#active = true;
+    this.#setButtonActiveStyle();
+  }
+
+  deActivate() {
+    this.#active = false;
+    this.#setButtonActiveStyle();
+  }
   // toggleButtonInteraction(disabled) {
   //   this.getTileButton().then(button => {
   //     this.setDisabled(disabled);
