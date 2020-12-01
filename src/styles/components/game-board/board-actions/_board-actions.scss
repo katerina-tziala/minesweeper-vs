@@ -11,19 +11,42 @@
 
 .board-action-btn {
   @extend ._btn;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   @include rectangle(30px);
 }
 
 .btn-icon--exit-game {
-  @include afterIcon("exit-game");
-
-  // &::after {
-
-  //   @extend .icon-exit-game;
-  // }
-
+  @include afterIcon("home");
 }
+
+.btn-icon--restart-game {
+  position : relative;
+  font-size: 1.5rem;
+
+  &:before {
+    @extend .icon-redo;
+    position: absolute;
+    top     : 3px;
+    left    : 0px;
+  }
+
+  &:after {
+    @extend .icon-play;
+    position : absolute;
+    left     : 0;
+    font-size: 0.6rem;
+    top      : 10px;
+  }
+}
+
+.btn-icon--exit-game {
+  @include afterIcon("home");
+}
+
+.btn-icon--reset-game {
+  @include afterIcon("sliders");
+}
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
@@ -33,6 +56,7 @@
     color: theming.getThemeColor("light", "theme-primary");
     @include game-board-styles.boardBorders("light");
     background-color: theming.getThemeColor("light", "board-button-background");
+
     &:hover,
     &:focus {
       color: theming.getThemeColor("light", "theme-primary-intense");
@@ -47,7 +71,7 @@
 
 
   .board-action-btn {
-    color: theming.getThemeColor("dark", "theme-primary");
+    color           : theming.getThemeColor("dark", "theme-primary");
     background-color: theming.getThemeColor("dark", "board-button-background");
     @include game-board-styles.boardBorders("dark");
 

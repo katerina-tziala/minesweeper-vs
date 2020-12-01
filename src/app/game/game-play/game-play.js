@@ -266,10 +266,10 @@ export class GamePlay {
     return this.#getClearedBoardSection(sectionId)
       .then(actionsContainer => {
         if (this.actionsAllowed) {
-          const exitButton = ElementGenerator.generateButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
-          ElementHandler.addStyleClass(exitButton, DOM_ELEMENT_CLASS.actionButton);
-
-          actionsContainer.append(exitButton);
+          const resetButton = this.#generateActionButton(ACTION_BUTTONS.reset, this.#onReset.bind(this));
+          const restartButton = this.#generateActionButton(ACTION_BUTTONS.restart, this.#onRestart.bind(this));
+          const exitButton = this.#generateActionButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
+          actionsContainer.append(resetButton, restartButton, exitButton);
           ElementHandler.display(actionsContainer);
         } else {
           ElementHandler.hide(actionsContainer);
@@ -290,6 +290,11 @@ export class GamePlay {
     return counterContainer;
   }
 
+  #generateActionButton(params, action) {
+    const actionButton = ElementGenerator.generateButton(params, action);
+    ElementHandler.addStyleClass(actionButton, DOM_ELEMENT_CLASS.actionButton);
+    return actionButton;
+  }
 
 
 

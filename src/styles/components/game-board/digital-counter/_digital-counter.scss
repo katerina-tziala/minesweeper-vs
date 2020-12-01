@@ -61,13 +61,13 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-  .digital-counter, .digit {
+  .digital-counter {
     background-color: theming.getThemeColor("light", "digit-background");
   }
 }
 
 .theme-dark {
-  .digital-counter, .digit {
+  .digital-counter {
     background-color: theming.getThemeColor("dark", "digit-background");
   }
 }

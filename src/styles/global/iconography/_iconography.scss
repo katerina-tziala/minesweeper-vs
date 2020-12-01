@@ -92,6 +92,16 @@
   @extend.icon-flag;
 }
 
+.icon-redo {
+  @extend %icon-regular;
+  content  : fa-content($fa-var-redo-alt);
+}
+
+.icon-home {
+  @extend %icon-regular;
+  content  : fa-content($fa-var-home);
+}
+
 .icon-exit-game {
   @extend %icon-regular;
   content: fa-content($fa-var-reply-all);
