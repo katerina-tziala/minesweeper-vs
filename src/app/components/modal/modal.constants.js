@@ -1,5 +1,5 @@
 "use strict";
-import { CONFIRM_BTN, QUIT_NOW_BTN } from "~/_constants/btn-text.constants";
+import { RESTART_BTN, QUIT_BTN, EXIT_BTN } from "~/_constants/btn-text.constants";
 
 export const DOM_ELEMENT_ID = {
   window: "modal-window",
@@ -25,11 +25,21 @@ export const MOVEMENT_DURATION = {
 
 export const CONFIRMATION = {
   quitGame: {
-    title: "Quiting Game",
+    title: "Quit Game",
     content: "Quiting game in...",
     timer: 3,
-    confirmButton: QUIT_NOW_BTN
+    confirmButton: QUIT_BTN
   },
-
-
+  restartGame: {
+    title: "Restart Game",
+    content: "Restarting game in...",
+    timer: 3,
+    confirmButton: RESTART_BTN
+  },
+  exitGame: {
+    title: "Exit Game",
+    content: "Exiting game in...",
+    timer: 3,
+    confirmButton: EXIT_BTN
+  },
 };

@@ -34,7 +34,7 @@ export class App {
     self.modal = new Modal();
 
     setTimeout(() => {
-      self.modal.displayConfirmation(CONFIRMATION.quitGame, (confirmed) => {
+      self.modal.displayConfirmation(CONFIRMATION.exitGame, (confirmed) => {
         console.log("confirmed? ", confirmed);
       })
       // .then(confirmed => {

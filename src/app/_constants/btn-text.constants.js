@@ -36,20 +36,40 @@ export const CONFIRM_BTN = {
   actionType: "click"
 };
 
-export const QUIT_NOW_BTN = {
-  innerHTML: "quit now",
-  className: "btn-text btn-primary",
-  attributes: {
-    "aria-label": "quit now",
-  },
-  actionType: "click"
-};
+
 
 export const CANCEL_BTN = {
   innerHTML: "cancel",
   className: "btn-text btn-primary",
   attributes: {
     "aria-label": "cancel",
+  },
+  actionType: "click"
+};
+
+export const QUIT_BTN = {
+  innerHTML: "quit",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "quit",
+  },
+  actionType: "click"
+};
+
+export const RESTART_BTN = {
+  innerHTML: "restart",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "restart",
+  },
+  actionType: "click"
+};
+
+export const EXIT_BTN = {
+  innerHTML: "exit",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "exit",
   },
   actionType: "click"
 };
