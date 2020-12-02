@@ -106,7 +106,7 @@ export class DropdownSelect extends UserInput {
     }
     this.expanded = expand;
     if (this.expanded) {
-      document.addEventListener("click", this.collapseDropdown.bind(this), false);
+      document.addEventListener("click", this.collapseDropdown.bind(this));
     } else {
       this.removeCollapseDropdownListener();
     }

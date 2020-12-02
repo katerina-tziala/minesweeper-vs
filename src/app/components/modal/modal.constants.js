@@ -1,20 +1,26 @@
 "use strict";
 import { CONFIRM_BTN, QUIT_NOW_BTN } from "~/_constants/btn-text.constants";
 
-
 export const DOM_ELEMENT_ID = {
   window: "modal-window",
-  modalBox: "modal-box",
+  modalDialog: "modal-dialog",
   modalTimer: "modal-timer",
+  modalDialogTitle: "modal-dialog-title",
 };
 
 export const DOM_ELEMENT_CLASS = {
   display: "modal-window--display",
-  shakeBox: "modal-box--shake",
-  boxContent: "modal-box-content-container",
+  shakeDialog: "modal-dialog--shake",
+  dialogContent: "modal-dialog-content-container",
   title: "title",
   content: "content",
-  actions: "actions"
+  actions: "actions",
+  actionButton: "actionButton"
+};
+
+export const MOVEMENT_DURATION = {
+  shake: 500,
+  slideIn: 300
 };
 
 export const CONFIRMATION = {

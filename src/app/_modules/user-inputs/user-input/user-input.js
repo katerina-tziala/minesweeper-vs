@@ -72,7 +72,7 @@ export class UserInput {
 
     const params = this.inputParams;
     if (inputAction) {
-      inputField.addEventListener(params.actionType, inputAction, false);
+      inputField.addEventListener(params.actionType, inputAction);
     }
     delete params.actionType;
 

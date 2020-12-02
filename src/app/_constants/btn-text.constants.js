@@ -31,7 +31,7 @@ export const CONFIRM_BTN = {
   innerHTML: "confirm",
   className: "btn-text btn-primary",
   attributes: {
-    "aria-label": "confirm",
+    "aria-label": "confirm"
   },
   actionType: "click"
 };

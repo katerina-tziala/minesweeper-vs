@@ -80,7 +80,7 @@ export class TileView {
         this.activate();
         onActivation(this.#active);
       }
-    }, false);
+    });
   }
 
   #setMouseLeaveAction(tileButton, onActivation) {
@@ -89,7 +89,7 @@ export class TileView {
         this.deActivate();
         onActivation(this.#active);
       }
-    }, false);
+    });
   }
 
   #setMouseDownAction(tileButton, onActivation) {
@@ -98,7 +98,7 @@ export class TileView {
         this.activate();
         onActivation(this.#active);
       }
-    }, false);
+    });
   }
 
   #setMouseUpAction(tileButton, onAction) {
@@ -117,7 +117,7 @@ export class TileView {
             break;
         }
       }
-    }, false);
+    });
   }
 
   generateView(content, onActivation, onAction) {

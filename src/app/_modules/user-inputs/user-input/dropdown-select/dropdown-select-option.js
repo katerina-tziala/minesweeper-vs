@@ -25,7 +25,7 @@ export class DropdownSelectOption {
       preventInteraction(event);
       action(option);
     }, false);
-    option.addEventListener("mousein", () => option.focus(), false);
+    option.addEventListener("mousein", () => option.focus());
     return option;
   }
 

@@ -8,7 +8,7 @@ export class ElementGenerator {
   static generateContainer(styleClasses, elementId) {
     const container = document.createElement("div");
     if (styleClasses && styleClasses.length) {
-      container.className = styleClasses.join(TYPOGRAPHY.space);
+      ElementHandler.setStyleClass(container, styleClasses);
     }
     if (elementId) {
       ElementHandler.setID(container, elementId);
@@ -22,7 +22,7 @@ export class ElementGenerator {
     const button = document.createElement("button");
     button.type = "button";
 
-    button.addEventListener(params.actionType, action, false);
+    button.addEventListener(params.actionType, action);
     delete params.actionType;
 
     ElementHandler.setParams(button, params);

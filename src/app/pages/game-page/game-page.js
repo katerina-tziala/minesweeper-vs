@@ -41,7 +41,7 @@ export class GamePage extends Page {
       event.preventDefault();
       //console.log(event);
 
-    }, false);
+    });
 
 
     const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);

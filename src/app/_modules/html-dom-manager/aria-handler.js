@@ -65,4 +65,24 @@ export class AriaHandler {
   static removeAriaSelected(element) {
     element.removeAttribute("aria-selected");
   }
+
+  static setLabeledBy(element, labelId) {
+    element.setAttribute("aria-labelledby", labelId);
+  }
+
+  static removeLabeledBy(element) {
+    element.removeAttribute("aria-labelledby");
+  }
+
+  static setAriaModal(element, labelId) {
+    element.setAttribute("aria-modal", true);
+    AriaHandler.setRole(element, "dialog");
+    AriaHandler.setLabeledBy(element, labelId);
+  }
+
+  static removeAriaModal(element) {
+    element.removeAttribute("aria-modal");
+    AriaHandler.removeRole(element);
+    AriaHandler.removeLabeledBy(element);
+  }
 }

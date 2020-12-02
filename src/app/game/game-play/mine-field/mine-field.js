@@ -34,7 +34,7 @@ export class MineField {
 
   #generateFieldFreezer() {
     const boardFreezer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.freezer], DOM_ELEMENT_ID.freezer);
-    boardFreezer.addEventListener("click", (event) => { preventInteraction(event) }, false);
+    boardFreezer.addEventListener("click", (event) => { preventInteraction(event) });
     return boardFreezer;
   }
 

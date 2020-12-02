@@ -14,7 +14,7 @@ import { LocalStorageHelper } from "./_utils/local-storage-helper";
 import { User } from "./_models/user";
 import { PageType } from "./_enums/page-type.enum";
 import { GameType } from "Game";
-
+import { CONFIRMATION } from "./components/modal/modal.constants"
 
 export class App {
 
@@ -34,7 +34,9 @@ export class App {
     self.modal = new Modal();
 
     setTimeout(() => {
-      self.modal.displayConfirmation()
+      self.modal.displayConfirmation(CONFIRMATION.quitGame, (confirmed) => {
+        console.log("confirmed? ", confirmed);
+      })
       // .then(confirmed => {
       //   console.log("confirmed? ", confirmed);
       // });

@@ -163,7 +163,7 @@ export class SettingsController {
     }
 
     detectOusideClick() {
-        document.addEventListener("click", this.collapseOnOutsideClick.bind(this), false);
+        document.addEventListener("click", this.collapseOnOutsideClick.bind(this));
     }
 
     collapseOnOutsideClick(event) {
