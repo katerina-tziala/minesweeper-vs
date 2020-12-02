@@ -260,7 +260,6 @@ export class GamePlay {
       });
   }
 
-
   #renderActionButtons() {
     const sectionId = this.#getBoardSectionID(BOARD_SECTION.boardActions);
     return this.#getClearedBoardSection(sectionId)
@@ -278,8 +277,6 @@ export class GamePlay {
       });
   }
 
-
-
   #generateBoardSection(sectionName) {
     return ElementGenerator.generateContainer([sectionName], this.#getBoardSectionID(sectionName));
   }
@@ -295,8 +292,6 @@ export class GamePlay {
     ElementHandler.addStyleClass(actionButton, DOM_ELEMENT_CLASS.actionButton);
     return actionButton;
   }
-
-
 
   #onReset() {
 

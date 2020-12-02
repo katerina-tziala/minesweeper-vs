@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
-    <title>MinesweeperVS</title>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta name='wap-font-scale' content='yes'>
+  <title>MinesweeperVS</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <meta name='wap-font-scale' content='yes'>
 </head>
+
 <body>
-    <div id='app' class='app theme-light'>
-        <!-- HEADER -->
-        <header class='header'>
-            <h1 class='header-title'>MinesweeperVS</h1>
-            <div id='settings' class='settings'></div>
-        </header>
-        <!-- NOTIFICATION -->
-        <div id='toast-notification' class='toast-notification'></div>
-        <!-- MAIN CONTENT -->
-        <main id='main' class='main'></main>
-        <!-- LOADER -->
-        <div id='loader' class='loader'>
-            <svg viewBox='0 0 32 32' width='32' height='32'>
-                <circle id='spinner' class='spinner spin' cx='16' cy='16' r='14' fill='none'></circle>
-            </svg>
-        </div>
+  <div id='app' class='app theme-light'>
+    <!-- HEADER -->
+    <header class='header'>
+      <h1 class='header-title'>MinesweeperVS</h1>
+      <div id='settings' class='settings'></div>
+    </header>
+    <!-- NOTIFICATION -->
+    <div id='toast-notification' class='toast-notification'></div>
+    <!-- MAIN CONTENT -->
+    <main id='main' class='main'></main>
+    <!-- LOADER -->
+    <div id='loader' class='loader'>
+      <svg viewBox='0 0 32 32' width='32' height='32'>
+        <circle id='spinner' class='spinner spin' cx='16' cy='16' r='14' fill='none'></circle>
+      </svg>
     </div>
+    <!-- MODAL WINDOW -->
+    <div id='modal-window' class='modal-window'>
+      <div id='modal-box'></div>
+    </div>
+  </div>
 </body>
+
 </html>

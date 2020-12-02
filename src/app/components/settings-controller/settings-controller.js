@@ -167,8 +167,8 @@ export class SettingsController {
     }
 
     collapseOnOutsideClick(event) {
-        const settingsPanel = event.target.closest(".settings-panel");
-        const toggleBtn = event.target.closest("#settings-toggle-btn");
+        const settingsPanel = event.target.closest(`.${DOM_ELEMENT_CLASS.settingsPanel}`);
+        const toggleBtn = event.target.closest(`#${DOM_ELEMENT_ID.settingsBtn}`);
         if (!toggleBtn && !settingsPanel && this.expanded) {
             this.expanded = false;
             this.collapseSettings();

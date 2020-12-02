@@ -7,6 +7,7 @@ import { NOTIFICATION_MESSAGE } from "./components/toast-notification/toast-noti
 
 
 import { SettingsController } from "./components/settings-controller/settings-controller";
+import { Modal } from "./components/modal/modal";
 
 import { LocalStorageHelper } from "./_utils/local-storage-helper";
 
@@ -30,8 +31,14 @@ export class App {
 
 
     self.settingsController = new SettingsController();
+    self.modal = new Modal();
 
-
+    setTimeout(() => {
+      self.modal.displayConfirmation()
+      // .then(confirmed => {
+      //   console.log("confirmed? ", confirmed);
+      // });
+    }, 1000);
 
     self.user = undefined;
     self.peers = [];
@@ -44,7 +51,7 @@ export class App {
     this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
     // this.onGameSetUpNavigation(GameType.Online);
-     //this.onGameSetUpNavigation(GameType.Bot);
+    //this.onGameSetUpNavigation(GameType.Bot);
     // remove document listeners!!!
   }
 
