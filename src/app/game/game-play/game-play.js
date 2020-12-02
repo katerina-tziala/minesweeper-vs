@@ -16,6 +16,7 @@ import { MineField } from "./mine-field/mine-field";
 import { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";
 import { DigitalCounter } from "./digital-counter/digital-counter";
 
+import { CONFIRMATION } from "../../components/modal/modal.constants";
 
 
 
@@ -25,9 +26,10 @@ export class GamePlay {
   #_game;
   #_timerInterval;
 
-  constructor(game) {
+  constructor(game, actions) {
     this.game = game;
     this.actionsAllowed = true;
+    this.actions = actions;
 
   }
 
@@ -60,8 +62,9 @@ export class GamePlay {
 
 
   #init() {
-    this.game.init();
     this.stopTimer();
+
+
     console.log(this.game.levelSettings);
     this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
     this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
@@ -181,7 +184,7 @@ export class GamePlay {
   }
 
 
-  startGame() {
+  start() {
     //console.log("startGame");
 
     this.#init();
@@ -200,6 +203,11 @@ export class GamePlay {
   }
 
 
+  reStart() {
+    this.game.init();
+    this.#init();
+    this.start();
+  }
 
 
 
@@ -293,20 +301,72 @@ export class GamePlay {
     return actionButton;
   }
 
-  #onReset() {
 
-    console.log("onReset");
-  }
 
-  #onRestart() {
-    console.log("onRestart");
 
+
+
+  #confirmAction(confirmation = CONFIRMATION.quitGame) {
+    this.stopTimer();
+    return new Promise(resolve => {
+      if (this.game.startedAt && !this.game.isOver) {
+        self.modal.displayConfirmation(confirmation, (confirmed) => {
+          resolve(confirmed);
+        });
+      } else {// excecute the action immediately
+        resolve(true);
+      }
+    });
   }
 
   #onExit() {
-    console.log("onExit");
+    this.#confirmAction().then(confirmed => {
+      confirmed ? this.actions.onExit() : this.continueGame();
+    });
+  }
 
+  #onRestart() {
+    this.#confirmAction(CONFIRMATION.restartGame).then(confirmed => {
+      confirmed ? this.reStart() : this.continueGame();
+    });
+  }
+
+  #onReset() {
+    this.#confirmAction().then(confirmed => {
+      confirmed ? this.actions.onReset() : this.continueGame();
+    });
   }
 
 
+
+
+
+
+  continueGame() {
+    console.log(this.game.startedAt);
+    console.log(this.timeCounter.value);
+    console.log("continueGame");
+    // this.stopTimer();
+    // this.timeCounter.value = 1;
+    // this.#_timerInterval = setInterval(() => {
+    //   this.timeCounter.value = this.timeCounter.value + 1;
+    // }, 1000);
+
+  }
+  continueGameTimer() {
+    console.log(this.game.startedAt);
+    console.log(this.timeCounter.value);
+    // this.stopTimer();
+    // this.timeCounter.value = 1;
+    // this.#_timerInterval = setInterval(() => {
+    //   this.timeCounter.value = this.timeCounter.value + 1;
+    // }, 1000);
+
+  }
+
+  // if (this.game.roundTimer) {
+  //   console.log("set round styles");
+  //   this.setRoundTimer();
+  //   //console.log(this.game.playerOnTurn);
+  // }
 }

@@ -84,4 +84,12 @@ export class TurnSettingsWizard extends GameSettingsWizard {
     return WIZARD_NAME.turnSettings;
   }
 
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new TurnSettings()
+    };
+  }
+
 }

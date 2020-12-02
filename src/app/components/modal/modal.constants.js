@@ -35,11 +35,5 @@ export const CONFIRMATION = {
     content: "Restarting game in...",
     timer: 3,
     confirmButton: RESTART_BTN
-  },
-  exitGame: {
-    title: "Exit Game",
-    content: "Exiting game in...",
-    timer: 3,
-    confirmButton: EXIT_BTN
-  },
+  }
 };

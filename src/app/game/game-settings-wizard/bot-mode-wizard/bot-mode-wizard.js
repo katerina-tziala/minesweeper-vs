@@ -34,4 +34,12 @@ export class BotModeWizard extends GameSettingsWizard {
     return "botMode";
   }
 
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: { botMode: BotMode.Easy }
+    };
+  }
+
 }

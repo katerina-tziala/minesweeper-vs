@@ -33,15 +33,6 @@ export class App {
     self.settingsController = new SettingsController();
     self.modal = new Modal();
 
-    setTimeout(() => {
-      self.modal.displayConfirmation(CONFIRMATION.exitGame, (confirmed) => {
-        console.log("confirmed? ", confirmed);
-      })
-      // .then(confirmed => {
-      //   console.log("confirmed? ", confirmed);
-      // });
-    }, 1000);
-
     self.user = undefined;
     self.peers = [];
 
@@ -164,13 +155,9 @@ export class App {
 
 
   onPlayGame(game) {
-    //console.log(game);
     this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
-      this.interfaceController = new GamePage(game, this.onHomeNavigation.bind(this));
+      this.interfaceController = new GamePage(game, this.onHomeNavigation.bind(this), this.onGameSetUpNavigation.bind(this));
     });
-    // this.loadInterfaceController(PageType.GameSetup).then(({ GamePage }) => {
-    //   this.interfaceController = new GamePage(gameType, this.onHomeNavigation.bind(this));
-    // });
   }
 
 

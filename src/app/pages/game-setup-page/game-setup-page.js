@@ -2,6 +2,8 @@
 
 import "../../../styles/pages/_game-setup.scss";
 
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+
 import { Page } from "../page";
 
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";

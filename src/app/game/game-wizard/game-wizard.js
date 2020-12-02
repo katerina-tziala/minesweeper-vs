@@ -3,7 +3,7 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { GroupController } from "~/_utils/group-controller";
-import { clone } from "~/_utils/utils.js";
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 import { Game, Player } from "Game";
 
@@ -39,6 +39,11 @@ export class GameWizard {
 
   initGameParams() {
     this.#_gameParams = {};
+    const currentParams = LocalStorageHelper.retrieve("gameSetup");
+    if (currentParams) {
+      this.#_gameParams = currentParams;
+    }
+    LocalStorageHelper.remove("gameSetup");
   }
 
   set gameParams(params) {
@@ -64,7 +69,7 @@ export class GameWizard {
   set settingsControllers(controller) {
     this.#_settingsControllers.controllers = controller;
     this.gameParams = controller.data;
-    this.defaultGameParams = controller.data;
+    this.defaultGameParams = controller.defaultSettings;
   }
 
   get settingsControllers() {
@@ -74,7 +79,6 @@ export class GameWizard {
   removeController(wizardName) {
     return this.#_settingsControllers.removeController(wizardName);
   }
-
 
   getSettingsController(wizardName) {
     return this.#_settingsControllers.getController(wizardName);

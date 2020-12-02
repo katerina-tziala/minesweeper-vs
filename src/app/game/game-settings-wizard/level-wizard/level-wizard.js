@@ -147,4 +147,12 @@ export class LevelWizard extends GameSettingsWizard {
     return WIZARD_NAME.levelSettings;
   }
 
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new LevelSettings()
+    };
+  }
+
 }

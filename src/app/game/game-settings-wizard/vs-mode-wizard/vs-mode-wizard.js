@@ -69,4 +69,12 @@ export class VSModeWizard extends GameSettingsWizard {
     return CONTENT[enumValue].label;
   }
 
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new OptionsSettings(GameVSMode.Clear)
+    };
+  }
+
 }

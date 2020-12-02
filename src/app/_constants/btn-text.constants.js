@@ -64,12 +64,3 @@ export const RESTART_BTN = {
   },
   actionType: "click"
 };
-
-export const EXIT_BTN = {
-  innerHTML: "exit",
-  className: "btn-text btn-primary",
-  attributes: {
-    "aria-label": "exit",
-  },
-  actionType: "click"
-};

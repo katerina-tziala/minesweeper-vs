@@ -96,7 +96,7 @@ export class OptionsWizard extends GameSettingsWizard {
     this.#updateSneakPeekDuration();
   }
 
- #onSneakPeekChange(params) {
+  #onSneakPeekChange(params) {
     this.settings[params.name] = params.value;
     this.#updateSneakPeekDuration();
   }
@@ -120,6 +120,14 @@ export class OptionsWizard extends GameSettingsWizard {
   // OVERIDDEN FUNCTIONS
   get name() {
     return WIZARD_NAME.optionsSettings;
+  }
+
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new OptionsSettings()
+    };
   }
 
 }
