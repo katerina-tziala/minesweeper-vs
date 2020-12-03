@@ -1,21 +1,34 @@
 "use strict";
+
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+
 import { TileState } from "../../../_enums/tile-state.enum";
 import { TileView } from "./tile.view";
 
 export class Tile {
   #_id;
+  #_position;
   #_neighbors;
   #_content;
   #_state;
   #_modifiedBy;
   #viewController;
 
-  constructor(params) {
-    this.id = params.id;
+  constructor(gameID, params) {
+    this.id = gameID + TYPOGRAPHY.hyphen + params.position;
+    this.position = params.position;
     this.neighbors = params.neighbors;
     this.content = params.content;
     this.initState();
     this.#viewController = new TileView(this.id);
+  }
+
+  set position(position) {
+    return this.#_position = position;
+  }
+
+  get position() {
+    return this.#_position;
   }
 
   set id(id) {

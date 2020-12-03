@@ -1,7 +1,7 @@
 "use strict";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementGenerator } from "HTML_DOM_Manager";
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, LIMITS, SPECIAL_DIGIT_VALUE, DEFAULT_DIGITS } from "./digital-counter.constants";
 import { Digit } from "./digit/digit";
 
@@ -31,6 +31,10 @@ export class DigitalCounter {
 
   get #digits() {
     return this.#_digits;
+  }
+
+  get #digitalCounterContainer() {
+    return ElementHandler.getByID(this.#id);
   }
 
   #getDigitId(digitIndex) {
@@ -95,10 +99,16 @@ export class DigitalCounter {
     return this.#_value;
   }
 
-  generate(parentContainer) {
+  generate() {
+    this.#digitalCounterContainer.then(digitalCounter => {
+      ElementHandler.clearContent(digitalCounter);
+      digitalCounter.append(this.#generateCounter);
+    });
+  }
+
+  get #generateCounter() {
     const counter = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.counter]);
     this.#digits.forEach(digit => counter.append(digit.generateDigit()));
-    parentContainer.append(counter);
-    return parentContainer;
+    return counter;
   }
 }

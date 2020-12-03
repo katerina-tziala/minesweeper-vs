@@ -21,7 +21,7 @@ export const BOARD_SECTION = {
 };
 
 export const DASHBOARD_SECTION = {
-  timeCounter: "dashboard__time-counter",
+  mineCounter: "dashboard__mine-counter",
   actionStateIcon: "dashboard__face-icon",
-	mineCounter: "dashboard__mine-counter"
+  timeCounter: "dashboard__time-counter"
 };

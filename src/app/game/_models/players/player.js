@@ -30,7 +30,6 @@ export class Player extends AppModel {
     this.moves = 0;
     this.detonatedMine = false;
     this.revealedPositions = [];
-    this.flagsPositions = [];
     this.marksPositions = [];
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
@@ -56,12 +55,12 @@ export class Player extends AppModel {
     return this.detectedMinesPositions.length;
   }
 
-  set inRevealedPositions(position) {
-    this.revealedPositions.push(position);
+  get placedFlags() {
+    return this.redundantFlagsPositions.length + this.detectedMinesPositions.length;
   }
 
-  set #inFlagsPositions(position) {
-    this.flagsPositions.push(position);
+  set inRevealedPositions(position) {
+    this.revealedPositions.push(position);
   }
 
   set #inRedundantFlagsPositions(position) {
@@ -81,13 +80,11 @@ export class Player extends AppModel {
   }
 
   #removeFromBasePositionsStatistics(position) {
-    this.flagsPositions = this.#removeFromPositionsArray(this.flagsPositions, position);
     this.redundantFlagsPositions = this.#removeFromPositionsArray(this.redundantFlagsPositions, position);
     this.detectedMinesPositions = this.#removeFromPositionsArray(this.detectedMinesPositions, position);
   }
 
   onSetFlag(position, wronglyPlaced) {
-    this.#inFlagsPositions = position;
     wronglyPlaced ? this.#inRedundantFlagsPositions = position : this.#inDetectedMinesPositions = position;
   }
 

@@ -9,15 +9,25 @@ import { preventInteraction } from "~/_utils/utils";
 
 export class MineField {
   #_levelSettings;
+  #_gameId;
   #tiles = [];
   #tilesGenerator;
   #onActiveTileChange;
   #submitTileAction;
 
-  constructor(levelSettings, onActiveTileChange, onTileAction) {
+  constructor(gameId, levelSettings, onActiveTileChange, onTileAction) {
+    this.gameId = gameId;
     this.levelSettings = levelSettings;
     this.#onActiveTileChange = onActiveTileChange;
     this.#submitTileAction = onTileAction;
+  }
+
+  set gameId(gameID) {
+    this.#_gameId = gameID;
+  }
+
+  get gameId() {
+    return this.#_gameId;
   }
 
   set levelSettings(game) {
@@ -28,12 +38,16 @@ export class MineField {
     return this.#_levelSettings;
   }
 
+  get #freezerId() {
+    return DOM_ELEMENT_ID.freezer + TYPOGRAPHY.doubleHyphen + this.gameId;
+  }
+
   get #freezer() {
-    return ElementHandler.getByID(DOM_ELEMENT_ID.freezer);
+    return ElementHandler.getByID(this.#freezerId);
   }
 
   #generateFieldFreezer() {
-    const boardFreezer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.freezer], DOM_ELEMENT_ID.freezer);
+    const boardFreezer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.freezer], this.#freezerId);
     boardFreezer.addEventListener("click", (event) => { preventInteraction(event) });
     return boardFreezer;
   }
@@ -59,7 +73,7 @@ export class MineField {
   #generateMinefieldColumns(rowIndex) {
     const fragment = document.createDocumentFragment();
     for (let index = 0; index < this.#levelSettings.columns; index++) {
-      const tile = this.#tilesGenerator.generateTile(rowIndex, index);
+      const tile = this.#tilesGenerator.generateTile(this.gameId, rowIndex, index);
       this.#tiles.push(tile);
       fragment.append(tile.generateView(this.#onActiveTileChange, this.#onTileAction.bind(this)));
     }
@@ -105,8 +119,8 @@ export class MineField {
   }
 
   removeFromTiles(tilesToFilter, tilesReference) {
-    const idsToRemove = this.getTilesIDs(tilesReference);
-    return tilesToFilter.filter(tile => !idsToRemove.includes(tile.id));
+    const positionsToRemove = this.getTilesPositions(tilesReference);
+    return tilesToFilter.filter(tile => !positionsToRemove.includes(tile.position));
   }
 
   getAreaToReveal(tilesToSearch, emptyArea = []) {
@@ -127,9 +141,9 @@ export class MineField {
   getBlankAndEmptyNeighbors(referenceTile, currentEmptyTiles) {
     const blankTiles = [];
     const emptyTiles = [];
-    const currentEmptyTilesIDs = this.getTilesIDs(currentEmptyTiles);
-    const neighborsIDs = arrayDifference(referenceTile.neighbors, currentEmptyTilesIDs);
-    let unrevealedNeighbors = this.getTilesByIDs(neighborsIDs);
+    const currentEmptyTilesPositions = this.getTilesByPositions(currentEmptyTiles);
+    const neighborsPositions = arrayDifference(referenceTile.neighbors, currentEmptyTilesPositions);
+    let unrevealedNeighbors = this.getTilesByPositions(neighborsPositions);
     unrevealedNeighbors = this.getNonMineTiles(unrevealedNeighbors);
     unrevealedNeighbors = this.getNonFlaggedTiles(unrevealedNeighbors);
     unrevealedNeighbors.forEach(tile => {
@@ -142,12 +156,12 @@ export class MineField {
     return tiles.filter(tile => tile.isBlank);
   }
 
-  getTilesIDs(tiles) {
-    return tiles.map(tile => tile.id);
+  getTilesPositions(tiles) {
+    return tiles.map(tile => tile.position);
   }
 
-  getTilesByIDs(selectedIDs) {
-    return this.#tiles.filter(tile => selectedIDs.includes(tile.id));
+  getTilesByPositions(positionsToKeep) {
+    return this.#tiles.filter(tile => positionsToKeep.includes(tile.position));
   }
 
   getNonMineTiles(tiles = this.#tiles) {

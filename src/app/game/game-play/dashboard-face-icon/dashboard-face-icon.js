@@ -45,6 +45,11 @@ export class DashboardFaceIcon {
     return iconStyles;
   }
 
+  init() {
+    this.#iconStyles = [DOM_ELEMENT_CLASS.dashboardIcon];
+    return Promise.resolve();
+  }
+
   setSmileFace(colorType) {
     this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.smile, colorType);
   }

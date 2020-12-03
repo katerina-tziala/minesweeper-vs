@@ -20,16 +20,22 @@ import { CONFIRMATION } from "../../components/modal/modal.constants";
 
 import { GameTimer } from "./game-timer/game-timer";
 
+import { GamePlayViewHelper } from "./game-play-view-helper";
 
 
 
 export class GamePlay {
   #_game;
+  #dashboardFaceIcon;
+  #mineCounter;
+  #timeCounter;
+  #mineField;
 
   constructor(game, actions) {
     this.game = game;
     this.actionsAllowed = true;
     this.actions = actions;
+    this.init();
   }
 
   set game(game) {
@@ -40,45 +46,24 @@ export class GamePlay {
     return this.#_game;
   }
 
-  get boardContainer() {
-    return ElementHandler.getByID(this.game.id);
-  }
-
-  get boardMineTypeStyleClass() {
-    return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleHyphen + LocalStorageHelper.retrieve("settings").mineType;
-  }
-
-
-  generateGameBoard() {
-    const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, this.boardMineTypeStyleClass], this.game.id);
-    Object.values(BOARD_SECTION).forEach(sectionName => {
-      board.append(this.#generateBoardSection(sectionName));
-    });
-    return board;
-  }
-
-
-  #init() {
-
+  init() {
+    // console.log(" ------- init ------- ");
     console.log(this.game.levelSettings);
 
-    this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
-    this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
-    this.mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
-
+    this.#mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
+    this.#dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
     this.#initTimeCounter();
+    this.#mineField = new MineField(this.game.id, this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
   }
 
-  #initTimeCounter() {
-    const params = this.game.gameTimerParams;
-    params.id = this.#getBoardSectionID(DASHBOARD_SECTION.timeCounter);
-    this.timeCounter = new GameTimer(params, this.onTimerStopped.bind(this));
-  }
 
+
+
+  // MINEFIELD ACTIONS
   #onActiveTileChange(activeTile) {
     activeTile
-      ? this.dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
-      : this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
+      ? this.#dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
+      : this.#dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
   }
 
   #onTileAction(action, tile) {
@@ -110,176 +95,153 @@ export class GamePlay {
 
   revealTile(tile, playerOnTurn = this.game.playerOnTurn) {
     if (tile.isUntouched) {
-      this.mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
+      this.#mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
         this.onPlayerMove(boardTiles);
       });
     } else {
-      this.mineField.toggleMinefieldFreezer(false);
+      this.#mineField.toggleMinefieldFreezer(false);
     }
   }
 
   onPlayerMove(boardTiles) {
     this.game.updateOnPlayerMove(boardTiles);
-    this.game.checkGameEnd(this.mineField);
+    this.game.checkGameEnd(this.#mineField);
     this.game.isOver ? this.onGameEnd() : this.onMoveEnd();
   }
 
   onMoveEnd() {
     this.startGameRound();
-    // console.log("updateViewAfterPlayerMove");
+    //console.log("updateViewAfterPlayerMove");
     // console.log(this.game);
 
   }
 
-
-
-  #checkGameStart() {
-    if (!this.timeCounter.isRunning && !this.game.startedAt) {
-      this.game.startedAt = new Date().toISOString();
-      this.timeCounter.start();
-    }
+  continueGame() {
+    //console.log("continueGame");
+    this.#timeCounter.continue();
+    this.#mineField.toggleMinefieldFreezer(false);
   }
 
-  startGameRound() {
-    console.log("startGameRound");
-
-    this.game.startRound();
-    // board face icon
-    this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
-    // mineCounter
-    this.mineCounter.value = this.game.minesToDetect;
-    // timeCounter
-    if (this.game.roundTimer) {
-      console.log("set round styles");
-      this.timeCounter.start();
-      //console.log(this.game.playerOnTurn);
-    }
-
-    this.mineField.toggleMinefieldFreezer(false);
+  onGameEnd() {
+    //console.log("onGameEnd");
+    this.#timeCounter.stop();
+    this.#mineField.toggleMinefieldFreezer(true);
+    this.#boardFaceIconOnGameEnd = this.game.player.lost;
   }
 
+
+
+  generateView() {
+    const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#gameContainerID);
+    gameContainer.append(GamePlayViewHelper.generateBoard(this.game.id));
+    return gameContainer;
+  }
 
   start() {
-    this.#init();
     this.#initGameView.then(() => {
-
-      if (this.game.roundTimer) {
-        this.game.startedAt = new Date().toISOString();
-        //console.log(this.game.playerOnTurn);
-      } else {
-        this.timeCounter.init();
-      }
+      this.game.roundTimer ? this.game.setGameStart() : this.#timeCounter.init();
 
       if (!this.game.singlePlayer) {
         console.log("show start modal");
+        console.log(this.game.playerOnTurn);
       }
 
       this.startGameRound();
     });
+  }
 
+
+  #setDashboardRoundState() {
+    this.#mineCounter.value = this.game.minesToDetect;
+    this.#dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
+    if (this.game.roundTimer) {
+      this.#timeCounter.start();
+    }
+  }
+
+  startGameRound() {
+    this.game.startRound();
+    this.#setDashboardRoundState();
+
+    if (!this.game.singlePlayer) {
+      console.log("set round styles");
+    }
+
+    this.#mineField.toggleMinefieldFreezer(false);
   }
 
 
   reStart() {
     this.game.init();
-    this.#init();
+    this.init();
     this.start();
   }
 
-
-  continueGame() {
-    console.log("continueGame");
-    this.timeCounter.continue();
-  }
-
-  onTimerStopped() {
-    console.log("turn ended");
-  }
-
-
-
-  onGameEnd() {
-    console.log("onGameEnd");
-    console.log(this.game);
-
-    this.timeCounter.stop();
-
-    this.game.player.lost ?
-      this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
-      : this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);
-  }
-
-
-
-
-
-
-
   // PRIVATE FUNCTIONS
-  get #initGameView() {
-    const renderViewParts = [this.#renderMineField(), this.#renderDashboard(), this.#renderActionButtons()];
-    return Promise.all(renderViewParts);
+  #initTimeCounter() {
+    const params = this.game.gameTimerParams;
+    params.id = this.#getBoardSectionID(DASHBOARD_SECTION.timeCounter);
+    this.#timeCounter = new GameTimer(params, this.#onTimerStopped.bind(this));
+  }
 
+  get #gameContainerID() {
+    return DOM_ELEMENT_CLASS.container + TYPOGRAPHY.doubleHyphen + this.game.id;
+  }
+
+  set #boardFaceIconOnGameEnd(playerLost) {
+    playerLost
+      ? this.#dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
+      : this.#dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);
   }
 
   #getBoardSectionID(sectionName) {
-    return sectionName + TYPOGRAPHY.doubleHyphen + this.game.id;
+    return GamePlayViewHelper.getBoardSectionID(sectionName, this.game.id);
+  }
+
+  #checkGameStart() {
+    if (!this.#timeCounter.isRunning && this.game.isIdle) {
+      this.game.setGameStart();
+      this.#timeCounter.start();
+    }
+  }
+
+  #onTimerStopped() {
+    console.log("turn ended");
+  }
+
+  get #initGameView() {
+    const renderViewParts = [
+      this.#renderMineField(),
+      this.#mineCounter.generate(),
+      this.#dashboardFaceIcon.init(),
+      this.#timeCounter.generate(),
+      this.#renderActionButtons()];
+    return Promise.all(renderViewParts);
   }
 
   #renderMineField() {
-    const sectionId = this.#getBoardSectionID(BOARD_SECTION.mineField);
-    return this.#getClearedBoardSection(sectionId)
-      .then(mineFieldContainer => {
-        mineFieldContainer.append(this.mineField.generateMinefield);
+    return GamePlayViewHelper.getClearedGameSection(this.#getBoardSectionID(BOARD_SECTION.mineField))
+      .then(container => {
+        container.append(this.#mineField.generateMinefield);
         return Promise.resolve();
       });
   }
 
-  #getClearedBoardSection(sectionId) {
-    return ElementHandler.getByID(sectionId)
-      .then(boardSection => {
-        ElementHandler.clearContent(boardSection);
-        return boardSection;
-      });
-  }
-
-  #renderDashboard() {
-    const sectionId = this.#getBoardSectionID(BOARD_SECTION.dashBoard);
-    return this.#getClearedBoardSection(sectionId)
-      .then(dashBoardContainer => {
-        const actionStateIconContainer = this.#generateBoardSection(DASHBOARD_SECTION.actionStateIcon);
-        const timeCounter = this.timeCounter.generate(this.#generateBoardSection(DASHBOARD_SECTION.timeCounter));
-        const mineCounter = this.mineCounter.generate(this.#generateBoardSection(DASHBOARD_SECTION.mineCounter));
-        dashBoardContainer.append(mineCounter, actionStateIconContainer, timeCounter);
-        return Promise.resolve();
-      });
-  }
-
+  // BOARD ACTIONS
   #renderActionButtons() {
-    const sectionId = this.#getBoardSectionID(BOARD_SECTION.boardActions);
-    return this.#getClearedBoardSection(sectionId)
-      .then(actionsContainer => {
-        if (this.actionsAllowed) {
+    return GamePlayViewHelper.getClearedGameSection(this.#getBoardSectionID(BOARD_SECTION.boardActions))
+      .then(container => {
+        if (this.game.actionsAllowed) {
           const resetButton = this.#generateActionButton(ACTION_BUTTONS.reset, this.#onReset.bind(this));
           const restartButton = this.#generateActionButton(ACTION_BUTTONS.restart, this.#onRestart.bind(this));
           const exitButton = this.#generateActionButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
-          actionsContainer.append(resetButton, restartButton, exitButton);
-          ElementHandler.display(actionsContainer);
+          container.append(resetButton, restartButton, exitButton);
+          ElementHandler.display(container);
         } else {
-          ElementHandler.hide(actionsContainer);
+          ElementHandler.hide(container);
         }
         return Promise.resolve();
       });
-  }
-
-  #generateBoardSection(sectionName) {
-    return ElementGenerator.generateContainer([sectionName], this.#getBoardSectionID(sectionName));
-  }
-
-  #generateCounter(name, counter) {
-    const counterContainer = this.#generateBoardSection(name);
-    counterContainer.append(counter.generateCounter);
-    return counterContainer;
   }
 
   #generateActionButton(params, action) {
@@ -288,42 +250,28 @@ export class GamePlay {
     return actionButton;
   }
 
-
-
-
-
-
-  // BOARD ACTIONS
-  #confirmAction(confirmation = CONFIRMATION.quitGame) {
-    this.timeCounter.stop();
-
-    return new Promise(resolve => {
-      if (this.game.startedAt && !this.game.isOver) {
-        self.modal.displayConfirmation(confirmation, (confirmed) => {
-          resolve(confirmed);
-        });
-      } else {// excecute the action immediately
-        resolve(true);
-      }
+  #excecuteBoardAction(action, confirmation = CONFIRMATION.quitGame) {
+    this.#timeCounter.stop();
+    this.#mineField.toggleMinefieldFreezer(true);
+    if (this.game.isIdle) {
+      action();
+      return;
+    }
+    self.modal.displayConfirmation(confirmation, (confirmed) => {
+      confirmed ? action() : this.continueGame();
     });
   }
 
   #onExit() {
-    this.#confirmAction().then(confirmed => {
-      confirmed ? this.actions.onExit() : this.continueGame();
-    });
+    this.#excecuteBoardAction(this.actions.onExit.bind(this));
   }
 
   #onRestart() {
-    this.#confirmAction(CONFIRMATION.restartGame).then(confirmed => {
-      confirmed ? this.reStart() : this.continueGame();
-    });
+    this.#excecuteBoardAction(this.reStart.bind(this), CONFIRMATION.restartGame);
   }
 
   #onReset() {
-    this.#confirmAction().then(confirmed => {
-      confirmed ? this.actions.onReset() : this.continueGame();
-    });
+    this.#excecuteBoardAction(this.actions.onReset.bind(this));
   }
 
 }

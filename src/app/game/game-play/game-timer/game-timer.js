@@ -107,8 +107,8 @@ export class GameTimer {
     this.#run();
   }
 
-  generate(parentContainer) {
-    return this.digitalCounter.generate(parentContainer);
+  generate() {
+    return this.digitalCounter.generate();
   }
 
 }

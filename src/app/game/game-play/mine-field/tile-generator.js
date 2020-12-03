@@ -4,8 +4,8 @@ import { sortNumbersArrayAsc, clone } from "~/_utils/utils";
 import { Tile } from "./tile/tile";
 
 export class TileGenerator {
-  #rows;
-  #columns;
+  #_rows;
+  #_columns;
   #minesPositions;
 
   constructor(levelSettings) {
@@ -14,36 +14,44 @@ export class TileGenerator {
     this.#minesPositions = levelSettings.minesPositions;
   }
 
-  getGridRows() {
-    return this.#rows;
+  set #rows(value) {
+    this.#_rows = value;
   }
 
-  getGridColumns() {
-    return this.#columns;
+  get #rows() {
+    return this.#_rows;
   }
 
-  getMaxColumnPosition() {
-    return this.getGridColumns() - 1;
+  set #columns(value) {
+    this.#_columns = value;
   }
 
-  getMaxRowPosition() {
-    return this.getGridRows() - 1;
+  get #columns() {
+    return this.#_columns;
   }
 
-  generateTile(rowIndex, columnIndex) {
-    return new Tile(this.getTileParams(rowIndex, columnIndex));
+  get #maxColumnPosition() {
+    return this.#columns - 1;
+  }
+
+  get #maxRowPosition() {
+    return this.#rows - 1;
+  }
+
+  generateTile(gameId, rowIndex, columnIndex) {
+    return new Tile(gameId, this.getTileParams(rowIndex, columnIndex));
   }
 
   getTileParams(row, column) {
     const coordinates = { row, column };
     const position = this.getTilePosition(coordinates);
     const params = this.getTileContentAndNeighbors(coordinates, position);
-    params.id = position;
+    params.position = position;
     return params;
   }
 
   getTilePosition(coordinates) {
-    return (coordinates.row * this.getGridColumns()) + coordinates.column;
+    return (coordinates.row * this.#columns) + coordinates.column;
   }
 
   getTileContentAndNeighbors(coordinates, position) {
@@ -87,7 +95,7 @@ export class TileGenerator {
   getCoordinatesInSameRow(coordinates, columnStep) {
     const newCoordinates = clone(coordinates);
     newCoordinates.column = newCoordinates.column + columnStep;
-    return (0 <= newCoordinates.column && newCoordinates.column <= this.getMaxColumnPosition()) ? [newCoordinates] : [];
+    return (0 <= newCoordinates.column && newCoordinates.column <= this.#maxColumnPosition) ? [newCoordinates] : [];
   }
 
   getGridCoordinatesInColumn(coordinates) {
@@ -100,7 +108,7 @@ export class TileGenerator {
   getCoordinatesInSameColumn(coordinates, rowStep) {
     const newCoordinates = clone(coordinates);
     newCoordinates.row = newCoordinates.row + rowStep;
-    return (0 <= newCoordinates.row && newCoordinates.row <= this.getMaxRowPosition()) ? [newCoordinates] : [];
+    return (0 <= newCoordinates.row && newCoordinates.row <= this.#maxRowPosition) ? [newCoordinates] : [];
   }
 
   getMinesAround(positionsToCheck) {

@@ -1,16 +1,11 @@
 "use strict";
 import { AppModel } from "~/_models/app-model";
 import { getRandomValueFromArray } from "~/_utils/utils";
-import { GameEndType, GameVSMode } from "Game";
+import { GameType, GameEndType, GameVSMode } from "Game";
 
 export class Game extends AppModel {
   #players = [];
   #roundTiles = [];
-  #startedAt;
-  #gameOver;
-  #completedAt;
-  #minesToDetect;
-  // #timerSeconds;
 
   constructor(type, params, player, opponent) {
     super();
@@ -21,6 +16,7 @@ export class Game extends AppModel {
     this.update(params);
     this.players = player;
     this.players = opponent;
+    this.init();
   }
 
   set players(player) {
@@ -45,20 +41,12 @@ export class Game extends AppModel {
     return this.#roundTiles;
   }
 
-  set gameOver(gameOver) {
-    return this.#gameOver = gameOver;
-  }
-
-  get gameOver() {
-    return this.#gameOver;
-  }
-
   get isOver() {
-    return this.#gameOver ? true : false;
+    return this.gameOverType ? true : false;
   }
 
-  set endGame(type) {
-    this.gameOver = type;
+  set #endGame(type) {
+    this.gameOverType = type;
     this.completedAt = new Date().toISOString();
   }
 
@@ -74,53 +62,11 @@ export class Game extends AppModel {
     return this.optionsSettings.vsMode;
   }
 
-  set minesToDetect(minesToDetect) {
-    this.#minesToDetect = minesToDetect;
+  get isIdle() {
+    return (!this.startedAt || this.isOver) ? true : false;
   }
 
-  get minesToDetect() {
-    return this.#minesToDetect;
-  }
-
-  set completedAt(completedAt) {
-    this.#completedAt = completedAt;
-  }
-
-  get completedAt() {
-    return this.#completedAt;
-  }
-
-  set startedAt(startedAt) {
-    this.#startedAt = startedAt;
-  }
-
-  get startedAt() {
-    return this.#startedAt;
-  }
-
-  init() {
-    this.#roundTiles = [];
-    this.gameOver = null;
-    this.completedAt = null;
-    this.startedAt = null;
-    this.#players.forEach(player => player.initState());
-    this.#setMinesPositions();
-    this.#initTurns();
-  }
-
-  updateOnPlayerMove(boardTiles) {
-    const playerOnTurn = this.playerOnTurn;
-    playerOnTurn.increaseMoves();
-    this.roundTiles = boardTiles;
-
-    (boardTiles.length === 1)
-      ? this.#setPlayerStatisticsOnTileUpdate(boardTiles[0])
-      : this.#setPlayerStatisticsOnRevealedMines(boardTiles);
-
-    this.#setMinesToDetectAfterMove();
-  }
-
-
+  // TURN SETTINGS
   get roundTimer() {
     return this.turnSettings && this.turnSettings.turnTimer;
   }
@@ -146,11 +92,38 @@ export class Game extends AppModel {
 
 
 
+  init() {
+    this.#roundTiles = [];
+    this.#setIdle();
+    this.#players.forEach(player => player.initState());
+    this.#setMinesPositions();
+    this.#initTurns();
+  }
+
+
+
+  setGameStart() {
+    this.startedAt = new Date().toISOString();
+  }
+
+  updateOnPlayerMove(boardTiles) {
+    const playerOnTurn = this.playerOnTurn;
+    playerOnTurn.increaseMoves();
+    this.roundTiles = boardTiles;
+
+    (boardTiles.length === 1)
+      ? this.#setPlayerStatisticsOnTileUpdate(boardTiles[0])
+      : this.#setPlayerStatisticsOnRevealedMines(boardTiles);
+
+    this.#setMinesToDetectAfterMove();
+  }
 
 
 
 
-
+  get actionsAllowed() {
+    return this.type !== GameType.Online;
+  }
 
   get singlePlayer() {
     return this.#players.length === 1;
@@ -193,7 +166,7 @@ export class Game extends AppModel {
       return;
     }
     if (mineField.isCleared) {
-      this.endGame = GameEndType.Cleared;
+      this.#endGame = GameEndType.Cleared;
       if (this.singlePlayer) {
         console.log("single player completed clear goal");
         this.playerOnTurn.completedGoal = true;
@@ -201,6 +174,12 @@ export class Game extends AppModel {
 
       }
     }
+  }
+
+  #setIdle() {
+    this.gameOverType = null;
+    this.completedAt = null;
+    this.startedAt = null;
   }
 
   #setMinesPositions() {
@@ -215,28 +194,33 @@ export class Game extends AppModel {
 
   #setPlayerStatisticsOnRevealedMines(boardTiles, playerOnTurn = this.playerOnTurn) {
     boardTiles.forEach(tile => {
-      playerOnTurn.inRevealedPositions = tile.id;
+      playerOnTurn.inRevealedPositions = tile.position;
     });
   }
 
   #setPlayerStatisticsOnTileUpdate(tile, playerOnTurn = this.playerOnTurn) {
     if (tile.isDetonatedMine) {
       playerOnTurn.detonatedMine = true;
-      this.endGame = GameEndType.DetonatedMine;
+      this.#endGame = GameEndType.DetonatedMine;
     } else if (tile.isRevealed) {
-      playerOnTurn.inRevealedPositions = tile.id;
+      playerOnTurn.inRevealedPositions = tile.position;
     } else if (tile.isFlagged) {
-      playerOnTurn.onSetFlag(tile.id, tile.isWronglyFlagged);
+      playerOnTurn.onSetFlag(tile.position, tile.isWronglyFlagged);
     } else if (tile.isMarked) {
-      playerOnTurn.onSetMark(tile.id);
+      playerOnTurn.onSetMark(tile.position);
     } else if (tile.isUntouched) {
-      playerOnTurn.onTileReset(tile.id);
+      playerOnTurn.onTileReset(tile.position);
     }
   }
 
   #setMinesToDetectAfterMove() {
     let detectedMines = 0;
-    this.#players.forEach(player => detectedMines = detectedMines + player.minesDetected);
+    console.log(this.player);
+    if (this.singlePlayer) {
+       detectedMines = this.wrongFlagHint ? this.player.minesDetected : this.player.placedFlags;
+    } else {
+      this.#players.forEach(player => detectedMines = detectedMines + player.minesDetected);
+    }
     this.minesToDetect = this.levelSettings.minesPositions.length - detectedMines;
   }
 

@@ -148,7 +148,6 @@ export class GameWizard {
 
   onSubmit() {
     const game = this.game;
-    game.init();
     this.submitGame(game);
   }
 
