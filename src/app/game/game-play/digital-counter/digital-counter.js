@@ -95,9 +95,10 @@ export class DigitalCounter {
     return this.#_value;
   }
 
-  get generateCounter() {
+  generate(parentContainer) {
     const counter = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.counter]);
     this.#digits.forEach(digit => counter.append(digit.generateDigit()));
-    return counter;
+    parentContainer.append(counter);
+    return parentContainer;
   }
 }

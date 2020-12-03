@@ -102,6 +102,7 @@ export class Game extends AppModel {
     this.#roundTiles = [];
     this.gameOver = null;
     this.completedAt = null;
+    this.startedAt = null;
     this.#players.forEach(player => player.initState());
     this.#setMinesPositions();
     this.#initTurns();
@@ -127,6 +128,28 @@ export class Game extends AppModel {
   get roundDuration() {
     return this.turnSettings.turnDuration;
   }
+
+  get gameTimerParams() {
+    let step = 1;
+    let limit = null;
+    let initialValue = 0;
+
+    if (this.roundTimer) {
+      step = -1;
+      limit = 0;
+      initialValue = this.roundDuration;
+    }
+
+    return { step, limit, initialValue };
+  }
+
+
+
+
+
+
+
+
 
 
   get singlePlayer() {

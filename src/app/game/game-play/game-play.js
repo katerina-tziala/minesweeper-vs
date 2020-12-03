@@ -18,19 +18,18 @@ import { DigitalCounter } from "./digital-counter/digital-counter";
 
 import { CONFIRMATION } from "../../components/modal/modal.constants";
 
+import { GameTimer } from "./game-timer/game-timer";
 
 
 
 
 export class GamePlay {
   #_game;
-  #_timerInterval;
 
   constructor(game, actions) {
     this.game = game;
     this.actionsAllowed = true;
     this.actions = actions;
-
   }
 
   set game(game) {
@@ -50,8 +49,6 @@ export class GamePlay {
   }
 
 
-
-
   generateGameBoard() {
     const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, this.boardMineTypeStyleClass], this.game.id);
     Object.values(BOARD_SECTION).forEach(sectionName => {
@@ -62,23 +59,27 @@ export class GamePlay {
 
 
   #init() {
-    this.stopTimer();
-
 
     console.log(this.game.levelSettings);
+
     this.mineField = new MineField(this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
     this.dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
     this.mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
-    this.timeCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.timeCounter));
+
+    this.#initTimeCounter();
   }
 
+  #initTimeCounter() {
+    const params = this.game.gameTimerParams;
+    params.id = this.#getBoardSectionID(DASHBOARD_SECTION.timeCounter);
+    this.timeCounter = new GameTimer(params, this.onTimerStopped.bind(this));
+  }
 
   #onActiveTileChange(activeTile) {
     activeTile
       ? this.dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
       : this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
   }
-
 
   #onTileAction(action, tile) {
     this.#checkGameStart();
@@ -131,39 +132,11 @@ export class GamePlay {
   }
 
 
-  get timerStarted() {
-    return this.#_timerInterval ? true : false;
-  }
-
-  stopTimer() {
-    clearInterval(this.#_timerInterval);
-    this.#_timerInterval = undefined;
-  }
-
-  setGameTimer() {
-    this.stopTimer();
-    this.timeCounter.value = 1;
-    this.#_timerInterval = setInterval(() => {
-      this.timeCounter.value = this.timeCounter.value + 1;
-    }, 1000);
-  }
-
-  setRoundTimer() {
-    this.stopTimer();
-    this.timeCounter.value = this.game.roundDuration;
-    this.#_timerInterval = setInterval(() => {
-      this.timeCounter.value = this.timeCounter.value - 1;
-      if (this.timeCounter.value === 0) {
-        this.stopTimer();
-        console.log("turn ended");
-      }
-    }, 1000);
-  }
 
   #checkGameStart() {
-    if (!this.timerStarted && !this.game.startedAt) {
+    if (!this.timeCounter.isRunning && !this.game.startedAt) {
       this.game.startedAt = new Date().toISOString();
-      this.setGameTimer();
+      this.timeCounter.start();
     }
   }
 
@@ -171,12 +144,14 @@ export class GamePlay {
     console.log("startGameRound");
 
     this.game.startRound();
+    // board face icon
     this.dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
+    // mineCounter
     this.mineCounter.value = this.game.minesToDetect;
-
+    // timeCounter
     if (this.game.roundTimer) {
       console.log("set round styles");
-      this.setRoundTimer();
+      this.timeCounter.start();
       //console.log(this.game.playerOnTurn);
     }
 
@@ -185,18 +160,20 @@ export class GamePlay {
 
 
   start() {
-    //console.log("startGame");
-
     this.#init();
     this.#initGameView.then(() => {
-      this.timeCounter.value = 0;
+
       if (this.game.roundTimer) {
         this.game.startedAt = new Date().toISOString();
         //console.log(this.game.playerOnTurn);
+      } else {
+        this.timeCounter.init();
       }
+
       if (!this.game.singlePlayer) {
         console.log("show start modal");
       }
+
       this.startGameRound();
     });
 
@@ -210,13 +187,23 @@ export class GamePlay {
   }
 
 
+  continueGame() {
+    console.log("continueGame");
+    this.timeCounter.continue();
+  }
+
+  onTimerStopped() {
+    console.log("turn ended");
+  }
+
 
 
   onGameEnd() {
     console.log("onGameEnd");
     console.log(this.game);
 
-    this.stopTimer();
+    this.timeCounter.stop();
+
     this.game.player.lost ?
       this.dashboardFaceIcon.setLostFace(this.game.dashboardIconColor)
       : this.dashboardFaceIcon.setWinnerFace(this.game.dashboardIconColor);
@@ -261,8 +248,8 @@ export class GamePlay {
     return this.#getClearedBoardSection(sectionId)
       .then(dashBoardContainer => {
         const actionStateIconContainer = this.#generateBoardSection(DASHBOARD_SECTION.actionStateIcon);
-        const timeCounter = this.#generateCounter(DASHBOARD_SECTION.timeCounter, this.timeCounter);
-        const mineCounter = this.#generateCounter(DASHBOARD_SECTION.mineCounter, this.mineCounter);
+        const timeCounter = this.timeCounter.generate(this.#generateBoardSection(DASHBOARD_SECTION.timeCounter));
+        const mineCounter = this.mineCounter.generate(this.#generateBoardSection(DASHBOARD_SECTION.mineCounter));
         dashBoardContainer.append(mineCounter, actionStateIconContainer, timeCounter);
         return Promise.resolve();
       });
@@ -306,8 +293,10 @@ export class GamePlay {
 
 
 
+  // BOARD ACTIONS
   #confirmAction(confirmation = CONFIRMATION.quitGame) {
-    this.stopTimer();
+    this.timeCounter.stop();
+
     return new Promise(resolve => {
       if (this.game.startedAt && !this.game.isOver) {
         self.modal.displayConfirmation(confirmation, (confirmed) => {
@@ -337,36 +326,4 @@ export class GamePlay {
     });
   }
 
-
-
-
-
-
-  continueGame() {
-    console.log(this.game.startedAt);
-    console.log(this.timeCounter.value);
-    console.log("continueGame");
-    // this.stopTimer();
-    // this.timeCounter.value = 1;
-    // this.#_timerInterval = setInterval(() => {
-    //   this.timeCounter.value = this.timeCounter.value + 1;
-    // }, 1000);
-
-  }
-  continueGameTimer() {
-    console.log(this.game.startedAt);
-    console.log(this.timeCounter.value);
-    // this.stopTimer();
-    // this.timeCounter.value = 1;
-    // this.#_timerInterval = setInterval(() => {
-    //   this.timeCounter.value = this.timeCounter.value + 1;
-    // }, 1000);
-
-  }
-
-  // if (this.game.roundTimer) {
-  //   console.log("set round styles");
-  //   this.setRoundTimer();
-  //   //console.log(this.game.playerOnTurn);
-  // }
 }
