@@ -3,24 +3,7 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "../../_utils/local-storage-helper";
-
-
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "./game-play.constants";
-
-import { User } from "~/_models/user";
-
-
-import { GameType, GameAction } from "Game";
-
-import { MineField } from "./mine-field/mine-field";
-import { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";
-import { DigitalCounter } from "./digital-counter/digital-counter";
-
-import { CONFIRMATION } from "../../components/modal/modal.constants";
-
-import { GameTimer } from "./game-timer/game-timer";
-
-
+import { DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "./game-play.constants";
 export class GamePlayViewHelper {
 
   static get boardMineTypeStyleClass() {
@@ -60,7 +43,11 @@ export class GamePlayViewHelper {
     });
   }
 
-
+  static generateActionButton(params, action) {
+    const actionButton = ElementGenerator.generateButton(params, action);
+    ElementHandler.addStyleClass(actionButton, DOM_ELEMENT_CLASS.actionButton);
+    return actionButton;
+  }
 
 
 }

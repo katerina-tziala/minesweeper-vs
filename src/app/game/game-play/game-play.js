@@ -111,19 +111,19 @@ export class GamePlay {
 
   onMoveEnd() {
     this.startGameRound();
-    //console.log("updateViewAfterPlayerMove");
+    console.log("updateViewAfterPlayerMove");
     // console.log(this.game);
 
   }
 
   continueGame() {
-    //console.log("continueGame");
+    console.log("continueGame");
     this.#timeCounter.continue();
     this.#mineField.toggleMinefieldFreezer(false);
   }
 
   onGameEnd() {
-    //console.log("onGameEnd");
+    console.log("onGameEnd");
     this.#timeCounter.stop();
     this.#mineField.toggleMinefieldFreezer(true);
     this.#boardFaceIconOnGameEnd = this.game.player.lost;
@@ -232,9 +232,9 @@ export class GamePlay {
     return GamePlayViewHelper.getClearedGameSection(this.#getBoardSectionID(BOARD_SECTION.boardActions))
       .then(container => {
         if (this.game.actionsAllowed) {
-          const resetButton = this.#generateActionButton(ACTION_BUTTONS.reset, this.#onReset.bind(this));
-          const restartButton = this.#generateActionButton(ACTION_BUTTONS.restart, this.#onRestart.bind(this));
-          const exitButton = this.#generateActionButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
+          const resetButton = GamePlayViewHelper.generateActionButton(ACTION_BUTTONS.reset, this.#onReset.bind(this));
+          const restartButton = GamePlayViewHelper.generateActionButton(ACTION_BUTTONS.restart, this.#onRestart.bind(this));
+          const exitButton = GamePlayViewHelper.generateActionButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
           container.append(resetButton, restartButton, exitButton);
           ElementHandler.display(container);
         } else {
@@ -242,12 +242,6 @@ export class GamePlay {
         }
         return Promise.resolve();
       });
-  }
-
-  #generateActionButton(params, action) {
-    const actionButton = ElementGenerator.generateButton(params, action);
-    ElementHandler.addStyleClass(actionButton, DOM_ELEMENT_CLASS.actionButton);
-    return actionButton;
   }
 
   #excecuteBoardAction(action, confirmation = CONFIRMATION.quitGame) {
