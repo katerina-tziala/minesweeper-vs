@@ -10,9 +10,9 @@ import { Player } from "Game";
 
 import { WIZARD_NAME, LevelWizard, OptionsWizard } from "GameSettingsWizard";
 
-import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard.constants";
+import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-setup.constants";
 
-export class GameWizard {
+export class GameSetup {
   #_stepper;
   #_gameParams;
   #_defaultGameParams = {};

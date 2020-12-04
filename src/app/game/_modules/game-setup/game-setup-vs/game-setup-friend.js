@@ -1,16 +1,14 @@
 "use strict";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler } from "HTML_DOM_Manager";
+import { ADD_PLAYER_BTN } from "~/_constants/btn-text.constants";
+import { FormUsername } from "~/components/form/form-username/form-username";
 
 import { GameType } from "GameEnums";
 import { Player } from "Game";
+import { GameSetupVS } from "./_game-setup-vs";
 
-import { GameWizardVS } from "./_game-wizard-vs";
-import { FORM_PARAMS } from "./_game-wizard-vs.constants";
-
-import { FormUsername } from "~/components/form/form-username/form-username";
-
-export class GameWizardVSFriend extends GameWizardVS {
+export class GameSetupFriend extends GameSetupVS {
   #addOpponentForm = undefined;
 
   constructor(onClose, submitGame) {
@@ -29,7 +27,7 @@ export class GameWizardVSFriend extends GameWizardVS {
   #generateAddPlayerForm() {
     const fragment = document.createDocumentFragment();
     this.#addOpponentForm = new FormUsername(this.#addOpponent.bind(this), TYPOGRAPHY.emptyString);
-    fragment.append(this.#addOpponentForm.renderForm(FORM_PARAMS));
+    fragment.append(this.#addOpponentForm.renderForm({submitBtn: ADD_PLAYER_BTN}));
     return fragment;
   }
 

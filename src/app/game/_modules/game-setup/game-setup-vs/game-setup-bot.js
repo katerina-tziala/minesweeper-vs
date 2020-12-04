@@ -2,12 +2,12 @@
 import { GameType } from "GameEnums";
 import { BotPlayer } from "Game";
 
-import { GameWizardVS } from "./_game-wizard-vs";
+import { GameSetupVS } from "./_game-setup-vs";
 
-import { TITLE } from "../game-wizard.constants";
+import { TITLE } from "../game-setup.constants";
 import { WIZARD_NAME, BotModeWizard } from "GameSettingsWizard";
 
-export class GameWizardVSBot extends GameWizardVS {
+export class GameSetupBot extends GameSetupVS {
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);

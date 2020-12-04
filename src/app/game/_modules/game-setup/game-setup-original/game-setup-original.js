@@ -1,12 +1,12 @@
 "use strict";
 
 import { GameType } from "GameEnums";
-
-import { GameWizard } from "./game-wizard";
-import { TITLE } from "./game-wizard.constants";
-
 import { GameWizardStepper } from "GameWizardStepper";
-export class GameWizardOriginal extends GameWizard {
+
+import { GameSetup } from "../game-setup";
+import { TITLE } from "../game-setup.constants";
+
+export class GameSetupOriginal extends GameSetup {
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);

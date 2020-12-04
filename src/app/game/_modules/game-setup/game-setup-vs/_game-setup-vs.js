@@ -6,10 +6,10 @@ import { GameVSMode } from "GameEnums";
 import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "GameSettingsWizard";
 import { EndButtonType, GameWizardStepper } from "GameWizardStepper";
 
-import { GameWizard } from "../game-wizard";
-import { TITLE } from "../game-wizard.constants";
+import { GameSetup } from "../game-setup";
+import { TITLE } from "../game-setup.constants";
 
-export class GameWizardVS extends GameWizard {
+export class GameSetupVS extends GameSetup {
   #_opponent;
   #_wizardSteps;
 

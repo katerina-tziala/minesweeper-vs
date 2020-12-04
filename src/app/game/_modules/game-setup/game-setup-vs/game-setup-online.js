@@ -1,11 +1,11 @@
 "use strict";
 
 import { GameType } from "GameEnums";
-import { GameWizardVS } from "./_game-wizard-vs";
 import { Player } from "Game";
-import { EndButtonType } from "GameWizardStepper";
 
-export class GameWizardVSOnline extends GameWizardVS {
+import { GameSetupVS } from "./_game-setup-vs";
+import { EndButtonType } from "GameWizardStepper";
+export class GameSetupOnline extends GameSetupVS {
 
   constructor(onClose, submitGame, clientToInvite) {
     super(onClose, submitGame);

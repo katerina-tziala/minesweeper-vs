@@ -31,7 +31,8 @@ module.exports = {
             Game: path.resolve(__dirname, 'src/app/game/@game-module.js'),
             GameEnums: path.resolve(__dirname, 'src/app/game/_modules/enums/@game-enums.module.js'),
             GameSettingsWizard: path.resolve(__dirname, 'src/app/game/_modules/game-settings-wizard/@game-settings-wizard.module.js'),
-            GameWizardStepper: path.resolve(__dirname, 'src/app/game/_modules/game-wizard-stepper/@game-wizard-stepper.module.js')
+            GameWizardStepper: path.resolve(__dirname, 'src/app/game/_modules/game-wizard-stepper/@game-wizard-stepper.module.js'),
+            GameSetUp: path.resolve(__dirname, 'src/app/game/_modules/game-setup/@game-setup.module.js')
         }
     },
     entry: {
