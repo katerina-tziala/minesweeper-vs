@@ -2,7 +2,7 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
-import { TileState } from "../../../_enums/tile-state.enum";
+import { TileState } from "./tile-state.enum";
 import { TileView } from "./tile.view";
 
 export class Tile {

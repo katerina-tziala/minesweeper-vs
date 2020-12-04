@@ -1,6 +1,6 @@
 "use strict";
 
-import { GameType } from "Game";
+import { GameType } from "GameEnums";
 
 import { GameWizard } from "./game-wizard";
 import { TITLE } from "./game-wizard.constants";

@@ -2,8 +2,7 @@
 
 import { replaceStringParameter } from "~/_utils/utils";
 
-import { GameVSMode } from "Game";
-
+import { GameVSMode } from "GameEnums";
 import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "GameSettingsWizard";
 import { EndButtonType, GameWizardStepper } from "GameWizardStepper";
 

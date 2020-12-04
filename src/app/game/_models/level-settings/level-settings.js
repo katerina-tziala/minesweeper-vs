@@ -1,7 +1,7 @@
 "use strict";
 import { sortNumbersArrayAsc } from "~/_utils/utils";
 import { AppModel } from "~/_models/app-model";
-import { GameLevel } from "../../_enums/game-level.enum";
+import { GameLevel } from "GameEnums";
 import { LEVEL_PARAMS } from "./level-setting-constants";
 
 export class LevelSettings extends AppModel {

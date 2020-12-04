@@ -4,7 +4,8 @@ import { DropdownSelect, NumberInput } from "UserInputs";
 
 import { clone } from "~/_utils/utils";
 
-import { GameLevel, LevelSettings } from "Game";
+import { GameLevel } from "GameEnums";
+import { LevelSettings } from "Game";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 import { WIZARD_NAME } from "../game-settings-wizard.constants";

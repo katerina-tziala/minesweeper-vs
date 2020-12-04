@@ -2,7 +2,8 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler } from "HTML_DOM_Manager";
 
-import { GameType,  Player } from "Game";
+import { GameType } from "GameEnums";
+import { Player } from "Game";
 
 import { GameWizardVS } from "./_game-wizard-vs";
 import { FORM_PARAMS } from "./_game-wizard-vs.constants";

@@ -8,7 +8,7 @@ import { Page } from "../page";
 
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
-import { GameType } from "Game";
+import { GameType } from "GameEnums";
 
 export class GameSetupPage extends Page {
   #_gameType;

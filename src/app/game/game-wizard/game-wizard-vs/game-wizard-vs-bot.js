@@ -1,5 +1,6 @@
 "use strict";
-import { GameType, BotMode, BotPlayer } from "Game";
+import { GameType } from "GameEnums";
+import { BotPlayer } from "Game";
 
 import { GameWizardVS } from "./_game-wizard-vs";
 

@@ -2,7 +2,7 @@
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { clone } from "~/_utils/utils.js";
-import { GameAction } from "Game";
+import { GameAction } from "GameEnums";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TILE_BTN } from "./tile.constants";
 export class TileView {
   #_id;

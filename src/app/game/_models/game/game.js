@@ -1,7 +1,7 @@
 "use strict";
 import { AppModel } from "~/_models/app-model";
 import { getRandomValueFromArray } from "~/_utils/utils";
-import { GameType, GameEndType, GameVSMode } from "Game";
+import { GameType, GameEndType, GameVSMode } from "GameEnums";
 
 export class Game extends AppModel {
   #players = [];

@@ -10,7 +10,9 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, AC
 import { User } from "~/_models/user";
 
 
-import { GameType, GameAction } from "Game";
+import { GameType, GameAction } from "GameEnums";
+
+
 
 import { MineField } from "./mine-field/mine-field";
 import { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";

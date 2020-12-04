@@ -1,7 +1,7 @@
 "use strict";
 
 import { Player } from "./player";
-import { BotMode } from "../../_enums/bot-mode.enum";
+import { BotMode } from "GameEnums";
 export class BotPlayer extends Player {
 
   constructor() {

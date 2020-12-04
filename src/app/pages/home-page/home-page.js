@@ -7,7 +7,7 @@ import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager"
 
 import { Page } from "../page";
 import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./home-page.constants";
-import { GameType } from "Game";
+import { GameType } from "GameEnums";
 
 export class HomePage extends Page {
     constructor(selectGameType) {
