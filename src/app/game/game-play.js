@@ -2,10 +2,10 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "../../_utils/local-storage-helper";
+import { LocalStorageHelper } from "../_utils/local-storage-helper";
 
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "../game-type/game.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "./game-type/game.constants";
 
 import { User } from "~/_models/user";
 
@@ -14,15 +14,15 @@ import { GameType, GameAction } from "GameEnums";
 
 
 
-import { MineField } from "./mine-field/mine-field";
-import { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";
-import { DigitalCounter } from "./digital-counter/digital-counter";
+import { MineField } from "./game-play-components/mine-field/mine-field";
+import { DashboardFaceIcon } from "./game-play-components/dashboard-face-icon/dashboard-face-icon";
+import { DigitalCounter } from "./game-play-components/digital-counter/digital-counter";
 
-import { CONFIRMATION } from "../../components/modal/modal.constants";
+import { CONFIRMATION } from "../components/modal/modal.constants";
 
-import { GameTimer } from "./game-timer/game-timer";
+import { GameTimer } from "./game-play-components/game-timer/game-timer";
 
-import { GamePlayViewHelper } from "../game-type/game-view-helper";
+import { GamePlayViewHelper } from "./game-type/game-view-helper";
 
 
 
@@ -225,7 +225,7 @@ export class GamePlay {
     return GamePlayViewHelper.getClearedGameSection(this.#getBoardSectionID(BOARD_SECTION.mineField))
       .then(container => {
         container.append(this.#mineField.generateMinefield);
-        return Promise.resolve();
+        return;
       });
   }
 

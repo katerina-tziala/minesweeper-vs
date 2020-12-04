@@ -25,6 +25,9 @@ export class GameViewHelper {
 
   static generateBoard(gameID) {
     const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, GameViewHelper.boardMineTypeStyleClass], GameViewHelper.getBoardID(gameID));
+    board.addEventListener("contextmenu", event => {
+      event.preventDefault();
+    });
     board.append(GameViewHelper.generateBoardSection(BOARD_SECTION.boardActions, gameID));
     board.append(GameViewHelper.generateDashBoard(gameID));
     board.append(GameViewHelper.generateBoardSection(BOARD_SECTION.mineField, gameID));
