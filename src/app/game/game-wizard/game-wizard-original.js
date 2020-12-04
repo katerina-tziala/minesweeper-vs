@@ -5,7 +5,7 @@ import { GameType } from "Game";
 import { GameWizard } from "./game-wizard";
 import { TITLE } from "./game-wizard.constants";
 
-import { GameWizardStepper } from "./game-wizard-stepper/@game-wizard-stepper.module";
+import { GameWizardStepper } from "GameWizardStepper";
 export class GameWizardOriginal extends GameWizard {
 
   constructor(onClose, submitGame) {

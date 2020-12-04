@@ -1,11 +1,11 @@
 "use strict";
 
-import { replaceStringParameter, clone } from "~/_utils/utils";
+import { replaceStringParameter } from "~/_utils/utils";
 
 import { GameVSMode } from "Game";
 
-import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
-import { EndButtonType, GameWizardStepper } from "../game-wizard-stepper/@game-wizard-stepper.module";
+import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "GameSettingsWizard";
+import { EndButtonType, GameWizardStepper } from "GameWizardStepper";
 
 import { GameWizard } from "../game-wizard";
 import { TITLE } from "../game-wizard.constants";

@@ -3,7 +3,7 @@
 import { GameType } from "Game";
 import { GameWizardVS } from "./_game-wizard-vs";
 import { Player } from "Game";
-import { EndButtonType } from "../game-wizard-stepper/@game-wizard-stepper.module";
+import { EndButtonType } from "GameWizardStepper";
 
 export class GameWizardVSOnline extends GameWizardVS {
 

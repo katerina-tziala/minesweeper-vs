@@ -8,7 +8,7 @@ import { clone } from "~/_utils/utils.js";
 
 import { Player } from "Game";
 
-import { WIZARD_NAME, LevelWizard, OptionsWizard } from "../game-settings-wizard/@game-settings-wizard.module";
+import { WIZARD_NAME, LevelWizard, OptionsWizard } from "GameSettingsWizard";
 
 import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard.constants";
 

@@ -4,7 +4,7 @@ import { GameType, BotMode, BotPlayer } from "Game";
 import { GameWizardVS } from "./_game-wizard-vs";
 
 import { TITLE } from "../game-wizard.constants";
-import { WIZARD_NAME, BotModeWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
+import { WIZARD_NAME, BotModeWizard } from "GameSettingsWizard";
 
 export class GameWizardVSBot extends GameWizardVS {
 
