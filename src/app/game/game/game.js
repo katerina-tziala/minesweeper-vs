@@ -1,6 +1,6 @@
 "use strict";
 import { AppModel } from "~/_models/app-model";
-import { getRandomValueFromArray } from "~/_utils/utils";
+import { randomValueFromArray } from "~/_utils/utils";
 import { GameType, GameEndType, GameVSMode } from "GameEnums";
 
 export class Game extends AppModel {
@@ -188,7 +188,7 @@ export class Game extends AppModel {
   }
 
   #initTurns() {
-    const playerStartID = getRandomValueFromArray(this.players.map(player => player.id));
+    const playerStartID = randomValueFromArray(this.players.map(player => player.id));
     this.players.find(player => player.id === playerStartID).turn = true;
   }
 

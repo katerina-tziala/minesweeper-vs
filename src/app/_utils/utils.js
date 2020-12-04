@@ -10,7 +10,7 @@ export const sortNumbersArrayAsc = (arrayToSort) => {
   return [...arrayToSort].sort((itemA, itemB) => { return itemA - itemB; });
 };
 
-export const getRandomValueFromArray = (arrayToChooseFrom) => {
+export const randomValueFromArray = (arrayToChooseFrom) => {
   return arrayToChooseFrom[Math.floor(Math.random() * arrayToChooseFrom.length)];
 };
 

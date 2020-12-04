@@ -4,7 +4,7 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { GroupController } from "~/_utils/group-controller";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-import { clone } from "~/_utils/utils.js";
+import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
 import { Player } from "GameModels";
 
@@ -147,7 +147,9 @@ export class GameSetup {
   }
 
   onSubmit() {
-    this.#submitGame(clone(this.gameSetUp));
+    const gameSetUp = this.gameSetUp;
+    gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map(player => player.id));
+    this.#submitGame(clone(gameSetUp));
   }
 
   onClose() {
