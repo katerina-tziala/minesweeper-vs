@@ -6,14 +6,14 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { Page } from "../page";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
+// import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
 
-import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
+// import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
-import { User } from "~/_models/user";
+// import { User } from "~/_models/user";
 
 
-import { GamePlay } from "../../game/game-play/game-play";
+// import { GamePlay } from "../../game/game-play/game-play";
 
 export class GamePage extends Page {
   #_gameParams;
@@ -21,14 +21,18 @@ export class GamePage extends Page {
 
   constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
     super();
+    self.settingsController.gameSettingsHidden = true;
+    this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
-    this.gameParams = gameParams;
+
+    console.log(this.gameParams);
+
     // this.gamePlay = new GamePlay(game, {
     //   onExit: this.onGameExit.bind(this),
     //   onReset: this.onGameReset.bind(this),
     // });
-    self.settingsController.gameSettingsHidden = true;
+
     this.init();
   }
 
@@ -50,7 +54,6 @@ export class GamePage extends Page {
 
   renderPage(mainContainer) {
 
-    console.log(this.gameParams);
 
     // console.log(JSON.parse(JSON.stringify(this.game)));
 

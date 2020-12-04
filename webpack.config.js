@@ -32,7 +32,8 @@ module.exports = {
             GameModels: path.resolve(__dirname, 'src/app/game/_modules/models/@game-models.module.js'),
             GameSettingsWizard: path.resolve(__dirname, 'src/app/game/_modules/game-settings-wizard/@game-settings-wizard.module.js'),
             GameWizardStepper: path.resolve(__dirname, 'src/app/game/_modules/game-wizard-stepper/@game-wizard-stepper.module.js'),
-            GameSetUp: path.resolve(__dirname, 'src/app/game/_modules/game-setup/@game-setup.module.js')
+            GameSetUp: path.resolve(__dirname, 'src/app/game/_modules/game-setup/@game-setup.module.js'),
+            GamePlay: path.resolve(__dirname, 'src/app/game/_modules/game-play/@game-play.module.js')
         }
     },
     entry: {

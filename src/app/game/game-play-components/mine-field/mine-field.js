@@ -1,8 +1,8 @@
 "use strict";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
-import { sortNumbersArrayAsc, uniqueArray, arrayDifference } from "~/_utils/utils";
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { uniqueArray, arrayDifference } from "~/_utils/utils";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./mine-field.constants";
 import { TileGenerator } from "./tile-generator";
 import { preventInteraction } from "~/_utils/utils";
