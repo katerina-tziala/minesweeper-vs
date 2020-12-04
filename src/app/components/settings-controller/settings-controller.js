@@ -81,7 +81,7 @@ export class SettingsController {
 
     initSettings() {
         this.settings = new AppSettingsModel();
-        const savedSettings = LocalStorageHelper.retrieve("settings");
+        const savedSettings = LocalStorageHelper.appSettings;
         if (savedSettings) {
             this.settings.update(savedSettings);
         }
@@ -208,7 +208,7 @@ export class SettingsController {
     }
 
     saveSettings() {
-        LocalStorageHelper.save("settings", clone(this.settings));
+        LocalStorageHelper.appSettings = clone(this.settings);
     }
 
     setAppTheme() {

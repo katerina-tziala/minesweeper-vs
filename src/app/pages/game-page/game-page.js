@@ -6,14 +6,14 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { Page } from "../page";
+
 // import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
 
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
 // import { User } from "~/_models/user";
 
-
-// import { GamePlay } from "../../game/game-play/game-play";
+import { GameFactory } from "../../game/game-factory";
 
 export class GamePage extends Page {
   #_gameParams;
@@ -25,8 +25,7 @@ export class GamePage extends Page {
     this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
-
-    console.log(this.gameParams);
+    this.game = GameFactory.getGame(this.gameParams);
 
     // this.gamePlay = new GamePlay(game, {
     //   onExit: this.onGameExit.bind(this),
@@ -55,6 +54,10 @@ export class GamePage extends Page {
   renderPage(mainContainer) {
 
 
+    if (this.game) {
+      mainContainer.append(this.game.generateView());
+      this.game.start();
+    }
     // console.log(JSON.parse(JSON.stringify(this.game)));
 
 
@@ -64,8 +67,8 @@ export class GamePage extends Page {
     //   //console.log(event);
     // });
 
-    // mainContainer.append(this.gamePlay.generateView());
-    // this.gamePlay.start();
+    //
+    //
   }
 
   // Overridden functions

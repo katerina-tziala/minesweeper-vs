@@ -91,7 +91,11 @@ export class Game extends AppModel {
 
 
 
-
+  #setIdle() {
+    this.gameOverType = null;
+    this.completedAt = null;
+    this.startedAt = null;
+  }
   init() {
     this.#roundTiles = [];
     this.#setIdle();

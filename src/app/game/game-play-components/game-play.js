@@ -5,7 +5,7 @@ import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager"
 import { LocalStorageHelper } from "../../_utils/local-storage-helper";
 
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "./game-play.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "../game-type/game.constants";
 
 import { User } from "~/_models/user";
 
@@ -22,7 +22,7 @@ import { CONFIRMATION } from "../../components/modal/modal.constants";
 
 import { GameTimer } from "./game-timer/game-timer";
 
-import { GamePlayViewHelper } from "./game-play-view-helper";
+import { GamePlayViewHelper } from "../game-type/game-view-helper";
 
 
 

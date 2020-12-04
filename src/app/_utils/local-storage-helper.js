@@ -19,6 +19,22 @@ export class LocalStorageHelper {
     return localStorage.clear();
   }
 
+  static set appSettings(data) {
+    LocalStorageHelper.save("appSettings", data);
+  }
+
+  static get appSettings() {
+    return LocalStorageHelper.retrieve("appSettings");
+  }
+
+  static getGameSetUp(type) {
+    return LocalStorageHelper.retrieve(`gameSetup-${type}`);
+  }
+
+  static removeGameSetUp(type) {
+    return localStorage.removeItem(`gameSetup-${type}`);
+  }
+
   static setGameSetUp(type, data) {
     LocalStorageHelper.save(`gameSetup-${type}`, data);
   }
