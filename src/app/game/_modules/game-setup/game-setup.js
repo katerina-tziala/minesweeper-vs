@@ -6,7 +6,7 @@ import { GroupController } from "~/_utils/group-controller";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone } from "~/_utils/utils.js";
 
-import { Player } from "Game";
+import { Player } from "GameModels";
 
 import { WIZARD_NAME, LevelWizard, OptionsWizard } from "GameSettingsWizard";
 

@@ -1,6 +1,6 @@
 "use strict";
 import { GameType } from "GameEnums";
-import { BotPlayer } from "Game";
+import { BotPlayer } from "GameModels";
 
 import { GameSetupVS } from "./_game-setup-vs";
 

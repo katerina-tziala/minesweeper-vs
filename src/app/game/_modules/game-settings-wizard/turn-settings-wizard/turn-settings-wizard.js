@@ -2,7 +2,7 @@
 
 import { Switcher, NumberInput } from "UserInputs";
 
-import { TurnSettings } from "Game";
+import { TurnSettings } from "GameModels";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 import { WIZARD_NAME } from "../game-settings-wizard.constants";

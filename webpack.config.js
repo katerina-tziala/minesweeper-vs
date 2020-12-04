@@ -28,8 +28,8 @@ module.exports = {
             ['~']: path.resolve(__dirname, 'src/app'),
             UserInputs: path.resolve(__dirname, 'src/app/_modules/user-inputs/@user-inputs.module.js'),
             HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/@html-dom-manager.module.js'),
-            Game: path.resolve(__dirname, 'src/app/game/@game-module.js'),
             GameEnums: path.resolve(__dirname, 'src/app/game/_modules/enums/@game-enums.module.js'),
+            GameModels: path.resolve(__dirname, 'src/app/game/_modules/models/@game-models.module.js'),
             GameSettingsWizard: path.resolve(__dirname, 'src/app/game/_modules/game-settings-wizard/@game-settings-wizard.module.js'),
             GameWizardStepper: path.resolve(__dirname, 'src/app/game/_modules/game-wizard-stepper/@game-wizard-stepper.module.js'),
             GameSetUp: path.resolve(__dirname, 'src/app/game/_modules/game-setup/@game-setup.module.js')

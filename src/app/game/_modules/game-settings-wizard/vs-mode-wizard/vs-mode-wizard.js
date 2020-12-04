@@ -2,7 +2,7 @@
 
 import { DropdownSelect } from "UserInputs";
 
-import { OptionsSettings } from "Game";
+import { OptionsSettings } from "GameModels";
 import { GameVSMode } from "GameEnums";
 
 import { GameSettingsWizard } from "../game-settings-wizard";

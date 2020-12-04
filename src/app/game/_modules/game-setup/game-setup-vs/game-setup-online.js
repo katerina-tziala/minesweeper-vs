@@ -1,7 +1,7 @@
 "use strict";
 
 import { GameType } from "GameEnums";
-import { Player } from "Game";
+import { Player } from "GameModels";
 
 import { GameSetupVS } from "./_game-setup-vs";
 import { EndButtonType } from "GameWizardStepper";

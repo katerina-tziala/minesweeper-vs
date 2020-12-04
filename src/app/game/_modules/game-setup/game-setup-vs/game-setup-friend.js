@@ -5,7 +5,7 @@ import { ADD_PLAYER_BTN } from "~/_constants/btn-text.constants";
 import { FormUsername } from "~/components/form/form-username/form-username";
 
 import { GameType } from "GameEnums";
-import { Player } from "Game";
+import { Player } from "GameModels";
 import { GameSetupVS } from "./_game-setup-vs";
 
 export class GameSetupFriend extends GameSetupVS {
