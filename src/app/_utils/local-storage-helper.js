@@ -19,5 +19,17 @@ export class LocalStorageHelper {
     return localStorage.clear();
   }
 
+  static setGameSetUp(type, data) {
+    LocalStorageHelper.save(`gameSetup-${type}`, data);
+  }
+
+  static getGameSetUp(type) {
+    return LocalStorageHelper.retrieve(`gameSetup-${type}`);
+  }
+
+  static removeGameSetUp(type) {
+    return localStorage.removeItem(`gameSetup-${type}`);
+  }
+
 }
 

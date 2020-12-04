@@ -1,15 +1,15 @@
 "use strict";
 
-import { replaceStringParameter } from "~/_utils/utils";
+import { replaceStringParameter, clone } from "~/_utils/utils";
 
-import { GameVSMode, Game } from "Game";
+import { GameVSMode } from "Game";
 
 import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "../../game-settings-wizard/@game-settings-wizard.module";
+import { EndButtonType, GameWizardStepper } from "../game-wizard-stepper/@game-wizard-stepper.module";
 
 import { GameWizard } from "../game-wizard";
 import { TITLE } from "../game-wizard.constants";
 
-import { GameWizardStepper } from "../game-wizard-stepper/game-wizard-stepper";
 export class GameWizardVS extends GameWizard {
   #_opponent;
   #_wizardSteps;
@@ -29,9 +29,6 @@ export class GameWizardVS extends GameWizard {
   }
 
   get opponent() {
-    if (this.#_opponent) {
-      this.#_opponent.colorType = self.settingsController.settings.opponentColorType;
-    }
     return this.#_opponent;
   }
 
@@ -63,7 +60,7 @@ export class GameWizardVS extends GameWizard {
   }
 
   initModeWizard() {
-    const controller = new VSModeWizard(this.onVSModeChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.optionsSettings), this.parallelAllowed);
+    const controller = new VSModeWizard(this.onVSModeChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.vsModeSettings), this.parallelAllowed);
     this.settingsControllers = controller;
     this.setOptionsBasedOnVSMode(controller.data);
   }
@@ -155,7 +152,7 @@ export class GameWizardVS extends GameWizard {
 
   // OVERIDDEN FUNCTIONS
   get stepperSubmissionType() {
-    return "play";
+    return EndButtonType.play;
   }
 
   get title() {
@@ -166,7 +163,11 @@ export class GameWizardVS extends GameWizard {
     return title;
   }
 
-  get game() {
-    return new Game(this.gameType, this.gameParams, this.player, this.opponent);
+  get gameSetUp() {
+    const gameSetUp = super.gameSetUp;
+    gameSetUp.players.push(this.opponent);
+    delete gameSetUp.vsModeSettings;
+    return gameSetUp;
   }
+
 }

@@ -3,6 +3,7 @@
 import { GameType } from "Game";
 import { GameWizardVS } from "./_game-wizard-vs";
 import { Player } from "Game";
+import { EndButtonType } from "../game-wizard-stepper/@game-wizard-stepper.module";
 
 export class GameWizardVSOnline extends GameWizardVS {
 
@@ -18,7 +19,7 @@ export class GameWizardVSOnline extends GameWizardVS {
   }
 
   get stepperSubmissionType() {
-    return "invite";
+    return EndButtonType.invite;
   }
 
 }

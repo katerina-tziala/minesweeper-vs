@@ -2,18 +2,16 @@
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard-stepper.constants";
-
+import { EndButtonType } from "./game-wizard-stepper-end-button-type.enum"
 export class GameWizardStepper {
-  // Properties
   #_submissionType;
   #_steps;
   #_currentStep;
-  // Methods
   #onReset;
   #onSubmit;
   #onStepChange;
 
-  constructor(actions, steps = 1, submissionType = "play") {
+  constructor(actions, steps = 1, submissionType = EndButtonType.play) {
     this.#onReset = actions.onReset;
     this.#onSubmit = actions.onSubmit;
     this.#onStepChange = actions.onStepChange;
@@ -74,7 +72,7 @@ export class GameWizardStepper {
     const previousBtn = ElementGenerator.generateButton(BUTTONS.previous, this.#onPrevious.bind(this));
     ElementHandler.setDisabled(previousBtn, this.#onFirstStep);
     actionButtons.unshift(previousBtn);
-    const nextBtn = this.#generateSubmissionButton("next");
+    const nextBtn = this.#generateSubmissionButton(EndButtonType.next);
     actionButtons.push(nextBtn);
   }
 
@@ -90,12 +88,12 @@ export class GameWizardStepper {
   }
 
   #onPrevious() {
-    this.#currentStep = this.currentStep-1;
+    this.#currentStep = this.currentStep - 1;
     if (this.#onFirstStep) {
       this.#setPreviousButtonDisabled();
     }
     if (this.#onSemiFinalStep) {
-      this.#setSubmissionStyle("next");
+      this.#setSubmissionStyle(EndButtonType.next);
     }
     this.#onStepChange(this.currentStep);
   }
@@ -109,7 +107,7 @@ export class GameWizardStepper {
   }
 
   #moveToNextStep() {
-    this.#currentStep = this.currentStep+1;
+    this.#currentStep = this.currentStep + 1;
     if (this.#onSecondStep) {
       this.#setPreviousButtonDisabled();
     }

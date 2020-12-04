@@ -16,19 +16,28 @@ import { User } from "~/_models/user";
 import { GamePlay } from "../../game/game-play/game-play";
 
 export class GamePage extends Page {
+  #_gameParams;
   #_game;
 
-  constructor(game, navigateToHome, onGameSetUpNavigation) {
+  constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
     super();
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
-    this.game = game;
-    this.gamePlay = new GamePlay(game, {
-      onExit: this.onGameExit.bind(this),
-      onReset: this.onGameReset.bind(this),
-    });
+    this.gameParams = gameParams;
+    // this.gamePlay = new GamePlay(game, {
+    //   onExit: this.onGameExit.bind(this),
+    //   onReset: this.onGameReset.bind(this),
+    // });
     self.settingsController.gameSettingsHidden = true;
     this.init();
+  }
+
+  set gameParams(gameParams) {
+    this.#_gameParams = gameParams;
+  }
+
+  get gameParams() {
+    return this.#_gameParams;
   }
 
   set game(game) {
@@ -41,13 +50,19 @@ export class GamePage extends Page {
 
   renderPage(mainContainer) {
 
-    mainContainer.addEventListener("contextmenu", event => {
-      event.preventDefault();
-      //console.log(event);
-    });
+    console.log(this.gameParams);
 
-    mainContainer.append(this.gamePlay.generateView());
-    this.gamePlay.start();
+    // console.log(JSON.parse(JSON.stringify(this.game)));
+
+
+
+    // mainContainer.addEventListener("contextmenu", event => {
+    //   event.preventDefault();
+    //   //console.log(event);
+    // });
+
+    // mainContainer.append(this.gamePlay.generateView());
+    // this.gamePlay.start();
   }
 
   // Overridden functions
@@ -71,7 +86,7 @@ export class GamePage extends Page {
     console.log("onGameReset");
     console.log("notify connection");
 
-    this.#saveCurrentGameSetUp();
+    //this.#saveCurrentGameSetUp();
     this.onGameSetUpNavigation(this.game.type);
   }
 
@@ -82,7 +97,7 @@ export class GamePage extends Page {
     delete gameSetUp.player;
     delete gameSetUp.opponent;
 
-    LocalStorageHelper.save("gameSetup", gameSetUp);
+  //   LocalStorageHelper.save("gameSetup", gameSetUp);
   }
 
 }

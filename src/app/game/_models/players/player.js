@@ -10,12 +10,15 @@ export class Player extends AppModel {
     this.id = id;
     this.name = name;
     this.entered = true;
-    this.initState();
+    this.isBot = false;
   }
 
-  get isBot() {
-    return false;
-  }
+
+
+
+  // get isBot() {
+  //   return false;
+  // }
 
   set colorType(colorType) {
     this.#_colorType = colorType;

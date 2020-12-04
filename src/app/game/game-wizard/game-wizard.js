@@ -4,8 +4,9 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { GroupController } from "~/_utils/group-controller";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+import { clone } from "~/_utils/utils.js";
 
-import { Game, Player } from "Game";
+import { Player } from "Game";
 
 import { WIZARD_NAME, LevelWizard, OptionsWizard } from "../game-settings-wizard/@game-settings-wizard.module";
 
@@ -16,10 +17,12 @@ export class GameWizard {
   #_gameParams;
   #_defaultGameParams = {};
   #_settingsControllers = new GroupController();
+  #closeWizard;
+  #submitGame;
 
   constructor(onClose, submitGame) {
-    this.onClose = onClose;
-    this.submitGame = submitGame;
+    this.#closeWizard = onClose;
+    this.#submitGame = submitGame;
     this.initGameParams();
   }
 
@@ -32,18 +35,15 @@ export class GameWizard {
   }
 
   get player() {
-    const player = new Player(self.user.id, self.user.username);
-    player.colorType = self.settingsController.settings.playerColorType;
-    return player;
+    return new Player(self.user.id, self.user.username);
   }
 
   initGameParams() {
     this.#_gameParams = {};
-    const currentParams = LocalStorageHelper.retrieve("gameSetup");
+    const currentParams = LocalStorageHelper.getGameSetUp(this.type);
     if (currentParams) {
       this.#_gameParams = currentParams;
     }
-    LocalStorageHelper.remove("gameSetup");
   }
 
   set gameParams(params) {
@@ -147,8 +147,12 @@ export class GameWizard {
   }
 
   onSubmit() {
-    const game = this.game;
-    this.submitGame(game);
+    this.#submitGame(clone(this.gameSetUp));
+  }
+
+  onClose() {
+    this.#closeWizard();
+    LocalStorageHelper.removeGameSetUp(this.gameType);
   }
 
   // OVERRIDEN FUNCTIONS
@@ -160,8 +164,13 @@ export class GameWizard {
     return TYPOGRAPHY.emptyString;
   }
 
-  get game() {
-    return new Game(this.gameType, this.gameParams, this.player);
+  get gameSetUp() {
+    LocalStorageHelper.setGameSetUp(this.gameType, this.gameParams);
+    const gameSetUp = this.gameParams;
+    gameSetUp.type = this.gameType;
+    gameSetUp.levelSettings.setMinesPositions();
+    gameSetUp.players = [this.player];
+    return gameSetUp;
   }
 
   generateContent() {
