@@ -13,3 +13,8 @@ export const DOM_ELEMENT_CLASS = {
 export const DOM_ELEMENT_ID = {
   allowedFlags: "allowed-flags__",
 };
+
+export const TARGET_CONTENT = {
+  clear: "cleared",
+  detect: "detected",
+};

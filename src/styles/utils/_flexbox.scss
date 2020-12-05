@@ -74,3 +74,9 @@
   @extend %first-axis-end;
   @extend %second-axis-end;
 }
+
+%end-center {
+  @extend %flexbox;
+  @extend %first-axis-end;
+  @extend %second-axis-centered;
+}

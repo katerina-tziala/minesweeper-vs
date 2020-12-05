@@ -20,11 +20,11 @@
 
 
 .game-player-card {
-  width           : 200px;
-  height          : 90px;
-  position        : relative;
-  position        : relative;
-  margin          : 10px;
+  width   : 200px;
+  height  : 90px;
+  position: relative;
+  position: relative;
+  margin  : 10px;
 
 
 
@@ -60,6 +60,11 @@
       text-align: left;
     }
 
+    .game-player-card__player-goal-details {
+      left: 41px;
+
+
+    }
   }
 
 
@@ -93,6 +98,12 @@
     .game-player-card__player-name {
       left      : 28px;
       text-align: right;
+    }
+
+    .game-player-card__player-goal-details {
+      left: 28px;
+
+      //@extend %end-center;
     }
   }
 
@@ -194,6 +205,39 @@
   height     : 22px;
   white-space: nowrap;
 }
+
+
+.game-player-card__player-goal-details {
+  position           : absolute;
+  z-index            : 2;
+  bottom             : 30px;
+  font-weight        : 600;
+  font-size          : 1rem;
+  width              : 134px;
+
+  white-space        : nowrap;
+  // background-color: pink;
+  @extend %ellipsis-text;
+  height: 14px;
+  line-height: 15px;
+
+  @extend %start-center;
+}
+
+.player-goal-details-target {
+  text-transform: capitalize;
+  font-style    : italic;
+  display       : inline-block;
+}
+
+.player-goal-details-target-result {
+  width     : 30px;
+  padding   : 0 4px;
+  // background: red;
+
+}
+
+
 
 
 

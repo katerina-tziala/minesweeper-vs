@@ -4,14 +4,14 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-player-card.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TARGET_CONTENT } from "./game-player-card.constants";
 
 import { PlayerCardState } from "./player-card-state/player-card-state";
 import { TurnsIndicator } from "./turns-indicator/turns-indicator";
 export class GamePlayerCard {
 
 
-  static generate(player, allowedTurns, opponent = false) {
+  static generate(player, allowedTurns, clearMinefield = true, opponent = false) {
     const playerCard = ElementGenerator.generateContainer(["game-player-card"]);
 
     if (opponent) {
@@ -23,7 +23,7 @@ export class GamePlayerCard {
 
 
     playerCard.append(GamePlayerCard.generatePlayerSection(player, allowedTurns));
-    playerCard.append(GamePlayerCard.generateDetailsSection(player, opponent));
+    playerCard.append(GamePlayerCard.generateDetailsSection(player, clearMinefield));
     playerCard.append(PlayerCardState.generateStateSection(player));
 
 
@@ -48,13 +48,21 @@ export class GamePlayerCard {
     return playerIcon;
   }
 
-  static generateDetailsSection(player, opponent) {
+  static generateDetailsSection(player, clearMinefield) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
 
     const playerName = ElementGenerator.generateContainer(["game-player-card__player-name"]);
     playerName.innerHTML = player.name;
     playerInstanceSection.append(playerName);
 
+    const playerTarget = ElementGenerator.generateContainer(["game-player-card__player-goal-details"]);
+    playerTarget.innerHTML = `<span class="player-goal-details-target">${clearMinefield ? TARGET_CONTENT.clear : TARGET_CONTENT.detect}:</span>
+    <span id="player-goal-details-target-result__${player.id}" class="player-goal-details-target-result">
+    ${clearMinefield ? player.revealedTiles : player.minesDetected}</span>`;
+    playerInstanceSection.append(playerTarget);
+
+
+    // clearMinefield
     console.log(player);
 
     return playerInstanceSection;

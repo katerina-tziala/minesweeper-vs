@@ -15,6 +15,7 @@ import { Page } from "../page";
 
 import { GameFactory } from "../../game/game-factory";
 import { Player } from "GameModels";
+// import { GameVSMode } from "GameEnums";
 
 import { GamePlayerCard } from "../../game/game-play-components/game-player-card/game-player-card";
 export class GamePage extends Page {
@@ -66,9 +67,9 @@ export class GamePage extends Page {
    // b.allowedFlags = 1;
     a.allowedFlags = 0;
 
-    mainContainer.append(GamePlayerCard.generate(a, 10));
+    mainContainer.append(GamePlayerCard.generate(a, 10, false, false));
 
-    mainContainer.append(GamePlayerCard.generate(b, undefined, true));
+    mainContainer.append(GamePlayerCard.generate(b, undefined, true, true));
    // mainContainer.append(card.generate());
     // GameFactory.loadGame(this.gameParams).then(game => {
     //   this.game = game;
