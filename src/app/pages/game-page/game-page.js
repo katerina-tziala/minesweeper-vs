@@ -25,7 +25,6 @@ export class GamePage extends Page {
     this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
-    this.game = GameFactory.getGame(this.gameParams);
 
     // this.gamePlay = new GamePlay(game, {
     //   onExit: this.onGameExit.bind(this),
@@ -53,24 +52,15 @@ export class GamePage extends Page {
 
   renderPage(mainContainer) {
 
-
-    if (this.game) {
-      mainContainer.append(this.game.generateView());
-      this.game.start();
-    } else {
-      console.log("no game");
-    }
-    // console.log(JSON.parse(JSON.stringify(this.game)));
-
-
-
-    // mainContainer.addEventListener("contextmenu", event => {
-    //   event.preventDefault();
-    //   //console.log(event);
-    // });
-
-    //
-    //
+    GameFactory.getGame(this.gameParams).then(game => {
+      this.game = game;
+      if (this.game) {
+        mainContainer.append(this.game.generateView());
+        this.game.start();
+      } else {
+        console.log("no game");
+      }
+    });
   }
 
   // Overridden functions
@@ -105,7 +95,7 @@ export class GamePage extends Page {
     delete gameSetUp.player;
     delete gameSetUp.opponent;
 
-  //   LocalStorageHelper.save("gameSetup", gameSetUp);
+    //   LocalStorageHelper.save("gameSetup", gameSetUp);
   }
 
 }

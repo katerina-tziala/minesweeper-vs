@@ -5,7 +5,6 @@ import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { GameType, GameVSMode } from "GameEnums";
 import { LevelSettings, Player, BotPlayer } from "GameModels";
 
-import { GameSinglePlayer, GameVS, GameParallel } from "GamePlayType";
 export class GameFactory {
 
   static getGame(gameParams, gameId) {
@@ -16,24 +15,17 @@ export class GameFactory {
 
     switch (gameParams.type) {
       case GameType.Original:
-        return GameFactory.getPlayerGame(gameId, gameParams);
+        return GameFactory.loadPlayerGame(gameId, gameParams);
       case GameType.Friend:
-        return new GameVS(gameId, gameParams, GameFactory.getPlayer(), GameFactory.getOpponent(playersData));
+        return GameFactory.loadGameVs(gameId, gameParams, GameFactory.getOpponent(playersData));
       case GameType.Bot:
-        return GameFactory.getGameVSBot(gameId, gameParams, playersData);
+        return GameFactory.loadGameVSBot(gameId, gameParams, playersData);
       case GameType.Online:
-        return GameFactory.getGameVSOnline(gameId, gameParams, playersData);
+        return GameFactory.loadGameVSOnline(gameId, gameParams, playersData);
       default:
         return undefined;
     }
   }
-
-  // #initializeWizard(gameId, gameParams, gameName = GameVS) {
-  //   const gameName = `GameSetup${enumKey(GameType, this.#_gameType)}`;
-  //   return import(`GamePlayType`).then(module => {
-  //     return new module[wizardName](this.navigateToHome, this.onPlayGame.bind(this));
-  //   });
-  // }
 
   static getLevelSettings(settings) {
     const levelSettings = new LevelSettings();
@@ -65,30 +57,45 @@ export class GameFactory {
     return botPlayer;
   }
 
-  static getPlayerGame(gameId, gameParams) {
-    return new GameSinglePlayer(gameId, gameParams, GameFactory.getPlayer());
-  }
-
-  static getPlayerParallelGame(gameParams, player = GameFactory.getPlayer()) {
-    return new GameSinglePlayer(player.id, gameParams, player);
-  }
-
-  static getGameVSBot(gameId, gameParams, playersData) {
+  static loadGameVSBot(gameId, gameParams, playersData) {
     const botPlayer = GameFactory.getBot(playersData);
     if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
-      const opponentGame = GameFactory.getPlayerParallelGame(gameParams, botPlayer);
-      return new GameParallel(gameId, GameFactory.getPlayerParallelGame(gameParams), opponentGame);
+      return GameFactory.loadParrallelGame(gameId, gameParams, botPlayer);
     }
-    return new GameVS(gameId, gameParams, GameFactory.getPlayer(), botPlayer);
+    return loadGameVs(gameId, gameParams, botPlayer);
   }
 
-  static getGameVSOnline(gameId, gameParams, playersData) {
+  static loadGameVSOnline(gameId, gameParams, playersData) {
     const opponent = GameFactory.getOpponent(playersData);
     if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
-      const opponentGame = GameFactory.getPlayerParallelGame(gameParams, opponent);
-      return new GameParallel(gameId, GameFactory.getPlayerParallelGame(gameParams), opponentGame);
+      return GameFactory.loadParrallelGame(gameId, gameParams, opponent);
     }
-    return new GameVS(gameId, gameParams, GameFactory.getPlayer(), opponent);
+    return loadGameVs(gameId, gameParams, opponent);
+  }
+
+  static loadPlayerGame(gameId, gameParams, player = GameFactory.getPlayer()) {
+    return import(`GamePlayType`).then(module => {
+      return new module.GameSinglePlayer(gameId, gameParams, player);
+    });
+  }
+
+  static loadGameVs(gameId, gameParams, opponent) {
+    return import(`GamePlayType`).then(module => {
+      return new module.GameVS(gameId, gameParams, GameFactory.getPlayer(), opponent);
+    });
+  }
+
+  static loadParrallelGame(gameId, gameParams, opponent) {
+    const player = GameFactory.getPlayer();
+    const gamesForPlayers = [
+      GameFactory.loadPlayerGame(player.id, gameParams, player),
+      GameFactory.loadPlayerGame(opponent.id, gameParams, opponent)
+    ];
+    return Promise.all([gamesForPlayers]).then(([playerGame, opponentGame]) => {
+      return import(`GamePlayType`).then(module => {
+        return new module.GameParallel(gameId, playerGame, opponentGame);
+      });
+    });
   }
 
 }
