@@ -1,5 +1,5 @@
 "use strict";
-import { Game } from "./game";
+import { Game } from "./_game";
 
 export class GameSinglePlayer extends Game {
 

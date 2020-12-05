@@ -7,8 +7,8 @@ import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
 
 import { GameType, GameVSMode } from "GameEnums";
-import { GameViewHelper } from "./game-view-helper";
-import { DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./game.constants";
+import { GameViewHelper } from "./_game-view-helper";
+import { DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./_game.constants";
 
 import {
   DigitalCounter,

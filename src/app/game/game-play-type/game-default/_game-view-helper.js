@@ -2,8 +2,8 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "../../_utils/local-storage-helper";
-import { DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./game.constants";
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+import { DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./_game.constants";
 
 export class GameViewHelper {
 

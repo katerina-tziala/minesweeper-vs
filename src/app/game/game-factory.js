@@ -5,17 +5,8 @@ import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { GameType, GameVSMode } from "GameEnums";
 import { LevelSettings, Player, BotPlayer } from "GameModels";
 
-
-
-import { GameSinglePlayer } from "./game-type/game-single-player";
-import { GameVS } from "./game-type/game-vs";
-
-
-
-
+import { GameSinglePlayer, GameVS, GameParallel } from "GamePlayType";
 export class GameFactory {
-
-
 
   static getGame(gameParams, gameId) {
     gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
@@ -23,24 +14,26 @@ export class GameFactory {
     const playersData = gameParams.players;
     delete gameParams.players;
 
-    // console.log("GameFactory");
-    // console.log(gameParams);
-
-    //console.log(GameFactory.getBot(playersData));
-
     switch (gameParams.type) {
       case GameType.Original:
-        return new GameSinglePlayer(gameId, gameParams, GameFactory.getPlayer());
+        return GameFactory.getPlayerGame(gameId, gameParams);
       case GameType.Friend:
         return new GameVS(gameId, gameParams, GameFactory.getPlayer(), GameFactory.getOpponent(playersData));
       case GameType.Bot:
-        return new GameVS(gameId, gameParams, GameFactory.getPlayer(), GameFactory.getBot(playersData));
+        return GameFactory.getGameVSBot(gameId, gameParams, playersData);
       case GameType.Online:
-        return new GameVS(gameId, gameParams, GameFactory.getPlayer(), GameFactory.getOpponent(playersData));
+        return GameFactory.getGameVSOnline(gameId, gameParams, playersData);
       default:
         return undefined;
     }
   }
+
+  // #initializeWizard(gameId, gameParams, gameName = GameVS) {
+  //   const gameName = `GameSetup${enumKey(GameType, this.#_gameType)}`;
+  //   return import(`GamePlayType`).then(module => {
+  //     return new module[wizardName](this.navigateToHome, this.onPlayGame.bind(this));
+  //   });
+  // }
 
   static getLevelSettings(settings) {
     const levelSettings = new LevelSettings();
@@ -60,7 +53,7 @@ export class GameFactory {
 
   static getOpponent(players) {
     const opponentData = this.getOpponentData(players);
-    const opponent = new Player(opponentData.id, opponentData.username);
+    const opponent = new Player(opponentData.id, opponentData.name);
     opponent.colorType = LocalStorageHelper.appSettings.opponentColorType;
     return opponent;
   }
@@ -71,4 +64,31 @@ export class GameFactory {
     botPlayer.colorType = LocalStorageHelper.appSettings.opponentColorType;
     return botPlayer;
   }
+
+  static getPlayerGame(gameId, gameParams) {
+    return new GameSinglePlayer(gameId, gameParams, GameFactory.getPlayer());
+  }
+
+  static getPlayerParallelGame(gameParams, player = GameFactory.getPlayer()) {
+    return new GameSinglePlayer(player.id, gameParams, player);
+  }
+
+  static getGameVSBot(gameId, gameParams, playersData) {
+    const botPlayer = GameFactory.getBot(playersData);
+    if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
+      const opponentGame = GameFactory.getPlayerParallelGame(gameParams, botPlayer);
+      return new GameParallel(gameId, GameFactory.getPlayerParallelGame(gameParams), opponentGame);
+    }
+    return new GameVS(gameId, gameParams, GameFactory.getPlayer(), botPlayer);
+  }
+
+  static getGameVSOnline(gameId, gameParams, playersData) {
+    const opponent = GameFactory.getOpponent(playersData);
+    if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
+      const opponentGame = GameFactory.getPlayerParallelGame(gameParams, opponent);
+      return new GameParallel(gameId, GameFactory.getPlayerParallelGame(gameParams), opponentGame);
+    }
+    return new GameVS(gameId, gameParams, GameFactory.getPlayer(), opponent);
+  }
+
 }
