@@ -1,0 +1,197 @@
+@use "../../theming/theming";
+
+@import "./turns-indicator/turns-indicator";
+
+.game-player-card {
+  // background-color: yellow;
+  width   : 200px;
+  height  : 90px;
+  position: relative;
+  //@extend %start-center;
+
+  margin: 10px;
+
+
+  &.direction-left {
+
+    .game-player-card__player-instance {
+      left: -48px;
+    }
+
+    .turn-indicator {
+      @include setIndicatorsPositions(-1);
+    }
+
+
+    .game-player-card__flag-section {
+      right: -24px;
+    }
+
+    .game-player-card__details-section {
+      &::after {
+        @extend ._details-background-shape;
+        top             : 0px;
+        right           : 0px;
+        transform       : rotate(-90deg) scaleY(-1);
+        transform-origin: top right;
+      }
+    }
+  }
+
+
+
+
+
+  &.direction-right {
+    .game-player-card__player-instance {
+      right: -48px;
+    }
+
+    .turn-indicator {
+      @include setIndicatorsPositions(1);
+    }
+
+    .game-player-card__flag-section {
+      left: -24px;
+    }
+
+    .game-player-card__details-section {
+      &::after {
+        @extend ._details-background-shape;
+        top             : 0px;
+        left            : -88px;
+        transform       : rotate(-90deg);
+        transform-origin: top right;
+      }
+    }
+
+  }
+
+
+
+  //game-player-card__color-type--
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+._player-card-circle {
+
+  position: absolute;
+
+  z-index         : 2;
+  background-color: #ffffff;
+  border-style    : solid;
+  border-color    : #ffffff;
+
+}
+
+
+.game-player-card__player-instance {
+  @include circle(90px);
+  @extend ._player-card-circle;
+  top             : 0px;
+  border-width    : 2px;
+  background-color: palegoldenrod;
+  @extend %center-center;
+
+  overflow: hidden;
+
+}
+
+
+.player-instance-icon {
+  // background-color: red;
+  @include circle(54px);
+  // position: absolute;
+  // top : 13px;
+  // left: 13px;
+  position : relative;
+  overflow : hidden;
+  font-size: 2.4rem;
+  color    : #ffffff;
+
+  &::after {
+    @extend %center-center;
+    @extend .icon-user;
+    // position: absolute;
+    // top: 8px;
+
+  }
+
+}
+
+
+
+
+
+.game-player-card__flag-section {
+  @include circle(50px);
+  @extend ._player-card-circle;
+  top         : 20px;
+  border-width: 2px;
+}
+
+._details-background-shape {
+  content : "";
+  position: absolute;
+  @include pseudoIsoscelesTrapezoid(200, 20);
+  display            : block;
+  height             : 0;
+  width              : 50px;
+  border-radius      : 5px;
+  border-bottom-color: #ffffff;
+}
+
+
+.game-player-card__details-section {
+  position: relative;
+  width   : 100%;
+  height  : 100%;
+}
+
+
+
+
+@mixin applyGameColorsStyle($theme) {
+  @for $i from 1 through 8 {
+    &.game-player-card__color-type--#{$i} {
+      .player-instance-icon {
+        background-color: theming.getThemeColor($theme, "game-type-#{$i}");
+      }
+
+      //#{$property}:
+
+
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  .game-player-card {
+    @include applyGameColorsStyle("light");
+  }
+
+}
+
+.theme-dark {
+  .game-player-card {
+    @include applyGameColorsStyle("dark");
+  }
+
+}
+
+
+// @include theming.applyGameColorsStyle($theme, "&.tile-cell__content", "color");

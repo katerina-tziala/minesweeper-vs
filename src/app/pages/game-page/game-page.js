@@ -58,7 +58,8 @@ export class GamePage extends Page {
     const a = new Player("asd", "kate");
     const b = new Player("asd", "angie")
     a.initState();
-
+    a.colorType = LocalStorageHelper.appSettings.playerColorType;
+    b.colorType = LocalStorageHelper.appSettings.opponentColorType;
     mainContainer.append(card.generate(a));
 
     mainContainer.append(card.generate(b, true));

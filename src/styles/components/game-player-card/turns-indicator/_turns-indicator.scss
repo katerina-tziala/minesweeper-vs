@@ -1,0 +1,26 @@
+@import "./turns-indicator-utils";
+
+._indicator {
+  content   : "";
+  @include circle(#{$size}px);
+  position: absolute;
+  z-index : 10;
+
+  background: red;
+}
+
+
+
+
+.turns-container {
+  position: absolute;
+  @extend %center-start;
+  @include circle(80px);
+}
+
+.turn-indicator {
+  position        : absolute;
+  height          : 40px;
+  transform-origin: 0 100%;
+  //@include setIndicatorsPositions(-1);
+}
