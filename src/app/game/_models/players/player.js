@@ -103,6 +103,9 @@ export class Player extends AppModel {
     this.detectedMinesPositions = this.#removeFromPositionsArray(this.detectedMinesPositions, position);
   }
 
+  getTurnsLeft(allowedTurns) {
+    return allowedTurns - this.missedTurns;
+  }
   // setAllowedFlags(allowedFlags) {
   //     this.allowedFlags = allowedFlags;
   // }

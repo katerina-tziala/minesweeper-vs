@@ -5,14 +5,10 @@ export const DOM_ELEMENT_CLASS = {
   playerIcon: "person-icon--player",
   botIcon: "person-icon--bot",
 
-  stateSection: "game-player-card__state-section",
-  loadingState: "state-loading",
-  flagState: "state-flag",
-  allowedFlags: "allowed-flags",
-  allowedFlagsInfinite: "allowed-flags--infinite",
+  secondRing: "game-player-card__state-section",
+
 };
 
 export const DOM_ELEMENT_ID = {
-  stateSection: "card-state__",
   allowedFlags: "allowed-flags__",
 };

@@ -41,7 +41,7 @@
   position   : absolute;
   font-size  : 11px;
   font-weight: 900;
-  width      : 23px;
+  width      : 24px;
   height     : 11px;
   line-height: 11px;
   text-align : center;
@@ -49,6 +49,7 @@
 
   &.allowed-flags--infinite {
     color: #999999;
+
     &::after {
       content    : "\221E";
       font-size  : 18px;

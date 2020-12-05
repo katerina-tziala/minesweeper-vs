@@ -1,26 +1,36 @@
 @import "./turns-indicator-utils";
 
+$container-size: 84;
+
 ._indicator {
-  content   : "";
+  content: "";
   @include circle(#{$size}px);
   position: absolute;
   z-index : 10;
 
-  background: red;
+
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.8);
+
+  &.turn-indicator--on {
+    background: green;
+
+  }
+
+  &.turn-indicator--off {
+    background: red;
+  }
 }
-
-
-
 
 .turns-container {
   position: absolute;
   @extend %center-start;
-  @include circle(80px);
+  @include circle(#{$container-size}px);
+  position: absolute;
+  z-index : 2;
 }
 
 .turn-indicator {
   position        : absolute;
-  height          : 40px;
+  height          : #{$container-size / 2}px;
   transform-origin: 0 100%;
-  //@include setIndicatorsPositions(-1);
 }

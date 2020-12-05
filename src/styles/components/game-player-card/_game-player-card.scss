@@ -9,7 +9,7 @@
 ._card-circle-border {
   border-width: 2px;
   border-style: solid;
-  border-color: #b3b3b3;
+  border-color: #bfbfbf;
 }
 
 
@@ -37,7 +37,7 @@
 
     .turn-indicator {
       @include setIndicatorsPositions(-1);
-      margin-left: 3px;
+      //margin-left: 3px;
     }
 
 
@@ -67,7 +67,7 @@
 
     .turn-indicator {
       @include setIndicatorsPositions(1);
-      margin-right: 3px;
+      //margin-right: 3px;
     }
 
     .game-player-card__state-section {
@@ -117,9 +117,17 @@
   border-width: 2px;
 
   @extend %center-center;
+  overflow: hidden;
 
-  overflow        : hidden;
-  // background-color: palegoldenrod;
+
+  &::after {
+    position: absolute;
+    @extend %center-start;
+    @include circle(74px);
+    @extend ._card-circle-border;
+    position: absolute;
+    content : "";
+  }
 }
 
 
@@ -141,7 +149,17 @@
   // background-color: palegoldenrod;
   overflow: hidden;
   padding : 2px;
+
 }
+
+
+.game-player-card__player-section--second-ring {
+
+  // border-width: 3px;
+
+  // border-color: #d9d9d9;
+}
+
 
 ._details-background-shape {
   content : "";
@@ -170,7 +188,9 @@
       $game-color-type: theming.getThemeColor($theme, "game-type-#{$i}");
 
       .person-icon {
-        background-color: $game-color-type;
+        &::after {
+          background-color: $game-color-type;
+        }
       }
 
       // ._card-circle-border {

@@ -1,20 +1,24 @@
-
 .person-icon {
-  @include circle(54px);
-  position : relative;
+  //@include circle(86px);
+  @extend %center-center;
+  position : absolute;
   overflow : hidden;
-  font-size: 2.3rem;
+  font-size: 2.7rem;
+
+
+  &::after {
+    @include circle(60px);
+    line-height: 58px;
+  }
 
   &.person-icon--bot {
-    &::after {
-      @extend %center-center;
-      @extend .icon-bot;
-    }
+
+    @include afterIcon("bot");
   }
 
   &.person-icon--player {
     &::after {
-      @extend %center-center;
+
       @extend .icon-user;
     }
   }

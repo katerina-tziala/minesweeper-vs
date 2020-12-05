@@ -7,7 +7,7 @@ import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager"
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-player-card.constants";
 
 import { PlayerCardState } from "./player-card-state/player-card-state";
-
+import { TurnsIndicator } from "./turns-indicator/turns-indicator";
 export class GamePlayerCard {
 
 
@@ -16,7 +16,7 @@ export class GamePlayerCard {
 
   }
 
-  generate(player, opponent = false) {
+  generate(player, allowedTurns, opponent = false) {
     const playerCard = ElementGenerator.generateContainer(["game-player-card"]);
 
     if (opponent) {
@@ -27,31 +27,25 @@ export class GamePlayerCard {
     ElementHandler.addStyleClass(playerCard, "game-player-card__color-type--" + player.colorType);
 
 
-    playerCard.append(this.#generatePayerInstanceSection(player, opponent));
+    playerCard.append(this.#generatePayerInstanceSection(player, allowedTurns));
     playerCard.append(this.#generateDetailsSection(player, opponent));
-    playerCard.append(PlayerCardState.generateStateSection(player, opponent));
+    playerCard.append(PlayerCardState.generateStateSection(player));
 
 
     return playerCard;
   }
 
-  #generatePayerInstanceSection(player, opponent) {
+  #generatePayerInstanceSection(player, allowedTurns) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__player-section"]);
-    const playerIcon = this.#generatePayerIcon(player.isBot);
-
-    console.log(player);
-
-
-    const turns = ElementGenerator.generateContainer(["turns-container"]);
-    for (let index = 1; index < 11; index++) {
-      const turnIndicator = ElementGenerator.generateContainer(["turn-indicator", "turn-indicator--" + index]);
-
-      turns.append(turnIndicator);
+    if (allowedTurns) {
+      playerInstanceSection.append(TurnsIndicator.generate(player, allowedTurns));
     }
 
-    playerInstanceSection.append(turns);
+    // const secondRing = ElementGenerator.generateContainer(["game-player-card__player-section--second-ring"]);
+    // playerInstanceSection.append(secondRing);
+    playerInstanceSection.append(this.#generatePayerIcon(player.isBot));
 
-    playerInstanceSection.append(playerIcon);
+    console.log(player, allowedTurns);
 
     return playerInstanceSection;
   }
@@ -60,13 +54,6 @@ export class GamePlayerCard {
 
   #generateDetailsSection(player, opponent) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
-    // if (opponent) {
-    //   ElementHandler.addStyleClass(playerInstanceSection, "direction-right")
-    // } else {
-    //   ElementHandler.addStyleClass(playerInstanceSection, "direction-left")
-    // }
-    //.turns-indicator
-
 
 
 
