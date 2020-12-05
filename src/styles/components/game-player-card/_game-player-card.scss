@@ -20,13 +20,12 @@
 
 
 .game-player-card {
-  // background-color: yellow;
-  width   : 200px;
-  height  : 90px;
-  position: relative;
-  //@extend %start-center;
+  width           : 200px;
+  height          : 90px;
+  position        : relative;
+  position        : relative;
+  margin          : 10px;
 
-  margin: 10px;
 
 
   &.direction-left {
@@ -37,7 +36,7 @@
 
     .turn-indicator {
       @include setIndicatorsPositions(-1);
-      //margin-left: 3px;
+
     }
 
 
@@ -60,6 +59,7 @@
       left      : 41px;
       text-align: left;
     }
+
   }
 
 
@@ -73,7 +73,7 @@
 
     .turn-indicator {
       @include setIndicatorsPositions(1);
-      //margin-right: 3px;
+
     }
 
     .game-player-card__state-section {
@@ -91,7 +91,7 @@
     }
 
     .game-player-card__player-name {
-      left      : 26px;
+      left      : 28px;
       text-align: right;
     }
   }
@@ -129,7 +129,6 @@
   border-width: 2px;
 
   @extend %center-center;
-  overflow: hidden;
 
 
   &::after {
@@ -140,6 +139,7 @@
     position: absolute;
     content : "";
   }
+
 }
 
 
@@ -155,13 +155,8 @@
   top         : 20px;
   border-width: 2px;
   @extend %center-center;
-  // border-style: dotted;
-  // border-color: red;
-  //background-color: ivory;
-  // background-color: palegoldenrod;
   overflow: hidden;
   padding : 2px;
-
 }
 
 
@@ -186,14 +181,15 @@
   height  : 100%;
 }
 
+
+
 .game-player-card__player-name {
-  position      : absolute;
-  // border     : 1px solid red;
-  z-index       : 2;
-  top           : 22px;
-  font-weight   : 600;
-  font-size     : 1.2rem;
-  width         : 134px;
+  position   : absolute;
+  z-index    : 2;
+  top        : 22px;
+  font-weight: 600;
+  font-size  : 1.2rem;
+  width      : 134px;
   @extend %ellipsis-text;
   height     : 22px;
   white-space: nowrap;
@@ -213,13 +209,10 @@
         }
       }
 
-      // ._card-circle-border {
-      //   border-color: $game-color-type;
-      // }
-
       .state-flag {
         color: $game-color-type;
       }
+
     }
   }
 }

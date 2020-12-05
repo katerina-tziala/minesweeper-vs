@@ -30,6 +30,8 @@ export class GamePlayerCard {
     return playerCard;
   }
 
+
+
   static generatePlayerSection(player, allowedTurns) {
     const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerSection]);
     if (allowedTurns) {
@@ -39,7 +41,12 @@ export class GamePlayerCard {
     return playerInstanceSection;
   }
 
-
+  static generatePayerIcon(isBot) {
+    const styles = [DOM_ELEMENT_CLASS.personIcon];
+    isBot ? styles.push(DOM_ELEMENT_CLASS.botIcon) : styles.push(DOM_ELEMENT_CLASS.playerIcon);
+    const playerIcon = ElementGenerator.generateContainer(styles);
+    return playerIcon;
+  }
 
   static generateDetailsSection(player, opponent) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
@@ -48,19 +55,9 @@ export class GamePlayerCard {
     playerName.innerHTML = player.name;
     playerInstanceSection.append(playerName);
 
+    console.log(player);
 
     return playerInstanceSection;
   }
-
-
-
-  static generatePayerIcon(isBot) {
-    const styles = [DOM_ELEMENT_CLASS.personIcon];
-    isBot ? styles.push(DOM_ELEMENT_CLASS.botIcon) : styles.push(DOM_ELEMENT_CLASS.playerIcon);
-    const playerIcon = ElementGenerator.generateContainer(styles);
-    return playerIcon;
-  }
-
-
 
 }
