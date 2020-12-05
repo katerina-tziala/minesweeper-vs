@@ -2,6 +2,23 @@
 
 @import "./turns-indicator/turns-indicator";
 
+
+
+
+
+._card-circle-border {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #b3b3b3;
+}
+
+
+
+@import "./card-icons/card-icons";
+@import "./card-state/card-state";
+
+
+
 .game-player-card {
   // background-color: yellow;
   width   : 200px;
@@ -14,16 +31,17 @@
 
   &.direction-left {
 
-    .game-player-card__player-instance {
+    .game-player-card__player-section {
       left: -48px;
     }
 
     .turn-indicator {
       @include setIndicatorsPositions(-1);
+      margin-left: 3px;
     }
 
 
-    .game-player-card__flag-section {
+    .game-player-card__state-section {
       right: -24px;
     }
 
@@ -43,15 +61,16 @@
 
 
   &.direction-right {
-    .game-player-card__player-instance {
+    .game-player-card__player-section {
       right: -48px;
     }
 
     .turn-indicator {
       @include setIndicatorsPositions(1);
+      margin-right: 3px;
     }
 
-    .game-player-card__flag-section {
+    .game-player-card__state-section {
       left: -24px;
     }
 
@@ -59,20 +78,13 @@
       &::after {
         @extend ._details-background-shape;
         top             : 0px;
-        left            : -88px;
+        left            : -90px;
         transform       : rotate(-90deg);
         transform-origin: top right;
       }
     }
 
   }
-
-
-
-  //game-player-card__color-type--
-
-
-
 }
 
 
@@ -98,49 +110,37 @@
 }
 
 
-.game-player-card__player-instance {
+.game-player-card__player-section {
   @include circle(90px);
   @extend ._player-card-circle;
-  top             : 0px;
-  border-width    : 2px;
-  background-color: palegoldenrod;
+  top         : 0px;
+  border-width: 2px;
+
   @extend %center-center;
 
-  overflow: hidden;
-
-}
-
-
-.player-instance-icon {
-  // background-color: red;
-  @include circle(54px);
-  // position: absolute;
-  // top : 13px;
-  // left: 13px;
-  position : relative;
-  overflow : hidden;
-  font-size: 2.4rem;
-  color    : #ffffff;
-
-  &::after {
-    @extend %center-center;
-    @extend .icon-user;
-    // position: absolute;
-    // top: 8px;
-
-  }
-
+  overflow        : hidden;
+  // background-color: palegoldenrod;
 }
 
 
 
 
 
-.game-player-card__flag-section {
+
+
+
+.game-player-card__state-section {
   @include circle(50px);
   @extend ._player-card-circle;
   top         : 20px;
   border-width: 2px;
+  @extend %center-center;
+  // border-style: dotted;
+  // border-color: red;
+  //background-color: ivory;
+  // background-color: palegoldenrod;
+  overflow: hidden;
+  padding : 2px;
 }
 
 ._details-background-shape {
@@ -167,13 +167,19 @@
 @mixin applyGameColorsStyle($theme) {
   @for $i from 1 through 8 {
     &.game-player-card__color-type--#{$i} {
-      .player-instance-icon {
-        background-color: theming.getThemeColor($theme, "game-type-#{$i}");
+      $game-color-type: theming.getThemeColor($theme, "game-type-#{$i}");
+
+      .person-icon {
+        background-color: $game-color-type;
       }
 
-      //#{$property}:
+      // ._card-circle-border {
+      //   border-color: $game-color-type;
+      // }
 
-
+      .state-flag {
+        color: $game-color-type;
+      }
     }
   }
 }
@@ -192,6 +198,3 @@
   }
 
 }
-
-
-// @include theming.applyGameColorsStyle($theme, "&.tile-cell__content", "color");

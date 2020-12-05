@@ -7,11 +7,14 @@ $placement-angle: 170;
 }
 
 @function getAngle($position, $direction: 1, $reverted-order: true) {
-  $level-out: $size / 2;
+  $level-out: 19;
 
   @if $reverted-order {
     $position: revertedOrderPosition($position);
-    $level-out      : $size * 2;
+  }
+
+  @if $direction == -1 {
+    $level-out      : 26;
   }
 
   $result : ($placement-angle / $max-indicators) * $position + $level-out;

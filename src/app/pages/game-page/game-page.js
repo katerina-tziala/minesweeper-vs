@@ -23,7 +23,7 @@ export class GamePage extends Page {
 
   constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
     super();
-    self.settingsController.gameSettingsHidden = true;
+    self.settingsController.gameSettingsHidden = false;
     this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
@@ -59,7 +59,13 @@ export class GamePage extends Page {
     const b = new Player("asd", "angie")
     a.initState();
     a.colorType = LocalStorageHelper.appSettings.playerColorType;
+   // a.entered = false;
     b.colorType = LocalStorageHelper.appSettings.opponentColorType;
+    b.isBot = true;
+
+   // b.allowedFlags = 1;
+    a.allowedFlags = 0;
+
     mainContainer.append(card.generate(a));
 
     mainContainer.append(card.generate(b, true));

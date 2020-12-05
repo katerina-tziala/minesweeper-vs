@@ -1,0 +1,24 @@
+
+.person-icon {
+  @include circle(54px);
+  position : relative;
+  overflow : hidden;
+  font-size: 2.3rem;
+
+  &.person-icon--bot {
+    &::after {
+      @extend %center-center;
+      @extend .icon-bot;
+    }
+  }
+
+  &.person-icon--player {
+    &::after {
+      @extend %center-center;
+      @extend .icon-user;
+    }
+  }
+
+
+  color: #ffffff;
+}
