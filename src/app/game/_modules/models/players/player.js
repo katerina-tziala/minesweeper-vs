@@ -5,12 +5,13 @@ import { AppModel } from "~/_models/app-model";
 export class Player extends AppModel {
   #_colorType;
 
-  constructor(id, name) {
+  constructor(id, name, entered = true) {
     super();
     this.id = id;
     this.name = name;
     this.entered = false;
     this.isBot = false;
+    this.entered = entered;
   }
 
   set colorType(colorType) {
@@ -22,7 +23,7 @@ export class Player extends AppModel {
   }
 
   initState() {
-    this.entered = true;
+
     this.turn = false;
     this.moves = 0;
     this.missedTurns = 0;

@@ -9,7 +9,7 @@ export class GameSetupOnline extends GameSetupVS {
 
   constructor(onClose, submitGame, clientToInvite) {
     super(onClose, submitGame);
-    this.opponent = new Player(clientToInvite.id, clientToInvite.username);
+    this.opponent = new Player(clientToInvite.id, clientToInvite.username, false);
     this.init();
   }
 

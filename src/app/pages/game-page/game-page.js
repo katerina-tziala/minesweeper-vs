@@ -57,6 +57,8 @@ export class GamePage extends Page {
     if (this.game) {
       mainContainer.append(this.game.generateView());
       this.game.start();
+    } else {
+      console.log("no game");
     }
     // console.log(JSON.parse(JSON.stringify(this.game)));
 

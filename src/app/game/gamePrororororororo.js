@@ -83,7 +83,7 @@ export class Game extends AppModel {
     if (this.roundTimer) {
       step = -1;
       limit = 0;
-      initialValue = this.roundDuration;
+      initialValue = this.turnSettings.turnDuration;
     }
 
     return { step, limit, initialValue };

@@ -29,6 +29,17 @@ export class Game extends AppModel {
     this.onActionTimer = true;
   }
 
+  initState() {
+    this.roundTiles = [];
+    this.gameOverType = null;
+    this.completedAt = null;
+    this.startedAt = null;
+  }
+
+  setGameStart() {
+    this.startedAt = nowTimestamp();
+  }
+
   getBoardSectionID(sectionName) {
     return GameViewHelper.getBoardSectionID(sectionName, this.id);
   }
@@ -39,12 +50,6 @@ export class Game extends AppModel {
         container.append(this.mineField.generateMinefield);
         return;
       });
-  }
-
-  initTimeCounter() {
-    const params = this.gameTimerSettings;
-    params.id = this.getBoardSectionID(DASHBOARD_SECTION.timeCounter);
-    this.gameTimer = new GameTimer(params, this.onTimerStopped.bind(this));
   }
 
   onActiveTileChange(activeTile) {
@@ -64,24 +69,14 @@ export class Game extends AppModel {
     // this.revealTile(tile);
   }
 
+  initTimeCounter() {
+    const params = this.gameTimerSettings;
+    params.id = this.getBoardSectionID(DASHBOARD_SECTION.timeCounter);
+    this.gameTimer = new GameTimer(params, this.onTimerStopped.bind(this));
+  }
 
   onTimerStopped() {
     console.log("turn ended");
-  }
-
-
-
-
-
-
-
-
-
-  initState() {
-    this.roundTiles = [];
-    this.gameOverType = null;
-    this.completedAt = null;
-    this.startedAt = null;
   }
 
   generateView() {
@@ -122,6 +117,19 @@ export class Game extends AppModel {
     this.dashboardFace.setSmileFace(this.dashboardFaceColor);
   }
 
+  get dashboardFaceColor() {
+    if (this.optionsSettings.vsMode && this.optionsSettings.vsMode !== GameVSMode.Parallel) {
+      return this.playerOnTurn.colorType;
+    }
+    return undefined;
+  }
+
+  initDashBoard() {
+    this.gameTimer.init();
+    this.updateMineCounter();
+    this.setSmileFace();
+  }
+
 
   // OVERRIDEN FUNCTIONS
   init() { }
@@ -139,9 +147,8 @@ export class Game extends AppModel {
     return 0;
   }
 
-  get dashboardFaceColor() {
-    return undefined;
+  get playerOnTurn() {
+    return this.player;
   }
-
 
 }
