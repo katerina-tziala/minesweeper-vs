@@ -53,10 +53,9 @@ export class GamePage extends Page {
   }
 
   renderPage(mainContainer) {
-    const card = new GamePlayerCard();
 
     const a = new Player("asd", "kate");
-    const b = new Player("asd", "angie")
+    const b = new Player("asd", "angie asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd")
     a.initState();
     b.initState();
     a.colorType = LocalStorageHelper.appSettings.playerColorType;
@@ -67,9 +66,9 @@ export class GamePage extends Page {
    // b.allowedFlags = 1;
     a.allowedFlags = 0;
 
-    mainContainer.append(card.generate(a, 10));
+    mainContainer.append(GamePlayerCard.generate(a, 10));
 
-    mainContainer.append(card.generate(b, undefined, true));
+    mainContainer.append(GamePlayerCard.generate(b, undefined, true));
    // mainContainer.append(card.generate());
     // GameFactory.loadGame(this.gameParams).then(game => {
     //   this.game = game;

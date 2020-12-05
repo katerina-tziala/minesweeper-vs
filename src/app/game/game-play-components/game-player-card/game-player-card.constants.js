@@ -1,11 +1,12 @@
 "use strict";
 
 export const DOM_ELEMENT_CLASS = {
+  playerSection: "game-player-card__player-section",
   personIcon: "person-icon",
   playerIcon: "person-icon--player",
   botIcon: "person-icon--bot",
 
-  secondRing: "game-player-card__state-section",
+
 
 };
 

@@ -11,12 +11,7 @@ import { TurnsIndicator } from "./turns-indicator/turns-indicator";
 export class GamePlayerCard {
 
 
-  constructor() {
-
-
-  }
-
-  generate(player, allowedTurns, opponent = false) {
+  static generate(player, allowedTurns, opponent = false) {
     const playerCard = ElementGenerator.generateContainer(["game-player-card"]);
 
     if (opponent) {
@@ -27,34 +22,31 @@ export class GamePlayerCard {
     ElementHandler.addStyleClass(playerCard, "game-player-card__color-type--" + player.colorType);
 
 
-    playerCard.append(this.#generatePayerInstanceSection(player, allowedTurns));
-    playerCard.append(this.#generateDetailsSection(player, opponent));
+    playerCard.append(GamePlayerCard.generatePlayerSection(player, allowedTurns));
+    playerCard.append(GamePlayerCard.generateDetailsSection(player, opponent));
     playerCard.append(PlayerCardState.generateStateSection(player));
 
 
     return playerCard;
   }
 
-  #generatePayerInstanceSection(player, allowedTurns) {
-    const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__player-section"]);
+  static generatePlayerSection(player, allowedTurns) {
+    const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerSection]);
     if (allowedTurns) {
       playerInstanceSection.append(TurnsIndicator.generate(player, allowedTurns));
     }
-
-    // const secondRing = ElementGenerator.generateContainer(["game-player-card__player-section--second-ring"]);
-    // playerInstanceSection.append(secondRing);
-    playerInstanceSection.append(this.#generatePayerIcon(player.isBot));
-
-    console.log(player, allowedTurns);
-
+    playerInstanceSection.append(GamePlayerCard.generatePayerIcon(player.isBot));
     return playerInstanceSection;
   }
 
 
 
-  #generateDetailsSection(player, opponent) {
+  static generateDetailsSection(player, opponent) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
 
+    const playerName = ElementGenerator.generateContainer(["game-player-card__player-name"]);
+    playerName.innerHTML = player.name;
+    playerInstanceSection.append(playerName);
 
 
     return playerInstanceSection;
@@ -62,7 +54,7 @@ export class GamePlayerCard {
 
 
 
-  #generatePayerIcon(isBot) {
+  static generatePayerIcon(isBot) {
     const styles = [DOM_ELEMENT_CLASS.personIcon];
     isBot ? styles.push(DOM_ELEMENT_CLASS.botIcon) : styles.push(DOM_ELEMENT_CLASS.playerIcon);
     const playerIcon = ElementGenerator.generateContainer(styles);

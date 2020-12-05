@@ -54,6 +54,12 @@
         transform-origin: top right;
       }
     }
+
+
+    .game-player-card__player-name {
+      left      : 41px;
+      text-align: left;
+    }
   }
 
 
@@ -84,7 +90,13 @@
       }
     }
 
+    .game-player-card__player-name {
+      left      : 26px;
+      text-align: right;
+    }
   }
+
+
 }
 
 
@@ -153,12 +165,7 @@
 }
 
 
-.game-player-card__player-section--second-ring {
 
-  // border-width: 3px;
-
-  // border-color: #d9d9d9;
-}
 
 
 ._details-background-shape {
@@ -177,6 +184,19 @@
   position: relative;
   width   : 100%;
   height  : 100%;
+}
+
+.game-player-card__player-name {
+  position      : absolute;
+  // border     : 1px solid red;
+  z-index       : 2;
+  top           : 22px;
+  font-weight   : 600;
+  font-size     : 1.2rem;
+  width         : 134px;
+  @extend %ellipsis-text;
+  height     : 22px;
+  white-space: nowrap;
 }
 
 
