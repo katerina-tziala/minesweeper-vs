@@ -86,6 +86,16 @@ export class Game extends AppModel {
     return gameContainer;
   }
 
+
+
+
+
+
+
+
+
+
+
   get viewControllers() {
     this.mineCounter = new DigitalCounter(this.getBoardSectionID(DASHBOARD_SECTION.mineCounter));
     this.dashboardFace = new DashboardFaceIcon(this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));

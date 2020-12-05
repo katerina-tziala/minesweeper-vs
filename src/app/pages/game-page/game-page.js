@@ -15,6 +15,7 @@ import { Page } from "../page";
 
 import { GameFactory } from "../../game/game-factory";
 
+import { GamePlayerCard } from "../../game/game-play-components/game-player-card/game-player-card";
 export class GamePage extends Page {
   #_gameParams;
   #_game;
@@ -51,16 +52,18 @@ export class GamePage extends Page {
   }
 
   renderPage(mainContainer) {
+    const card = new GamePlayerCard();
 
-    GameFactory.loadGame(this.gameParams).then(game => {
-      this.game = game;
-      if (this.game) {
-        mainContainer.append(this.game.generateView());
-        this.game.start();
-      } else {
-        console.log("no game");
-      }
-    });
+    mainContainer.append(card.generate());
+    // GameFactory.loadGame(this.gameParams).then(game => {
+    //   this.game = game;
+    //   if (this.game) {
+    //     mainContainer.append(this.game.generateView());
+    //     this.game.start();
+    //   } else {
+    //     console.log("no game");
+    //   }
+    // });
   }
 
   // Overridden functions
