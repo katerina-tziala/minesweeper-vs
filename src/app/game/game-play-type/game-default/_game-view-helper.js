@@ -12,11 +12,11 @@ export class GameViewHelper {
   }
 
   static getBoardID(gameID) {
-    return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleHyphen + gameID;
+    return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleUnderscore + gameID;
   }
 
   static getBoardSectionID(sectionName, gameID) {
-    return sectionName + TYPOGRAPHY.doubleHyphen + gameID;
+    return sectionName + TYPOGRAPHY.doubleUnderscore + gameID;
   }
 
   static generateBoardSection(sectionName, gameID) {

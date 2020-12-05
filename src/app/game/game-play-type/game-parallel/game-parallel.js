@@ -1,6 +1,12 @@
 "use strict";
+
+import { TYPOGRAPHY } from "~/_constants/typography.constants";
+
 import { AppModel } from "~/_models/app-model";
 
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+
+import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
 export class GameParallel extends AppModel {
 
   constructor(id, playerGame, opponentGame) {
@@ -8,32 +14,35 @@ export class GameParallel extends AppModel {
     this.id = id ? id : this.type;
     this.playerGame = playerGame;
     this.opponentGame = opponentGame;
-    console.log("GameParallel");
+    this.games = [this.playerGame, this.opponentGame];
   }
 
+
   generateView() {
-    //const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#gameContainerID);
     const gameContainer = document.createDocumentFragment();
-    //gameContainer.append(GameViewHelper.generateBoard(this.id));
+    this.games.forEach(game => {
+      gameContainer.append(this.#generateGameView(game));
+    });
     return gameContainer;
   }
+
+  #gameContainerID(gameID) {
+    return DOM_ELEMENT_CLASS.container + TYPOGRAPHY.doubleUnderscore + gameID;
+  }
+
+  #generateGameView(game) {
+    const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#gameContainerID(game.id));
+    gameContainer.append(game.generateView());
+    return gameContainer;
+  }
+
+
   start() {
     console.log("start parallel");
     // this.onAfterViewInit.then(() => {
     //   this.initDashBoard();
-
-    //   console.log("re staaart original");
-    //   console.log("show start modal when not parallel else start");
-    //   //console.log(this);
-    //   // this.game.roundTimer ? this.game.setGameStart() :
-
-    //   // if (!this.game.singlePlayer) {
-    //   //
-    //   //   console.log(this.game.playerOnTurn);
-    //   // }
-
-    //   // this.startGameRound();
-    // });
-
+    this.games.forEach(game => {
+      game.start();
+    });
   }
 }

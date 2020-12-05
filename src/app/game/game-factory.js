@@ -91,7 +91,7 @@ export class GameFactory {
       GameFactory.loadPlayerGame(player.id, gameParams, player),
       GameFactory.loadPlayerGame(opponent.id, gameParams, opponent)
     ];
-    return Promise.all([gamesForPlayers]).then(([playerGame, opponentGame]) => {
+    return Promise.all(gamesForPlayers).then(([playerGame, opponentGame]) => {
       return import(`GamePlayType`).then(module => {
         return new module.GameParallel(gameId, playerGame, opponentGame);
       });

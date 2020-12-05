@@ -9,7 +9,6 @@ export const ACTION_BUTTONS = {
 };
 
 export const DOM_ELEMENT_CLASS = {
-  container: "game-container",
   board: "game-board",
   actionButton: "board-action-btn"
 };
