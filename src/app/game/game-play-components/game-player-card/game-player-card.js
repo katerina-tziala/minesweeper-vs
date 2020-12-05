@@ -14,22 +14,26 @@ export class GamePlayerCard {
 
   }
 
-  generate() {
+  generate(player, opponent = false) {
     const playerCard = ElementGenerator.generateContainer(["game-player-card"]);
 
 
 
-    playerCard.append(this.#generatePayerInstanceSection());
-    playerCard.append(this.#generateDetailsSection());
-    playerCard.append(this.#generateFlagSection());
+    playerCard.append(this.#generatePayerInstanceSection(player, opponent));
+    playerCard.append(this.#generateDetailsSection(player, opponent));
+    playerCard.append(this.#generateFlagSection(player, opponent));
 
 
     return playerCard;
   }
 
-  #generatePayerInstanceSection() {
+  #generatePayerInstanceSection(player, opponent) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__player-instance"]);
-
+    if (opponent) {
+      ElementHandler.addStyleClass(playerInstanceSection, "direction-right")
+    } else {
+      ElementHandler.addStyleClass(playerInstanceSection, "direction-left")
+    }
 
 
 
@@ -38,9 +42,13 @@ export class GamePlayerCard {
     return playerInstanceSection;
   }
 
-  #generateDetailsSection() {
+  #generateDetailsSection(player, opponent) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
-
+    if (opponent) {
+      ElementHandler.addStyleClass(playerInstanceSection, "direction-right")
+    } else {
+      ElementHandler.addStyleClass(playerInstanceSection, "direction-left")
+    }
 
 
 
@@ -49,8 +57,14 @@ export class GamePlayerCard {
     return playerInstanceSection;
   }
 
-  #generateFlagSection() {
+  #generateFlagSection(player, opponent) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__flag-section"]);
+    if (opponent) {
+      ElementHandler.addStyleClass(playerInstanceSection, "direction-right")
+    } else {
+      ElementHandler.addStyleClass(playerInstanceSection, "direction-left")
+    }
+
 
 
 

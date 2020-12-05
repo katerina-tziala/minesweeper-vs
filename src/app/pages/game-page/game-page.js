@@ -14,6 +14,7 @@ import { Page } from "../page";
 // import { User } from "~/_models/user";
 
 import { GameFactory } from "../../game/game-factory";
+import { Player } from "GameModels";
 
 import { GamePlayerCard } from "../../game/game-play-components/game-player-card/game-player-card";
 export class GamePage extends Page {
@@ -54,7 +55,14 @@ export class GamePage extends Page {
   renderPage(mainContainer) {
     const card = new GamePlayerCard();
 
-    mainContainer.append(card.generate());
+    const a = new Player("asd", "kate");
+    const b = new Player("asd", "angie")
+    a.initState();
+
+    mainContainer.append(card.generate(a));
+
+    mainContainer.append(card.generate(b, true));
+   // mainContainer.append(card.generate());
     // GameFactory.loadGame(this.gameParams).then(game => {
     //   this.game = game;
     //   if (this.game) {
