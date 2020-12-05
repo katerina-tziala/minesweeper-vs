@@ -52,7 +52,7 @@ export class GamePage extends Page {
 
   renderPage(mainContainer) {
 
-    GameFactory.getGame(this.gameParams).then(game => {
+    GameFactory.loadGame(this.gameParams).then(game => {
       this.game = game;
       if (this.game) {
         mainContainer.append(this.game.generateView());

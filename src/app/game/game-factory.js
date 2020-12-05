@@ -7,7 +7,7 @@ import { LevelSettings, Player, BotPlayer } from "GameModels";
 
 export class GameFactory {
 
-  static getGame(gameParams, gameId) {
+  static loadGame(gameParams, gameId) {
     gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
 
     const playersData = gameParams.players;
@@ -62,7 +62,7 @@ export class GameFactory {
     if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
       return GameFactory.loadParrallelGame(gameId, gameParams, botPlayer);
     }
-    return loadGameVs(gameId, gameParams, botPlayer);
+    return GameFactory.loadGameVs(gameId, gameParams, botPlayer);
   }
 
   static loadGameVSOnline(gameId, gameParams, playersData) {
@@ -70,7 +70,7 @@ export class GameFactory {
     if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
       return GameFactory.loadParrallelGame(gameId, gameParams, opponent);
     }
-    return loadGameVs(gameId, gameParams, opponent);
+    return GameFactory.loadGameVs(gameId, gameParams, opponent);
   }
 
   static loadPlayerGame(gameId, gameParams, player = GameFactory.getPlayer()) {
