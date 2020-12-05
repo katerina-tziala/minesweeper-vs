@@ -1,7 +1,7 @@
 "use strict";
 
 import { AppModel } from "~/_models/app-model";
-import { GameVSMode } from "../../_enums/game-vs-mode.enum";
+import { GameVSMode } from "GameEnums";
 
 export class OptionsSettings extends AppModel {
 

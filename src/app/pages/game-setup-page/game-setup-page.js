@@ -3,12 +3,17 @@
 import "../../../styles/pages/_game-setup.scss";
 
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+import { enumKey } from "~/_utils/utils";
+
+
+
+
 
 import { Page } from "../page";
 
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
-import { GameType } from "Game";
+import { GameType } from "GameEnums";
 
 export class GameSetupPage extends Page {
   #_gameType;
@@ -30,21 +35,11 @@ export class GameSetupPage extends Page {
     return this.#_gameType;
   }
 
-  #loadWizard(wizardName) {
-    return import(`~/game/game-wizard/@game-wizard.module`).then(module => {
+  #initializeWizard() {
+    const wizardName = `GameSetup${enumKey(GameType, this.#_gameType)}`;
+    return import(`GameSetUp`).then(module => {
       return new module[wizardName](this.navigateToHome, this.onPlayGame.bind(this));
     });
-  }
-
-  #initializeWizard() {
-    switch (this.#gameType) {
-      case GameType.Original:
-        return this.#loadWizard("GameWizardOriginal");
-      case GameType.Bot:
-        return this.#loadWizard("GameWizardVSBot");
-      case GameType.Friend:
-        return this.#loadWizard("GameWizardVSFriend");
-    }
   }
 
   renderPage(mainContainer) {

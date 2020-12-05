@@ -10,7 +10,7 @@ export const sortNumbersArrayAsc = (arrayToSort) => {
   return [...arrayToSort].sort((itemA, itemB) => { return itemA - itemB; });
 };
 
-export const getRandomValueFromArray = (arrayToChooseFrom) => {
+export const randomValueFromArray = (arrayToChooseFrom) => {
   return arrayToChooseFrom[Math.floor(Math.random() * arrayToChooseFrom.length)];
 };
 
@@ -39,4 +39,7 @@ export const arrayDifference = (arrayToFilter, arrayReference) => {
   return arrayToFilter.filter(item => !arrayReference.includes(item));
 };
 
+export const enumKey = (enumObject, value) => {
+  return Object.keys(enumObject).find(key => enumObject[key] === value);
+};
 

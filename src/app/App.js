@@ -13,7 +13,7 @@ import { LocalStorageHelper } from "./_utils/local-storage-helper";
 
 import { User } from "./_models/user";
 import { PageType } from "./_enums/page-type.enum";
-import { GameType } from "Game";
+import { GameType } from "GameEnums";
 import { CONFIRMATION } from "./components/modal/modal.constants"
 
 export class App {
@@ -41,10 +41,10 @@ export class App {
     //  this.setInterface();
 
     //
-    this.onGameSetUpNavigation(GameType.Original);
+    //this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
     // this.onGameSetUpNavigation(GameType.Online);
-    //this.onGameSetUpNavigation(GameType.Bot);
+    this.onGameSetUpNavigation(GameType.Bot);
     // remove document listeners!!!
   }
 

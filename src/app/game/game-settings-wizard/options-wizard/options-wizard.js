@@ -4,7 +4,7 @@ import { Switcher, NumberInput } from "UserInputs";
 
 import { clone } from "~/_utils/utils.js";
 
-import { OptionsSettings } from "Game";
+import { OptionsSettings } from "GameModels";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 import { WIZARD_NAME } from "../game-settings-wizard.constants";

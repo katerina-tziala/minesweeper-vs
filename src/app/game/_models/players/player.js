@@ -5,16 +5,13 @@ import { AppModel } from "~/_models/app-model";
 export class Player extends AppModel {
   #_colorType;
 
-  constructor(id, name) {
+  constructor(id, name, entered = true) {
     super();
     this.id = id;
     this.name = name;
-    this.entered = true;
-    this.initState();
-  }
-
-  get isBot() {
-    return false;
+    this.entered = false;
+    this.isBot = false;
+    this.entered = entered;
   }
 
   set colorType(colorType) {
@@ -26,21 +23,27 @@ export class Player extends AppModel {
   }
 
   initState() {
+
     this.turn = false;
     this.moves = 0;
-    this.detonatedMine = false;
-    this.revealedPositions = [];
-    this.marksPositions = [];
-    this.redundantFlagsPositions = [];
-    this.detectedMinesPositions = [];
-    this.completedGoal = false;
-    this.exceededTurnsLimit = false;
     this.missedTurns = 0;
     this.allowedFlags = null;
+    // minefield statistics
+    this.redundantFlagsPositions = [];
+    this.detectedMinesPositions = [];
+    this.revealedPositions = [];
+    this.marksPositions = [];
+    // params to check if player lost the game
+    this.detonatedMine = false;
+    this.completedGoal = false;
+    this.exceededTurnsLimit = false;
   }
 
-  get lost() {
-    return (this.detonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
+  get lostGame() {
+    if (this.entered) {
+      return (this.detonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
+    }
+    return false;
   }
 
   increaseMoves() {
@@ -52,17 +55,33 @@ export class Player extends AppModel {
   }
 
   get minesDetected() {
-    return this.detectedMinesPositions.length;
+    return this.entered ? this.detectedMinesPositions.length : 0;
   }
 
   get placedFlags() {
-    return this.redundantFlagsPositions.length + this.detectedMinesPositions.length;
+    return this.entered ? (this.redundantFlagsPositions.length + this.detectedMinesPositions.length) : 0;
   }
 
   set inRevealedPositions(position) {
     this.revealedPositions.push(position);
   }
 
+  onSetFlag(position, wronglyPlaced) {
+    wronglyPlaced ? this.#inRedundantFlagsPositions = position : this.#inDetectedMinesPositions = position;
+  }
+
+  onTileReset(position) {
+    this.#removeFromBasePositionsStatistics(position);
+    this.marksPositions = this.#removeFromPositionsArray(this.marksPositions, position);
+  }
+
+  onSetMark(position) {
+    this.#removeFromBasePositionsStatistics(position);
+    this.#inMarksPositions = position;
+  }
+
+
+  // PRIVATE FUNCTIONS
   set #inRedundantFlagsPositions(position) {
     this.redundantFlagsPositions.push(position);
   }
@@ -83,22 +102,6 @@ export class Player extends AppModel {
     this.redundantFlagsPositions = this.#removeFromPositionsArray(this.redundantFlagsPositions, position);
     this.detectedMinesPositions = this.#removeFromPositionsArray(this.detectedMinesPositions, position);
   }
-
-  onSetFlag(position, wronglyPlaced) {
-    wronglyPlaced ? this.#inRedundantFlagsPositions = position : this.#inDetectedMinesPositions = position;
-  }
-
-  onTileReset(position) {
-    this.#removeFromBasePositionsStatistics(position);
-    this.marksPositions = this.#removeFromPositionsArray(this.marksPositions, position);
-  }
-
-  onSetMark(position) {
-    this.#removeFromBasePositionsStatistics(position);
-    this.#inMarksPositions = position;
-  }
-
-
 
   // setAllowedFlags(allowedFlags) {
   //     this.allowedFlags = allowedFlags;

@@ -6,29 +6,40 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { Page } from "../page";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
 
-import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
+// import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
 
-import { User } from "~/_models/user";
+// import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
+// import { User } from "~/_models/user";
 
-import { GamePlay } from "../../game/game-play/game-play";
+import { GameFactory } from "../../game/game-factory";
 
 export class GamePage extends Page {
+  #_gameParams;
   #_game;
 
-  constructor(game, navigateToHome, onGameSetUpNavigation) {
+  constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
     super();
+    self.settingsController.gameSettingsHidden = true;
+    this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
-    this.game = game;
-    this.gamePlay = new GamePlay(game, {
-      onExit: this.onGameExit.bind(this),
-      onReset: this.onGameReset.bind(this),
-    });
-    self.settingsController.gameSettingsHidden = true;
+
+    // this.gamePlay = new GamePlay(game, {
+    //   onExit: this.onGameExit.bind(this),
+    //   onReset: this.onGameReset.bind(this),
+    // });
+
     this.init();
+  }
+
+  set gameParams(gameParams) {
+    this.#_gameParams = gameParams;
+  }
+
+  get gameParams() {
+    return this.#_gameParams;
   }
 
   set game(game) {
@@ -41,13 +52,15 @@ export class GamePage extends Page {
 
   renderPage(mainContainer) {
 
-    mainContainer.addEventListener("contextmenu", event => {
-      event.preventDefault();
-      //console.log(event);
+    GameFactory.loadGame(this.gameParams).then(game => {
+      this.game = game;
+      if (this.game) {
+        mainContainer.append(this.game.generateView());
+        this.game.start();
+      } else {
+        console.log("no game");
+      }
     });
-
-    mainContainer.append(this.gamePlay.generateView());
-    this.gamePlay.start();
   }
 
   // Overridden functions
@@ -71,7 +84,7 @@ export class GamePage extends Page {
     console.log("onGameReset");
     console.log("notify connection");
 
-    this.#saveCurrentGameSetUp();
+    //this.#saveCurrentGameSetUp();
     this.onGameSetUpNavigation(this.game.type);
   }
 
@@ -82,7 +95,7 @@ export class GamePage extends Page {
     delete gameSetUp.player;
     delete gameSetUp.opponent;
 
-    LocalStorageHelper.save("gameSetup", gameSetUp);
+    //   LocalStorageHelper.save("gameSetup", gameSetUp);
   }
 
 }

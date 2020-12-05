@@ -2,7 +2,7 @@
 
 import { DropdownSelect } from "UserInputs";
 
-import { BotMode } from "Game";
+import { BotMode } from "GameEnums";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 
