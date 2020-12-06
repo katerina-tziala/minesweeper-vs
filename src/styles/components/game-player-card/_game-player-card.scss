@@ -1,23 +1,9 @@
 @use "../../theming/theming";
-
-@import "./turns-indicator/turns-indicator";
-
-
-
-
-
-._card-circle-border {
-  border-width: 2px;
-  border-style: solid;
-  border-color: #bfbfbf;
-}
-
-
-
+@import "./game-player-card-utils";
 @import "./card-icons/card-icons";
 @import "./card-state/card-state";
-
-
+@import "./turns-indicator/turns-indicator";
+@import "./game-player-card-theming";
 
 .game-player-card {
   width   : 200px;
@@ -26,112 +12,64 @@
   position: relative;
   margin  : 10px;
 
-
-
   &.direction-left {
 
     .game-player-card__player-section {
       left: -48px;
+
+      .turn-indicator-container {
+        @include setIndicatorsPositions(-1);
+      }
     }
 
-    .turn-indicator {
-      @include setIndicatorsPositions(-1);
+    .game-player-card__details-section {
+      @include detailsSectionShape(-1);
+
+      ._player-details {
+        left: 42px;
+      }
+
+      .player-name {
+        text-align: left;
+      }
 
     }
-
 
     .game-player-card__state-section {
       right: -24px;
     }
 
-    .game-player-card__details-section {
-      &::after {
-        @extend ._details-background-shape;
-        top             : 0px;
-        right           : 0px;
-        transform       : rotate(-90deg) scaleY(-1);
-        transform-origin: top right;
-      }
-    }
-
-
-    .game-player-card__player-name {
-      left      : 41px;
-      text-align: left;
-    }
-
-    .game-player-card__player-goal-details {
-      left: 41px;
-
-
-    }
   }
-
-
-
-
 
   &.direction-right {
     .game-player-card__player-section {
       right: -48px;
+
+      .turn-indicator-container {
+        @include setIndicatorsPositions(1);
+      }
     }
 
-    .turn-indicator {
-      @include setIndicatorsPositions(1);
-
-    }
 
     .game-player-card__state-section {
       left: -24px;
     }
 
     .game-player-card__details-section {
-      &::after {
-        @extend ._details-background-shape;
-        top             : 0px;
-        left            : -90px;
-        transform       : rotate(-90deg);
-        transform-origin: top right;
+      @include detailsSectionShape(1);
+
+      ._player-details {
+        left: 28px;
       }
-    }
 
-    .game-player-card__player-name {
-      left      : 28px;
-      text-align: right;
-    }
+      .player-name {
+        text-align: right;
+      }
 
-    .game-player-card__player-goal-details {
-      left: 28px;
-
-      //@extend %end-center;
     }
   }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-._player-card-circle {
-
-  position: absolute;
-
-  z-index         : 2;
-  background-color: #ffffff;
-  border-style    : solid;
-  border-color    : #ffffff;
-
-}
-
 
 .game-player-card__player-section {
   @include circle(90px);
@@ -153,13 +91,6 @@
 
 }
 
-
-
-
-
-
-
-
 .game-player-card__state-section {
   @include circle(50px);
   @extend ._player-card-circle;
@@ -170,108 +101,50 @@
   padding : 2px;
 }
 
-
-
-
-
-._details-background-shape {
-  content : "";
-  position: absolute;
-  @include pseudoIsoscelesTrapezoid(200, 20);
-  display            : block;
-  height             : 0;
-  width              : 50px;
-  border-radius      : 5px;
-  border-bottom-color: #ffffff;
-}
-
-
 .game-player-card__details-section {
   position: relative;
   width   : 100%;
   height  : 100%;
+
+  .player-name {
+    @extend ._player-details;
+    height: 22px;
+    top   : 22px;
+    @extend %ellipsis-text;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size  : 1.2rem;
+  }
 }
-
-
-
-.game-player-card__player-name {
-  position   : absolute;
-  z-index    : 2;
-  top        : 22px;
-  font-weight: 600;
-  font-size  : 1.2rem;
-  width      : 134px;
-  @extend %ellipsis-text;
-  height     : 22px;
-  white-space: nowrap;
-}
-
 
 .game-player-card__player-goal-details {
-  position           : absolute;
-  z-index            : 2;
-  bottom             : 30px;
-  font-weight        : 600;
-  font-size          : 1rem;
-  width              : 134px;
-
-  white-space        : nowrap;
-  // background-color: pink;
-  @extend %ellipsis-text;
-  height: 14px;
-  line-height: 15px;
-
+  @extend ._player-details;
   @extend %start-center;
+  height     : 14px;
+  line-height: 15px;
+  bottom     : 30px;
+  font-weight: 600;
+  font-size  : 1rem;
 }
 
-.player-goal-details-target {
+.player-goal-details__target {
   text-transform: capitalize;
   font-style    : italic;
   display       : inline-block;
 }
 
 .player-goal-details-target-result {
-  width     : 30px;
-  padding   : 0 4px;
-  // background: red;
+  width  : 30px;
+  padding: 0 4px;
 
 }
 
-
-
-
-
-
-@mixin applyGameColorsStyle($theme) {
-  @for $i from 1 through 8 {
-    &.game-player-card__color-type--#{$i} {
-      $game-color-type: theming.getThemeColor($theme, "game-type-#{$i}");
-
-      .person-icon {
-        &::after {
-          background-color: $game-color-type;
-        }
-      }
-
-      .state-flag {
-        color: $game-color-type;
-      }
-
-    }
-  }
-}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-  .game-player-card {
-    @include applyGameColorsStyle("light");
-  }
-
+  @include applyPlayerCardThemeStyle("light");
 }
 
 .theme-dark {
-  .game-player-card {
-    @include applyGameColorsStyle("dark");
-  }
-
+  @include applyPlayerCardThemeStyle("dark");
 }

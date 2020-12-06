@@ -1,0 +1,43 @@
+._card-circle-border {
+  border-width: 2px;
+  border-style: solid;
+}
+
+._player-card-circle {
+  position    : absolute;
+  z-index     : 2;
+  border-style: solid;
+}
+
+._player-details {
+  width   : 134px;
+  position: absolute;
+  z-index : 2;
+}
+
+._details-background-shape {
+  content : "";
+  position: absolute;
+  top     : 0px;
+  @include pseudoIsoscelesTrapezoid(200, 20);
+  display         : block;
+  height          : 0;
+  width           : 50px;
+  border-radius   : 5px;
+  transform-origin: top right;
+}
+
+@mixin detailsSectionShape($direction: 1) {
+  $right-position: 200px;
+
+  @if $direction==-1 {
+    $right-position: 0px;
+  }
+
+  &::after {
+    @extend ._details-background-shape;
+    right    : $right-position;
+    transform: rotate(-90deg) scaleY($direction);
+  }
+
+}

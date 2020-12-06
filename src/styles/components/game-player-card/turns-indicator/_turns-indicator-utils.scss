@@ -13,11 +13,11 @@ $placement-angle: 170;
     $position: revertedOrderPosition($position);
   }
 
-  @if $direction == -1 {
-    $level-out      : 26;
+  @if $direction==-1 {
+    $level-out: 26;
   }
 
-  $result : ($placement-angle / $max-indicators) * $position + $level-out;
+  $result : ($placement-angle / $max-indicators) * $position+$level-out;
   $result : $direction * $result;
   @return $result;
 }
@@ -27,11 +27,15 @@ $placement-angle: 170;
   @for $i from 1 through $max-indicators {
     $angle: getAngle($i, $direction);
 
-    &.turn-indicator--#{$i} {
+    &.turn-indicator-container--#{$i} {
       transform: rotate($angle+deg);
 
+      &::before {
+        @extend ._turn-indicator-background;
+      }
+
       &::after {
-        @extend ._indicator;
+        @extend ._turn-indicator;
       }
 
     }

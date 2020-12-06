@@ -60,17 +60,18 @@ export class GamePage extends Page {
     a.initState();
     b.initState();
     a.colorType = LocalStorageHelper.appSettings.playerColorType;
-   // a.entered = false;
+    // a.entered = false;
+    // b.entered = false;
     b.colorType = LocalStorageHelper.appSettings.opponentColorType;
     b.isBot = true;
 
-   // b.allowedFlags = 1;
-    a.allowedFlags = 0;
+    // b.allowedFlags = 1;
+    // a.allowedFlags = 0;
 
     mainContainer.append(GamePlayerCard.generate(a, 10, false, false));
 
     mainContainer.append(GamePlayerCard.generate(b, undefined, true, true));
-   // mainContainer.append(card.generate());
+    // mainContainer.append(card.generate());
     // GameFactory.loadGame(this.gameParams).then(game => {
     //   this.game = game;
     //   if (this.game) {

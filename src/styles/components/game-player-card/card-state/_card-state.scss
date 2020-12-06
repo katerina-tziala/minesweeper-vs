@@ -12,12 +12,13 @@
 
 .state-flag {
   @extend ._state-section-container;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 
   &::after {
     @extend ._state-icon;
     @extend .icon-flag;
-    margin-left: 6px;
+    margin-left: 5px;
+    line-height: 26px;
   }
 }
 
@@ -25,17 +26,13 @@
   @extend ._state-section-container;
   font-size: 2rem;
 
-  color: #bfbfbf;
-
   &::after {
     @extend ._state-icon;
     @extend .icon-spinner;
     position : absolute;
-    animation: spin 1.1s infinite linear;
+    animation: spin 1s infinite linear;
   }
-
 }
-
 
 .allowed-flags {
   position   : absolute;
@@ -48,26 +45,11 @@
   bottom     : -4px;
 
   &.allowed-flags--infinite {
-    color: #999999;
-
     &::after {
       content    : "\221E";
       font-size  : 18px;
       line-height: 12px;
-
     }
-  }
-
-
-  color           : #1a1a1a;
-  background-color: white;
-
-  &.allowed-flags--0 {
-    color: red;
-  }
-
-  &.allowed-flags--1 {
-    color: #ff6600;
   }
 
 }

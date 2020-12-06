@@ -51,12 +51,12 @@ export class GamePlayerCard {
   static generateDetailsSection(player, clearMinefield) {
     const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
 
-    const playerName = ElementGenerator.generateContainer(["game-player-card__player-name"]);
+    const playerName = ElementGenerator.generateContainer(["player-name"]);
     playerName.innerHTML = player.name;
     playerInstanceSection.append(playerName);
 
     const playerTarget = ElementGenerator.generateContainer(["game-player-card__player-goal-details"]);
-    playerTarget.innerHTML = `<span class="player-goal-details-target">${clearMinefield ? TARGET_CONTENT.clear : TARGET_CONTENT.detect}:</span>
+    playerTarget.innerHTML = `<span class="player-goal-details__target">${clearMinefield ? TARGET_CONTENT.clear : TARGET_CONTENT.detect}:</span>
     <span id="player-goal-details-target-result__${player.id}" class="player-goal-details-target-result">
     ${clearMinefield ? player.revealedTiles : player.minesDetected}</span>`;
     playerInstanceSection.append(playerTarget);

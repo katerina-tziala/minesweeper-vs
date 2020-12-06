@@ -3,9 +3,13 @@
 
 @use "../palletes/app-pallete";
 @use "../palletes/error-pallete";
+@use "../palletes/warning-pallete";
+@use "../palletes/success-pallete";
 @use "../palletes/dark-pallete";
 
 $palleteList: app-pallete.$pallete,
 error-pallete.$pallete,
+warning-pallete.$pallete,
+success-pallete.$pallete,
 dark-pallete.$game-pallete,
 dark-pallete.$theme-pallete;

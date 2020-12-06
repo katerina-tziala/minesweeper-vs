@@ -2,7 +2,7 @@
 
 export const DOM_ELEMENT_CLASS = {
   container: "turns-container",
-  indicator: "turn-indicator",
+  indicator: "turn-indicator-container",
   indicatorOn: "turn-indicator--on",
   indicatorOff: "turn-indicator--off",
 };
