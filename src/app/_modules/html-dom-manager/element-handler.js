@@ -34,7 +34,11 @@ export class ElementHandler {
   }
 
   static setStyleClass(element, styleClasses) {
-    element.className = styleClasses.join(TYPOGRAPHY.space);
+    let className = TYPOGRAPHY.emptyString;
+    if (styleClasses.length) {
+      className = styleClasses.join(TYPOGRAPHY.space);
+    }
+    element.className = className
   }
 
   static removeStyleClass(element, className) {

@@ -55,22 +55,47 @@ export class GamePage extends Page {
 
   renderPage(mainContainer) {
 
-    const a = new Player("asd", "kate");
-    const b = new Player("asd", "angie asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd")
-    a.initState();
-    b.initState();
-    a.colorType = LocalStorageHelper.appSettings.playerColorType;
+    // const a = new Player("asd", "kate");
+    // const b = new Player("asdb", "angie asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd")
+    // a.initState();
+    // b.initState();
+    // a.colorType = LocalStorageHelper.appSettings.playerColorType;
     // a.entered = false;
-    // b.entered = false;
-    b.colorType = LocalStorageHelper.appSettings.opponentColorType;
-    b.isBot = true;
 
-    // b.allowedFlags = 1;
-    // a.allowedFlags = 0;
+    // // b.entered = false;
+    // b.colorType = LocalStorageHelper.appSettings.opponentColorType;
+    // b.isBot = true;
 
-    mainContainer.append(GamePlayerCard.generate(a, 10, false, false));
+    // a.turn = false;
+    // b.turn = true;
+    // // b.allowedFlags = 1;
+    // // a.allowedFlags = 0;
 
-    mainContainer.append(GamePlayerCard.generate(b, undefined, true, true));
+    // mainContainer.append(GamePlayerCard.generate(a, 10, false, false));
+
+    // mainContainer.append(GamePlayerCard.generate(b, undefined, true, true));
+
+
+    // setTimeout(() => {
+    //   a.turn = true;
+    //   b.turn = false;
+    //   a.allowedFlags = 15;
+    //   a.revealedPositions = [2];
+    //   //console.log("update", a);
+
+
+    //   a.missedTurns = 3;
+    //   GamePlayerCard.updateTurnStatus(a)
+    //   GamePlayerCard.updateTurnStatus(b)
+
+
+
+    // }, 2000);
+
+
+
+
+
     // mainContainer.append(card.generate());
     // GameFactory.loadGame(this.gameParams).then(game => {
     //   this.game = game;

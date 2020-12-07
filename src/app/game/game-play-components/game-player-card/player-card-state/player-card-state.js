@@ -15,10 +15,14 @@ export class PlayerCardState {
     return DOM_ELEMENT_ID.allowedFlags + player.id;
   }
 
+  static getStateSectionContent(player) {
+    return player.entered ? PlayerCardState.generateFlagState(player) : PlayerCardState.generateLoadingState();
+  }
+
   static generateStateSection(player) {
     const stateSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stateSection]);
     ElementHandler.setID(stateSection, PlayerCardState.getStateSectionID(player));
-    const content = player.entered ? PlayerCardState.generateFlagState(player) : PlayerCardState.generateLoadingState();
+    const content = PlayerCardState.getStateSectionContent(player);
     stateSection.append(content);
     return stateSection;
   }
@@ -54,6 +58,31 @@ export class PlayerCardState {
       content = allowedFlags.toString();
     }
     return { content, styles };
+  }
+
+  static getStateSection(player) {
+    return ElementHandler.getByID(PlayerCardState.getStateSectionID(player));
+  }
+
+  static getAllowedFlagsContainer(player) {
+    return ElementHandler.getByID(PlayerCardState.getAllowedFlagsID(player));
+  }
+  // UPDATES
+  static updateStateSection(player) {
+    return PlayerCardState.getStateSection(player).then(stateSection => {
+      ElementHandler.clearContent(stateSection);
+      const content = PlayerCardState.getStateSectionContent(player);
+      stateSection.append(content);
+    });
+  }
+
+  static updateAllowedFlags(player) {
+    return PlayerCardState.getAllowedFlagsContainer(player).then(allowedFlagsContainer => {
+      const interfaceParams = PlayerCardState.getAllowedFlagsContentAndStyles(player.allowedFlags);
+      ElementHandler.clearContent(allowedFlagsContainer);
+      ElementHandler.setStyleClass(allowedFlagsContainer, interfaceParams.styles);
+      allowedFlagsContainer.innerHTML = interfaceParams.content;
+    });
   }
 
 }

@@ -31,7 +31,7 @@
   }
 
   ._turn-indicator {
-    filter        : drop-shadow(0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow"));
+    filter: drop-shadow(0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow"));
 
     &.turn-indicator--on {
       background-color: theming.getThemeColor($theme, "success-primary");
@@ -79,7 +79,9 @@
 
 @mixin applyPlayerCardThemeStyle($theme) {
   .game-player-card {
-    @include theming.dropThemeShadow($theme);
+    &.game-player-card--turn--on {
+      @include theming.dropThemeShadow($theme);
+    }
 
     @for $i from 1 through 8 {
       @include applyCardTypeThemeStyle($theme, $i);

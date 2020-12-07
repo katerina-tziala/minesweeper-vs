@@ -12,14 +12,14 @@ export class TurnsIndicator {
   }
 
   static generate(player, allowedTurns = 10) {
-    const turns = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container]);
-    ElementHandler.setID(turns, TurnsIndicator.getTurnsIndicatorID(player));
+    const turnsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container]);
+    ElementHandler.setID(turnsContainer, TurnsIndicator.getTurnsIndicatorID(player));
     for (let index = 1; index <= allowedTurns; index++) {
       const styles = TurnsIndicator.getIndicatorStyles(player, index, allowedTurns);
       const turnIndicator = ElementGenerator.generateContainer(styles);
-      turns.append(turnIndicator);
+      turnsContainer.append(turnIndicator);
     }
-    return turns;
+    return turnsContainer;
   }
 
   static getIndicatorBaseStyles(position) {
@@ -34,6 +34,21 @@ export class TurnsIndicator {
     const onLimit = player.getTurnsLeft(allowedTurns);
     (indicatorPosition <= onLimit) ? styles.push(DOM_ELEMENT_CLASS.indicatorOn) : styles.push(DOM_ELEMENT_CLASS.indicatorOff);
     return styles;
+  }
+
+  static getTurnsIndicatorContainer(player) {
+    return ElementHandler.getByID(TurnsIndicator.getTurnsIndicatorID(player));
+  }
+
+  // UPDATE
+  static update(player) {
+    return TurnsIndicator.getTurnsIndicatorContainer(player).then(turnsContainer => {
+      const turnsIndicators = turnsContainer.childNodes;
+      turnsIndicators.forEach((turnIndicator, index) => {
+        const styles = TurnsIndicator.getIndicatorStyles(player, index + 1, turnsIndicators.length);
+        ElementHandler.setStyleClass(turnIndicator, styles);
+      });
+    });
   }
 
 }

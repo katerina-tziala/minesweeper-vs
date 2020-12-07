@@ -1,17 +1,18 @@
 "use strict";
 
-
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_CLASS } from "./game-player-card.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-player-card.constants";
 
 import { PlayerCardState } from "./player-card-state/player-card-state";
 import { TurnsIndicator } from "./turns-indicator/turns-indicator";
 import { PlayerCardDetails } from "./player-card-details/player-card-details";
 
-
 export class GamePlayerCard {
+
+  static getPlayerCardID(player) {
+    return DOM_ELEMENT_ID.card + player.id;
+  }
 
   static getPlayerCardColorType(player) {
     return DOM_ELEMENT_CLASS.cardColorType + player.colorType;
@@ -22,12 +23,15 @@ export class GamePlayerCard {
     cardStyles.push(GamePlayerCard.getPlayerCardColorType(player));
     const cardDirection = opponent ? DOM_ELEMENT_CLASS.directionRight : DOM_ELEMENT_CLASS.directionLeft;
     cardStyles.push(cardDirection);
+    if (player.turn) {
+      cardStyles.push(DOM_ELEMENT_CLASS.turnOn);
+    }
     return cardStyles;
   }
 
   static generate(player, allowedTurns, clearMinefield = true, opponent = false) {
     const cardStyles = GamePlayerCard.getPlayerCardStyles(player, opponent);
-    const playerCard = ElementGenerator.generateContainer(cardStyles);
+    const playerCard = ElementGenerator.generateContainer(cardStyles, GamePlayerCard.getPlayerCardID(player));
     const playerSection = GamePlayerCard.generatePlayerSection(player, allowedTurns);
     const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield);
     const stateSection = PlayerCardState.generateStateSection(player);
@@ -52,5 +56,34 @@ export class GamePlayerCard {
     return playerIcon;
   }
 
+  static getPlayerCard(player) {
+    return ElementHandler.getByID(GamePlayerCard.getPlayerCardID(player));
+  }
+
+  // UPDATES
+  static updateState(player) {
+    return PlayerCardState.updateStateSection(player);
+  }
+
+  static updateAllowedFlags(player) {
+    return PlayerCardState.updateAllowedFlags(player);
+  }
+
+  static updateMissedTurns(player) {
+    return TurnsIndicator.update(player);
+  }
+
+  static updateGameGoalStatistics(player, value = 0) {
+    return PlayerCardDetails.updateGameGoalStatistics(player, value);
+  }
+
+  static updateTurnStatus(player) {
+    return GamePlayerCard.getPlayerCard(player).then(playerCard => {
+      ElementHandler.removeStyleClass(playerCard, DOM_ELEMENT_CLASS.turnOn);
+      if (player.turn) {
+        ElementHandler.addStyleClass(playerCard, DOM_ELEMENT_CLASS.turnOn);
+      }
+    });
+  }
 
 }

@@ -69,6 +69,13 @@
     }
   }
 
+  opacity: 0.5;
+
+
+  &.game-player-card--turn--on {
+    opacity: 1;
+
+  }
 }
 
 .game-player-card__player-section {
