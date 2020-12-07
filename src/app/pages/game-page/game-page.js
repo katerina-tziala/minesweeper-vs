@@ -72,7 +72,6 @@ export class GamePage extends Page {
     // // a.allowedFlags = 0;
 
     // mainContainer.append(GamePlayerCard.generate(a, 10, false, false));
-
     // mainContainer.append(GamePlayerCard.generate(b, undefined, true, true));
 
 
