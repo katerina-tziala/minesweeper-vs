@@ -8,5 +8,6 @@
   overflow-x   : hidden;
   overflow-y   : auto;
   flex-grow    : 1;
+  flex-direction: column;
   @extend ._scrollbar;
 }

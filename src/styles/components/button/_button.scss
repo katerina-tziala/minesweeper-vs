@@ -48,7 +48,6 @@
 
 .btn-icon--close {
   @include afterIcon(x);
-  line-height: 20px!important;
 }
 
 .btn-gameplay {
@@ -59,28 +58,32 @@
 
   &.btn-icon--previous {
     padding-right: 2px;
-    line-height: 25px;
+    line-height  : 20px;
+    font-size    : 1.3rem;
   }
 
   &.btn-icon--reset {
-    font-size: 1.1rem;
-    padding-bottom: 1px;
+    font-size   : 1.1rem;
+    padding-left: 1px;
   }
 
   &.btn-icon--play {
     font-size   : 1rem;
     line-height : 20px;
-    padding-left: 2px;
+    padding-left: 3px;
+
   }
 
   &.btn-icon--next {
     padding-left: 2px;
-    line-height: 25px;
+    line-height : 20px;
+    font-size   : 1.3rem;
   }
 
   &.btn-icon--send {
-    font-size    : 1.1rem;
-    padding-right: 2px;
+    font-size    : 1rem;
+    line-height  : 26px;
+    padding-right: 1px;
   }
 }
 

@@ -1,0 +1,43 @@
+$size           : 8;
+$max-indicators : 10;
+$placement-angle: 170;
+
+@function revertedOrderPosition($position) {
+  @return ($max-indicators - $position);
+}
+
+@function getAngle($position, $direction: 1, $reverted-order: true) {
+  $level-out: 19;
+
+  @if $reverted-order {
+    $position: revertedOrderPosition($position);
+  }
+
+  @if $direction==-1 {
+    $level-out: 26;
+  }
+
+  $result : ($placement-angle / $max-indicators) * $position+$level-out;
+  $result : $direction * $result;
+  @return $result;
+}
+
+@mixin setIndicatorsPositions($direction: 1) {
+
+  @for $i from 1 through $max-indicators {
+    $angle: getAngle($i, $direction);
+
+    &.turn-indicator-container--#{$i} {
+      transform: rotate($angle+deg);
+
+      &::before {
+        @extend ._turn-indicator-background;
+      }
+
+      &::after {
+        @extend ._turn-indicator;
+      }
+
+    }
+  }
+}

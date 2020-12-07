@@ -58,6 +58,10 @@ export class Player extends AppModel {
     return this.entered ? this.detectedMinesPositions.length : 0;
   }
 
+  get revealedTiles() {
+    return this.entered ? this.revealedPositions.length : 0;
+  }
+
   get placedFlags() {
     return this.entered ? (this.redundantFlagsPositions.length + this.detectedMinesPositions.length) : 0;
   }
@@ -103,6 +107,9 @@ export class Player extends AppModel {
     this.detectedMinesPositions = this.#removeFromPositionsArray(this.detectedMinesPositions, position);
   }
 
+  getTurnsLeft(allowedTurns) {
+    return allowedTurns - this.missedTurns;
+  }
   // setAllowedFlags(allowedFlags) {
   //     this.allowedFlags = allowedFlags;
   // }

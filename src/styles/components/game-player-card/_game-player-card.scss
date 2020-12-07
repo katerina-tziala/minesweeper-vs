@@ -1,0 +1,156 @@
+@use "../../theming/theming";
+@import "./game-player-card-utils";
+@import "./card-icons/card-icons";
+@import "./card-state/card-state";
+@import "./turns-indicator/turns-indicator";
+@import "./game-player-card-theming";
+
+.game-player-card {
+  width   : 200px;
+  height  : 90px;
+  position: relative;
+  position: relative;
+  margin  : 10px;
+
+  &.direction-left {
+
+    .game-player-card__player-section {
+      left: -48px;
+
+      .turn-indicator-container {
+        @include setIndicatorsPositions(-1);
+      }
+    }
+
+    .game-player-card__details-section {
+      @include detailsSectionShape(-1);
+
+      ._player-details {
+        left: 42px;
+      }
+
+      .player-name {
+        text-align: left;
+      }
+
+    }
+
+    .game-player-card__state-section {
+      right: -24px;
+    }
+
+  }
+
+  &.direction-right {
+    .game-player-card__player-section {
+      right: -48px;
+
+      .turn-indicator-container {
+        @include setIndicatorsPositions(1);
+      }
+    }
+
+
+    .game-player-card__state-section {
+      left: -24px;
+    }
+
+    .game-player-card__details-section {
+      @include detailsSectionShape(1);
+
+      ._player-details {
+        left: 28px;
+      }
+
+      .player-name {
+        text-align: right;
+      }
+
+    }
+  }
+
+  opacity: 0.5;
+
+
+  &.game-player-card--turn--on {
+    opacity: 1;
+
+  }
+}
+
+.game-player-card__player-section {
+  @include circle(90px);
+  @extend ._player-card-circle;
+  top         : 0px;
+  border-width: 2px;
+
+  @extend %center-center;
+
+
+  &::after {
+    position: absolute;
+    @extend %center-start;
+    @include circle(74px);
+    @extend ._card-circle-border;
+    position: absolute;
+    content : "";
+  }
+
+}
+
+.game-player-card__state-section {
+  @include circle(50px);
+  @extend ._player-card-circle;
+  top         : 20px;
+  border-width: 2px;
+  @extend %center-center;
+  overflow: hidden;
+  padding : 2px;
+}
+
+.game-player-card__details-section {
+  position: relative;
+  width   : 100%;
+  height  : 100%;
+
+  .player-name {
+    @extend ._player-details;
+    height: 22px;
+    top   : 25px;
+    @extend %ellipsis-text;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size  : 1.2rem;
+  }
+}
+
+.game-player-card__player-goal-details {
+  @extend ._player-details;
+  @extend %start-center;
+  height     : 14px;
+  line-height: 15px;
+  bottom     : 25px;
+  font-weight: 600;
+  font-size  : 1rem;
+}
+
+.player-goal-details__target {
+  text-transform: capitalize;
+  font-style    : italic;
+  display       : inline-block;
+}
+
+.player-goal-details-target-result {
+  width  : 70px;
+  padding: 0 4px;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  @include applyPlayerCardThemeStyle("light");
+}
+
+.theme-dark {
+  @include applyPlayerCardThemeStyle("dark");
+}

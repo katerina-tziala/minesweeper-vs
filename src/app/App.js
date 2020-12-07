@@ -41,11 +41,14 @@ export class App {
     //  this.setInterface();
 
     //
-    //this.onGameSetUpNavigation(GameType.Original);
+    this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
     // this.onGameSetUpNavigation(GameType.Online);
-    this.onGameSetUpNavigation(GameType.Bot);
+   // this.onGameSetUpNavigation(GameType.Bot);
     // remove document listeners!!!
+
+    //this.onPlayGame(undefined);
+
   }
 
 

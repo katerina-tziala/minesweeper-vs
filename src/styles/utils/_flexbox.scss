@@ -51,6 +51,12 @@
   @extend %second-axis-end;
 }
 
+%center-start {
+  @extend %flexbox;
+  @extend %first-axis-centered;
+  @extend %second-axis-start;
+}
+
 %between-center {
   @extend %flexbox;
   @extend %first-axis-between;
@@ -67,4 +73,10 @@
   @extend %flexbox;
   @extend %first-axis-end;
   @extend %second-axis-end;
+}
+
+%end-center {
+  @extend %flexbox;
+  @extend %first-axis-end;
+  @extend %second-axis-centered;
 }
