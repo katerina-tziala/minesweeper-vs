@@ -109,7 +109,7 @@
   .player-name {
     @extend ._player-details;
     height: 22px;
-    top   : 22px;
+    top   : 25px;
     @extend %ellipsis-text;
     white-space: nowrap;
     font-weight: 600;
@@ -122,7 +122,7 @@
   @extend %start-center;
   height     : 14px;
   line-height: 15px;
-  bottom     : 30px;
+  bottom     : 25px;
   font-weight: 600;
   font-size  : 1rem;
 }
@@ -134,9 +134,8 @@
 }
 
 .player-goal-details-target-result {
-  width  : 30px;
+  width  : 70px;
   padding: 0 4px;
-
 }
 
 

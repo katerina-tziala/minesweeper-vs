@@ -12,13 +12,13 @@
 
 .state-flag {
   @extend ._state-section-container;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 
   &::after {
     @extend ._state-icon;
     @extend .icon-flag;
     margin-left: 5px;
-    line-height: 26px;
+    line-height: 27px;
   }
 }
 

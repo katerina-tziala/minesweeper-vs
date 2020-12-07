@@ -2,22 +2,21 @@
   @extend %center-center;
   position : absolute;
   overflow : hidden;
-  font-size: 2.7rem;
+  font-size: 2.4rem;
 
-
-  &::after {
-    @include circle(60px);
-    line-height: 58px;
+  &::before {
+    @include circle(58px);
+    line-height: 56px;
   }
 
   &.person-icon--bot {
-
-    @include afterIcon("bot");
+    &::before {
+      @extend .icon-bot;
+    }
   }
 
   &.person-icon--player {
-    &::after {
-
+    &::before {
       @extend .icon-user;
     }
   }

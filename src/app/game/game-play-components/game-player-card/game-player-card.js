@@ -2,35 +2,38 @@
 
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TARGET_CONTENT } from "./game-player-card.constants";
+import { DOM_ELEMENT_CLASS } from "./game-player-card.constants";
 
 import { PlayerCardState } from "./player-card-state/player-card-state";
 import { TurnsIndicator } from "./turns-indicator/turns-indicator";
+import { PlayerCardDetails } from "./player-card-details/player-card-details";
+
+
 export class GamePlayerCard {
 
-
-  static generate(player, allowedTurns, clearMinefield = true, opponent = false) {
-    const playerCard = ElementGenerator.generateContainer(["game-player-card"]);
-
-    if (opponent) {
-      ElementHandler.addStyleClass(playerCard, "direction-right");
-    } else {
-      ElementHandler.addStyleClass(playerCard, "direction-left");
-    }
-    ElementHandler.addStyleClass(playerCard, "game-player-card__color-type--" + player.colorType);
-
-
-    playerCard.append(GamePlayerCard.generatePlayerSection(player, allowedTurns));
-    playerCard.append(GamePlayerCard.generateDetailsSection(player, clearMinefield));
-    playerCard.append(PlayerCardState.generateStateSection(player));
-
-
-    return playerCard;
+  static getPlayerCardColorType(player) {
+    return DOM_ELEMENT_CLASS.cardColorType + player.colorType;
   }
 
+  static getPlayerCardStyles(player, opponent) {
+    const cardStyles = [DOM_ELEMENT_CLASS.card];
+    cardStyles.push(GamePlayerCard.getPlayerCardColorType(player));
+    const cardDirection = opponent ? DOM_ELEMENT_CLASS.directionRight : DOM_ELEMENT_CLASS.directionLeft;
+    cardStyles.push(cardDirection);
+    return cardStyles;
+  }
 
+  static generate(player, allowedTurns, clearMinefield = true, opponent = false) {
+    const cardStyles = GamePlayerCard.getPlayerCardStyles(player, opponent);
+    const playerCard = ElementGenerator.generateContainer(cardStyles);
+    const playerSection = GamePlayerCard.generatePlayerSection(player, allowedTurns);
+    const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield);
+    const stateSection = PlayerCardState.generateStateSection(player);
+    playerCard.append(playerSection, detailsSection, stateSection);
+    return playerCard;
+  }
 
   static generatePlayerSection(player, allowedTurns) {
     const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerSection]);
@@ -44,28 +47,10 @@ export class GamePlayerCard {
   static generatePayerIcon(isBot) {
     const styles = [DOM_ELEMENT_CLASS.personIcon];
     isBot ? styles.push(DOM_ELEMENT_CLASS.botIcon) : styles.push(DOM_ELEMENT_CLASS.playerIcon);
+    //TODO: add indicator for bot level
     const playerIcon = ElementGenerator.generateContainer(styles);
     return playerIcon;
   }
 
-  static generateDetailsSection(player, clearMinefield) {
-    const playerInstanceSection = ElementGenerator.generateContainer(["game-player-card__details-section"]);
-
-    const playerName = ElementGenerator.generateContainer(["player-name"]);
-    playerName.innerHTML = player.name;
-    playerInstanceSection.append(playerName);
-
-    const playerTarget = ElementGenerator.generateContainer(["game-player-card__player-goal-details"]);
-    playerTarget.innerHTML = `<span class="player-goal-details__target">${clearMinefield ? TARGET_CONTENT.clear : TARGET_CONTENT.detect}:</span>
-    <span id="player-goal-details-target-result__${player.id}" class="player-goal-details-target-result">
-    ${clearMinefield ? player.revealedTiles : player.minesDetected}</span>`;
-    playerInstanceSection.append(playerTarget);
-
-
-    // clearMinefield
-    console.log(player);
-
-    return playerInstanceSection;
-  }
 
 }

@@ -31,7 +31,7 @@
   }
 
   ._turn-indicator {
-    filter: drop-shadow(0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow"));
+    filter        : drop-shadow(0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow"));
 
     &.turn-indicator--on {
       background-color: theming.getThemeColor($theme, "success-primary");
@@ -65,7 +65,7 @@
     $game-color-type: theming.getThemeColor($theme, "game-type-#{$color-type}");
 
     .person-icon {
-      &::after {
+      &::before {
         background-color: $game-color-type;
       }
     }
@@ -85,6 +85,7 @@
       @include applyCardTypeThemeStyle($theme, $i);
     }
   }
+
   @include applyCardUtilitiesThemeStyle($theme);
   @include applyPersonIconThemeStyle($theme);
   @include applyTurnsIndicatorThemeStyle($theme);
