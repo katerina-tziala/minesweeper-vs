@@ -4,12 +4,11 @@
 @import "../../vendor/fontawesome/brands.scss";
 
 %icon {
-  display       : inline-block;
-  margin        : auto;
-  vertical-align: middle;
-  width         : 100%;
-  font-style    : normal;
-  text-align    : center;
+  display: block;
+  margin: auto;
+  width: 100%;
+  font-style: normal;
+  text-align: center;
 }
 
 %icon-regular-outline {
@@ -19,13 +18,13 @@
 
 %icon-regular {
   @extend %icon;
-  font-weight   : 900;
+  font-weight: 900;
   font-family: "Font Awesome 5 Free";
 }
 
 %icon-brand {
   @extend %icon;
-  font-weight   : 900;
+  font-weight: 900;
   font-family: "Font Awesome 5 Brands";
 }
 
