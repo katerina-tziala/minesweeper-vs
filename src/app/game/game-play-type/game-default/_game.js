@@ -109,8 +109,7 @@ export class Game extends AppModel {
       this.renderMineField(),
       this.mineCounter.generate(),
       this.dashboardFace.init(),
-      this.gameTimer.generate(),
-      //this.#renderActionButtons()
+      this.gameTimer.generate()
     ];
     return Promise.all(viewParts);
   }
