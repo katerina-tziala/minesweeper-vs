@@ -1,7 +1,9 @@
 @use "../game-board-styles";
+@import "../../table/table";
 
 .mine-field {
   @extend ._board-section;
+  @extend %center-center;
   position: relative;
 
   .mine-field__freezer {

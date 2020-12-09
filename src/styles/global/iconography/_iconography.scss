@@ -107,3 +107,7 @@
   content: fa-content($fa-var-reply-all);
 }
 
+.icon-low-vision {
+  @extend %icon-regular;
+  content: fa-content($fa-var-low-vision);
+}

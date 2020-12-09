@@ -6,6 +6,7 @@
 
 .dashboard {
   @extend ._board-section;
+  @extend %between-center;
   padding: 5px;
 
   .dashboard__time-counter, .dashboard__mine-counter {

@@ -18,6 +18,10 @@
   justify-content: space-between;
 }
 
+%first-axis-evenly {
+  justify-content: space-evenly;
+}
+
 %second-axis-centered {
   align-items  : center;
   align-content: center;
@@ -78,5 +82,11 @@
 %end-center {
   @extend %flexbox;
   @extend %first-axis-end;
+  @extend %second-axis-centered;
+}
+
+%evenly-center {
+  @extend %flexbox;
+  @extend %first-axis-evenly;
   @extend %second-axis-centered;
 }

@@ -72,3 +72,11 @@ export const RESET_GAME_BTN = {
   },
   actionType: "click"
 };
+
+export const SNEAK_PEEK_GAME_BTN = {
+  className: "btn-icon--sneak-peek",
+  attributes: {
+    "aria-label": "sneak peek on opponent's game"
+  },
+  actionType: "click"
+};

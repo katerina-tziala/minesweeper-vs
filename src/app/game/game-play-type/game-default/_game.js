@@ -8,18 +8,16 @@ import { nowTimestamp } from "~/_utils/dates";
 
 import { GameType, GameVSMode } from "GameEnums";
 import { GameViewHelper } from "./_game-view-helper";
-import { BOARD_SECTION, DASHBOARD_SECTION } from "./_game.constants";
+import { ACTION_BUTTONS, BOARD_SECTION, DASHBOARD_SECTION } from "./_game.constants";
 
 import {
   DigitalCounter,
   GameTimer,
   DashboardFaceIcon,
-  MineField
+  MineField,
 } from "GamePlayComponents";
 
-
 export class Game extends AppModel {
-
   constructor(id, params, player) {
     super();
     this.update(params);
@@ -45,11 +43,12 @@ export class Game extends AppModel {
   }
 
   renderMineField() {
-    return GameViewHelper.getClearedGameSection(this.getBoardSectionID(BOARD_SECTION.mineField))
-      .then(container => {
-        container.append(this.mineField.generateMinefield);
-        return;
-      });
+    return GameViewHelper.getClearedGameSection(
+      this.getBoardSectionID(BOARD_SECTION.mineField)
+    ).then((container) => {
+      container.append(this.mineField.generateMinefield);
+      return;
+    });
   }
 
   onActiveTileChange(activeTile) {
@@ -72,35 +71,46 @@ export class Game extends AppModel {
   initTimeCounter() {
     const params = this.gameTimerSettings;
     params.id = this.getBoardSectionID(DASHBOARD_SECTION.timeCounter);
-    this.gameTimer = new GameTimer(params, this.onTimerStopped.bind(this));
+    this.gameTimer = new GameTimer(params, this.onRoundTimerEnd.bind(this));
   }
 
-  onTimerStopped() {
+  onRoundTimerEnd() {
     console.log("turn ended");
   }
 
   generateView() {
-    //const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#gameContainerID);
     const gameContainer = document.createDocumentFragment();
-    gameContainer.append(GameViewHelper.generateBoard(this.id));
+    const board = GameViewHelper.generateBoard(this.id);
+    board.insertBefore(this.generatBoardActions(), board.firstChild);
+    gameContainer.append(board);
     return gameContainer;
   }
 
+  generatBoardActions() {
+    const boardActions = GameViewHelper.generateBoardSection(BOARD_SECTION.boardActions, this.id);
+    const boardActionButtons = this.boardActionButtons;
+    if (boardActionButtons.length) {
+      boardActionButtons.forEach(button => boardActions.append(button));
+    } else {
+      ElementHandler.hide(boardActions);
+    }
+    return boardActions;
+  }
 
-
-
-
-
-
-
-
-
-
-  get viewControllers() {
-    this.mineCounter = new DigitalCounter(this.getBoardSectionID(DASHBOARD_SECTION.mineCounter));
-    this.dashboardFace = new DashboardFaceIcon(this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
+  get initViewControllers() {
+    this.mineCounter = new DigitalCounter(
+      this.getBoardSectionID(DASHBOARD_SECTION.mineCounter)
+    );
+    this.dashboardFace = new DashboardFaceIcon(
+      this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon)
+    );
     this.initTimeCounter();
-    this.mineField = new MineField(this.id, this.levelSettings, this.onActiveTileChange.bind(this), this.onTileAction.bind(this));
+    this.mineField = new MineField(
+      this.id,
+      this.levelSettings,
+      this.onActiveTileChange.bind(this),
+      this.onTileAction.bind(this)
+    );
     return Promise.resolve();
   }
 
@@ -109,17 +119,18 @@ export class Game extends AppModel {
       this.renderMineField(),
       this.mineCounter.generate(),
       this.dashboardFace.init(),
-      this.gameTimer.generate()
+      this.gameTimer.generate(),
     ];
     return Promise.all(viewParts);
   }
 
   get onAfterViewInit() {
-    return this.viewControllers.then(() => this.onViewInit);
+    return this.initViewControllers.then(() => this.onViewInit);
   }
 
   updateMineCounter() {
-    this.mineCounter.value = this.levelSettings.numberOfMines - this.detectedMines;
+    this.mineCounter.value =
+      this.levelSettings.numberOfMines - this.detectedMines;
   }
 
   setSmileFace() {
@@ -127,7 +138,10 @@ export class Game extends AppModel {
   }
 
   get dashboardFaceColor() {
-    if (this.optionsSettings.vsMode && this.optionsSettings.vsMode !== GameVSMode.Parallel) {
+    if (
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode !== GameVSMode.Parallel
+    ) {
       return this.playerOnTurn.colorType;
     }
     return undefined;
@@ -139,12 +153,30 @@ export class Game extends AppModel {
     this.setSmileFace();
   }
 
+  get isParallel() {
+    if (
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode === GameVSMode.Parallel
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get isOnline() {
+    if (
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode === GameVSMode.Online
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+
+
 
   // OVERRIDEN FUNCTIONS
-  init() { }
-
-  start() { }
-
   get gameTimerSettings() {
     const step = 1;
     const limit = null;
@@ -159,5 +191,42 @@ export class Game extends AppModel {
   get playerOnTurn() {
     return this.player;
   }
+
+  get boardActionButtons() {
+    if (this.isParallel) {
+      return [];
+    }
+    const boardActions = [];
+    boardActions.push(GameViewHelper.generateActionButton(ACTION_BUTTONS.exit, this.onExit.bind(this)));
+    if (!this.isOnline) {
+      boardActions.push(GameViewHelper.generateActionButton(ACTION_BUTTONS.restart, this.onRestart.bind(this)));
+      boardActions.push(GameViewHelper.generateActionButton(ACTION_BUTTONS.reset, this.onReset.bind(this)));
+    }
+    return boardActions;
+  }
+
+  init() {
+    return;
+  }
+
+  start() {
+    return;
+  }
+
+  onExit() {
+    console.log("onExit");
+    return;
+  }
+
+  onRestart() {
+    console.log("onRestart");
+    return;
+  }
+
+  onReset() {
+    console.log("onReset");
+    return;
+  }
+
 
 }

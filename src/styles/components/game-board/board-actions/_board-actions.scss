@@ -4,15 +4,20 @@
 
 .board-actions {
   @extend ._board-section;
-  padding: 5px;
+  @extend %evenly-center;
+  // padding: 5px;
 }
 
-
-
 .board-action-btn {
-  @extend ._btn;
-  font-size: 1.4rem;
-  @include rectangle(30px);
+  @extend .btn-icon;
+  height: 30px;
+  min-width: 30px;
+  flex-grow: 1;
+  font-size: 1.5rem;
+  &::after {
+    width: 30px;
+    border: 1px solid transparent;
+  }
 }
 
 .btn-icon--exit-game {
@@ -20,38 +25,33 @@
 }
 
 .btn-icon--restart-game {
-  position : relative;
-  font-size: 1.5rem;
+  position: relative;
 
   &:before {
+    width: 30px;
     @extend .icon-redo;
-    position: absolute;
-    top     : 3px;
-    left    : 0px;
   }
 
   &:after {
     @extend .icon-play;
-    position : absolute;
-    left     : 0;
+    position: absolute;
+    left: 0;
     font-size: 0.6rem;
-    top      : 10px;
+    top: 8px;
+    width: 100%;
   }
-}
-
-.btn-icon--exit-game {
-  @include afterIcon("home");
 }
 
 .btn-icon--reset-game {
   @include afterIcon("sliders");
 }
 
+.btn-icon--sneak-peek {
+  @include afterIcon("low-vision");
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-
-
   .board-action-btn {
     color: theming.getThemeColor("light", "theme-primary");
     @include game-board-styles.boardBorders("light");
@@ -61,17 +61,12 @@
     &:focus {
       color: theming.getThemeColor("light", "theme-primary-intense");
     }
-
-
   }
-
 }
 
 .theme-dark {
-
-
   .board-action-btn {
-    color           : theming.getThemeColor("dark", "theme-primary");
+    color: theming.getThemeColor("dark", "theme-primary");
     background-color: theming.getThemeColor("dark", "board-button-background");
     @include game-board-styles.boardBorders("dark");
 
@@ -79,6 +74,5 @@
     &:focus {
       color: theming.getThemeColor("dark", "theme-primary-intense");
     }
-
   }
 }

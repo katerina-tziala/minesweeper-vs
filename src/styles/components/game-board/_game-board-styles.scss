@@ -1,5 +1,5 @@
 @use "../../theming/theming";
-@import "../table/table";
+
 
 @mixin twoSideBorderDirectionTopLeft($top-left-color, $bottom-right-color) {
   border-width    : 2px;

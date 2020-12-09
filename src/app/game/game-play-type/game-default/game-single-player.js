@@ -8,19 +8,23 @@ export class GameSinglePlayer extends Game {
     this.init();
   }
 
+  // OVERRIDEN FUNCTIONS
+  get detectedMines() {
+    return this.optionsSettings.wrongFlagHint ? this.player.minesDetected : this.player.placedFlags;
+  }
+
   init() {
     this.player.initState();
     this.player.turn = true;
     this.initState();
   }
 
-  get detectedMines() {
-    return this.optionsSettings.wrongFlagHint ? this.player.minesDetected : this.player.placedFlags;
-  }
-
   start() {
     this.onAfterViewInit.then(() => {
       this.initDashBoard();
+
+
+      console.log("start ORIGINAL GAME --- can be parallel");
 
       console.log("re staaart original");
       console.log("show start modal when not parallel else start");
@@ -36,11 +40,5 @@ export class GameSinglePlayer extends Game {
     });
 
   }
-
-
-
-
-
-
 
 }

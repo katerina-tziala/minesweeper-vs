@@ -2,7 +2,6 @@
 import { Game } from "./_game";
 
 export class GameVS extends Game {
-
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;
@@ -10,24 +9,7 @@ export class GameVS extends Game {
     this.init();
   }
 
-  init() {
-    this.players.forEach(player => {
-      player.initState();
-      player.turn = player.id === this.playerStartID;
-    });
-    this.initState();
-  }
-
-  get playerOnTurn() {
-    return this.players.find(player => player.turn);
-  }
-
-  get detectedMines() {
-    let detectedMines = 0;
-    this.players.forEach(player => detectedMines += player.minesDetected);
-    return detectedMines;
-  }
-
+  // OVERRIDEN FUNCTIONS
   get gameTimerSettings() {
     const timerSettings = super.gameTimerSettings;
     if (this.#roundTimer) {
@@ -38,7 +20,36 @@ export class GameVS extends Game {
     return timerSettings;
   }
 
+  get playerOnTurn() {
+    return this.players.find((player) => player.turn);
+  }
 
+  get detectedMines() {
+    let detectedMines = 0;
+    this.players.forEach((player) => (detectedMines += player.minesDetected));
+    return detectedMines;
+  }
+
+  get boardActionButtons() {
+    const boardActions = super.boardActionButtons;
+    if (this.sneakPeekAllowed) {
+      boardActions.push(
+        GameViewHelper.generateActionButton(
+          ACTION_BUTTONS.sneakPeek,
+          this.onSneakPeek.bind(this)
+        )
+      );
+    }
+    return boardActions;
+  }
+
+  init() {
+    this.players.forEach((player) => {
+      player.initState();
+      player.turn = player.id === this.playerStartID;
+    });
+    this.initState();
+  }
 
   start() {
     this.onAfterViewInit.then(() => {
@@ -47,7 +58,7 @@ export class GameVS extends Game {
         this.setGameStart();
       }
 
-      console.log("re staaart VS");
+      console.log("start VS GAME --- can be online");
 
       console.log(this.playerOnTurn);
       console.log("show start modal and start rounds");
@@ -55,33 +66,40 @@ export class GameVS extends Game {
     });
   }
 
-  initRound() {
-    this.roundTiles = [];
-    this.players.forEach(player => player.toggleTurn());
-  }
-
   startGameRound() {
     // this.game.startRound();
     // this.#setDashboardRoundState();
-
-
     // if (this.game.roundTimer) {
     //   this.#timeCounter.start();
     // }
     // if (!this.game.singlePlayer) {
     //   console.log("set round styles");
     // }
-
     // this.mineField.toggleMinefieldFreezer(false);
   }
 
-
+  // CLASS SPECIFIC FUNCTIONS
   get #roundTimer() {
     return this.turnSettings && this.turnSettings.turnTimer;
   }
 
+  get sneakPeekAllowed() {
+    if (
+      this.optionsSettings.sneakPeek &&
+      this.optionsSettings.sneakPeekDuration
+    ) {
+      return true;
+    }
+    return false;
+  }
 
+  initRound() {
+    this.roundTiles = [];
+    this.players.forEach((player) => player.toggleTurn());
+  }
 
-
-
+  onSneakPeek() {
+    console.log("onSneakPeek");
+    return;
+  }
 }
