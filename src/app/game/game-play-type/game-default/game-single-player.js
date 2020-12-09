@@ -24,11 +24,12 @@ export class GameSinglePlayer extends Game {
       this.initDashBoard();
 
 
-      console.log("start ORIGINAL GAME --- can be parallel");
+      // TODO
+      //console.log("ON Parallel - start");
 
       console.log("re staaart original");
-      console.log("show start modal when not parallel else start");
-      //console.log(this);
+  
+      
       // this.game.roundTimer ? this.game.setGameStart() :
 
       // if (!this.game.singlePlayer) {

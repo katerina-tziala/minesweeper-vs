@@ -1,0 +1,20 @@
+@use "../../theming/theming";
+
+@import "./game-player-card/game-player-card";
+
+
+
+.game-vs-dashboard {
+
+  @extend %center-center;
+  width: 100%;
+  padding: 10px;
+
+  //border: 2px solid red;
+  // add parallel actions
+}
+
+.game-vs-dashboard__player {
+  @extend %center-center;
+  width: 300px;
+}

@@ -18,10 +18,10 @@ export class GamePlayerCard {
     return DOM_ELEMENT_CLASS.cardColorType + player.colorType;
   }
 
-  static getPlayerCardStyles(player, opponent) {
+  static getPlayerCardStyles(player, directionLeft) {
     const cardStyles = [DOM_ELEMENT_CLASS.card];
     cardStyles.push(GamePlayerCard.getPlayerCardColorType(player));
-    const cardDirection = opponent ? DOM_ELEMENT_CLASS.directionRight : DOM_ELEMENT_CLASS.directionLeft;
+    const cardDirection = directionLeft ? DOM_ELEMENT_CLASS.directionRight : DOM_ELEMENT_CLASS.directionLeft;
     cardStyles.push(cardDirection);
     if (player.turn) {
       cardStyles.push(DOM_ELEMENT_CLASS.turnOn);
@@ -29,8 +29,8 @@ export class GamePlayerCard {
     return cardStyles;
   }
 
-  static generate(player, allowedTurns, clearMinefield = true, opponent = false) {
-    const cardStyles = GamePlayerCard.getPlayerCardStyles(player, opponent);
+  static generate(player, directionLeft = false, allowedTurns = null, clearMinefield = true) {
+    const cardStyles = GamePlayerCard.getPlayerCardStyles(player, directionLeft);
     const playerCard = ElementGenerator.generateContainer(cardStyles, GamePlayerCard.getPlayerCardID(player));
     const playerSection = GamePlayerCard.generatePlayerSection(player, allowedTurns);
     const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield);

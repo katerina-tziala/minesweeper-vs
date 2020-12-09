@@ -1,11 +1,19 @@
 "use strict";
-import { Game } from "./_game";
+
+
+import { GameType, GameVSMode } from "GameEnums";
+
+
+import { Game } from "../_game";
+
+import { GameVSDashboard } from "../../game-vs-dashboard/game-vs-dashboard";
 
 export class GameVS extends Game {
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
+    this.vsDashboard = new GameVSDashboard(!this.#isDetectMinesGoal, this.#turnsLimit);
     this.init();
   }
 
@@ -32,7 +40,7 @@ export class GameVS extends Game {
 
   get boardActionButtons() {
     const boardActions = super.boardActionButtons;
-    if (this.sneakPeekAllowed) {
+    if (this.#sneakPeekAllowed) {
       boardActions.push(
         GameViewHelper.generateActionButton(
           ACTION_BUTTONS.sneakPeek,
@@ -41,6 +49,13 @@ export class GameVS extends Game {
       );
     }
     return boardActions;
+  }
+
+  generateView() {
+    const gameContainer = super.generateView();
+    const vsDashboard = this.vsDashboard.generateView(this.player, this.opponent);
+    gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
+    return gameContainer;
   }
 
   init() {
@@ -83,7 +98,21 @@ export class GameVS extends Game {
     return this.turnSettings && this.turnSettings.turnTimer;
   }
 
-  get sneakPeekAllowed() {
+  get #turnsLimit() {
+    return this.turnSettings ? this.turnSettings.missedTurnsLimit : 0;
+  }
+
+  get #isDetectMinesGoal() {
+    if (
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode === GameVSMode.Detect
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  get #sneakPeekAllowed() {
     if (
       this.optionsSettings.sneakPeek &&
       this.optionsSettings.sneakPeekDuration

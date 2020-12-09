@@ -4,10 +4,10 @@
 @import "../utils/_module-utils";
 
 @import "../components/button/button";
+
+
 @import "../components/game-board/game-board";
-
-@import "../components/game-player-card//game-player-card";
-
+@import "../components/game-vs-dashboard/game-vs-dashboard";
 
 
 .game-container {
@@ -19,3 +19,4 @@
   // background-color: pink;
   // border: 2px solid red;
 }
+

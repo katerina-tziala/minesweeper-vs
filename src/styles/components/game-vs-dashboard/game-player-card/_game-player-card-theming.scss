@@ -1,4 +1,4 @@
-@use "../../theming/theming";
+@use "../../../theming/theming";
 
 @mixin applyAllowedFlagsThemeStyle($theme) {
   .allowed-flags {
