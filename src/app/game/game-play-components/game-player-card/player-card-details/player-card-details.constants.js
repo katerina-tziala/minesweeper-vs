@@ -5,7 +5,9 @@ export const DOM_ELEMENT_CLASS = {
   playerName: "player-name",
   gameGoalDetails: "game-player-card__player-goal-details",
   gameGoalDetailsTarget: "player-goal-details__target",
-  gameTargetResult: "player-goal-details-target-result"
+  gameTargetResult: "player-goal-details-target-result",
+  playerResult: "game-player-result",
+  targetValue: "game-target-value",
 };
 
 export const DOM_ELEMENT_ID = {

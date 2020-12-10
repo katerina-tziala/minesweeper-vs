@@ -6,7 +6,7 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TARGET_CONTENT } from "./player-card
 
 export class PlayerCardDetails {
 
-  static generateDetailsSection(player, clearMinefield, targetValue) {
+  static generateDetailsSection(player, clearMinefield, targetValue = 999) {
     const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.detailsSection]);
     const playerName = PlayerCardDetails.generatePlayerName(player.name);
     const playerTarget = PlayerCardDetails.generateGoalDetails(player, clearMinefield, targetValue);
@@ -41,8 +41,8 @@ export class PlayerCardDetails {
     gameTargetResult.append(result);
 
     if (targetValue) {
-      const expectedResult = document.createElement("span");
-      expectedResult.innerHTML = ` / ${targetValue}`;
+      const expectedResult = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.targetValue]);
+      expectedResult.innerHTML = `/ ${targetValue}`;
       gameTargetResult.append(expectedResult);
     }
 
@@ -50,7 +50,7 @@ export class PlayerCardDetails {
   }
 
   static generateGameResultContainer(player, clearMinefield) {
-    const gameResult = document.createElement("span");
+    const gameResult = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.targetValue]);
     ElementHandler.setID(gameResult, PlayerCardDetails.getGameResultID(player));
     gameResult.innerHTML = clearMinefield ? player.revealedTiles : player.minesDetected;
     return gameResult;

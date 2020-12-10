@@ -14,6 +14,8 @@ export class GameVSDashboard {
   constructor(allowedTurns, clearMinefield) {
     this.allowedTurns = allowedTurns;
     this.clearMinefield = clearMinefield;
+    //to pass
+    this.target = 999;
   }
 
   generateView(player, opponent) {

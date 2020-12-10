@@ -1,8 +1,6 @@
 "use strict";
 
-
 import { GameType, GameVSMode } from "GameEnums";
-
 
 import { Game } from "../_game";
 
@@ -13,7 +11,10 @@ export class GameVS extends Game {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
-    this.vsDashboard = new GameVSDashboard(!this.#isDetectMinesGoal, this.#turnsLimit);
+    this.vsDashboard = new GameVSDashboard(
+      !this.#isDetectMinesGoal,
+      this.#turnsLimit
+    );
     this.init();
   }
 
@@ -53,7 +54,10 @@ export class GameVS extends Game {
 
   generateView() {
     const gameContainer = super.generateView();
-    const vsDashboard = this.vsDashboard.generateView(this.player, this.opponent);
+    const vsDashboard = this.vsDashboard.generateView(
+      this.player,
+      this.opponent
+    );
     gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
     return gameContainer;
   }
@@ -74,6 +78,7 @@ export class GameVS extends Game {
       }
 
       console.log("start VS GAME --- can be online");
+      console.log("start VS GAME --- init cards");
 
       console.log(this.playerOnTurn);
       console.log("show start modal and start rounds");
