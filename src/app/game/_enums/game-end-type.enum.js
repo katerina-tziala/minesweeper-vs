@@ -2,10 +2,9 @@
 
 const GameEndType = {
   DetonatedMine: "detonated-mine",
-  Cleared: "cleared-minefield",
-  Friend: "friend",
-  Original: "original"
+  Cleared: "cleared-minefield"
 };
+
 Object.freeze(GameEndType);
 
 export { GameEndType };

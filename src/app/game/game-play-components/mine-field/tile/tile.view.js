@@ -104,7 +104,6 @@ export class TileView {
   #setMouseUpAction(tileButton, onAction) {
     tileButton.addEventListener("mouseup", (event) => {
       if (this.#active) {
-        this.deActivate();
         switch (event.which) {
           case 1: // left mouse click
           case 2:// middle mouse click
@@ -116,6 +115,7 @@ export class TileView {
           default:
             break;
         }
+        this.deActivate();
       }
     });
   }
@@ -185,6 +185,7 @@ export class TileView {
     this.#active = false;
     this.#setButtonActiveStyle();
   }
+
   // toggleButtonInteraction(disabled) {
   //   this.getTileButton().then(button => {
   //     this.setDisabled(disabled);

@@ -78,11 +78,13 @@ export class Tile {
         if (this.isUntouched) {
           onActivation(activated)
         } else {
-          this.#viewController.deActivate();
+          //this.#viewController.deActivate();
           onActivation(false)
         }
       },
-      (action) => onAction(this, action)
+      (action) => {
+        onAction(this, action)
+      }
     );
   }
 

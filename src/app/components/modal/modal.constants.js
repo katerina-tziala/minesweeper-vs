@@ -1,5 +1,5 @@
 "use strict";
-import { RESTART_BTN, QUIT_BTN, EXIT_BTN } from "~/_constants/btn-text.constants";
+import { RESTART_BTN, QUIT_BTN, RESET_BTN } from "~/_constants/btn-text.constants";
 
 export const DOM_ELEMENT_ID = {
   window: "modal-window",
@@ -35,5 +35,11 @@ export const CONFIRMATION = {
     content: "Restarting game in...",
     timer: 3,
     confirmButton: RESTART_BTN
-  }
+  },
+  resetGame: {
+    title: "Reset Game",
+    content: "Reseting game in...",
+    timer: 3,
+    confirmButton: RESET_BTN
+  },
 };

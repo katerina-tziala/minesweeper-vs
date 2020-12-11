@@ -3,7 +3,11 @@
 import "../../../styles/pages/_game.scss";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import {
+  ElementHandler,
+  ElementGenerator,
+  AriaHandler,
+} from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { Page } from "../page";
 
@@ -29,11 +33,6 @@ export class GamePage extends Page {
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
 
-    // this.gamePlay = new GamePlay(game, {
-    //   onExit: this.onGameExit.bind(this),
-    //   onReset: this.onGameReset.bind(this),
-    // });
-
     this.init();
   }
 
@@ -54,8 +53,12 @@ export class GamePage extends Page {
   }
 
   renderPage(mainContainer) {
-    GameFactory.loadGame(this.gameParams).then(game => {
+    GameFactory.loadGame(this.gameParams).then((game) => {
       this.game = game;
+      this.game.dashBoardActions = {
+        onExit: this.onGameExit.bind(this),
+        onReset: this.onGameReset.bind(this),
+      };
       if (this.game) {
         mainContainer.append(this.game.generateView());
         this.game.start();
@@ -68,19 +71,13 @@ export class GamePage extends Page {
   // Overridden functions
   onConnectionError(errorMessage) {
     //super.onConnectionError(errorMessage);
-
   }
-
 
   onGameExit() {
     console.log("onGameExit");
     console.log("notify connection");
     this.navigateToHome();
   }
-
-
-
-
 
   onGameReset() {
     console.log("onGameReset");
@@ -90,7 +87,6 @@ export class GamePage extends Page {
     this.onGameSetUpNavigation(this.game.type);
   }
 
-
   #saveCurrentGameSetUp() {
     const gameSetUp = { ...this.game };
     delete gameSetUp.id;
@@ -99,5 +95,4 @@ export class GamePage extends Page {
 
     //   LocalStorageHelper.save("gameSetup", gameSetUp);
   }
-
 }

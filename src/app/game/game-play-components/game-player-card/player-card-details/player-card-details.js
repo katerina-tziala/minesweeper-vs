@@ -6,10 +6,10 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, TARGET_CONTENT } from "./player-card
 
 export class PlayerCardDetails {
 
-  static generateDetailsSection(player, clearMinefield, targetValue = 999) {
+  static generateDetailsSection(player, clearMinefield) {
     const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.detailsSection]);
     const playerName = PlayerCardDetails.generatePlayerName(player.name);
-    const playerTarget = PlayerCardDetails.generateGoalDetails(player, clearMinefield, targetValue);
+    const playerTarget = PlayerCardDetails.generateGoalDetails(player, clearMinefield);
     playerInstanceSection.append(playerName, playerTarget);
     return playerInstanceSection;
   }
@@ -20,10 +20,10 @@ export class PlayerCardDetails {
     return playerName;
   }
 
-  static generateGoalDetails(player, clearMinefield, targetValue) {
+  static generateGoalDetails(player, clearMinefield) {
     const goalDetails = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.gameGoalDetails]);
     const detailsLabel = PlayerCardDetails.generateGameTargetLabel(clearMinefield);
-    const gameTargetResult = PlayerCardDetails.generateGameTargetStatistics(player, clearMinefield, targetValue);
+    const gameTargetResult = PlayerCardDetails.generateGameTargetStatistics(player, clearMinefield);
     goalDetails.append(detailsLabel, gameTargetResult);
     return goalDetails;
   }
@@ -34,15 +34,15 @@ export class PlayerCardDetails {
     return targetLabel;
   }
 
-  static generateGameTargetStatistics(player, clearMinefield, targetValue) {
+  static generateGameTargetStatistics(player, clearMinefield) {
     const gameTargetResult = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.gameTargetResult]);
 
     const result = PlayerCardDetails.generateGameResultContainer(player, clearMinefield);
     gameTargetResult.append(result);
 
-    if (targetValue) {
+    if (player.goalTargetNumber) {
       const expectedResult = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.targetValue]);
-      expectedResult.innerHTML = `/ ${targetValue}`;
+      expectedResult.innerHTML = `/ ${player.goalTargetNumber}`;
       gameTargetResult.append(expectedResult);
     }
 

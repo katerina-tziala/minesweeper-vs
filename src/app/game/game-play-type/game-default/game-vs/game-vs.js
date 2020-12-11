@@ -7,17 +7,15 @@ import { Game } from "../_game";
 import { GameVSDashboard } from "../../game-vs-dashboard/game-vs-dashboard";
 
 export class GameVS extends Game {
+
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
-    this.vsDashboard = new GameVSDashboard(
-      !this.#isDetectMinesGoal,
-      this.#turnsLimit
-    );
     this.init();
+    this.vsDashboard = new GameVSDashboard(this.#turnsLimit, !this.#isDetectMinesGoal);
   }
-
+  
   // OVERRIDEN FUNCTIONS
   get gameTimerSettings() {
     const timerSettings = super.gameTimerSettings;
@@ -64,7 +62,7 @@ export class GameVS extends Game {
 
   init() {
     this.players.forEach((player) => {
-      player.initState();
+      player.initState(this.#isDetectMinesGoal ? this.levelSettings.numberOfMines : this.levelSettings.numberOfEmptyTiles);
       player.turn = player.id === this.playerStartID;
     });
     this.initState();
@@ -72,31 +70,26 @@ export class GameVS extends Game {
 
   start() {
     this.onAfterViewInit.then(() => {
+      return this.vsDashboard.initCardsState(this.players);
+    }).then(() => {
       this.initDashBoard();
       if (this.#roundTimer) {
         this.setGameStart();
       }
-
-      console.log("start VS GAME --- can be online");
-      console.log("start VS GAME --- init cards");
-
+      console.log("start VS GAME");
       console.log(this.playerOnTurn);
       console.log("show start modal and start rounds");
-      // this.startGameRound();
+      this.startGameRound();
     });
   }
 
-  startGameRound() {
-    // this.game.startRound();
-    // this.#setDashboardRoundState();
-    // if (this.game.roundTimer) {
-    //   this.#timeCounter.start();
-    // }
-    // if (!this.game.singlePlayer) {
-    //   console.log("set round styles");
-    // }
-    // this.mineField.toggleMinefieldFreezer(false);
+  restart() {
+    console.log("restart");
+   // this.init();
+    return;
   }
+
+ 
 
   // CLASS SPECIFIC FUNCTIONS
   get #roundTimer() {
@@ -136,4 +129,13 @@ export class GameVS extends Game {
     console.log("onSneakPeek");
     return;
   }
+
+  startGameRound() {
+    this.initRoundTiles();
+
+
+    this.mineField.enable();
+
+  }
+
 }

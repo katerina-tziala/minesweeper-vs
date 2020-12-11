@@ -55,7 +55,7 @@ export class MineField {
   #onTileAction(tile, action) {
     if (action && tile) {
       this.#onActiveTileChange(false);
-      this.toggleMinefieldFreezer(true);
+      this.freezerState = true;
       this.#submitTileAction(action, tile);
     }
   }
@@ -92,7 +92,7 @@ export class MineField {
     return fragment;
   }
 
-  toggleMinefieldFreezer(display) {
+  set freezerState(display) {
     this.#freezer.then(freezer => {
       display ? ElementHandler.display(freezer) : ElementHandler.hide(freezer);
     });
@@ -198,7 +198,13 @@ export class MineField {
   // }
 
 
+  disable() {
+    this.freezerState = true;
+  }
 
+  enable() {
+    this.freezerState = false;
+  }
 
 
 

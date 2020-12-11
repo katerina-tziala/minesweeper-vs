@@ -40,6 +40,8 @@ export class GamePlay {
     this.init();
   }
 
+
+
   set game(game) {
     this.#_game = game;
   }

@@ -14,7 +14,7 @@ $placement-angle: 170;
   }
 
   @if $direction==-1 {
-    $level-out: 34;
+    $level-out: 32;
   }
 
   $result : ($placement-angle / $max-indicators) * $position+$level-out;

@@ -6,9 +6,13 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
 
-import { GameType, GameVSMode } from "GameEnums";
+import { GameType, GameVSMode, GameAction } from "GameEnums";
 import { GameViewHelper } from "./_game-view-helper";
-import { ACTION_BUTTONS, BOARD_SECTION, DASHBOARD_SECTION } from "./_game.constants";
+import {
+  ACTION_BUTTONS,
+  BOARD_SECTION,
+  DASHBOARD_SECTION,
+} from "./_game.constants";
 
 import {
   DigitalCounter,
@@ -17,8 +21,11 @@ import {
   MineField,
 } from "GamePlayComponents";
 
+import { CONFIRMATION } from "../../../components/modal/modal.constants";
+
 export class Game extends AppModel {
-  
+  #dashBoardActions = {};
+
   constructor(id, params, player) {
     super();
     this.update(params);
@@ -28,14 +35,8 @@ export class Game extends AppModel {
     this.onActionTimer = true;
   }
 
-  get isParallel() {
-    if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode === GameVSMode.Parallel
-    ) {
-      return true;
-    }
-    return false;
+  set dashBoardActions(actions) {
+    return (this.#dashBoardActions = actions);
   }
 
   get isOnline() {
@@ -48,8 +49,46 @@ export class Game extends AppModel {
     return false;
   }
 
+  get isOver() {
+    return this.gameOverType ? true : false;
+  }
+
+  get isIdle() {
+    return !this.startedAt || this.isOver ? true : false;
+  }
+
+  get allowMarks() {
+    return this.optionsSettings ? this.optionsSettings.marks : false;
+  }
+
+  get wrongFlagHint() {
+    return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
+  }
+
   setGameStart() {
     this.startedAt = nowTimestamp();
+  }
+
+  setGameEnd(type) {
+    if (type && type.length) {
+      this.gameOverType = type;
+      this.completedAt = nowTimestamp();
+    }
+  }
+
+  initState() {
+    this.initRoundTiles();
+    this.gameOverType = null;
+    this.completedAt = null;
+    this.startedAt = null;
+  }
+
+  initRoundTiles() {
+    this.moveTiles = [];
+  }
+
+  set moveTilesUpdate(newMoveTiles) {
+    this.moveTiles = newMoveTiles;
   }
 
   get dashboardFaceColor() {
@@ -62,8 +101,6 @@ export class Game extends AppModel {
     return undefined;
   }
 
-
-
   initTimeCounter() {
     const params = this.gameTimerSettings;
     params.id = this.getBoardSectionID(DASHBOARD_SECTION.timeCounter);
@@ -74,33 +111,27 @@ export class Game extends AppModel {
     console.log("turn ended");
   }
 
-
-  onActiveTileChange(activeTile) {
-    console.log("onActiveTileChange");
-    // activeTile
-    //   ? this.#dashboardFace.setSurpriseFace(this.game.dashboardIconColor)
-    //   : this.#dashboardFace.setSmileFace(this.game.dashboardIconColor);
+  #onActiveTileChange(activeTile) {
+    this.checkGameStart();
+    activeTile ? this.setSurpriseFace() : this.setSmileFace();
   }
 
-  onTileAction(action, tile) {
-    console.log("onTileAction");
-    // this.#checkGameStart();
-    // if (action === GameAction.Mark) {
-    //   this.handleTileMarking(tile);
-    //   return;
-    // }
-    // this.revealTile(tile);
+  #onTileAction(action, tile) {
+    action === GameAction.Mark
+      ? this.handleTileMarking(tile)
+      : this.handleTileRevealing(tile);
   }
 
-  initState() {
-    this.roundTiles = [];
-    this.gameOverType = null;
-    this.completedAt = null;
-    this.startedAt = null;
+  checkGameStart() {
+    if (!this.gameTimer.isRunning && this.isIdle) {
+      this.setGameStart();
+      this.gameTimer.start();
+    }
   }
 
   updateMineCounter() {
-    this.mineCounter.value = this.levelSettings.numberOfMines - this.detectedMines;
+    this.mineCounter.value =
+      this.levelSettings.numberOfMines - this.detectedMines;
   }
 
   getBoardSectionID(sectionName) {
@@ -125,10 +156,13 @@ export class Game extends AppModel {
   }
 
   get boardActions() {
-    const boardActions = GameViewHelper.generateBoardSection(BOARD_SECTION.boardActions, this.id);
+    const boardActions = GameViewHelper.generateBoardSection(
+      BOARD_SECTION.boardActions,
+      this.id
+    );
     const boardActionButtons = this.boardActionButtons;
     if (boardActionButtons.length) {
-      boardActionButtons.forEach(button => boardActions.append(button));
+      boardActionButtons.forEach((button) => boardActions.append(button));
     } else {
       ElementHandler.hide(boardActions);
     }
@@ -153,10 +187,58 @@ export class Game extends AppModel {
     this.dashboardFace.setSmileFace(this.dashboardFaceColor);
   }
 
+  setSurpriseFace() {
+    this.dashboardFace.setSurpriseFace(this.dashboardFaceColor);
+  }
+
   initDashBoard() {
     this.gameTimer.init();
     this.updateMineCounter();
     this.setSmileFace();
+  }
+
+  pause() {
+    this.gameTimer.stop();
+    this.mineField.disable();
+  }
+
+  continueGame() {
+    console.log("continueGame");
+    this.gameTimer.continue();
+    this.mineField.enable();
+  }
+
+  #executeBoardAction(action, confirmation = CONFIRMATION.quitGame) {
+    this.pause();
+    if (action) {
+      this.isIdle
+        ? action()
+        : self.modal.displayConfirmation(confirmation, (confirmed) => {
+            confirmed ? action() : this.continueGame();
+          });
+    } else {
+      console.log("action not specified");
+    }
+  }
+
+  onExit() {
+    console.log("onExit - check online");
+    this.#executeBoardAction(this.#dashBoardActions.onExit.bind(this));
+    return;
+  }
+
+  onRestart() {
+    console.log("onRestart");
+    this.#executeBoardAction(this.restart.bind(this), CONFIRMATION.restartGame);
+  }
+
+  onReset() {
+    console.log("onReset");
+    this.#executeBoardAction(
+      this.#dashBoardActions.onReset.bind(this),
+      CONFIRMATION.resetGame
+    );
+    return;
   }
 
   // OVERRIDEN FUNCTIONS
@@ -176,14 +258,26 @@ export class Game extends AppModel {
   }
 
   get boardActionButtons() {
-    if (this.isParallel) {
-      return [];
-    }
     const boardActions = [];
-    boardActions.push(GameViewHelper.generateActionButton(ACTION_BUTTONS.exit, this.onExit.bind(this)));
+    boardActions.push(
+      GameViewHelper.generateActionButton(
+        ACTION_BUTTONS.exit,
+        this.onExit.bind(this)
+      )
+    );
     if (!this.isOnline) {
-      boardActions.push(GameViewHelper.generateActionButton(ACTION_BUTTONS.restart, this.onRestart.bind(this)));
-      boardActions.push(GameViewHelper.generateActionButton(ACTION_BUTTONS.reset, this.onReset.bind(this)));
+      boardActions.push(
+        GameViewHelper.generateActionButton(
+          ACTION_BUTTONS.restart,
+          this.onRestart.bind(this)
+        )
+      );
+      boardActions.push(
+        GameViewHelper.generateActionButton(
+          ACTION_BUTTONS.reset,
+          this.onReset.bind(this)
+        )
+      );
     }
     return boardActions;
   }
@@ -199,8 +293,8 @@ export class Game extends AppModel {
     this.mineField = new MineField(
       this.id,
       this.levelSettings,
-      this.onActiveTileChange.bind(this),
-      this.onTileAction.bind(this)
+      this.#onActiveTileChange.bind(this),
+      this.#onTileAction.bind(this)
     );
     return Promise.resolve();
   }
@@ -219,19 +313,21 @@ export class Game extends AppModel {
     return;
   }
 
-  onExit() {
-    console.log("onExit");
+  restart() {
+    this.levelSettings.setMinesPositions();
+  }
+
+  handleTileMarking(tile) {
     return;
   }
 
-  onRestart() {
-    console.log("onRestart");
+  handleTileRevealing(tile) {
     return;
   }
 
-  onReset() {
-    console.log("onReset");
-    return;
+  submitMove() {
+    console.log("submitMove");
+    console.log(this);
   }
 
 }

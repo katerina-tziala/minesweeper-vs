@@ -36,8 +36,6 @@ export const CONFIRM_BTN = {
   actionType: "click"
 };
 
-
-
 export const CANCEL_BTN = {
   innerHTML: "cancel",
   className: "btn-text btn-primary",
@@ -64,3 +62,13 @@ export const RESTART_BTN = {
   },
   actionType: "click"
 };
+
+export const RESET_BTN = {
+  innerHTML: "reset",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "reset",
+  },
+  actionType: "click"
+};
+

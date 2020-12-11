@@ -12,6 +12,10 @@ export class LevelSettings extends AppModel {
     this.minesPositions = [];
   }
 
+  get numberOfEmptyTiles() {
+    return (this.rows * this.columns) - this.numberOfMines;
+  }
+
   setLevel(level) {
     this.level = level;
     this.update(LEVEL_PARAMS[this.level]);

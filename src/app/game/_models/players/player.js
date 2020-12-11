@@ -22,26 +22,32 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-  initState() {
+  get detonatedMine() {
+    return this.detonatedMinesPositions.length;
+  }
 
+  
+  initState(goalTargetNumber = 0) {
     this.turn = false;
     this.moves = 0;
     this.missedTurns = 0;
     this.allowedFlags = null;
+
+    this.goalTargetNumber = goalTargetNumber;
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
     this.revealedPositions = [];
     this.marksPositions = [];
+    this.detonatedMinesPositions = [];
     // params to check if player lost the game
-    this.detonatedMine = false;
     this.completedGoal = false;
     this.exceededTurnsLimit = false;
   }
 
   get lostGame() {
     if (this.entered) {
-      return (this.detonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
+      return (this.hasDetonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
     }
     return false;
   }
@@ -52,6 +58,10 @@ export class Player extends AppModel {
 
   toggleTurn() {
     this.turn = !this.turn;
+  }
+
+  getTurnsLeft(allowedTurns) {
+    return allowedTurns - this.missedTurns;
   }
 
   get minesDetected() {
@@ -66,20 +76,32 @@ export class Player extends AppModel {
     return this.entered ? (this.redundantFlagsPositions.length + this.detectedMinesPositions.length) : 0;
   }
 
-  set inRevealedPositions(position) {
-    this.revealedPositions.push(position);
+  get revealedMineField() {
+    return this.goalTargetNumber ? this.goalTargetNumber === this.revealedPositions.length : false;
   }
 
-  onSetFlag(position, wronglyPlaced) {
+
+
+  set revealedTiles(positions) {
+    this.revealedPositions = this.revealedPositions.concat(positions);
+  }
+
+  set detonatedTile(position) {
+    console.log(position);
+    this.detonatedMinesPositions = [position];
+    console.log(this.detonatedMinesPositions);
+  }
+
+  flaggedTile(position, wronglyPlaced) {
     wronglyPlaced ? this.#inRedundantFlagsPositions = position : this.#inDetectedMinesPositions = position;
   }
 
-  onTileReset(position) {
+  set resetedTile(position) {
     this.#removeFromBasePositionsStatistics(position);
     this.marksPositions = this.#removeFromPositionsArray(this.marksPositions, position);
   }
 
-  onSetMark(position) {
+  set markedTile(position) {
     this.#removeFromBasePositionsStatistics(position);
     this.#inMarksPositions = position;
   }
@@ -107,9 +129,7 @@ export class Player extends AppModel {
     this.detectedMinesPositions = this.#removeFromPositionsArray(this.detectedMinesPositions, position);
   }
 
-  getTurnsLeft(allowedTurns) {
-    return allowedTurns - this.missedTurns;
-  }
+
   // setAllowedFlags(allowedFlags) {
   //     this.allowedFlags = allowedFlags;
   // }
@@ -122,10 +142,6 @@ export class Player extends AppModel {
   //     return (this.allowedFlags === "undefined") ? true : (this.allowedFlags !== 0) ? true : false;
   // }
 
-  // isBotPlayer() {
-  //     return this.isBot;
-  // }
-
   // enteredGame() {
   //     return this.entered;
   // }
@@ -134,19 +150,10 @@ export class Player extends AppModel {
   //     return this.missedTurns;
   // }
 
-  // isOnTurn() {
-  //     return this.turn;
-  // }
-
   // setTurnStatus(turnStatus) {
   //     this.turn = turnStatus;
   // }
 
-
-
-  // setRevealedMine() {
-  //     this.revealdMine = true;
-  // }
 
   // resetMissedTurns() {
   //     this.missedTurns = 0;
@@ -161,22 +168,6 @@ export class Player extends AppModel {
   //     if (reachedmissedTurnsLimit) {
   //         this.exceededTurnsLimit = true;
   //     }
-  // }
-
-  // setOpponentStatus(opponentStatus) {
-  //     this.opponent = opponentStatus;
-  // }
-
-  // updateMoves() {
-  //     this.moves++;
-  // }
-
-  // lostGame() {
-  //     return (this.revealdMine || this.exceededTurnsLimit) ? true : false;
-  // }
-
-  // getRevealedMine() {
-  //     return this.revealdMine;
   // }
 
   // getExceededTurnsLimit() {

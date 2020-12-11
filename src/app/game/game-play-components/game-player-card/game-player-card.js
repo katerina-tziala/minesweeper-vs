@@ -29,11 +29,11 @@ export class GamePlayerCard {
     return cardStyles;
   }
 
-  static generate(player, directionLeft = false, allowedTurns = null, clearMinefield = true, targetValue = 999) {
+  static generate(player, directionLeft = false, allowedTurns = null, clearMinefield = true) {
     const cardStyles = GamePlayerCard.getPlayerCardStyles(player, directionLeft);
     const playerCard = ElementGenerator.generateContainer(cardStyles, GamePlayerCard.getPlayerCardID(player));
     const playerSection = GamePlayerCard.generatePlayerSection(player, allowedTurns);
-    const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield, targetValue);
+    const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield);
     const stateSection = PlayerCardState.generateStateSection(player);
     playerCard.append(playerSection, detailsSection, stateSection);
     return playerCard;

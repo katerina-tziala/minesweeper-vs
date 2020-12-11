@@ -7,19 +7,18 @@ import { AppModel } from "~/_models/app-model";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_CLASS } from "./game-vs-dashboard.constants";
-import { GamePlayerCard as PlayerCard }  from "GamePlayComponents";
+import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
 
 export class GameVSDashboard {
-
   constructor(allowedTurns, clearMinefield) {
     this.allowedTurns = allowedTurns;
     this.clearMinefield = clearMinefield;
-    //to pass
-    this.target = 999;
   }
 
   generateView(player, opponent) {
-    const playersContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container]);
+    const playersContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.container,
+    ]);
     const playerCard = this.#generatePlayerCard(player);
     const opponentCard = this.#generatePlayerCard(opponent, true);
     playersContainer.append(playerCard, opponentCard);
@@ -28,8 +27,30 @@ export class GameVSDashboard {
 
   #generatePlayerCard(player, directionLeft = false) {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerContainer]);
-    container.append(PlayerCard.generate(player, directionLeft, this.allowedTurns, this.clearMinefield));
+    const playerCard = PlayerCard.generate( player, directionLeft, this.allowedTurns, this.clearMinefield);
+    container.append(playerCard);
     return container;
   }
+
+  initCardsState(players) {
+    const cardUpdates = [];
+    players.forEach(player => {
+      const playerGameStatistics = this.clearMinefield ? player.revealedTiles : player.minesDetected;
+      cardUpdates.push(PlayerCard.updateTurnStatus(player));
+      cardUpdates.push(PlayerCard.updateState(player));
+      cardUpdates.push(PlayerCard.updateMissedTurns(player));
+      cardUpdates.push(PlayerCard.updateGameGoalStatistics(player, playerGameStatistics));
+    });
+    return Promise.all(cardUpdates);
+  }
+
+
+
+
+
+
+
+
+
 
 }
