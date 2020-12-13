@@ -1,26 +1,49 @@
 @use "../../../theming/theming";
 @use "./dashboard-face-icon-styles";
 
+%absolute-center {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
 .__face-icon {
-  @include circle(18px);
+  @include circle(22px);
+  @extend %absolute-center;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.__face-background {
+  @include pseudoCircle(18);
+  @extend %absolute-center;
+  z-index: 1;
 }
 
 .dashboard__face-icon {
   @extend ._board-button;
   @extend %center-center;
-  font-size: 1.4rem;
-  padding-right: 1px;
-  @include setFaceIcons("&.face-icon");
+  font-size: 22px;
+  position: relative;
+  border-width: 2px;
+
+  &::before {
+    @extend .__face-background;
+  }
 
   &::after {
     @extend .__face-icon;
   }
 
-  &.dashboard__face-icon--player {
-    &::after {
-      @extend .__player-face-icon;
-    }
-  }
+  @include setFaceIcons("&.face-icon");
+
+  // &.dashboard__face-icon--player {
+  //   &::after {
+  //     @extend .__player-face-icon;
+  //   }
+  // }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

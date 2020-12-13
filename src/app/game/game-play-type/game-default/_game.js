@@ -112,14 +112,18 @@ export class Game extends AppModel {
   }
 
   #onActiveTileChange(activeTile) {
-    this.checkGameStart();
-    activeTile ? this.setSurpriseFace() : this.setSmileFace();
+    if (!this.isOver) {
+      this.checkGameStart();
+      activeTile ? this.setSurpriseFace() : this.setSmileFace();
+    }
   }
 
   #onTileAction(action, tile) {
-    action === GameAction.Mark
-      ? this.handleTileMarking(tile)
-      : this.handleTileRevealing(tile);
+    if (!this.isOver) {
+      action === GameAction.Mark
+        ? this.handleTileMarking(tile)
+        : this.handleTileRevealing(tile);
+    }
   }
 
   checkGameStart() {
@@ -190,6 +194,15 @@ export class Game extends AppModel {
   setSurpriseFace() {
     this.dashboardFace.setSurpriseFace(this.dashboardFaceColor);
   }
+
+  setFaceIconOnGameEnd() {
+    this.playerOnTurn.lostGame
+      ? this.dashboardFace.setLostFace(this.dashboardFaceColor)
+      : this.dashboardFace.setWinnerFace(this.dashboardFaceColor);
+  }
+
+
+
 
   initDashBoard() {
     this.gameTimer.init();
@@ -329,5 +342,4 @@ export class Game extends AppModel {
     console.log("submitMove");
     console.log(this);
   }
-
 }

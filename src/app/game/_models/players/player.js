@@ -80,16 +80,12 @@ export class Player extends AppModel {
     return this.goalTargetNumber ? this.goalTargetNumber === this.revealedPositions.length : false;
   }
 
-
-
   set revealedTiles(positions) {
     this.revealedPositions = this.revealedPositions.concat(positions);
   }
 
   set detonatedTile(position) {
-    console.log(position);
     this.detonatedMinesPositions = [position];
-    console.log(this.detonatedMinesPositions);
   }
 
   flaggedTile(position, wronglyPlaced) {
@@ -105,7 +101,6 @@ export class Player extends AppModel {
     this.#removeFromBasePositionsStatistics(position);
     this.#inMarksPositions = position;
   }
-
 
   // PRIVATE FUNCTIONS
   set #inRedundantFlagsPositions(position) {

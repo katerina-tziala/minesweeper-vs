@@ -3,20 +3,20 @@
 @use "../game-board-styles";
 
 %tile-cell__content {
-  text-align : center;
-  width      : 100%;
-  display    : block;
+  text-align: center;
+  display: block;
   font-weight: 700;
-  font-size  : 1.1rem;
-  line-height: 21px;
 }
 
 @mixin setNumberContent() {
   @for $number from 1 through 8 {
     &.tile-cell__content--#{$number} {
       &::after {
-        content : "#{$number}";
+        content: "#{$number}";
         @extend %tile-cell__content;
+        width: 100%;
+        font-size: 1.1rem;
+        line-height: 21px;
       }
     }
   }
@@ -31,6 +31,11 @@
         &::after {
           @extend .icon-#{$type};
           @extend %tile-cell__content;
+          font-size: 16px;
+          line-height: 16px;
+          height: 14px;
+          width: 16px;
+          margin-left: 3px;
         }
       }
     }
@@ -39,21 +44,34 @@
 
 @mixin setTileTheme($theme) {
   .tile-cell {
-    @include theming.applyGameColorsStyle($theme, "&.tile-cell__content", "color");
+    @include theming.applyGameColorsStyle(
+      $theme,
+      "&.tile-cell__content",
+      "color"
+    );
     border-color: theming.getThemeColor($theme, "board-grid");
 
     &.tile-cell--revealed-mine {
       background-color: theming.getThemeColor($theme, "error-primary");
-      color           : theming.getThemeColor($theme, "error-pale-contrast");
+      color: theming.getThemeColor($theme, "error-pale-contrast");
     }
   }
 
   .tile-cell-btn {
     @include game-board-styles.applyThemeBoardButtonStyle($theme);
-    @include theming.applyGameColorsStyle($theme, "&.tile-cell-btn-color", "color");
+    @include theming.applyGameColorsStyle(
+      $theme,
+      "&.tile-cell-btn-color",
+      "color"
+    );
+
+    &.tile-cell-btn--active {
+      background-color: theming.getThemeColor($theme, "board-background");
+    }
   }
 
   ._wrong-flag-hint {
-    color      : theming.getThemeColor($theme, "error-primary");
+    color: theming.getThemeColor($theme, "error-primary");
   }
 }
+

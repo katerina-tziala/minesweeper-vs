@@ -1,21 +1,31 @@
 @use "../../../theming/theming";
 
-@mixin applyThemeDashboardIcon($theme) {
-  background-color: theming.getThemeColor($theme, "dashboard-icon-background");
-  color           : theming.getThemeColor($theme, "dashboard-icon-color");
-  @include theming.applyGameColorsStyle($theme, "&.face-icon-color", "color");
+@mixin setIconShadow($theme) {
+  $color    : theming.getThemeColor($theme, "theme-primary");
+  box-shadow: 0 0px 6px 2px rgba($color, .4);
 }
 
-@mixin applyThemPlayerIcon($theme) {
-  background-color: theming.getThemeColor($theme, "dashboard-icon-user-background");
+@mixin applyThemeDefaultDashboardIcon($theme) {
+  .dashboard__face-icon.dashboard__face-icon--default {
+    &::before {
+      background-color: theming.getThemeColor($theme, "dashboard-icon-background");
+      @include setIconShadow($theme);
+    }
+    color: theming.getThemeColor($theme, "dashboard-icon-color");
+  }
+}
+
+@mixin applyThemePlayerIcon($theme) {
+  .dashboard__face-icon.dashboard__face-icon--player {
+    &::before {
+      background-color: theming.getThemeColor($theme, "dashboard-icon-user-background");
+      @include setIconShadow($theme);
+    }
+    @include theming.applyGameColorsStyle($theme, "&.face-icon-color", "color");
+  }
 }
 
 @mixin applyThemStyles($theme) {
-  .__face-icon {
-    @include applyThemeDashboardIcon($theme);
-  }
-
-  .__player-face-icon {
-    @include applyThemPlayerIcon($theme);
-  }
+  @include applyThemeDefaultDashboardIcon($theme);
+  @include applyThemePlayerIcon($theme);
 }

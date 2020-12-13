@@ -31,6 +31,8 @@ export class DashboardFaceIcon {
     if (colorType) {
       iconStyles.push(DOM_ELEMENT_CLASS.player);
       iconStyles.push(DOM_ELEMENT_CLASS.color + colorType);
+    } else {
+      iconStyles.push(DOM_ELEMENT_CLASS.default);
     }
     return iconStyles;
   }

@@ -11,8 +11,8 @@ export class GameSinglePlayer extends Game {
   // OVERRIDEN FUNCTIONS
   get detectedMines() {
     return this.optionsSettings.wrongFlagHint
-      ? this.player.minesDetected
-      : this.player.placedFlags;
+      ? this.player.placedFlags
+      : this.player.minesDetected;
   }
 
   get boardActionButtons() {
@@ -21,8 +21,6 @@ export class GameSinglePlayer extends Game {
     }
     return super.boardActionButtons;
   }
-
- 
 
   init() {
     this.player.initState(this.levelSettings.numberOfEmptyTiles);
@@ -35,12 +33,9 @@ export class GameSinglePlayer extends Game {
       this.initDashBoard();
 
       // start modal
-      console.log("show start modal");
+      console.log("show start modal message");
       console.log(this.levelSettings.minesPositions);
       this.startGameRound();
-      if (this.playerOnTurn.isBot) {
-        console.log("onGame start --- BotMove");
-      }
     });
   }
 
@@ -63,12 +58,12 @@ export class GameSinglePlayer extends Game {
     }
   }
 
-  inOneTileRevealed(boardTiles) {
+  oneTileRevealed(boardTiles) {
     return boardTiles.length == 1 && !boardTiles[0].isDetonatedMine;
   }
 
   setPlayerStatisticsOnTileRevealing(boardTiles) {
-    if (boardTiles.length > 1 || this.inOneTileRevealed(boardTiles)) {
+    if (boardTiles.length > 1 || this.oneTileRevealed(boardTiles)) {
       this.playerOnTurn.revealedTiles = boardTiles.map((tile) => tile.position);
       this.setGameEnd(
         this.player.revealedMineField ? GameEndType.Cleared : undefined
@@ -86,23 +81,35 @@ export class GameSinglePlayer extends Game {
   }
 
   handleTileMarking(tile) {
-    if (tile.isUntouched) {// set flag
-      tile.setFlag(this.playerOnTurn.id, this.playerOnTurn.colorType, this.wrongFlagHint);
+    if (tile.isUntouched) {
+      // set flag
+      tile.setFlag(
+        this.playerOnTurn.id,
+        this.playerOnTurn.colorType,
+        this.wrongFlagHint
+      );
       this.playerOnTurn.flaggedTile(tile.position, tile.isWronglyFlagged);
-    } else if (tile.isFlagged && this.allowMarks) {// set mark
+    } else if (tile.isFlagged && this.allowMarks) {
+      // set mark
       tile.setMark(this.playerOnTurn.id, this.playerOnTurn.colorType);
       this.playerOnTurn.markedTile = tile.position;
-    } else {// reset
+    } else {
+      // reset
       tile.resetState();
       this.playerOnTurn.resetedTile = tile.position;
     }
+    this.updateMineCounter();
     this.onPlayerMoveEnd([tile]);
   }
 
   onGameOver() {
+    this.pause();
+    this.setFaceIconOnGameEnd();
     console.log("onGameOver");
     console.log(this);
-    this.pause();
+    // this.gameTimer.stop();
+    // this.mineField.enable();
+    console.log("show end modal message");
   }
 
   onGameContinue() {
@@ -110,10 +117,12 @@ export class GameSinglePlayer extends Game {
     if (this.isParallel) {
       this.submitMove();
     }
-    this.mineField.enable();
+
     if (this.playerOnTurn.isBot) {
       console.log("onGameContinue --- BotMove");
     }
+
+    this.mineField.enable();
   }
 
   // CLASS SPECIFIC FUNCTIONS
@@ -130,5 +139,8 @@ export class GameSinglePlayer extends Game {
   startGameRound() {
     this.initRoundTiles();
     this.mineField.enable();
+    if (this.playerOnTurn.isBot) {
+      console.log("onGame start --- BotMove");
+    }
   }
 }

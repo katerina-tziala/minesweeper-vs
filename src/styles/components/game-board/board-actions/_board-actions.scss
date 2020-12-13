@@ -5,7 +5,6 @@
 .board-actions {
   @extend ._board-section;
   @extend %evenly-center;
-  // padding: 5px;
 }
 
 .board-action-btn {
@@ -14,6 +13,8 @@
   min-width: 30px;
   flex-grow: 1;
   font-size: 1.5rem;
+  border-width: 2px;
+
   &::after {
     width: 30px;
     border: 1px solid transparent;
