@@ -1,4 +1,5 @@
 "use strict";
+import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
 import { GameType, GameVSMode } from "GameEnums";
 
@@ -63,7 +64,7 @@ export class GameVS extends Game {
   init() {
     this.players.forEach((player) => {
       player.initState(this.#isDetectMinesGoal ? this.levelSettings.numberOfMines : this.levelSettings.numberOfEmptyTiles);
-      player.turn = player.id === this.playerStartID;
+      player.turn = (player.id === this.playerStartID);
     });
     this.initState();
   }
@@ -84,9 +85,10 @@ export class GameVS extends Game {
   }
 
   restart() {
-    console.log("restart");
-   // this.init();
-    return;
+    super.restart();
+    this.playerStartID = randomValueFromArray(this.players.map(player => player.id));
+    this.init();
+    this.start();
   }
 
  

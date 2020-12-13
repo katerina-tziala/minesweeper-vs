@@ -54,7 +54,7 @@ export class Game extends AppModel {
   }
 
   get isIdle() {
-    return !this.startedAt || this.isOver ? true : false;
+    return (!this.startedAt || this.isOver || !this.gameTimer.isRunning) ? true : false;
   }
 
   get allowMarks() {
