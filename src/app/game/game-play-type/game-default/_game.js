@@ -335,8 +335,8 @@ export class Game extends AppModel {
     return;
   }
 
-  submitMove() {
-    console.log("submitMove");
+  submitResult() {
+    console.log("submitResult");
     console.log(this);
   }
 }

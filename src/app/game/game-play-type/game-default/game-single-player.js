@@ -107,22 +107,20 @@ export class GameSinglePlayer extends Game {
     this.setFaceIconOnGameEnd();
     this.mineField.revealField();
 
+
     console.log("onGameOver");
     console.log(this);
     console.log("show end modal message");
+    if (this.isParallel) {
+      this.submitResult();
+    }
   }
 
   onGameContinue() {
-    console.log("onGameContinue");
     if (this.isParallel) {
-      this.submitMove();
+      this.submitResult();
     }
-
-    if (this.playerOnTurn.isBot) {
-      console.log("onGameContinue --- BotMove");
-    }
-
-    this.mineField.enable();
+    this.startGameRound();
   }
 
   // CLASS SPECIFIC FUNCTIONS
@@ -138,9 +136,12 @@ export class GameSinglePlayer extends Game {
 
   startGameRound() {
     this.initRoundTiles();
-    this.mineField.enable();
     if (this.playerOnTurn.isBot) {
-      console.log("onGame start --- BotMove");
+      console.log("onGameContinue --- BotMove");
+      this.mineField.disable();
+    } else {
+      this.mineField.enable();
     }
   }
+
 }

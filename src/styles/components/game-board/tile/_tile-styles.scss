@@ -44,10 +44,10 @@
 
 @mixin setTextShadow($theme) {
   $shadow-color: theming.getThemeColor($theme, "theme-primary");
-  text-shadow: -1px -1px 1px rgba($shadow-color, 0.9),
-  1px -1px 1px rgba($shadow-color, 0.9),
-  -1px 1px 1px rgba($shadow-color, 0.9),
-  1px 1px 1px rgba($shadow-color, 0.9);
+  text-shadow: -1px -1px 1px rgba($shadow-color, 0.3),
+  1px -1px 1px rgba($shadow-color, 0.3),
+  -1px 1px 1px rgba($shadow-color, 0.3),
+  1px 1px 1px rgba($shadow-color, 0.3);
 }
 
 @mixin setTileTheme($theme) {
