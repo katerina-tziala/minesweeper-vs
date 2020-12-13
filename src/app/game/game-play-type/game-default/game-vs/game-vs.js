@@ -135,7 +135,6 @@ export class GameVS extends Game {
 
   handleTileRevealing(tile) {
     if (this.#modeController.revealingAllowed && tile.isUntouched) {
-      this.pause();
       this.getRevealedMinefieldArea(tile).then((boardTiles) => {
         this.setPlayerStatisticsOnTileRevealing(boardTiles);
       });
@@ -170,11 +169,11 @@ export class GameVS extends Game {
     console.log("handleTileMarking detect");
     console.log(tile);
   
-    this.pause();
-
+    
     if (tile.isUntouched) {
       this.handleTileFlagging(tile);
     } else {
+      this.pause();
       console.log("touched tile - flagged or marked by any player");
 
       console.log(this.optionsSettings);
@@ -193,7 +192,7 @@ export class GameVS extends Game {
       Promise.all(playerUpdates).then(() => this.onPlayerMoveEnd([tile]));
 
     } else { // flagging not allowed
-      this.continue();
+      this.mineField.enable();
     }
   }
 
@@ -239,7 +238,8 @@ export class GameVS extends Game {
     }
     
     console.log("continue round for player");
-    this.continue();
+    //this.continue();
+    this.mineField.enable();
   }
 
 
