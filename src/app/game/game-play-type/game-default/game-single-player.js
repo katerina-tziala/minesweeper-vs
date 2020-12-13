@@ -74,12 +74,6 @@ export class GameSinglePlayer extends Game {
     }
   }
 
-  onPlayerMoveEnd(boardTiles) {
-    this.moveTilesUpdate = boardTiles;
-    this.playerOnTurn.increaseMoves();
-    this.isOver ? this.onGameOver() : this.onGameContinue();
-  }
-
   handleTileMarking(tile) {
     if (tile.isUntouched) {
       // set flag
@@ -102,6 +96,11 @@ export class GameSinglePlayer extends Game {
     this.onPlayerMoveEnd([tile]);
   }
 
+  onPlayerMoveEnd(boardTiles = []) {
+    super.onPlayerMoveEnd(boardTiles);
+    this.isOver ? this.onGameOver() : this.onGameContinueAfterMove();
+  }
+
   onGameOver() {
     this.pause();
     this.setFaceIconOnGameEnd();
@@ -114,11 +113,15 @@ export class GameSinglePlayer extends Game {
 
   }
 
-  onGameContinue() {
+  onGameContinueAfterMove() {
     if (this.isParallel) {
+      console.log("parallel");
       this.submitResult();
+
+      this.pause();
+    } else {
+      this.startGameRound();
     }
-    this.startGameRound();
   }
 
   // CLASS SPECIFIC FUNCTIONS
@@ -133,7 +136,7 @@ export class GameSinglePlayer extends Game {
   }
 
   startGameRound() {
-    this.initRoundTiles();
+    this.initMoveTiles();
     if (this.playerOnTurn.isBot) {
       console.log("onGameContinue --- BotMove");
       this.mineField.disable();

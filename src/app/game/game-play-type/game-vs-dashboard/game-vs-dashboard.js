@@ -10,8 +10,7 @@ import { DOM_ELEMENT_CLASS } from "./game-vs-dashboard.constants";
 import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
 
 export class GameVSDashboard {
-  constructor(allowedTurns, clearMinefield) {
-    this.allowedTurns = allowedTurns;
+  constructor(clearMinefield) {
     this.clearMinefield = clearMinefield;
   }
 
@@ -27,7 +26,7 @@ export class GameVSDashboard {
 
   #generatePlayerCard(player, directionLeft = false) {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerContainer]);
-    const playerCard = PlayerCard.generate( player, directionLeft, this.allowedTurns, this.clearMinefield);
+    const playerCard = PlayerCard.generate( player, directionLeft, this.clearMinefield);
     container.append(playerCard);
     return container;
   }
@@ -44,8 +43,18 @@ export class GameVSDashboard {
     return Promise.all(cardUpdates);
   }
 
+  setCardOnTurn(players) {
+    const cardUpdates = [];
+    players.forEach(player => {
+      const playerGameStatistics = this.clearMinefield ? player.revealedTiles : player.minesDetected;
+      cardUpdates.push(PlayerCard.updateTurnStatus(player));
+    });
+    return Promise.all(cardUpdates);
+  }
 
-
+  updatePlayerMissedTurns(player) {
+    return PlayerCard.updateMissedTurns(player);
+  }
 
 
 

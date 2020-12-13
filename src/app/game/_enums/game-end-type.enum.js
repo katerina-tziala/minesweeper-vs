@@ -2,7 +2,8 @@
 
 const GameEndType = {
   DetonatedMine: "detonated-mine",
-  Cleared: "cleared-minefield"
+  Cleared: "cleared-minefield",
+  ExceededTurnsLimit: "exceeded-turns-limit"
 };
 
 Object.freeze(GameEndType);

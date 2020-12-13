@@ -1,22 +1,30 @@
 "use strict";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
-import { GameType, GameVSMode } from "GameEnums";
+import { GameType, GameVSMode, GameEndType } from "GameEnums";
 
 import { Game } from "../_game";
 
 import { GameVSDashboard } from "../../game-vs-dashboard/game-vs-dashboard";
 
 export class GameVS extends Game {
-
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
+
+    this.turnSettings.turnTimer = false;
+    this.turnSettings.turnDuration = 5;
+    this.turnSettings.missedTurnsLimit = 3;
+
+    //     consecutiveTurns: false
+
+    //console.log(this.turnSettings);
+    console.log(this.optionsSettings);
     this.init();
-    this.vsDashboard = new GameVSDashboard(this.#turnsLimit, !this.#isDetectMinesGoal);
+    this.vsDashboard = new GameVSDashboard(!this.#isDetectMinesGoal);
   }
-  
+
   // OVERRIDEN FUNCTIONS
   get gameTimerSettings() {
     const timerSettings = super.gameTimerSettings;
@@ -63,47 +71,140 @@ export class GameVS extends Game {
 
   init() {
     this.players.forEach((player) => {
-      player.initState(this.#isDetectMinesGoal ? this.levelSettings.numberOfMines : this.levelSettings.numberOfEmptyTiles);
-      player.turn = (player.id === this.playerStartID);
+      const goalTargetNumber = this.#isDetectMinesGoal
+        ? this.levelSettings.numberOfMines
+        : this.levelSettings.numberOfEmptyTiles;
+      player.initState(goalTargetNumber, this.#turnsLimit);
+      player.turn = player.id === this.playerStartID;
     });
     this.initState();
   }
 
   start() {
-    this.onAfterViewInit.then(() => {
-      return this.vsDashboard.initCardsState(this.players);
-    }).then(() => {
-      this.initDashBoard();
+    console.log(this.levelSettings.minesPositions);
+    this.onAfterViewInit
+      .then(() => {
+        return this.vsDashboard.initCardsState(this.players);
+      })
+      .then(() => {
+        this.initDashBoard();
+        if (this.#roundTimer) {
+          this.setGameStart();
+        }
+        console.log("start VS GAME");
+        // console.log(this.playerOnTurn);
+        // console.log("show start modal");
+        this.startGameRound();
+      });
+  }
+
+  startGameRound() {
+    this.initMoveTiles();
+
+    this.vsDashboard.setCardOnTurn(this.players).then(() => {
       if (this.#roundTimer) {
-        this.setGameStart();
+        this.gameTimer.start();
       }
-      console.log("start VS GAME");
-      console.log(this.playerOnTurn);
-      console.log("show start modal and start rounds");
-      this.startGameRound();
+      console.log(" start round ");
+      //keep round number
+      if (this.playerOnTurn.isBot) {
+        console.log("onGameContinue --- BotMove");
+        //this.mineField.disable();
+        this.mineField.enable();
+      } else {
+        this.mineField.enable();
+      }
     });
   }
 
   restart() {
     super.restart();
-    this.playerStartID = randomValueFromArray(this.players.map(player => player.id));
+    this.playerStartID = randomValueFromArray(
+      this.players.map((player) => player.id)
+    );
     this.init();
     this.start();
   }
 
- 
   handleTileRevealing(tile) {
-    console.log("handleTileRevealing");
-    console.log(tile);
+    if (this.#revealingAllowed) {
+      // detect mines
+      console.log("revealing allowed");
+      console.log("handleTileRevealing");
+      console.log(tile);
 
     
-  }
+       console.log(this.optionsSettings);
 
+
+    } else {
+      console.log("revealing not allowed");
+      this.mineField.enable();
+    }
+  }
 
   handleTileMarking(tile) {
     console.log("handleTileMarking");
     console.log(tile);
-  
+    console.log(this.optionsSettings);
+  }
+
+  onRoundTimerEnd() {
+    this.playerOnTurn.increaseMissedTurns();
+
+    if (this.playerOnTurn.exceededTurnsLimit) {
+      this.setGameEnd(GameEndType.ExceededTurnsLimit);
+    }
+
+    this.vsDashboard.updatePlayerMissedTurns(this.playerOnTurn).then(() => {
+      if (this.isOver) {
+        this.onGameOver();
+        return;
+      }
+      this.onRoundEnd();
+    });
+  }
+
+  onPlayerMoveEnd(boardTiles = []) {
+    super.onPlayerMoveEnd(boardTiles);
+
+    if (this.isOver) {
+      this.onGameOver();
+      return;
+    }
+
+    console.log(boardTiles);
+
+    if (!boardTiles.length) {
+      this.onRoundEnd();
+      return;
+    }
+
+    console.log("onPlayerMoveEnd");
+    console.log(this.playerOnTurn);
+  }
+
+  onRoundEnd() {
+    if (this.isOnline) {
+      console.log("submit online round end");
+      console.log(this.playerOnTurn);
+    } else {
+      console.log("go on the next round");
+      this.#switchTurns();
+      this.startGameRound();
+    }
+  }
+
+  onGameOver() {
+    this.pause();
+    this.setFaceIconOnGameEnd();
+    // this.mineField.revealField();
+    if (this.isOnline) {
+      console.log("onGameOver online");
+    }
+    console.log("onGameOver");
+    console.log(this);
+    console.log("show end modal message");
   }
 
   // CLASS SPECIFIC FUNCTIONS
@@ -112,7 +213,7 @@ export class GameVS extends Game {
   }
 
   get #turnsLimit() {
-    return this.turnSettings ? this.turnSettings.missedTurnsLimit : 0;
+    return this.turnSettings ? this.turnSettings.missedTurnsLimit : null;
   }
 
   get #isDetectMinesGoal() {
@@ -125,6 +226,13 @@ export class GameVS extends Game {
     return false;
   }
 
+  get #revealingAllowed() {
+    if (this.optionsSettings.tileRevealing !== undefined) {
+      return this.optionsSettings.tileRevealing;
+    }
+    return true;
+  }
+
   get #sneakPeekAllowed() {
     if (
       this.optionsSettings.sneakPeek &&
@@ -135,8 +243,7 @@ export class GameVS extends Game {
     return false;
   }
 
-  initRound() {
-    this.roundTiles = [];
+  #switchTurns() {
     this.players.forEach((player) => player.toggleTurn());
   }
 
@@ -144,12 +251,4 @@ export class GameVS extends Game {
     console.log("onSneakPeek");
     return;
   }
-
-  startGameRound() {
-    this.initRoundTiles();
-    this.mineField.enable();
-  }
-
- 
-
 }

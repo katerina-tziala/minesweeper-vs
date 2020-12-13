@@ -11,11 +11,11 @@ export class TurnsIndicator {
     return DOM_ELEMENT_ID.container + player.id;
   }
 
-  static generate(player, allowedTurns = 10) {
+  static generate(player) {
     const turnsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container]);
     ElementHandler.setID(turnsContainer, TurnsIndicator.getTurnsIndicatorID(player));
-    for (let index = 1; index <= allowedTurns; index++) {
-      const styles = TurnsIndicator.getIndicatorStyles(player, index, allowedTurns);
+    for (let index = 1; index <= player.allowedTurns; index++) {
+      const styles = TurnsIndicator.getIndicatorStyles(player, index);
       const turnIndicator = ElementGenerator.generateContainer(styles);
       turnsContainer.append(turnIndicator);
     }
@@ -29,9 +29,9 @@ export class TurnsIndicator {
     return styles;
   }
 
-  static getIndicatorStyles(player, indicatorPosition, allowedTurns = 10) {
+  static getIndicatorStyles(player, indicatorPosition) {
     const styles = TurnsIndicator.getIndicatorBaseStyles(indicatorPosition);
-    const onLimit = player.getTurnsLeft(allowedTurns);
+    const onLimit = player.turnsLeft;
     (indicatorPosition <= onLimit) ? styles.push(DOM_ELEMENT_CLASS.indicatorOn) : styles.push(DOM_ELEMENT_CLASS.indicatorOff);
     return styles;
   }

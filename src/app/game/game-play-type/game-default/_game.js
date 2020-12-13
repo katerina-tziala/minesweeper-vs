@@ -54,7 +54,7 @@ export class Game extends AppModel {
   }
 
   get isIdle() {
-    return (!this.startedAt || this.isOver || !this.gameTimer.isRunning) ? true : false;
+    return (!this.startedAt && !this.isOver && !this.gameTimer.isRunning);
   }
 
   get allowMarks() {
@@ -77,13 +77,13 @@ export class Game extends AppModel {
   }
 
   initState() {
-    this.initRoundTiles();
+    this.initMoveTiles();
     this.gameOverType = null;
     this.completedAt = null;
     this.startedAt = null;
   }
 
-  initRoundTiles() {
+  initMoveTiles() {
     this.moveTiles = [];
   }
 
@@ -105,10 +105,6 @@ export class Game extends AppModel {
     const params = this.gameTimerSettings;
     params.id = this.getBoardSectionID(DASHBOARD_SECTION.timeCounter);
     this.gameTimer = new GameTimer(params, this.onRoundTimerEnd.bind(this));
-  }
-
-  onRoundTimerEnd() {
-    console.log("turn ended");
   }
 
   #onActiveTileChange(activeTile) {
@@ -134,8 +130,7 @@ export class Game extends AppModel {
   }
 
   updateMineCounter() {
-    this.mineCounter.value =
-      this.levelSettings.numberOfMines - this.detectedMines;
+    this.mineCounter.value = this.levelSettings.numberOfMines - this.detectedMines;
   }
 
   getBoardSectionID(sectionName) {
@@ -212,11 +207,15 @@ export class Game extends AppModel {
     this.mineField.disable();
   }
 
+
+
+
   continueGame() {
     console.log("continueGame");
     this.gameTimer.continue();
     this.mineField.enable();
   }
+
 
   #executeBoardAction(action, confirmation = CONFIRMATION.quitGame) {
     this.pause();
@@ -332,6 +331,20 @@ export class Game extends AppModel {
   }
 
   handleTileRevealing(tile) {
+    return;
+  }
+
+  onRoundTimerEnd() {
+    return;
+  }
+
+  onPlayerMoveEnd(boardTiles = []) {
+    this.moveTilesUpdate = boardTiles;
+    this.playerOnTurn.increaseMoves();
+  }
+  
+  onGameOver() {
+    console.log("onGameOver");
     return;
   }
 

@@ -29,20 +29,20 @@ export class GamePlayerCard {
     return cardStyles;
   }
 
-  static generate(player, directionLeft = false, allowedTurns = null, clearMinefield = true) {
+  static generate(player, directionLeft = false, clearMinefield = true) {
     const cardStyles = GamePlayerCard.getPlayerCardStyles(player, directionLeft);
     const playerCard = ElementGenerator.generateContainer(cardStyles, GamePlayerCard.getPlayerCardID(player));
-    const playerSection = GamePlayerCard.generatePlayerSection(player, allowedTurns);
+    const playerSection = GamePlayerCard.generatePlayerSection(player);
     const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield);
     const stateSection = PlayerCardState.generateStateSection(player);
     playerCard.append(playerSection, detailsSection, stateSection);
     return playerCard;
   }
 
-  static generatePlayerSection(player, allowedTurns) {
+  static generatePlayerSection(player) {
     const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerSection]);
-    if (allowedTurns) {
-      playerInstanceSection.append(TurnsIndicator.generate(player, allowedTurns));
+    if (player.allowedTurns) {
+      playerInstanceSection.append(TurnsIndicator.generate(player));
     }
     playerInstanceSection.append(GamePlayerCard.generatePayerIcon(player.isBot));
     return playerInstanceSection;
