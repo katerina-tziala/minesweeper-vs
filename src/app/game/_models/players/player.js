@@ -89,21 +89,9 @@ export class Player extends AppModel {
     return this.unlimitedFlags ? true : (this.allowedFlags !== 0);
   }
 
-
-
-  increaseAllowedFlags() {
-    this.allowedFlags++;
-  }
-
-  decreaseAllowedFlags() {
-    this.allowedFlags--;
-  }
-
-
   increaseMissedTurns() {
     this.missedTurns++;
   }
-
 
   get minesDetected() {
     return this.entered ? this.detectedMinesPositions.length : 0;
@@ -115,7 +103,7 @@ export class Player extends AppModel {
 
   get placedFlags() {
     return this.entered
-      ? this.redundantFlagsPositions.length + this.detectedMinesPositions.length
+      ? (this.redundantFlagsPositions.length + this.detectedMinesPositions.length)
       : 0;
   }
 
@@ -143,7 +131,7 @@ export class Player extends AppModel {
     wronglyPlaced
       ? (this.#inRedundantFlagsPositions = position)
       : (this.#inDetectedMinesPositions = position);
-      this.#updateAllowedFlags();
+      this.#decreaseAllowedFlags();
   }
 
   set resetedTile(position) {
@@ -152,13 +140,13 @@ export class Player extends AppModel {
       this.marksPositions,
       position
     );
-    this.#updateAllowedFlags();
+    this.#increaseAllowedFlags();
   }
 
   set markedTile(position) {
     this.#removeFromBasePositionsStatistics(position);
     this.#inMarksPositions = position;
-    this.#updateAllowedFlags();
+    this.#increaseAllowedFlags();
   }
 
 
@@ -194,12 +182,17 @@ export class Player extends AppModel {
     );
   }
 
-  #updateAllowedFlags() {
+  #increaseAllowedFlags() {
     if (!this.unlimitedFlags) {
-      this.allowedFlags = this.allowedFlags - this.placedFlags;
+      this.allowedFlags++;
     }
   }
 
+  #decreaseAllowedFlags() {
+    if (!this.unlimitedFlags) {
+      this.allowedFlags--;
+    }
+  }
 
 
   // setAllowedFlags(allowedFlags) {

@@ -149,11 +149,12 @@ export class GameVS extends Game {
       player.revealedTiles = boardTiles.map((tile) => tile.position);
       this.setGameEnd(this.#modeController.getGameEndOnPlayerMove(player));
       console.log("check game over on minefield state after revealing");
-      this.onPlayerMoveEnd(boardTiles);
+      //this.onPlayerMoveEnd(boardTiles);
+      this.resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
     } else {
       player.detonatedTile = boardTiles[0].position;
       this.setGameEnd(GameEndType.DetonatedMine);
-      this.onPlayerMoveEnd(boardTiles);
+      this.resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
     }
   }
 
@@ -169,12 +170,11 @@ export class GameVS extends Game {
     console.log("handleTileMarking detect");
     console.log(tile);
   
-  
+    this.pause();
 
     if (tile.isUntouched) {
       this.handleTileFlagging(tile);
     } else {
-      this.pause();
       console.log("touched tile - flagged or marked by any player");
 
       console.log(this.optionsSettings);
@@ -184,13 +184,16 @@ export class GameVS extends Game {
 
   handleTileFlagging(tile, player = this.playerOnTurn) {
     if (this.#modeController.getFlaggingAllowed(player)) {
-      this.pause();
       this.setFlagOnMinefieldTile(tile);
+  
       console.log("check game over on minefield state after flagging");
 
-      this.vsDashboard.updatePlayerAllowedFlags(player).then(() => this.onPlayerMoveEnd([tile]));
-    } else {
-      console.log("flag is not allowed");
+      const playerUpdates = [this.vsDashboard.updatePlayerAllowedFlags(player)];
+      playerUpdates.push(this.resetPlayerTurnsAfterMove());
+      Promise.all(playerUpdates).then(() => this.onPlayerMoveEnd([tile]));
+
+    } else { // flagging not allowed
+      this.continue();
     }
   }
 
@@ -214,19 +217,17 @@ export class GameVS extends Game {
 
   onPlayerMoveEnd(boardTiles = []) {
     super.onPlayerMoveEnd(boardTiles);
-    this.resetPlayerTurnsAfterMove().then(() => {
-      if (this.isOver) {
-        this.onGameOver();
-        return;
-      }
-  
-     if (this.#modeController.roundEnded) {
-      this.onRoundEnd();
+    if (this.isOver) {
+      this.onGameOver();
       return;
-     }
-  
-     this.onGameContinueAfterMove();
-    });
+    }
+
+   if (this.#modeController.roundEnded) {
+    this.onRoundEnd();
+    return;
+   }
+
+   this.onGameContinueAfterMove();
   }
 
   onGameContinueAfterMove() {
@@ -238,7 +239,7 @@ export class GameVS extends Game {
     }
     
     console.log("continue round for player");
-
+    this.continue();
   }
 
 

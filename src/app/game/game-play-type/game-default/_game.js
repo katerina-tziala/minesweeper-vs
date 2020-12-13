@@ -240,8 +240,8 @@ export class Game extends AppModel {
     this.mineField.disable();
   }
 
-  continueGame() {
-    console.log("continueGame");
+  continue() {
+    console.log("continue");
     this.gameTimer.continue();
     this.mineField.enable();
   }
@@ -252,7 +252,7 @@ export class Game extends AppModel {
       this.isIdle
         ? action()
         : self.modal.displayConfirmation(confirmation, (confirmed) => {
-            confirmed ? action() : this.continueGame();
+            confirmed ? action() : this.continue();
           });
     } else {
       console.log("action not specified");
