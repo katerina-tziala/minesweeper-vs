@@ -42,6 +42,14 @@
   }
 }
 
+@mixin setTextShadow($theme) {
+  $shadow-color: theming.getThemeColor($theme, "theme-primary");
+  text-shadow: -1px -1px 1px rgba($shadow-color, 0.9),
+  1px -1px 1px rgba($shadow-color, 0.9),
+  -1px 1px 1px rgba($shadow-color, 0.9),
+  1px 1px 1px rgba($shadow-color, 0.9);
+}
+
 @mixin setTileTheme($theme) {
   .tile-cell {
     @include theming.applyGameColorsStyle(
@@ -68,10 +76,28 @@
     &.tile-cell-btn--active {
       background-color: theming.getThemeColor($theme, "board-background");
     }
+
+    &.tile-cell-btn--revealed {
+      background-color: rgba(theming.getThemeColor($theme, "board-button-background"), 0.5);
+    }
+  
+    &.tile-cell-btn--flagged {
+      &::before {
+        @include setTextShadow($theme);
+      }
+    }
+  
+    &.tile-cell-btn--marked {
+      &::after {
+        @include setTextShadow($theme);
+      }
+    }
+
   }
 
   ._wrong-flag-hint {
     color: theming.getThemeColor($theme, "error-primary");
+    @include setTextShadow($theme);
   }
 }
 

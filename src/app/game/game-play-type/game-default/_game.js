@@ -201,9 +201,6 @@ export class Game extends AppModel {
       : this.dashboardFace.setWinnerFace(this.dashboardFaceColor);
   }
 
-
-
-
   initDashBoard() {
     this.gameTimer.init();
     this.updateMineCounter();

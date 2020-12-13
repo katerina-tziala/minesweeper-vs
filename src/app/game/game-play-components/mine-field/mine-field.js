@@ -34,6 +34,10 @@ export class MineField {
     this.#_levelSettings = game;
   }
 
+  get isCleared() {
+    return this.#tiles.every(tile => tile.isMine);
+  }
+
   get #levelSettings() {
     return this.#_levelSettings;
   }
@@ -171,8 +175,20 @@ export class MineField {
     return tiles.filter(tile => !tile.isFlagged);
   }
 
-  // getUnrevealedTiles(tiles = this.getFieldTiles()) {
-  //   return tiles.filter(tile => !tile.isRevealed());
+  disable() {
+    this.freezerState = true;
+  }
+
+  enable() {
+    this.freezerState = false;
+  }
+
+  getUnrevealedTiles(tiles = this.#tiles) {
+    return tiles.filter(tile => !tile.isRevealed);
+  }
+
+  // getUnrevealedMines() {
+  //   return this.getTilesByPositions(this.#levelSettings.minesPositions).filter(tile => !tile.isRevealed);
   // }
 
   // getFlaggedTiles(tiles = this.getFieldTiles()) {
@@ -187,23 +203,17 @@ export class MineField {
   //   return tiles.filter(tile => tile.isFlaggedBy(playerID));
   // }
 
-
-
-  get isCleared() {
-    return this.#tiles.every(tile => tile.isMine);
-  }
-
   // get detectedMines() {
   //   return this.#tiles.filter(tile => tile.isDetected).length;
   // }
 
 
-  disable() {
-    this.freezerState = true;
-  }
+ 
 
-  enable() {
-    this.freezerState = false;
+  revealField() {
+    this.getUnrevealedTiles().forEach(tile => {
+      tile.reveal(undefined, false);
+    });
   }
 
 

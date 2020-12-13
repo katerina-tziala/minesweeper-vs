@@ -16,7 +16,7 @@ export class TileView {
   }
 
   set #id(id) {
-    return this.#_id = id.toString();
+    return (this.#_id = id.toString());
   }
 
   get #id() {
@@ -24,7 +24,7 @@ export class TileView {
   }
 
   set #active(active) {
-    return this.#_active = active;
+    return (this.#_active = active);
   }
 
   get #active() {
@@ -32,7 +32,7 @@ export class TileView {
   }
 
   set #disabled(disabled) {
-    return this.#_disabled = disabled;
+    return (this.#_disabled = disabled);
   }
 
   get #disabled() {
@@ -66,7 +66,9 @@ export class TileView {
   }
 
   #generateTileButton(onActivation, onAction) {
-    const tileButton = ElementGenerator.generateButton(this.#tileButtonParameters);
+    const tileButton = ElementGenerator.generateButton(
+      this.#tileButtonParameters
+    );
     this.#setMouseOverAction(tileButton, onActivation);
     this.#setMouseLeaveAction(tileButton, onActivation);
     this.#setMouseDownAction(tileButton, onActivation);
@@ -106,10 +108,10 @@ export class TileView {
       if (this.#active) {
         switch (event.which) {
           case 1: // left mouse click
-          case 2:// middle mouse click
+          case 2: // middle mouse click
             onAction(GameAction.Reveal);
             break;
-          case 3:// right mouse click
+          case 3: // right mouse click
             onAction(GameAction.Mark);
             break;
           default:
@@ -130,16 +132,24 @@ export class TileView {
   }
 
   #setButtonActiveStyle() {
-    this.tileButton.then(button => {
-      this.#active ? ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.activeButton) :
-        ElementHandler.removeStyleClass(button, DOM_ELEMENT_CLASS.activeButton);
+    this.tileButton.then((button) => {
+      this.#active
+        ? ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.activeButton)
+        : ElementHandler.removeStyleClass(
+            button,
+            DOM_ELEMENT_CLASS.activeButton
+          );
     });
   }
 
   setRevealedView(isDetonatedMine, userAction = true) {
-    this.tileButton.then(button => button.remove());
-    if (isDetonatedMine && userAction) {
-      this.tileCell.then(tileCell => ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.mineReveled));
+    if (userAction) {
+      this.tileButton.then(button => button.remove());
+      if (isDetonatedMine) {
+      this.tileCell.then((tileCell) => ElementHandler.addStyleClass(tileCell, DOM_ELEMENT_CLASS.mineReveled));
+      }
+    } else {
+      this.tileButton.then(button => ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.buttonRevealed));
     }
   }
 
@@ -163,7 +173,9 @@ export class TileView {
   }
 
   set buttonStyles(buttonStyles) {
-    this.tileButton.then(button => ElementHandler.setStyleClass(button, buttonStyles));
+    this.tileButton.then((button) =>
+      ElementHandler.setStyleClass(button, buttonStyles)
+    );
   }
 
   resetTileButtonStyling() {
@@ -192,5 +204,4 @@ export class TileView {
   //     ElementHandler.setDisabled(button, this.isDisabled());
   //   });
   // }
-
 }

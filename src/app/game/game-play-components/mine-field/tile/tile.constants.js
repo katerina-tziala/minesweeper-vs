@@ -1,13 +1,9 @@
 "use strict";
 
-
-
-
 export const DOM_ELEMENT_ID = {
   cell: "tile-cell__",
   button: "tile-cell-btn__",
 };
-
 
 export const DOM_ELEMENT_CLASS = {
   cell: "tile-cell",
@@ -19,6 +15,7 @@ export const DOM_ELEMENT_CLASS = {
   buttonFlagged: "tile-cell-btn--flagged",
   buttonWronglyFlagged: "tile-cell-btn--wrongly-flagged",
   buttonMarked: "tile-cell-btn--marked",
+  buttonRevealed: "tile-cell-btn--revealed"
 };
 
 export const TILE_BTN = {

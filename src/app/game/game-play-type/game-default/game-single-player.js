@@ -105,10 +105,10 @@ export class GameSinglePlayer extends Game {
   onGameOver() {
     this.pause();
     this.setFaceIconOnGameEnd();
+    this.mineField.revealField();
+
     console.log("onGameOver");
     console.log(this);
-    // this.gameTimer.stop();
-    // this.mineField.enable();
     console.log("show end modal message");
   }
 

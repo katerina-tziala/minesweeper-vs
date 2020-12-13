@@ -51,6 +51,7 @@
       line-height: 19px;
     }
   }
+
 }
 
 ._wrong-flag-hint {
@@ -63,8 +64,6 @@
   z-index: 5;
   text-shadow: 0;
   font-size: 1.3rem;
-  text-shadow: -1px -1px 2px rgba(0, 0, 0, 0.9), 1px -1px 2px rgba(0, 0, 0, 0.9),
-    -1px 1px 2px rgba(0, 0, 0, 0.9), 1px 1px 2px rgba(0, 0, 0, 0.9);
 }
 
 @include tile-styles.setMineTypeIcons();

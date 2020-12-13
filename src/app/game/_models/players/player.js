@@ -47,7 +47,7 @@ export class Player extends AppModel {
 
   get lostGame() {
     if (this.entered) {
-      return (this.hasDetonatedMine || !this.completedGoal || this.exceededTurnsLimit) ? true : false;
+      return (this.hasDetonatedMine || !this.revealedMineField || this.exceededTurnsLimit) ? true : false;
     }
     return false;
   }
