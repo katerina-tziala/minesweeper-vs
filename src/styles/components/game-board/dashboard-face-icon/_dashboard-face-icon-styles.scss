@@ -1,8 +1,11 @@
 @use "../../../theming/theming";
 
 @mixin setIconShadow($theme) {
-  $color    : theming.getThemeColor($theme, "theme-primary");
-  box-shadow: 0 0px 6px 2px rgba($color, .4);
+  $shadow-color: theming.getThemeColor($theme, "theme-primary");
+  box-shadow: -2px -2px 2px rgba($shadow-color, 0.6),
+  2px -2px 2px rgba($shadow-color, 0.6),
+  -2px 2px 2px rgba($shadow-color, 0.6),
+  2px 2px 2px rgba($shadow-color, 0.6);
 }
 
 @mixin applyThemeDefaultDashboardIcon($theme) {

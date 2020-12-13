@@ -1,65 +1,51 @@
 @use "../../theming/theming";
 
 .dropdown-listbox-option {
-    padding      : 3px 5px;
-    cursor       : pointer;
-    outline      : none;
-    border-bottom: 1px solid transparent;
-    text-transform: capitalize;
-    &:last-of-type {
-        border-bottom-color: transparent !important;
-    }
+  padding: 3px 5px;
+  cursor: pointer;
+  outline: none;
+  border-bottom: 1px solid transparent;
+  text-transform: capitalize;
+  &:last-of-type {
+    border-bottom-color: transparent !important;
+  }
 }
 
 .dropdown-listbox-option[aria-selected="true"] {
-    @extend .dropdown-listbox-option--selected;
+  @extend .dropdown-listbox-option--selected;
 }
 
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@mixin applyThemeOptionStyle($theme) {
+  .dropdown-listbox-option {
+    border-bottom-color: theming.getThemeColor(
+      $theme,
+      "theme-secondary-subtle"
+    );
+
+    &:hover,
+    &:focus {
+      background-color: theming.getThemeColor($theme, "theme-primary-intense");
+      color: theming.getThemeColor($theme, "theme-secondary-intense");
+    }
+  }
+
+  .dropdown-listbox-option--selected {
+    background-color: theming.getThemeColor($theme, "theme-primary-subtle");
+    color: theming.getThemeColor($theme, "theme-secondary");
+
+    &:hover,
+    &:focus {
+      background-color: theming.getThemeColor($theme, "theme-primary-subtle");
+      color: theming.getThemeColor($theme, "theme-secondary");
+    }
+  }
+}
+
 .theme-light {
-
-    .dropdown-listbox-option {
-        border-bottom-color: theming.getThemeColor("light", "theme-secondary-subtle");
-
-        &:hover,
-        &:focus {
-            background-color: theming.getThemeColor("light", "bw-85");
-            color           : theming.getThemeColor("light", "theme-primary");
-        }
-    }
-
-    .dropdown-listbox-option--selected {
-        background-color: theming.getThemeColor("light", "theme-primary-subtle");
-        color           : theming.getThemeColor("light", "theme-secondary");
-
-        &:hover,
-        &:focus {
-            background-color: theming.getThemeColor("light", "bw-85");
-            color           : theming.getThemeColor("light", "theme-primary");
-        }
-    }
+  @include applyThemeOptionStyle("light");
 }
 
 .theme-dark {
-    .dropdown-listbox-option {
-        border-bottom-color: theming.getThemeColor("dark", "theme-primary-subtle");
-
-        &:hover,
-        &:focus {
-            background-color: theming.getThemeColor("dark", "theme-primary");
-            color           : theming.getThemeColor("dark", "theme-secondary-intense");
-        }
-    }
-
-    .dropdown-listbox-option--selected {
-        background-color: theming.getThemeColor("dark", "theme-primary-subtle");
-        color           : theming.getThemeColor("dark", "theme-secondary");
-
-        &:hover,
-        &:focus {
-            background-color: theming.getThemeColor("dark", "theme-primary");
-            color           : theming.getThemeColor("dark", "theme-secondary-intense");
-        }
-    }
+  @include applyThemeOptionStyle("dark");
 }

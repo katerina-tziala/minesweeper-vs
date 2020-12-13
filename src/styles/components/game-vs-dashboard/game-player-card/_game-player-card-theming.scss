@@ -20,8 +20,10 @@
 
 @mixin applyPersonIconThemeStyle($theme) {
   .person-icon {
-    color : theming.getThemeColor($theme, "theme-secondary");
-    filter: drop-shadow(0px 0px 3px theming.getThemeColor($theme, "game-card-circle-shadow"));
+    color: theming.getThemeColor($theme, "theme-secondary");
+    filter: drop-shadow(
+      0px 0px 3px theming.getThemeColor($theme, "game-card-circle-shadow")
+    );
   }
 }
 
@@ -31,7 +33,9 @@
   }
 
   ._turn-indicator {
-    filter: drop-shadow(0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow"));
+    filter: drop-shadow(
+      0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow")
+    );
 
     &.turn-indicator--on {
       background-color: theming.getThemeColor($theme, "success-primary");
@@ -41,7 +45,6 @@
       background-color: theming.getThemeColor($theme, "error-primary");
     }
   }
-
 }
 
 @mixin applyCardUtilitiesThemeStyle($theme) {
@@ -51,13 +54,15 @@
   }
 
   ._details-background-shape {
-    border-bottom-color: theming.getThemeColor($theme, "theme-secondary-intense");
+    border-bottom-color: theming.getThemeColor(
+      $theme,
+      "theme-secondary-intense"
+    );
   }
 
   ._card-circle-border {
     border-color: theming.getThemeColor($theme, "game-card-details");
   }
-
 }
 
 @mixin applyCardTypeThemeStyle($theme, $color-type) {
@@ -73,15 +78,12 @@
     ._state-icon {
       color: $game-color-type;
     }
-
   }
 }
 
 @mixin applyPlayerCardThemeStyle($theme) {
   .game-player-card {
-    &.game-player-card--turn--on {
-      @include theming.dropThemeShadow($theme);
-    }
+    @include theming.dropThemeShadow($theme);
 
     @for $i from 1 through 8 {
       @include applyCardTypeThemeStyle($theme, $i);

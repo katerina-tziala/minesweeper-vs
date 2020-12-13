@@ -92,6 +92,19 @@ export class GameVS extends Game {
   }
 
  
+  handleTileRevealing(tile) {
+    console.log("handleTileRevealing");
+    console.log(tile);
+
+    
+  }
+
+
+  handleTileMarking(tile) {
+    console.log("handleTileMarking");
+    console.log(tile);
+  
+  }
 
   // CLASS SPECIFIC FUNCTIONS
   get #roundTimer() {
@@ -134,10 +147,9 @@ export class GameVS extends Game {
 
   startGameRound() {
     this.initRoundTiles();
-
-
     this.mineField.enable();
-
   }
+
+ 
 
 }
