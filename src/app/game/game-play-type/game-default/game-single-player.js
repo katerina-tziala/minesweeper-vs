@@ -9,12 +9,6 @@ export class GameSinglePlayer extends Game {
   }
 
   // OVERRIDEN FUNCTIONS
-  get detectedMines() {
-    return this.optionsSettings.wrongFlagHint
-      ? this.player.placedFlags
-      : this.player.minesDetected;
-  }
-
   get boardActionButtons() {
     if (this.isParallel) {
       return [];
@@ -47,52 +41,39 @@ export class GameSinglePlayer extends Game {
 
   handleTileRevealing(tile) {
     if (tile.isUntouched) {
-      this.mineField
-        .revealMinefieldTile(tile, this.playerOnTurn.id)
-        .then((boardTiles) => {
-          this.setPlayerStatisticsOnTileRevealing(boardTiles);
-          this.onPlayerMoveEnd(boardTiles);
-        });
+      this.getRevealedMinefieldArea(tile).then((boardTiles) => {
+        this.setPlayerStatisticsOnTileRevealing(boardTiles);
+      });
     } else {
       this.mineField.enable();
     }
-  }
-
-  oneTileRevealed(boardTiles) {
-    return boardTiles.length == 1 && !boardTiles[0].isDetonatedMine;
   }
 
   setPlayerStatisticsOnTileRevealing(boardTiles) {
     if (boardTiles.length > 1 || this.oneTileRevealed(boardTiles)) {
       this.playerOnTurn.revealedTiles = boardTiles.map((tile) => tile.position);
       this.setGameEnd(
-        this.player.revealedMineField ? GameEndType.Cleared : undefined
+        this.playerOnTurn.clearedMinefield ? GameEndType.Cleared : undefined
       );
     } else {
       this.playerOnTurn.detonatedTile = boardTiles[0].position;
       this.setGameEnd(GameEndType.DetonatedMine);
     }
+    this.onPlayerMoveEnd(boardTiles);
   }
 
   handleTileMarking(tile) {
-    if (tile.isUntouched) {
-      // set flag
-      tile.setFlag(
-        this.playerOnTurn.id,
-        this.playerOnTurn.colorType,
-        this.wrongFlagHint
-      );
-      this.playerOnTurn.flaggedTile(tile.position, tile.isWronglyFlagged);
-    } else if (tile.isFlagged && this.allowMarks) {
-      // set mark
+    if (tile.isUntouched) {// set flag
+      this.setFlagOnMinefieldTile(tile);
+    } else if (tile.isFlagged && this.allowMarks) { // set mark
       tile.setMark(this.playerOnTurn.id, this.playerOnTurn.colorType);
       this.playerOnTurn.markedTile = tile.position;
-    } else {
-      // reset
+      this.updateMineCounter();
+    } else { // reset
       tile.resetState();
       this.playerOnTurn.resetedTile = tile.position;
+      this.updateMineCounter();
     }
-    this.updateMineCounter();
     this.onPlayerMoveEnd([tile]);
   }
 
@@ -106,11 +87,9 @@ export class GameSinglePlayer extends Game {
     this.setFaceIconOnGameEnd();
     this.mineField.revealField();
 
-
     console.log("onGameOver");
     console.log(this);
     console.log("show end modal message");
-
   }
 
   onGameContinueAfterMove() {
@@ -144,5 +123,4 @@ export class GameSinglePlayer extends Game {
       this.mineField.enable();
     }
   }
-
 }

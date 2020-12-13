@@ -31,6 +31,7 @@ export class Game extends AppModel {
     this.update(params);
     this.id = id ? id : this.type;
     this.player = player;
+    this.players = [this.player];
     this.createdAt = nowTimestamp();
     this.onActionTimer = true;
   }
@@ -54,7 +55,11 @@ export class Game extends AppModel {
   }
 
   get isIdle() {
-    return (!this.startedAt && !this.isOver && !this.gameTimer.isRunning);
+    return !this.startedAt ||
+      this.isOver ||
+      this.players.every((player) => !player.moves)
+      ? true
+      : false;
   }
 
   get allowMarks() {
@@ -91,6 +96,19 @@ export class Game extends AppModel {
     this.moveTiles = newMoveTiles;
   }
 
+  #getPlayerDetectedMines(player) {
+    return this.optionsSettings.wrongFlagHint
+      ? player.placedFlags
+      : player.minesDetected;
+  }
+
+  get detectedMines() {
+    let detectedMines = 0;
+    this.players.forEach((player) => (detectedMines += this.#getPlayerDetectedMines(player)));
+    return detectedMines;
+  }
+
+
   get dashboardFaceColor() {
     if (
       this.optionsSettings.vsMode &&
@@ -122,6 +140,20 @@ export class Game extends AppModel {
     }
   }
 
+  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
+    player.flaggedTile(tile.position, tile.isWronglyFlagged);
+    this.updateMineCounter();
+  }
+
+  getRevealedMinefieldArea(tile) {
+    return this.mineField.revealMinefieldTile(tile, this.playerOnTurn.id);
+  }
+
+  oneTileRevealed(boardTiles) {
+    return boardTiles.length == 1 && !boardTiles[0].isDetonatedMine;
+  }
+
   checkGameStart() {
     if (!this.gameTimer.isRunning && this.isIdle) {
       this.setGameStart();
@@ -130,7 +162,8 @@ export class Game extends AppModel {
   }
 
   updateMineCounter() {
-    this.mineCounter.value = this.levelSettings.numberOfMines - this.detectedMines;
+    this.mineCounter.value =
+      this.levelSettings.numberOfMines - this.detectedMines;
   }
 
   getBoardSectionID(sectionName) {
@@ -207,15 +240,11 @@ export class Game extends AppModel {
     this.mineField.disable();
   }
 
-
-
-
   continueGame() {
     console.log("continueGame");
     this.gameTimer.continue();
     this.mineField.enable();
   }
-
 
   #executeBoardAction(action, confirmation = CONFIRMATION.quitGame) {
     this.pause();
@@ -258,9 +287,7 @@ export class Game extends AppModel {
     return { step, limit, initialValue };
   }
 
-  get detectedMines() {
-    return 0;
-  }
+
 
   get playerOnTurn() {
     return this.player;
@@ -342,7 +369,7 @@ export class Game extends AppModel {
     this.moveTilesUpdate = boardTiles;
     this.playerOnTurn.increaseMoves();
   }
-  
+
   onGameOver() {
     console.log("onGameOver");
     return;

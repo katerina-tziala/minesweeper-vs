@@ -10,6 +10,7 @@ import { DOM_ELEMENT_CLASS } from "./game-vs-dashboard.constants";
 import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
 
 export class GameVSDashboard {
+
   constructor(clearMinefield) {
     this.clearMinefield = clearMinefield;
   }
@@ -56,10 +57,8 @@ export class GameVSDashboard {
     return PlayerCard.updateMissedTurns(player);
   }
 
-
-
-
-
-
+  updatePlayerAllowedFlags(player) {
+    return PlayerCard.updateAllowedFlags(player);
+  }
 
 }
