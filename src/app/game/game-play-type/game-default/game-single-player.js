@@ -111,9 +111,7 @@ export class GameSinglePlayer extends Game {
     console.log("onGameOver");
     console.log(this);
     console.log("show end modal message");
-    if (this.isParallel) {
-      this.submitResult();
-    }
+
   }
 
   onGameContinue() {
