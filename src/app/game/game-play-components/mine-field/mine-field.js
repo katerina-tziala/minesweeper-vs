@@ -34,10 +34,6 @@ export class MineField {
     this.#_levelSettings = game;
   }
 
-  get isCleared() {
-    return this.#tiles.every((tile) => tile.isMine);
-  }
-
   get #levelSettings() {
     return this.#_levelSettings;
   }
@@ -98,7 +94,7 @@ export class MineField {
     return fragment;
   }
 
-  get generateMinefield() {
+  generate() {
     this.#tiles = [];
     this.#tilesGenerator = new TileGenerator(this.#levelSettings);
     const fragment = document.createDocumentFragment();
@@ -237,4 +233,17 @@ export class MineField {
       tile.reveal(undefined, false);
     });
   }
+
+  get isCleared() {
+    return this.#tiles.every((tile) => tile.isMine);
+  }
+
+  get allMinesDetected() {
+    const detectedTiles = this.#tiles.filter((tile) => tile.isDetected);
+    return detectedTiles.length === this.#levelSettings.numberOfMines;
+  }
+
+  // get mineTiles() {
+  //   return this.getTilesByPositions(this.#levelSettings.minesPositions);
+  // }
 }

@@ -36,6 +36,7 @@
         "dot-location": [
             "error",
             "property"
-        ]
+        ],
+        "max-line-length": [true, 140]
     }
 }

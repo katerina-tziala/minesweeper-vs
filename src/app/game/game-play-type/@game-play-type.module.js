@@ -1,3 +1,4 @@
 export { GameSinglePlayer } from "./game-default/game-single-player";
-export { GameVS } from "./game-default/game-vs/game-vs";
+export { GameVSDetect } from "./game-default/game-vs/game-vs-detect";
+export { GameVSClear } from "./game-default/game-vs/game-vs-clear";
 export { GameParallel } from "./game-parallel/game-parallel";

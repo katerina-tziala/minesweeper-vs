@@ -6,10 +6,9 @@ import { GameType, GameVSMode } from "GameEnums";
 import { LevelSettings, Player, BotPlayer } from "GameModels";
 
 export class GameFactory {
+
   static loadGame(gameParams, gameId) {
-    gameParams.levelSettings = GameFactory.getLevelSettings(
-      gameParams.levelSettings,
-    );
+    gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
 
     const playersData = gameParams.players;
     delete gameParams.players;
@@ -18,11 +17,7 @@ export class GameFactory {
       case GameType.Original:
         return GameFactory.loadPlayerGame(gameId, gameParams);
       case GameType.Friend:
-        return GameFactory.loadGameVs(
-          gameId,
-          gameParams,
-          GameFactory.getOpponent(playersData),
-        );
+        return GameFactory.loadGameVs(gameId, gameParams, GameFactory.getOpponent(playersData));
       case GameType.Bot:
         return GameFactory.loadGameVSBot(gameId, gameParams, playersData);
       case GameType.Online:
@@ -62,9 +57,17 @@ export class GameFactory {
     return botPlayer;
   }
 
+  static isParallelGaming(gameParams) {
+    return gameParams.optionsSettings.vsMode === GameVSMode.Parallel;
+  }
+
+  static isVSModeDetect(gameParams) {
+    return gameParams.optionsSettings.vsMode === GameVSMode.Detect;
+  }
+
   static loadGameVSBot(gameId, gameParams, playersData) {
     const botPlayer = GameFactory.getBot(playersData);
-    if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
+    if (GameFactory.isParallelGaming(gameParams)) {
       return GameFactory.loadParrallelGame(gameId, gameParams, botPlayer);
     }
     return GameFactory.loadGameVs(gameId, gameParams, botPlayer);
@@ -72,7 +75,7 @@ export class GameFactory {
 
   static loadGameVSOnline(gameId, gameParams, playersData) {
     const opponent = GameFactory.getOpponent(playersData);
-    if (gameParams.optionsSettings.vsMode === GameVSMode.Parallel) {
+    if (GameFactory.isParallelGaming(gameParams)) {
       return GameFactory.loadParrallelGame(gameId, gameParams, opponent);
     }
     return GameFactory.loadGameVs(gameId, gameParams, opponent);
@@ -86,7 +89,15 @@ export class GameFactory {
 
   static loadGameVs(gameId, gameParams, opponent) {
     return import(`GamePlayType`).then((module) => {
-      return new module.GameVS(
+      if (GameFactory.isVSModeDetect(gameParams)) {
+        return new module.GameVSDetect(
+          gameId,
+          gameParams,
+          GameFactory.getPlayer(),
+          opponent,
+        );
+      }
+      return new module.GameVSClear(
         gameId,
         gameParams,
         GameFactory.getPlayer(),

@@ -6,7 +6,7 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
 
-import { GameType, GameVSMode, GameAction } from "GameEnums";
+import { GameType, GameVSMode, GameAction, GameEndType } from "GameEnums";
 import { GameViewHelper } from "./_game-view-helper";
 import {
   ACTION_BUTTONS,
@@ -92,8 +92,8 @@ export class Game extends AppModel {
     this.moveTiles = [];
   }
 
-  set moveTilesUpdate(newMoveTiles) {
-    this.moveTiles = newMoveTiles;
+  set moveTilesUpdate(newMoveTiles = []) {
+    this.moveTiles = this.moveTiles.concat(newMoveTiles);
   }
 
   #getPlayerDetectedMines(player) {
@@ -141,16 +141,30 @@ export class Game extends AppModel {
     }
   }
 
+  get revealingAllowed() {
+    return true;
+  }
+
+  handleTileRevealing(tile) {
+    if (this.revealingAllowed && tile.isUntouched) {
+      this.mineField.revealMinefieldTile(tile, this.playerOnTurn.id).then((revealedTiles) => {
+        if (this.tileDetonated(revealedTiles)) {
+          this.updateStateOnTileDetonation(revealedTiles);
+          return;
+        }
+        this.updateStateOnRevealedTiles(revealedTiles);
+      });
+    } else {
+      this.mineField.enable();
+    }
+  }
+
   tileMarkingAllowed(tile, player = this.playerOnTurn) {
     return tile.isFlaggedBy(player.id) && this.allowMarks;
   }
 
-  getRevealedMinefieldArea(tile) {
-    return this.mineField.revealMinefieldTile(tile, this.playerOnTurn.id);
-  }
-
-  oneTileRevealed(boardTiles) {
-    return boardTiles.length == 1 && !boardTiles[0].isDetonatedMine;
+  tileDetonated(boardTiles) {
+    return boardTiles.length === 1 && boardTiles[0].isDetonatedMine;
   }
 
   checkGameStart() {
@@ -173,7 +187,7 @@ export class Game extends AppModel {
     return GameViewHelper.getClearedGameSection(
       this.getBoardSectionID(BOARD_SECTION.mineField),
     ).then((container) => {
-      container.append(this.mineField.generateMinefield);
+      container.append(this.mineField.generate());
       return;
     });
   }
@@ -354,12 +368,17 @@ export class Game extends AppModel {
     return;
   }
 
-  handleTileRevealing(tile) {
+  onRoundTimerEnd() {
     return;
   }
 
-  onRoundTimerEnd() {
-    return;
+  updateStateOnTileDetonation(revealedTiles) {
+    this.playerOnTurn.detonatedTile = revealedTiles[0].position;
+    this.setGameEnd(GameEndType.DetonatedMine);
+  }
+
+  updateStateOnRevealedTiles(revealedTiles) {
+    this.playerOnTurn.revealedTiles = this.mineField.getTilesPositions(revealedTiles);
   }
 
   setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
@@ -380,18 +399,27 @@ export class Game extends AppModel {
     this.updateMineCounter();
   }
 
-  onPlayerMoveEnd(boardTiles = []) {
-    this.moveTilesUpdate = boardTiles;
-    this.playerOnTurn.increaseMoves();
-  }
 
-  onGameOver() {
-    console.log("onGameOver");
-    return;
-  }
+
 
   submitResult() {
     console.log("submitResult");
     console.log(this);
   }
+
+
+
+
+
+  
+////////////////////////////////
+  onGameOver(boardTiles = []) {
+    this.pause();
+    this.moveTilesUpdate = boardTiles;
+    this.playerOnTurn.increaseMoves();
+  
+    this.setFaceIconOnGameEnd();
+    this.mineField.revealField();
+  }
+
 }

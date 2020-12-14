@@ -114,7 +114,7 @@ export class Player extends AppModel {
       : false;
   }
 
-  get detectedMines() {
+  get detectedAllMines() {
     return this.goalTargetNumber
       ? this.goalTargetNumber === this.detectedMinesPositions.length
       : false;

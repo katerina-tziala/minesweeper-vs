@@ -39,59 +39,35 @@ export class GameSinglePlayer extends Game {
     this.start();
   }
 
-  handleTileRevealing(tile) {
-    if (tile.isUntouched) {
-      this.getRevealedMinefieldArea(tile).then((boardTiles) => {
-        this.setPlayerStatisticsOnTileRevealing(boardTiles);
-      });
-    } else {
-      this.mineField.enable();
-    }
+  updateStateOnTileDetonation(revealedTiles) {
+    super.updateStateOnTileDetonation(revealedTiles);
+    this.onGameOver(revealedTiles);
   }
 
-  setPlayerStatisticsOnTileRevealing(boardTiles) {
-    if (boardTiles.length > 1 || this.oneTileRevealed(boardTiles)) {
-      this.playerOnTurn.revealedTiles = boardTiles.map((tile) => tile.position);
-      this.setGameEnd(
-        this.playerOnTurn.clearedMinefield ? GameEndType.Cleared : undefined,
-      );
-    } else {
-      this.playerOnTurn.detonatedTile = boardTiles[0].position;
-      this.setGameEnd(GameEndType.DetonatedMine);
+  updateStateOnRevealedTiles(revealedTiles) {
+    super.updateStateOnRevealedTiles(revealedTiles);
+    if (this.playerOnTurn.clearedMinefield) {
+      this.setGameEnd(GameEndType.Cleared);
+      this.onGameOver(revealedTiles);
+      return;
     }
-    this.onPlayerMoveEnd(boardTiles);
+    this.onPlayerMoveEnd(revealedTiles);
   }
 
   handleTileMarking(tile) {
-    if (tile.isUntouched) {
-      // set flag
+    if (tile.isUntouched) { // set flag
       this.setFlagOnMinefieldTile(tile);
-    } else if (this.tileMarkingAllowed(tile)) {
-      // set mark
+    } else if (this.tileMarkingAllowed(tile)) { // set mark
       this.setMarkOnMinefieldTile(tile);
-    } else {
-      // reset
+    } else { // reset
       this.resetMinefieldTile(tile);
     }
     this.onPlayerMoveEnd([tile]);
   }
 
   onPlayerMoveEnd(boardTiles = []) {
-    super.onPlayerMoveEnd(boardTiles);
-    this.isOver ? this.onGameOver() : this.onGameContinueAfterMove();
-  }
-
-  onGameOver() {
-    this.pause();
-    this.setFaceIconOnGameEnd();
-    this.mineField.revealField();
-
-    console.log("onGameOver");
-    console.log(this);
-    console.log("show end modal message");
-  }
-
-  onGameContinueAfterMove() {
+    this.moveTilesUpdate = boardTiles;
+    this.playerOnTurn.increaseMoves();
     if (this.isParallel) {
       console.log("parallel");
       this.submitResult();
@@ -100,6 +76,18 @@ export class GameSinglePlayer extends Game {
     } else {
       this.startGameRound();
     }
+  }
+
+  onGameOver(boardTiles = []) {
+    super.onGameOver(boardTiles);
+    if (this.isParallel) {
+      console.log("parallel");
+      this.submitResult();
+      return;
+    }
+    console.log("onGameOver");
+    console.log(this);
+    console.log("show end modal message");
   }
 
   // CLASS SPECIFIC FUNCTIONS
