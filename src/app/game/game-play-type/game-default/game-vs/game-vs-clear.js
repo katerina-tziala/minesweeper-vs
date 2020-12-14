@@ -22,18 +22,10 @@ import { GameVS } from "./_game-vs";
 export class GameVSClear extends GameVS {
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
-
-    console.log("GameVSClear");
   }
 
   get goalTargetNumber() {
     return this.levelSettings.numberOfEmptyTiles;
-  }
-
-
-
-  roundEnded(boardTiles) {
-    return boardTiles.length && boardTiles[0].isRevealed;
   }
 
   get boardActionButtons() {
@@ -45,12 +37,21 @@ export class GameVSClear extends GameVS {
     return boardActions;
   }
 
-
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
     console.log("updateStateOnRevealedTiles");
     console.log("check game over on minefield state after revealing");
     this.pause();
+    console.log("round end");
+
+    // if (this.playerOnTurn.clearedMinefield) {
+    //   this.setGameEnd(GameEndType.Cleared);
+    //   this.onGameOver(revealedTiles);
+    //   return;
+    // }
+    // this.onPlayerMoveEnd(revealedTiles);
+
+
     // this.resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(revealedTiles));
   }
   
