@@ -132,11 +132,11 @@ export class Tile {
   }
 
   isFlaggedBy(playerID) {
-    return this.isFlagged && this.isModifiedBy === playerID;
+    return this.isFlagged && this.modifiedBy === playerID;
   }
 
   isMarkedBy(playerID) {
-    return this.isMarked && this.isModifiedBy === playerID;
+    return this.isMarked && this.modifiedBy === playerID;
   }
 
   /* ACTIONS */

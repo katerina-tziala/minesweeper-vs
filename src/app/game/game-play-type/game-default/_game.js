@@ -140,10 +140,8 @@ export class Game extends AppModel {
     }
   }
 
-  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
-    player.flaggedTile(tile.position, tile.isWronglyFlagged);
-    this.updateMineCounter();
+  tileMarkingAllowed(tile, player = this.playerOnTurn) {
+    return tile.isFlaggedBy(player.id) && this.allowMarks;
   }
 
   getRevealedMinefieldArea(tile) {
@@ -364,6 +362,30 @@ export class Game extends AppModel {
   onRoundTimerEnd() {
     return;
   }
+
+  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
+    player.flaggedTile(tile.position, tile.isWronglyFlagged);
+    this.updateMineCounter();
+  }
+
+  setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.setMark(player.id, player.colorType);
+    this.playerOnTurn.markedTile = tile.position;
+    this.updateMineCounter();
+  }
+
+  resetMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.resetState();
+    player.resetedTile = tile.position;
+    this.updateMineCounter();
+  }
+
+
+  
+  
+
+
 
   onPlayerMoveEnd(boardTiles = []) {
     this.moveTilesUpdate = boardTiles;

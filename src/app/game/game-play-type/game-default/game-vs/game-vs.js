@@ -147,56 +147,59 @@ export class GameVS extends Game {
     if (boardTiles.length > 1 || this.oneTileRevealed(boardTiles)) {
       player.revealedTiles = boardTiles.map((tile) => tile.position);
       this.setGameEnd(this.#modeController.getGameEndOnPlayerMove(player));
+  
       console.log("check game over on minefield state after revealing");
-      //this.onPlayerMoveEnd(boardTiles);
-      this.resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
+
+      this.#resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
     } else {
       player.detonatedTile = boardTiles[0].position;
       this.setGameEnd(GameEndType.DetonatedMine);
-      this.resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
+      this.#resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
     }
-  }
-
-  resetPlayerTurnsAfterMove(player = this.playerOnTurn) {
-    if (this.turnSettings.consecutiveTurns && player.missedTurns) {
-      player.resetMissedTurns();
-      return this.vsDashboard.updatePlayerMissedTurns(player);
-    }
-    return Promise.resolve();
   }
 
   handleTileMarking(tile) {
     console.log("handleTileMarking detect");
-    console.log(tile);
-  
-    
-    if (tile.isUntouched) {
-      this.handleTileFlagging(tile);
-    } else {
-      this.pause();
-      console.log("touched tile - flagged or marked by any player");
 
-      console.log(this.optionsSettings);
-    }
-  }
-
-
-  handleTileFlagging(tile, player = this.playerOnTurn) {
-    if (this.#modeController.getFlaggingAllowed(player)) {
+    if (this.tileFlaggingAllowed(tile)) {
       this.setFlagOnMinefieldTile(tile);
+    } else if (this.tileMarkingAllowed(tile)) { // set mark
+      this.setMarkOnMinefieldTile(tile);
   
-      console.log("check game over on minefield state after flagging");
-
-      const playerUpdates = [this.vsDashboard.updatePlayerAllowedFlags(player)];
-      playerUpdates.push(this.resetPlayerTurnsAfterMove());
-      Promise.all(playerUpdates).then(() => this.onPlayerMoveEnd([tile]));
-
-    } else { // flagging not allowed
-      this.mineField.enable();
+      console.log("check game over on minefield state after marking?");
+  
+      this.#updatePlayerTurnsAndAllowedFlags().then(() => this.onPlayerMoveEnd([tile]));
+    } else if (this.tileResetingAllowed(tile)) { // reset
+      this.resetMinefieldTile(tile);
+  
+      console.log("check game over on minefield state after reseting tile?");
+  
+      this.#updatePlayerTurnsAndAllowedFlags().then(() => this.onPlayerMoveEnd([tile]));
+    } else {
+      //this.pause();
+      console.log("touched tile - flagged or marked by other player");
+      console.log(tile);
+      // console.log(this.optionsSettings);
+      
+      this.minefield.enable();
     }
   }
 
+  tileFlaggingAllowed(tile, player = this.playerOnTurn) {
+    return tile.isUntouched && this.#modeController.getFlaggingAllowed(player);
+  }
+
+  tileResetingAllowed(tile, player = this.playerOnTurn) {
+    return (tile.isFlaggedBy(player.id) && !this.allowMarks) || tile.isMarkedBy(player.id);
+  }
+
+  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
+    super.setFlagOnMinefieldTile(tile);
   
+    console.log("check game over on minefield state after flagging");
+
+    this.#updatePlayerTurnsAndAllowedFlags().then(() => this.onPlayerMoveEnd([tile]));
+  }
 
   onRoundTimerEnd() {
     this.playerOnTurn.increaseMissedTurns();
@@ -221,7 +224,8 @@ export class GameVS extends Game {
       return;
     }
 
-   if (this.#modeController.roundEnded) {
+    console.log(this.#modeController.roundEnded(boardTiles));
+   if (this.#modeController.roundEnded(boardTiles)) {
     this.onRoundEnd();
     return;
    }
@@ -316,6 +320,24 @@ export class GameVS extends Game {
   #switchTurns() {
     this.players.forEach((player) => player.toggleTurn());
   }
+
+  #resetPlayerTurnsAfterMove(player = this.playerOnTurn) {
+    if (this.turnSettings.consecutiveTurns && player.missedTurns) {
+      player.resetMissedTurns();
+      return this.vsDashboard.updatePlayerMissedTurns(player);
+    }
+    return Promise.resolve();
+  }
+
+  #updatePlayerTurnsAndAllowedFlags(player = this.playerOnTurn) {
+    const playerUpdates = [this.vsDashboard.updatePlayerAllowedFlags(player)];
+    playerUpdates.push(this.#resetPlayerTurnsAfterMove());
+    return Promise.all(playerUpdates);
+  }
+
+
+
+
 
   onSneakPeek() {
     console.log("onSneakPeek");

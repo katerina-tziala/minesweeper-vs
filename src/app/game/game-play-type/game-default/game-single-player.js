@@ -65,14 +65,10 @@ export class GameSinglePlayer extends Game {
   handleTileMarking(tile) {
     if (tile.isUntouched) {// set flag
       this.setFlagOnMinefieldTile(tile);
-    } else if (tile.isFlagged && this.allowMarks) { // set mark
-      tile.setMark(this.playerOnTurn.id, this.playerOnTurn.colorType);
-      this.playerOnTurn.markedTile = tile.position;
-      this.updateMineCounter();
+    } else if (this.tileMarkingAllowed(tile)) { // set mark
+      this.setMarkOnMinefieldTile(tile);
     } else { // reset
-      tile.resetState();
-      this.playerOnTurn.resetedTile = tile.position;
-      this.updateMineCounter();
+      this.resetMinefieldTile(tile);
     }
     this.onPlayerMoveEnd([tile]);
   }

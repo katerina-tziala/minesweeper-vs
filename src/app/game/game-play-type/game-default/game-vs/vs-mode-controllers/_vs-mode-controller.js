@@ -27,5 +27,5 @@ export class VSModeController {
   roundEnded(boardTiles) {
     return true;
   }
-  
+
 }
