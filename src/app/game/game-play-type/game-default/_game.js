@@ -104,10 +104,11 @@ export class Game extends AppModel {
 
   get detectedMines() {
     let detectedMines = 0;
-    this.players.forEach((player) => (detectedMines += this.#getPlayerDetectedMines(player)));
+    this.players.forEach(
+      (player) => (detectedMines += this.#getPlayerDetectedMines(player)),
+    );
     return detectedMines;
   }
-
 
   get dashboardFaceColor() {
     if (
@@ -170,7 +171,7 @@ export class Game extends AppModel {
 
   renderMineField() {
     return GameViewHelper.getClearedGameSection(
-      this.getBoardSectionID(BOARD_SECTION.mineField)
+      this.getBoardSectionID(BOARD_SECTION.mineField),
     ).then((container) => {
       container.append(this.mineField.generateMinefield);
       return;
@@ -188,7 +189,7 @@ export class Game extends AppModel {
   get boardActions() {
     const boardActions = GameViewHelper.generateBoardSection(
       BOARD_SECTION.boardActions,
-      this.id
+      this.id,
     );
     const boardActionButtons = this.boardActionButtons;
     if (boardActionButtons.length) {
@@ -272,7 +273,7 @@ export class Game extends AppModel {
     console.log("onReset");
     this.#executeBoardAction(
       this.#dashBoardActions.onReset.bind(this),
-      CONFIRMATION.resetGame
+      CONFIRMATION.resetGame,
     );
     return;
   }
@@ -285,8 +286,6 @@ export class Game extends AppModel {
     return { step, limit, initialValue };
   }
 
-
-
   get playerOnTurn() {
     return this.player;
   }
@@ -296,21 +295,21 @@ export class Game extends AppModel {
     boardActions.push(
       GameViewHelper.generateActionButton(
         ACTION_BUTTONS.exit,
-        this.onExit.bind(this)
-      )
+        this.onExit.bind(this),
+      ),
     );
     if (!this.isOnline) {
       boardActions.push(
         GameViewHelper.generateActionButton(
           ACTION_BUTTONS.restart,
-          this.onRestart.bind(this)
-        )
+          this.onRestart.bind(this),
+        ),
       );
       boardActions.push(
         GameViewHelper.generateActionButton(
           ACTION_BUTTONS.reset,
-          this.onReset.bind(this)
-        )
+          this.onReset.bind(this),
+        ),
       );
     }
     return boardActions;
@@ -318,17 +317,17 @@ export class Game extends AppModel {
 
   get initViewControllers() {
     this.mineCounter = new DigitalCounter(
-      this.getBoardSectionID(DASHBOARD_SECTION.mineCounter)
+      this.getBoardSectionID(DASHBOARD_SECTION.mineCounter),
     );
     this.dashboardFace = new DashboardFaceIcon(
-      this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon)
+      this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon),
     );
     this.initTimeCounter();
     this.mineField = new MineField(
       this.id,
       this.levelSettings,
       this.#onActiveTileChange.bind(this),
-      this.#onTileAction.bind(this)
+      this.#onTileAction.bind(this),
     );
     return Promise.resolve();
   }
@@ -380,12 +379,6 @@ export class Game extends AppModel {
     player.resetedTile = tile.position;
     this.updateMineCounter();
   }
-
-
-  
-  
-
-
 
   onPlayerMoveEnd(boardTiles = []) {
     this.moveTilesUpdate = boardTiles;

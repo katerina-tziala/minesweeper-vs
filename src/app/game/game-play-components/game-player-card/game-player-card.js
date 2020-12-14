@@ -2,14 +2,16 @@
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-player-card.constants";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+} from "./game-player-card.constants";
 
 import { PlayerCardState } from "./player-card-state/player-card-state";
 import { TurnsIndicator } from "./turns-indicator/turns-indicator";
 import { PlayerCardDetails } from "./player-card-details/player-card-details";
 
 export class GamePlayerCard {
-
   static getPlayerCardID(player) {
     return DOM_ELEMENT_ID.card + player.id;
   }
@@ -21,7 +23,9 @@ export class GamePlayerCard {
   static getPlayerCardStyles(player, directionLeft) {
     const cardStyles = [DOM_ELEMENT_CLASS.card];
     cardStyles.push(GamePlayerCard.getPlayerCardColorType(player));
-    const cardDirection = directionLeft ? DOM_ELEMENT_CLASS.directionRight : DOM_ELEMENT_CLASS.directionLeft;
+    const cardDirection = directionLeft
+      ? DOM_ELEMENT_CLASS.directionRight
+      : DOM_ELEMENT_CLASS.directionLeft;
     cardStyles.push(cardDirection);
     if (player.turn) {
       cardStyles.push(DOM_ELEMENT_CLASS.turnOn);
@@ -30,27 +34,42 @@ export class GamePlayerCard {
   }
 
   static generate(player, directionLeft = false, clearMinefield = true) {
-    const cardStyles = GamePlayerCard.getPlayerCardStyles(player, directionLeft);
-    const playerCard = ElementGenerator.generateContainer(cardStyles, GamePlayerCard.getPlayerCardID(player));
+    const cardStyles = GamePlayerCard.getPlayerCardStyles(
+      player,
+      directionLeft,
+    );
+    const playerCard = ElementGenerator.generateContainer(
+      cardStyles,
+      GamePlayerCard.getPlayerCardID(player),
+    );
     const playerSection = GamePlayerCard.generatePlayerSection(player);
-    const detailsSection = PlayerCardDetails.generateDetailsSection(player, clearMinefield);
+    const detailsSection = PlayerCardDetails.generateDetailsSection(
+      player,
+      clearMinefield,
+    );
     const stateSection = PlayerCardState.generateStateSection(player);
     playerCard.append(playerSection, detailsSection, stateSection);
     return playerCard;
   }
 
   static generatePlayerSection(player) {
-    const playerInstanceSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerSection]);
+    const playerInstanceSection = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.playerSection,
+    ]);
     if (player.allowedTurns) {
       playerInstanceSection.append(TurnsIndicator.generate(player));
     }
-    playerInstanceSection.append(GamePlayerCard.generatePayerIcon(player.isBot));
+    playerInstanceSection.append(
+      GamePlayerCard.generatePayerIcon(player.isBot),
+    );
     return playerInstanceSection;
   }
 
   static generatePayerIcon(isBot) {
     const styles = [DOM_ELEMENT_CLASS.personIcon];
-    isBot ? styles.push(DOM_ELEMENT_CLASS.botIcon) : styles.push(DOM_ELEMENT_CLASS.playerIcon);
+    isBot
+      ? styles.push(DOM_ELEMENT_CLASS.botIcon)
+      : styles.push(DOM_ELEMENT_CLASS.playerIcon);
     //TODO: add indicator for bot level
     const playerIcon = ElementGenerator.generateContainer(styles);
     return playerIcon;
@@ -78,12 +97,11 @@ export class GamePlayerCard {
   }
 
   static updateTurnStatus(player) {
-    return GamePlayerCard.getPlayerCard(player).then(playerCard => {
+    return GamePlayerCard.getPlayerCard(player).then((playerCard) => {
       ElementHandler.removeStyleClass(playerCard, DOM_ELEMENT_CLASS.turnOn);
       if (player.turn) {
         ElementHandler.addStyleClass(playerCard, DOM_ELEMENT_CLASS.turnOn);
       }
     });
   }
-
 }

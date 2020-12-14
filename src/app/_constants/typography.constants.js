@@ -11,5 +11,5 @@ export const TYPOGRAPHY = {
   doubleHyphen: "--",
   colon: ":",
   commaAndSpace: ", ",
-  tripleHashtag: "###"
+  tripleHashtag: "###",
 };

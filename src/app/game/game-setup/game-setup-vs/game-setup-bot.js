@@ -8,7 +8,6 @@ import { TITLE } from "../game-setup.constants";
 import { WIZARD_NAME, BotModeWizard } from "GameSettingsWizard";
 
 export class GameSetupBot extends GameSetupVS {
-
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.opponent = new BotPlayer();
@@ -20,7 +19,10 @@ export class GameSetupBot extends GameSetupVS {
   }
 
   #initBotModeWizard() {
-    return new BotModeWizard(this.#onBotModeChange.bind(this), this.opponent.mode);
+    return new BotModeWizard(
+      this.#onBotModeChange.bind(this),
+      this.opponent.mode,
+    );
   }
 
   #onBotModeChange(params) {
@@ -51,5 +53,4 @@ export class GameSetupBot extends GameSetupVS {
       this.opponent.mode = BotMode.Easy;
     }
   }
-
 }

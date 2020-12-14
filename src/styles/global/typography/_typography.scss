@@ -1,14 +1,13 @@
 @import "./font-face";
 
-$font-family: "Nunito",
-sans-serif;
+$font-family: "Nunito", sans-serif;
 $font-size-base: 14px;
 
 html,
 body,
 .app {
   font-family: $font-family;
-  font-size  : $font-size-base;
+  font-size: $font-size-base;
 }
 
 h1 {
@@ -16,7 +15,7 @@ h1 {
 }
 
 h2 {
-  font-size     : 1.2rem;
+  font-size: 1.2rem;
   text-transform: capitalize;
 }
 
@@ -31,6 +30,6 @@ input {
 }
 
 %ellipsis-text {
-  overflow     : hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
 }

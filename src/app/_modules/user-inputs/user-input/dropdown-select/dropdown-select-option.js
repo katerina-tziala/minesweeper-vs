@@ -2,12 +2,18 @@
 
 import { ElementHandler, AriaHandler } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_CLASS, OPTION_ATTRIBUTES } from "./dropdown-select.constants";
+import {
+  DOM_ELEMENT_CLASS,
+  OPTION_ATTRIBUTES,
+} from "./dropdown-select.constants";
 
-import { preventInteraction, clone, replaceStringParameter } from "~/_utils/utils";
+import {
+  preventInteraction,
+  clone,
+  replaceStringParameter,
+} from "~/_utils/utils";
 
 export class DropdownSelectOption {
-
   static selectOption(optionElement) {
     AriaHandler.setAriaSelected(optionElement);
     optionElement.focus();
@@ -21,10 +27,14 @@ export class DropdownSelectOption {
   static generateSelectOption(selectOption, action) {
     const option = document.createElement("li");
     ElementHandler.setParams(option, selectOption);
-    option.addEventListener("click", (event) => {
-      preventInteraction(event);
-      action(option);
-    }, false);
+    option.addEventListener(
+      "click",
+      (event) => {
+        preventInteraction(event);
+        action(option);
+      },
+      false,
+    );
     option.addEventListener("mousein", () => option.focus());
     return option;
   }
@@ -34,7 +44,11 @@ export class DropdownSelectOption {
     const className = DOM_ELEMENT_CLASS.listboxOption;
     const attributes = clone(OPTION_ATTRIBUTES);
     attributes["value"] = option.value;
-    attributes["id"] = DropdownSelectOption.generateSelectOptionId(attributes.id, fieldName, position);
+    attributes["id"] = DropdownSelectOption.generateSelectOptionId(
+      attributes.id,
+      fieldName,
+      position,
+    );
     attributes["aria-setsize"] = size;
     attributes["aria-posinset"] = position;
     if (option.value === value) {
@@ -48,5 +62,4 @@ export class DropdownSelectOption {
     optionId += position;
     return optionId;
   }
-
 }

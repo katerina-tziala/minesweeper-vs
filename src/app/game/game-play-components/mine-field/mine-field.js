@@ -35,7 +35,7 @@ export class MineField {
   }
 
   get isCleared() {
-    return this.#tiles.every(tile => tile.isMine);
+    return this.#tiles.every((tile) => tile.isMine);
   }
 
   get #levelSettings() {
@@ -51,8 +51,13 @@ export class MineField {
   }
 
   #generateFieldFreezer() {
-    const boardFreezer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.freezer], this.#freezerId);
-    boardFreezer.addEventListener("click", (event) => { preventInteraction(event) });
+    const boardFreezer = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.freezer],
+      this.#freezerId,
+    );
+    boardFreezer.addEventListener("click", (event) => {
+      preventInteraction(event);
+    });
     return boardFreezer;
   }
 
@@ -77,9 +82,18 @@ export class MineField {
   #generateMinefieldColumns(rowIndex) {
     const fragment = document.createDocumentFragment();
     for (let index = 0; index < this.#levelSettings.columns; index++) {
-      const tile = this.#tilesGenerator.generateTile(this.gameId, rowIndex, index);
+      const tile = this.#tilesGenerator.generateTile(
+        this.gameId,
+        rowIndex,
+        index,
+      );
       this.#tiles.push(tile);
-      fragment.append(tile.generateView(this.#onActiveTileChange, this.#onTileAction.bind(this)));
+      fragment.append(
+        tile.generateView(
+          this.#onActiveTileChange,
+          this.#onTileAction.bind(this),
+        ),
+      );
     }
     return fragment;
   }
@@ -97,7 +111,7 @@ export class MineField {
   }
 
   set freezerState(display) {
-    this.#freezer.then(freezer => {
+    this.#freezer.then((freezer) => {
       display ? ElementHandler.display(freezer) : ElementHandler.hide(freezer);
     });
   }
@@ -105,7 +119,7 @@ export class MineField {
   revealMinefieldTile(clickedTile, playerId) {
     return new Promise((resolve) => {
       if (clickedTile.isBlank) {
-        this.getAreaToReveal([clickedTile]).then(revealedTiles => {
+        this.getAreaToReveal([clickedTile]).then((revealedTiles) => {
           this.revealTiles(revealedTiles, playerId);
           resolve(revealedTiles);
         });
@@ -117,18 +131,20 @@ export class MineField {
   }
 
   revealTiles(revealedTiles, playerId) {
-    revealedTiles.map(tile => tile.reveal(playerId));
+    revealedTiles.map((tile) => tile.reveal(playerId));
     this.#tiles = this.removeFromTiles(this.#tiles, revealedTiles);
   }
 
   removeFromTiles(tilesToFilter, tilesReference) {
     const positionsToRemove = this.getTilesPositions(tilesReference);
-    return tilesToFilter.filter(tile => !positionsToRemove.includes(tile.position));
+    return tilesToFilter.filter(
+      (tile) => !positionsToRemove.includes(tile.position),
+    );
   }
 
   getAreaToReveal(tilesToSearch, emptyArea = []) {
     let newSearch = [];
-    tilesToSearch.forEach(tile => {
+    tilesToSearch.forEach((tile) => {
       emptyArea.push(tile);
       const neighborsSearch = this.getBlankAndEmptyNeighbors(tile, emptyArea);
       newSearch = newSearch.concat(neighborsSearch.blankTiles);
@@ -138,41 +154,50 @@ export class MineField {
     emptyArea = uniqueArray(emptyArea);
     newSearch = uniqueArray(newSearch);
     newSearch = this.removeFromTiles(newSearch, emptyArea);
-    return Promise.resolve(newSearch.length ? this.getAreaToReveal(newSearch, emptyArea) : emptyArea);
+    return Promise.resolve(
+      newSearch.length ? this.getAreaToReveal(newSearch, emptyArea) : emptyArea,
+    );
   }
 
   getBlankAndEmptyNeighbors(referenceTile, currentEmptyTiles) {
     const blankTiles = [];
     const emptyTiles = [];
-    const currentEmptyTilesPositions = this.getTilesByPositions(currentEmptyTiles);
-    const neighborsPositions = arrayDifference(referenceTile.neighbors, currentEmptyTilesPositions);
+    const currentEmptyTilesPositions = this.getTilesByPositions(
+      currentEmptyTiles,
+    );
+    const neighborsPositions = arrayDifference(
+      referenceTile.neighbors,
+      currentEmptyTilesPositions,
+    );
     let unrevealedNeighbors = this.getTilesByPositions(neighborsPositions);
     unrevealedNeighbors = this.getNonMineTiles(unrevealedNeighbors);
     unrevealedNeighbors = this.getNonFlaggedTiles(unrevealedNeighbors);
-    unrevealedNeighbors.forEach(tile => {
+    unrevealedNeighbors.forEach((tile) => {
       tile.isBlank ? blankTiles.push(tile) : emptyTiles.push(tile);
     });
     return { blankTiles, emptyTiles };
   }
 
   getBlankTiles(tiles = this.#tiles) {
-    return tiles.filter(tile => tile.isBlank);
+    return tiles.filter((tile) => tile.isBlank);
   }
 
   getTilesPositions(tiles) {
-    return tiles.map(tile => tile.position);
+    return tiles.map((tile) => tile.position);
   }
 
   getTilesByPositions(positionsToKeep) {
-    return this.#tiles.filter(tile => positionsToKeep.includes(tile.position));
+    return this.#tiles.filter((tile) =>
+      positionsToKeep.includes(tile.position),
+    );
   }
 
   getNonMineTiles(tiles = this.#tiles) {
-    return tiles.filter(tile => !tile.isMine);
+    return tiles.filter((tile) => !tile.isMine);
   }
 
   getNonFlaggedTiles(tiles = this.#tiles) {
-    return tiles.filter(tile => !tile.isFlagged);
+    return tiles.filter((tile) => !tile.isFlagged);
   }
 
   disable() {
@@ -184,7 +209,7 @@ export class MineField {
   }
 
   getUnrevealedTiles(tiles = this.#tiles) {
-    return tiles.filter(tile => !tile.isRevealed);
+    return tiles.filter((tile) => !tile.isRevealed);
   }
 
   // getUnrevealedMines() {
@@ -207,15 +232,9 @@ export class MineField {
   //   return this.#tiles.filter(tile => tile.isDetected).length;
   // }
 
-
- 
-
   revealField() {
-    this.getUnrevealedTiles().forEach(tile => {
+    this.getUnrevealedTiles().forEach((tile) => {
       tile.reveal(undefined, false);
     });
   }
-
-
-
 }

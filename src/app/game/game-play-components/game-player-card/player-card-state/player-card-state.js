@@ -3,10 +3,12 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./player-card-state.constants";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+} from "./player-card-state.constants";
 
 export class PlayerCardState {
-
   static getStateSectionID(player) {
     return DOM_ELEMENT_ID.stateSection + player.id;
   }
@@ -16,12 +18,19 @@ export class PlayerCardState {
   }
 
   static getStateSectionContent(player) {
-    return player.entered ? PlayerCardState.generateFlagState(player) : PlayerCardState.generateLoadingState();
+    return player.entered
+      ? PlayerCardState.generateFlagState(player)
+      : PlayerCardState.generateLoadingState();
   }
 
   static generateStateSection(player) {
-    const stateSection = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stateSection]);
-    ElementHandler.setID(stateSection, PlayerCardState.getStateSectionID(player));
+    const stateSection = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.stateSection,
+    ]);
+    ElementHandler.setID(
+      stateSection,
+      PlayerCardState.getStateSectionID(player),
+    );
     const content = PlayerCardState.getStateSectionContent(player);
     stateSection.append(content);
     return stateSection;
@@ -32,15 +41,24 @@ export class PlayerCardState {
   }
 
   static generateFlagState(player) {
-    const flagContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.flagState]);
+    const flagContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.flagState,
+    ]);
     flagContainer.append(PlayerCardState.generateAllowedFlags(player));
     return flagContainer;
   }
 
   static generateAllowedFlags(player) {
-    const interfaceParams = PlayerCardState.getAllowedFlagsContentAndStyles(player.allowedFlags);
-    const allowedFlagsContainer = ElementGenerator.generateContainer(interfaceParams.styles);
-    ElementHandler.setID(allowedFlagsContainer, PlayerCardState.getAllowedFlagsID(player));
+    const interfaceParams = PlayerCardState.getAllowedFlagsContentAndStyles(
+      player.allowedFlags,
+    );
+    const allowedFlagsContainer = ElementGenerator.generateContainer(
+      interfaceParams.styles,
+    );
+    ElementHandler.setID(
+      allowedFlagsContainer,
+      PlayerCardState.getAllowedFlagsID(player),
+    );
     allowedFlagsContainer.innerHTML = interfaceParams.content;
     return allowedFlagsContainer;
   }
@@ -53,7 +71,11 @@ export class PlayerCardState {
       styles.push(DOM_ELEMENT_CLASS.allowedFlagsInfinite);
     } else {
       if (allowedFlags < 3) {
-        styles.push(DOM_ELEMENT_CLASS.allowedFlags + TYPOGRAPHY.doubleHyphen + allowedFlags);
+        styles.push(
+          DOM_ELEMENT_CLASS.allowedFlags +
+            TYPOGRAPHY.doubleHyphen +
+            allowedFlags,
+        );
       }
       content = allowedFlags.toString();
     }
@@ -69,7 +91,7 @@ export class PlayerCardState {
   }
   // UPDATES
   static updateStateSection(player) {
-    return PlayerCardState.getStateSection(player).then(stateSection => {
+    return PlayerCardState.getStateSection(player).then((stateSection) => {
       ElementHandler.clearContent(stateSection);
       const content = PlayerCardState.getStateSectionContent(player);
       stateSection.append(content);
@@ -77,12 +99,18 @@ export class PlayerCardState {
   }
 
   static updateAllowedFlags(player) {
-    return PlayerCardState.getAllowedFlagsContainer(player).then(allowedFlagsContainer => {
-      const interfaceParams = PlayerCardState.getAllowedFlagsContentAndStyles(player.allowedFlags);
-      ElementHandler.clearContent(allowedFlagsContainer);
-      ElementHandler.setStyleClass(allowedFlagsContainer, interfaceParams.styles);
-      allowedFlagsContainer.innerHTML = interfaceParams.content;
-    });
+    return PlayerCardState.getAllowedFlagsContainer(player).then(
+      (allowedFlagsContainer) => {
+        const interfaceParams = PlayerCardState.getAllowedFlagsContentAndStyles(
+          player.allowedFlags,
+        );
+        ElementHandler.clearContent(allowedFlagsContainer);
+        ElementHandler.setStyleClass(
+          allowedFlagsContainer,
+          interfaceParams.styles,
+        );
+        allowedFlagsContainer.innerHTML = interfaceParams.content;
+      },
+    );
   }
-
 }

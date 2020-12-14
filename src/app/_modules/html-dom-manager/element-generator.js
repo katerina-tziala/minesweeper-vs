@@ -4,7 +4,6 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler } from "./element-handler";
 
 export class ElementGenerator {
-
   static generateContainer(styleClasses, elementId) {
     const container = document.createElement("div");
     if (styleClasses && styleClasses.length) {

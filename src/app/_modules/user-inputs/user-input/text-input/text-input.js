@@ -6,7 +6,11 @@ import { ElementGenerator } from "HTML_DOM_Manager";
 import { emptyString } from "~/_utils/validator";
 import { clone, replaceStringParameter } from "~/_utils/utils";
 
-import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR } from "./text-input.constants";
+import {
+  DOM_ELEMENT_CLASS,
+  FIELD_PARAMS,
+  FIELD_ERROR,
+} from "./text-input.constants";
 
 import { UserInput } from "../user-input";
 import { InputError } from "../../input-error/input-error";
@@ -16,7 +20,7 @@ export class TextInput extends UserInput {
 
   constructor(name, value = TYPOGRAPHY.emptyString, onValueChange) {
     super(name, value, onValueChange);
-    this.valid = (this.value && this.value.length !== 0);
+    this.valid = this.value && this.value.length !== 0;
     this.errorController = new InputError(this.name);
   }
 
@@ -37,7 +41,10 @@ export class TextInput extends UserInput {
     params.placeholder = replaceStringParameter(params.placeholder, this.name);
     params.className = `${DOM_ELEMENT_CLASS.inputField} ${this.inputClassBasedOnName}`;
     params.autocomplete = "off";
-    params.attributes["aria-label"] = replaceStringParameter(params.attributes["aria-label"], this.name);
+    params.attributes["aria-label"] = replaceStringParameter(
+      params.attributes["aria-label"],
+      this.name,
+    );
     params.attributes.id = this.name;
     return params;
   }
@@ -47,7 +54,9 @@ export class TextInput extends UserInput {
   }
 
   generateInputField() {
-    const inputContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.inputContainer]);
+    const inputContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.inputContainer,
+    ]);
     const input = this.generateField(this.onValueChange.bind(this));
     const error = this.errorController.generateInputError();
     inputContainer.append(input, error);
@@ -106,7 +115,6 @@ export class TextInput extends UserInput {
   }
 
   setFieldValue() {
-    this.inputField.then(field => field.value = this.value);
+    this.inputField.then((field) => (field.value = this.value));
   }
-
 }

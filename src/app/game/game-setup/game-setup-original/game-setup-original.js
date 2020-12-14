@@ -7,12 +7,11 @@ import { GameSetup } from "../game-setup";
 import { TITLE } from "../game-setup.constants";
 
 export class GameSetupOriginal extends GameSetup {
-
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.stepper = new GameWizardStepper({
       onReset: this.onReset.bind(this),
-      onSubmit: this.onSubmit.bind(this)
+      onSubmit: this.onSubmit.bind(this),
     });
     this.#init();
   }
@@ -39,7 +38,9 @@ export class GameSetupOriginal extends GameSetup {
 
   generateContent() {
     const fragment = document.createDocumentFragment();
-    this.settingsControllers.forEach(controller => fragment.append(controller.generateSettingsWizard()));
+    this.settingsControllers.forEach((controller) =>
+      fragment.append(controller.generateSettingsWizard()),
+    );
     return fragment;
   }
 

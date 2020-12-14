@@ -1,5 +1,9 @@
 "use strict";
-import { RESTART_BTN, QUIT_BTN, RESET_BTN } from "~/_constants/btn-text.constants";
+import {
+  RESTART_BTN,
+  QUIT_BTN,
+  RESET_BTN,
+} from "~/_constants/btn-text.constants";
 
 export const DOM_ELEMENT_ID = {
   window: "modal-window",
@@ -15,12 +19,12 @@ export const DOM_ELEMENT_CLASS = {
   title: "title",
   content: "content",
   actions: "actions",
-  actionButton: "actionButton"
+  actionButton: "actionButton",
 };
 
 export const MOVEMENT_DURATION = {
   shake: 500,
-  slideIn: 300
+  slideIn: 300,
 };
 
 export const CONFIRMATION = {
@@ -28,18 +32,18 @@ export const CONFIRMATION = {
     title: "Quit Game",
     content: "Quiting game in...",
     timer: 3,
-    confirmButton: QUIT_BTN
+    confirmButton: QUIT_BTN,
   },
   restartGame: {
     title: "Restart Game",
     content: "Restarting game in...",
     timer: 3,
-    confirmButton: RESTART_BTN
+    confirmButton: RESTART_BTN,
   },
   resetGame: {
     title: "Reset Game",
     content: "Reseting game in...",
     timer: 3,
-    confirmButton: RESET_BTN
+    confirmButton: RESET_BTN,
   },
 };

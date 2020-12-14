@@ -2,12 +2,12 @@
 
 .modal-window {
   @extend %center-center;
-  width     : 100vw;
-  height    : 100vh;
-  position  : absolute;
-  z-index   : getIndex("modal");
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: getIndex("modal");
   transition: 0.3s ease-in-out;
-  top       : -100vh;
+  top: -100vh;
   background: rgba(0, 0, 0, 0.65);
 }
 
@@ -20,16 +20,16 @@
 }
 
 .modal-dialog-content-container {
-  padding  : 10px;
+  padding: 10px;
   min-width: 240px;
 
-  >.content {
-    font-size : 1.1rem;
-    padding   : 15px 5px 0px;
+  > .content {
+    font-size: 1.1rem;
+    padding: 15px 5px 0px;
     font-style: italic;
   }
 
-  >.actions {
+  > .actions {
     @extend %between-center;
     margin-top: 15px;
   }

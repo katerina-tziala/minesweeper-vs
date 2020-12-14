@@ -2,28 +2,27 @@
 @use "./input-theming";
 
 .input {
-    outline         : none;
-    border          : none;
-    background-color: inherit;
-    display         : block;
-    min-height      : getSize("input-height");
-    max-height      : getSize("input-height");
-    padding         : 0px 5px;
-    color           : inherit;
-    border-bottom   : 1px solid transparent;
-    user-select     : none;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  display: block;
+  min-height: getSize("input-height");
+  max-height: getSize("input-height");
+  padding: 0px 5px;
+  color: inherit;
+  border-bottom: 1px solid transparent;
+  user-select: none;
 
-    &:read-only {
-        @extend .disabled;
-    }
+  &:read-only {
+    @extend .disabled;
+  }
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    @include input-theming.applyInputThemeStyles("light");
+  @include input-theming.applyInputThemeStyles("light");
 }
 
 .theme-dark {
-    @include input-theming.applyInputThemeStyles("dark");
+  @include input-theming.applyInputThemeStyles("dark");
 }

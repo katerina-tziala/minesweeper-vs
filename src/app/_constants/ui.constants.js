@@ -9,7 +9,7 @@ export const DOM_ELEMENT_CLASS = {
   hidden: "hidden",
   app: "app",
   theme: "theme-",
-  colorType: "color-type--"
+  colorType: "color-type--",
 };
 
 export const COLOR_TYPES = ["1", "2", "3", "4", "5", "6", "7", "8"];

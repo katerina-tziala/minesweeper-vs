@@ -1,10 +1,18 @@
 "use strict";
 
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import {
+  ElementHandler,
+  ElementGenerator,
+  AriaHandler,
+} from "HTML_DOM_Manager";
 
 import { clone } from "~/_utils/utils";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, LISTBOX_ATTRIBUTES } from "./dropdown-select.constants";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+  LISTBOX_ATTRIBUTES,
+} from "./dropdown-select.constants";
 
 import { DropdownSelectOptionsHandler } from "./dropdown-select-options-handler";
 import { DropdownSelectOption } from "./dropdown-select-option";
@@ -65,19 +73,36 @@ export class DropdownSelectList {
 
   updateOptions(options) {
     this.listHeight = 0;
-    this.listbox.then(listbox => {
+    this.listbox.then((listbox) => {
       ElementHandler.clearContent(listbox);
-      listbox.append(DropdownSelectOptionsHandler.generateOptionsList(options, this.onOptionClick.bind(this)));
+      listbox.append(
+        DropdownSelectOptionsHandler.generateOptionsList(
+          options,
+          this.onOptionClick.bind(this),
+        ),
+      );
     });
   }
 
   setUpListHeight(listbox) {
-    this.listHeight = DropdownSelectOptionsHandler.getOptionsHeight(listbox.childNodes);
-    this.isScrollable ? ElementHandler.addStyleClass(listbox, DOM_ELEMENT_CLASS.listboxScrollable) : ElementHandler.removeStyleClass(listbox, DOM_ELEMENT_CLASS.listboxScrollable);
+    this.listHeight = DropdownSelectOptionsHandler.getOptionsHeight(
+      listbox.childNodes,
+    );
+    this.isScrollable
+      ? ElementHandler.addStyleClass(
+          listbox,
+          DOM_ELEMENT_CLASS.listboxScrollable,
+        )
+      : ElementHandler.removeStyleClass(
+          listbox,
+          DOM_ELEMENT_CLASS.listboxScrollable,
+        );
   }
 
   getListBoxAttributes(options, selectText) {
-    const selectedOption = DropdownSelectOptionsHandler.getSelectedOptionBySelected(options);
+    const selectedOption = DropdownSelectOptionsHandler.getSelectedOptionBySelected(
+      options,
+    );
     const attributes = clone(LISTBOX_ATTRIBUTES);
     attributes["id"] = this.listboxId;
     attributes["aria-label"] = selectText;
@@ -88,7 +113,9 @@ export class DropdownSelectList {
   }
 
   generateDropdownListbox(options, selectText) {
-    const listboxContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.listboxContainer]);
+    const listboxContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.listboxContainer,
+    ]);
     const attributes = this.getListBoxAttributes(options, selectText);
     const listbox = this.generateOptionsListbox(options, attributes);
     AriaHandler.setTabindex(listbox, -1);
@@ -99,13 +126,21 @@ export class DropdownSelectList {
   generateOptionsListbox(options, attributes) {
     const listbox = document.createElement("ul");
     listbox.className = DOM_ELEMENT_CLASS.listbox;
-    listbox.addEventListener(
-      "keydown",
-      (event) => {
-        DropdownSelectNavigation.manageNavigation(event, listbox, this.onEscape.bind(this), this.onEnter.bind(this));
-      });
+    listbox.addEventListener("keydown", (event) => {
+      DropdownSelectNavigation.manageNavigation(
+        event,
+        listbox,
+        this.onEscape.bind(this),
+        this.onEnter.bind(this),
+      );
+    });
     ElementHandler.setAttributes(listbox, attributes);
-    listbox.append(DropdownSelectOptionsHandler.generateOptionsList(options, this.onOptionClick.bind(this)));
+    listbox.append(
+      DropdownSelectOptionsHandler.generateOptionsList(
+        options,
+        this.onOptionClick.bind(this),
+      ),
+    );
     return listbox;
   }
 
@@ -115,18 +150,26 @@ export class DropdownSelectList {
   }
 
   onEnter(activeDescendantID) {
-    ElementHandler.getByID(activeDescendantID).then(activeDescendant => this.submitSelectedOption(activeDescendant));
+    ElementHandler.getByID(activeDescendantID).then((activeDescendant) =>
+      this.submitSelectedOption(activeDescendant),
+    );
   }
 
   clearCurrentSelectedOption() {
-    this.listbox.then(listbox => {
-      const activeDescendantID = AriaHandler.getActiveDescendant(listbox);
-      return ElementHandler.getByID(activeDescendantID);
-    }).then(activeDescendant => DropdownSelectOption.deselectOption(activeDescendant));
+    this.listbox
+      .then((listbox) => {
+        const activeDescendantID = AriaHandler.getActiveDescendant(listbox);
+        return ElementHandler.getByID(activeDescendantID);
+      })
+      .then((activeDescendant) =>
+        DropdownSelectOption.deselectOption(activeDescendant),
+      );
   }
 
   setActiveDescendant(activeDescendantID) {
-    this.listbox.then(listbox => AriaHandler.setActiveDescendant(listbox, activeDescendantID));
+    this.listbox.then((listbox) =>
+      AriaHandler.setActiveDescendant(listbox, activeDescendantID),
+    );
   }
 
   onOptionClick(selectedOption) {
@@ -141,11 +184,13 @@ export class DropdownSelectList {
   }
 
   toggleList(expanded, selectedOption) {
-    this.listbox.then(listbox => {
+    this.listbox.then((listbox) => {
       if (!this.listHeight) {
         this.setUpListHeight(listbox);
       }
-      expanded ? this.expandList(listbox, selectedOption) : this.collapseList(listbox);
+      expanded
+        ? this.expandList(listbox, selectedOption)
+        : this.collapseList(listbox);
     });
   }
 
@@ -156,7 +201,7 @@ export class DropdownSelectList {
     AriaHandler.setListTabindex(listbox.childNodes, 0);
     const activeDescendantID = selectedOption.attributes.id;
     AriaHandler.setActiveDescendant(listbox, activeDescendantID);
-    ElementHandler.getByID(activeDescendantID).then(activeDescendant => {
+    ElementHandler.getByID(activeDescendantID).then((activeDescendant) => {
       DropdownSelectOption.selectOption(activeDescendant);
       listbox.scrollTop = activeDescendant.getBoundingClientRect().top;
     });
@@ -166,16 +211,21 @@ export class DropdownSelectList {
     listbox.style.height = "0px";
     AriaHandler.setListTabindex(listbox.childNodes, -1);
     const activeDescendantID = AriaHandler.getActiveDescendant(listbox);
-    ElementHandler.getByID(activeDescendantID).then(activeDescendant => {
+    ElementHandler.getByID(activeDescendantID).then((activeDescendant) => {
       DropdownSelectOption.deselectOption(activeDescendant);
     });
-    this.transitionTimeout = setTimeout(() => AriaHandler.setAriaExpanded(listbox, false), 500);
+    this.transitionTimeout = setTimeout(
+      () => AriaHandler.setAriaExpanded(listbox, false),
+      500,
+    );
   }
 
   collapseListOnOutsideClick() {
-    this.listbox.then(listbox => {
+    this.listbox.then((listbox) => {
       const activeDescendantID = AriaHandler.getActiveDescendant(listbox);
-      ElementHandler.getByID(activeDescendantID).then(activeDescendant => this.submitSelectedOption(activeDescendant));
+      ElementHandler.getByID(activeDescendantID).then((activeDescendant) =>
+        this.submitSelectedOption(activeDescendant),
+      );
     });
   }
 }

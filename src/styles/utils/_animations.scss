@@ -1,13 +1,13 @@
 @keyframes slide-in {
-    from {
-        opacity    : 0;
-        margin-left: -200px;
-    }
+  from {
+    opacity: 0;
+    margin-left: -200px;
+  }
 
-    to {
-        opacity    : 1;
-        margin-left: 0px;
-    }
+  to {
+    opacity: 1;
+    margin-left: 0px;
+  }
 }
 
 @keyframes shake {
@@ -58,20 +58,20 @@
 
 @keyframes spin {
   0% {
-      -webkit-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
   }
 
   100% {
-      -webkit-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
   }
 }
 
 @keyframes spin-reverse {
   0% {
-      -webkit-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
   }
 
   100% {
-      -webkit-transform: rotate(-360deg);
+    -webkit-transform: rotate(-360deg);
   }
 }

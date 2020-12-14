@@ -3,7 +3,11 @@
 import { replaceStringParameter } from "~/_utils/utils";
 
 import { GameVSMode } from "GameEnums";
-import { WIZARD_NAME, VSModeWizard, TurnSettingsWizard } from "GameSettingsWizard";
+import {
+  WIZARD_NAME,
+  VSModeWizard,
+  TurnSettingsWizard,
+} from "GameSettingsWizard";
 import { EndButtonType, GameWizardStepper } from "GameWizardStepper";
 
 import { GameSetup } from "../game-setup";
@@ -32,9 +36,14 @@ export class GameSetupVS extends GameSetup {
   }
 
   set wizardSteps(selectedMode) {
-    this.#_wizardSteps = selectedMode === GameVSMode.Parallel ?
-      [WIZARD_NAME.vsModeSettings, WIZARD_NAME.levelSettings, WIZARD_NAME.optionsSettings] :
-      Object.keys(WIZARD_NAME);
+    this.#_wizardSteps =
+      selectedMode === GameVSMode.Parallel
+        ? [
+            WIZARD_NAME.vsModeSettings,
+            WIZARD_NAME.levelSettings,
+            WIZARD_NAME.optionsSettings,
+          ]
+        : Object.keys(WIZARD_NAME);
   }
 
   get wizardSteps() {
@@ -51,21 +60,32 @@ export class GameSetupVS extends GameSetup {
 
   init() {
     this.wizardSteps = undefined;
-    this.stepper = new GameWizardStepper({
-      onReset: this.onReset.bind(this),
-      onSubmit: this.onSubmit.bind(this),
-      onStepChange: this.onStepChange.bind(this),
-    }, this.wizardSteps.length, this.stepperSubmissionType);
+    this.stepper = new GameWizardStepper(
+      {
+        onReset: this.onReset.bind(this),
+        onSubmit: this.onSubmit.bind(this),
+        onStepChange: this.onStepChange.bind(this),
+      },
+      this.wizardSteps.length,
+      this.stepperSubmissionType,
+    );
   }
 
   initModeWizard() {
-    const controller = new VSModeWizard(this.onVSModeChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.vsModeSettings), this.parallelAllowed);
+    const controller = new VSModeWizard(
+      this.onVSModeChange.bind(this),
+      this.getGameParamsForWizard(WIZARD_NAME.vsModeSettings),
+      this.parallelAllowed,
+    );
     this.settingsControllers = controller;
     this.setOptionsBasedOnVSMode(controller.data);
   }
 
   initTurnsWizard() {
-    this.settingsControllers = new TurnSettingsWizard(this.onGameSettingsChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.turnSettings));
+    this.settingsControllers = new TurnSettingsWizard(
+      this.onGameSettingsChange.bind(this),
+      this.getGameParamsForWizard(WIZARD_NAME.turnSettings),
+    );
   }
 
   onVSModeChange(params) {
@@ -86,7 +106,9 @@ export class GameSetupVS extends GameSetup {
   }
 
   getSettingsController(wizardName) {
-    const controller = super.getSettingsController(wizardName) || this.generateSettingsController(wizardName);
+    const controller =
+      super.getSettingsController(wizardName) ||
+      this.generateSettingsController(wizardName);
     return controller;
   }
 
@@ -141,7 +163,7 @@ export class GameSetupVS extends GameSetup {
 
   onStepChange() {
     this.stepper.submissionButtonDisabled = false;
-    this.settingsControllers.forEach(controller => {
+    this.settingsControllers.forEach((controller) => {
       if (controller.name !== this.wizardStepName) {
         this.removeController(controller.name);
       }
@@ -168,5 +190,4 @@ export class GameSetupVS extends GameSetup {
     delete gameSetUp.vsModeSettings;
     return gameSetUp;
   }
-
 }

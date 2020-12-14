@@ -2,7 +2,11 @@
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./dropdown-select.constants";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+  CONTENT,
+} from "./dropdown-select.constants";
 
 import { replaceStringParameter } from "~/_utils/utils";
 
@@ -24,13 +28,23 @@ export class DropdownSelect extends UserInput {
     this.selectLabel = params.selectLabel;
     this.expanded = false;
     this.options = params.options || [];
-    this.#dropdownBtn = new DropdownSelectButton(this.onDropdownBtnClick.bind(this), this.name);
-    this.#dropdownList = new DropdownSelectList(this.onOptionSelected.bind(this), this.name);
+    this.#dropdownBtn = new DropdownSelectButton(
+      this.onDropdownBtnClick.bind(this),
+      this.name,
+    );
+    this.#dropdownList = new DropdownSelectList(
+      this.onOptionSelected.bind(this),
+      this.name,
+    );
     this.onExpand = onExpand;
   }
 
   set options(options) {
-    this.#options = DropdownSelectOptionsHandler.getSelectOptions(options, this.name, this.value);
+    this.#options = DropdownSelectOptionsHandler.getSelectOptions(
+      options,
+      this.name,
+      this.value,
+    );
   }
 
   get options() {
@@ -58,11 +72,15 @@ export class DropdownSelect extends UserInput {
   }
 
   get selectText() {
-    return this.selectLabel ? replaceStringParameter(CONTENT.selectText, this.selectLabel) : CONTENT.defaultSelectText;
+    return this.selectLabel
+      ? replaceStringParameter(CONTENT.selectText, this.selectLabel)
+      : CONTENT.defaultSelectText;
   }
 
   get btnDisabled() {
-    return DropdownSelectOptionsHandler.getOptionsListSize(this.options) ? false : true;
+    return DropdownSelectOptionsHandler.getOptionsListSize(this.options)
+      ? false
+      : true;
   }
 
   get btnDisplayValue() {
@@ -71,7 +89,10 @@ export class DropdownSelect extends UserInput {
   }
 
   get selectedOption() {
-    return DropdownSelectOptionsHandler.getSelectedOptionByValue(this.options, this.value);
+    return DropdownSelectOptionsHandler.getSelectedOptionByValue(
+      this.options,
+      this.value,
+    );
   }
 
   updateOptions(options) {
@@ -82,9 +103,15 @@ export class DropdownSelect extends UserInput {
 
   generateInputField() {
     const dorpdownFragment = document.createDocumentFragment();
-    const dropdownContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.containerID);
+    const dropdownContainer = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.container],
+      this.containerID,
+    );
     const button = this.generateDropdownButton();
-    const listbox = this.#dropdownList.generateDropdownListbox(this.options, this.selectText);
+    const listbox = this.#dropdownList.generateDropdownListbox(
+      this.options,
+      this.selectText,
+    );
     dropdownContainer.append(button, listbox);
     dorpdownFragment.append(dropdownContainer);
     return dorpdownFragment;
@@ -95,7 +122,7 @@ export class DropdownSelect extends UserInput {
       displayValue: this.btnDisplayValue,
       selectText: this.selectText,
       expanded: this.btnDisabled ? false : this.expanded,
-      disabled: this.btnDisabled
+      disabled: this.btnDisabled,
     };
     return this.#dropdownBtn.generateDropdownBtn(dropdownParams);
   }
@@ -124,18 +151,19 @@ export class DropdownSelect extends UserInput {
   }
 
   collapseDropdown() {
-    ElementHandler.getByID(this.containerID).then(() => {
-      if (this.expanded) {
-        this.#dropdownList.collapseListOnOutsideClick();
-      }
-      this.#dropdownBtn.blur();
-    }).catch(() => {
-      this.removeCollapseDropdownListener();
-    });
+    ElementHandler.getByID(this.containerID)
+      .then(() => {
+        if (this.expanded) {
+          this.#dropdownList.collapseListOnOutsideClick();
+        }
+        this.#dropdownBtn.blur();
+      })
+      .catch(() => {
+        this.removeCollapseDropdownListener();
+      });
   }
 
   removeCollapseDropdownListener() {
     document.removeEventListener("click", this.collapseDropdown.bind(this));
   }
-
 }

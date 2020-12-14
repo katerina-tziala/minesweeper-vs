@@ -4,7 +4,7 @@ const GameType = {
   Online: "online",
   Bot: "bot",
   Friend: "friend",
-  Original: "original"
+  Original: "original",
 };
 Object.freeze(GameType);
 

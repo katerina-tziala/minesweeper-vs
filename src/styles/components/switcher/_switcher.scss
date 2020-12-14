@@ -1,75 +1,73 @@
 @use "./switcher-theming";
 // track
-$track-height        : 18;
-$track-width         : 32;
+$track-height: 18;
+$track-width: 32;
 // thumb
-$thumb-size          : 14;
-$thumb-position-top  : 2;
-$thumb-position-left : 2;
+$thumb-size: 14;
+$thumb-position-top: 2;
+$thumb-position-left: 2;
 $thumb-position-right: 16;
 
 ._track {
-    @include fullyRoundedBar($track-width);
-    height : #{$track-height}px;
+  @include fullyRoundedBar($track-width);
+  height: #{$track-height}px;
 }
 
 ._thumb {
-    @include pseudoCircle($thumb-size);
-    position: absolute;
-    top     : #{$thumb-position-top}px;
-    border  : 1px solid transparent;
-    border  : none;
-    transition: all .3s linear;
+  @include pseudoCircle($thumb-size);
+  position: absolute;
+  top: #{$thumb-position-top}px;
+  border: 1px solid transparent;
+  border: none;
+  transition: all 0.3s linear;
 }
 
 ._thumb--off {
-    left: #{$thumb-position-left}px;
+  left: #{$thumb-position-left}px;
 }
 
 ._thumb--on {
-    left: #{$thumb-position-right}px;
+  left: #{$thumb-position-right}px;
 }
 
 .switcher {
-    position  : relative;
-    border    : none;
-    outline   : none;
-    cursor    : pointer;
-    @extend ._track;
+  position: relative;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  @extend ._track;
 
-    &:disabled {
-        @extend .disabled;
-    }
+  &:disabled {
+    @extend .disabled;
+  }
 
-    &::after {
-        transition: all .3s linear;
-        @extend ._thumb;
-    }
-
+  &::after {
+    transition: all 0.3s linear;
+    @extend ._thumb;
+  }
 }
 
 [role="switch"][aria-checked="false"] {
-    @extend ._track--off;
+  @extend ._track--off;
 
-    &::after {
-        @extend ._thumb--off;
-    }
+  &::after {
+    @extend ._thumb--off;
+  }
 }
 
 [role="switch"][aria-checked="true"] {
-    @extend ._track--on;
+  @extend ._track--on;
 
-    &::after {
-        @extend ._thumb--on;
-    }
+  &::after {
+    @extend ._thumb--on;
+  }
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    @include switcher-theming.applySwitcherTheme("light");
+  @include switcher-theming.applySwitcherTheme("light");
 }
 
 .theme-dark {
-    @include switcher-theming.applySwitcherTheme("dark");
+  @include switcher-theming.applySwitcherTheme("dark");
 }

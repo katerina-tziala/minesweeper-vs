@@ -24,7 +24,7 @@ export class Tile {
   }
 
   set position(position) {
-    return this.#_position = position;
+    return (this.#_position = position);
   }
 
   get position() {
@@ -32,7 +32,7 @@ export class Tile {
   }
 
   set id(id) {
-    return this.#_id = id;
+    return (this.#_id = id);
   }
 
   get id() {
@@ -40,7 +40,7 @@ export class Tile {
   }
 
   set neighbors(neighbors) {
-    return this.#_neighbors = neighbors;
+    return (this.#_neighbors = neighbors);
   }
 
   get neighbors() {
@@ -48,7 +48,7 @@ export class Tile {
   }
 
   set content(content) {
-    return this.#_content = content;
+    return (this.#_content = content);
   }
 
   get content() {
@@ -56,7 +56,7 @@ export class Tile {
   }
 
   set state(state) {
-    return this.#_state = state;
+    return (this.#_state = state);
   }
 
   get state() {
@@ -64,7 +64,7 @@ export class Tile {
   }
 
   set modifiedBy(modifiedBy) {
-    return this.#_modifiedBy = modifiedBy;
+    return (this.#_modifiedBy = modifiedBy);
   }
 
   get modifiedBy() {
@@ -76,15 +76,15 @@ export class Tile {
       this.content,
       (activated) => {
         if (this.isUntouched) {
-          onActivation(activated)
+          onActivation(activated);
         } else {
           //this.#viewController.deActivate();
-          onActivation(false)
+          onActivation(false);
         }
       },
       (action) => {
-        onAction(this, action)
-      }
+        onAction(this, action);
+      },
     );
   }
 
@@ -95,7 +95,9 @@ export class Tile {
 
   /* TYPE CHECKERS */
   get isBlank() {
-    return (this.content.length === 1) && (parseInt(this.content, 10) === 0) ? true : false;
+    return this.content.length === 1 && parseInt(this.content, 10) === 0
+      ? true
+      : false;
   }
 
   get isMine() {
@@ -124,11 +126,11 @@ export class Tile {
   }
 
   get isWronglyFlagged() {
-    return (!this.isMine && this.isFlagged);
+    return !this.isMine && this.isFlagged;
   }
 
   get isDetected() {
-    return (this.isMine && this.isFlagged);
+    return this.isMine && this.isFlagged;
   }
 
   isFlaggedBy(playerID) {
@@ -171,5 +173,4 @@ export class Tile {
   // enable() {
   //   this.#viewController.toggleButtonInteraction(false);
   // }
-
 }

@@ -1,5 +1,5 @@
-$size           : 8;
-$max-indicators : 10;
+$size: 8;
+$max-indicators: 10;
 $placement-angle: 170;
 
 @function revertedOrderPosition($position) {
@@ -17,18 +17,17 @@ $placement-angle: 170;
     $level-out: 32;
   }
 
-  $result : ($placement-angle / $max-indicators) * $position+$level-out;
-  $result : $direction * $result;
+  $result: ($placement-angle / $max-indicators) * $position + $level-out;
+  $result: $direction * $result;
   @return $result;
 }
 
 @mixin setIndicatorsPositions($direction: 1) {
-
   @for $i from 1 through $max-indicators {
     $angle: getAngle($i, $direction);
 
     &.turn-indicator-container--#{$i} {
-      transform: rotate($angle+deg);
+      transform: rotate($angle + deg);
 
       &::before {
         @extend ._turn-indicator-background;
@@ -37,7 +36,6 @@ $placement-angle: 170;
       &::after {
         @extend ._turn-indicator;
       }
-
     }
   }
 }

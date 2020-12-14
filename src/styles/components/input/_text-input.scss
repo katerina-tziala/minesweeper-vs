@@ -2,12 +2,12 @@
 @import "../input-error/input-error";
 
 .text-input-container {
-	width   : 100%;
-    position: relative;
-    min-width: 200px;
+  width: 100%;
+  position: relative;
+  min-width: 200px;
 }
 
 .text-input {
-	@extend .input;
-	width    : 100%;
+  @extend .input;
+  width: 100%;
 }

@@ -16,7 +16,7 @@ export class GameSetupFriend extends GameSetupVS {
   }
 
   #updateWizardView() {
-    this.wizardContainer.then(wizardContainer => {
+    this.wizardContainer.then((wizardContainer) => {
       ElementHandler.clearContent(wizardContainer);
       wizardContainer.append(this.generateWizardHeader());
       wizardContainer.append(this.generateContentSection());
@@ -26,8 +26,13 @@ export class GameSetupFriend extends GameSetupVS {
 
   #generateAddPlayerForm() {
     const fragment = document.createDocumentFragment();
-    this.#addOpponentForm = new FormUsername(this.#addOpponent.bind(this), TYPOGRAPHY.emptyString);
-    fragment.append(this.#addOpponentForm.renderForm({submitBtn: ADD_PLAYER_BTN}));
+    this.#addOpponentForm = new FormUsername(
+      this.#addOpponent.bind(this),
+      TYPOGRAPHY.emptyString,
+    );
+    fragment.append(
+      this.#addOpponentForm.renderForm({ submitBtn: ADD_PLAYER_BTN }),
+    );
     return fragment;
   }
 
@@ -48,7 +53,8 @@ export class GameSetupFriend extends GameSetupVS {
   }
 
   generateContent() {
-    return this.opponent ? super.generateContent() : this.#generateAddPlayerForm();
+    return this.opponent
+      ? super.generateContent()
+      : this.#generateAddPlayerForm();
   }
-
 }

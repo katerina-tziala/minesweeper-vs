@@ -3,7 +3,7 @@
 const GameVSMode = {
   Clear: "clear",
   Detect: "detect",
-  Parallel: "parallel"
+  Parallel: "parallel",
 };
 Object.freeze(GameVSMode);
 

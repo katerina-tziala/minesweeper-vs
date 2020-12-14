@@ -35,7 +35,6 @@ export class Player extends AppModel {
     this.moves = 0;
     this.missedTurns = 0;
 
-   
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
@@ -82,11 +81,13 @@ export class Player extends AppModel {
   }
 
   get unlimitedFlags() {
-    return (this.allowedFlags === null || this.allowedFlags === undefined) ? true : false;
+    return this.allowedFlags === null || this.allowedFlags === undefined
+      ? true
+      : false;
   }
 
   get hasFlags() {
-    return this.unlimitedFlags ? true : (this.allowedFlags !== 0);
+    return this.unlimitedFlags ? true : this.allowedFlags !== 0;
   }
 
   increaseMissedTurns() {
@@ -103,7 +104,7 @@ export class Player extends AppModel {
 
   get placedFlags() {
     return this.entered
-      ? (this.redundantFlagsPositions.length + this.detectedMinesPositions.length)
+      ? this.redundantFlagsPositions.length + this.detectedMinesPositions.length
       : 0;
   }
 
@@ -131,14 +132,14 @@ export class Player extends AppModel {
     wronglyPlaced
       ? (this.#inRedundantFlagsPositions = position)
       : (this.#inDetectedMinesPositions = position);
-      this.#decreaseAllowedFlags();
+    this.#decreaseAllowedFlags();
   }
 
   set resetedTile(position) {
     this.#removeFromBasePositionsStatistics(position);
     this.marksPositions = this.#removeFromPositionsArray(
       this.marksPositions,
-      position
+      position,
     );
     this.#increaseAllowedFlags();
   }
@@ -148,11 +149,6 @@ export class Player extends AppModel {
     this.#inMarksPositions = position;
     this.#increaseAllowedFlags();
   }
-
-
- 
-
-
 
   // PRIVATE FUNCTIONS
   set #inRedundantFlagsPositions(position) {
@@ -174,11 +170,11 @@ export class Player extends AppModel {
   #removeFromBasePositionsStatistics(position) {
     this.redundantFlagsPositions = this.#removeFromPositionsArray(
       this.redundantFlagsPositions,
-      position
+      position,
     );
     this.detectedMinesPositions = this.#removeFromPositionsArray(
       this.detectedMinesPositions,
-      position
+      position,
     );
   }
 
@@ -194,7 +190,6 @@ export class Player extends AppModel {
     }
   }
 
-
   // setAllowedFlags(allowedFlags) {
   //     this.allowedFlags = allowedFlags;
   // }
@@ -203,7 +198,6 @@ export class Player extends AppModel {
   //     return this.allowedFlags;
   // }
 
- 
   // enteredGame() {
   //     return this.entered;
   // }

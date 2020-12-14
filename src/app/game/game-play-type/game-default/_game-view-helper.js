@@ -3,12 +3,19 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-import { DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION } from "./_game.constants";
+import {
+  DOM_ELEMENT_CLASS,
+  BOARD_SECTION,
+  DASHBOARD_SECTION,
+} from "./_game.constants";
 
 export class GameViewHelper {
-
   static get boardMineTypeStyleClass() {
-    return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleHyphen + LocalStorageHelper.appSettings.mineType;
+    return (
+      DOM_ELEMENT_CLASS.board +
+      TYPOGRAPHY.doubleHyphen +
+      LocalStorageHelper.appSettings.mineType
+    );
   }
 
   static getBoardID(gameID) {
@@ -20,28 +27,41 @@ export class GameViewHelper {
   }
 
   static generateBoardSection(sectionName, gameID) {
-    return ElementGenerator.generateContainer([sectionName], GameViewHelper.getBoardSectionID(sectionName, gameID));
+    return ElementGenerator.generateContainer(
+      [sectionName],
+      GameViewHelper.getBoardSectionID(sectionName, gameID),
+    );
   }
 
   static generateBoard(gameID) {
-    const board = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.board, GameViewHelper.boardMineTypeStyleClass], GameViewHelper.getBoardID(gameID));
-    board.addEventListener("contextmenu", event => {
+    const board = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.board, GameViewHelper.boardMineTypeStyleClass],
+      GameViewHelper.getBoardID(gameID),
+    );
+    board.addEventListener("contextmenu", (event) => {
       event.preventDefault();
     });
     // board.append(GameViewHelper.generateBoardSection(BOARD_SECTION.boardActions, gameID));
     board.append(GameViewHelper.generateDashBoard(gameID));
-    board.append(GameViewHelper.generateBoardSection(BOARD_SECTION.mineField, gameID));
+    board.append(
+      GameViewHelper.generateBoardSection(BOARD_SECTION.mineField, gameID),
+    );
     return board;
   }
 
   static generateDashBoard(gameID) {
-    const dashBoard = GameViewHelper.generateBoardSection(BOARD_SECTION.dashBoard, gameID);
-    Object.values(DASHBOARD_SECTION).forEach(section => dashBoard.append(GameViewHelper.generateBoardSection(section, gameID)));
+    const dashBoard = GameViewHelper.generateBoardSection(
+      BOARD_SECTION.dashBoard,
+      gameID,
+    );
+    Object.values(DASHBOARD_SECTION).forEach((section) =>
+      dashBoard.append(GameViewHelper.generateBoardSection(section, gameID)),
+    );
     return dashBoard;
   }
 
   static getClearedGameSection(sectionId) {
-    return ElementHandler.getByID(sectionId).then(section => {
+    return ElementHandler.getByID(sectionId).then((section) => {
       ElementHandler.clearContent(section);
       return section;
     });
@@ -52,5 +72,4 @@ export class GameViewHelper {
     ElementHandler.addStyleClass(actionButton, DOM_ELEMENT_CLASS.actionButton);
     return actionButton;
   }
-
 }

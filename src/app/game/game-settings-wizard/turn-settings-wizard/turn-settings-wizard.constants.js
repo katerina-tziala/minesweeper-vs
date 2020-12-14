@@ -4,17 +4,16 @@ export const FIELD_NAME = {
   turnTimer: "turnTimer",
   turnDuration: "turnDuration",
   missedTurnsLimit: "missedTurnsLimit",
-  consecutiveTurns: "consecutiveTurns"
+  consecutiveTurns: "consecutiveTurns",
 };
 
 export const LIMITS = {
   missedTurnsLimit: {
     max: 10,
-    min: 0
+    min: 0,
   },
   turnDuration: {
     max: 90,
-    min: 3
-  }
+    min: 3,
+  },
 };
-

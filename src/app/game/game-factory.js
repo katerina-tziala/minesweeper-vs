@@ -6,9 +6,10 @@ import { GameType, GameVSMode } from "GameEnums";
 import { LevelSettings, Player, BotPlayer } from "GameModels";
 
 export class GameFactory {
-
   static loadGame(gameParams, gameId) {
-    gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
+    gameParams.levelSettings = GameFactory.getLevelSettings(
+      gameParams.levelSettings,
+    );
 
     const playersData = gameParams.players;
     delete gameParams.players;
@@ -17,7 +18,11 @@ export class GameFactory {
       case GameType.Original:
         return GameFactory.loadPlayerGame(gameId, gameParams);
       case GameType.Friend:
-        return GameFactory.loadGameVs(gameId, gameParams, GameFactory.getOpponent(playersData));
+        return GameFactory.loadGameVs(
+          gameId,
+          gameParams,
+          GameFactory.getOpponent(playersData),
+        );
       case GameType.Bot:
         return GameFactory.loadGameVSBot(gameId, gameParams, playersData);
       case GameType.Online:
@@ -29,7 +34,7 @@ export class GameFactory {
 
   static getLevelSettings(settings) {
     const levelSettings = new LevelSettings();
-    levelSettings.update(settings)
+    levelSettings.update(settings);
     return levelSettings;
   }
 
@@ -40,7 +45,7 @@ export class GameFactory {
   }
 
   static getOpponentData(players) {
-    return players.find(player => player.id !== self.user.id);
+    return players.find((player) => player.id !== self.user.id);
   }
 
   static getOpponent(players) {
@@ -74,14 +79,19 @@ export class GameFactory {
   }
 
   static loadPlayerGame(gameId, gameParams, player = GameFactory.getPlayer()) {
-    return import(`GamePlayType`).then(module => {
+    return import(`GamePlayType`).then((module) => {
       return new module.GameSinglePlayer(gameId, gameParams, player);
     });
   }
 
   static loadGameVs(gameId, gameParams, opponent) {
-    return import(`GamePlayType`).then(module => {
-      return new module.GameVS(gameId, gameParams, GameFactory.getPlayer(), opponent);
+    return import(`GamePlayType`).then((module) => {
+      return new module.GameVS(
+        gameId,
+        gameParams,
+        GameFactory.getPlayer(),
+        opponent,
+      );
     });
   }
 
@@ -89,13 +99,12 @@ export class GameFactory {
     const player = GameFactory.getPlayer();
     const gamesForPlayers = [
       GameFactory.loadPlayerGame(player.id, gameParams, player),
-      GameFactory.loadPlayerGame(opponent.id, gameParams, opponent)
+      GameFactory.loadPlayerGame(opponent.id, gameParams, opponent),
     ];
     return Promise.all(gamesForPlayers).then(([playerGame, opponentGame]) => {
-      return import(`GamePlayType`).then(module => {
+      return import(`GamePlayType`).then((module) => {
         return new module.GameParallel(gameId, playerGame, opponentGame);
       });
     });
   }
-
 }

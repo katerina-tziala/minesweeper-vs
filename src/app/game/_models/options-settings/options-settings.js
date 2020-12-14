@@ -4,7 +4,6 @@ import { AppModel } from "~/_models/app-model";
 import { GameVSMode } from "GameEnums";
 
 export class OptionsSettings extends AppModel {
-
   constructor(vsMode) {
     super();
     this.marks = false;
@@ -39,5 +38,4 @@ export class OptionsSettings extends AppModel {
         break;
     }
   }
-
 }

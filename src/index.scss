@@ -13,35 +13,34 @@
 @import "./styles/components/modal-window/modal-window";
 
 * {
-    box-sizing : border-box;
-    margin     : 0;
-    padding    : 0;
-    user-select: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
 }
 
 html,
 body,
 .app {
-    width   : 100vw;
-    height  : 100vh;
-    overflow: hidden;
-    position: relative;
-    @extend %start-center;
-    flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  @extend %start-center;
+  flex-direction: column;
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @mixin setThemeStyles($theme) {
-    $background: theming.getThemeColor($theme, "theme-base");
-    $color     : theming.getThemeColor($theme, "theme-primary");
-    @include theming.setBoxTheming($background, $color);
+  $background: theming.getThemeColor($theme, "theme-base");
+  $color: theming.getThemeColor($theme, "theme-primary");
+  @include theming.setBoxTheming($background, $color);
 }
 
 .theme-light {
-    @include setThemeStyles("light");
+  @include setThemeStyles("light");
 }
 
 .theme-dark {
-    @include setThemeStyles("dark");
+  @include setThemeStyles("dark");
 }

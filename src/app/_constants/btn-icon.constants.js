@@ -3,42 +3,42 @@
 export const CLOSE_BTN = {
   className: "btn-icon btn-icon--close",
   attributes: {
-    "aria-label": "close"
+    "aria-label": "close",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const PLAY_BTN = {
   className: "btn-gameplay btn-icon--play",
   attributes: {
-    "aria-label": "play"
+    "aria-label": "play",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const NEXT_BTN = {
   className: "btn-gameplay btn-icon--next",
   attributes: {
-    "aria-label": "next"
+    "aria-label": "next",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const PREVIOUS_BTN = {
   className: "btn-gameplay btn-icon--previous",
   attributes: {
     "aria-label": "previous",
-    "id": "btn__previous",
+    id: "btn__previous",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const INVITE_BTN = {
   className: "btn-gameplay btn-icon--send",
   attributes: {
-    "aria-label": "invite"
+    "aria-label": "invite",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const RESET_BTN = {
@@ -46,37 +46,37 @@ export const RESET_BTN = {
   attributes: {
     "aria-label": "reset",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const EXIT_GAME_BTN = {
   className: "btn-icon--exit-game",
   attributes: {
-    "aria-label": "exit game"
+    "aria-label": "exit game",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const RESTART_GAME_BTN = {
   className: "btn-icon--restart-game",
   attributes: {
-    "aria-label": "restart game"
+    "aria-label": "restart game",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const RESET_GAME_BTN = {
   className: "btn-icon--reset-game",
   attributes: {
-    "aria-label": "reset game type"
+    "aria-label": "reset game type",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const SNEAK_PEEK_GAME_BTN = {
   className: "btn-icon--sneak-peek",
   attributes: {
-    "aria-label": "sneak peek on opponent's game"
+    "aria-label": "sneak peek on opponent's game",
   },
-  actionType: "click"
+  actionType: "click",
 };

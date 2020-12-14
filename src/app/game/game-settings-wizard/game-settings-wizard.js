@@ -9,7 +9,11 @@ import { clone } from "~/_utils/utils";
 import { DropdownSelect, Switcher } from "UserInputs";
 
 import { UserInputsGroupController } from "UserInputs";
-import { DOM_ELEMENT_CLASS, CONTENT, TITLES } from "./game-settings-wizard.constants";
+import {
+  DOM_ELEMENT_CLASS,
+  CONTENT,
+  TITLES,
+} from "./game-settings-wizard.constants";
 
 export class GameSettingsWizard {
   #settings;
@@ -43,7 +47,9 @@ export class GameSettingsWizard {
   getControllerParams(name) {
     return {
       name: name,
-      value: this.settingsPropertyExists(name) ? this.settings[name] : TYPOGRAPHY.emptyString
+      value: this.settingsPropertyExists(name)
+        ? this.settings[name]
+        : TYPOGRAPHY.emptyString,
     };
   }
 
@@ -54,13 +60,15 @@ export class GameSettingsWizard {
   }
 
   getEnumOptions(enumObject) {
-    return Object.values(enumObject).map(enumValue => this.getDropdownOptions(enumValue));
+    return Object.values(enumObject).map((enumValue) =>
+      this.getDropdownOptions(enumValue),
+    );
   }
 
   getDropdownOptions(enumValue) {
     return {
       value: enumValue,
-      innerHTML: `<span>${this.getOptionLabel(enumValue)}</span>`
+      innerHTML: `<span>${this.getOptionLabel(enumValue)}</span>`,
     };
   }
 
@@ -76,48 +84,64 @@ export class GameSettingsWizard {
     return {
       name: this.name,
       valid: this.inputsGroup.isValid,
-      value: this.settings
+      value: this.settings,
     };
   }
 
   // INTERFACE
   get titleStyleClass() {
-    return DOM_ELEMENT_CLASS.wizardTitleIcon + TYPOGRAPHY.doubleHyphen + this.name;
+    return (
+      DOM_ELEMENT_CLASS.wizardTitleIcon + TYPOGRAPHY.doubleHyphen + this.name
+    );
   }
 
   generateSettingsWizard() {
-    const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer]);
+    const wizardContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.wizardContainer,
+    ]);
     wizardContainer.append(this.generateWizardTitle());
     wizardContainer.append(this.generateWizardInputs());
     return wizardContainer;
   }
 
   generateWizardTitle() {
-    const titleContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardTitleContainer]);
-    titleContainer.innerHTML = `<div class="${DOM_ELEMENT_CLASS.wizardTitleIcon} ${this.titleStyleClass}"></div>
+    const titleContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.wizardTitleContainer,
+    ]);
+    titleContainer.innerHTML = `<div class="${
+      DOM_ELEMENT_CLASS.wizardTitleIcon
+    } ${this.titleStyleClass}"></div>
     <div class="${DOM_ELEMENT_CLASS.wizardTitle}">${TITLES[this.name]}</div>`;
     return titleContainer;
   }
 
   generateWizardInputs() {
     const fragment = document.createDocumentFragment();
-    this.inputsGroup.controllers.forEach(controller => {
+    this.inputsGroup.controllers.forEach((controller) => {
       fragment.append(this.generateInputSection(controller));
     });
     return fragment;
   }
 
   generateInputSection(controller) {
-    const sectionContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.sectionContainer]);
+    const sectionContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.sectionContainer,
+    ]);
     const label = this.generateSectionLabel(controller.name);
-    const fieldContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.fieldContainer]);
+    const fieldContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.fieldContainer,
+    ]);
     fieldContainer.append(controller.generateInputField());
     sectionContainer.append(label, fieldContainer);
     return sectionContainer;
   }
 
   getFieldExplanationID(fieldName) {
-    return DOM_ELEMENT_CLASS.sectionContainer + TYPOGRAPHY.doubleUnderscore + fieldName;
+    return (
+      DOM_ELEMENT_CLASS.sectionContainer +
+      TYPOGRAPHY.doubleUnderscore +
+      fieldName
+    );
   }
 
   getFieldExplanationContainer(fieldName) {
@@ -125,7 +149,10 @@ export class GameSettingsWizard {
   }
 
   generateFieldExplanation(fieldName, explanation) {
-    const fieldExplanation = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.fieldExplanation], this.getFieldExplanationID(fieldName));
+    const fieldExplanation = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.fieldExplanation],
+      this.getFieldExplanationID(fieldName),
+    );
     fieldExplanation.innerHTML = explanation;
     return fieldExplanation;
   }
@@ -135,5 +162,4 @@ export class GameSettingsWizard {
     label.innerHTML = CONTENT[inputName];
     return label;
   }
-
 }

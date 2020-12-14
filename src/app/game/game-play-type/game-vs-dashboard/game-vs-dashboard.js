@@ -10,7 +10,6 @@ import { DOM_ELEMENT_CLASS } from "./game-vs-dashboard.constants";
 import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
 
 export class GameVSDashboard {
-
   constructor(clearMinefield) {
     this.clearMinefield = clearMinefield;
   }
@@ -26,28 +25,40 @@ export class GameVSDashboard {
   }
 
   #generatePlayerCard(player, directionLeft = false) {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerContainer]);
-    const playerCard = PlayerCard.generate( player, directionLeft, this.clearMinefield);
+    const container = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.playerContainer,
+    ]);
+    const playerCard = PlayerCard.generate(
+      player,
+      directionLeft,
+      this.clearMinefield,
+    );
     container.append(playerCard);
     return container;
   }
 
   initCardsState(players) {
     const cardUpdates = [];
-    players.forEach(player => {
-      const playerGameStatistics = this.clearMinefield ? player.revealedTiles : player.minesDetected;
+    players.forEach((player) => {
+      const playerGameStatistics = this.clearMinefield
+        ? player.revealedTiles
+        : player.minesDetected;
       cardUpdates.push(PlayerCard.updateTurnStatus(player));
       cardUpdates.push(PlayerCard.updateState(player));
       cardUpdates.push(PlayerCard.updateMissedTurns(player));
-      cardUpdates.push(PlayerCard.updateGameGoalStatistics(player, playerGameStatistics));
+      cardUpdates.push(
+        PlayerCard.updateGameGoalStatistics(player, playerGameStatistics),
+      );
     });
     return Promise.all(cardUpdates);
   }
 
   setCardOnTurn(players) {
     const cardUpdates = [];
-    players.forEach(player => {
-      const playerGameStatistics = this.clearMinefield ? player.revealedTiles : player.minesDetected;
+    players.forEach((player) => {
+      const playerGameStatistics = this.clearMinefield
+        ? player.revealedTiles
+        : player.minesDetected;
       cardUpdates.push(PlayerCard.updateTurnStatus(player));
     });
     return Promise.all(cardUpdates);
@@ -60,5 +71,4 @@ export class GameVSDashboard {
   updatePlayerAllowedFlags(player) {
     return PlayerCard.updateAllowedFlags(player);
   }
-
 }

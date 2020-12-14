@@ -7,11 +7,15 @@ export const clone = (itemToClone) => {
 };
 
 export const sortNumbersArrayAsc = (arrayToSort) => {
-  return [...arrayToSort].sort((itemA, itemB) => { return itemA - itemB; });
+  return [...arrayToSort].sort((itemA, itemB) => {
+    return itemA - itemB;
+  });
 };
 
 export const randomValueFromArray = (arrayToChooseFrom) => {
-  return arrayToChooseFrom[Math.floor(Math.random() * arrayToChooseFrom.length)];
+  return arrayToChooseFrom[
+    Math.floor(Math.random() * arrayToChooseFrom.length)
+  ];
 };
 
 export const preventInteraction = (event) => {
@@ -19,7 +23,11 @@ export const preventInteraction = (event) => {
   event.stopPropagation();
 };
 
-export const replaceStringParameter = (stringToUpdate, value, replacePart = TYPOGRAPHY.tripleHashtag) => {
+export const replaceStringParameter = (
+  stringToUpdate,
+  value,
+  replacePart = TYPOGRAPHY.tripleHashtag,
+) => {
   return stringToUpdate.replace(replacePart, value);
 };
 
@@ -36,10 +44,9 @@ export const uniqueArray = (arrayToClear) => {
 };
 
 export const arrayDifference = (arrayToFilter, arrayReference) => {
-  return arrayToFilter.filter(item => !arrayReference.includes(item));
+  return arrayToFilter.filter((item) => !arrayReference.includes(item));
 };
 
 export const enumKey = (enumObject, value) => {
-  return Object.keys(enumObject).find(key => enumObject[key] === value);
+  return Object.keys(enumObject).find((key) => enumObject[key] === value);
 };
-

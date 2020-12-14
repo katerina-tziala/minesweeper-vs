@@ -8,7 +8,6 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
 export class GameParallel extends AppModel {
-
   constructor(id, playerGame, opponentGame) {
     super();
     this.id = id ? id : this.type;
@@ -17,10 +16,9 @@ export class GameParallel extends AppModel {
     this.games = [this.playerGame, this.opponentGame];
   }
 
-
   generateView() {
     const gameContainer = document.createDocumentFragment();
-    this.games.forEach(game => {
+    this.games.forEach((game) => {
       gameContainer.append(this.#generateGameView(game));
     });
     return gameContainer;
@@ -31,17 +29,19 @@ export class GameParallel extends AppModel {
   }
 
   #generateGameView(game) {
-    const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#gameContainerID(game.id));
+    const gameContainer = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.container],
+      this.#gameContainerID(game.id),
+    );
     gameContainer.append(game.generateView());
     return gameContainer;
   }
-
 
   start() {
     console.log("start parallel");
     // this.onAfterViewInit.then(() => {
     //   this.initDashBoard();
-    this.games.forEach(game => {
+    this.games.forEach((game) => {
       game.start();
     });
   }

@@ -4,7 +4,12 @@ export const SETTINGS_PROPERTIES = {
   default: ["marks", "wrongFlagHint"],
   clear: ["unlimitedFlags", "openStrategy", "sneakPeek", "sneakPeekDuration"],
   detect: ["unlimitedFlags", "tileRevealing"],
-  parallel: ["sameMinePositions", "openStrategy", "sneakPeek", "sneakPeekDuration"]
+  parallel: [
+    "sameMinePositions",
+    "openStrategy",
+    "sneakPeek",
+    "sneakPeekDuration",
+  ],
 };
 
 export const FIELD_NAME = {
@@ -16,6 +21,6 @@ export const FIELD_NAME = {
 export const LIMITS = {
   sneakPeekDuration: {
     max: 10,
-    min: 3
-  }
+    min: 3,
+  },
 };

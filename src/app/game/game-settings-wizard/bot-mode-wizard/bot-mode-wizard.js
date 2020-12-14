@@ -7,10 +7,9 @@ import { BotMode } from "GameEnums";
 import { GameSettingsWizard } from "../game-settings-wizard";
 
 export class BotModeWizard extends GameSettingsWizard {
-
   constructor(onSubmit, botMode) {
     super(onSubmit, undefined);
-    this.#setModeSettings(botMode)
+    this.#setModeSettings(botMode);
     this.#init();
   }
 
@@ -21,7 +20,10 @@ export class BotModeWizard extends GameSettingsWizard {
 
   #init() {
     const params = this.getDropdownSelectParams("botMode", BotMode);
-    this.inputsGroup.controllers = new DropdownSelect(params, this.#onModeChange.bind(this));
+    this.inputsGroup.controllers = new DropdownSelect(
+      params,
+      this.#onModeChange.bind(this),
+    );
   }
 
   #onModeChange(params) {
@@ -38,8 +40,7 @@ export class BotModeWizard extends GameSettingsWizard {
     return {
       name: this.name,
       valid: true,
-      value: { botMode: BotMode.Easy }
+      value: { botMode: BotMode.Easy },
     };
   }
-
 }

@@ -1,22 +1,22 @@
 .form {
-	width           : 100%;
-	margin          : auto;
-	position        : relative;
-	background-color: transparent;
+  width: 100%;
+  margin: auto;
+  position: relative;
+  background-color: transparent;
 }
 
 .form-title {
-	margin-bottom : 15px;
-	text-transform: capitalize;
+  margin-bottom: 15px;
+  text-transform: capitalize;
 }
 
 .form-section {
-	@extend %start-center;
-	flex-flow: row nowrap;
+  @extend %start-center;
+  flex-flow: row nowrap;
 }
 
 .form-actions {
-    @extend %center-center;
-    justify-content: space-between!important;
-    margin-top     : 20px;
+  @extend %center-center;
+  justify-content: space-between !important;
+  margin-top: 20px;
 }

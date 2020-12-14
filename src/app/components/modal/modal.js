@@ -1,39 +1,54 @@
 "use strict";
 
-import { ElementHandler, } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONFIRMATION, MOVEMENT_DURATION } from "./modal.constants";
-import { ModalView } from "./modal-view"
+import { ElementHandler } from "HTML_DOM_Manager";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+  CONFIRMATION,
+  MOVEMENT_DURATION,
+} from "./modal.constants";
+import { ModalView } from "./modal-view";
 export class Modal {
   #shakeTimeout = false;
   #confirmationTimer = 0;
   #confirmationCountdown;
   #displayed = false;
 
-  constructor() { }
+  constructor() {}
 
   // SHAKE DIALOG
   #addShakeEvent() {
     this.shakeDialog = this.#shakeDialog.bind(this);
-    ModalView.modalWindow.then(modalWindow => modalWindow.addEventListener("click", this.shakeDialog, true));
+    ModalView.modalWindow.then((modalWindow) =>
+      modalWindow.addEventListener("click", this.shakeDialog, true),
+    );
   }
 
   #removeShakeEvent() {
-    ModalView.modalWindow.then(modalWindow => {
+    ModalView.modalWindow.then((modalWindow) => {
       this.#stopShaking();
       modalWindow.removeEventListener("click", this.shakeDialog, true);
     });
   }
 
   #shakeDialog(event) {
-    if (!this.#shakeTimeout && ElementHandler.getID(event.target) === DOM_ELEMENT_ID.window) {
-      ModalView.modalDialog.then(modalDialog => {
-        this.#stopShaking(modalDialog);
-        this.#shakeTimeout = true;
-        ElementHandler.addStyleClass(modalDialog, DOM_ELEMENT_CLASS.shakeDialog);
-        return ModalView.timeoutPromise(MOVEMENT_DURATION.shake, modalDialog);
-      }).then(modalDialog => {
-        this.#stopShaking(modalDialog);
-      });
+    if (
+      !this.#shakeTimeout &&
+      ElementHandler.getID(event.target) === DOM_ELEMENT_ID.window
+    ) {
+      ModalView.modalDialog
+        .then((modalDialog) => {
+          this.#stopShaking(modalDialog);
+          this.#shakeTimeout = true;
+          ElementHandler.addStyleClass(
+            modalDialog,
+            DOM_ELEMENT_CLASS.shakeDialog,
+          );
+          return ModalView.timeoutPromise(MOVEMENT_DURATION.shake, modalDialog);
+        })
+        .then((modalDialog) => {
+          this.#stopShaking(modalDialog);
+        });
     }
   }
 
@@ -56,27 +71,31 @@ export class Modal {
 
   // DISPLAY HIDE MODAL
   #display(shake = true) {
-    return ModalView.displayedModalWindow.then(() => {
-      return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
-    }).then(() => {
-      if (shake) {
-        this.#addShakeEvent();
-      }
-      this.#displayed = true;
-      return;
-    });
+    return ModalView.displayedModalWindow
+      .then(() => {
+        return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
+      })
+      .then(() => {
+        if (shake) {
+          this.#addShakeEvent();
+        }
+        this.#displayed = true;
+        return;
+      });
   }
 
   #hide() {
     this.#removeEscapeEvent();
     if (this.#displayed) {
-      ModalView.hiddenModalWindow.then(() => {
-        return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
-      }).then(() => {
-        this.#displayed = false;
-        this.#removeShakeEvent();
-        return ModalView.clearedModalDialog;
-      });
+      ModalView.hiddenModalWindow
+        .then(() => {
+          return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
+        })
+        .then(() => {
+          this.#displayed = false;
+          this.#removeShakeEvent();
+          return ModalView.clearedModalDialog;
+        });
     }
     return Promise.resolve();
   }
@@ -94,14 +113,15 @@ export class Modal {
 
   #setConfirmationCountdown(onCompletion) {
     this.#confirmationCountdown = setInterval(() => {
-      ModalView.updateConfirmationTimer(this.#confirmationTimer)
-        .then((timerValue) => {
+      ModalView.updateConfirmationTimer(this.#confirmationTimer).then(
+        (timerValue) => {
           this.#confirmationTimer = timerValue;
           if (this.#confirmationCountdownOver) {
             this.#clearActionCountdown();
             onCompletion();
           }
-        });
+        },
+      );
     }, 1000);
   }
 
@@ -114,27 +134,33 @@ export class Modal {
   }
 
   displayConfirmation(message, onAction) {
-    this.#hide().then(() => {
-      return ModalView.generateConfirmationDialog(
-        message,
-        () => this.#onConfirmationAction(onAction, false),
-        () => this.#onConfirmationAction(onAction, true)
-      );
-    }).then(() => {
-      return this.#display();
-    }).then(() => {
-      ModalView.setConfirmationNavigation();
-      // timer
-      if (message.timer) {
-        this.#confirmationTimer = message.timer;
-        this.#setConfirmationCountdown(() => this.#onConfirmationAction(onAction, true));
-      }
-      // escape modal dialog
-      this.onModalEscape = (event) => {
-        this.#onEscape((event), () => this.#onConfirmationAction(onAction, true))
-      };
-      document.addEventListener("keyup", this.onModalEscape, true);
-    });
+    this.#hide()
+      .then(() => {
+        return ModalView.generateConfirmationDialog(
+          message,
+          () => this.#onConfirmationAction(onAction, false),
+          () => this.#onConfirmationAction(onAction, true),
+        );
+      })
+      .then(() => {
+        return this.#display();
+      })
+      .then(() => {
+        ModalView.setConfirmationNavigation();
+        // timer
+        if (message.timer) {
+          this.#confirmationTimer = message.timer;
+          this.#setConfirmationCountdown(() =>
+            this.#onConfirmationAction(onAction, true),
+          );
+        }
+        // escape modal dialog
+        this.onModalEscape = (event) => {
+          this.#onEscape(event, () =>
+            this.#onConfirmationAction(onAction, true),
+          );
+        };
+        document.addEventListener("keyup", this.onModalEscape, true);
+      });
   }
-
 }

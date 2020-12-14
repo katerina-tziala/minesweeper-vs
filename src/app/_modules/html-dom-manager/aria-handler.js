@@ -1,7 +1,6 @@
 "use strict";
 
 export class AriaHandler {
-
   static setRole(element, role) {
     element.setAttribute("role", role);
   }
@@ -31,7 +30,7 @@ export class AriaHandler {
   }
 
   static setListTabindex(elements, value) {
-    elements.forEach(element => AriaHandler.setTabindex(element, value));
+    elements.forEach((element) => AriaHandler.setTabindex(element, value));
   }
 
   static setAriaChecked(element, value) {

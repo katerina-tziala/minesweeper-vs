@@ -1,9 +1,9 @@
 "use strict";
 
 export class MapController {
-  #_map = new Map;
+  #_map = new Map();
 
-  constructor() { }
+  constructor() {}
 
   get itemsArray() {
     return Array.from(this.#_map.values());
@@ -23,5 +23,4 @@ export class MapController {
       this.#_map.delete(key);
     }
   }
-
 }

@@ -6,16 +6,16 @@ $container-size: 84;
   content: "";
   @include circle(#{$size}px);
   position: absolute;
-  z-index : 10;
+  z-index: 10;
 }
 
 ._turn-indicator-background {
   content: "";
   @include circle(#{$size + 2}px);
   position: absolute;
-  left    : -1px;
-  top     : -1px;
-  z-index : 2;
+  left: -1px;
+  top: -1px;
+  z-index: 2;
 }
 
 .turns-container {
@@ -23,11 +23,11 @@ $container-size: 84;
   @extend %center-start;
   @include circle(#{$container-size}px);
   position: absolute;
-  z-index : 2;
+  z-index: 2;
 }
 
 .turn-indicator-container {
-  position        : absolute;
-  height          : #{$container-size / 2}px;
+  position: absolute;
+  height: #{$container-size / 2}px;
   transform-origin: 0 100%;
 }

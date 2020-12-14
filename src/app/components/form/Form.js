@@ -71,9 +71,17 @@ export class Form {
   }
 
   renderFormActions(form, submitBtnParams) {
-    const actionsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.formActions]);
-    const clearBtn = ElementGenerator.generateButton(CLEAR_BTN, this.clearForm.bind(this));
-    const submitBtn = ElementGenerator.generateButton(submitBtnParams, this.submitForm.bind(this));
+    const actionsContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.formActions,
+    ]);
+    const clearBtn = ElementGenerator.generateButton(
+      CLEAR_BTN,
+      this.clearForm.bind(this),
+    );
+    const submitBtn = ElementGenerator.generateButton(
+      submitBtnParams,
+      this.submitForm.bind(this),
+    );
     ElementHandler.setDisabled(submitBtn, !this.isValid);
     ElementHandler.setID(submitBtn, this.submissionBtnId);
     actionsContainer.append(clearBtn, submitBtn);
@@ -82,12 +90,16 @@ export class Form {
 
   clearForm(event) {
     event.target.blur();
-    this.inputsGroup.controllers.forEach(inputController => inputController.clear());
+    this.inputsGroup.controllers.forEach((inputController) =>
+      inputController.clear(),
+    );
     this.toggleSubmission();
   }
 
   toggleSubmission() {
-    this.submitBtn.then(button => ElementHandler.setDisabled(button, !this.isValid));
+    this.submitBtn.then((button) =>
+      ElementHandler.setDisabled(button, !this.isValid),
+    );
   }
 
   submitForm() {
@@ -98,7 +110,9 @@ export class Form {
 
   renderFormFields(form) {
     const section = this.renderFormSection();
-    this.inputsGroup.controllers.forEach(inputControler => section.append(inputControler.generateInputField()));
+    this.inputsGroup.controllers.forEach((inputControler) =>
+      section.append(inputControler.generateInputField()),
+    );
     form.append(section);
   }
 }

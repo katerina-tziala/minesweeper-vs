@@ -2,51 +2,51 @@
 @import "../scrollbar/scrollbar";
 
 .dropdown-listbox-container {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-listbox {
-    width                     : 100%;
-    height                    : 0px;
-    position                  : absolute;
-    top                       : 0px;
-    list-style-type           : none;
-    overflow-x                : hidden;
-    overflow-y                : hidden;
-    border-bottom-left-radius : 3px;
-    border-bottom-right-radius: 3px;
-    transition                : height .5s;
-    z-index                   : 3;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  top: 0px;
+  list-style-type: none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  transition: height 0.5s;
+  z-index: 3;
 }
 
 .dropdown-listbox--expanded {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .dropdown-listbox--scrollable {
-    @extend ._scrollbar;
-    overflow-y: scroll;
+  @extend ._scrollbar;
+  overflow-y: scroll;
 }
 
 .dropdown-listbox[aria-expanded="true"] {
-    @extend .dropdown-listbox--expanded;
+  @extend .dropdown-listbox--expanded;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @mixin setDropdownListThemeStyles($theme) {
-    .dropdown-listbox {
-        @include theming.setThemeCard($theme);
-    }
+  .dropdown-listbox {
+    @include theming.setThemeCard($theme);
+  }
 
-    .dropdown-listbox--expanded {
-        @include theming.setThemeBoxShadow($theme);
-    }
+  .dropdown-listbox--expanded {
+    @include theming.setThemeBoxShadow($theme);
+  }
 }
 
 .theme-light {
-    @include setDropdownListThemeStyles("light");
+  @include setDropdownListThemeStyles("light");
 }
 
 .theme-dark {
-    @include setDropdownListThemeStyles("dark");
+  @include setDropdownListThemeStyles("dark");
 }

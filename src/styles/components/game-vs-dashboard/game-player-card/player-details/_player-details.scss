@@ -1,18 +1,18 @@
 ._player-details {
-  width   : 152px;
+  width: 152px;
   position: absolute;
-  z-index : 2;
+  z-index: 2;
 }
 
 ._details-background-shape {
-  content : "";
+  content: "";
   position: absolute;
-  top     : 0px;
+  top: 0px;
   @include pseudoIsoscelesTrapezoid($card-size, 20);
-  display         : block;
-  height          : 0;
-  width           : 50px;
-  border-radius   : 5px;
+  display: block;
+  height: 0;
+  width: 50px;
+  border-radius: 5px;
   transform-origin: top right;
 }
 
@@ -25,10 +25,9 @@
 
   &::after {
     @extend ._details-background-shape;
-    right    :  #{$right-position}px;
+    right: #{$right-position}px;
     transform: rotate(-90deg) scaleY($direction);
   }
-
 }
 
 .game-player-card__details-section {

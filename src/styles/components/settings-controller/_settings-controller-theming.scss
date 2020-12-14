@@ -1,24 +1,24 @@
 @use "../../theming/theming";
 
 @function getSettingSectionIndex($index) {
-    @return 500 - ($index * 100);
+  @return 500 - ($index * 100);
 }
 
 @mixin applySettingSectionIndex() {
-    @for $index from 2 through 4 {
-        &:nth-of-type(#{$index}) {
-            >.dropdown-container>.dropdown-listbox-container>.dropdown-listbox {
-                z-index: getSettingSectionIndex($index);
-            }
-        }
+  @for $index from 2 through 4 {
+    &:nth-of-type(#{$index}) {
+      > .dropdown-container > .dropdown-listbox-container > .dropdown-listbox {
+        z-index: getSettingSectionIndex($index);
+      }
     }
+  }
 }
 
 @mixin applySettingsControllerThemeStyle($theme) {
-    .settings-panel {
-        @include theming.setThemeCard($theme);
-        @include theming.setThemeBoxShadow($theme);
-    }
+  .settings-panel {
+    @include theming.setThemeCard($theme);
+    @include theming.setThemeBoxShadow($theme);
+  }
 
-    @include theming.applyGameColorsStyle($theme, ".color-type");
+  @include theming.applyGameColorsStyle($theme, ".color-type");
 }

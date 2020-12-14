@@ -1,31 +1,31 @@
 @use "../../theming/theming";
 
 @mixin setInputStyle($color) {
-    color              : $color;
-    border-bottom-color: $color;
+  color: $color;
+  border-bottom-color: $color;
 }
 
 @mixin setInputThemeStyles($color, $color-hovered) {
+  @include setInputStyle($color);
+
+  &:focus {
+    @include setInputStyle($color-hovered);
+  }
+
+  &:read-only {
     @include setInputStyle($color);
+  }
 
-    &:focus {
-        @include setInputStyle($color-hovered);
-    }
-
-    &:read-only {
-        @include setInputStyle($color);
-    }
-
-    &:read-only:focus {
-        @include setInputStyle($color);
-    }
+  &:read-only:focus {
+    @include setInputStyle($color);
+  }
 }
 
 @mixin applyInputThemeStyles($theme) {
-    $color        : theming.getThemeColor($theme, "theme-primary-subtle");
-    $color-hovered: theming.getThemeColor($theme, "theme-primary-intense");
+  $color: theming.getThemeColor($theme, "theme-primary-subtle");
+  $color-hovered: theming.getThemeColor($theme, "theme-primary-intense");
 
-    .input {
-        @include setInputThemeStyles($color, $color-hovered);
-    }
+  .input {
+    @include setInputThemeStyles($color, $color-hovered);
+  }
 }

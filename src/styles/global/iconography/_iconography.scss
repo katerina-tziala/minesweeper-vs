@@ -94,12 +94,12 @@
 
 .icon-redo {
   @extend %icon-regular;
-  content  : fa-content($fa-var-redo-alt);
+  content: fa-content($fa-var-redo-alt);
 }
 
 .icon-home {
   @extend %icon-regular;
-  content  : fa-content($fa-var-home);
+  content: fa-content($fa-var-home);
 }
 
 .icon-exit-game {

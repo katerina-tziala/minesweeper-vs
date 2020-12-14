@@ -6,7 +6,6 @@ import { Theme, MineType } from "../_enums/app-settings.enums";
 import { randomValueFromArray } from "~/_utils/utils";
 import { COLOR_TYPES } from "~/_constants/ui.constants";
 export class AppSettingsModel extends AppModel {
-
   constructor() {
     super();
     this.theme = Theme.Default;
@@ -16,8 +15,7 @@ export class AppSettingsModel extends AppModel {
   }
 
   generateColorType(typeToExclude) {
-    let types = COLOR_TYPES.filter(type => type !== typeToExclude);
+    let types = COLOR_TYPES.filter((type) => type !== typeToExclude);
     return randomValueFromArray(types);
   }
-
 }

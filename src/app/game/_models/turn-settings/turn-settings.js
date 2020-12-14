@@ -3,7 +3,6 @@
 import { AppModel } from "~/_models/app-model";
 
 export class TurnSettings extends AppModel {
-
   constructor() {
     super();
     this.turnTimer = true;
@@ -11,5 +10,4 @@ export class TurnSettings extends AppModel {
     this.missedTurnsLimit = 10;
     this.consecutiveTurns = false;
   }
-
 }

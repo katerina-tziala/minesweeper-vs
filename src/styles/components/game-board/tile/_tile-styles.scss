@@ -45,9 +45,8 @@
 @mixin setTextShadow($theme) {
   $shadow-color: theming.getThemeColor($theme, "theme-primary");
   text-shadow: -1px -1px 1px rgba($shadow-color, 0.3),
-  1px -1px 1px rgba($shadow-color, 0.3),
-  -1px 1px 1px rgba($shadow-color, 0.3),
-  1px 1px 1px rgba($shadow-color, 0.3);
+    1px -1px 1px rgba($shadow-color, 0.3), -1px 1px 1px rgba($shadow-color, 0.3),
+    1px 1px 1px rgba($shadow-color, 0.3);
 }
 
 @mixin setTileTheme($theme) {
@@ -78,21 +77,23 @@
     }
 
     &.tile-cell-btn--revealed {
-      background-color: rgba(theming.getThemeColor($theme, "board-button-background"), 0.5);
+      background-color: rgba(
+        theming.getThemeColor($theme, "board-button-background"),
+        0.5
+      );
     }
-  
+
     &.tile-cell-btn--flagged {
       &::before {
         @include setTextShadow($theme);
       }
     }
-  
+
     &.tile-cell-btn--marked {
       &::after {
         @include setTextShadow($theme);
       }
     }
-
   }
 
   ._wrong-flag-hint {
@@ -100,4 +101,3 @@
     @include setTextShadow($theme);
   }
 }
-

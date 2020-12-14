@@ -3,7 +3,7 @@
 const EndButtonType = {
   play: "play",
   next: "next",
-  invite: "invite"
+  invite: "invite",
 };
 Object.freeze(EndButtonType);
 

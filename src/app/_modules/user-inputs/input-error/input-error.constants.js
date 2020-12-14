@@ -16,10 +16,10 @@ export const TOGGLE_BTN = {
   attributes: {
     "aria-label": "display error",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const TOGGLE_BTN_ARIA = {
   false: "display error",
-  true: "hide error"
+  true: "hide error",
 };

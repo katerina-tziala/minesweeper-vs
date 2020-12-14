@@ -29,27 +29,26 @@
   &::after {
     @extend ._state-icon;
     @extend .icon-spinner;
-    position : absolute;
+    position: absolute;
     animation: spin 1s infinite linear;
   }
 }
 
 .allowed-flags {
-  position   : absolute;
-  font-size  : 11px;
+  position: absolute;
+  font-size: 11px;
   font-weight: 900;
-  width      : 24px;
-  height     : 11px;
+  width: 24px;
+  height: 11px;
   line-height: 11px;
-  text-align : center;
-  bottom     : -4px;
+  text-align: center;
+  bottom: -4px;
 
   &.allowed-flags--infinite {
     &::after {
-      content    : "\221E";
-      font-size  : 18px;
+      content: "\221E";
+      font-size: 18px;
       line-height: 12px;
     }
   }
-
 }

@@ -5,7 +5,7 @@ export const DOM_ELEMENT_CLASS = {
   wizardContainer: "game-wizard-container",
   wizardHeader: "game-wizard-header",
   actionsContainer: "game-wizard-actions-container",
-  wizardContent: "game-wizard-content"
+  wizardContent: "game-wizard-content",
 };
 
 export const TITLE = {
@@ -13,5 +13,5 @@ export const TITLE = {
   bot: "play minesweeperVS against bot",
   friend: "play minesweeperVS against ###",
   online: "invite in a minesweeperVS game ###",
-  addOpponent: "add opponent:"
+  addOpponent: "add opponent:",
 };

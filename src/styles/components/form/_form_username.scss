@@ -3,9 +3,9 @@
 @import "../input/text-input";
 
 .form-username-icon {
-	@include rectangle(getSize("input-height"));
-	@include afterIcon("user");
-	line-height : 27px;
-	font-size   : 24px;
-	margin-right: 5px;
+  @include rectangle(getSize("input-height"));
+  @include afterIcon("user");
+  line-height: 27px;
+  font-size: 24px;
+  margin-right: 5px;
 }

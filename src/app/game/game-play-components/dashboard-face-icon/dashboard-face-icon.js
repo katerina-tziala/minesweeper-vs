@@ -23,7 +23,9 @@ export class DashboardFaceIcon {
   }
 
   set #iconStyles(iconStyles) {
-    this.#iconElement.then(icon => ElementHandler.setStyleClass(icon, iconStyles));
+    this.#iconElement.then((icon) =>
+      ElementHandler.setStyleClass(icon, iconStyles),
+    );
   }
 
   #getIconStylesBasedOnPlayer(colorType) {
@@ -54,7 +56,10 @@ export class DashboardFaceIcon {
   }
 
   setSurpriseFace(colorType) {
-    this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.surprise, colorType);
+    this.#iconStyles = this.#getIconStyles(
+      DOM_ELEMENT_CLASS.surprise,
+      colorType,
+    );
   }
 
   setWinnerFace(colorType) {
@@ -64,5 +69,4 @@ export class DashboardFaceIcon {
   setLostFace(colorType) {
     this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.lost, colorType);
   }
-
 }

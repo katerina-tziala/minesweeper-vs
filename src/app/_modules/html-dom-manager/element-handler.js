@@ -5,11 +5,12 @@ import { DOM_ELEMENT_CLASS } from "~/_constants/ui.constants";
 import { clone } from "~/_utils/utils.js";
 
 export class ElementHandler {
-
   static getByID(elementId) {
     return new Promise((resolve, reject) => {
       const element = document.getElementById(elementId);
-      element ? resolve(element) : reject(`element with id ${elementId} does not exist`);
+      element
+        ? resolve(element)
+        : reject(`element with id ${elementId} does not exist`);
     });
   }
 
@@ -38,7 +39,7 @@ export class ElementHandler {
     if (styleClasses.length) {
       className = styleClasses.join(TYPOGRAPHY.space);
     }
-    element.className = className
+    element.className = className;
   }
 
   static removeStyleClass(element, className) {
@@ -49,14 +50,16 @@ export class ElementHandler {
     params = clone(params);
     const attributes = params.attributes;
     delete params.attributes;
-    Object.keys(params).forEach(key => element[key] = params[key]);
+    Object.keys(params).forEach((key) => (element[key] = params[key]));
     if (attributes) {
       this.setAttributes(element, attributes);
     }
   }
 
   static setAttributes(element, attributes) {
-    Object.keys(attributes).forEach(key => element.setAttribute(key, attributes[key]));
+    Object.keys(attributes).forEach((key) =>
+      element.setAttribute(key, attributes[key]),
+    );
   }
 
   static setID(element, id) {
@@ -74,5 +77,4 @@ export class ElementHandler {
   static getID(element) {
     return element.getAttribute("id");
   }
-
 }

@@ -13,5 +13,5 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const DOM_ELEMENT_ID = {
-  card: "game-player-card__"
+  card: "game-player-card__",
 };

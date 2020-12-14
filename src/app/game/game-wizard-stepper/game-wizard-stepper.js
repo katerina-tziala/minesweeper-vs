@@ -1,8 +1,12 @@
 "use strict";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTONS } from "./game-wizard-stepper.constants";
-import { EndButtonType } from "./game-wizard-stepper-end-button-type.enum"
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+  BUTTONS,
+} from "./game-wizard-stepper.constants";
+import { EndButtonType } from "./game-wizard-stepper-end-button-type.enum";
 export class GameWizardStepper {
   #_submissionType;
   #_steps;
@@ -45,7 +49,7 @@ export class GameWizardStepper {
   }
 
   get #onSemiFinalStep() {
-    return this.currentStep === (this.steps - 1);
+    return this.currentStep === this.steps - 1;
   }
 
   get #onFirstStep() {
@@ -62,14 +66,22 @@ export class GameWizardStepper {
 
   get #actionButtons() {
     let actionButtons = [];
-    const resetButton = ElementGenerator.generateButton(BUTTONS.reset, this.#resetStep.bind(this));
+    const resetButton = ElementGenerator.generateButton(
+      BUTTONS.reset,
+      this.#resetStep.bind(this),
+    );
     actionButtons.push(resetButton);
-    this.#navigationAllowed ? this.#addNavigationButtons(actionButtons) : actionButtons.push(this.#generateSubmissionButton());
+    this.#navigationAllowed
+      ? this.#addNavigationButtons(actionButtons)
+      : actionButtons.push(this.#generateSubmissionButton());
     return actionButtons;
   }
 
   #addNavigationButtons(actionButtons) {
-    const previousBtn = ElementGenerator.generateButton(BUTTONS.previous, this.#onPrevious.bind(this));
+    const previousBtn = ElementGenerator.generateButton(
+      BUTTONS.previous,
+      this.#onPrevious.bind(this),
+    );
     ElementHandler.setDisabled(previousBtn, this.#onFirstStep);
     actionButtons.unshift(previousBtn);
     const nextBtn = this.#generateSubmissionButton(EndButtonType.next);
@@ -77,14 +89,17 @@ export class GameWizardStepper {
   }
 
   #generateSubmissionButton(type = this.#submissionType) {
-    const button = ElementGenerator.generateButton(BUTTONS[type], this.#onNext.bind(this));
+    const button = ElementGenerator.generateButton(
+      BUTTONS[type],
+      this.#onNext.bind(this),
+    );
     ElementHandler.setID(button, DOM_ELEMENT_ID.submitButton);
     return button;
   }
 
   #addActionButtons(actionsContainer) {
     const buttons = this.#actionButtons;
-    buttons.forEach(button => actionsContainer.append(button));
+    buttons.forEach((button) => actionsContainer.append(button));
   }
 
   #onPrevious() {
@@ -118,13 +133,15 @@ export class GameWizardStepper {
   }
 
   #setPreviousButtonDisabled() {
-    ElementHandler.getByID(DOM_ELEMENT_ID.previousButton).then(previousBtn => {
-      ElementHandler.setDisabled(previousBtn, this.#onFirstStep);
-    });
+    ElementHandler.getByID(DOM_ELEMENT_ID.previousButton).then(
+      (previousBtn) => {
+        ElementHandler.setDisabled(previousBtn, this.#onFirstStep);
+      },
+    );
   }
 
   #setSubmissionStyle(type = this.#submissionType) {
-    this.#submissionButton.then(button => {
+    this.#submissionButton.then((button) => {
       const buttonParams = BUTTONS[type];
       button.className = buttonParams.className;
       ElementHandler.setAttributes(button, buttonParams.attributes);
@@ -146,12 +163,16 @@ export class GameWizardStepper {
   }
 
   set submissionButtonDisabled(state) {
-    this.#submissionButton.then(button => ElementHandler.setDisabled(button, state));
+    this.#submissionButton.then((button) =>
+      ElementHandler.setDisabled(button, state),
+    );
   }
 
   generateStepper() {
     const fragment = document.createDocumentFragment();
-    const stepperContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container]);
+    const stepperContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.container,
+    ]);
     this.#addActionButtons(stepperContainer);
     fragment.append(stepperContainer);
     return fragment;
@@ -160,11 +181,11 @@ export class GameWizardStepper {
   updateNumberOfSteps(steps) {
     if (this.#navigationAllowed) {
       this.#steps = steps;
-      this.#currentStep = (this.steps < this.currentStep) ? this.steps : this.currentStep;
+      this.#currentStep =
+        this.steps < this.currentStep ? this.steps : this.currentStep;
       if (this.#onFinalStep) {
         this.#setSubmissionStyle();
       }
     }
   }
-
 }

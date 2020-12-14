@@ -93,15 +93,23 @@ export class GameSetup {
   }
 
   getGameParamsForWizard(wizardName) {
-    return Object.keys(this.gameParams).includes(wizardName) ? this.gameParams[wizardName] : undefined;
+    return Object.keys(this.gameParams).includes(wizardName)
+      ? this.gameParams[wizardName]
+      : undefined;
   }
 
   initLevelWizard() {
-    this.settingsControllers = new LevelWizard(this.onGameSettingsChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.levelSettings));
+    this.settingsControllers = new LevelWizard(
+      this.onGameSettingsChange.bind(this),
+      this.getGameParamsForWizard(WIZARD_NAME.levelSettings),
+    );
   }
 
   initOptionsWizard() {
-    this.settingsControllers = new OptionsWizard(this.onGameSettingsChange.bind(this), this.getGameParamsForWizard(WIZARD_NAME.optionsSettings));
+    this.settingsControllers = new OptionsWizard(
+      this.onGameSettingsChange.bind(this),
+      this.getGameParamsForWizard(WIZARD_NAME.optionsSettings),
+    );
   }
 
   generateWizard() {
@@ -113,13 +121,21 @@ export class GameSetup {
   }
 
   generateWizardContainer() {
-    const wizardContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContainer], DOM_ELEMENT_CLASS.wizardContainer);
+    const wizardContainer = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.wizardContainer],
+      DOM_ELEMENT_CLASS.wizardContainer,
+    );
     return wizardContainer;
   }
 
   generateWizardHeader() {
-    const wizardHeader = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardHeader]);
-    const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, this.onClose.bind(this));
+    const wizardHeader = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.wizardHeader,
+    ]);
+    const closeBnt = ElementGenerator.generateButton(
+      CLOSE_BTN,
+      this.onClose.bind(this),
+    );
     wizardHeader.append(this.generateWizardTitle(), closeBnt);
     return wizardHeader;
   }
@@ -131,7 +147,10 @@ export class GameSetup {
   }
 
   generateContentSection() {
-    const wizardContent = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardContent], DOM_ELEMENT_CLASS.wizardContent);
+    const wizardContent = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.wizardContent],
+      DOM_ELEMENT_CLASS.wizardContent,
+    );
     wizardContent.append(this.generateContent());
     return wizardContent;
   }
@@ -148,7 +167,9 @@ export class GameSetup {
 
   onSubmit() {
     const gameSetUp = this.gameSetUp;
-    gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map(player => player.id));
+    gameSetUp.playerStartID = randomValueFromArray(
+      gameSetUp.players.map((player) => player.id),
+    );
     this.#submitGame(clone(gameSetUp));
   }
 
@@ -185,10 +206,9 @@ export class GameSetup {
   }
 
   updateWizardContent() {
-    this.contentContainer.then(contentContainer => {
+    this.contentContainer.then((contentContainer) => {
       ElementHandler.clearContent(contentContainer);
       contentContainer.append(this.generateContent());
     });
   }
-
 }

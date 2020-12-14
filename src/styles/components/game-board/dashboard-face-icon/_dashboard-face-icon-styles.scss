@@ -3,15 +3,17 @@
 @mixin setIconShadow($theme) {
   $shadow-color: theming.getThemeColor($theme, "theme-primary");
   box-shadow: -2px -2px 2px rgba($shadow-color, 0.6),
-  2px -2px 2px rgba($shadow-color, 0.6),
-  -2px 2px 2px rgba($shadow-color, 0.6),
-  2px 2px 2px rgba($shadow-color, 0.6);
+    2px -2px 2px rgba($shadow-color, 0.6), -2px 2px 2px rgba($shadow-color, 0.6),
+    2px 2px 2px rgba($shadow-color, 0.6);
 }
 
 @mixin applyThemeDefaultDashboardIcon($theme) {
   .dashboard__face-icon.dashboard__face-icon--default {
     &::before {
-      background-color: theming.getThemeColor($theme, "dashboard-icon-background");
+      background-color: theming.getThemeColor(
+        $theme,
+        "dashboard-icon-background"
+      );
       @include setIconShadow($theme);
     }
     color: theming.getThemeColor($theme, "dashboard-icon-color");
@@ -21,7 +23,10 @@
 @mixin applyThemePlayerIcon($theme) {
   .dashboard__face-icon.dashboard__face-icon--player {
     &::before {
-      background-color: theming.getThemeColor($theme, "dashboard-icon-user-background");
+      background-color: theming.getThemeColor(
+        $theme,
+        "dashboard-icon-user-background"
+      );
       @include setIconShadow($theme);
     }
     @include theming.applyGameColorsStyle($theme, "&.face-icon-color", "color");

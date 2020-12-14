@@ -51,7 +51,7 @@ export class TileGenerator {
   }
 
   getTilePosition(coordinates) {
-    return (coordinates.row * this.#columns) + coordinates.column;
+    return coordinates.row * this.#columns + coordinates.column;
   }
 
   getTileContentAndNeighbors(coordinates, position) {
@@ -60,7 +60,9 @@ export class TileGenerator {
     if (this.positionInMinesList(position)) {
       content = "mine";
     } else {
-      const gridPositionsAround = this.getGridPositions(coordinates).filter(aroundPorition => aroundPorition !== position);
+      const gridPositionsAround = this.getGridPositions(coordinates).filter(
+        (aroundPorition) => aroundPorition !== position,
+      );
       const minesAround = this.getMinesAround(gridPositionsAround);
       neighbors = gridPositionsAround;
       content = minesAround.length.toString();
@@ -73,46 +75,66 @@ export class TileGenerator {
   }
 
   getGridPositions(coordinates) {
-    const tilesPositions = this.getGridCoordinates(coordinates).map(tileCoordinates => this.getTilePosition(tileCoordinates))
+    const tilesPositions = this.getGridCoordinates(
+      coordinates,
+    ).map((tileCoordinates) => this.getTilePosition(tileCoordinates));
     return sortNumbersArrayAsc(tilesPositions);
   }
 
   getGridCoordinates(referenceCoordinates) {
     let gridCoordinates = [];
-    this.getGridCoordinatesInRow(referenceCoordinates).forEach(rowCoordinates => {
-      gridCoordinates = gridCoordinates.concat(this.getGridCoordinatesInColumn(rowCoordinates));
-    });
+    this.getGridCoordinatesInRow(referenceCoordinates).forEach(
+      (rowCoordinates) => {
+        gridCoordinates = gridCoordinates.concat(
+          this.getGridCoordinatesInColumn(rowCoordinates),
+        );
+      },
+    );
     return gridCoordinates;
   }
 
   getGridCoordinatesInRow(coordinates) {
     let rowCoordinates = [clone(coordinates)];
-    rowCoordinates = rowCoordinates.concat(this.getCoordinatesInSameRow(coordinates, 1));
-    rowCoordinates = rowCoordinates.concat(this.getCoordinatesInSameRow(coordinates, -1));
+    rowCoordinates = rowCoordinates.concat(
+      this.getCoordinatesInSameRow(coordinates, 1),
+    );
+    rowCoordinates = rowCoordinates.concat(
+      this.getCoordinatesInSameRow(coordinates, -1),
+    );
     return rowCoordinates;
   }
 
   getCoordinatesInSameRow(coordinates, columnStep) {
     const newCoordinates = clone(coordinates);
     newCoordinates.column = newCoordinates.column + columnStep;
-    return (0 <= newCoordinates.column && newCoordinates.column <= this.#maxColumnPosition) ? [newCoordinates] : [];
+    return 0 <= newCoordinates.column &&
+      newCoordinates.column <= this.#maxColumnPosition
+      ? [newCoordinates]
+      : [];
   }
 
   getGridCoordinatesInColumn(coordinates) {
     let columnCoordinates = [clone(coordinates)];
-    columnCoordinates = columnCoordinates.concat(this.getCoordinatesInSameColumn(coordinates, 1));
-    columnCoordinates = columnCoordinates.concat(this.getCoordinatesInSameColumn(coordinates, -1));
+    columnCoordinates = columnCoordinates.concat(
+      this.getCoordinatesInSameColumn(coordinates, 1),
+    );
+    columnCoordinates = columnCoordinates.concat(
+      this.getCoordinatesInSameColumn(coordinates, -1),
+    );
     return columnCoordinates;
   }
 
   getCoordinatesInSameColumn(coordinates, rowStep) {
     const newCoordinates = clone(coordinates);
     newCoordinates.row = newCoordinates.row + rowStep;
-    return (0 <= newCoordinates.row && newCoordinates.row <= this.#maxRowPosition) ? [newCoordinates] : [];
+    return 0 <= newCoordinates.row && newCoordinates.row <= this.#maxRowPosition
+      ? [newCoordinates]
+      : [];
   }
 
   getMinesAround(positionsToCheck) {
-    return positionsToCheck.filter(position => this.positionInMinesList(position));
+    return positionsToCheck.filter((position) =>
+      this.positionInMinesList(position),
+    );
   }
-
 }

@@ -1,18 +1,24 @@
 "use strict";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import {
+  ElementHandler,
+  ElementGenerator,
+  AriaHandler,
+} from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "../_utils/local-storage-helper";
 
-
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION, DASHBOARD_SECTION, ACTION_BUTTONS } from "./game-type/game.constants";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+  BOARD_SECTION,
+  DASHBOARD_SECTION,
+  ACTION_BUTTONS,
+} from "./game-type/game.constants";
 
 import { User } from "~/_models/user";
 
-
 import { GameType, GameAction } from "GameEnums";
-
-
 
 import { MineField } from "./game-play-components/mine-field/mine-field";
 import { DashboardFaceIcon } from "./game-play-components/dashboard-face-icon/dashboard-face-icon";
@@ -23,8 +29,6 @@ import { CONFIRMATION } from "../components/modal/modal.constants";
 import { GameTimer } from "./game-play-components/game-timer/game-timer";
 
 import { GamePlayViewHelper } from "./game-type/game-view-helper";
-
-
 
 export class GamePlay {
   #_game;
@@ -40,8 +44,6 @@ export class GamePlay {
     this.init();
   }
 
-
-
   set game(game) {
     this.#_game = game;
   }
@@ -54,20 +56,26 @@ export class GamePlay {
     // console.log(" ------- init ------- ");
     console.log(this.game.levelSettings);
 
-    this.#mineCounter = new DigitalCounter(this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter));
-    this.#dashboardFaceIcon = new DashboardFaceIcon(this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon));
+    this.#mineCounter = new DigitalCounter(
+      this.#getBoardSectionID(DASHBOARD_SECTION.mineCounter),
+    );
+    this.#dashboardFaceIcon = new DashboardFaceIcon(
+      this.#getBoardSectionID(DASHBOARD_SECTION.actionStateIcon),
+    );
     this.#initTimeCounter();
-    this.#mineField = new MineField(this.game.id, this.game.levelSettings, this.#onActiveTileChange.bind(this), this.#onTileAction.bind(this));
+    this.#mineField = new MineField(
+      this.game.id,
+      this.game.levelSettings,
+      this.#onActiveTileChange.bind(this),
+      this.#onTileAction.bind(this),
+    );
   }
-
-
-
 
   // MINEFIELD ACTIONS
   #onActiveTileChange(activeTile) {
     activeTile
       ? this.#dashboardFaceIcon.setSurpriseFace(this.game.dashboardIconColor)
-      : this.#dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor)
+      : this.#dashboardFaceIcon.setSmileFace(this.game.dashboardIconColor);
   }
 
   #onTileAction(action, tile) {
@@ -81,7 +89,11 @@ export class GamePlay {
 
   handleTileMarking(tile, playerOnTurn = this.game.playerOnTurn) {
     if (tile.isUntouched) {
-      tile.setFlag(playerOnTurn.id, playerOnTurn.colorType, this.game.wrongFlagHint);
+      tile.setFlag(
+        playerOnTurn.id,
+        playerOnTurn.colorType,
+        this.game.wrongFlagHint,
+      );
       this.onPlayerMove([tile]);
     } else {
       this.handleTileActionWhenTileTouched(tile, playerOnTurn);
@@ -99,9 +111,11 @@ export class GamePlay {
 
   revealTile(tile, playerOnTurn = this.game.playerOnTurn) {
     if (tile.isUntouched) {
-      this.#mineField.revealMinefieldTile(tile, playerOnTurn.id).then(boardTiles => {
-        this.onPlayerMove(boardTiles);
-      });
+      this.#mineField
+        .revealMinefieldTile(tile, playerOnTurn.id)
+        .then((boardTiles) => {
+          this.onPlayerMove(boardTiles);
+        });
     } else {
       this.#mineField.toggleMinefieldFreezer(false);
     }
@@ -117,7 +131,6 @@ export class GamePlay {
     this.startGameRound();
     console.log("updateViewAfterPlayerMove");
     // console.log(this.game);
-
   }
 
   continueGame() {
@@ -133,17 +146,20 @@ export class GamePlay {
     this.#boardFaceIconOnGameEnd = this.game.player.lost;
   }
 
-
-
   generateView() {
-    const gameContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#gameContainerID);
+    const gameContainer = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.container],
+      this.#gameContainerID,
+    );
     gameContainer.append(GamePlayViewHelper.generateBoard(this.game.id));
     return gameContainer;
   }
 
   start() {
     this.#initGameView.then(() => {
-      this.game.roundTimer ? this.game.setGameStart() : this.#timeCounter.init();
+      this.game.roundTimer
+        ? this.game.setGameStart()
+        : this.#timeCounter.init();
 
       if (!this.game.singlePlayer) {
         console.log("show start modal");
@@ -153,7 +169,6 @@ export class GamePlay {
       this.startGameRound();
     });
   }
-
 
   #setDashboardRoundState() {
     this.#mineCounter.value = this.game.minesToDetect;
@@ -173,7 +188,6 @@ export class GamePlay {
 
     this.#mineField.toggleMinefieldFreezer(false);
   }
-
 
   reStart() {
     this.game.init();
@@ -219,33 +233,45 @@ export class GamePlay {
       this.#mineCounter.generate(),
       this.#dashboardFaceIcon.init(),
       this.#timeCounter.generate(),
-      this.#renderActionButtons()];
+      this.#renderActionButtons(),
+    ];
     return Promise.all(renderViewParts);
   }
 
   #renderMineField() {
-    return GamePlayViewHelper.getClearedGameSection(this.#getBoardSectionID(BOARD_SECTION.mineField))
-      .then(container => {
-        container.append(this.#mineField.generateMinefield);
-        return;
-      });
+    return GamePlayViewHelper.getClearedGameSection(
+      this.#getBoardSectionID(BOARD_SECTION.mineField),
+    ).then((container) => {
+      container.append(this.#mineField.generateMinefield);
+      return;
+    });
   }
 
   // BOARD ACTIONS
   #renderActionButtons() {
-    return GamePlayViewHelper.getClearedGameSection(this.#getBoardSectionID(BOARD_SECTION.boardActions))
-      .then(container => {
-        if (this.game.actionsAllowed) {
-          const resetButton = GamePlayViewHelper.generateActionButton(ACTION_BUTTONS.reset, this.#onReset.bind(this));
-          const restartButton = GamePlayViewHelper.generateActionButton(ACTION_BUTTONS.restart, this.#onRestart.bind(this));
-          const exitButton = GamePlayViewHelper.generateActionButton(ACTION_BUTTONS.exit, this.#onExit.bind(this));
-          container.append(resetButton, restartButton, exitButton);
-          ElementHandler.display(container);
-        } else {
-          ElementHandler.hide(container);
-        }
-        return Promise.resolve();
-      });
+    return GamePlayViewHelper.getClearedGameSection(
+      this.#getBoardSectionID(BOARD_SECTION.boardActions),
+    ).then((container) => {
+      if (this.game.actionsAllowed) {
+        const resetButton = GamePlayViewHelper.generateActionButton(
+          ACTION_BUTTONS.reset,
+          this.#onReset.bind(this),
+        );
+        const restartButton = GamePlayViewHelper.generateActionButton(
+          ACTION_BUTTONS.restart,
+          this.#onRestart.bind(this),
+        );
+        const exitButton = GamePlayViewHelper.generateActionButton(
+          ACTION_BUTTONS.exit,
+          this.#onExit.bind(this),
+        );
+        container.append(resetButton, restartButton, exitButton);
+        ElementHandler.display(container);
+      } else {
+        ElementHandler.hide(container);
+      }
+      return Promise.resolve();
+    });
   }
 
   #excecuteBoardAction(action, confirmation = CONFIRMATION.quitGame) {
@@ -265,11 +291,13 @@ export class GamePlay {
   }
 
   #onRestart() {
-    this.#excecuteBoardAction(this.reStart.bind(this), CONFIRMATION.restartGame);
+    this.#excecuteBoardAction(
+      this.reStart.bind(this),
+      CONFIRMATION.restartGame,
+    );
   }
 
   #onReset() {
     this.#excecuteBoardAction(this.actions.onReset.bind(this));
   }
-
 }

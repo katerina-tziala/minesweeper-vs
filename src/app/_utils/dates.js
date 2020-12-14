@@ -3,4 +3,3 @@
 export const nowTimestamp = () => {
   return new Date().toISOString();
 };
-

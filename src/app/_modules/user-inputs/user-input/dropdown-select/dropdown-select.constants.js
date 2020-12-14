@@ -10,7 +10,7 @@ export const DOM_ELEMENT_CLASS = {
   listboxOption: "dropdown-listbox-option",
   listboxContainer: "dropdown-listbox-container",
   listbox: "dropdown-listbox",
-  listboxScrollable: "dropdown-listbox--scrollable"
+  listboxScrollable: "dropdown-listbox--scrollable",
 };
 
 export const CONTENT = {
@@ -19,18 +19,18 @@ export const CONTENT = {
 };
 
 export const OPTION_ATTRIBUTES = {
-  "role": "option",
-  "value": "",
-  "id": "###-option__",
+  role: "option",
+  value: "",
+  id: "###-option__",
   "aria-setsize": "",
   "aria-posinset": "",
 };
 
 export const LISTBOX_ATTRIBUTES = {
-  "role": "listbox",
+  role: "listbox",
   "aria-multiselectable": false,
   "aria-required": true,
   "aria-label": "",
   "aria-activedescendant": "",
-  "id": "",
+  id: "",
 };

@@ -41,7 +41,7 @@ export class GameTimer {
   }
 
   set limit(limit) {
-    return this.#_limit = limit !== null ? limit : null;
+    return (this.#_limit = limit !== null ? limit : null);
   }
 
   get limit() {
@@ -49,7 +49,7 @@ export class GameTimer {
   }
 
   set step(step) {
-    return this.#_step = step;
+    return (this.#_step = step);
   }
 
   get step() {
@@ -61,7 +61,7 @@ export class GameTimer {
   }
 
   set digitalCounter(digitalCounter) {
-    return this.#_digitalCounter = digitalCounter;
+    return (this.#_digitalCounter = digitalCounter);
   }
 
   get digitalCounter() {
@@ -101,6 +101,7 @@ export class GameTimer {
   }
 
   continue() {
+    this.stop();
     this.value = this.value;
     this.#run();
   }
@@ -108,5 +109,4 @@ export class GameTimer {
   generate() {
     return this.digitalCounter.generate();
   }
-
 }

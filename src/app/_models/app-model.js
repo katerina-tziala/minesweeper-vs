@@ -1,11 +1,11 @@
 "use strict";
 
 export class AppModel {
-
-  constructor() { }
+  constructor() {}
 
   update(updateData) {
-    Object.keys(updateData).forEach(property => this[property] = updateData[property]);
+    Object.keys(updateData).forEach(
+      (property) => (this[property] = updateData[property]),
+    );
   }
-
 }

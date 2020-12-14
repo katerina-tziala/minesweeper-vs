@@ -3,30 +3,30 @@
 .dropdown-btn {
   @extend ._btn;
   @extend %start-center;
-  background-color       : inherit;
-  color                  : inherit;
-  padding                : 3px 5px;
-  border-top-left-radius : 3px;
+  background-color: inherit;
+  color: inherit;
+  padding: 3px 5px;
+  border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border-bottom          : 1px solid transparent;
-  width                  : 100%;
+  border-bottom: 1px solid transparent;
+  width: 100%;
 
-  >.dropdown-btn-label {
+  > .dropdown-btn-label {
     text-transform: capitalize;
-    flex-grow     : 1;
-    text-align    : left;
+    flex-grow: 1;
+    text-align: left;
   }
 
-  >.dropdown-btn-caret {
+  > .dropdown-btn-caret {
     margin-left: 10px;
-    height     : 12px;
+    height: 12px;
     line-height: 11px;
-    transition : transform .3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
     @include afterIcon("caret-down");
   }
 }
 
-.dropdown-btn[aria-expanded="true"]>.dropdown-btn-caret {
+.dropdown-btn[aria-expanded="true"] > .dropdown-btn-caret {
   transform: rotate(-180deg);
 }
 
@@ -37,8 +37,11 @@
 
     &:hover,
     &:focus {
-      border-bottom-color: theming.getThemeColor($theme, "theme-primary-intense");
-      color              : theming.getThemeColor($theme, "theme-primary-intense");
+      border-bottom-color: theming.getThemeColor(
+        $theme,
+        "theme-primary-intense"
+      );
+      color: theming.getThemeColor($theme, "theme-primary-intense");
     }
   }
 }

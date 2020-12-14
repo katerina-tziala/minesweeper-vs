@@ -6,7 +6,7 @@ export const CLEAR_BTN = {
   attributes: {
     "aria-label": "clear form",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const JOIN_BTN = {
@@ -15,7 +15,7 @@ export const JOIN_BTN = {
   attributes: {
     "aria-label": "join minesweepervs",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const ADD_PLAYER_BTN = {
@@ -24,16 +24,16 @@ export const ADD_PLAYER_BTN = {
   attributes: {
     "aria-label": "add player",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const CONFIRM_BTN = {
   innerHTML: "confirm",
   className: "btn-text btn-primary",
   attributes: {
-    "aria-label": "confirm"
+    "aria-label": "confirm",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const CANCEL_BTN = {
@@ -42,7 +42,7 @@ export const CANCEL_BTN = {
   attributes: {
     "aria-label": "cancel",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const QUIT_BTN = {
@@ -51,7 +51,7 @@ export const QUIT_BTN = {
   attributes: {
     "aria-label": "quit",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const RESTART_BTN = {
@@ -60,7 +60,7 @@ export const RESTART_BTN = {
   attributes: {
     "aria-label": "restart",
   },
-  actionType: "click"
+  actionType: "click",
 };
 
 export const RESET_BTN = {
@@ -69,6 +69,5 @@ export const RESET_BTN = {
   attributes: {
     "aria-label": "reset",
   },
-  actionType: "click"
+  actionType: "click",
 };
-

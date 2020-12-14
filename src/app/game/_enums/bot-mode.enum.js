@@ -4,7 +4,7 @@ const BotMode = {
   Easy: "easy",
   Medium: "medium",
   Hard: "hard",
-  Evil: "evil"
+  Evil: "evil",
 };
 Object.freeze(BotMode);
 

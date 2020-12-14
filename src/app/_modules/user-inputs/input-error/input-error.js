@@ -2,13 +2,17 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
-import { ElementHandler, ElementGenerator, AriaHandler } from "HTML_DOM_Manager";
+import {
+  ElementHandler,
+  ElementGenerator,
+  AriaHandler,
+} from "HTML_DOM_Manager";
 
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
   TOGGLE_BTN,
-  TOGGLE_BTN_ARIA
+  TOGGLE_BTN_ARIA,
 } from "./input-error.constants";
 
 export class InputError {
@@ -57,68 +61,95 @@ export class InputError {
   }
 
   generateInputError() {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.errorContainer]);
+    const container = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.errorContainer,
+    ]);
     container.append(this.generateErrorToggle(), this.generateErrorMessage());
     return container;
   }
 
   generateErrorToggle() {
-    const button = ElementGenerator.generateButton(TOGGLE_BTN, this.toggleErrorMessage.bind(this));
+    const button = ElementGenerator.generateButton(
+      TOGGLE_BTN,
+      this.toggleErrorMessage.bind(this),
+    );
     ElementHandler.hide(button);
     ElementHandler.setID(button, this.toggleBtnID);
     return button;
   }
 
   generateErrorMessage() {
-    const errorMessage = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.errorMessage], this.messageID);
+    const errorMessage = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.errorMessage],
+      this.messageID,
+    );
     ElementHandler.hide(errorMessage);
     return errorMessage;
   }
 
   toggleErrorMessage() {
-    this.messageDisplayed ? this.hideErrorMessage() : this.displayErrorMessage();
+    this.messageDisplayed
+      ? this.hideErrorMessage()
+      : this.displayErrorMessage();
   }
 
   hideErrorMessage() {
-    this.messageContainer.then(messageContainer => ElementHandler.hide(messageContainer));
+    this.messageContainer.then((messageContainer) =>
+      ElementHandler.hide(messageContainer),
+    );
     this.messageDisplayed = false;
     this.updateToggleBtnAria();
   }
 
   displayErrorMessage() {
-    this.messageContainer.then(messageContainer => ElementHandler.display(messageContainer));
+    this.messageContainer.then((messageContainer) =>
+      ElementHandler.display(messageContainer),
+    );
     this.messageDisplayed = true;
     this.updateToggleBtnAria();
   }
 
   updateToggleBtnAria() {
-    this.toggleBtn.then(button => AriaHandler.setAriaLabel(button, TOGGLE_BTN_ARIA[JSON.stringify(this.messageDisplayed)]));
+    this.toggleBtn.then((button) =>
+      AriaHandler.setAriaLabel(
+        button,
+        TOGGLE_BTN_ARIA[JSON.stringify(this.messageDisplayed)],
+      ),
+    );
   }
 
   show(message) {
-    this.toggleBtn.then(button => {
+    this.toggleBtn.then((button) => {
       this.hideErrorMessage();
       ElementHandler.display(button);
       AriaHandler.setAlertRole(button);
       AriaHandler.setAriaAssertive(button);
       this.setErrorMessage(message);
-      this.inputField.then(inputField => ElementHandler.addStyleClass(inputField, DOM_ELEMENT_CLASS.errorInput));
+      this.inputField.then((inputField) =>
+        ElementHandler.addStyleClass(inputField, DOM_ELEMENT_CLASS.errorInput),
+      );
     });
   }
 
   hide() {
-    this.toggleBtn.then(button => {
+    this.toggleBtn.then((button) => {
       this.hideErrorMessage();
       ElementHandler.hide(button);
       AriaHandler.removeRole(button);
       AriaHandler.removeAriaLive(button);
       this.setErrorMessage(TYPOGRAPHY.emptyString);
-      this.inputField.then(inputField => ElementHandler.removeStyleClass(inputField, DOM_ELEMENT_CLASS.errorInput));
+      this.inputField.then((inputField) =>
+        ElementHandler.removeStyleClass(
+          inputField,
+          DOM_ELEMENT_CLASS.errorInput,
+        ),
+      );
     });
   }
 
   setErrorMessage(message) {
-    this.messageContainer.then(messageContainer => ElementHandler.setContent(messageContainer, message));
+    this.messageContainer.then((messageContainer) =>
+      ElementHandler.setContent(messageContainer, message),
+    );
   }
-
 }

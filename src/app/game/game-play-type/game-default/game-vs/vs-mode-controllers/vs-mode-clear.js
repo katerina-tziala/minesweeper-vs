@@ -5,7 +5,6 @@ import { GameType, GameVSMode, GameEndType } from "GameEnums";
 import { VSModeController } from "./_vs-mode-controller";
 
 export class VSModeClear extends VSModeController {
-
   constructor(optionsSettings) {
     super(optionsSettings);
   }
@@ -26,7 +25,6 @@ export class VSModeClear extends VSModeController {
   }
 
   roundEnded(boardTiles) {
-    return (boardTiles.length && boardTiles[0].isRevealed);
+    return boardTiles.length && boardTiles[0].isRevealed;
   }
-  
 }

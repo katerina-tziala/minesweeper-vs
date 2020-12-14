@@ -1,7 +1,6 @@
 "use strict";
 
 export class LocalStorageHelper {
-
   static save(keyName, value) {
     localStorage.setItem(keyName, JSON.stringify(value));
   }
@@ -46,6 +45,4 @@ export class LocalStorageHelper {
   static removeGameSetUp(type) {
     return localStorage.removeItem(`gameSetup-${type}`);
   }
-
 }
-

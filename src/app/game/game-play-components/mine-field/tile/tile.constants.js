@@ -15,12 +15,12 @@ export const DOM_ELEMENT_CLASS = {
   buttonFlagged: "tile-cell-btn--flagged",
   buttonWronglyFlagged: "tile-cell-btn--wrongly-flagged",
   buttonMarked: "tile-cell-btn--marked",
-  buttonRevealed: "tile-cell-btn--revealed"
+  buttonRevealed: "tile-cell-btn--revealed",
 };
 
 export const TILE_BTN = {
   className: "tile-cell-btn",
   attributes: {
     "aria-label": "choose mine field tile",
-  }
+  },
 };

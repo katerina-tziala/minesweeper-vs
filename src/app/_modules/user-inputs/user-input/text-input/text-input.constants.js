@@ -12,7 +12,7 @@ export const FIELD_PARAMS = {
   placeholder: "enter ###",
   attributes: {
     "aria-label": "enter ###",
-  }
+  },
 };
 
 export const FIELD_ERROR = "### is not valid!";

@@ -5,54 +5,57 @@
 @import "../dropdown-select/dropdown-select";
 
 .settings {
-    position: relative;
+  position: relative;
 }
 
 .settings-panel {
-    position  : absolute;
-    top       : 34px;
-    right     : -15px;
-    z-index   : getIndex("settings-panel");
-    height    : 0;
-    transition: height 0.5s;
+  position: absolute;
+  top: 34px;
+  right: -15px;
+  z-index: getIndex("settings-panel");
+  height: 0;
+  transition: height 0.5s;
 }
 
 .settings-section {
-    @extend %start-center;
-    min-width      : 200px;
-    justify-content: space-between !important;
-    padding        : 10px;
+  @extend %start-center;
+  min-width: 200px;
+  justify-content: space-between !important;
+  padding: 10px;
 
-    &:not(:last-of-type) {
-        padding-bottom: 0px;
-    }
+  &:not(:last-of-type) {
+    padding-bottom: 0px;
+  }
 
-    @include settings-controller-theming.applySettingSectionIndex();
+  @include settings-controller-theming.applySettingSectionIndex();
 }
 
 .settings-tag {
-    text-transform: capitalize;
-    font-style    : italic;
-    font-weight   : 600;
+  text-transform: capitalize;
+  font-style: italic;
+  font-weight: 600;
 }
 
 .mine-type-option {
-    @include circle(22px);
-    line-height: 17px;
-    font-size  : 1.1rem;
-    @include setMineTypeIcons("&.mine-type-option");
+  @include circle(22px);
+  line-height: 17px;
+  font-size: 1.1rem;
+  @include setMineTypeIcons("&.mine-type-option");
 }
 
 .game-color-option {
-    @include circle(22px);
+  @include circle(22px);
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    @include settings-controller-theming.applySettingsControllerThemeStyle("light");
+  @include settings-controller-theming.applySettingsControllerThemeStyle(
+    "light"
+  );
 }
 
 .theme-dark {
-    @include settings-controller-theming.applySettingsControllerThemeStyle("dark");
+  @include settings-controller-theming.applySettingsControllerThemeStyle(
+    "dark"
+  );
 }

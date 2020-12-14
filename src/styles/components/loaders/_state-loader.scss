@@ -1,38 +1,38 @@
 @use "../../theming/theming";
 
 .state-loader {
-    @extend %center-center;
-    height  : 100%;
-    width   : 100%;
-    position: absolute;
-    top     : 0;
-    left    : 0;
-    z-index : 600;
+  @extend %center-center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 600;
 }
 
 .state-loader-icon {
-    @include afterIcon("spinner");
+  @include afterIcon("spinner");
 
-    &.spin {
-        animation: spin 1.3s infinite linear;
-    }
+  &.spin {
+    animation: spin 1.3s infinite linear;
+  }
 }
 
 .state-loader-icon--basic {
-    font-size  : 50px;
-    line-height: 40px;
-    @include circle(50px);
+  font-size: 50px;
+  line-height: 40px;
+  @include circle(50px);
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-    .state-loader {
-        @include theming.setThemeCard("light", 0.7);
-    }
+  .state-loader {
+    @include theming.setThemeCard("light", 0.7);
+  }
 }
 
 .theme-dark {
-    .state-loader {
-        @include theming.setThemeCard("dark", 0.7);
-    }
+  .state-loader {
+    @include theming.setThemeCard("dark", 0.7);
+  }
 }

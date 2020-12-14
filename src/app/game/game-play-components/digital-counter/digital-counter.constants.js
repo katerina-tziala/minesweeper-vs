@@ -21,5 +21,5 @@ export const SPECIAL_DIGIT_VALUE = {
 export const DEFAULT_DIGITS = {
   undefined: ["undefined", "undefined", "undefined"],
   exceedsUpper: ["upperExceeded", "upperExceeded", "upperExceeded"],
-  exceedsLower: ["minus", "bottomExceeded", "bottomExceeded"]
+  exceedsLower: ["minus", "bottomExceeded", "bottomExceeded"],
 };

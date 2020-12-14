@@ -2,7 +2,13 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, LIMITS, SPECIAL_DIGIT_VALUE, DEFAULT_DIGITS } from "./digital-counter.constants";
+import {
+  DOM_ELEMENT_ID,
+  DOM_ELEMENT_CLASS,
+  LIMITS,
+  SPECIAL_DIGIT_VALUE,
+  DEFAULT_DIGITS,
+} from "./digital-counter.constants";
 import { Digit } from "./digit/digit";
 
 export class DigitalCounter {
@@ -59,11 +65,11 @@ export class DigitalCounter {
   }
 
   get #exceedsUpperLimit() {
-    return (this.value && this.value > LIMITS.max);
+    return this.value && this.value > LIMITS.max;
   }
 
   get #exceedsLowerLimit() {
-    return (this.value && this.value < LIMITS.min);
+    return this.value && this.value < LIMITS.min;
   }
 
   get #valueArray() {
@@ -80,7 +86,9 @@ export class DigitalCounter {
   }
 
   get #valueArrayWhenNumber() {
-    let digitsArray = Math.abs(this.value).toString().split(TYPOGRAPHY.emptyString);
+    let digitsArray = Math.abs(this.value)
+      .toString()
+      .split(TYPOGRAPHY.emptyString);
     while (digitsArray.length < 3) {
       digitsArray.unshift(SPECIAL_DIGIT_VALUE.zero);
     }
@@ -100,15 +108,17 @@ export class DigitalCounter {
   }
 
   generate() {
-    this.#digitalCounterContainer.then(digitalCounter => {
+    this.#digitalCounterContainer.then((digitalCounter) => {
       ElementHandler.clearContent(digitalCounter);
       digitalCounter.append(this.#generateCounter);
     });
   }
 
   get #generateCounter() {
-    const counter = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.counter]);
-    this.#digits.forEach(digit => counter.append(digit.generateDigit()));
+    const counter = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.counter,
+    ]);
+    this.#digits.forEach((digit) => counter.append(digit.generateDigit()));
     return counter;
   }
 }

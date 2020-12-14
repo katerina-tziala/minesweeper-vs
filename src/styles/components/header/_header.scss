@@ -5,54 +5,58 @@
 @import "../button/button";
 
 .header {
-    @extend %start-center;
-    height : 46px;
-    width  : 100%;
-    padding: 0 15px;
+  @extend %start-center;
+  height: 46px;
+  width: 100%;
+  padding: 0 15px;
 }
 
 .header-title {
-    font-weight: 500;
-    flex-grow  : 1;
+  font-weight: 500;
+  flex-grow: 1;
 }
 
 .header-btn {
-    @extend .btn-icon;
-    @extend .btn-icon--normal;
-    @include afterIcon("settings");
-    background-color: transparent;
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  @include afterIcon("settings");
+  background-color: transparent;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .theme-light {
+  .header {
+    background: theming.getThemeColor("light", "app-primary");
+    color: theming.getThemeColor("light", "theme-secondary");
+    @include theming.setThemeBoxShadow("light");
+  }
 
-    .header {
-        background: theming.getThemeColor("light", "app-primary");
-        color     : theming.getThemeColor("light", "theme-secondary");
-        @include theming.setThemeBoxShadow("light");
-    }
-
-    .header-btn {
-        $base       : (color: theming.getThemeColor("light", "theme-base"));
-        $hovered       : (color: theming.getThemeColor("light", "theme-secondary-intense"));
-        @include button-theming.setButtonStyles($base, $hovered);
-    }
-
+  .header-btn {
+    $base: (
+      color: theming.getThemeColor("light", "theme-base"),
+    );
+    $hovered: (
+      color: theming.getThemeColor("light", "theme-secondary-intense"),
+    );
+    @include button-theming.setButtonStyles($base, $hovered);
+  }
 }
 
 .theme-dark {
+  .header {
+    background: theming.getThemeColor("dark", "app-primary");
+    color: theming.getThemeColor("dark", "theme-primary");
+    @include theming.setThemeBoxShadow("dark");
+  }
 
-    .header {
-        background: theming.getThemeColor("dark", "app-primary");
-        color     : theming.getThemeColor("dark", "theme-primary");
-        @include theming.setThemeBoxShadow("dark");
-    }
-
-     .header-btn {
-        $base       : (color: theming.getThemeColor("dark", "theme-primary"));
-        $hovered       : (color: theming.getThemeColor("dark", "theme-primary-intense"));
-        @include button-theming.setButtonStyles($base, $hovered);
-    }
-
+  .header-btn {
+    $base: (
+      color: theming.getThemeColor("dark", "theme-primary"),
+    );
+    $hovered: (
+      color: theming.getThemeColor("dark", "theme-primary-intense"),
+    );
+    @include button-theming.setButtonStyles($base, $hovered);
+  }
 }

@@ -4,12 +4,10 @@ import { clone, randomValueFromArray } from "~/_utils/utils.js";
 import { GameType, GameVSMode, GameEndType } from "GameEnums";
 
 export class VSModeController {
-
   constructor(optionsSettings) {
     this.optionsSettings = optionsSettings;
 
     console.log(this.optionsSettings);
-
   }
 
   get revealingAllowed() {
@@ -27,5 +25,4 @@ export class VSModeController {
   roundEnded(boardTiles) {
     return true;
   }
-
 }

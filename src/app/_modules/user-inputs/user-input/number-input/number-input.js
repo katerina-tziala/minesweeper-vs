@@ -2,12 +2,21 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { valueInLimits, emptyString, validValue } from "../../../../_utils/validator";
+import {
+  valueInLimits,
+  emptyString,
+  validValue,
+} from "../../../../_utils/validator";
 import { clone, replaceStringParameter } from "../../../../_utils/utils";
 
 import { TextInput } from "../text-input/text-input";
 
-import { DOM_ELEMENT_CLASS, FIELD_PARAMS, FIELD_ERROR, CONTROLL_BUTTONS } from "./number-input.constants";
+import {
+  DOM_ELEMENT_CLASS,
+  FIELD_PARAMS,
+  FIELD_ERROR,
+  CONTROLL_BUTTONS,
+} from "./number-input.constants";
 
 export class NumberInput extends TextInput {
   #boundaries;
@@ -30,13 +39,18 @@ export class NumberInput extends TextInput {
     const params = clone(FIELD_PARAMS);
     params.className = `${DOM_ELEMENT_CLASS.inputField} ${this.inputClassBasedOnName}`;
     params.autocomplete = "off";
-    params.attributes["aria-label"] = replaceStringParameter(params.attributes["aria-label"], this.name);
+    params.attributes["aria-label"] = replaceStringParameter(
+      params.attributes["aria-label"],
+      this.name,
+    );
     params.attributes.id = this.name;
     return params;
   }
 
   get valueInteger() {
-    return (this.value && this.value.trim().match(/^-?[0-9]+$/) !== null) ? parseInt(this.value, 10) : undefined;
+    return this.value && this.value.trim().match(/^-?[0-9]+$/) !== null
+      ? parseInt(this.value, 10)
+      : undefined;
   }
 
   get validNumber() {
@@ -49,26 +63,30 @@ export class NumberInput extends TextInput {
 
   get boundariesError() {
     let message = FIELD_ERROR.outOfLimits;
-    Object.keys(this.boundaries).forEach(key => {
+    Object.keys(this.boundaries).forEach((key) => {
       message = replaceStringParameter(message, this.boundaries[key], key);
     });
     return message;
   }
 
   get controllsID() {
-    return DOM_ELEMENT_CLASS.inputControls + TYPOGRAPHY.doubleUnderscore + this.name;
+    return (
+      DOM_ELEMENT_CLASS.inputControls + TYPOGRAPHY.doubleUnderscore + this.name
+    );
   }
 
   get submissionProperties() {
     return {
       name: this.name,
       value: this.valueInteger,
-      valid: this.valid
+      valid: this.valid,
     };
   }
 
   generateInputField() {
-    const inputContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.inputContainer]);
+    const inputContainer = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.inputContainer,
+    ]);
     const input = this.generateField(this.onKeyUp.bind(this));
     ElementHandler.setReadOnly(input, this.disabled);
     const error = this.errorController.generateInputError();
@@ -78,15 +96,24 @@ export class NumberInput extends TextInput {
   }
 
   generateInputControlls() {
-    const inputControlls = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.inputControls], this.controllsID);
-    const upButton = ElementGenerator.generateButton(CONTROLL_BUTTONS.up, () => {
-      this.updateValue(1);
-    });
+    const inputControlls = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.inputControls],
+      this.controllsID,
+    );
+    const upButton = ElementGenerator.generateButton(
+      CONTROLL_BUTTONS.up,
+      () => {
+        this.updateValue(1);
+      },
+    );
     ElementHandler.setDisabled(upButton, this.disabled);
     inputControlls.append(upButton);
-    const downButton = ElementGenerator.generateButton(CONTROLL_BUTTONS.down, () => {
-      this.updateValue(-1);
-    });
+    const downButton = ElementGenerator.generateButton(
+      CONTROLL_BUTTONS.down,
+      () => {
+        this.updateValue(-1);
+      },
+    );
     ElementHandler.setDisabled(downButton, this.disabled);
     inputControlls.append(downButton);
     return inputControlls;
@@ -126,7 +153,7 @@ export class NumberInput extends TextInput {
 
   getInitialValueWhenFieldIsCleared(step) {
     if (this.boundaries) {
-      const newValue = (step > 0) ? this.boundaries.max : this.boundaries.min;
+      const newValue = step > 0 ? this.boundaries.max : this.boundaries.min;
       return newValue;
     }
     return 0;
@@ -167,7 +194,9 @@ export class NumberInput extends TextInput {
   }
 
   valueInLimits() {
-    return this.boundaries ? valueInLimits(this.valueInteger, this.boundaries) : true;
+    return this.boundaries
+      ? valueInLimits(this.valueInteger, this.boundaries)
+      : true;
   }
 
   showError(message = this.inputError) {
@@ -181,26 +210,33 @@ export class NumberInput extends TextInput {
   }
 
   toggleControllButtons(show = false) {
-    ElementHandler.getByID(this.controllsID).then(controllsContainer => {
-      show ? ElementHandler.display(controllsContainer) : ElementHandler.hide(controllsContainer);
+    ElementHandler.getByID(this.controllsID).then((controllsContainer) => {
+      show
+        ? ElementHandler.display(controllsContainer)
+        : ElementHandler.hide(controllsContainer);
     });
   }
 
   disable() {
     this.disabled = true;
-    this.inputField.then(inputField => { ElementHandler.setReadOnly(inputField, this.disabled) });
+    this.inputField.then((inputField) => {
+      ElementHandler.setReadOnly(inputField, this.disabled);
+    });
     this.updateControllButtonsState();
   }
 
   enable() {
     this.disabled = false;
-    this.inputField.then(inputField => { ElementHandler.setReadOnly(inputField, this.disabled) });
+    this.inputField.then((inputField) => {
+      ElementHandler.setReadOnly(inputField, this.disabled);
+    });
     this.updateControllButtonsState();
   }
 
   updateControllButtonsState() {
-    document.querySelectorAll(`.${DOM_ELEMENT_CLASS.inputControlBtn}`)
-      .forEach(button => ElementHandler.setDisabled(button, this.disabled));
+    document
+      .querySelectorAll(`.${DOM_ELEMENT_CLASS.inputControlBtn}`)
+      .forEach((button) => ElementHandler.setDisabled(button, this.disabled));
   }
 
   updateValidFieldValue(value = this.valueInteger) {
@@ -209,5 +245,4 @@ export class NumberInput extends TextInput {
     this.setFieldValue();
     this.hideError();
   }
-
 }

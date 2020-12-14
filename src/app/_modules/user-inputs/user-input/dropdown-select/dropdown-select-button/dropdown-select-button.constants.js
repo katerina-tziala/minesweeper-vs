@@ -12,5 +12,5 @@ export const DOM_ELEMENT_CLASS = {
 
 export const DROPDOWN_BNT = {
   className: "dropdown-btn",
-  actionType: "click"
+  actionType: "click",
 };

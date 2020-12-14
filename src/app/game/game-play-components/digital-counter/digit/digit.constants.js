@@ -21,5 +21,5 @@ export const DIGIT_POSITIONS = {
   undefined: [],
   noNumber: [2, 5, 7],
   upperExceeded: [1, 2, 3],
-  bottomExceeded: [4, 5, 6]
+  bottomExceeded: [4, 5, 6],
 };

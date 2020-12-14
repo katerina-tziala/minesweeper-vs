@@ -5,7 +5,6 @@ import { GameLevel } from "GameEnums";
 import { LEVEL_PARAMS } from "./level-setting-constants";
 
 export class LevelSettings extends AppModel {
-
   constructor(level) {
     super();
     this.setLevel(level ? level : GameLevel.Beginner);
@@ -13,7 +12,7 @@ export class LevelSettings extends AppModel {
   }
 
   get numberOfEmptyTiles() {
-    return (this.rows * this.columns) - this.numberOfMines;
+    return this.rows * this.columns - this.numberOfMines;
   }
 
   setLevel(level) {
@@ -28,12 +27,13 @@ export class LevelSettings extends AppModel {
   generateMinesPositions() {
     let mineList = [];
     while (mineList.length < this.numberOfMines) {
-      const minePosition = parseInt(Math.floor((Math.random() * (this.rows * this.columns))));
+      const minePosition = parseInt(
+        Math.floor(Math.random() * (this.rows * this.columns)),
+      );
       if (!mineList.includes(minePosition)) {
         mineList.push(minePosition);
       }
     }
     return sortNumbersArrayAsc(mineList);
   }
-
 }

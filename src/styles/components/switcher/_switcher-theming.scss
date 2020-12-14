@@ -2,7 +2,6 @@
 @use "../../theming/theming";
 
 @mixin applySwitcherFocusedTrackTheme($theme) {
-
   &:hover,
   &:focus {
     @include theming.setThemeBoxShadow($theme);
@@ -10,7 +9,6 @@
   }
 
   &:disabled {
-
     &:hover,
     &:focus {
       box-shadow: none;
@@ -19,13 +17,15 @@
 }
 
 @mixin applySwitcherTheme($theme) {
-
   ._thumb {
     background-color: theming.getThemeColor($theme, "theme-base");
 
     &:hover,
     &:focus {
-      background-color: theming.getThemeColor($theme, "theme-secondary-intense");
+      background-color: theming.getThemeColor(
+        $theme,
+        "theme-secondary-intense"
+      );
     }
   }
 
@@ -34,10 +34,12 @@
     @include applySwitcherFocusedTrackTheme($theme);
 
     &:disabled {
-
       &:hover,
       &:focus {
-        background-color: theming.getThemeColor($theme, "theme-primary-intense");
+        background-color: theming.getThemeColor(
+          $theme,
+          "theme-primary-intense"
+        );
       }
     }
   }
@@ -47,12 +49,13 @@
     @include applySwitcherFocusedTrackTheme($theme);
 
     &:disabled {
-
       &:hover,
       &:focus {
-        background-color: theming.getThemeColor($theme, "theme-primary-intense");
+        background-color: theming.getThemeColor(
+          $theme,
+          "theme-primary-intense"
+        );
       }
     }
   }
-
 }

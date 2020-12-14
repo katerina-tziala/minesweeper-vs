@@ -1,7 +1,7 @@
 "use strict";
 const GameAction = {
-    Mark: "mark",
-    Reveal: "reveal"
+  Mark: "mark",
+  Reveal: "reveal",
 };
 
 Object.freeze(GameAction);

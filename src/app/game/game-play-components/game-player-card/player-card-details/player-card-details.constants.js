@@ -11,7 +11,7 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const DOM_ELEMENT_ID = {
-  gameTargetResult: "player-goal-details-target-result__"
+  gameTargetResult: "player-goal-details-target-result__",
 };
 
 export const TARGET_CONTENT = {

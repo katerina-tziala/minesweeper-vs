@@ -8,7 +8,7 @@ export const DOM_ELEMENT_CLASS = {
   sectionContainer: "settings-wizard-section",
   label: "settings-wizard-label",
   fieldContainer: "settings-wizard-field-container",
-  fieldExplanation: "settings-wizard-field-explanation"
+  fieldExplanation: "settings-wizard-field-explanation",
 };
 
 export const CONTENT = {
@@ -29,14 +29,14 @@ export const CONTENT = {
   missedTurnsLimit: "allowed missed turns",
   consecutiveTurns: "consecutive missed turns",
   sameMinePositions: "identical minefield",
-  botMode: "bot mode"
+  botMode: "bot mode",
 };
 
 export const WIZARD_NAME = {
   vsModeSettings: "vsModeSettings",
   levelSettings: "levelSettings",
   turnSettings: "turnSettings",
-  optionsSettings: "optionsSettings"
+  optionsSettings: "optionsSettings",
 };
 
 export const TITLES = {
@@ -44,5 +44,5 @@ export const TITLES = {
   optionsSettings: "set up game options",
   turnSettings: "set up turn options",
   vsModeSettings: "set up VS mode",
-  botMode: "set up bot mode"
+  botMode: "set up bot mode",
 };

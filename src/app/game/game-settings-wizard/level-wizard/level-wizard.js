@@ -33,19 +33,27 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   get #levelProperties() {
-    return Object.keys(SETTINGS_PROPERTIES).filter(key => SETTINGS_PROPERTIES[key] !== SETTINGS_PROPERTIES.level);
+    return Object.keys(SETTINGS_PROPERTIES).filter(
+      (key) => SETTINGS_PROPERTIES[key] !== SETTINGS_PROPERTIES.level,
+    );
   }
 
   get #levelPropertiesControllers() {
-    return this.inputsGroup.controllers.filter(controller => controller.name !== SETTINGS_PROPERTIES.level);
+    return this.inputsGroup.controllers.filter(
+      (controller) => controller.name !== SETTINGS_PROPERTIES.level,
+    );
   }
 
   get #numberOfMinesBoundaries() {
     if (this.#isCustomLevel) {
       const numberOfBoardTiles = this.settings.rows * this.settings.columns;
       const boundaries = clone(LIMITS.numberOfMines);
-      boundaries.max = Math.floor(numberOfBoardTiles * LIMITS.maxMinesPercentage);
-      boundaries.min = Math.ceil(numberOfBoardTiles * LIMITS.minMinesPercentage);
+      boundaries.max = Math.floor(
+        numberOfBoardTiles * LIMITS.maxMinesPercentage,
+      );
+      boundaries.min = Math.ceil(
+        numberOfBoardTiles * LIMITS.minMinesPercentage,
+      );
       return boundaries;
     }
     return undefined;
@@ -73,13 +81,23 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   #initLevelController() {
-    const params = this.getDropdownSelectParams(SETTINGS_PROPERTIES.level, GameLevel);
-    this.inputsGroup.controllers = new DropdownSelect(params, this.onLevelChange.bind(this));
+    const params = this.getDropdownSelectParams(
+      SETTINGS_PROPERTIES.level,
+      GameLevel,
+    );
+    this.inputsGroup.controllers = new DropdownSelect(
+      params,
+      this.onLevelChange.bind(this),
+    );
   }
 
   #initLevelPropertiesControllers() {
-    this.#levelProperties.forEach(levelProperty => {
-      const controller = new NumberInput(levelProperty, this.settings[levelProperty].toString(), this.#onCustomLevelParamChange.bind(this));
+    this.#levelProperties.forEach((levelProperty) => {
+      const controller = new NumberInput(
+        levelProperty,
+        this.settings[levelProperty].toString(),
+        this.#onCustomLevelParamChange.bind(this),
+      );
       controller.boundaries = this.#getPropertyBoundaries(levelProperty);
       controller.disabled = !this.#isCustomLevel;
       this.inputsGroup.controllers = controller;
@@ -103,7 +121,7 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   #updateLevelPropertiesControllers() {
-    this.#levelPropertiesControllers.forEach(controller => {
+    this.#levelPropertiesControllers.forEach((controller) => {
       controller.value = this.settings[controller.name].toString();
       this.#isCustomLevel ? controller.enable() : controller.disable();
       controller.updateValidFieldValue();
@@ -112,12 +130,16 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   #enableDisabledControllers() {
-    this.#levelPropertiesControllers.filter(controller => controller.disabled).forEach(controller => controller.enable());
+    this.#levelPropertiesControllers
+      .filter((controller) => controller.disabled)
+      .forEach((controller) => controller.enable());
   }
 
   #onInvalidCustomLevel(invalidPropertyName) {
-    const restPropertiesControllers = this.#levelPropertiesControllers.filter(controller => controller.name !== invalidPropertyName);
-    restPropertiesControllers.forEach(controller => controller.disable());
+    const restPropertiesControllers = this.#levelPropertiesControllers.filter(
+      (controller) => controller.name !== invalidPropertyName,
+    );
+    restPropertiesControllers.forEach((controller) => controller.disable());
     this.emitChanges();
   }
 
@@ -138,7 +160,9 @@ export class LevelWizard extends GameSettingsWizard {
   }
 
   #updateNumberOfMinesBoundaries() {
-    const numberOfMinesController = this.inputsGroup.getController(SETTINGS_PROPERTIES.numberOfMines);
+    const numberOfMinesController = this.inputsGroup.getController(
+      SETTINGS_PROPERTIES.numberOfMines,
+    );
     numberOfMinesController.boundaries = this.#numberOfMinesBoundaries;
     numberOfMinesController.validateInputTypeValue();
   }
@@ -152,8 +176,7 @@ export class LevelWizard extends GameSettingsWizard {
     return {
       name: this.name,
       valid: true,
-      value: new LevelSettings()
+      value: new LevelSettings(),
     };
   }
-
 }

@@ -55,7 +55,7 @@ export class UserInput {
     return {
       name: this.name,
       value: this.value,
-      valid: this.valid
+      valid: this.valid,
     };
   }
 
@@ -79,5 +79,4 @@ export class UserInput {
     ElementHandler.setParams(inputField, params);
     return inputField;
   }
-
 }

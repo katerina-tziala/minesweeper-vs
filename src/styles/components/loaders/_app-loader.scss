@@ -1,68 +1,68 @@
 @use "../../theming/theming";
 
 .loader {
-    @extend %center-center;
-	flex-flow: column nowrap;
-	height   : 100%;
-	width    : 100%;
-	position : absolute;
-	top      : 0;
-	left     : 0;
-	z-index  : getIndex("loader");
+  @extend %center-center;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: getIndex("loader");
 }
 
 .spinner {
-	stroke-width    : 3px;
-	transform-origin: 50%;
+  stroke-width: 3px;
+  transform-origin: 50%;
 
-	&.spin {
-		animation: line 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.2s linear infinite;
-	}
+  &.spin {
+    animation: line 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite,
+      rotate 1.2s linear infinite;
+  }
 }
 
 @keyframes rotate {
-	from {
-		transform: rotate(0);
-	}
+  from {
+    transform: rotate(0);
+  }
 
-	to {
-		transform: rotate(450deg);
-	}
+  to {
+    transform: rotate(450deg);
+  }
 }
 
 @keyframes line {
-	0% {
-		stroke-dasharray: 2, 85.964;
-		transform       : rotate(0);
-	}
+  0% {
+    stroke-dasharray: 2, 85.964;
+    transform: rotate(0);
+  }
 
-	50% {
-		stroke-dasharray : 65.973, 21.9911;
-		stroke-dashoffset: 0;
-	}
+  50% {
+    stroke-dasharray: 65.973, 21.9911;
+    stroke-dashoffset: 0;
+  }
 
-	100% {
-		stroke-dasharray : 2, 85.964;
-		stroke-dashoffset: -65.973;
-		transform        : rotate(90deg);
-	}
+  100% {
+    stroke-dasharray: 2, 85.964;
+    stroke-dashoffset: -65.973;
+    transform: rotate(90deg);
+  }
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @mixin setLoaderThemeStyles($theme) {
-    background-color: theming.getThemeColor($theme, "theme-base");
-    stroke: theming.getThemeColor($theme, "theme-primary");
+  background-color: theming.getThemeColor($theme, "theme-base");
+  stroke: theming.getThemeColor($theme, "theme-primary");
 }
 
 .theme-light {
-	.loader {
-        @include setLoaderThemeStyles("light");
-	}
+  .loader {
+    @include setLoaderThemeStyles("light");
+  }
 }
 
 .theme-dark {
-	.loader {
-		@include setLoaderThemeStyles("dark");
-	}
+  .loader {
+    @include setLoaderThemeStyles("dark");
+  }
 }

@@ -21,21 +21,18 @@ export class GameVS extends Game {
     this.#setModeController();
 
     //this.turnSettings.turnTimer = false;
-   // this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 5;
-    this.turnSettings.missedTurnsLimit = 3;
+    // this.turnSettings.consecutiveTurns = true;
+    // this.turnSettings.turnDuration = 5;
+    // this.turnSettings.missedTurnsLimit = 3;
 
     this.optionsSettings.unlimitedFlags = false;
+    this.optionsSettings.tileRevealing = false;
 
-    
     //console.log(this.turnSettings);
-    // console.log(this.optionsSettings);
+    //console.log(this.optionsSettings);
     this.init();
     this.vsDashboard = new GameVSDashboard(!this.#isDetectMinesGoal);
   }
-
-
-
 
   // OVERRIDEN FUNCTIONS
   get gameTimerSettings() {
@@ -58,8 +55,8 @@ export class GameVS extends Game {
       boardActions.push(
         GameViewHelper.generateActionButton(
           ACTION_BUTTONS.sneakPeek,
-          this.onSneakPeek.bind(this)
-        )
+          this.onSneakPeek.bind(this),
+        ),
       );
     }
     return boardActions;
@@ -69,20 +66,21 @@ export class GameVS extends Game {
     const gameContainer = super.generateView();
     const vsDashboard = this.vsDashboard.generateView(
       this.player,
-      this.opponent
+      this.opponent,
     );
     gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
     return gameContainer;
   }
 
   init() {
-
-    console.log(this.#maxAllowedFlags);
+    // console.log(this.#maxAllowedFlags);
     this.players.forEach((player) => {
-     
-      player.initState(this.#goalTargetNumber, this.#turnsLimit, 3);
+      player.initState(
+        this.#goalTargetNumber,
+        this.#turnsLimit,
+        this.#maxAllowedFlags,
+      );
       player.turn = player.id === this.playerStartID;
-
     });
     this.initState();
   }
@@ -127,7 +125,7 @@ export class GameVS extends Game {
   restart() {
     super.restart();
     this.playerStartID = randomValueFromArray(
-      this.players.map((player) => player.id)
+      this.players.map((player) => player.id),
     );
     this.init();
     this.start();
@@ -135,6 +133,7 @@ export class GameVS extends Game {
 
   handleTileRevealing(tile) {
     if (this.#modeController.revealingAllowed && tile.isUntouched) {
+      this.pause();
       this.getRevealedMinefieldArea(tile).then((boardTiles) => {
         this.setPlayerStatisticsOnTileRevealing(boardTiles);
       });
@@ -147,41 +146,57 @@ export class GameVS extends Game {
     if (boardTiles.length > 1 || this.oneTileRevealed(boardTiles)) {
       player.revealedTiles = boardTiles.map((tile) => tile.position);
       this.setGameEnd(this.#modeController.getGameEndOnPlayerMove(player));
-  
+
       console.log("check game over on minefield state after revealing");
 
-      this.#resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
+      this.#resetPlayerTurnsAfterMove().then(() =>
+        this.onPlayerMoveEnd(boardTiles),
+      );
     } else {
       player.detonatedTile = boardTiles[0].position;
       this.setGameEnd(GameEndType.DetonatedMine);
-      this.#resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(boardTiles));
+      this.#resetPlayerTurnsAfterMove().then(() =>
+        this.onPlayerMoveEnd(boardTiles),
+      );
     }
   }
 
   handleTileMarking(tile) {
-    console.log("handleTileMarking detect");
-
     if (this.tileFlaggingAllowed(tile)) {
+      this.pause();
       this.setFlagOnMinefieldTile(tile);
-    } else if (this.tileMarkingAllowed(tile)) { // set mark
+
+      console.log("check game over on minefield state after flagging");
+
+      this.#updatePlayerTurnsAndAllowedFlags().then(() =>
+        this.onPlayerMoveEnd([tile]),
+      );
+    } else if (this.tileMarkingAllowed(tile)) {
+      // set mark
+      this.pause();
       this.setMarkOnMinefieldTile(tile);
-  
+
       console.log("check game over on minefield state after marking?");
-  
-      this.#updatePlayerTurnsAndAllowedFlags().then(() => this.onPlayerMoveEnd([tile]));
-    } else if (this.tileResetingAllowed(tile)) { // reset
+
+      this.#updatePlayerTurnsAndAllowedFlags().then(() =>
+        this.onPlayerMoveEnd([tile]),
+      );
+    } else if (this.tileResetingAllowed(tile)) {
+      // reset
+      this.pause();
       this.resetMinefieldTile(tile);
-  
+
       console.log("check game over on minefield state after reseting tile?");
-  
-      this.#updatePlayerTurnsAndAllowedFlags().then(() => this.onPlayerMoveEnd([tile]));
+
+      this.#updatePlayerTurnsAndAllowedFlags().then(() =>
+        this.onPlayerMoveEnd([tile]),
+      );
     } else {
-      //this.pause();
-      console.log("touched tile - flagged or marked by other player");
-      console.log(tile);
+      // this.pause();
+      // console.log("touched tile - no action");
+      // console.log(tile);
       // console.log(this.optionsSettings);
-      
-      this.minefield.enable();
+      this.mineField.enable();
     }
   }
 
@@ -190,15 +205,10 @@ export class GameVS extends Game {
   }
 
   tileResetingAllowed(tile, player = this.playerOnTurn) {
-    return (tile.isFlaggedBy(player.id) && !this.allowMarks) || tile.isMarkedBy(player.id);
-  }
-
-  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
-    super.setFlagOnMinefieldTile(tile);
-  
-    console.log("check game over on minefield state after flagging");
-
-    this.#updatePlayerTurnsAndAllowedFlags().then(() => this.onPlayerMoveEnd([tile]));
+    return (
+      (tile.isFlaggedBy(player.id) && !this.allowMarks) ||
+      tile.isMarkedBy(player.id)
+    );
   }
 
   onRoundTimerEnd() {
@@ -219,18 +229,19 @@ export class GameVS extends Game {
 
   onPlayerMoveEnd(boardTiles = []) {
     super.onPlayerMoveEnd(boardTiles);
+
     if (this.isOver) {
       this.onGameOver();
       return;
     }
 
-    console.log(this.#modeController.roundEnded(boardTiles));
-   if (this.#modeController.roundEnded(boardTiles)) {
-    this.onRoundEnd();
-    return;
-   }
+    //console.log(this.#modeController.roundEnded(boardTiles));
+    if (this.#modeController.roundEnded(boardTiles)) {
+      this.onRoundEnd();
+      return;
+    }
 
-   this.onGameContinueAfterMove();
+    this.onGameContinueAfterMove();
   }
 
   onGameContinueAfterMove() {
@@ -240,15 +251,13 @@ export class GameVS extends Game {
       console.log(this.playerOnTurn);
       return;
     }
-    
+
     console.log("continue round for player");
-    //this.continue();
-    this.mineField.enable();
+    this.continue();
+    // this.mineField.enable();
   }
 
-
   onRoundEnd() {
-
     console.log("onRoundEnd");
     if (this.isOnline) {
       console.log("submit online round end");
@@ -300,11 +309,15 @@ export class GameVS extends Game {
   }
 
   get #goalTargetNumber() {
-    return this.#isDetectMinesGoal ? this.levelSettings.numberOfMines : this.levelSettings.numberOfEmptyTiles;
+    return this.#isDetectMinesGoal
+      ? this.levelSettings.numberOfMines
+      : this.levelSettings.numberOfEmptyTiles;
   }
 
   get #maxAllowedFlags() {
-    return !this.optionsSettings.unlimitedFlags ? this.levelSettings.numberOfMines : null;
+    return !this.optionsSettings.unlimitedFlags
+      ? this.levelSettings.numberOfMines
+      : null;
   }
 
   get #sneakPeekAllowed() {
@@ -334,10 +347,6 @@ export class GameVS extends Game {
     playerUpdates.push(this.#resetPlayerTurnsAfterMove());
     return Promise.all(playerUpdates);
   }
-
-
-
-
 
   onSneakPeek() {
     console.log("onSneakPeek");

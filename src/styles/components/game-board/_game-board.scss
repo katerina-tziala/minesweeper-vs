@@ -3,7 +3,6 @@
 @use "../../theming/theming";
 @use "./game-board-styles";
 
-
 ._board-section {
   border-width: 2px;
   border-style: solid;
@@ -12,7 +11,7 @@
 }
 
 ._board-button {
-  height   : 30px;
+  height: 30px;
   min-width: 30px;
 }
 
@@ -21,12 +20,9 @@
 @import "./minefield/minefield";
 @import "./tile/tile";
 
-
-
 .game-board {
   padding: 5px;
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
@@ -35,13 +31,15 @@
   }
 
   ._board-section {
-    @include game-board-styles.twoSideBorderDirectionTopLeft(theming.getThemeColor("light", "board-grid-dark"), theming.getThemeColor("light", "board-grid-light"));
+    @include game-board-styles.twoSideBorderDirectionTopLeft(
+      theming.getThemeColor("light", "board-grid-dark"),
+      theming.getThemeColor("light", "board-grid-light")
+    );
   }
 
   ._board-button {
     @include game-board-styles.applyThemeBoardButtonStyle("light");
   }
-
 }
 
 .theme-dark {
@@ -50,11 +48,13 @@
   }
 
   ._board-section {
-    @include game-board-styles.twoSideBorderDirectionTopLeft(theming.getThemeColor("dark", "board-grid-dark"), theming.getThemeColor("dark", "board-grid-light"));
+    @include game-board-styles.twoSideBorderDirectionTopLeft(
+      theming.getThemeColor("dark", "board-grid-dark"),
+      theming.getThemeColor("dark", "board-grid-light")
+    );
   }
 
   ._board-button {
     @include game-board-styles.applyThemeBoardButtonStyle("dark");
   }
-
 }

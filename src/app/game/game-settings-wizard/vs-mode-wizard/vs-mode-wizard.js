@@ -36,22 +36,33 @@ export class VSModeWizard extends GameSettingsWizard {
   }
 
   get #initialSettingsMode() {
-    return (!this.#parallelAllowed && this.settings.vsMode === GameVSMode.Parallel) ? GameVSMode.Clear : this.settings.vsMode;
+    return !this.#parallelAllowed &&
+      this.settings.vsMode === GameVSMode.Parallel
+      ? GameVSMode.Clear
+      : this.settings.vsMode;
   }
 
   #init() {
-    this.settings = new OptionsSettings(this.#vsModeSelected ? this.#initialSettingsMode : GameVSMode.Clear);
+    this.settings = new OptionsSettings(
+      this.#vsModeSelected ? this.#initialSettingsMode : GameVSMode.Clear,
+    );
     const params = this.getDropdownSelectParams("vsMode", GameVSMode);
     if (!this.#parallelAllowed) {
-      params.options = params.options.filter(option => option.value !== GameVSMode.Parallel);
-
+      params.options = params.options.filter(
+        (option) => option.value !== GameVSMode.Parallel,
+      );
     }
-    this.inputsGroup.controllers = new DropdownSelect(params, this.#onVsModeChange.bind(this));
+    this.inputsGroup.controllers = new DropdownSelect(
+      params,
+      this.#onVsModeChange.bind(this),
+    );
   }
 
   #onVsModeChange(params) {
     this.settings = new OptionsSettings(params.value);
-    this.getFieldExplanationContainer("vsMode").then(container => container.innerHTML = this.#modeExplanation);
+    this.getFieldExplanationContainer("vsMode").then(
+      (container) => (container.innerHTML = this.#modeExplanation),
+    );
     this.emitChanges();
   }
 
@@ -62,7 +73,9 @@ export class VSModeWizard extends GameSettingsWizard {
 
   generateSettingsWizard() {
     const wizardContainer = super.generateSettingsWizard();
-    wizardContainer.append(this.generateFieldExplanation("vsMode", this.#modeExplanation));
+    wizardContainer.append(
+      this.generateFieldExplanation("vsMode", this.#modeExplanation),
+    );
     return wizardContainer;
   }
 
@@ -74,8 +87,7 @@ export class VSModeWizard extends GameSettingsWizard {
     return {
       name: this.name,
       valid: true,
-      value: new OptionsSettings(GameVSMode.Clear)
+      value: new OptionsSettings(GameVSMode.Clear),
     };
   }
-
 }

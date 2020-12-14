@@ -4,7 +4,7 @@ const GameLevel = {
   Beginner: "beginner",
   Intermediate: "intermediate",
   Expert: "expert",
-  Custom: "custom"
+  Custom: "custom",
 };
 Object.freeze(GameLevel);
 

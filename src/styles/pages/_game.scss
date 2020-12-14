@@ -5,13 +5,11 @@
 
 @import "../components/button/button";
 
-
 @import "../components/game-board/game-board";
 @import "../components/game-vs-dashboard/game-vs-dashboard";
 
-
 .game-container {
-  width : 100%;
+  width: 100%;
   height: 100%;
   @extend %center-center;
   flex-direction: column;
@@ -19,4 +17,3 @@
   // background-color: pink;
   // border: 2px solid red;
 }
-

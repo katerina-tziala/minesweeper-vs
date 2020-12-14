@@ -4,7 +4,7 @@ import { MapController } from "./map-controller";
 export class GroupController {
   #_controllers = new MapController();
 
-  constructor() { }
+  constructor() {}
 
   set controllers(controller) {
     this.#_controllers.addInMap(controller.name, controller);
@@ -21,5 +21,4 @@ export class GroupController {
   removeController(key) {
     this.#_controllers.removeFromMap(key);
   }
-
 }

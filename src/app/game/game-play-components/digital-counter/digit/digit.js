@@ -30,7 +30,9 @@ export class Digit {
   }
 
   get #linePositions() {
-    return this.#value ? DIGIT_POSITIONS[this.#value] : DIGIT_POSITIONS.undefined;
+    return this.#value
+      ? DIGIT_POSITIONS[this.#value]
+      : DIGIT_POSITIONS.undefined;
   }
 
   get #generateDigitLines() {
@@ -45,7 +47,9 @@ export class Digit {
 
   #getDigitLineStyles(linePosition) {
     let digitStyles = [DOM_ELEMENT_CLASS.digitLine];
-    digitStyles.push(DOM_ELEMENT_CLASS.digitLine + TYPOGRAPHY.doubleHyphen + linePosition);
+    digitStyles.push(
+      DOM_ELEMENT_CLASS.digitLine + TYPOGRAPHY.doubleHyphen + linePosition,
+    );
     if (this.#linePositions.includes(linePosition)) {
       digitStyles.push(DOM_ELEMENT_CLASS.digitLineOn);
     }
@@ -53,26 +57,31 @@ export class Digit {
   }
 
   get #digitLines() {
-    return ElementHandler.getByID(this.#id).then(digit => {
+    return ElementHandler.getByID(this.#id).then((digit) => {
       return digit.childNodes;
     });
   }
 
   #updateDigitLines(digitLines) {
     digitLines.forEach((digitLine, index) => {
-      ElementHandler.setStyleClass(digitLine, this.#getDigitLineStyles(index + 1));
+      ElementHandler.setStyleClass(
+        digitLine,
+        this.#getDigitLineStyles(index + 1),
+      );
     });
   }
 
   generateDigit() {
-    const digit = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.digit], this.#id);
+    const digit = ElementGenerator.generateContainer(
+      [DOM_ELEMENT_CLASS.digit],
+      this.#id,
+    );
     digit.append(this.#generateDigitLines);
     return digit;
   }
 
   update(value) {
     this.#value = value;
-    this.#digitLines.then(digitLines => this.#updateDigitLines(digitLines));
+    this.#digitLines.then((digitLines) => this.#updateDigitLines(digitLines));
   }
-
 }

@@ -53,7 +53,7 @@ export class GameSinglePlayer extends Game {
     if (boardTiles.length > 1 || this.oneTileRevealed(boardTiles)) {
       this.playerOnTurn.revealedTiles = boardTiles.map((tile) => tile.position);
       this.setGameEnd(
-        this.playerOnTurn.clearedMinefield ? GameEndType.Cleared : undefined
+        this.playerOnTurn.clearedMinefield ? GameEndType.Cleared : undefined,
       );
     } else {
       this.playerOnTurn.detonatedTile = boardTiles[0].position;
@@ -63,11 +63,14 @@ export class GameSinglePlayer extends Game {
   }
 
   handleTileMarking(tile) {
-    if (tile.isUntouched) {// set flag
+    if (tile.isUntouched) {
+      // set flag
       this.setFlagOnMinefieldTile(tile);
-    } else if (this.tileMarkingAllowed(tile)) { // set mark
+    } else if (this.tileMarkingAllowed(tile)) {
+      // set mark
       this.setMarkOnMinefieldTile(tile);
-    } else { // reset
+    } else {
+      // reset
       this.resetMinefieldTile(tile);
     }
     this.onPlayerMoveEnd([tile]);
