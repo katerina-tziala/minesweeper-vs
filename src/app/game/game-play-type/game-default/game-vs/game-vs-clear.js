@@ -1,7 +1,7 @@
 "use strict";
 // import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
-// import { GameType, GameVSMode, GameEndType } from "GameEnums";
+import { GameEndType } from "GameEnums";
 
 // import { Game } from "../_game";
 
@@ -20,8 +20,18 @@ import { GameViewHelper } from "../_game-view-helper";
 import { GameVS } from "./_game-vs";
 
 export class GameVSClear extends GameVS {
+
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
+
+    //marks: true
+    // wrongFlagHint: false
+    // openStrategy: false
+    // sneakPeek: false
+    // sneakPeekDuration: 0
+    // unlimitedFlags: true
+    // vsMode: "clear"
+
   }
 
   get goalTargetNumber() {
@@ -37,24 +47,6 @@ export class GameVSClear extends GameVS {
     return boardActions;
   }
 
-  updateStateOnRevealedTiles(revealedTiles) {
-    super.updateStateOnRevealedTiles(revealedTiles);
-    console.log("updateStateOnRevealedTiles");
-    console.log("check game over on minefield state after revealing");
-    this.pause();
-    console.log("round end");
-
-    // if (this.playerOnTurn.clearedMinefield) {
-    //   this.setGameEnd(GameEndType.Cleared);
-    //   this.onGameOver(revealedTiles);
-    //   return;
-    // }
-    // this.onPlayerMoveEnd(revealedTiles);
-
-
-    // this.resetPlayerTurnsAfterMove().then(() => this.onPlayerMoveEnd(revealedTiles));
-  }
-  
   flaggingAllowed(player) {
     console.log("flagging allowed when clearing minefield");
     console.log(this.optionsSettings);
@@ -62,10 +54,24 @@ export class GameVSClear extends GameVS {
     return false;
   }
 
+  updateStateOnRevealedTiles(revealedTiles) {
+    super.updateStateOnRevealedTiles(revealedTiles);
+    this.pause();
+    this.resetPlayerTurnsAfterMove().then(() => {
+    
+      if (this.mineField.isCleared) {
+        this.setGameEnd(GameEndType.Cleared);
+        this.onGameOver(revealedTiles);
+        return;
+      }
+      this.onRoundEnd(revealedTiles);
+    });
+  }
+  
   handleTileMarking(tile) {
     console.log("handleTileMarking");
     console.log(tile);
-
+    this.pause();
     
   }
 
@@ -82,5 +88,24 @@ export class GameVSClear extends GameVS {
     console.log("onSneakPeek");
     return;
   }
+
+  onPlayerMoveEnd(boardTiles = []) {
+    this.moveTilesUpdate = boardTiles;
+    this.playerOnTurn.increaseMoves();
+  
+    console.log("-- onPlayerMoveEnd --");
+
+    // this.resetPlayerTurnsAfterMove().then(() => {
+    
+    //   if (this.isOnline) {
+    //     console.log("submit online move");
+    //     console.log(this.playerOnTurn);
+    //     return;
+    //   }
+
+    //   this.mineField.enable();
+    // });
+  }
+
 
 }

@@ -159,7 +159,7 @@ export class Game extends AppModel {
     }
   }
 
-  tileMarkingAllowed(tile, player = this.playerOnTurn) {
+  markingAllowed(tile, player = this.playerOnTurn) {
     return tile.isFlaggedBy(player.id) && this.allowMarks;
   }
 

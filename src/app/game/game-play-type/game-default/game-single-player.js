@@ -1,19 +1,29 @@
 "use strict";
-import { Game } from "./_game";
 
-import { GameEndType, GameVSMode, GameAction } from "GameEnums";
+import { GameEndType, GameVSMode } from "GameEnums";
+import { Game } from "./_game";
 export class GameSinglePlayer extends Game {
+  
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
   }
 
-  // OVERRIDEN FUNCTIONS
   get boardActionButtons() {
     if (this.isParallel) {
       return [];
     }
     return super.boardActionButtons;
+  }
+
+  get isParallel() {
+    if (
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode === GameVSMode.Parallel
+    ) {
+      return true;
+    }
+    return false;
   }
 
   init() {
@@ -55,11 +65,14 @@ export class GameSinglePlayer extends Game {
   }
 
   handleTileMarking(tile) {
-    if (tile.isUntouched) { // set flag
+    if (tile.isUntouched) {
+      // set flag
       this.setFlagOnMinefieldTile(tile);
-    } else if (this.tileMarkingAllowed(tile)) { // set mark
+    } else if (this.markingAllowed(tile)) {
+      // set mark
       this.setMarkOnMinefieldTile(tile);
-    } else { // reset
+    } else {
+      // reset
       this.resetMinefieldTile(tile);
     }
     this.onPlayerMoveEnd([tile]);
@@ -90,24 +103,17 @@ export class GameSinglePlayer extends Game {
     console.log("show end modal message");
   }
 
-  // CLASS SPECIFIC FUNCTIONS
-  get isParallel() {
-    if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode === GameVSMode.Parallel
-    ) {
-      return true;
-    }
-    return false;
-  }
-
   startGameRound() {
     this.initMoveTiles();
+
+    //keep round number
     if (this.playerOnTurn.isBot) {
-      console.log("onGameContinue --- BotMove");
-      this.mineField.disable();
+      console.log("get BotMove");
+      //this.mineField.disable();
+      this.mineField.enable();
     } else {
       this.mineField.enable();
     }
   }
+
 }

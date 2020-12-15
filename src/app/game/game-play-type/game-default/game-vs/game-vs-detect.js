@@ -24,11 +24,11 @@ export class GameVSDetect extends GameVS {
     return true;
   }
 
-  tileFlaggingAllowed(tile, player = this.playerOnTurn) {
+  flaggingAllowed(tile, player = this.playerOnTurn) {
     return tile.isUntouched && player.hasFlags;
   }
 
-  tileResetingAllowed(tile, player = this.playerOnTurn) {
+  resetingAllowed(tile, player = this.playerOnTurn) {
     return (
       (tile.isFlaggedBy(player.id) && !this.allowMarks) ||
       tile.isMarkedBy(player.id)
@@ -36,12 +36,12 @@ export class GameVSDetect extends GameVS {
   }
 
   handleTileMarking(tile) {
-    if (this.tileFlaggingAllowed(tile)) { // set flag
+    if (this.flaggingAllowed(tile)) { // set flag
       this.updateStateOnFlaggedTile(tile);
       return;
     }
 
-    if (this.tileMarkingAllowed(tile)) { // set mark
+    if (this.markingAllowed(tile)) { // set mark
       this.pause();
       this.setMarkOnMinefieldTile(tile);
       this.updatePlayerAllowedFlags().then(() => {
@@ -50,7 +50,7 @@ export class GameVSDetect extends GameVS {
       return;
     }
   
-    if (this.tileResetingAllowed(tile)) { // reset
+    if (this.resetingAllowed(tile)) { // reset
       this.pause();
       this.resetMinefieldTile(tile);
       this.updatePlayerAllowedFlags().then(() => {
@@ -77,10 +77,27 @@ export class GameVSDetect extends GameVS {
       if (this.mineField.allMinesDetected) {
         this.setGameEnd(GameEndType.Detected);
         this.onGameOver([tile]);
-      } else {
-        this.onRoundEnd([tile]);
+        return;
       }
+      this.onRoundEnd([tile]);
     });
   }
 
+  onPlayerMoveEnd(boardTiles = []) {
+    this.moveTilesUpdate = boardTiles;
+    this.playerOnTurn.increaseMoves();
+  
+    console.log("-- onPlayerMoveEnd --");
+
+    this.resetPlayerTurnsAfterMove().then(() => {
+    
+      if (this.isOnline) {
+        console.log("submit online move");
+        console.log(this.playerOnTurn);
+        return;
+      }
+
+      this.mineField.enable();
+    });
+  }
 }

@@ -219,21 +219,7 @@ export class GameVS extends Game {
   }
 
   onPlayerMoveEnd(boardTiles = []) {
-    this.moveTilesUpdate = boardTiles;
-    this.playerOnTurn.increaseMoves();
-  
-    console.log("-- onPlayerMoveEnd --");
-
-    this.resetPlayerTurnsAfterMove().then(() => {
-    
-      if (this.isOnline) {
-        console.log("submit online move");
-        console.log(this.playerOnTurn);
-        return;
-      }
-
-      this.mineField.enable();
-    });
+    return;
   }
 
 
