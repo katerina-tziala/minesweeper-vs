@@ -59,12 +59,15 @@ export class GameVSClear extends GameVS {
     return boardActions;
   }
 
-  flaggingAllowed(tile, player = this.playerOnTurn) {
-    let flaggingAllowed = true;
+  get flaggingAllowedBySettings() {
     if (this.optionsSettings.allowFlagging !== undefined) {
-      flaggingAllowed = this.optionsSettings.allowFlagging;
+      return this.optionsSettings.allowFlagging;
     }
-    return flaggingAllowed && tile.isUntouched && player.hasFlags;
+    return true;
+  }
+
+  flaggingAllowed(tile, player = this.playerOnTurn) {
+    return this.flaggingAllowedBySettings  && this.flagOnTileAllowedByPlayer(tile) && player.hasFlags;
   }
 
   updateStateOnRevealedTiles(revealedTiles) {

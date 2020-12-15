@@ -23,8 +23,10 @@ export class GameVSDetect extends GameVS {
     return true;
   }
 
+
+
   flaggingAllowed(tile, player = this.playerOnTurn) {
-    return tile.isUntouched && player.hasFlags;
+    return (player.hasFlags && this.flagOnTileAllowedByPlayer(tile));
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
@@ -35,6 +37,9 @@ export class GameVSDetect extends GameVS {
   updateStateOnFlaggedTile(tile) {
     this.pause();
     this.setFlagOnMinefieldTile(tile);
+
+    this.playerWaiting.removeFromMarkedPositions = this.mineField.getTilesPositions([tile]);
+
     this.updatePlayerTurnsAndAllowedFlags().then(() => {
       if (this.mineField.allMinesDetected) {
         this.setGameEnd(GameEndType.Detected);

@@ -185,6 +185,12 @@ export class GameVS extends Game {
     return this.vsDashboard.updatePlayerAllowedFlags(player);
   }
 
+  flagOnTileAllowedByPlayer(tile, player = this.playerOnTurn) {
+    if (!tile.isFlagged && !tile.isMarkedBy(player.id)) {
+      return true;
+    }
+    return false;
+  }
   updatePlayerTurnsAndAllowedFlags(player = this.playerOnTurn) {
     const playerUpdates = [this.vsDashboard.updatePlayerAllowedFlags(player)];
     playerUpdates.push(this.resetPlayerTurnsAfterMove());
