@@ -1,7 +1,7 @@
 "use strict";
 
 import { AppModel } from "~/_models/app-model";
-
+import { GameEndType } from "GameEnums";
 export class Player extends AppModel {
   #_colorType;
 
@@ -22,36 +22,29 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-  get detonatedMine() {
-    return this.detonatedMinesPositions.length;
-  }
+  // get detonatedMine() {
+  //   return this.detonatedMinesPositions.length;
+  // }
 
   initState(goalTargetNumber = 0, allowedTurns = null, allowedFlags = null) {
     this.goalTargetNumber = goalTargetNumber;
     this.allowedTurns = allowedTurns;
     this.allowedFlags = allowedFlags;
-
     this.turn = false;
     this.moves = 0;
     this.missedTurns = 0;
-
+    this.gameLostType = null;
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
     this.revealedPositions = [];
     this.marksPositions = [];
     this.detonatedMinesPositions = [];
-    // params to check if player lost the game
-    this.completedGoal = false;
   }
 
   get lostGame() {
     if (this.entered) {
-      return this.hasDetonatedMine ||
-        !this.clearedMinefield ||
-        this.exceededTurnsLimit
-        ? true
-        : false;
+      return this.gameLostType ? true : false;
     }
     return false;
   }
@@ -77,7 +70,13 @@ export class Player extends AppModel {
   }
 
   get exceededTurnsLimit() {
-    return this.allowedTurns ? this.allowedTurns === this.missedTurns : false;
+    const exceededLimits = this.allowedTurns
+      ? this.allowedTurns === this.missedTurns
+      : false;
+    if (exceededLimits) {
+      this.gameLostType = GameEndType.exceededTurnsLimit;
+    }
+    return exceededLimits;
   }
 
   get unlimitedFlags() {
@@ -108,24 +107,13 @@ export class Player extends AppModel {
       : 0;
   }
 
-  get clearedMinefield() {
-    return this.goalTargetNumber
-      ? this.goalTargetNumber === this.revealedPositions.length
-      : false;
-  }
-
-  get detectedAllMines() {
-    return this.goalTargetNumber
-      ? this.goalTargetNumber === this.detectedMinesPositions.length
-      : false;
-  }
-
   set revealedTiles(positions) {
     this.revealedPositions = this.revealedPositions.concat(positions);
   }
 
   set detonatedTile(position) {
     this.detonatedMinesPositions = [position];
+    this.gameLostType = GameEndType.DetonatedMine;
   }
 
   flaggedTile(position, wronglyPlaced) {
@@ -234,5 +222,23 @@ export class Player extends AppModel {
   //     //     wronglyPlacedFlags: this.wronglyPlacedFlags,
   //     //     minesDetected: this.minesDetected
   //     // };
+  // }
+
+  get clearedMinefield() {
+    const cleared = this.goalTargetNumber
+      ? this.goalTargetNumber === this.revealedPositions.length
+      : false;
+
+    if (cleared) {
+      this.gameLostType = GameEndType.Cleared;
+    }
+
+    return cleared;
+  }
+
+  // get detectedAllMines() {
+  //   return this.goalTargetNumber
+  //     ? this.goalTargetNumber === this.detectedMinesPositions.length
+  //     : false;
   // }
 }

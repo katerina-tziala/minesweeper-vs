@@ -182,6 +182,50 @@ export class GameVS extends Game {
     return Promise.all(playerUpdates);
   }
 
+  resetingAllowed(tile, player = this.playerOnTurn) {
+    return (
+      (tile.isFlaggedBy(player.id) && !this.allowMarks) ||
+      tile.isMarkedBy(player.id)
+    );
+  }
+
+  handleTileMarking(tile) {
+    if (this.flaggingAllowed(tile)) { // set flag
+      this.updateStateOnFlaggedTile(tile);
+      return;
+    }
+
+    if (this.markingAllowed(tile)) { // set mark
+      this.updateStateOnMarkedTile(tile);
+      return;
+    }
+  
+    if (this.resetingAllowed(tile)) { // reset
+      this.updateStateOnResetedTile(tile);
+      return;
+    }
+
+    console.log("round continue");
+    console.log("NO RESET NO FLAG NO MARK");
+    console.log(tile);
+    this.mineField.enable();
+  }
+
+  updateStateOnFlaggedTile(tile) {
+    return;
+  }
+
+  updateStateOnMarkedTile(tile) {
+    return;
+  }
+
+  updateStateOnResetedTile(tile) {
+    return;
+  }
+  
+  onPlayerMoveEnd(boardTiles = []) {
+    return;
+  }
 
 
 
@@ -217,13 +261,6 @@ export class GameVS extends Game {
     console.log("show end modal message");
     console.log("ganme vs end");
   }
-
-  onPlayerMoveEnd(boardTiles = []) {
-    return;
-  }
-
-
-
 
 
 

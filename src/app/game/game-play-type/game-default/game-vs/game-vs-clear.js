@@ -14,16 +14,15 @@ import {
   DASHBOARD_SECTION,
 } from "../_game.constants";
 
-
 import { GameViewHelper } from "../_game-view-helper";
 
 import { GameVS } from "./_game-vs";
 
 export class GameVSClear extends GameVS {
-
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
 
+    // this.optionsSettings.allowFlagging = true;
     //marks: true
     // wrongFlagHint: false
     // openStrategy: false
@@ -31,7 +30,16 @@ export class GameVSClear extends GameVS {
     // sneakPeekDuration: 0
     // unlimitedFlags: true
     // vsMode: "clear"
+  }
 
+  get #sneakPeekAllowed() {
+    if (
+      this.optionsSettings.sneakPeek &&
+      this.optionsSettings.sneakPeekDuration
+    ) {
+      return true;
+    }
+    return false;
   }
 
   get goalTargetNumber() {
@@ -41,24 +49,27 @@ export class GameVSClear extends GameVS {
   get boardActionButtons() {
     const boardActions = super.boardActionButtons;
     if (this.#sneakPeekAllowed) {
-      const sneakPeekBtn = GameViewHelper.generateActionButton(ACTION_BUTTONS.sneakPeek,this.#onSneakPeek.bind(this));
+      const sneakPeekBtn = GameViewHelper.generateActionButton(
+        ACTION_BUTTONS.sneakPeek,
+        this.#onSneakPeek.bind(this),
+      );
       boardActions.push(sneakPeekBtn);
     }
     return boardActions;
   }
 
-  flaggingAllowed(player) {
-    console.log("flagging allowed when clearing minefield");
-    console.log(this.optionsSettings);
-    console.log(player);
-    return false;
+  flaggingAllowed(tile, player = this.playerOnTurn) {
+    let flaggingAllowed = true;
+    if (this.optionsSettings.allowFlagging !== undefined) {
+      flaggingAllowed = this.optionsSettings.allowFlagging;
+    }
+    return flaggingAllowed && tile.isUntouched && player.hasFlags;
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
     this.pause();
     this.resetPlayerTurnsAfterMove().then(() => {
-    
       if (this.mineField.isCleared) {
         this.setGameEnd(GameEndType.Cleared);
         this.onGameOver(revealedTiles);
@@ -67,45 +78,49 @@ export class GameVSClear extends GameVS {
       this.onRoundEnd(revealedTiles);
     });
   }
+
+
   
-  handleTileMarking(tile) {
-    console.log("handleTileMarking");
-    console.log(tile);
+
+
+
+  updateStateOnFlaggedTile(tile) {
     this.pause();
-    
+    this.setFlagOnMinefieldTile(tile);
+    this.onPlayerMoveEnd([tile]);
   }
 
-
-
-  get #sneakPeekAllowed() {
-    if (this.optionsSettings.sneakPeek && this.optionsSettings.sneakPeekDuration) {
-      return true;
-    }
-    return false;
+  updateStateOnMarkedTile(tile) {
+    this.pause();
+    this.setMarkOnMinefieldTile(tile);
+    this.onPlayerMoveEnd([tile]);
   }
 
-  #onSneakPeek() {
-    console.log("onSneakPeek");
-    return;
+  updateStateOnResetedTile(tile) {
+    this.pause();
+    this.resetMinefieldTile(tile);
+    this.onPlayerMoveEnd([tile]);
   }
 
   onPlayerMoveEnd(boardTiles = []) {
     this.moveTilesUpdate = boardTiles;
     this.playerOnTurn.increaseMoves();
+    this.updatePlayerTurnsAndAllowedFlags().then(() => {
+      console.log("-- onPlayerMoveEnd --");
+      if (this.isOnline) {
+        console.log("submit online move");
+        console.log(this.playerOnTurn);
+        return;
+      }
   
-    console.log("-- onPlayerMoveEnd --");
+      this.mineField.enable();
 
-    // this.resetPlayerTurnsAfterMove().then(() => {
-    
-    //   if (this.isOnline) {
-    //     console.log("submit online move");
-    //     console.log(this.playerOnTurn);
-    //     return;
-    //   }
-
-    //   this.mineField.enable();
-    // });
+    });
   }
 
 
+  #onSneakPeek() {
+    console.log("onSneakPeek");
+    return;
+  }
 }

@@ -4,7 +4,6 @@ import { GameEndType } from "GameEnums";
 import { GameVS } from "./_game-vs";
 
 export class GameVSDetect extends GameVS {
-  
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
   }
@@ -28,43 +27,6 @@ export class GameVSDetect extends GameVS {
     return tile.isUntouched && player.hasFlags;
   }
 
-  resetingAllowed(tile, player = this.playerOnTurn) {
-    return (
-      (tile.isFlaggedBy(player.id) && !this.allowMarks) ||
-      tile.isMarkedBy(player.id)
-    );
-  }
-
-  handleTileMarking(tile) {
-    if (this.flaggingAllowed(tile)) { // set flag
-      this.updateStateOnFlaggedTile(tile);
-      return;
-    }
-
-    if (this.markingAllowed(tile)) { // set mark
-      this.pause();
-      this.setMarkOnMinefieldTile(tile);
-      this.updatePlayerAllowedFlags().then(() => {
-        this.onPlayerMoveEnd([tile]);
-      });
-      return;
-    }
-  
-    if (this.resetingAllowed(tile)) { // reset
-      this.pause();
-      this.resetMinefieldTile(tile);
-      this.updatePlayerAllowedFlags().then(() => {
-        this.onPlayerMoveEnd([tile]);
-      });
-      return;
-    }
-
-    console.log("round continue");
-    console.log("NO RESET NO FLAG NO MARK");
-    console.log(tile);
-    this.mineField.enable();
-  }
-
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
     this.onPlayerMoveEnd(revealedTiles);
@@ -83,14 +45,29 @@ export class GameVSDetect extends GameVS {
     });
   }
 
+  updateStateOnMarkedTile(tile) {
+    this.pause();
+    this.setMarkOnMinefieldTile(tile);
+    this.updatePlayerAllowedFlags().then(() => {
+      this.onPlayerMoveEnd([tile]);
+    });
+  }
+
+  updateStateOnResetedTile(tile) {
+    this.pause();
+    this.resetMinefieldTile(tile);
+    this.updatePlayerAllowedFlags().then(() => {
+      this.onPlayerMoveEnd([tile]);
+    });
+  }
+
   onPlayerMoveEnd(boardTiles = []) {
     this.moveTilesUpdate = boardTiles;
     this.playerOnTurn.increaseMoves();
-  
+
     console.log("-- onPlayerMoveEnd --");
 
     this.resetPlayerTurnsAfterMove().then(() => {
-    
       if (this.isOnline) {
         console.log("submit online move");
         console.log(this.playerOnTurn);
