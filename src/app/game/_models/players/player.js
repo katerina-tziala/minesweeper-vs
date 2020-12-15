@@ -22,9 +22,9 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-  // get detonatedMine() {
-  //   return this.detonatedMinesPositions.length;
-  // }
+  get detonatedMine() {
+    return this.detonatedMinesPositions.length ? true : false;
+  }
 
   initState(goalTargetNumber = 0, allowedTurns = null, allowedFlags = null) {
     this.goalTargetNumber = goalTargetNumber;
@@ -33,20 +33,14 @@ export class Player extends AppModel {
     this.turn = false;
     this.moves = 0;
     this.missedTurns = 0;
-    this.gameLostType = null;
+
+    this.lostGame = false;
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
     this.revealedPositions = [];
     this.marksPositions = [];
     this.detonatedMinesPositions = [];
-  }
-
-  get lostGame() {
-    if (this.entered) {
-      return this.gameLostType ? true : false;
-    }
-    return false;
   }
 
   increaseMoves() {
@@ -73,9 +67,7 @@ export class Player extends AppModel {
     const exceededLimits = this.allowedTurns
       ? this.allowedTurns === this.missedTurns
       : false;
-    if (exceededLimits) {
-      this.gameLostType = GameEndType.exceededTurnsLimit;
-    }
+    this.lostGame = exceededLimits;
     return exceededLimits;
   }
 
@@ -107,13 +99,18 @@ export class Player extends AppModel {
       : 0;
   }
 
-  set revealedTiles(positions) {
-    this.revealedPositions = this.revealedPositions.concat(positions);
+  set revealedTiles(movePositions) {
+    this.revealedPositions = this.revealedPositions.concat(movePositions);
+    this.removeFromMarkedPositions = movePositions;
+  }
+
+  set removeFromMarkedPositions(movePositions) {
+    this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
   }
 
   set detonatedTile(position) {
     this.detonatedMinesPositions = [position];
-    this.gameLostType = GameEndType.DetonatedMine;
+    this.lostGame = this.detonatedMine;
   }
 
   flaggedTile(position, wronglyPlaced) {
@@ -228,11 +225,6 @@ export class Player extends AppModel {
     const cleared = this.goalTargetNumber
       ? this.goalTargetNumber === this.revealedPositions.length
       : false;
-
-    if (cleared) {
-      this.gameLostType = GameEndType.Cleared;
-    }
-
     return cleared;
   }
 

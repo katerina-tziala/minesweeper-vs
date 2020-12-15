@@ -12,15 +12,15 @@ export class GameVS extends Game {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
-
+    this.levelSettings.minesPositions = [0, 1, 2, 3, 4, 5, 6, 7, 73, 74, 75, 76, 77, 78, 79, 80];
     //this.turnSettings.turnTimer = false;
-    this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 5;
-    this.turnSettings.missedTurnsLimit = 3;
+    // this.turnSettings.consecutiveTurns = true;
+    // this.turnSettings.turnDuration = 5;
+    // this.turnSettings.missedTurnsLimit = 3;
 
     // this.optionsSettings.unlimitedFlags = false;
     // this.optionsSettings.tileRevealing = false;
-    this.optionsSettings.marks = true;
+    //this.optionsSettings.marks = true;
     //console.log(this.turnSettings);
     console.log(this.optionsSettings);
     this.init();
@@ -40,6 +40,10 @@ export class GameVS extends Game {
 
   get playerOnTurn() {
     return this.players.find((player) => player.turn);
+  }
+
+  get playerWaiting() {
+    return this.players.find((player) => !player.turn);
   }
 
   generateView() {
@@ -131,6 +135,11 @@ export class GameVS extends Game {
     this.resetPlayerTurnsAfterMove().then(() => {
       this.onGameOver(revealedTiles);
     });
+  }
+
+  updateStateOnRevealedTiles(revealedTiles) {
+    super.updateStateOnRevealedTiles(revealedTiles);
+    this.playerWaiting.removeFromMarkedPositions = this.mineField.getTilesPositions(revealedTiles);
   }
 
   // CLASS SPECIFIC FUNCTIONS

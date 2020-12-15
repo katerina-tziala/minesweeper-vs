@@ -22,6 +22,7 @@ export class GameVSClear extends GameVS {
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
 
+  
     // this.optionsSettings.allowFlagging = true;
     //marks: true
     // wrongFlagHint: false
@@ -67,8 +68,9 @@ export class GameVSClear extends GameVS {
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
-    super.updateStateOnRevealedTiles(revealedTiles);
     this.pause();
+    super.updateStateOnRevealedTiles(revealedTiles);
+
     this.resetPlayerTurnsAfterMove().then(() => {
       if (this.mineField.isCleared) {
         this.setGameEnd(GameEndType.Cleared);

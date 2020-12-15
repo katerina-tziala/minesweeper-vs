@@ -146,7 +146,7 @@ export class Game extends AppModel {
   }
 
   handleTileRevealing(tile) {
-    if (this.revealingAllowed && tile.isUntouched) {
+    if (this.revealingAllowed && (tile.isUntouched || tile.isMarked)) {
       this.mineField.revealMinefieldTile(tile, this.playerOnTurn.id).then((revealedTiles) => {
         if (this.tileDetonated(revealedTiles)) {
           this.updateStateOnTileDetonation(revealedTiles);
@@ -361,7 +361,8 @@ export class Game extends AppModel {
   }
 
   restart() {
-    this.levelSettings.setMinesPositions();
+   // this.levelSettings.setMinesPositions();
+    this.levelSettings.minesPositions = [0, 1, 2, 3, 4, 5, 6, 7, 73, 74, 75, 76, 77, 78, 79, 80];
   }
 
   handleTileMarking(tile) {

@@ -216,9 +216,9 @@ export class MineField {
   //   return tiles.filter(tile => tile.isFlagged());
   // }
 
-  // getUntouchedTiles(tiles = this.getFieldTiles()) {
-  //   return tiles.filter(tile => tile.isUntouched());
-  // }
+  getUntouchedTiles(tiles = this.#tiles) {
+    return tiles.filter(tile => tile.isUntouched);
+  }
 
   // getFlaggedTilesByPlayer(playerID, tiles = this.getFieldTiles()) {
   //   return tiles.filter(tile => tile.isFlaggedBy(playerID));

@@ -46,7 +46,7 @@ export class GameVSDetect extends GameVS {
   }
 
   updateStateOnMarkedTile(tile) {
-    this.pause();
+   // this.pause();
     this.setMarkOnMinefieldTile(tile);
     this.updatePlayerAllowedFlags().then(() => {
       this.onPlayerMoveEnd([tile]);
@@ -54,12 +54,20 @@ export class GameVSDetect extends GameVS {
   }
 
   updateStateOnResetedTile(tile) {
-    this.pause();
+   // this.pause();
     this.resetMinefieldTile(tile);
     this.updatePlayerAllowedFlags().then(() => {
       this.onPlayerMoveEnd([tile]);
     });
   }
+
+
+
+
+
+
+
+
 
   onPlayerMoveEnd(boardTiles = []) {
     this.moveTilesUpdate = boardTiles;
