@@ -31,9 +31,9 @@ export class GameVS extends Game {
       80,
     ];
     //this.turnSettings.turnTimer = false;
-    this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 5;
-    this.turnSettings.missedTurnsLimit = 3;
+    // this.turnSettings.consecutiveTurns = true;
+    // this.turnSettings.turnDuration = 5;
+    // this.turnSettings.missedTurnsLimit = 3;
 
     // this.optionsSettings.unlimitedFlags = false;
     // this.optionsSettings.tileRevealing = false;
@@ -111,7 +111,7 @@ export class GameVS extends Game {
   }
 
   startGameRound() {
-    this.initMoveTiles();
+    this.initRoundTiles();
 
     this.vsDashboard.setCardOnTurn(this.players).then(() => {
       if (this.#roundTimer) {
@@ -153,65 +153,38 @@ export class GameVS extends Game {
     });
   }
 
+  /* UPDATE GAME AFTER MINEFIELD ACTIONS */
+  playerMissedTurnsReseted(player = this.playerOnTurn) {
+    if (
+      this.turnSettings &&
+      this.turnSettings.resetMissedTurns &&
+      player.missedTurns
+        ? true
+        : false
+    ) {
+      player.resetMissedTurns();
+      return true;
+    }
+    return false;
+  }
+
+  removeFromPlayerMarkedPositions(revealedTiles, player = this.playerWaiting) {
+    player.removeFromMarkedPositions = this.mineField.getTilesPositions(
+      revealedTiles,
+    );
+  }
+
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
-    this.resetPlayerTurnsAfterMove().then(() => {
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    this.updatePlayerCard(missedTurnsUpdated).then(() => {
       this.onGameOver(revealedTiles);
     });
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
-    this.playerWaiting.removeFromMarkedPositions = this.mineField.getTilesPositions(
-      revealedTiles,
-    );
-  }
-
-  // CLASS SPECIFIC FUNCTIONS
-  get #roundTimer() {
-    return (
-      this.turnSettings &&
-      this.turnSettings.turnTimer &&
-      this.turnSettings.turnDuration
-    );
-  }
-
-  get #turnsLimit() {
-    return this.turnSettings ? this.turnSettings.missedTurnsLimit : null;
-  }
-
-  get isDetectMinesGoal() {
-    return false;
-  }
-
-  get goalTargetNumber() {
-    return null;
-  }
-
-  roundEnded(boardTiles) {
-    return true;
-  }
-
-  get #maxAllowedFlags() {
-    return !this.optionsSettings.unlimitedFlags
-      ? this.levelSettings.numberOfMines
-      : null;
-  }
-
-  switchTurns() {
-    this.players.forEach((player) => player.toggleTurn());
-  }
-
-  resetPlayerTurnsAfterMove(player = this.playerOnTurn) {
-    if (
-      this.#roundTimer &&
-      this.turnSettings.consecutiveTurns &&
-      player.missedTurns
-    ) {
-      player.resetMissedTurns();
-      return this.vsDashboard.updatePlayerMissedTurns(player);
-    }
-    return Promise.resolve();
+    this.removeFromPlayerMarkedPositions(revealedTiles);
   }
 
   flagOnTileAllowedByPlayer(tile, player = this.playerOnTurn) {
@@ -221,37 +194,9 @@ export class GameVS extends Game {
     return false;
   }
 
-  updatePlayerAllowedFlags(player = this.playerOnTurn) {
-    return this.vsDashboard.updatePlayerAllowedFlags(player);
-  }
-
-  updatePlayerTurnsAndAllowedFlags(player = this.playerOnTurn) {
-    const playerUpdates = [this.updatePlayerAllowedFlags(player)];
-    playerUpdates.push(this.resetPlayerTurnsAfterMove());
-    return Promise.all(playerUpdates);
-  }
-
-  getPlayerTargetValue(player) {
-    return this.wrongFlagHint
-      ? this.getPlayerDetectedMines(player)
-      : player.goalTargetNumber;
-  }
-
-  updatePlayerGameGoalStatistics(player = this.playerOnTurn) {
-    if (this.wrongFlagHint) {
-      const playerTargetValue = this.getPlayerTargetValue(player);
-      return this.vsDashboard.updatePlayerGameGoalStatistics(
-        player,
-        playerTargetValue,
-      );
-    }
-    return Promise.resolve();
-  }
-
-  updatePlayerCardGameInfo(player = this.playerOnTurn) {
-    const playerUpdates = [this.updatePlayerTurnsAndAllowedFlags(player)];
-    playerUpdates.push(this.updatePlayerGameGoalStatistics());
-    return Promise.all(playerUpdates);
+  setFlagOnMinefieldTile(tile) {
+    super.setFlagOnMinefieldTile(tile);
+    this.removeFromPlayerMarkedPositions([tile]);
   }
 
   resetingAllowed(tile, player = this.playerOnTurn) {
@@ -280,17 +225,73 @@ export class GameVS extends Game {
       return;
     }
 
-    console.log("round continue");
-    console.log("NO RESET NO FLAG NO MARK");
-    console.log(tile);
     this.mineField.enable();
   }
 
-  setFlagOnMinefieldTile(tile) {
-    super.setFlagOnMinefieldTile(tile);
-    this.playerWaiting.removeFromMarkedPositions = this.mineField.getTilesPositions(
-      [tile],
-    );
+  // resetPlayerTurnsAfterMove(player = this.playerOnTurn) {
+  //   if (
+  //     this.#roundTimer &&
+  //     this.turnSettings.consecutiveTurns &&
+  //     player.missedTurns
+  //   ) {
+  //
+  //     player.resetMissedTurns();
+  //     return this.vsDashboard.updatePlayerMissedTurns(player);
+  //   }
+  //   return Promise.resolve();
+  // }
+
+  // CLASS SPECIFIC FUNCTIONS
+  // FUNCTIONS TO HANDLE TURNS
+  get #roundTimer() {
+    return this.turnSettings && this.turnSettings.roundTimer;
+  }
+
+  get #turnsLimit() {
+    return this.turnSettings ? this.turnSettings.missedTurnsLimit : null;
+  }
+
+  get isDetectMinesGoal() {
+    return false;
+  }
+
+  get goalTargetNumber() {
+    return null;
+  }
+
+  get #maxAllowedFlags() {
+    return !this.optionsSettings.unlimitedFlags
+      ? this.levelSettings.numberOfMines
+      : null;
+  }
+
+  switchTurns() {
+    this.players.forEach((player) => player.toggleTurn());
+  }
+
+  /* UPDATE PLAYER CARD */
+  updatePlayerCardMissedTurns(player = this.playerOnTurn) {
+    return this.vsDashboard.updatePlayerMissedTurns(player);
+  }
+
+  updatePlayerCardAllowedFlags(player = this.playerOnTurn) {
+    return this.vsDashboard.updatePlayerAllowedFlags(player);
+  }
+
+  updatePlayerTurnsAndAllowedFlags(player = this.playerOnTurn) {
+    const playerUpdates = [this.updatePlayerAllowedFlags(player)];
+    playerUpdates.push(this.resetPlayerTurnsAfterMove());
+    return Promise.all(playerUpdates);
+  }
+
+
+
+
+
+  updatePlayerCardGameInfo(player = this.playerOnTurn) {
+    const playerUpdates = [this.updatePlayerTurnsAndAllowedFlags(player)];
+    playerUpdates.push(this.updatePlayerGameGoalStatistics());
+    return Promise.all(playerUpdates);
   }
 
   updateStateOnFlaggedTile(tile) {
@@ -305,17 +306,20 @@ export class GameVS extends Game {
     return;
   }
 
+  roundEnded(boardTiles) {
+    return true;
+  }
+
+  //
   onPlayerMoveEnd(boardTiles = []) {
     return;
   }
 
   onRoundEnd(boardTiles = []) {
     this.pause();
-    this.moveTilesUpdate = boardTiles;
-    this.playerOnTurn.increaseMoves();
+    this.roundTilesUpdate = boardTiles;
 
     console.log("-- onRoundEnd --");
-
     if (this.isOnline) {
       console.log("submit online round");
       console.log(this.playerOnTurn);

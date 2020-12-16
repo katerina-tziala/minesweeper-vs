@@ -82,18 +82,18 @@ export class Game extends AppModel {
   }
 
   initState() {
-    this.initMoveTiles();
+    this.initRoundTiles();
     this.gameOverType = null;
     this.completedAt = null;
     this.startedAt = null;
   }
 
-  initMoveTiles() {
-    this.moveTiles = [];
+  initRoundTiles() {
+    this.roundTiles = [];
   }
 
-  set moveTilesUpdate(newMoveTiles = []) {
-    this.moveTiles = this.moveTiles.concat(newMoveTiles);
+  set roundTilesUpdate(newMoveTiles = []) {
+    this.roundTiles = this.roundTiles.concat(newMoveTiles);
   }
 
   getPlayerDetectedMines(player) {
@@ -146,16 +146,15 @@ export class Game extends AppModel {
   handleTileRevealing(tile) {
     if (this.revealingAllowed) {
       this.revealMinefieldArea(tile);
-    } else {
-      this.mineField.enable();
+      return;
     }
+    this.mineField.enable();
   }
 
-
-  revealMinefieldArea(tile) {
+  revealMinefieldArea(tile, player = this.playerOnTurn) {
     if (tile.isUntouched || tile.isMarked) {
       this.mineField
-        .revealMinefieldTile(tile, this.playerOnTurn.id)
+        .revealMinefieldTile(tile, player.id)
         .then((revealedTiles) => {
           if (this.tileDetonated(revealedTiles)) {
             this.updateStateOnTileDetonation(revealedTiles);
@@ -167,9 +166,6 @@ export class Game extends AppModel {
       this.mineField.enable();
     }
   }
-
-
-
 
   markingAllowed(tile, player = this.playerOnTurn) {
     return tile.isFlaggedBy(player.id) && this.allowMarks;
@@ -279,8 +275,6 @@ export class Game extends AppModel {
         : self.modal.displayConfirmation(confirmation, (confirmed) => {
             confirmed ? action() : this.continue();
           });
-    } else {
-      console.log("action not specified");
     }
   }
 
@@ -402,15 +396,14 @@ export class Game extends AppModel {
     return;
   }
 
-  updateStateOnTileDetonation(revealedTiles) {
-    this.playerOnTurn.detonatedTile = revealedTiles[0].position;
+  /* UPDATE GAME AFTER MINEFIELD ACTIONS */
+  updateStateOnTileDetonation(revealedTiles, player = this.playerOnTurn) {
+    player.detonatedTile = revealedTiles[0].position;
     this.setGameEnd(GameEndType.DetonatedMine);
   }
 
-  updateStateOnRevealedTiles(revealedTiles) {
-    this.playerOnTurn.revealedTiles = this.mineField.getTilesPositions(
-      revealedTiles,
-    );
+  updateStateOnRevealedTiles(revealedTiles, player = this.playerOnTurn) {
+    player.revealedTiles = this.mineField.getTilesPositions(revealedTiles);
   }
 
   setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
@@ -431,17 +424,17 @@ export class Game extends AppModel {
     this.updateMineCounter();
   }
 
+ ////////////////////////////////
   submitResult() {
     console.log("submitResult");
     console.log(this);
   }
 
-  ////////////////////////////////
+ 
   onGameOver(boardTiles = []) {
     this.pause();
-    this.moveTilesUpdate = boardTiles;
-    this.playerOnTurn.increaseMoves();
-
+    this.roundTilesUpdate = boardTiles;
+  
     this.setFaceIconOnGameEnd();
     this.mineField.revealField();
   }

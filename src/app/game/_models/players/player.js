@@ -22,18 +22,16 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-  get detonatedMine() {
-    return this.detonatedMinesPositions.length ? true : false;
-  }
 
   initState(goalTargetNumber = 0, allowedTurns = null, allowedFlags = null) {
     this.goalTargetNumber = goalTargetNumber;
-    this.allowedTurns = allowedTurns;
     this.allowedFlags = allowedFlags;
+
+    this.allowedTurns = allowedTurns;
     this.turn = false;
-    this.moves = 0;
     this.missedTurns = 0;
 
+    this.moves = 0;
     this.lostGame = false;
     // minefield statistics
     this.redundantFlagsPositions = [];
@@ -47,14 +45,9 @@ export class Player extends AppModel {
     this.moves++;
   }
 
-  increaseMissedTurns() {
-    this.missedTurns++;
-  }
+  
 
-  resetMissedTurns() {
-    this.missedTurns = 0;
-  }
-
+  /* TURN PARAMETERS */
   toggleTurn() {
     this.turn = !this.turn;
   }
@@ -63,12 +56,27 @@ export class Player extends AppModel {
     return this.allowedTurns - this.missedTurns;
   }
 
+  resetMissedTurns() {
+    this.missedTurns = 0;
+  }
+
+  increaseMissedTurns() {
+    this.missedTurns++;
+  }
+
   get exceededTurnsLimit() {
     const exceededLimits = this.allowedTurns
       ? this.allowedTurns === this.missedTurns
       : false;
     this.lostGame = exceededLimits;
     return exceededLimits;
+  }
+
+
+
+
+  get detonatedMine() {
+    return this.detonatedMinesPositions.length ? true : false;
   }
 
   get unlimitedFlags() {
@@ -81,9 +89,6 @@ export class Player extends AppModel {
     return this.unlimitedFlags ? true : this.allowedFlags !== 0;
   }
 
-  increaseMissedTurns() {
-    this.missedTurns++;
-  }
 
   get minesDetected() {
     return this.entered ? this.detectedMinesPositions.length : 0;
@@ -99,18 +104,21 @@ export class Player extends AppModel {
       : 0;
   }
 
-  set revealedTiles(movePositions) {
-    this.revealedPositions = this.revealedPositions.concat(movePositions);
-    this.removeFromMarkedPositions = movePositions;
-  }
 
-  set removeFromMarkedPositions(movePositions) {
-    this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
-  }
 
+
+
+  /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
   set detonatedTile(position) {
     this.detonatedMinesPositions = [position];
+    this.increaseMoves();
     this.lostGame = this.detonatedMine;
+  }
+
+  set revealedTiles(movePositions) {
+    this.revealedPositions = this.revealedPositions.concat(movePositions);
+    this.increaseMoves();
+    this.removeFromMarkedPositions = movePositions;
   }
 
   flaggedTile(position, wronglyPlaced) {
@@ -118,6 +126,14 @@ export class Player extends AppModel {
       ? (this.#inRedundantFlagsPositions = position)
       : (this.#inDetectedMinesPositions = position);
     this.#decreaseAllowedFlags();
+    this.increaseMoves();
+  }
+
+  set markedTile(position) {
+    this.#removeFromBasePositionsStatistics(position);
+    this.#inMarksPositions = position;
+    this.#increaseAllowedFlags();
+    this.increaseMoves();
   }
 
   set resetedTile(position) {
@@ -127,13 +143,17 @@ export class Player extends AppModel {
       position,
     );
     this.#increaseAllowedFlags();
+    this.increaseMoves();
   }
 
-  set markedTile(position) {
-    this.#removeFromBasePositionsStatistics(position);
-    this.#inMarksPositions = position;
-    this.#increaseAllowedFlags();
+  set removeFromMarkedPositions(movePositions) {
+    this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
   }
+  
+
+
+
+
 
   // PRIVATE FUNCTIONS
   set #inRedundantFlagsPositions(position) {
@@ -175,52 +195,7 @@ export class Player extends AppModel {
     }
   }
 
-  // setAllowedFlags(allowedFlags) {
-  //     this.allowedFlags = allowedFlags;
-  // }
-
-  // getAllowedFlags() {
-  //     return this.allowedFlags;
-  // }
-
-  // enteredGame() {
-  //     return this.entered;
-  // }
-
-  // getMissedTurns() {
-  //     return this.missedTurns;
-  // }
-
-  // setTurnStatus(turnStatus) {
-  //     this.turn = turnStatus;
-  // }
-
-  // checkPlayerTurnsLimit(turnsLimit = 3) {
-  //     const reachedmissedTurnsLimit = (this.missedTurns === turnsLimit);
-  //     if (reachedmissedTurnsLimit) {
-  //         this.exceededTurnsLimit = true;
-  //     }
-  // }
-
-  // getExceededTurnsLimit() {
-  //     return this.exceededTurnsLimit;
-  // }
-
-  // getPlayerReportData() {
-  //     // return {
-  //     //     id: this.getId(),
-  //     //     name: this.getName(),
-  //     //     turn: this.turn,
-  //     //     revealdMine: this.getRevealedMine(),
-  //     //     exceededTurnsLimit: this.getExceededTurnsLimit(),
-  //     //     missedTurns: this.missedTurns,
-  //     //     lostGame: this.lostGame,
-  //     //     blankTilesRevealed: this.blankTilesRevealed,
-  //     //     wronglyPlacedFlags: this.wronglyPlacedFlags,
-  //     //     minesDetected: this.minesDetected
-  //     // };
-  // }
-
+  //
   get clearedMinefield() {
     const cleared = this.goalTargetNumber
       ? this.goalTargetNumber === this.revealedPositions.length

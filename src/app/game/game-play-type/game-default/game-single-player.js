@@ -3,7 +3,6 @@
 import { GameEndType, GameVSMode } from "GameEnums";
 import { Game } from "./_game";
 export class GameSinglePlayer extends Game {
-  
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
@@ -49,6 +48,7 @@ export class GameSinglePlayer extends Game {
     this.start();
   }
 
+  /* UPDATE GAME AFTER MARKING TILES */
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
     this.onGameOver(revealedTiles);
@@ -65,27 +65,52 @@ export class GameSinglePlayer extends Game {
   }
 
   handleTileMarking(tile) {
+    console.log(tile);
     if (tile.isUntouched) {
-      // set flag
-      this.setFlagOnMinefieldTile(tile);
+      this.updateStateOnFlaggedTile(tile);
     } else if (this.markingAllowed(tile)) {
-      // set mark
-      this.setMarkOnMinefieldTile(tile);
+      this.updateStateOnMarkedTile(tile);
     } else {
-      // reset
-      this.resetMinefieldTile(tile);
+      this.updateStateOnResetedTile(tile);
     }
+    this.mineField.enable();
+  }
+
+  updateStateOnFlaggedTile(tile) {
+    this.setFlagOnMinefieldTile(tile);
     this.onPlayerMoveEnd([tile]);
   }
 
+  updateStateOnMarkedTile(tile) {
+    this.setMarkOnMinefieldTile(tile);
+    this.onPlayerMoveEnd([tile]);
+  }
+
+  updateStateOnResetedTile(tile) {
+    this.resetMinefieldTile(tile);
+    this.onPlayerMoveEnd([tile]);
+  }
+
+  startGameRound() {
+    this.initRoundTiles();
+
+    //keep round number
+    if (this.playerOnTurn.isBot) {
+      console.log("get BotMove");
+      //this.mineField.disable();
+      this.mineField.enable();
+    } else {
+      this.mineField.enable();
+    }
+  }
+
   onPlayerMoveEnd(boardTiles = []) {
-    this.moveTilesUpdate = boardTiles;
-    this.playerOnTurn.increaseMoves();
+    this.roundTilesUpdate = boardTiles;
     if (this.isParallel) {
       console.log("parallel");
       this.submitResult();
-
       this.pause();
+      return;
     } else {
       this.startGameRound();
     }
@@ -96,24 +121,12 @@ export class GameSinglePlayer extends Game {
     if (this.isParallel) {
       console.log("parallel");
       this.submitResult();
+      this.pause();
       return;
     }
     console.log("onGameOver");
     console.log(this);
     console.log("show end modal message");
-  }
-
-  startGameRound() {
-    this.initMoveTiles();
-
-    //keep round number
-    if (this.playerOnTurn.isBot) {
-      console.log("get BotMove");
-      //this.mineField.disable();
-      this.mineField.enable();
-    } else {
-      this.mineField.enable();
-    }
   }
 
 }

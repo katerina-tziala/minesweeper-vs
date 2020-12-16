@@ -10,4 +10,13 @@ export class TurnSettings extends AppModel {
     this.missedTurnsLimit = 10;
     this.consecutiveTurns = false;
   }
+
+  get roundTimer() {
+    return this.turnTimer && (this.turnDuration > 0);
+  }
+
+  get resetMissedTurns() {
+    return this.roundTimer && this.consecutiveTurns;
+  }
+
 }

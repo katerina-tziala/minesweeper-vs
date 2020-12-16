@@ -3,13 +3,25 @@
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 import { GameType, GameVSMode } from "GameEnums";
-import { LevelSettings, Player, BotPlayer } from "GameModels";
+import { LevelSettings, TurnSettings, Player, BotPlayer } from "GameModels";
 
 export class GameFactory {
 
-  static loadGame(gameParams, gameId) {
+  static getGameModelParams(gameParams) {
     gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
 
+    if (gameParams.turnSettings) {
+      const turnSettings = new TurnSettings();
+      turnSettings.update(gameParams.turnSettings)
+      gameParams.turnSettings = turnSettings;
+    }
+
+    return gameParams;
+  }
+
+  static loadGame(gameParams, gameId) {
+    gameParams = GameFactory.getGameModelParams(gameParams);
+ 
     const playersData = gameParams.players;
     delete gameParams.players;
 
