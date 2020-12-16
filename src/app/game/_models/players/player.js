@@ -233,4 +233,6 @@ export class Player extends AppModel {
   //     ? this.goalTargetNumber === this.detectedMinesPositions.length
   //     : false;
   // }
+
+
 }

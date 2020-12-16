@@ -74,14 +74,14 @@ export class GameVSClear extends GameVS {
     this.pause();
     super.updateStateOnRevealedTiles(revealedTiles);
 
-    this.resetPlayerTurnsAfterMove().then(() => {
+   this.resetPlayerTurnsAfterMove().then(() => {
       if (this.mineField.isCleared) {
         this.setGameEnd(GameEndType.Cleared);
         this.onGameOver(revealedTiles);
         return;
       }
       this.onRoundEnd(revealedTiles);
-    });
+   });
   }
 
 
@@ -110,7 +110,7 @@ export class GameVSClear extends GameVS {
   onPlayerMoveEnd(boardTiles = []) {
     this.moveTilesUpdate = boardTiles;
     this.playerOnTurn.increaseMoves();
-    this.updatePlayerTurnsAndAllowedFlags().then(() => {
+  //  this.updatePlayerTurnsAndAllowedFlags().then(() => {
       console.log("-- onPlayerMoveEnd --");
       if (this.isOnline) {
         console.log("submit online move");
@@ -120,7 +120,7 @@ export class GameVSClear extends GameVS {
   
       this.mineField.enable();
 
-    });
+    //});
   }
 
 

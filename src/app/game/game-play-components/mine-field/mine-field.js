@@ -208,9 +208,7 @@ export class MineField {
     return tiles.filter((tile) => !tile.isRevealed);
   }
 
-  // getUnrevealedMines() {
-  //   return this.getTilesByPositions(this.#levelSettings.minesPositions).filter(tile => !tile.isRevealed);
-  // }
+
 
   // getFlaggedTiles(tiles = this.getFieldTiles()) {
   //   return tiles.filter(tile => tile.isFlagged());
@@ -243,6 +241,9 @@ export class MineField {
     return detectedTiles.length === this.#levelSettings.numberOfMines;
   }
 
+  getUnrevealedMines() {
+    return this.getTilesByPositions(this.#levelSettings.minesPositions).filter(tile => !tile.isFlagged);
+  }
   // get mineTiles() {
   //   return this.getTilesByPositions(this.#levelSettings.minesPositions);
   // }

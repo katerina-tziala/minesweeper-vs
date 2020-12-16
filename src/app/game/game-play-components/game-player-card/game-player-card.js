@@ -33,7 +33,7 @@ export class GamePlayerCard {
     return cardStyles;
   }
 
-  static generate(player, directionLeft = false, clearMinefield = true) {
+  static generate(player, directionLeft = false, clearMinefield = true, wrongFlagHint = false) {
     const cardStyles = GamePlayerCard.getPlayerCardStyles(
       player,
       directionLeft,
@@ -46,6 +46,7 @@ export class GamePlayerCard {
     const detailsSection = PlayerCardDetails.generateDetailsSection(
       player,
       clearMinefield,
+      wrongFlagHint
     );
     const stateSection = PlayerCardState.generateStateSection(player);
     playerCard.append(playerSection, detailsSection, stateSection);

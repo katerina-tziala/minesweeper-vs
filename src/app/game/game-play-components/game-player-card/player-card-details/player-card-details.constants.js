@@ -17,4 +17,6 @@ export const DOM_ELEMENT_ID = {
 export const TARGET_CONTENT = {
   clear: "cleared",
   detect: "detected",
+  toClear: "to clear",
+  toDetect: "to detect",
 };

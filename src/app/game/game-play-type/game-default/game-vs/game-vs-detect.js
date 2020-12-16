@@ -24,6 +24,14 @@ export class GameVSDetect extends GameVS {
   }
 
 
+  handleTileRevealing(tile) {
+    if (this.revealingAllowed) {
+      this.revealMinefieldArea(tile);
+    } else {
+      this.updateStateOnFlaggedTile(tile);
+    }
+  }
+
 
   flaggingAllowed(tile, player = this.playerOnTurn) {
     return (player.hasFlags && this.flagOnTileAllowedByPlayer(tile));
@@ -31,39 +39,64 @@ export class GameVSDetect extends GameVS {
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
+
+    if (this.mineField.isCleared) {
+      this.updateStateOnClearedMinefield(revealedTiles);
+      return;
+    }
+  
     this.onPlayerMoveEnd(revealedTiles);
   }
+
+  updateStateOnClearedMinefield(revealedTiles) {
+    this.pause();
+    const unflaggedTiles = this.mineField.getUnrevealedMines();
+    unflaggedTiles.forEach(tile => this.setFlagOnMinefieldTile(tile));
+    this.updatePlayerCardGameInfoAndCheckGameOver(unflaggedTiles.concat(revealedTiles));
+  }
+
+  updatePlayerCardGameInfoAndCheckGameOver(boardTiles) {
+    this.updatePlayerCardGameInfo().then(() => {
+      if (this.mineField.allMinesDetected) {
+        this.setGameEnd(GameEndType.Detected);
+        this.onGameOver(boardTiles);
+        return;
+      }
+      this.onRoundEnd(boardTiles);
+    });
+  }
+  
+
 
   updateStateOnFlaggedTile(tile) {
     this.pause();
     this.setFlagOnMinefieldTile(tile);
-
-    this.playerWaiting.removeFromMarkedPositions = this.mineField.getTilesPositions([tile]);
-
-    this.updatePlayerTurnsAndAllowedFlags().then(() => {
-      if (this.mineField.allMinesDetected) {
-        this.setGameEnd(GameEndType.Detected);
-        this.onGameOver([tile]);
-        return;
-      }
-      this.onRoundEnd([tile]);
-    });
+    this.updatePlayerCardGameInfoAndCheckGameOver([tile]);
   }
+
+
+
+
+
+
+
+
+
 
   updateStateOnMarkedTile(tile) {
    // this.pause();
     this.setMarkOnMinefieldTile(tile);
-    this.updatePlayerAllowedFlags().then(() => {
+   // this.updatePlayerAllowedFlags().then(() => {
       this.onPlayerMoveEnd([tile]);
-    });
+   // });
   }
 
   updateStateOnResetedTile(tile) {
    // this.pause();
     this.resetMinefieldTile(tile);
-    this.updatePlayerAllowedFlags().then(() => {
+    //this.updatePlayerAllowedFlags().then(() => {
       this.onPlayerMoveEnd([tile]);
-    });
+   // });
   }
 
 
