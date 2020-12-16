@@ -43,9 +43,10 @@ export class GameSinglePlayer extends Game {
         console.log("start parallel");
         return;
       }
-      self.modal.displayWaitingMessage(this.startMessage, (confirmed) => {
-        this.startGameRound();
-      });
+    
+      console.log(this.startMessage);
+      this.startGameRound();
+    
     });
   }
 
@@ -107,10 +108,8 @@ export class GameSinglePlayer extends Game {
   startGameRound() {
     this.initRoundTiles();
 
-    //keep round number
     if (this.playerOnTurn.isBot) {
       console.log("get BotMove");
-      //this.mineField.disable();
       this.mineField.disable();
       return;
     }
@@ -136,8 +135,18 @@ export class GameSinglePlayer extends Game {
       this.pause();
       return;
     }
+
+
     console.log("onGameOver");
     console.log(this);
     console.log("show end modal message");
+    console.log(this.playerOnTurn);
+    console.log(this.endMessage);
+  }
+
+  get endMessage() {
+    const message = Object.assign(this.playerOnTurn.lostGame ? MESSAGE.gameOverLoss : MESSAGE.gameOverWin);
+    message.content = replaceStringParameter(message.content, this.playerOnTurn.name);
+    return message;
   }
 }

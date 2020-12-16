@@ -26,6 +26,7 @@ import { CONFIRMATION } from "../../../components/modal/modal.constants";
 export class Game extends AppModel {
   #dashBoardActions = {};
 
+  //round statistics
   constructor(id, params, player) {
     super();
     this.update(params);
