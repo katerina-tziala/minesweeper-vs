@@ -1,12 +1,13 @@
 "use strict";
 
 import { ElementHandler } from "HTML_DOM_Manager";
+
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
-  CONFIRMATION,
   MOVEMENT_DURATION,
 } from "./modal.constants";
+
 import { ModalView } from "./modal-view";
 export class Modal {
   #shakeTimeout = false;
@@ -85,9 +86,10 @@ export class Modal {
   }
 
   #hide() {
+    this.#clearActionCountdown();
     this.#removeEscapeEvent();
     if (this.#displayed) {
-      ModalView.hiddenModalWindow
+      return ModalView.hiddenModalWindow
         .then(() => {
           return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
         })
@@ -133,6 +135,23 @@ export class Modal {
     });
   }
 
+  #setMessageTimer(timerSeconds, onAction) {
+    if (timerSeconds && onAction) {
+      this.#confirmationTimer = timerSeconds;
+      this.#setConfirmationCountdown(() =>
+        this.#onConfirmationAction(onAction, true),
+      );
+    }
+  }
+
+  #setModalEscape(onAction) {
+    this.onModalEscape = (event) => {
+      this.#onEscape(event, () => this.#onConfirmationAction(onAction, true));
+    };
+    document.addEventListener("keyup", this.onModalEscape, true);
+  }
+
+
   displayConfirmation(message, onAction) {
     this.#hide()
       .then(() => {
@@ -148,19 +167,20 @@ export class Modal {
       .then(() => {
         ModalView.setConfirmationNavigation();
         // timer
-        if (message.timer) {
-          this.#confirmationTimer = message.timer;
-          this.#setConfirmationCountdown(() =>
-            this.#onConfirmationAction(onAction, true),
-          );
-        }
+        this.#setMessageTimer(message.timer, onAction);
         // escape modal dialog
-        this.onModalEscape = (event) => {
-          this.#onEscape(event, () =>
-            this.#onConfirmationAction(onAction, true),
-          );
-        };
-        document.addEventListener("keyup", this.onModalEscape, true);
+        this.#setModalEscape(onAction);
+      });
+  }
+
+  displayWaitingMessage(message, onAction) {
+    this.#hide()
+      .then(() => {
+        return ModalView.generateWaitingDialog(message);
+      })
+      .then(() => {
+        this.#display();
+        this.#setMessageTimer(message.timer, onAction);
       });
   }
 }

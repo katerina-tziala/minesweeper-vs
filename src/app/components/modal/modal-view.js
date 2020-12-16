@@ -71,7 +71,7 @@ export class ModalView {
     return titleContainer;
   }
 
-  static generateContent(content, timer) {
+  static generateTimerContent(content, timer) {
     const contentContainer = document.createElement("p");
     ElementHandler.addStyleClass(contentContainer, DOM_ELEMENT_CLASS.content);
     if (timer) {
@@ -81,25 +81,25 @@ export class ModalView {
     return contentContainer;
   }
 
-  static generateDialogContent(message) {
+  static generateDialogContent(message, timer = message.timer) {
     const boxContentContainer = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.dialogContent,
     ]);
     const title = ModalView.generateTitle(message.title);
-    const content = ModalView.generateContent(message.content, message.timer);
+    const content = ModalView.generateTimerContent(message.content, timer);
     boxContentContainer.append(title, content);
     return boxContentContainer;
   }
 
   static updateConfirmationTimer(timerValue) {
+    timerValue--;
     return ModalView.modalTimer
       .then((modalTimer) => {
-        timerValue--;
         modalTimer.innerHTML = timerValue;
         return timerValue;
       })
       .catch(() => {
-        return 0;
+        return timerValue;
       });
   }
 
@@ -174,4 +174,13 @@ export class ModalView {
       }
     }
   }
+
+  static generateWaitingDialog(message) {
+    return ModalView.newModalDialog.then((modalBox) => {
+      const confirmationContainer = ModalView.generateDialogContent(message, 0);
+      modalBox.append(confirmationContainer);
+      return;
+    });
+  }
+
 }

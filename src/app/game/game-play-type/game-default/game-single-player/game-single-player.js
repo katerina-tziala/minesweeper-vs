@@ -1,7 +1,11 @@
 "use strict";
+import { replaceStringParameter } from "~/_utils/utils";
 
 import { GameEndType, GameVSMode } from "GameEnums";
-import { Game } from "./_game";
+import { Game } from "../_game";
+
+import { MESSAGE } from "./game-single-player.constants";
+
 export class GameSinglePlayer extends Game {
   constructor(id, params, player) {
     super(id, params, player);
@@ -35,11 +39,20 @@ export class GameSinglePlayer extends Game {
     this.onAfterViewInit.then(() => {
       this.initDashBoard();
 
-      // start modal
-      console.log("show start modal message");
-      console.log(this.levelSettings.minesPositions);
-      this.startGameRound();
+      if (this.isParallel) {
+        console.log("start parallel");
+        return;
+      }
+      self.modal.displayWaitingMessage(this.startMessage, (confirmed) => {
+        this.startGameRound();
+      });
     });
+  }
+
+  get startMessage() {
+    const message = Object.assign(MESSAGE.gameOn);
+    message.content = replaceStringParameter(message.content, this.playerOnTurn.name);
+    return message;
   }
 
   restart() {
@@ -98,10 +111,10 @@ export class GameSinglePlayer extends Game {
     if (this.playerOnTurn.isBot) {
       console.log("get BotMove");
       //this.mineField.disable();
-      this.mineField.enable();
-    } else {
-      this.mineField.enable();
+      this.mineField.disable();
+      return;
     }
+    this.mineField.enable();
   }
 
   onPlayerMoveEnd(boardTiles = []) {
@@ -111,9 +124,8 @@ export class GameSinglePlayer extends Game {
       this.submitResult();
       this.pause();
       return;
-    } else {
-      this.startGameRound();
     }
+    this.startGameRound();
   }
 
   onGameOver(boardTiles = []) {
@@ -128,5 +140,4 @@ export class GameSinglePlayer extends Game {
     console.log(this);
     console.log("show end modal message");
   }
-
 }

@@ -1,7 +1,6 @@
 "use strict";
 
 import { AppModel } from "~/_models/app-model";
-import { GameEndType } from "GameEnums";
 export class Player extends AppModel {
   #_colorType;
 
@@ -22,11 +21,9 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-
   initState(goalTargetNumber = 0, allowedTurns = null, allowedFlags = null) {
     this.goalTargetNumber = goalTargetNumber;
     this.allowedFlags = allowedFlags;
-
     this.allowedTurns = allowedTurns;
     this.turn = false;
     this.missedTurns = 0;
@@ -44,8 +41,6 @@ export class Player extends AppModel {
   increaseMoves() {
     this.moves++;
   }
-
-  
 
   /* TURN PARAMETERS */
   toggleTurn() {
@@ -72,13 +67,7 @@ export class Player extends AppModel {
     return exceededLimits;
   }
 
-
-
-
-  get detonatedMine() {
-    return this.detonatedMinesPositions.length ? true : false;
-  }
-
+  /* CHECKS BASED ON MINEFIELD ACTIONS */
   get unlimitedFlags() {
     return this.allowedFlags === null || this.allowedFlags === undefined
       ? true
@@ -89,6 +78,15 @@ export class Player extends AppModel {
     return this.unlimitedFlags ? true : this.allowedFlags !== 0;
   }
 
+  get placedFlags() {
+    return this.entered
+      ? this.redundantFlagsPositions.length + this.detectedMinesPositions.length
+      : 0;
+  }
+
+  get detonatedMine() {
+    return this.detonatedMinesPositions.length ? true : false;
+  }
 
   get minesDetected() {
     return this.entered ? this.detectedMinesPositions.length : 0;
@@ -98,15 +96,12 @@ export class Player extends AppModel {
     return this.entered ? this.revealedPositions.length : 0;
   }
 
-  get placedFlags() {
-    return this.entered
-      ? this.redundantFlagsPositions.length + this.detectedMinesPositions.length
-      : 0;
+  get clearedMinefield() {
+    const cleared = this.goalTargetNumber
+      ? this.goalTargetNumber === this.revealedPositions.length
+      : false;
+    return cleared;
   }
-
-
-
-
 
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
   set detonatedTile(position) {
@@ -149,11 +144,6 @@ export class Player extends AppModel {
   set removeFromMarkedPositions(movePositions) {
     this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
   }
-  
-
-
-
-
 
   // PRIVATE FUNCTIONS
   set #inRedundantFlagsPositions(position) {
@@ -194,20 +184,5 @@ export class Player extends AppModel {
       this.allowedFlags--;
     }
   }
-
-  //
-  get clearedMinefield() {
-    const cleared = this.goalTargetNumber
-      ? this.goalTargetNumber === this.revealedPositions.length
-      : false;
-    return cleared;
-  }
-
-  // get detectedAllMines() {
-  //   return this.goalTargetNumber
-  //     ? this.goalTargetNumber === this.detectedMinesPositions.length
-  //     : false;
-  // }
-
 
 }

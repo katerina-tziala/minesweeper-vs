@@ -45,5 +45,5 @@ export const CONFIRMATION = {
     content: "Reseting game in...",
     timer: 3,
     confirmButton: RESET_BTN,
-  },
+  }
 };
