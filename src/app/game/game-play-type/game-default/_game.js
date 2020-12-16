@@ -6,7 +6,7 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
 
-import { GameType, GameVSMode, GameAction, GameEndType } from "GameEnums";
+import { GameType, GameVSMode, GameAction, GameEndType, GameSubmission } from "GameEnums";
 import { GameViewHelper } from "./_game-view-helper";
 import {
   ACTION_BUTTONS,
@@ -425,17 +425,21 @@ export class Game extends AppModel {
     this.updateMineCounter();
   }
 
- ////////////////////////////////
-  submitResult() {
-    console.log("submitResult");
-    console.log(this);
+  ////////////////////////////////
+  submitResult(type) {
+    //TODO:
+    console.log("--  submit game state -- ");
+    console.log("----------------------------");
+    console.log("update state: ", type);
+    //console.log(this);
+
   }
 
- 
   onGameOver(boardTiles = []) {
     this.pause();
+    // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
-  
+    // Board state
     this.setFaceIconOnGameEnd();
     this.mineField.revealField();
   }

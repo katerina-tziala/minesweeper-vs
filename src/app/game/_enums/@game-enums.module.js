@@ -4,3 +4,4 @@ export { GameVSMode } from "./game-vs-mode.enum";
 export { BotMode } from "./bot-mode.enum";
 export { GameAction } from "./game-action.enum";
 export { GameEndType } from "./game-end-type.enum";
+export { GameSubmission } from "./game-submission.enum";

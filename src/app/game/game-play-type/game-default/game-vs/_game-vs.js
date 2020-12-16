@@ -1,7 +1,7 @@
 "use strict";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
-import { GameType, GameVSMode, GameEndType } from "GameEnums";
+import { GameType, GameVSMode, GameEndType, GameSubmission } from "GameEnums";
 
 import { Game } from "../_game";
 
@@ -41,10 +41,12 @@ export class GameVS extends Game {
     //console.log(this.turnSettings);
     console.log(this.optionsSettings);
     this.init();
-    this.vsDashboard = new GameVSDashboard(
-      !this.isDetectMinesGoal,
-      this.wrongFlagHint,
-    );
+    this.setDashBoard();
+    
+  }
+
+  setDashBoard() {
+    this.vsDashboard = new GameVSDashboard(!this.isDetectMinesGoal, this.wrongFlagHint);
   }
 
   // OVERRIDEN FUNCTIONS
@@ -66,6 +68,20 @@ export class GameVS extends Game {
     return this.players.find((player) => !player.turn);
   }
 
+  get isDetectMinesGoal() {
+    return false;
+  }
+
+  get goalTargetNumber() {
+    return null;
+  }
+
+  get #maxAllowedFlags() {
+    return !this.optionsSettings.unlimitedFlags
+      ? this.levelSettings.numberOfMines
+      : null;
+  }
+
   generateView() {
     const gameContainer = super.generateView();
     const vsDashboard = this.vsDashboard.generateView(
@@ -77,7 +93,6 @@ export class GameVS extends Game {
   }
 
   init() {
-    // console.log(this.#maxAllowedFlags);
     this.players.forEach((player) => {
       player.initState(
         this.goalTargetNumber,
@@ -89,45 +104,57 @@ export class GameVS extends Game {
     this.initState();
   }
 
+  #initPlayersCards() {
+    const targetValuesForPlayers = this.players.map((player) => this.getPlayerTargetValue(player));
+    return this.vsDashboard.initCardsState(this.players, targetValuesForPlayers);
+  }
+
   start() {
     console.log(this.levelSettings.minesPositions);
-    this.onAfterViewInit
-      .then(() => {
-        return this.vsDashboard.initCardsState(
-          this.players,
-          this.players.map((player) => this.getPlayerTargetValue(player)),
-        );
-      })
-      .then(() => {
+    this.onAfterViewInit.then(() => {
+        return this.#initPlayersCards();
+    })
+    .then(() => {
         this.initDashBoard();
-        if (this.#roundTimer) {
-          this.setGameStart();
-        }
-        console.log("start VS GAME");
-        // console.log(this.playerOnTurn);
-        // console.log("show start modal");
-        this.startGameRound();
-      });
+        
+      if (this.#roundTimer) {
+        this.setGameStart();
+      }
+    
+      console.log("START GameVS GAME");
+      console.log("----------------------------");
+      console.log(" show start modal message");
+      this.startGameRound();
+
+    });
   }
 
   startGameRound() {
+    // TODO: ROUND STATISTICS
     this.initRoundTiles();
 
     this.vsDashboard.setCardOnTurn(this.players).then(() => {
       if (this.#roundTimer) {
         this.gameTimer.start();
       }
-      console.log("-- on Start Round --");
 
-      //keep round number
       if (this.playerOnTurn.isBot) {
-        console.log("get BotMove");
-        //this.mineField.disable();
-        this.mineField.enable();
-      } else {
-        this.mineField.enable();
+        this.startBotRound();
+        return;
       }
+
+      this.mineField.enable();
     });
+  }
+
+  //TODO: COMPLETE THE CASES
+  startBotRound() {
+    //TODO:
+    console.log("--  get Bot move -- ");
+    console.log("GameVS");
+    console.log("----------------------------");
+    //this.mineField.disable();
+    this.mineField.enable();
   }
 
   restart() {
@@ -228,20 +255,18 @@ export class GameVS extends Game {
     this.mineField.enable();
   }
 
-  // resetPlayerTurnsAfterMove(player = this.playerOnTurn) {
-  //   if (
-  //     this.#roundTimer &&
-  //     this.turnSettings.consecutiveTurns &&
-  //     player.missedTurns
-  //   ) {
-  //
-  //     player.resetMissedTurns();
-  //     return this.vsDashboard.updatePlayerMissedTurns(player);
-  //   }
-  //   return Promise.resolve();
-  // }
+  updateStateOnFlaggedTile(tile) {
+    return;
+  }
 
-  // CLASS SPECIFIC FUNCTIONS
+  updateStateOnMarkedTile(tile) {
+    return;
+  }
+
+  updateStateOnResetedTile(tile) {
+    return;
+  }
+
   // FUNCTIONS TO HANDLE TURNS
   get #roundTimer() {
     return this.turnSettings && this.turnSettings.roundTimer;
@@ -249,20 +274,6 @@ export class GameVS extends Game {
 
   get #turnsLimit() {
     return this.turnSettings ? this.turnSettings.missedTurnsLimit : null;
-  }
-
-  get isDetectMinesGoal() {
-    return false;
-  }
-
-  get goalTargetNumber() {
-    return null;
-  }
-
-  get #maxAllowedFlags() {
-    return !this.optionsSettings.unlimitedFlags
-      ? this.levelSettings.numberOfMines
-      : null;
   }
 
   switchTurns() {
@@ -278,54 +289,30 @@ export class GameVS extends Game {
     return this.vsDashboard.updatePlayerAllowedFlags(player);
   }
 
-  updatePlayerTurnsAndAllowedFlags(player = this.playerOnTurn) {
-    const playerUpdates = [this.updatePlayerAllowedFlags(player)];
-    playerUpdates.push(this.resetPlayerTurnsAfterMove());
-    return Promise.all(playerUpdates);
-  }
-
-
-
-
-
-  updatePlayerCardGameInfo(player = this.playerOnTurn) {
-    const playerUpdates = [this.updatePlayerTurnsAndAllowedFlags(player)];
-    playerUpdates.push(this.updatePlayerGameGoalStatistics());
-    return Promise.all(playerUpdates);
-  }
-
-  updateStateOnFlaggedTile(tile) {
-    return;
-  }
-
-  updateStateOnMarkedTile(tile) {
-    return;
-  }
-
-  updateStateOnResetedTile(tile) {
-    return;
-  }
-
-  roundEnded(boardTiles) {
-    return true;
-  }
-
-  //
+  /* HANDLE GAME STATE AFTER PLAYER ACTION */
   onPlayerMoveEnd(boardTiles = []) {
     return;
   }
 
+  //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
     this.pause();
+    // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
 
-    console.log("-- onRoundEnd --");
     if (this.isOnline) {
-      console.log("submit online round");
-      console.log(this.playerOnTurn);
+      //TODO:
+      console.log("--  submit online round -- ");
+      console.log("GameVS");
+      console.log("----------------------------");
+      this.submitResult(GameSubmission.RoundEnd);
+      this.pause();
       return;
     }
-
+    //TODO:
+    console.log("--  move to next round -- ");
+    console.log("GameVS");
+    console.log("----------------------------");
     console.log("go on the next round");
     this.switchTurns();
     this.startGameRound();
@@ -333,15 +320,21 @@ export class GameVS extends Game {
 
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
-    console.log("-- onGameOver --");
 
     if (this.isOnline) {
-      console.log("onGameOver online");
+      //TODO:
+      console.log("--  submit online game over -- ");
+      console.log("GameVS");
+      console.log("----------------------------");
+      this.submitResult(GameSubmission.GameOver);
       return;
     }
 
-    console.log(this);
+    //TODO:
+    console.log("--  game over --");
+    console.log("GameVS");
+    console.log("----------------------------");
     console.log("show end modal message");
-    console.log("ganme vs end");
+    console.log(this.playerOnTurn);
   }
 }

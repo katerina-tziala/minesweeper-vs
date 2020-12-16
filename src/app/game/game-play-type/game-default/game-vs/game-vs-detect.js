@@ -1,6 +1,6 @@
 "use strict";
 
-import { GameEndType } from "GameEnums";
+import { GameEndType, GameSubmission } from "GameEnums";
 import { GameVS } from "./_game-vs";
 
 export class GameVSDetect extends GameVS {
@@ -95,20 +95,25 @@ export class GameVSDetect extends GameVS {
     });
   }
 
+  /* UPDATE PLAYER CARD */
+  //TODO: COMPLETE THE CASES
   onPlayerMoveEnd(boardTiles = []) {
     this.roundTilesUpdate = boardTiles;
-
-    console.log("-- onPlayerMoveEnd --");
     if (this.isOnline) {
-      console.log("submit online move");
-      console.log(this.playerOnTurn);
+      //TODO:
+      console.log("--  submit online move --");
+      console.log("GameVSDetect");
+      console.log("----------------------------");
+      this.submitResult(GameSubmission.MoveEnd);
+      console.log("decide how game is continued for this player");
+      this.pause();
       return;
     }
-
+    console.log(this);
     this.mineField.enable();
   }
 
-  updatePlayerCard(turnsUpdate = false, flagsUpdate = false, player = this.playerOnTurn) {
+  updatePlayerCard(turnsUpdate = false, flagsUpdate = false) {
     const updates = this.getCardUpdates(turnsUpdate, flagsUpdate);
 
     if (updates.length) {
@@ -134,7 +139,9 @@ export class GameVSDetect extends GameVS {
   }
 
   getPlayerTargetValue(player) {
-    return this.wrongFlagHint ? this.getPlayerDetectedMines(player) : player.goalTargetNumber;
+    return this.wrongFlagHint
+      ? this.getPlayerDetectedMines(player)
+      : player.goalTargetNumber;
   }
 
   updatePlayerGameGoalStatistics(player = this.playerOnTurn) {
