@@ -64,8 +64,8 @@ export class GameVSClear extends GameVS {
   }
 
   // get flaggingAllowedBySettings() {
-  //   if (this.optionsSettings.allowFlagging !== undefined) {
-  //     return this.optionsSettings.allowFlagging;
+  //   if (this.optionsSettings.tileFlagging !== undefined) {
+  //     return this.optionsSettings.tileFlagging;
   //   }
   //   return true;
   // }

@@ -21,6 +21,7 @@ export class OptionsSettings extends AppModel {
   setModePropertiesVS() {
     switch (this.vsMode) {
       case GameVSMode.Clear:
+        // this.tileFlagging = true;
         this.unlimitedFlags = true;
         this.openStrategy = false;
         this.sneakPeek = false;
