@@ -124,7 +124,7 @@ export class GameVSDetect extends GameVS {
     return Promise.resolve();
   }
 
-  getCardUpdates(turnsUpdate, flagsUpdate, player = this.playerOnTurn) {
+  getCardUpdates(turnsUpdate = false, flagsUpdate = false, player = this.playerOnTurn) {
     const updates = super.getCardUpdates(turnsUpdate);
 
     if (flagsUpdate) {

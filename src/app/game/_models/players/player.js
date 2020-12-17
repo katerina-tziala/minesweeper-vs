@@ -131,13 +131,15 @@ export class Player extends AppModel {
     this.increaseMoves();
   }
 
-  set resetedTile(position) {
+  resetedTile(position, increaseFlags = false) {
     this.#removeFromBasePositionsStatistics(position);
     this.marksPositions = this.#removeFromPositionsArray(
       this.marksPositions,
       position,
     );
-    this.#increaseAllowedFlags();
+    if (increaseFlags) {
+      this.#increaseAllowedFlags();
+    }
     this.increaseMoves();
   }
 

@@ -70,10 +70,7 @@ export class GameVSClear extends GameVS {
   }
 
   flaggingAllowed(tile, player = this.playerOnTurn) {
-    
-   // console.log("flagOnTileAllowedByPlayer", this.flagOnTileAllowedByPlayer(tile));
-
-    
+    // console.log("flagOnTileAllowedByPlayer", this.flagOnTileAllowedByPlayer(tile));
 
     return this.flagOnTileAllowedByPlayer(tile);
   }
@@ -94,34 +91,34 @@ export class GameVSClear extends GameVS {
   handleTileMarking(tile) {
     console.log("handleTileMarking", tile);
 
-    this.pause();
+   // this.pause();
 
-    console.log("flaggingAllowedBySettings", this.flaggingAllowedBySettings);
-
+ 
     if (!this.strategyAllowed) {
       this.revealMinefieldArea(tile);
+      return;
     }
 
+    console.log("strategyAllowed -- flags allowed", this.strategyAllowed);
 
     // set flag
     if (this.flaggingAllowed(tile)) {
       this.updateStateOnFlaggedTile(tile);
       return;
     }
+    // set mark
+    if (this.markingAllowed(tile)) {
+      this.updateStateOnMarkedTile(tile);
+      return;
+    }
 
-    // if (this.markingAllowed(tile)) {
-    //   // set mark
-    //   this.updateStateOnMarkedTile(tile);
-    //   return;
-    // }
+    // reset
+    if (this.resetingAllowed(tile)) {
+      this.updateStateOnResetedTile(tile);
+      return;
+    }
 
-    // if (this.resetingAllowed(tile)) {
-    //   // reset
-    //   this.updateStateOnResetedTile(tile);
-    //   return;
-    // }
-
-    // this.mineField.enable();
+    this.mineField.enable();
   }
 
   updateStateOnFlaggedTile(tile) {
@@ -133,24 +130,22 @@ export class GameVSClear extends GameVS {
       console.log("updateStateOnFlaggedTile", "GameVSClear");
       this.onPlayerMoveEnd([tile]);
     });
-   
-    //this.onPlayerMoveEnd([tile]);
   }
 
   updateStateOnMarkedTile(tile) {
-    this.pause();
     this.setMarkOnMinefieldTile(tile);
-    // this.onPlayerMoveEnd([tile]);
-
-    console.log("updateStateOnMarkedTile", "GameVSClear");
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    this.updatePlayerCard(missedTurnsUpdated, false, true).then(() => {
+      this.onPlayerMoveEnd([tile]);
+    });
   }
 
   updateStateOnResetedTile(tile) {
-    this.pause();
     this.resetMinefieldTile(tile);
-
-    console.log("updateStateOnResetedTile", "GameVSClear");
-    // this.onPlayerMoveEnd([tile]);
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    this.updatePlayerCard(missedTurnsUpdated, false, true).then(() => {
+      this.onPlayerMoveEnd([tile]);
+    });
   }
 
   onPlayerMoveEnd(boardTiles = []) {
@@ -174,8 +169,7 @@ export class GameVSClear extends GameVS {
     return;
   }
 
-
-  updatePlayerCard(turnsUpdate, statsUpdate, flagsUpdate) {
+  updatePlayerCard(turnsUpdate = false, statsUpdate = false, flagsUpdate = false) {
     const updates = this.getCardUpdates(turnsUpdate, statsUpdate, flagsUpdate);
 
     if (updates.length) {
@@ -185,7 +179,12 @@ export class GameVSClear extends GameVS {
     return Promise.resolve();
   }
 
-  getCardUpdates(turnsUpdate, statsUpdate, flagsUpdate, player = this.playerOnTurn) {
+  getCardUpdates(
+    turnsUpdate = false,
+    statsUpdate = false,
+    flagsUpdate = false,
+    player = this.playerOnTurn,
+  ) {
     const updates = super.getCardUpdates(turnsUpdate);
 
     if (statsUpdate) {
@@ -206,5 +205,4 @@ export class GameVSClear extends GameVS {
       playerTargetValue,
     );
   }
-
 }

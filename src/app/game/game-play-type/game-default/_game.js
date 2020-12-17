@@ -145,7 +145,7 @@ export class Game extends AppModel {
   }
 
   handleTileRevealing(tile) {
-    if (this.revealingAllowed) {
+    if (this.revealingAllowed && tile.isUntouched || tile.isMarked) {
       this.revealMinefieldArea(tile);
       return;
     }
@@ -153,19 +153,15 @@ export class Game extends AppModel {
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
-    if (tile.isUntouched || tile.isMarked) {
-      this.mineField
-        .revealMinefieldTile(tile, player.id)
-        .then((revealedTiles) => {
-          if (this.tileDetonated(revealedTiles)) {
-            this.updateStateOnTileDetonation(revealedTiles);
-            return;
-          }
-          this.updateStateOnRevealedTiles(revealedTiles);
-        });
-    } else {
-      this.mineField.enable();
-    }
+    this.mineField
+    .revealMinefieldTile(tile, player.id)
+    .then((revealedTiles) => {
+      if (this.tileDetonated(revealedTiles)) {
+        this.updateStateOnTileDetonation(revealedTiles);
+        return;
+      }
+      this.updateStateOnRevealedTiles(revealedTiles);
+    });
   }
 
   markingAllowed(tile, player = this.playerOnTurn) {
@@ -421,7 +417,7 @@ export class Game extends AppModel {
 
   resetMinefieldTile(tile, player = this.playerOnTurn) {
     tile.resetState();
-    player.resetedTile = tile.position;
+    player.resetedTile(tile.position, !this.allowMarks);
     this.updateMineCounter();
   }
 

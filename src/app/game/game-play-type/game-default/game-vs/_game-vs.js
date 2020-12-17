@@ -35,9 +35,9 @@ export class GameVS extends Game {
     this.turnSettings.turnDuration = 5;
     this.turnSettings.missedTurnsLimit = 3;
     //this.optionsSettings.wrongFlagHint = true;
-    // this.optionsSettings.unlimitedFlags = false;
+     this.optionsSettings.unlimitedFlags = false;
     // this.optionsSettings.tileRevealing = false;
-    //this.optionsSettings.marks = true;
+    this.optionsSettings.marks = true;
     //console.log(this.turnSettings);
     console.log(this.optionsSettings);
     this.init();
