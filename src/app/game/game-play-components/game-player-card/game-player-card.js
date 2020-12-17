@@ -9,6 +9,7 @@ import {
 
 import { PlayerCardState } from "./player-card-state/player-card-state";
 import { TurnsIndicator } from "./turns-indicator/turns-indicator";
+
 import { PlayerCardDetails } from "./player-card-details/player-card-details";
 
 export class GamePlayerCard {
@@ -33,37 +34,47 @@ export class GamePlayerCard {
     return cardStyles;
   }
 
-  static generate(player, directionLeft = false, clearMinefield = true, wrongFlagHint = false) {
+  static generateCard(player, directionLeft) {
     const cardStyles = GamePlayerCard.getPlayerCardStyles(
       player,
       directionLeft,
     );
-    const playerCard = ElementGenerator.generateContainer(
+    const card = ElementGenerator.generateContainer(
       cardStyles,
       GamePlayerCard.getPlayerCardID(player),
     );
+    return card;
+  }
+
+  static generate(player, directionLeft = false, clearMinefield = true, wrongFlagHint = false) {
+    const playerCard = GamePlayerCard.generateCard(player, directionLeft);
+
     const playerSection = GamePlayerCard.generatePlayerSection(player);
-    const detailsSection = PlayerCardDetails.generateDetailsSection(
-      player,
-      clearMinefield,
-      wrongFlagHint
-    );
+
+    const detailsSection = GamePlayerCard.generateDetailsSection(player, clearMinefield, wrongFlagHint);
+ 
     const stateSection = PlayerCardState.generateStateSection(player);
+
     playerCard.append(playerSection, detailsSection, stateSection);
     return playerCard;
   }
 
+  static generateDetailsSection(player, clearMinefield, wrongFlagHint) {
+    if (clearMinefield) {
+      return PlayerCardDetails.generateClearGameDetailsSection(player);
+    } 
+    return PlayerCardDetails.generateDetectGameDetailsSection(player, wrongFlagHint);
+  }
+
   static generatePlayerSection(player) {
-    const playerInstanceSection = ElementGenerator.generateContainer([
+    const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.playerSection,
     ]);
     if (player.allowedTurns) {
-      playerInstanceSection.append(TurnsIndicator.generate(player));
+      container.append(TurnsIndicator.generate(player));
     }
-    playerInstanceSection.append(
-      GamePlayerCard.generatePayerIcon(player.isBot),
-    );
-    return playerInstanceSection;
+    container.append(GamePlayerCard.generatePayerIcon(player.isBot));
+    return container;
   }
 
   static generatePayerIcon(isBot) {

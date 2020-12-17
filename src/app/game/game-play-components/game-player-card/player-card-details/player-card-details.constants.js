@@ -7,16 +7,15 @@ export const DOM_ELEMENT_CLASS = {
   gameGoalDetailsTarget: "player-goal-details__target",
   gameTargetResult: "player-goal-details-target-result",
   playerResult: "game-player-result",
-  targetValue: "game-target-value",
+  targetValue: "game-target-value"
 };
 
 export const DOM_ELEMENT_ID = {
-  gameTargetResult: "player-goal-details-target-result__",
+  gameTargetResult: "player-goal-details-target-result__"
 };
 
 export const TARGET_CONTENT = {
   clear: "cleared",
   detect: "detected",
-  toClear: "to clear",
-  toDetect: "to detect",
+  toDetect: "to detect"
 };

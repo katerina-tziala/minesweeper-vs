@@ -10,19 +10,8 @@ import {
 } from "./player-card-details.constants";
 
 export class PlayerCardDetails {
-
-  static generateDetailsSection(player, clearMinefield, wrongFlagHint) {
-    const playerInstanceSection = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.detailsSection,
-    ]);
-    const playerName = PlayerCardDetails.generatePlayerName(player.name);
-    const playerTarget = PlayerCardDetails.generateGoalDetails(
-      player,
-      clearMinefield,
-      wrongFlagHint,
-    );
-    playerInstanceSection.append(playerName, playerTarget);
-    return playerInstanceSection;
+  static getGameResultID(player) {
+    return DOM_ELEMENT_ID.gameTargetResult + player.id;
   }
 
   static generatePlayerName(name) {
@@ -33,75 +22,142 @@ export class PlayerCardDetails {
     return playerName;
   }
 
-  static generateGoalDetails(player, clearMinefield, wrongFlagHint) {
-    const goalDetails = ElementGenerator.generateContainer([
+  static generateGameResultContainer(player, value = null) {
+    const gameResult = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.targetValue,
+    ]);
+    ElementHandler.setID(gameResult, PlayerCardDetails.getGameResultID(player));
+    gameResult.innerHTML =
+      value === null ? TYPOGRAPHY.hyphen : value.toString();
+    return gameResult;
+  }
+
+  static generateExpectedResultContainer(player) {
+    const expectedResult = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.targetValue,
+    ]);
+    expectedResult.innerHTML = `/ ${player.goalTargetNumber}`;
+    return expectedResult;
+  }
+
+  // CLEAR GAME DETAILS
+  static generateClearGameDetailsSection(player) {
+    const container = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.detailsSection,
+    ]);
+    const playerName = PlayerCardDetails.generatePlayerName(player.name);
+
+    const playerTarget = PlayerCardDetails.generateClearGameDetails(player);
+
+    container.append(playerName, playerTarget);
+    return container;
+  }
+
+  static generateClearGameDetails(player) {
+    const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gameGoalDetails,
     ]);
-    const detailsLabel = PlayerCardDetails.generateGameTargetLabel(
-      clearMinefield,
-      wrongFlagHint,
-    );
-    const gameTargetResult = PlayerCardDetails.generateGameTargetStatistics(
+
+    const detailsLabel = PlayerCardDetails.generateClearGameTargetLabel();
+    const gameTargetResult = PlayerCardDetails.generateClearGameTargetStatistics(
       player,
-      wrongFlagHint,
     );
-    goalDetails.append(detailsLabel, gameTargetResult);
-    return goalDetails;
+    container.append(detailsLabel, gameTargetResult);
+    return container;
   }
 
-  static getTargetLabelText(clearMinefield, wrongFlagHint) {
-    if (clearMinefield) {
-      return wrongFlagHint ? TARGET_CONTENT.clear : TARGET_CONTENT.toClear;
-    }
-    
-    return  wrongFlagHint ? TARGET_CONTENT.detect : TARGET_CONTENT.toDetect;
-  }
-
-  static generateGameTargetLabel(clearMinefield, wrongFlagHint) {
+  static generateClearGameTargetLabel() {
     const targetLabel = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gameGoalDetailsTarget,
     ]);
-    targetLabel.innerHTML = this.getTargetLabelText(clearMinefield, wrongFlagHint);
+    targetLabel.innerHTML = TARGET_CONTENT.clear;
     return targetLabel;
   }
 
-  static generateGameTargetStatistics(player, wrongFlagHint) {
+  static generateClearGameTargetStatistics(player) {
     const gameTargetResult = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gameTargetResult,
     ]);
 
-    const result = PlayerCardDetails.generateGameResultContainer(player, wrongFlagHint ? 0 : player.targetValue);
+    const result = PlayerCardDetails.generateGameResultContainer(
+      player,
+      player.revealedTiles,
+    );
+    const expectedResult = PlayerCardDetails.generateExpectedResultContainer(
+      player,
+    );
+
+    gameTargetResult.append(result, expectedResult);
+
+    return gameTargetResult;
+  }
+
+  // DETECT GAME DETAILS
+  static generateDetectGameDetailsSection(player, wrongFlagHint) {
+    const playerInstanceSection = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.detailsSection,
+    ]);
+    const playerName = PlayerCardDetails.generatePlayerName(player.name);
+    const playerTarget = PlayerCardDetails.generateDetectGameDetails(
+      player,
+      wrongFlagHint,
+    );
+    playerInstanceSection.append(playerName, playerTarget);
+    return playerInstanceSection;
+  }
+
+  static generateDetectGameDetails(player, wrongFlagHint) {
+    const container = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.gameGoalDetails,
+    ]);
+
+    const detailsLabel = PlayerCardDetails.generateDetectGameTargetLabel(
+      wrongFlagHint,
+    );
+    const gameTargetResult = PlayerCardDetails.generateDetectGameTargetStatistics(
+      player,
+      wrongFlagHint,
+    );
+    container.append(detailsLabel, gameTargetResult);
+    return container;
+  }
+
+  static generateDetectGameTargetLabel(wrongFlagHint) {
+    const targetLabel = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.gameGoalDetailsTarget,
+    ]);
+    targetLabel.innerHTML = wrongFlagHint
+      ? TARGET_CONTENT.detect
+      : TARGET_CONTENT.toDetect;
+    return targetLabel;
+  }
+
+  static generateDetectGameTargetStatistics(player, wrongFlagHint) {
+    const gameTargetResult = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.gameTargetResult,
+    ]);
+
+    const result = PlayerCardDetails.generateGameResultContainer(
+      player,
+      wrongFlagHint ? 0 : player.goalTargetNumber,
+    );
     gameTargetResult.append(result);
 
     if (player.goalTargetNumber && wrongFlagHint) {
-      const expectedResult = ElementGenerator.generateContainer([
-        DOM_ELEMENT_CLASS.targetValue,
-      ]);
-      expectedResult.innerHTML =`/ ${player.goalTargetNumber}`;
+      const expectedResult = PlayerCardDetails.generateExpectedResultContainer(
+        player,
+      );
       gameTargetResult.append(expectedResult);
     }
 
     return gameTargetResult;
   }
 
-  static generateGameResultContainer(player, value = null) {
-    const gameResult = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.targetValue,
-    ]);
-    ElementHandler.setID(gameResult, PlayerCardDetails.getGameResultID(player));
-    gameResult.innerHTML = value === null ? TYPOGRAPHY.hyphen : value.toString();
-    return gameResult;
-  }
-
-  static getGameResultID(player) {
-    return DOM_ELEMENT_ID.gameTargetResult + player.id;
-  }
-
+  // UPDATE
   static getGameResultContainer(player) {
     return ElementHandler.getByID(PlayerCardDetails.getGameResultID(player));
   }
 
-  // UPDATE
   static updateGameGoalStatistics(player, value) {
     return PlayerCardDetails.getGameResultContainer(player).then(
       (resultsContainer) => {

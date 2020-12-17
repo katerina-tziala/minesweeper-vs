@@ -23,7 +23,7 @@ export class OptionsSettings extends AppModel {
       case GameVSMode.Clear:
         // this.tileFlagging = true;
         this.unlimitedFlags = true;
-        this.openStrategy = false;
+        this.openStrategy = true;
         this.sneakPeek = false;
         this.sneakPeekDuration = 0;
         break;

@@ -47,7 +47,6 @@ export class GameVSDetect extends GameVS {
   }
 
   updateStateOnClearedMinefield(revealedTiles) {
-    this.pause();
     const unflaggedTiles = this.mineField.getUnrevealedMines();
     unflaggedTiles.forEach((tile) => this.setFlagOnMinefieldTile(tile));
     const boardTiles = unflaggedTiles.concat(revealedTiles);
@@ -67,18 +66,21 @@ export class GameVSDetect extends GameVS {
   }
 
   /* UPDATE GAME AFTER MARKING TILES */
-  flaggingAllowed(tile, player = this.playerOnTurn) {
-    return player.hasFlags && this.flagOnTileAllowedByPlayer(tile);
+  flaggingAllowed(tile) {
+    return this.flagOnTileAllowedByPlayer(tile);
+  }
+
+  setFlagOnMinefieldTile(tile) {
+    super.setFlagOnMinefieldTile(tile);
+    this.removeFromPlayerMarkedPositions([tile]);
   }
 
   updateStateOnFlaggedTile(tile) {
-    this.pause();
     this.setFlagOnMinefieldTile(tile);
     this.updatePlayerCardGameInfoAndCheckGameOver([tile]);
   }
 
   updateStateOnMarkedTile(tile) {
-    this.pause();
     this.setMarkOnMinefieldTile(tile);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
     this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
@@ -87,7 +89,6 @@ export class GameVSDetect extends GameVS {
   }
 
   updateStateOnResetedTile(tile) {
-    this.pause();
     this.resetMinefieldTile(tile);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
     this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
@@ -109,11 +110,11 @@ export class GameVSDetect extends GameVS {
       this.pause();
       return;
     }
-    console.log(this);
+    //console.log(this);
     this.mineField.enable();
   }
 
-  updatePlayerCard(turnsUpdate = false, flagsUpdate = false) {
+  updatePlayerCard(turnsUpdate, flagsUpdate) {
     const updates = this.getCardUpdates(turnsUpdate, flagsUpdate);
 
     if (updates.length) {
@@ -123,12 +124,8 @@ export class GameVSDetect extends GameVS {
     return Promise.resolve();
   }
 
-  getCardUpdates(turnsUpdate = false, flagsUpdate = false) {
-    const updates = [];
-
-    if (turnsUpdate) {
-      updates.push(this.updatePlayerCardMissedTurns(player));
-    }
+  getCardUpdates(turnsUpdate, flagsUpdate, player = this.playerOnTurn) {
+    const updates = super.getCardUpdates(turnsUpdate);
 
     if (flagsUpdate) {
       updates.push(this.updatePlayerCardAllowedFlags(player));
