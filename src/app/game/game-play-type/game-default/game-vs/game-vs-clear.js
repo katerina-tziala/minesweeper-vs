@@ -58,6 +58,10 @@ export class GameVSClear extends GameVS {
     return this.levelSettings.numberOfEmptyTiles;
   }
 
+  get openStrategy() {
+    return this.optionsSettings && this.optionsSettings.openStrategy;
+  }
+
   getPlayerTargetValue(player) {
     return player.revealedTiles;
   }
@@ -73,6 +77,22 @@ export class GameVSClear extends GameVS {
     // console.log("flagOnTileAllowedByPlayer", this.flagOnTileAllowedByPlayer(tile));
 
     return this.flagOnTileAllowedByPlayer(tile);
+  }
+
+  revealingAllowed(tile) {
+    console.log("openStrategy", this.openStrategy);
+
+    //&& tile.isUntouched || tile.isMarked
+
+    return super.revealingAllowed(tile);
+  }
+
+  handleTileRevealing(tile) {
+    if (this.revealingAllowed(tile)) {
+      this.revealMinefieldArea(tile);
+      return;
+    }
+    this.mineField.enable();
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
@@ -91,9 +111,8 @@ export class GameVSClear extends GameVS {
   handleTileMarking(tile) {
     console.log("handleTileMarking", tile);
 
-   // this.pause();
+    // this.pause();
 
- 
     if (!this.strategyAllowed) {
       this.revealMinefieldArea(tile);
       return;
@@ -122,7 +141,7 @@ export class GameVSClear extends GameVS {
   }
 
   updateStateOnFlaggedTile(tile) {
-    this.pause();
+    // this.pause();
     this.setFlagOnMinefieldTile(tile);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
     // might need to check state
@@ -169,7 +188,11 @@ export class GameVSClear extends GameVS {
     return;
   }
 
-  updatePlayerCard(turnsUpdate = false, statsUpdate = false, flagsUpdate = false) {
+  updatePlayerCard(
+    turnsUpdate = false,
+    statsUpdate = false,
+    flagsUpdate = false,
+  ) {
     const updates = this.getCardUpdates(turnsUpdate, statsUpdate, flagsUpdate);
 
     if (updates.length) {

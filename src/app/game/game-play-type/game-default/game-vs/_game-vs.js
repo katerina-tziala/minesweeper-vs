@@ -34,7 +34,9 @@ export class GameVS extends Game {
     this.turnSettings.consecutiveTurns = true;
     this.turnSettings.turnDuration = 5;
     this.turnSettings.missedTurnsLimit = 3;
+
     //this.optionsSettings.wrongFlagHint = true;
+
      this.optionsSettings.unlimitedFlags = false;
     // this.optionsSettings.tileRevealing = false;
     this.optionsSettings.marks = true;

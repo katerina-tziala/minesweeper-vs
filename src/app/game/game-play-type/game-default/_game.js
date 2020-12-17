@@ -140,12 +140,12 @@ export class Game extends AppModel {
     }
   }
 
-  get revealingAllowed() {
-    return true;
+  revealingAllowed(tile) {
+    return tile.isUntouched || tile.isMarked;
   }
 
   handleTileRevealing(tile) {
-    if (this.revealingAllowed && tile.isUntouched || tile.isMarked) {
+    if (this.revealingAllowed(tile.isUntouched)) {
       this.revealMinefieldArea(tile);
       return;
     }

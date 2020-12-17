@@ -16,20 +16,29 @@ export class GameVSDetect extends GameVS {
     return true;
   }
 
-  get revealingAllowed() {
-    if (this.optionsSettings.tileRevealing !== undefined) {
-      return this.optionsSettings.tileRevealing;
-    }
-    return true;
-  }
+
 
   /* UPDATE GAME AFTER REVEALING TILES */
-  handleTileRevealing(tile) {
-    if (this.revealingAllowed) {
-      this.revealMinefieldArea(tile);
-    } else {
-      this.updateStateOnFlaggedTile(tile);
+  revealingAllowed(tile) {
+    const tileRevealingAllowed = super.revealingAllowed(tile);
+    if (this.optionsSettings.tileRevealing !== undefined) {
+      return this.optionsSettings.tileRevealing && tileRevealingAllowed;
     }
+    return tileRevealingAllowed;
+  }
+
+  handleTileRevealing(tile) {
+    if (this.revealingAllowed(tile)) {
+      this.revealMinefieldArea(tile);
+      return;
+    } 
+    
+    if (this.flaggingAllowed(tile)) {
+      this.updateStateOnFlaggedTile(tile);
+      return;
+    }
+    
+    this.mineField.enable();
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
