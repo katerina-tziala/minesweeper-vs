@@ -169,6 +169,17 @@ export class Game extends AppModel {
     return tile.isFlaggedBy(player.id) && this.allowMarks;
   }
 
+  resetingAllowed(tile) {
+    return tile.isUntouched
+  }
+
+  flaggingAllowed(tile, player = this.playerOnTurn) {
+    if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
+      return true;
+    }
+    return false;
+  }
+
   tileDetonated(boardTiles) {
     return boardTiles.length === 1 && boardTiles[0].isDetonatedMine;
   }
@@ -386,7 +397,36 @@ export class Game extends AppModel {
     ];
   }
 
+
   handleTileMarking(tile) {
+    // set flag
+    if (this.flaggingAllowed(tile)) {
+      this.updateStateOnFlaggedTile(tile);
+      return;
+    }
+    // set mark
+    if (this.markingAllowed(tile)) {
+      this.updateStateOnMarkedTile(tile);
+      return;
+    }
+    // reset
+    if (this.resetingAllowed(tile)) {
+      this.updateStateOnResetedTile(tile);
+      return;
+    }
+
+    this.mineField.enable();
+  }
+
+  updateStateOnFlaggedTile(tile) {
+    return;
+  }
+
+  updateStateOnMarkedTile(tile) {
+    return;
+  }
+
+  updateStateOnResetedTile(tile) {
     return;
   }
 
@@ -408,19 +448,16 @@ export class Game extends AppModel {
   setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
     tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
     player.flaggedTile(tile.position, tile.isWronglyFlagged);
-    this.updateMineCounter();
   }
 
   setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
     tile.setMark(player.id, player.colorType);
     this.playerOnTurn.markedTile = tile.position;
-    this.updateMineCounter();
   }
 
   resetMinefieldTile(tile, player = this.playerOnTurn) {
     tile.resetState();
     player.resetedTile = tile.position;
-    this.updateMineCounter();
   }
 
   ////////////////////////////////

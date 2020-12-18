@@ -74,6 +74,7 @@ export class GameSinglePlayer extends Game {
   /* UPDATE GAME AFTER MARKING TILES */
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
+    this.updateMineCounter();
     this.onGameOver(revealedTiles);
   }
 
@@ -82,22 +83,12 @@ export class GameSinglePlayer extends Game {
 
     if (this.playerOnTurn.clearedMinefield) {
       this.setGameEnd(GameEndType.Cleared);
+      this.updateMineCounter();
       this.onGameOver(revealedTiles);
       return;
     }
-  
-    this.onPlayerMoveEnd(revealedTiles);
-  }
 
-  handleTileMarking(tile) {
-    if (tile.isUntouched) {
-      this.updateStateOnFlaggedTile(tile);
-    } else if (this.markingAllowed(tile)) {
-      this.updateStateOnMarkedTile(tile);
-    } else {
-      this.updateStateOnResetedTile(tile);
-    }
-    this.mineField.enable();
+    this.onPlayerMoveEnd(revealedTiles);
   }
 
   updateStateOnFlaggedTile(tile) {
@@ -132,10 +123,11 @@ export class GameSinglePlayer extends Game {
     console.log("--  get Bot move -- ");
     console.log("GameSinglePlayer");
     console.log("----------------------------");
-     this.mineField.disable();
+    this.mineField.disable();
   }
 
   onPlayerMoveEnd(boardTiles = []) {
+    this.updateMineCounter();
     this.roundTilesUpdate = boardTiles;
 
     if (this.isParallel) {

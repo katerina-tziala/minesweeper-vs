@@ -37,8 +37,8 @@ export class GameVS extends Game {
 
     //this.optionsSettings.wrongFlagHint = true;
     
-    this.optionsSettings.tileFlagging = true;
-    this.optionsSettings.openStrategy = false;
+    // this.optionsSettings.tileFlagging = true;
+    // this.optionsSettings.openStrategy = false;
    this.optionsSettings.unlimitedFlags = true;
 
     // this.optionsSettings.tileRevealing = false;
@@ -208,27 +208,11 @@ export class GameVS extends Game {
     return false;
   }
 
-  removeFromPlayerTouchedPositions(revealedTiles, player = this.playerWaiting) {
-    const positions = this.mineField.getTilesPositions(revealedTiles);
-    player.removeFromTouchedPositions = positions;
-  }
-
-  flagOnTileAllowedByPlayer(tile, player = this.playerOnTurn) {
+  flaggingAllowed(tile, player = this.playerOnTurn) {
     if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
       return true;
     }
     return false;
-  }
-
-  // setFlagOnMinefieldTile(tile) {
-  //   super.setFlagOnMinefieldTile(tile);
-  // }
-
-  resetingAllowed(tile, player = this.playerOnTurn) {
-    return (
-      (tile.isFlaggedBy(player.id) && !this.allowMarks) ||
-      tile.isMarkedBy(player.id)
-    );
   }
 
   handleTileMarking(tile) {
@@ -292,6 +276,7 @@ export class GameVS extends Game {
 
   //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
+    this.updateMineCounter();
     this.pause();
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;

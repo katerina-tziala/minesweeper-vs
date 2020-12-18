@@ -89,10 +89,6 @@ export class GameVSClear extends GameVS {
     return player.revealedTiles;
   }
 
-  flaggingAllowed(tile) {
-    return this.flagOnTileAllowedByPlayer(tile);
-  }
-
   revealingAllowed(tile) {
     if (this.openStrategy) {
       return true;
@@ -124,7 +120,7 @@ export class GameVSClear extends GameVS {
       this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
     ];
 
-    if (this.playerTouchedTilesAffected(revealedPositions)) {
+    if (this.#playerTouchedTilesAffected(revealedPositions)) {
       playerCardsUpdates.push(
         this.updatePlayerCard(false, false, true, this.playerWaiting),
       );
@@ -133,6 +129,7 @@ export class GameVSClear extends GameVS {
     this.pause();
     Promise.all(playerCardsUpdates).then(() => {
       if (this.isOver) {
+        this.updateMineCounter();
         this.onGameOver(revealedTiles);
         return;
       }
@@ -153,15 +150,18 @@ export class GameVSClear extends GameVS {
       this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
     ];
 
-    if (this.playerTouchedTilesAffected(revealedPositions)) {
+    if (this.#playerTouchedTilesAffected(revealedPositions)) {
       playerCardsUpdates.push(
         this.updatePlayerCard(false, false, true, this.playerWaiting),
       );
     }
-    Promise.all(playerCardsUpdates).then(() => this.onGameOver(revealedTiles));
+    Promise.all(playerCardsUpdates).then(() => {
+      this.updateMineCounter();
+      this.onGameOver(revealedTiles);
+    });
   }
 
-  playerTouchedTilesAffected(revealedPositions, player = this.playerWaiting) {
+  #playerTouchedTilesAffected(revealedPositions, player = this.playerWaiting) {
     if (player.inTouchedTiles(revealedPositions)) {
       player.removeFromTouchedPositions = revealedPositions;
       return true;
@@ -175,33 +175,13 @@ export class GameVSClear extends GameVS {
       this.revealMinefieldArea(tile);
       return;
     }
-    // set flag
-    if (this.flaggingAllowed(tile)) {
-      this.updateStateOnFlaggedTile(tile);
-      return;
-    }
-    // set mark
-    if (this.markingAllowed(tile)) {
-      this.updateStateOnMarkedTile(tile);
-      return;
-    }
-    // reset
-    if (this.resetingAllowed(tile)) {
-      this.updateStateOnResetedTile(tile);
-      return;
-    }
-
-    this.mineField.enable();
-    //super.handleTileMarking(tile);
+    super.handleTileMarking(tile);
   }
 
   updateStateOnFlaggedTile(tile) {
-    // this.pause();
     this.setFlagOnMinefieldTile(tile);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    // might need to check state
     this.updatePlayerCard(missedTurnsUpdated, false, true).then(() => {
-      //console.log("updateStateOnFlaggedTile", "GameVSClear");
       this.onPlayerMoveEnd([tile]);
     });
   }
@@ -223,6 +203,7 @@ export class GameVSClear extends GameVS {
   }
 
   onPlayerMoveEnd(boardTiles = []) {
+    this.updateMineCounter();
     this.roundTilesUpdate = boardTiles;
     if (this.isOnline) {
       //TODO:
@@ -237,11 +218,6 @@ export class GameVSClear extends GameVS {
     // console.log("--  onPlayerMoveEnd --");
     //console.log(this);
     this.mineField.enable();
-  }
-
-  #onSneakPeek() {
-    console.log("onSneakPeek");
-    return;
   }
 
   updatePlayerCard(
@@ -315,7 +291,7 @@ export class GameVSClear extends GameVS {
 
     if (this.hiddenStrategy && strategyPositions.length) {
       this.mineField.showStrategy(player, this.wrongFlagHint);
-      
+
       return Promise.resolve();
     }
 
@@ -326,5 +302,10 @@ export class GameVSClear extends GameVS {
     super.onGameOver(boardTiles);
 
     console.log(this.playerWaiting.touchedPositions);
+  }
+
+  #onSneakPeek() {
+    console.log("onSneakPeek");
+    return;
   }
 }
