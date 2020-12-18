@@ -34,6 +34,15 @@ export class MineField {
     this.#_levelSettings = game;
   }
 
+  get isCleared() {
+    return this.#tiles.every((tile) => tile.isMine);
+  }
+
+  get allMinesDetected() {
+    const detectedTiles = this.#tiles.filter((tile) => tile.isDetected);
+    return detectedTiles.length === this.#levelSettings.numberOfMines;
+  }
+
   get #levelSettings() {
     return this.#_levelSettings;
   }
@@ -208,23 +217,9 @@ export class MineField {
     return tiles.filter((tile) => !tile.isRevealed);
   }
 
-
-
-  // getFlaggedTiles(tiles = this.getFieldTiles()) {
-  //   return tiles.filter(tile => tile.isFlagged());
-  // }
-
   getUntouchedTiles(tiles = this.#tiles) {
-    return tiles.filter(tile => tile.isUntouched);
+    return tiles.filter((tile) => tile.isUntouched);
   }
-
-  // getFlaggedTilesByPlayer(playerID, tiles = this.getFieldTiles()) {
-  //   return tiles.filter(tile => tile.isFlaggedBy(playerID));
-  // }
-
-  // get detectedMines() {
-  //   return this.#tiles.filter(tile => tile.isDetected).length;
-  // }
 
   revealField() {
     this.getUnrevealedTiles().forEach((tile) => {
@@ -232,19 +227,25 @@ export class MineField {
     });
   }
 
-  get isCleared() {
-    return this.#tiles.every((tile) => tile.isMine);
-  }
-
-  get allMinesDetected() {
-    const detectedTiles = this.#tiles.filter((tile) => tile.isDetected);
-    return detectedTiles.length === this.#levelSettings.numberOfMines;
-  }
-
   getUnrevealedMines() {
-    return this.getTilesByPositions(this.#levelSettings.minesPositions).filter(tile => !tile.isFlagged);
+    return this.getTilesByPositions(this.#levelSettings.minesPositions).filter(
+      (tile) => !tile.isFlagged,
+    );
   }
-  // get mineTiles() {
-  //   return this.getTilesByPositions(this.#levelSettings.minesPositions);
-  // }
+
+  hideStrategy(strategyPositions) {
+    const tilesToReset = this.getTilesByPositions(strategyPositions);
+    tilesToReset.forEach(tile => {
+      tile.resetState();
+    });
+  }
+
+  showStrategy(player, wrongFlagHint) {
+    const tilesToMark = this.getTilesByPositions(player.marksPositions);
+    tilesToMark.forEach(tile => tile.setMark(player.id, player.colorType));
+    
+    const tilesToFlag = this.getTilesByPositions(player.flagsPositions);
+    tilesToFlag.forEach(tile => tile.setFlag(player.id, player.colorType, wrongFlagHint));
+  }
+
 }

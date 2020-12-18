@@ -58,8 +58,12 @@ export class GameVSClear extends GameVS {
     return this.levelSettings.numberOfEmptyTiles;
   }
 
-  getPlayerTargetValue(player) {
-    return player.revealedTiles;
+  get detectedMines() {
+    if (this.hiddenStrategy) {
+      return this.getPlayerDetectedMines(this.playerOnTurn);
+    }
+
+    return super.detectedMines;
   }
 
   get strategyAllowed() {
@@ -77,9 +81,15 @@ export class GameVSClear extends GameVS {
     );
   }
 
-  flaggingAllowed(tile, player = this.playerOnTurn) {
-    // console.log("flagOnTileAllowedByPlayer", this.flagOnTileAllowedByPlayer(tile));
+  get hiddenStrategy() {
+    return !this.openStrategy;
+  }
 
+  getPlayerTargetValue(player) {
+    return player.revealedTiles;
+  }
+
+  flaggingAllowed(tile) {
     return this.flagOnTileAllowedByPlayer(tile);
   }
 
@@ -102,16 +112,22 @@ export class GameVSClear extends GameVS {
     const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
     super.updateStateOnRevealedTiles(revealedTiles);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(revealedPositions);
-    
+    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(
+      revealedPositions,
+    );
+
     if (this.mineField.isCleared) {
       this.setGameEnd(GameEndType.Cleared);
     }
- 
-    const playerCardsUpdates = [this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected)];
-    
+
+    const playerCardsUpdates = [
+      this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
+    ];
+
     if (this.playerTouchedTilesAffected(revealedPositions)) {
-      playerCardsUpdates.push(this.updatePlayerCard(false, false, true, this.playerWaiting));
+      playerCardsUpdates.push(
+        this.updatePlayerCard(false, false, true, this.playerWaiting),
+      );
     }
 
     this.pause();
@@ -129,12 +145,18 @@ export class GameVSClear extends GameVS {
     const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
 
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(revealedPositions);
-    
-    const playerCardsUpdates = [this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected)];
-    
+    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(
+      revealedPositions,
+    );
+
+    const playerCardsUpdates = [
+      this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
+    ];
+
     if (this.playerTouchedTilesAffected(revealedPositions)) {
-      playerCardsUpdates.push(this.updatePlayerCard(false, false, true, this.playerWaiting));
+      playerCardsUpdates.push(
+        this.updatePlayerCard(false, false, true, this.playerWaiting),
+      );
     }
     Promise.all(playerCardsUpdates).then(() => this.onGameOver(revealedTiles));
   }
@@ -148,15 +170,7 @@ export class GameVSClear extends GameVS {
     return false;
   }
 
-
-
-
-
-
-
-
   handleTileMarking(tile) {
-
     if (!this.strategyAllowed) {
       this.revealMinefieldArea(tile);
       return;
@@ -220,7 +234,7 @@ export class GameVSClear extends GameVS {
       this.pause();
       return;
     }
-   // console.log("--  onPlayerMoveEnd --");
+    // console.log("--  onPlayerMoveEnd --");
     //console.log(this);
     this.mineField.enable();
   }
@@ -230,8 +244,18 @@ export class GameVSClear extends GameVS {
     return;
   }
 
-  updatePlayerCard(turnsUpdate = false, statsUpdate = false, flagsUpdate = false, player = this.playerOnTurn) {
-    const updates = this.getCardUpdates(turnsUpdate, statsUpdate, flagsUpdate, player);
+  updatePlayerCard(
+    turnsUpdate = false,
+    statsUpdate = false,
+    flagsUpdate = false,
+    player = this.playerOnTurn,
+  ) {
+    const updates = this.getCardUpdates(
+      turnsUpdate,
+      statsUpdate,
+      flagsUpdate,
+      player,
+    );
 
     if (updates.length) {
       return Promise.all(updates);
@@ -264,32 +288,43 @@ export class GameVSClear extends GameVS {
     );
   }
 
-
-
   startGameRound() {
-    // TODO: ROUND STATISTICS
-
-    if (!this.openStrategy) {
-      const positionsToHide = this.playerWaiting.touchedPositions;
-
-
-
-      if (positionsToHide.length) {
-        console.log("hide opponents marks and flags");
-        console.log(positionsToHide);
-      }
-
-    }
-
-
-
-
-
-    super.startGameRound();
-  
-    
+    this.hideStrategyForPlayer(this.playerWaiting)
+      .then(() => {
+        return this.displayStrategyForPlayer(this.playerOnTurn);
+      })
+      .then(() => {
+        this.updateMineCounter();
+        super.startGameRound();
+      });
   }
 
+  hideStrategyForPlayer(player) {
+    const strategyPositions = player.touchedPositions;
 
+    if (this.hiddenStrategy && strategyPositions.length) {
+      this.mineField.hideStrategy(strategyPositions);
+      return Promise.resolve();
+    }
 
+    return Promise.resolve();
+  }
+
+  displayStrategyForPlayer(player) {
+    const strategyPositions = player.touchedPositions;
+
+    if (this.hiddenStrategy && strategyPositions.length) {
+      this.mineField.showStrategy(player, this.wrongFlagHint);
+      
+      return Promise.resolve();
+    }
+
+    return Promise.resolve();
+  }
+
+  onGameOver(boardTiles = []) {
+    super.onGameOver(boardTiles);
+
+    console.log(this.playerWaiting.touchedPositions);
+  }
 }

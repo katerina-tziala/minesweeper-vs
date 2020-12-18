@@ -166,11 +166,4 @@ export class Tile {
     this.#viewController.setMark(colorType);
   }
 
-  // disable() {
-  //   this.#viewController.toggleButtonInteraction(true);
-  // }
-
-  // enable() {
-  //   this.#viewController.toggleButtonInteraction(false);
-  // }
 }

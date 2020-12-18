@@ -82,9 +82,11 @@ export class Player extends AppModel {
   }
 
   get placedFlags() {
-    return this.entered
-      ? this.redundantFlagsPositions.length + this.detectedMinesPositions.length
-      : 0;
+    return this.entered ? this.flagsPositions.length : 0;
+  }
+
+  get flagsPositions() {
+    return [...this.redundantFlagsPositions, ...this.detectedMinesPositions];
   }
 
   get detonatedMine() {

@@ -202,10 +202,4 @@ export class TileView {
     this.#setButtonActiveStyle();
   }
 
-  // toggleButtonInteraction(disabled) {
-  //   this.getTileButton().then(button => {
-  //     this.setDisabled(disabled);
-  //     ElementHandler.setDisabled(button, this.isDisabled());
-  //   });
-  // }
 }

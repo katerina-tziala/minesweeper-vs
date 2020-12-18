@@ -42,7 +42,7 @@ export class GameVS extends Game {
    this.optionsSettings.unlimitedFlags = true;
 
     // this.optionsSettings.tileRevealing = false;
-    //this.optionsSettings.marks = true;
+    this.optionsSettings.marks = true;
     //console.log(this.turnSettings);
     console.log(this.optionsSettings);
     this.init();
@@ -220,9 +220,9 @@ export class GameVS extends Game {
     return false;
   }
 
-  setFlagOnMinefieldTile(tile) {
-    super.setFlagOnMinefieldTile(tile);
-  }
+  // setFlagOnMinefieldTile(tile) {
+  //   super.setFlagOnMinefieldTile(tile);
+  // }
 
   resetingAllowed(tile, player = this.playerOnTurn) {
     return (
