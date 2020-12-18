@@ -110,7 +110,7 @@ export class GameVSClear extends GameVS {
  
     const playerCardsUpdates = [this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected)];
     
-    if (this.opoonentStatsAffected(revealedPositions)) {
+    if (this.playerTouchedTilesAffected(revealedPositions)) {
       playerCardsUpdates.push(this.updatePlayerCard(false, false, true, this.playerWaiting));
     }
 
@@ -126,29 +126,25 @@ export class GameVSClear extends GameVS {
 
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
-    console.log("on tile detonation");
-    // 
-    // //this.removeFromPlayerTouchedPositions(revealedTiles);
-    // const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    // this.updatePlayerCard(missedTurnsUpdated).then(() => {
-    //   this.onGameOver(revealedTiles);
-    // });
+    const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
+
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(revealedPositions);
+    
+    const playerCardsUpdates = [this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected)];
+    
+    if (this.playerTouchedTilesAffected(revealedPositions)) {
+      playerCardsUpdates.push(this.updatePlayerCard(false, false, true, this.playerWaiting));
+    }
+    Promise.all(playerCardsUpdates).then(() => this.onGameOver(revealedTiles));
   }
 
-
-  opoonentStatsAffected(revealedPositions, player = this.playerWaiting) {
-    if (this.openStrategy) {
-
-      if (player.inTouchedTiles(revealedPositions)) {
-        player.removeFromTouchedPositions = revealedPositions;
-        return true;
-      }
-
-      return false;
-
+  playerTouchedTilesAffected(revealedPositions, player = this.playerWaiting) {
+    if (player.inTouchedTiles(revealedPositions)) {
+      player.removeFromTouchedPositions = revealedPositions;
+      return true;
     }
-    console.log("strategy is hidden");
-   
+
     return false;
   }
 
@@ -191,7 +187,7 @@ export class GameVSClear extends GameVS {
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
     // might need to check state
     this.updatePlayerCard(missedTurnsUpdated, false, true).then(() => {
-      console.log("updateStateOnFlaggedTile", "GameVSClear");
+      //console.log("updateStateOnFlaggedTile", "GameVSClear");
       this.onPlayerMoveEnd([tile]);
     });
   }
@@ -224,7 +220,7 @@ export class GameVSClear extends GameVS {
       this.pause();
       return;
     }
-    console.log("--  onPlayerMoveEnd --");
+   // console.log("--  onPlayerMoveEnd --");
     //console.log(this);
     this.mineField.enable();
   }
@@ -267,4 +263,33 @@ export class GameVSClear extends GameVS {
       playerTargetValue,
     );
   }
+
+
+
+  startGameRound() {
+    // TODO: ROUND STATISTICS
+
+    if (!this.openStrategy) {
+      const positionsToHide = this.playerWaiting.touchedPositions;
+
+
+
+      if (positionsToHide.length) {
+        console.log("hide opponents marks and flags");
+        console.log(positionsToHide);
+      }
+
+    }
+
+
+
+
+
+    super.startGameRound();
+  
+    
+  }
+
+
+
 }

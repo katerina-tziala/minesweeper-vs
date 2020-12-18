@@ -78,9 +78,8 @@ export class Player extends AppModel {
   }
 
   get allowedFlags() {
-    return this.maxAllowedFlags - this.placedFlags;
+    return this.unlimitedFlags ? null : this.maxAllowedFlags - this.placedFlags;
   }
-
 
   get placedFlags() {
     return this.entered
@@ -108,12 +107,18 @@ export class Player extends AppModel {
   }
 
   inTouchedTiles(positionsToCheck) {
-    const alreadyToutchedPositions = this.touchedPositions.filter(position => positionsToCheck.includes(position));
+    const alreadyToutchedPositions = this.touchedPositions.filter((position) =>
+      positionsToCheck.includes(position),
+    );
     return alreadyToutchedPositions.length > 0;
   }
 
   get touchedPositions() {
-    return [...this.marksPositions, ...this.redundantFlagsPositions, ...this.detectedMinesPositions];
+    return [
+      ...this.marksPositions,
+      ...this.redundantFlagsPositions,
+      ...this.detectedMinesPositions,
+    ];
   }
 
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
@@ -154,12 +159,21 @@ export class Player extends AppModel {
   }
 
   set removeFromMarkedPositions(movePositions) {
-    this.marksPositions = this.#removeFromPositions(this.marksPositions, movePositions);
+    this.marksPositions = this.#removeFromPositions(
+      this.marksPositions,
+      movePositions,
+    );
   }
 
   set removeFromFlaggedPositions(movePositions) {
-    this.redundantFlagsPositions = this.#removeFromPositions(this.redundantFlagsPositions, movePositions);
-    this.detectedMinesPositions = this.#removeFromPositions(this.detectedMinesPositions, movePositions);
+    this.redundantFlagsPositions = this.#removeFromPositions(
+      this.redundantFlagsPositions,
+      movePositions,
+    );
+    this.detectedMinesPositions = this.#removeFromPositions(
+      this.detectedMinesPositions,
+      movePositions,
+    );
   }
 
   // PRIVATE FUNCTIONS
@@ -176,7 +190,8 @@ export class Player extends AppModel {
   }
 
   #removeFromPositions(positionsArray, positionsToRemove) {
-    return positionsArray.filter(position => !positionsToRemove.includes(position));
+    return positionsArray.filter(
+      (position) => !positionsToRemove.includes(position),
+    );
   }
-
 }

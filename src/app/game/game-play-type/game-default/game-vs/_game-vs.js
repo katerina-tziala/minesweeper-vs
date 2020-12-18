@@ -32,15 +32,17 @@ export class GameVS extends Game {
     ];
     //this.turnSettings.turnTimer = false;
     this.turnSettings.consecutiveTurns = true;
-    // this.turnSettings.turnDuration = 5;
-    // this.turnSettings.missedTurnsLimit = 3;
+    this.turnSettings.turnDuration = 5;
+    this.turnSettings.missedTurnsLimit = 3;
 
     //this.optionsSettings.wrongFlagHint = true;
     
     this.optionsSettings.tileFlagging = true;
-    this.optionsSettings.unlimitedFlags = false;
+    this.optionsSettings.openStrategy = false;
+   this.optionsSettings.unlimitedFlags = true;
+
     // this.optionsSettings.tileRevealing = false;
-    this.optionsSettings.marks = true;
+    //this.optionsSettings.marks = true;
     //console.log(this.turnSettings);
     console.log(this.optionsSettings);
     this.init();
@@ -142,12 +144,13 @@ export class GameVS extends Game {
   startGameRound() {
     // TODO: ROUND STATISTICS
     this.initRoundTiles();
-
+  
+    if (this.#roundTimer) {
+      this.gameTimer.start();
+    }
+  
     this.vsDashboard.setCardOnTurn(this.players).then(() => {
-      if (this.#roundTimer) {
-        this.gameTimer.start();
-      }
-
+ 
       if (this.playerOnTurn.isBot) {
         this.startBotRound();
         return;
@@ -303,10 +306,10 @@ export class GameVS extends Game {
       return;
     }
     //TODO:
-    console.log("--  move to next round -- ");
-    console.log("GameVS");
-    console.log("----------------------------");
-    console.log("go on the next round");
+    // console.log("--  move to next round -- ");
+    // console.log("GameVS");
+    // console.log("----------------------------");
+    // console.log("go on the next round");
     this.switchTurns();
     this.startGameRound();
   }
