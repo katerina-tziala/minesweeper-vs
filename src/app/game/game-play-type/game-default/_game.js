@@ -396,8 +396,9 @@ export class Game extends AppModel {
 
   /* UPDATE GAME AFTER MINEFIELD ACTIONS */
   updateStateOnTileDetonation(revealedTiles, player = this.playerOnTurn) {
-    player.detonatedTile = revealedTiles[0].position;
+    this.pause();
     this.setGameEnd(GameEndType.DetonatedMine);
+    player.detonatedTile = revealedTiles[0].position;
   }
 
   updateStateOnRevealedTiles(revealedTiles, player = this.playerOnTurn) {
@@ -418,7 +419,7 @@ export class Game extends AppModel {
 
   resetMinefieldTile(tile, player = this.playerOnTurn) {
     tile.resetState();
-    player.resetedTile(tile.position, !this.allowMarks);
+    player.resetedTile = tile.position;
     this.updateMineCounter();
   }
 

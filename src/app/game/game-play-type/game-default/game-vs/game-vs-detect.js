@@ -43,6 +43,7 @@ export class GameVSDetect extends GameVS {
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
+    this.removeFromPlayerTouchedPositions(revealedTiles);
 
     if (this.mineField.isCleared) {
       this.updateStateOnClearedMinefield(revealedTiles);
@@ -55,7 +56,17 @@ export class GameVSDetect extends GameVS {
     });
   }
 
+  updateStateOnTileDetonation(revealedTiles) {
+    super.updateStateOnTileDetonation(revealedTiles);
+    this.removeFromPlayerTouchedPositions(revealedTiles);
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    this.updatePlayerCard(missedTurnsUpdated).then(() => {
+      this.onGameOver(revealedTiles);
+    });
+  }
+
   updateStateOnClearedMinefield(revealedTiles) {
+    this.pause();
     const unflaggedTiles = this.mineField.getUnrevealedMines();
     unflaggedTiles.forEach((tile) => this.setFlagOnMinefieldTile(tile));
     const boardTiles = unflaggedTiles.concat(revealedTiles);
@@ -64,9 +75,13 @@ export class GameVSDetect extends GameVS {
 
   updatePlayerCardGameInfoAndCheckGameOver(boardTiles) {
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    
+    if (this.mineField.allMinesDetected) {
+      this.setGameEnd(GameEndType.Detected);
+    }
+
     this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
-      if (this.mineField.allMinesDetected) {
-        this.setGameEnd(GameEndType.Detected);
+      if (this.isOver) {
         this.onGameOver(boardTiles);
         return;
       }
@@ -81,7 +96,7 @@ export class GameVSDetect extends GameVS {
 
   setFlagOnMinefieldTile(tile) {
     super.setFlagOnMinefieldTile(tile);
-    this.removeFromPlayerMarkedPositions([tile]);
+    //this.removeFromPlayerTouchedPositions([tile]);
   }
 
   updateStateOnFlaggedTile(tile) {

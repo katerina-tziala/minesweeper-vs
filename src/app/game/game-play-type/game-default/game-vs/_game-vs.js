@@ -32,12 +32,13 @@ export class GameVS extends Game {
     ];
     //this.turnSettings.turnTimer = false;
     this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 5;
-    this.turnSettings.missedTurnsLimit = 3;
+    // this.turnSettings.turnDuration = 5;
+    // this.turnSettings.missedTurnsLimit = 3;
 
     //this.optionsSettings.wrongFlagHint = true;
-
-     this.optionsSettings.unlimitedFlags = false;
+    
+    this.optionsSettings.tileFlagging = true;
+    this.optionsSettings.unlimitedFlags = false;
     // this.optionsSettings.tileRevealing = false;
     this.optionsSettings.marks = true;
     //console.log(this.turnSettings);
@@ -204,23 +205,9 @@ export class GameVS extends Game {
     return false;
   }
 
-  removeFromPlayerMarkedPositions(revealedTiles, player = this.playerWaiting) {
-    player.removeFromMarkedPositions = this.mineField.getTilesPositions(
-      revealedTiles,
-    );
-  }
-
-  updateStateOnTileDetonation(revealedTiles) {
-    super.updateStateOnTileDetonation(revealedTiles);
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatePlayerCard(missedTurnsUpdated).then(() => {
-      this.onGameOver(revealedTiles);
-    });
-  }
-
-  updateStateOnRevealedTiles(revealedTiles) {
-    super.updateStateOnRevealedTiles(revealedTiles);
-    this.removeFromPlayerMarkedPositions(revealedTiles);
+  removeFromPlayerTouchedPositions(revealedTiles, player = this.playerWaiting) {
+    const positions = this.mineField.getTilesPositions(revealedTiles);
+    player.removeFromTouchedPositions = positions;
   }
 
   flagOnTileAllowedByPlayer(tile, player = this.playerOnTurn) {
@@ -353,5 +340,4 @@ export class GameVS extends Game {
 
     return updates;
   }
-
 }

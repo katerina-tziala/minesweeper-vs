@@ -21,13 +21,12 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
-  initState(goalTargetNumber = 0, allowedTurns = null, allowedFlags = null) {
+  initState(goalTargetNumber = 0, allowedTurns = null, maxAllowedFlags = null) {
     this.goalTargetNumber = goalTargetNumber;
-    this.allowedFlags = allowedFlags;
+    this.maxAllowedFlags = maxAllowedFlags;
     this.allowedTurns = allowedTurns;
     this.turn = false;
     this.missedTurns = 0;
-
     this.moves = 0;
     this.lostGame = false;
     // minefield statistics
@@ -69,7 +68,7 @@ export class Player extends AppModel {
 
   /* CHECKS BASED ON MINEFIELD ACTIONS */
   get unlimitedFlags() {
-    return this.allowedFlags === null || this.allowedFlags === undefined
+    return this.maxAllowedFlags === null || this.maxAllowedFlags === undefined
       ? true
       : false;
   }
@@ -77,6 +76,11 @@ export class Player extends AppModel {
   get hasFlags() {
     return this.unlimitedFlags ? true : this.allowedFlags !== 0;
   }
+
+  get allowedFlags() {
+    return this.maxAllowedFlags - this.placedFlags;
+  }
+
 
   get placedFlags() {
     return this.entered
@@ -103,57 +107,59 @@ export class Player extends AppModel {
     return cleared;
   }
 
+  inTouchedTiles(positionsToCheck) {
+    const alreadyToutchedPositions = this.touchedPositions.filter(position => positionsToCheck.includes(position));
+    return alreadyToutchedPositions.length > 0;
+  }
+
+  get touchedPositions() {
+    return [...this.marksPositions, ...this.redundantFlagsPositions, ...this.detectedMinesPositions];
+  }
+
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
   set detonatedTile(position) {
     this.detonatedMinesPositions = [position];
+    this.removeFromTouchedPositions = [position];
     this.increaseMoves();
     this.lostGame = this.detonatedMine;
   }
 
   set revealedTiles(movePositions) {
     this.revealedPositions = this.revealedPositions.concat(movePositions);
+    this.removeFromTouchedPositions = movePositions;
     this.increaseMoves();
-    this.removeFromMarkedPositions = movePositions;
   }
 
   flaggedTile(position, wronglyPlaced) {
     wronglyPlaced
       ? (this.#inRedundantFlagsPositions = position)
       : (this.#inDetectedMinesPositions = position);
-    this.#decreaseAllowedFlags();
     this.increaseMoves();
   }
 
   set markedTile(position) {
-    this.#removeFromBasePositionsStatistics(position);
     this.#inMarksPositions = position;
-    this.#increaseAllowedFlags();
+    this.increaseMoves();
+    this.removeFromFlaggedPositions = [position];
+  }
+
+  set resetedTile(position) {
+    this.removeFromTouchedPositions = [position];
     this.increaseMoves();
   }
 
-  resetedTile(position, increaseFlags = true) {
-    this.#removeFromBasePositionsStatistics(position);
-    this.marksPositions = this.#removeFromPositionsArray(
-      this.marksPositions,
-      position,
-    );
-    if (increaseFlags) {
-      this.#increaseAllowedFlags();
-    }
-    this.increaseMoves();
-  }
-
-  clearedTiles(movePositions) {
-    this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
-    this.redundantFlagsPositions = this.redundantFlagsPositions.filter(position => !movePositions.includes(position));
-    this.detectedMinesPositions = this.detectedMinesPositions.filter(position => !movePositions.includes(position));
-    if (increaseFlags) {
-      this.#increaseAllowedFlags();
-    }
+  set removeFromTouchedPositions(movePositions) {
+    this.removeFromMarkedPositions = movePositions;
+    this.removeFromFlaggedPositions = movePositions;
   }
 
   set removeFromMarkedPositions(movePositions) {
-    this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
+    this.marksPositions = this.#removeFromPositions(this.marksPositions, movePositions);
+  }
+
+  set removeFromFlaggedPositions(movePositions) {
+    this.redundantFlagsPositions = this.#removeFromPositions(this.redundantFlagsPositions, movePositions);
+    this.detectedMinesPositions = this.#removeFromPositions(this.detectedMinesPositions, movePositions);
   }
 
   // PRIVATE FUNCTIONS
@@ -169,31 +175,8 @@ export class Player extends AppModel {
     this.marksPositions.push(position);
   }
 
-  #removeFromPositionsArray(positionsArray, positionToRemove) {
-    return positionsArray.filter((position) => position !== positionToRemove);
-  }
-
-  #removeFromBasePositionsStatistics(position) {
-    this.redundantFlagsPositions = this.#removeFromPositionsArray(
-      this.redundantFlagsPositions,
-      position,
-    );
-    this.detectedMinesPositions = this.#removeFromPositionsArray(
-      this.detectedMinesPositions,
-      position,
-    );
-  }
-
-  #increaseAllowedFlags() {
-    if (!this.unlimitedFlags) {
-      this.allowedFlags++;
-    }
-  }
-
-  #decreaseAllowedFlags() {
-    if (!this.unlimitedFlags) {
-      this.allowedFlags--;
-    }
+  #removeFromPositions(positionsArray, positionsToRemove) {
+    return positionsArray.filter(position => !positionsToRemove.includes(position));
   }
 
 }

@@ -58,10 +58,6 @@ export class GameVSClear extends GameVS {
     return this.levelSettings.numberOfEmptyTiles;
   }
 
-  get openStrategy() {
-    return this.optionsSettings && this.optionsSettings.openStrategy;
-  }
-
   getPlayerTargetValue(player) {
     return player.revealedTiles;
   }
@@ -71,6 +67,14 @@ export class GameVSClear extends GameVS {
       return this.optionsSettings.tileFlagging;
     }
     return true;
+  }
+
+  get openStrategy() {
+    return (
+      this.strategyAllowed &&
+      this.optionsSettings &&
+      this.optionsSettings.openStrategy
+    );
   }
 
   flaggingAllowed(tile, player = this.playerOnTurn) {
@@ -94,24 +98,25 @@ export class GameVSClear extends GameVS {
     this.mineField.enable();
   }
 
-  resetPlayerPositions(revealedTiles, player = this.playerWaiting) {
-    player.clearedTiles = this.mineField.getTilesPositions(revealedTiles);
-  }
-
   updateStateOnRevealedTiles(revealedTiles) {
+    const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
     super.updateStateOnRevealedTiles(revealedTiles);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-
-    if (this.openStrategy) {
-      this.resetPlayerPositions(revealedTiles);
-      // update opponent player card
+    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(revealedPositions);
+    
+    if (this.mineField.isCleared) {
+      this.setGameEnd(GameEndType.Cleared);
+    }
+ 
+    const playerCardsUpdates = [this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected)];
+    
+    if (this.opoonentStatsAffected(revealedPositions)) {
+      playerCardsUpdates.push(this.updatePlayerCard(false, false, true, this.playerWaiting));
     }
 
-    console.log(this.players);
-
-    this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
-      if (this.mineField.isCleared) {
-        this.setGameEnd(GameEndType.Cleared);
+    this.pause();
+    Promise.all(playerCardsUpdates).then(() => {
+      if (this.isOver) {
         this.onGameOver(revealedTiles);
         return;
       }
@@ -119,18 +124,47 @@ export class GameVSClear extends GameVS {
     });
   }
 
-  handleTileMarking(tile) {
-    console.log("handleTileMarking", tile);
+  updateStateOnTileDetonation(revealedTiles) {
+    super.updateStateOnTileDetonation(revealedTiles);
+    console.log("on tile detonation");
+    // 
+    // //this.removeFromPlayerTouchedPositions(revealedTiles);
+    // const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    // this.updatePlayerCard(missedTurnsUpdated).then(() => {
+    //   this.onGameOver(revealedTiles);
+    // });
+  }
 
-    // this.pause();
+
+  opoonentStatsAffected(revealedPositions, player = this.playerWaiting) {
+    if (this.openStrategy) {
+
+      if (player.inTouchedTiles(revealedPositions)) {
+        player.removeFromTouchedPositions = revealedPositions;
+        return true;
+      }
+
+      return false;
+
+    }
+    console.log("strategy is hidden");
+   
+    return false;
+  }
+
+
+
+
+
+
+
+
+  handleTileMarking(tile) {
 
     if (!this.strategyAllowed) {
       this.revealMinefieldArea(tile);
       return;
     }
-
-    console.log("strategyAllowed -- flags allowed", this.strategyAllowed);
-
     // set flag
     if (this.flaggingAllowed(tile)) {
       this.updateStateOnFlaggedTile(tile);
@@ -141,7 +175,6 @@ export class GameVSClear extends GameVS {
       this.updateStateOnMarkedTile(tile);
       return;
     }
-
     // reset
     if (this.resetingAllowed(tile)) {
       this.updateStateOnResetedTile(tile);
@@ -149,6 +182,7 @@ export class GameVSClear extends GameVS {
     }
 
     this.mineField.enable();
+    //super.handleTileMarking(tile);
   }
 
   updateStateOnFlaggedTile(tile) {
@@ -190,6 +224,7 @@ export class GameVSClear extends GameVS {
       this.pause();
       return;
     }
+    console.log("--  onPlayerMoveEnd --");
     //console.log(this);
     this.mineField.enable();
   }
@@ -199,12 +234,8 @@ export class GameVSClear extends GameVS {
     return;
   }
 
-  updatePlayerCard(
-    turnsUpdate = false,
-    statsUpdate = false,
-    flagsUpdate = false,
-  ) {
-    const updates = this.getCardUpdates(turnsUpdate, statsUpdate, flagsUpdate);
+  updatePlayerCard(turnsUpdate = false, statsUpdate = false, flagsUpdate = false, player = this.playerOnTurn) {
+    const updates = this.getCardUpdates(turnsUpdate, statsUpdate, flagsUpdate, player);
 
     if (updates.length) {
       return Promise.all(updates);
@@ -220,15 +251,12 @@ export class GameVSClear extends GameVS {
     player = this.playerOnTurn,
   ) {
     const updates = super.getCardUpdates(turnsUpdate);
-
     if (statsUpdate) {
       updates.push(this.updatePlayerGameGoalStatistics(player));
     }
-
     if (flagsUpdate) {
       updates.push(this.updatePlayerCardAllowedFlags(player));
     }
-
     return updates;
   }
 

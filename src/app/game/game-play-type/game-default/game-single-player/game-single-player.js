@@ -79,11 +79,13 @@ export class GameSinglePlayer extends Game {
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
+
     if (this.playerOnTurn.clearedMinefield) {
       this.setGameEnd(GameEndType.Cleared);
       this.onGameOver(revealedTiles);
       return;
     }
+  
     this.onPlayerMoveEnd(revealedTiles);
   }
 

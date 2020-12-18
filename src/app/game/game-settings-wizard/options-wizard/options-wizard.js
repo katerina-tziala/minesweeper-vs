@@ -22,11 +22,10 @@ export class OptionsWizard extends GameSettingsWizard {
   }
 
   get #settingsProperties() {
-    let params = SETTINGS_PROPERTIES.default;
     if (this.settings && this.settings.vsMode) {
-      params = params.concat(SETTINGS_PROPERTIES[this.settings.vsMode]);
+      return SETTINGS_PROPERTIES[this.settings.vsMode];
     }
-    return params;
+    return SETTINGS_PROPERTIES.default;
   }
 
   get #sneakPeakDisabled() {
