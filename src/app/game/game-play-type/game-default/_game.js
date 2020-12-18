@@ -133,7 +133,7 @@ export class Game extends AppModel {
     }
   }
 
-  onTileAction(action, tile) {
+  #onTileAction(action, tile) {
     if (!this.isOver) {
       action === GameAction.Mark
         ? this.handleTileMarking(tile)
@@ -356,7 +356,7 @@ export class Game extends AppModel {
       this.id,
       this.levelSettings,
       this.#onActiveTileChange.bind(this),
-      this.onTileAction.bind(this),
+      this.#onTileAction.bind(this),
     );
     return Promise.resolve();
   }

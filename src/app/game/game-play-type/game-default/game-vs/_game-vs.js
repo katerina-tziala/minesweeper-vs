@@ -36,10 +36,11 @@ export class GameVS extends Game {
     this.turnSettings.missedTurnsLimit = 3;
 
     //this.optionsSettings.wrongFlagHint = true;
-    
-    // this.optionsSettings.tileFlagging = true;
-    // this.optionsSettings.openStrategy = false;
-   this.optionsSettings.unlimitedFlags = true;
+
+    this.optionsSettings.tileFlagging = true;
+    this.optionsSettings.openStrategy = false;
+
+    this.optionsSettings.unlimitedFlags = true;
 
     // this.optionsSettings.tileRevealing = false;
     this.optionsSettings.marks = true;
@@ -144,13 +145,12 @@ export class GameVS extends Game {
   startGameRound() {
     // TODO: ROUND STATISTICS
     this.initRoundTiles();
-  
+
     if (this.#roundTimer) {
       this.gameTimer.start();
     }
-  
+
     this.vsDashboard.setCardOnTurn(this.players).then(() => {
- 
       if (this.playerOnTurn.isBot) {
         this.startBotRound();
         return;
@@ -213,26 +213,6 @@ export class GameVS extends Game {
       return true;
     }
     return false;
-  }
-
-  handleTileMarking(tile) {
-    // set flag
-    if (this.flaggingAllowed(tile)) {
-      this.updateStateOnFlaggedTile(tile);
-      return;
-    }
-    // set mark
-    if (this.markingAllowed(tile)) {
-      this.updateStateOnMarkedTile(tile);
-      return;
-    }
-    // reset
-    if (this.resetingAllowed(tile)) {
-      this.updateStateOnResetedTile(tile);
-      return;
-    }
-
-    this.mineField.enable();
   }
 
   updateStateOnFlaggedTile(tile) {
