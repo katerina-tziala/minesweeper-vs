@@ -80,10 +80,9 @@ export class GameVSClear extends GameVS {
   }
 
   revealingAllowed(tile) {
-    console.log("openStrategy", this.openStrategy);
-
-    //&& tile.isUntouched || tile.isMarked
-
+    if (this.openStrategy) {
+      return true;
+    }
     return super.revealingAllowed(tile);
   }
 
@@ -95,9 +94,21 @@ export class GameVSClear extends GameVS {
     this.mineField.enable();
   }
 
+  resetPlayerPositions(revealedTiles, player = this.playerWaiting) {
+    player.clearedTiles = this.mineField.getTilesPositions(revealedTiles);
+  }
+
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
+
+    if (this.openStrategy) {
+      this.resetPlayerPositions(revealedTiles);
+      // update opponent player card
+    }
+
+    console.log(this.players);
+
     this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
       if (this.mineField.isCleared) {
         this.setGameEnd(GameEndType.Cleared);

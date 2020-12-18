@@ -131,7 +131,7 @@ export class Player extends AppModel {
     this.increaseMoves();
   }
 
-  resetedTile(position, increaseFlags = false) {
+  resetedTile(position, increaseFlags = true) {
     this.#removeFromBasePositionsStatistics(position);
     this.marksPositions = this.#removeFromPositionsArray(
       this.marksPositions,
@@ -141,6 +141,15 @@ export class Player extends AppModel {
       this.#increaseAllowedFlags();
     }
     this.increaseMoves();
+  }
+
+  clearedTiles(movePositions) {
+    this.marksPositions = this.marksPositions.filter(position => !movePositions.includes(position));
+    this.redundantFlagsPositions = this.redundantFlagsPositions.filter(position => !movePositions.includes(position));
+    this.detectedMinesPositions = this.detectedMinesPositions.filter(position => !movePositions.includes(position));
+    if (increaseFlags) {
+      this.#increaseAllowedFlags();
+    }
   }
 
   set removeFromMarkedPositions(movePositions) {

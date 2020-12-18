@@ -35,6 +35,7 @@ export class Game extends AppModel {
     this.players = [this.player];
     this.createdAt = nowTimestamp();
     this.onActionTimer = true;
+    // catch error on interface update
   }
 
   set dashBoardActions(actions) {
