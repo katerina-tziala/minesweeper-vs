@@ -32,7 +32,7 @@ export class GameVS extends Game {
     ];
     //this.turnSettings.turnTimer = false;
     this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 5;
+    this.turnSettings.turnDuration = 8;
     this.turnSettings.missedTurnsLimit = 3;
 
     //this.optionsSettings.wrongFlagHint = true;
@@ -41,9 +41,13 @@ export class GameVS extends Game {
     this.optionsSettings.openStrategy = false;
 
     this.optionsSettings.unlimitedFlags = true;
-
+  
     // this.optionsSettings.tileRevealing = false;
     this.optionsSettings.marks = true;
+
+    this.optionsSettings.sneakPeek = true;
+    this.optionsSettings.sneakPeekDuration = 5;
+
     //console.log(this.turnSettings);
     console.log(this.optionsSettings);
     this.init();

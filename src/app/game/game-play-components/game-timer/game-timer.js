@@ -10,11 +10,32 @@ export class GameTimer {
   #onTimerStopped;
 
   constructor(params, onTimerStopped) {
+    this.setConfiguration(params, onTimerStopped);
+    this.digitalCounter = new DigitalCounter(params.id);
+  }
+
+  setConfiguration(params, onTimerStopped) {
     this.initialValue = params.initialValue ? params.initialValue : 0;
     this.step = params.step ? params.step : 1;
     this.limit = params.limit;
-    this.#onTimerStopped = onTimerStopped;
-    this.digitalCounter = new DigitalCounter(params.id);
+    this.onTimerStopped = onTimerStopped;
+  }
+
+  get state() {
+    return {
+      initialValue: this.initialValue,
+      step: this.step,
+      limit: this.limit,
+      isRunning: this.isRunning,
+      hittedLimit: this.hittedLimit,
+      value: this.value
+    }
+  }
+
+  set onTimerStopped(onTimerStopped) {
+    if (onTimerStopped) {
+      this.#onTimerStopped = onTimerStopped;
+    }
   }
 
   #checkLimitHit() {

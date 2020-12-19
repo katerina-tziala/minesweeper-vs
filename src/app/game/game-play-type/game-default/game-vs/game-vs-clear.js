@@ -1,5 +1,5 @@
 "use strict";
-// import { clone, randomValueFromArray } from "~/_utils/utils.js";
+import { clone } from "~/_utils/utils.js";
 
 import { GameEndType, GameSubmission } from "GameEnums";
 
@@ -19,6 +19,8 @@ import { GameViewHelper } from "../_game-view-helper";
 import { GameVS } from "./_game-vs";
 
 export class GameVSClear extends GameVS {
+  #gameTimerSnapshot;
+
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
 
@@ -34,7 +36,7 @@ export class GameVSClear extends GameVS {
 
   get #sneakPeekAllowed() {
     if (
-      this.optionsSettings.sneakPeek &&
+      this.hiddenStrategy & this.optionsSettings.sneakPeek &&
       this.optionsSettings.sneakPeekDuration
     ) {
       return true;
@@ -304,8 +306,72 @@ export class GameVSClear extends GameVS {
     console.log(this.playerWaiting.touchedPositions);
   }
 
+
+
+
+
+
+
+
+  get #sneakPeekTimerParams() {
+    return {
+      initialValue: this.optionsSettings.sneakPeekDuration,
+      step: -1,
+      limit: 0,
+      isRunning: false,
+      hittedLimit: false,
+      value: this.optionsSettings.sneakPeekDuration,
+    };
+  }
+
+
+
+
   #onSneakPeek() {
-    console.log("onSneakPeek");
+    this.pause();
+    this.#gameTimerSnapshot = this.gameTimer.state;
+    // this.hideStrategyForPlayer(this.playerOnTurn)
+    // .then(() => {
+    //   return this.displayStrategyForPlayer(this.playerWaiting);
+    // })
+    // .then(() => {
+    //   this.gameTimer.setConfiguration(this.#sneakPeekTimerParams, this.continue.bind(this));
+    //   this.gameTimer.start();
+    // });
+  }
+
+  #onSneakEnd() {
+    this.pause();
+    console.log("onSneakEnd");
+    console.log(this.#gameTimerSnapshot);
+    //this.gameTimerSettingscontinue
+    //this.gameTimer.setConfiguration(currentTimerState, this.onRoundTimerEnd.bind(this));
+    // 
+    //this.gameTimer = new GameTimer(params, );
+    this.continue();
+    // && this.gameTimer.value > 0
     return;
+  }
+
+
+  
+
+
+
+  continue() {
+    console.log("sneakpeek ended mathafaca");
+    console.log("continue");
+
+
+    
+    if (this.#gameTimerSnapshot) {
+      // console.log(" onSneekPeaking ");
+      // const sneakPeekTimerState = this.gameTimer.state;
+      // console.log(sneakPeekTimerState, this.gameTimerSnapshot);
+
+      return;
+    }
+    this.gameTimer.continue();
+    this.mineField.enable();
   }
 }
