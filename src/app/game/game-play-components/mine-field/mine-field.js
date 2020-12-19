@@ -47,18 +47,18 @@ export class MineField {
     return this.#_levelSettings;
   }
 
-  get #freezerId() {
+  get freezerId() {
     return DOM_ELEMENT_ID.freezer + TYPOGRAPHY.doubleHyphen + this.gameId;
   }
 
   get #freezer() {
-    return ElementHandler.getByID(this.#freezerId);
+    return ElementHandler.getByID(this.freezerId);
   }
 
   #generateFieldFreezer() {
     const boardFreezer = ElementGenerator.generateContainer(
       [DOM_ELEMENT_CLASS.freezer],
-      this.#freezerId,
+      this.freezerId,
     );
     boardFreezer.addEventListener("click", (event) => {
       preventInteraction(event);
@@ -117,6 +117,7 @@ export class MineField {
 
   set freezerState(display) {
     this.#freezer.then((freezer) => {
+      ElementHandler.clearContent(freezer);
       display ? ElementHandler.display(freezer) : ElementHandler.hide(freezer);
     });
   }

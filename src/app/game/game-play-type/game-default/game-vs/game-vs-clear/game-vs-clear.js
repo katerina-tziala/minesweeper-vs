@@ -3,7 +3,7 @@ import { clone } from "~/_utils/utils.js";
 
 import { GameEndType, GameSubmission } from "GameEnums";
 
-// import { Game } from "../_game";
+import { SneakPeekSettings } from "GameModels";
 
 // import { GameVSDashboard } from "../../game-vs-dashboard/game-vs-dashboard";
 
@@ -12,18 +12,27 @@ import {
   ACTION_BUTTONS,
   BOARD_SECTION,
   DASHBOARD_SECTION,
-} from "../_game.constants";
+} from "../../_game.constants";
 
-import { GameViewHelper } from "../_game-view-helper";
+import { GameViewHelper } from "../../_game-view-helper";
 
-import { GameVS } from "./_game-vs";
+import { GameVS } from "../_game-vs";
+
+import { SneakPeekController } from "./sneak-peek-controller/sneak-peek-controller";
+
+
+
+
+
 
 export class GameVSClear extends GameVS {
   #gameTimerSnapshot;
+  #sneakPeekController;
 
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
-
+    this.#sneakPeekController = new SneakPeekController(this.roundTimer);
+    //console.log(new SneakPeekSettings());
     // this.optionsSettings.allowFlagging = true;
     //marks: true
     // wrongFlagHint: false
@@ -267,24 +276,18 @@ export class GameVSClear extends GameVS {
   }
 
   startGameRound() {
-    const interfaceUpdates = [];
-
-    this.hideStrategyForPlayer(this.playerWaiting)
-      .then(() => {
-        return this.displayStrategyForPlayer(this.playerOnTurn);
-      })
+    this.#hideOpponentStrategy()
       .then(() => {
         this.updateMineCounter();
         super.startGameRound();
       });
-
   }
 
 
 
 
 
-  hideStrategyForPlayer(player) {
+  #hideStrategyForPlayer(player) {
     const strategyPositions = player.strategyPositions;
 
     if (this.hiddenStrategy && strategyPositions.length) {
@@ -295,7 +298,7 @@ export class GameVSClear extends GameVS {
     return Promise.resolve();
   }
 
-  displayStrategyForPlayer(player) {
+  #displayStrategyForPlayer(player) {
     const strategyPositions = player.strategyPositions;
 
     if (this.hiddenStrategy && strategyPositions.length) {
@@ -322,15 +325,15 @@ export class GameVSClear extends GameVS {
 
   #revealOpponentStrategy() {
     const interfaceUpdates = [];
-    interfaceUpdates.push(this.hideStrategyForPlayer(this.playerOnTurn));
-    interfaceUpdates.push(this.displayStrategyForPlayer(this.playerWaiting));
+    interfaceUpdates.push(this.#hideStrategyForPlayer(this.playerOnTurn));
+    interfaceUpdates.push(this.#displayStrategyForPlayer(this.playerWaiting));
     return Promise.all(interfaceUpdates);
   }
 
   #hideOpponentStrategy() {
     const interfaceUpdates = [];
-    interfaceUpdates.push(this.hideStrategyForPlayer(this.playerWaiting));
-    interfaceUpdates.push(this.displayStrategyForPlayer(this.playerOnTurn));
+    interfaceUpdates.push(this.#hideStrategyForPlayer(this.playerWaiting));
+    interfaceUpdates.push(this.#displayStrategyForPlayer(this.playerOnTurn));
     return Promise.all(interfaceUpdates);
   }
 
@@ -354,37 +357,53 @@ export class GameVSClear extends GameVS {
 
   #onSneakPeek() {
 
+    this.pause();
     //console.log(this.startedAt);
+
     if (!this.startedAt) {
       console.log("game did not start");
       return;
     }
-
-
-
-    if (this.roundTimer) {
-      console.log("sneakPeek on rounds");
-      this.pause();
-      return;
-    }
-
-
+   
     const strategyPositions = this.playerWaiting.strategyPositions;
+    const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(this.playerWaiting);
+    
+    console.log("sneakPeekAllowed", sneakPeekAllowed);
 
-    console.log("onSneakPeek when timer incrementing");
+    // if (!sneakPeekAllowed) {
+    //   console.log("sneak peek not allowed");
+    //   return;
+    // }
 
-    console.log("strategyPositions", strategyPositions);
 
-    this.pause();
-    this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
+
+
+    // if (!strategyPositions.length) {
+    //   console.log("no strategy to display");
+    //   // return;
+    // }
+
+    // if (this.roundTimer) {
+    //   console.log("sneakPeek on rounds");
+    //   this.pause();
+    //   //return;
+    // }
+    // console.log("sneakPeek NO rounds");
+
+
+ 
+    //flash board
   
-    this.#revealOpponentStrategy().then(() => {
-      this.mineCounter.value =  this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
-      //different icon
-      this.setSmileFace(this.playerWaiting.colorType);
-      this.gameTimer.setConfiguration(this.#sneakPeekTimerParams, this.continue.bind(this));
-      this.gameTimer.start();
-    });
+
+    // this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
+    // this.#revealOpponentStrategy().then(() => {
+    //   this.mineCounter.value =  this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
+    //   //different icon
+    //   this.setSmileFace(this.playerWaiting.colorType);
+    //   this.gameTimer.setConfiguration(this.#sneakPeekTimerParams, this.continue.bind(this));
+    //   this.gameTimer.start();
+    // });
+  
   }
 
   

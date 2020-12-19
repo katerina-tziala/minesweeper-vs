@@ -2,7 +2,7 @@
 import { sortNumbersArrayAsc } from "~/_utils/utils";
 import { AppModel } from "~/_models/app-model";
 import { GameLevel } from "GameEnums";
-import { LEVEL_PARAMS } from "./level-setting-constants";
+import { LEVEL_PARAMS } from "./level-setting.constants";
 
 export class LevelSettings extends AppModel {
   constructor(level) {

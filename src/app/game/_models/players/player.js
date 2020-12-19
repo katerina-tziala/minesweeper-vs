@@ -124,6 +124,10 @@ export class Player extends AppModel {
     ];
   }
 
+  get hasStrategy() {
+    return this.strategyPositions.length > 0;
+  }
+
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
   set detonatedTile(position) {
     this.detonatedMinesPositions = [position];
