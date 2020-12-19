@@ -30,10 +30,10 @@ export class GameVS extends Game {
       79,
       80,
     ];
-    //this.turnSettings.turnTimer = false;
-    this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 8;
-    this.turnSettings.missedTurnsLimit = 3;
+    this.turnSettings.turnTimer = false;
+    // this.turnSettings.consecutiveTurns = true;
+    // this.turnSettings.turnDuration = 8;
+    // this.turnSettings.missedTurnsLimit = 3;
 
     //this.optionsSettings.wrongFlagHint = true;
 
@@ -64,7 +64,7 @@ export class GameVS extends Game {
   // OVERRIDEN FUNCTIONS
   get gameTimerSettings() {
     const timerSettings = super.gameTimerSettings;
-    if (this.#roundTimer) {
+    if (this.roundTimer) {
       timerSettings.step = -1;
       timerSettings.limit = 0;
       timerSettings.initialValue = this.turnSettings.turnDuration;
@@ -135,7 +135,8 @@ export class GameVS extends Game {
       .then(() => {
         this.initDashBoard();
 
-        if (this.#roundTimer) {
+        if (this.roundTimer) {
+          console.log("kkk");
           this.setGameStart();
         }
 
@@ -149,8 +150,8 @@ export class GameVS extends Game {
   startGameRound() {
     // TODO: ROUND STATISTICS
     this.initRoundTiles();
-
-    if (this.#roundTimer) {
+    this.setSmileFace();
+    if (this.roundTimer) {
       this.gameTimer.start();
     }
 
@@ -232,7 +233,7 @@ export class GameVS extends Game {
   }
 
   // FUNCTIONS TO HANDLE TURNS
-  get #roundTimer() {
+  get roundTimer() {
     return this.turnSettings && this.turnSettings.roundTimer;
   }
 
@@ -258,10 +259,16 @@ export class GameVS extends Game {
     return;
   }
 
+  stopRoundTimer() {
+    if (this.roundTimer) {
+      this.pause();
+    }
+  }
+
   //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
     this.updateMineCounter();
-    this.pause();
+    this.stopRoundTimer();
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
 

@@ -245,8 +245,8 @@ export class Game extends AppModel {
     return this.initViewControllers.then(() => this.onViewInit);
   }
 
-  setSmileFace() {
-    this.dashboardFace.setSmileFace(this.dashboardFaceColor);
+  setSmileFace(color = this.dashboardFaceColor) {
+    this.dashboardFace.setSmileFace(color);
   }
 
   setSurpriseFace() {

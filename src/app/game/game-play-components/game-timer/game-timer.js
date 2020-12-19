@@ -124,6 +124,10 @@ export class GameTimer {
   continue() {
     this.stop();
     this.value = this.value;
+    if (this.hittedLimit) {
+      this.#onLimitHit();
+      return;
+    }
     this.#run();
   }
 

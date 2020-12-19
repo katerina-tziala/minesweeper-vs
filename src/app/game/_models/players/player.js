@@ -29,6 +29,7 @@ export class Player extends AppModel {
     this.missedTurns = 0;
     this.moves = 0;
     this.lostGame = false;
+    this.sneakPeeks = 0;
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
@@ -108,14 +109,14 @@ export class Player extends AppModel {
     return cleared;
   }
 
-  inTouchedTiles(positionsToCheck) {
-    const alreadyToutchedPositions = this.touchedPositions.filter((position) =>
+  inStrategyPositions(positionsToCheck) {
+    const alreadyToutchedPositions = this.strategyPositions.filter((position) =>
       positionsToCheck.includes(position),
     );
     return alreadyToutchedPositions.length > 0;
   }
 
-  get touchedPositions() {
+  get strategyPositions() {
     return [
       ...this.marksPositions,
       ...this.redundantFlagsPositions,
@@ -126,14 +127,14 @@ export class Player extends AppModel {
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
   set detonatedTile(position) {
     this.detonatedMinesPositions = [position];
-    this.removeFromTouchedPositions = [position];
+    this.removeFromStrategyPositions = [position];
     this.increaseMoves();
     this.lostGame = this.detonatedMine;
   }
 
   set revealedTiles(movePositions) {
     this.revealedPositions = this.revealedPositions.concat(movePositions);
-    this.removeFromTouchedPositions = movePositions;
+    this.removeFromStrategyPositions = movePositions;
     this.increaseMoves();
   }
 
@@ -151,11 +152,11 @@ export class Player extends AppModel {
   }
 
   set resetedTile(position) {
-    this.removeFromTouchedPositions = [position];
+    this.removeFromStrategyPositions = [position];
     this.increaseMoves();
   }
 
-  set removeFromTouchedPositions(movePositions) {
+  set removeFromStrategyPositions(movePositions) {
     this.removeFromMarkedPositions = movePositions;
     this.removeFromFlaggedPositions = movePositions;
   }

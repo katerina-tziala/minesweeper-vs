@@ -43,7 +43,7 @@ export class GameVSDetect extends GameVS {
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
-    this.#removeFromPlayerTouchedPositions(revealedTiles);
+    this.#removeFromPlayerStrategy(revealedTiles);
 
     if (this.mineField.isCleared) {
       this.updateStateOnClearedMinefield(revealedTiles);
@@ -56,22 +56,22 @@ export class GameVSDetect extends GameVS {
     });
   }
 
-  updateStateOnTileDetonation(revealedTiles) {
-    super.updateStateOnTileDetonation(revealedTiles);
-    this.#removeFromPlayerTouchedPositions(revealedTiles);
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatePlayerCard(missedTurnsUpdated).then(() => {
-      this.updateMineCounter();
-      this.onGameOver(revealedTiles);
-    });
-  }
-
   updateStateOnClearedMinefield(revealedTiles) {
     this.pause();
     const unflaggedTiles = this.mineField.getUnrevealedMines();
     unflaggedTiles.forEach((tile) => this.setFlagOnMinefieldTile(tile));
     const boardTiles = unflaggedTiles.concat(revealedTiles);
     this.updatePlayerCardGameInfoAndCheckGameOver(boardTiles);
+  }
+
+  updateStateOnTileDetonation(revealedTiles) {
+    super.updateStateOnTileDetonation(revealedTiles);
+    this.#removeFromPlayerStrategy(revealedTiles);
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
+    this.updatePlayerCard(missedTurnsUpdated).then(() => {
+      this.updateMineCounter();
+      this.onGameOver(revealedTiles);
+    });
   }
 
   updatePlayerCardGameInfoAndCheckGameOver(boardTiles) {
@@ -94,7 +94,7 @@ export class GameVSDetect extends GameVS {
   /* UPDATE GAME AFTER MARKING TILES */
   updateStateOnFlaggedTile(tile) {
     this.setFlagOnMinefieldTile(tile);
-    this.#removeFromPlayerTouchedPositions([tile]);
+    this.#removeFromPlayerStrategy([tile]);
     this.updatePlayerCardGameInfoAndCheckGameOver([tile]);
   }
 
@@ -115,9 +115,9 @@ export class GameVSDetect extends GameVS {
     });
   }
 
-  #removeFromPlayerTouchedPositions(revealedTiles, player = this.playerWaiting) {
+  #removeFromPlayerStrategy(revealedTiles, player = this.playerWaiting) {
     const positions = this.mineField.getTilesPositions(revealedTiles);
-    player.removeFromTouchedPositions = positions;
+    player.removeFromStrategyPositions = positions;
   }
 
   /* UPDATE PLAYER CARD */

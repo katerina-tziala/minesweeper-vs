@@ -110,7 +110,7 @@ export class GameVSClear extends GameVS {
     const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
     super.updateStateOnRevealedTiles(revealedTiles);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(
+    const playerFlagsAffected = this.playerOnTurn.inStrategyPositions(
       revealedPositions,
     );
 
@@ -122,13 +122,13 @@ export class GameVSClear extends GameVS {
       this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
     ];
 
-    if (this.#playerTouchedTilesAffected(revealedPositions)) {
+    if (this.#playerStrategyAffected(revealedPositions)) {
       playerCardsUpdates.push(
         this.updatePlayerCard(false, false, true, this.playerWaiting),
       );
     }
 
-    this.pause();
+    this.stopRoundTimer();
     Promise.all(playerCardsUpdates).then(() => {
       if (this.isOver) {
         this.updateMineCounter();
@@ -144,7 +144,7 @@ export class GameVSClear extends GameVS {
     const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
 
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    const playerFlagsAffected = this.playerOnTurn.inTouchedTiles(
+    const playerFlagsAffected = this.playerOnTurn.inStrategyPositions(
       revealedPositions,
     );
 
@@ -152,7 +152,7 @@ export class GameVSClear extends GameVS {
       this.updatePlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
     ];
 
-    if (this.#playerTouchedTilesAffected(revealedPositions)) {
+    if (this.#playerStrategyAffected(revealedPositions)) {
       playerCardsUpdates.push(
         this.updatePlayerCard(false, false, true, this.playerWaiting),
       );
@@ -163,9 +163,9 @@ export class GameVSClear extends GameVS {
     });
   }
 
-  #playerTouchedTilesAffected(revealedPositions, player = this.playerWaiting) {
-    if (player.inTouchedTiles(revealedPositions)) {
-      player.removeFromTouchedPositions = revealedPositions;
+  #playerStrategyAffected(revealedPositions, player = this.playerWaiting) {
+    if (player.inStrategyPositions(revealedPositions)) {
+      player.removeFromStrategyPositions = revealedPositions;
       return true;
     }
 
@@ -267,6 +267,8 @@ export class GameVSClear extends GameVS {
   }
 
   startGameRound() {
+    const interfaceUpdates = [];
+
     this.hideStrategyForPlayer(this.playerWaiting)
       .then(() => {
         return this.displayStrategyForPlayer(this.playerOnTurn);
@@ -275,10 +277,15 @@ export class GameVSClear extends GameVS {
         this.updateMineCounter();
         super.startGameRound();
       });
+
   }
 
+
+
+
+
   hideStrategyForPlayer(player) {
-    const strategyPositions = player.touchedPositions;
+    const strategyPositions = player.strategyPositions;
 
     if (this.hiddenStrategy && strategyPositions.length) {
       this.mineField.hideStrategy(strategyPositions);
@@ -289,7 +296,7 @@ export class GameVSClear extends GameVS {
   }
 
   displayStrategyForPlayer(player) {
-    const strategyPositions = player.touchedPositions;
+    const strategyPositions = player.strategyPositions;
 
     if (this.hiddenStrategy && strategyPositions.length) {
       this.mineField.showStrategy(player, this.wrongFlagHint);
@@ -303,12 +310,31 @@ export class GameVSClear extends GameVS {
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
 
-    console.log(this.playerWaiting.touchedPositions);
+    console.log(this.playerWaiting.strategyPositions);
   }
 
 
 
+  // when no round timer disable sneak peek button when
+  //timer is not started and player has no moves
 
+
+
+  #revealOpponentStrategy() {
+    const interfaceUpdates = [];
+    interfaceUpdates.push(this.hideStrategyForPlayer(this.playerOnTurn));
+    interfaceUpdates.push(this.displayStrategyForPlayer(this.playerWaiting));
+    return Promise.all(interfaceUpdates);
+  }
+
+  #hideOpponentStrategy() {
+    const interfaceUpdates = [];
+    interfaceUpdates.push(this.hideStrategyForPlayer(this.playerWaiting));
+    interfaceUpdates.push(this.displayStrategyForPlayer(this.playerOnTurn));
+    return Promise.all(interfaceUpdates);
+  }
+
+  
 
 
 
@@ -326,51 +352,77 @@ export class GameVSClear extends GameVS {
 
 
 
-
   #onSneakPeek() {
+
+    //console.log(this.startedAt);
+    if (!this.startedAt) {
+      console.log("game did not start");
+      return;
+    }
+
+
+
+    if (this.roundTimer) {
+      console.log("sneakPeek on rounds");
+      this.pause();
+      return;
+    }
+
+
+    const strategyPositions = this.playerWaiting.strategyPositions;
+
+    console.log("onSneakPeek when timer incrementing");
+
+    console.log("strategyPositions", strategyPositions);
+
     this.pause();
-    this.#gameTimerSnapshot = this.gameTimer.state;
-    // this.hideStrategyForPlayer(this.playerOnTurn)
-    // .then(() => {
-    //   return this.displayStrategyForPlayer(this.playerWaiting);
-    // })
-    // .then(() => {
-    //   this.gameTimer.setConfiguration(this.#sneakPeekTimerParams, this.continue.bind(this));
-    //   this.gameTimer.start();
-    // });
+    this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
+  
+    this.#revealOpponentStrategy().then(() => {
+      this.mineCounter.value =  this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
+      //different icon
+      this.setSmileFace(this.playerWaiting.colorType);
+      this.gameTimer.setConfiguration(this.#sneakPeekTimerParams, this.continue.bind(this));
+      this.gameTimer.start();
+    });
   }
 
+  
+
   #onSneakEnd() {
-    this.pause();
     console.log("onSneakEnd");
-    console.log(this.#gameTimerSnapshot);
-    //this.gameTimerSettingscontinue
-    //this.gameTimer.setConfiguration(currentTimerState, this.onRoundTimerEnd.bind(this));
-    // 
-    //this.gameTimer = new GameTimer(params, );
-    this.continue();
-    // && this.gameTimer.value > 0
+    this.#hideOpponentStrategy().then(() => {
+      this.setSmileFace();
+      this.updateMineCounter();
+      this.gameTimer.setConfiguration(this.#gameTimerSnapshot, this.onRoundTimerEnd.bind(this));
+      this.gameTimer.value = this.#gameTimerSnapshot.value;
+      this.#gameTimerSnapshot = undefined;
+      this.continue();
+    });
     return;
   }
 
 
-  
-
+  #continueSneakPeekTimer() {
+    if (this.gameTimer.value === 0) {
+      this.#onSneakEnd();
+      return;
+    }
+    // console.log("continueSneakPeekTimer");
+    this.gameTimer.continue();
+    return;
+  }
 
 
   continue() {
-    console.log("sneakpeek ended mathafaca");
-    console.log("continue");
+    // console.log("sneakpeek ended mathafaca");
+    //console.log("continue");
 
-
-    
     if (this.#gameTimerSnapshot) {
-      // console.log(" onSneekPeaking ");
-      // const sneakPeekTimerState = this.gameTimer.state;
-      // console.log(sneakPeekTimerState, this.gameTimerSnapshot);
-
+      this.#continueSneakPeekTimer();
       return;
     }
+  
     this.gameTimer.continue();
     this.mineField.enable();
   }
