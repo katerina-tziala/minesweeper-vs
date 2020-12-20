@@ -16,11 +16,13 @@ import {
 
 import {
   DigitalCounter,
-  GameTimer,
   DashboardFaceIcon,
   MineField,
 } from "GamePlayComponents";
 
+import {
+  GameTimer
+} from "GamePlayControllers";
 import { CONFIRMATION } from "../../../components/modal/modal.constants";
 
 export class Game extends AppModel {
