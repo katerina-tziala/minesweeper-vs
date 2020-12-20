@@ -1,0 +1,23 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .sneak-peek-counter {
+    @include theming.setThemeCard($theme);
+  }
+
+  .sneak-peek-counter-value {
+    @include theming.applyGameColorsStyle($theme,"&.sneak-peek-counter-value","color");
+    text-shadow: 0 0 4px theming.getThemeColor($theme,"theme-primary-intense");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

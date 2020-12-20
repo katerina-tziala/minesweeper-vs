@@ -1,0 +1,35 @@
+@use "../../theming/theming";
+@use "./sneak-peak-counter-theming";
+
+.sneak-peek-counter {
+  @extend %center-center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+  opacity: 0.4;
+}
+
+.sneak-peek-counter-value {
+  font-size: 12rem;
+  display: inline-block;
+  height: 12rem;
+  line-height: 13rem;
+  padding: 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+.sneak-peek-counter-value--animate {
+  animation: countText 1s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes countText {
+  100% {
+    font-size: 1rem;
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include sneak-peak-counter-theming.setTheming();

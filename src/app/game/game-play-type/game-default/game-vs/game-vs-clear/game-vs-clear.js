@@ -355,20 +355,21 @@ export class GameVSClear extends GameVS {
 
 
 
-  #onSneakPeek() {
+  #onSneakPeek(player = this.playerWaiting) {
 
     this.pause();
     //console.log(this.startedAt);
 
-    if (!this.startedAt) {
-      console.log("game did not start");
-      return;
-    }
+    // if (!this.startedAt) {
+    //   console.log("game did not start");
+    //   return;
+    // }
    
-    const strategyPositions = this.playerWaiting.strategyPositions;
-    const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(this.playerWaiting);
+    // const strategyPositions = this.playerWaiting.strategyPositions;
+    // const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(this.playerWaiting);
     
-    console.log("sneakPeekAllowed", sneakPeekAllowed);
+    this.#sneakPeekController.setCountdown(this.mineField.freezerId, this.playerOnTurn.colorType);
+    // console.log("sneakPeekAllowed", sneakPeekAllowed);
 
     // if (!sneakPeekAllowed) {
     //   console.log("sneak peek not allowed");
