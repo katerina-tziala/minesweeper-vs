@@ -38,6 +38,10 @@ export class SneakPeekController extends GameInterval {
     console.log(this);
   }
 
+  get allowed() {
+    return this.config.allowed && (this.config.duration > 0);
+  }
+
   set playerID(id) {
     this.#_playerId = id;
   }

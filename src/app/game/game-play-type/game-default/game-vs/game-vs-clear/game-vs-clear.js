@@ -43,8 +43,7 @@ export class GameVSClear extends GameVS {
 
   get #sneakPeekAllowed() {
     if (
-      this.hiddenStrategy & this.optionsSettings.sneakPeek &&
-      this.optionsSettings.sneakPeekDuration
+      this.hiddenStrategy & this.#sneakPeekController.allowed
     ) {
       return true;
     }
