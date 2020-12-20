@@ -37,9 +37,7 @@ export class GameInterval {
   }
 
   set value(value) {
-    //console.log("ASDASD");
     this.#_timerValue = value;
-    //console.log(this.#_timerValue, value);
     this.#checkLimitHit();
   }
 

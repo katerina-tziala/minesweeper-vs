@@ -31,7 +31,7 @@ export class GameVSClear extends GameVS {
 
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
-    this.#sneakPeekController = new SneakPeekController(this.roundTimer);
+    this.#sneakPeekController = new SneakPeekController(this.#onSneakPeekEnd.bind(this), this.roundTimer);
     //console.log(new SneakPeekSettings());
     // this.optionsSettings.allowFlagging = true;
     //marks: true
@@ -355,9 +355,9 @@ export class GameVSClear extends GameVS {
 
 
 
-  #onSneakPeek(player = this.playerWaiting) {
+  #onSneakPeek() {
 
-    this.pause();
+    
     //console.log(this.startedAt);
 
     // if (!this.startedAt) {
@@ -366,18 +366,18 @@ export class GameVSClear extends GameVS {
     // }
    
     // const strategyPositions = this.playerWaiting.strategyPositions;
-    // const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(this.playerWaiting);
+    const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(this.playerWaiting);
     
-    this.#sneakPeekController.setCountdown(this.mineField.freezerId, this.playerOnTurn.colorType);
     // console.log("sneakPeekAllowed", sneakPeekAllowed);
 
-    // if (!sneakPeekAllowed) {
-    //   console.log("sneak peek not allowed");
-    //   return;
-    // }
-
-
-
+    if (!sneakPeekAllowed) {
+      console.log("sneak peek not allowed");
+      return;
+    }
+    this.pause();
+    console.log("sneak peek allowed");
+ 
+   
 
     // if (!strategyPositions.length) {
     //   console.log("no strategy to display");
@@ -396,29 +396,40 @@ export class GameVSClear extends GameVS {
     //flash board
   
 
-    // this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
-    // this.#revealOpponentStrategy().then(() => {
-    //   this.mineCounter.value =  this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
-    //   //different icon
-    //   this.setSmileFace(this.playerWaiting.colorType);
-    //   this.gameTimer.setConfiguration(this.#sneakPeekTimerParams, this.continue.bind(this));
-    //   this.gameTimer.start();
-    // });
+    this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
+    this.#revealOpponentStrategy().then(() => {
+      this.mineCounter.value =  this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
+      //different icon
+      this.setSmileFace(this.playerWaiting.colorType);
+      this.#sneakPeekController.startCountdown(this.mineField.freezerId, this.playerWaiting.colorType);
+    });
   
   }
 
-  
-
-  #onSneakEnd() {
-    console.log("onSneakEnd");
+  #onSneakPeekEnd() {
+    this.gameTimer.continue();
     this.#hideOpponentStrategy().then(() => {
       this.setSmileFace();
       this.updateMineCounter();
-      this.gameTimer.setConfiguration(this.#gameTimerSnapshot, this.onRoundTimerEnd.bind(this));
-      this.gameTimer.value = this.#gameTimerSnapshot.value;
-      this.#gameTimerSnapshot = undefined;
-      this.continue();
+      this.#sneakPeekController.endCountdown(this.mineField.freezerId);
+      this.mineField.enable();
     });
+    return;
+  }
+
+
+  #onSneakEnd() {
+    console.log("onSneakEnd");
+
+
+    // this.#hideOpponentStrategy().then(() => {
+    //   this.setSmileFace();
+    //   this.updateMineCounter();
+    //   this.gameTimer.setConfiguration(this.#gameTimerSnapshot, this.onRoundTimerEnd.bind(this));
+    //   this.gameTimer.value = this.#gameTimerSnapshot.value;
+    //   this.#gameTimerSnapshot = undefined;
+    //   this.continue();
+    // });
     return;
   }
 
@@ -436,12 +447,12 @@ export class GameVSClear extends GameVS {
 
   continue() {
     // console.log("sneakpeek ended mathafaca");
-    //console.log("continue");
+    console.log("continue");
 
-    if (this.#gameTimerSnapshot) {
-      this.#continueSneakPeekTimer();
-      return;
-    }
+    // if (this.#gameTimerSnapshot) {
+    //   this.#continueSneakPeekTimer();
+    //   return;
+    // }
   
     this.gameTimer.continue();
     this.mineField.enable();

@@ -1,5 +1,6 @@
 @use "../../theming/theming";
 @use "./sneak-peak-counter-theming";
+@import "../../game/game-board/game-board-flash";
 
 .sneak-peek-counter {
   @extend %center-center;
@@ -7,17 +8,17 @@
   height: 100%;
   position: absolute;
   overflow: hidden;
-  opacity: 0.4;
+  @extend .__board-flash;
 }
 
 .sneak-peek-counter-value {
   font-size: 12rem;
   display: inline-block;
-  height: 12rem;
-  line-height: 13rem;
   padding: 0;
   text-align: center;
   font-weight: 600;
+  z-index: 1;
+  opacity: .6;
 }
 
 .sneak-peek-counter-value--animate {

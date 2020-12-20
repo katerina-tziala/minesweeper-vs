@@ -1,0 +1,51 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+.__board-flash {
+  &::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @extend .__board-flash-before;
+  }
+}
+
+@keyframes flash-light {
+  0% {
+    background-position:  100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@mixin boardFlashBefore($theme) {
+  $stripe-color: theming.getThemeColor($theme,"board-stripe");
+  $stripe-width: 1.5%;
+  background: linear-gradient(
+    315deg,
+    rgba($stripe-color, 0) 50% - $stripe-width,
+    rgba($stripe-color, 0.5) 50%,
+    rgba($stripe-color, 0) 50% + $stripe-width,
+  );
+  background-size: 300% 300%;
+  animation: flash-light 3s ease-in-out infinite;
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      .__board-flash-before {
+      @include boardFlashBefore($theme);
+      }
+    }
+  }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include setTheming();

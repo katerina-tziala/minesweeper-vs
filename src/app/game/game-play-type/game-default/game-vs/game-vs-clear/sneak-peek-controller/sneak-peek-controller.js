@@ -11,10 +11,11 @@ import { SneakPeekCounter } from "../../../../../game-play-components/sneak-peek
 
 //board freezer
 export class SneakPeekController extends GameInterval {
-  constructor(roundBased = false) {
+  constructor(onEnd, roundBased = false) {
     super();
-
+    this.onEnd = onEnd;
     this.roundBased = roundBased;
+
     this.config = new SneakPeekSettings();
 
     this.config.allowed = true;
@@ -25,6 +26,7 @@ export class SneakPeekController extends GameInterval {
     this.initialValue = this.config.duration;
     this.colorType = undefined;
 
+    
     console.log("SneakPeekController");
 
     console.log(this);
@@ -55,19 +57,23 @@ export class SneakPeekController extends GameInterval {
     return false;
   }
 
-  setCountdown(parentElementID, colorType) {
+  startCountdown(parentElementID, colorType) {
     this.colorType = colorType;
+    this.stop();
     ElementHandler.getByID(parentElementID).then((parentElement) => {
       parentElement.append(SneakPeekCounter.generate);
-      console.log(parentElement);
+      ElementHandler.display(parentElement);
       this.start();
     });
-    console.log("setCountdown");
-
-    console.log(parentElementID);
   }
 
  
+  endCountdown(parentElementID) {
+    this.stop();
+    ElementHandler.getByID(parentElementID).then(parentElement => {
+      ElementHandler.clearContent(parentElement);
+    });
+  }
   
   
   
