@@ -22,6 +22,9 @@ export class SneakPeekController extends GameInterval {
     this.onEnd = onEnd;
     this.roundBased = roundBased;
 
+
+    // TODO IMPLEMENT SneakPeekCounter and manage sneak peek button
+
     // TODO IMPLEMENT IN SETTINGS AND PASS MODEL
     this.config = new SneakPeekSettings();
     this.config.allowed = true;
