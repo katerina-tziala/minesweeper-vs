@@ -45,17 +45,14 @@ export class GameInterval {
     return this.#_timerValue;
   }
 
+  get isPaused() {
+    return this.#_timerValue > 0;
+  }
+
   set onEnd(onEnd) {
     if (onEnd) {
       this.#onEnd = onEnd;
     }
-  }
-
-  setConfiguration(params, onEnd) {
-    this.initialValue = params.initialValue ? params.initialValue : 0;
-    this.step = params.step ? params.step : 1;
-    this.limit = params.limit;
-    this.onEnd = onEnd;
   }
 
   get isRunning() {
@@ -95,6 +92,13 @@ export class GameInterval {
       this.value = this.value + this.step;
       this.onUpdate();
     }, INTERVAL_DURATION);
+  }
+
+  setConfiguration(params, onEnd) {
+    this.initialValue = params.initialValue ? params.initialValue : 0;
+    this.step = params.step ? params.step : 1;
+    this.limit = params.limit;
+    this.onEnd = onEnd;
   }
 
   onUpdate() {

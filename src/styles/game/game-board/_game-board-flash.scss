@@ -13,7 +13,7 @@
   }
 }
 
-@keyframes flash-light {
+@keyframes flash-pulse {
   0% {
     background-position:  100% 100%;
   }
@@ -22,7 +22,7 @@
   }
 }
 
-@mixin boardFlashBefore($theme) {
+@mixin boardPulse($theme) {
   $stripe-color: theming.getThemeColor($theme,"board-stripe");
   $stripe-width: 1.5%;
   background: linear-gradient(
@@ -32,7 +32,7 @@
     rgba($stripe-color, 0) 50% + $stripe-width,
   );
   background-size: 300% 300%;
-  animation: flash-light 3s ease-in-out infinite;
+  animation: flash-pulse 2.8s ease-in-out infinite;
 }
 
 @mixin setTheming() {
@@ -41,7 +41,7 @@
   @each $theme in $themes {
     .theme-#{$theme} {
       .__board-flash-before {
-      @include boardFlashBefore($theme);
+      @include boardPulse($theme);
       }
     }
   }

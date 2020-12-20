@@ -1,87 +1,164 @@
 "use strict";
-import { clone } from "~/_utils/utils.js";
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
+import { ElementHandler } from "HTML_DOM_Manager";
+import { nowTimestamp } from "~/_utils/dates";
 import { SneakPeekSettings } from "GameModels";
 
-//game play contro
-import { GameInterval } from "../../../../../game-play-controllers/game-interval/game-interval";
+import { SneakPeekCounter } from "GamePlayComponents";
+import { GameInterval } from "GamePlayControllers";
 
-import { SneakPeekCounter } from "../../../../../game-play-components/sneak-peek-counter/sneak-peek-counter";
+const ROUND_MARGIN = 2;
 
-//board freezer
 export class SneakPeekController extends GameInterval {
+  #_parentElementId;
+  #_counterColorType;
+  #_playerId;
+  #_start;
+  #_end;
+  #_results = [];
+
   constructor(onEnd, roundBased = false) {
     super();
     this.onEnd = onEnd;
     this.roundBased = roundBased;
 
+    // TODO IMPLEMENT IN SETTINGS AND PASS MODEL
     this.config = new SneakPeekSettings();
-
     this.config.allowed = true;
     this.config.duration = 3;
+    // this.config.limit = 3;
 
     this.limit = 0;
     this.step = -1;
     this.initialValue = this.config.duration;
-    this.colorType = undefined;
+    this.#_results = [];
 
-    
     console.log("SneakPeekController");
 
     console.log(this);
   }
 
+  set playerID(id) {
+    this.#_playerId = id;
+  }
+
+  get playerID() {
+    return this.#_playerId;
+  }
+
+  set parentElementID(elementId) {
+    this.#_results = [];
+    this.#_parentElementId = elementId;
+  }
+
+  get parentElementID() {
+    return this.#_parentElementId;
+  }
+
+  set counterColorType(type) {
+    this.#_counterColorType = type;
+  }
+
+  get counterColorType() {
+    return this.#_counterColorType;
+  }
+
+  #setStart() {
+    this.#_start = nowTimestamp();
+  }
+
+  #setEnd() {
+    this.#_end = nowTimestamp();
+  }
+
+  get #peekData() {
+    return {
+      start: this.#_start,
+      end: this.#_end,
+      playerId: this.playerID,
+    };
+  }
+
+  updateResults() {
+    this.#_results.push(this.#peekData);
+  }
+
+  get results() {
+    return this.#_results;
+  }
+
   onInit() {
-    SneakPeekCounter.updateValue(this.value, this.colorType);
+    SneakPeekCounter.updateValue(this.value, this.counterColorType);
   }
 
   onUpdate() {
-    SneakPeekCounter.updateValue(this.value, this.colorType);
+    SneakPeekCounter.updateValue(this.value, this.counterColorType);
   }
 
-  // get hijackTimer() {
-  //   return !this.roundBased;
-  // }
+  get #counterParent() {
+    return ElementHandler.getByID(this.parentElementID);
+  }
 
-  sneakPeekAllowed(player) {
-    if (!this.config.allowed) {
-      return false;
+  #playerSneakPeeks(player) {
+    return this.results.filter((result) => result.playerId === player.id)
+      .length;
+  }
+
+  #sneakPeekAllowedForPlayer(player) {
+    if (this.config.limit === null) {
+      return true;
     }
-    if (!this.roundBased && player.hasStrategy) {
+    return this.#playerSneakPeeks(player) < this.config.limit;
+  }
+
+  #sneakPeekAllowedInDuration(roundSecond = 0) {
+    if (!this.roundBased) {
       return true;
     }
 
-    console.log("check based on timer when player has strategy");
-
-    return false;
+    const actualPeakDuration = this.config.duration + ROUND_MARGIN;
+    return actualPeakDuration <= roundSecond;
   }
 
-  startCountdown(parentElementID, colorType) {
-    this.colorType = colorType;
+  sneakPeekAllowed(playerOnTurn, playerWaiting, roundSecond) {
+    if (!this.parentElementID || !this.config.allowed) {
+      return false;
+    }
+
+    if (!playerWaiting.hasStrategy) {
+      return false;
+    }
+
+    if (!this.#sneakPeekAllowedForPlayer(playerOnTurn)) {
+      return false;
+    }
+
+    if (!this.#sneakPeekAllowedInDuration(roundSecond)) {
+      return false;
+    }
+
+    return this.#sneakPeekAllowedInDuration(roundSecond);
+  }
+
+  startCountdown(playerId, colorType) {
+    this.playerID = playerId;
+    this.counterColorType = colorType;
+
     this.stop();
-    ElementHandler.getByID(parentElementID).then((parentElement) => {
-      parentElement.append(SneakPeekCounter.generate);
-      ElementHandler.display(parentElement);
+    this.#counterParent.then((container) => {
+      container.append(SneakPeekCounter.generate);
+      ElementHandler.display(container);
+      this.#setStart();
       this.start();
     });
   }
 
- 
-  endCountdown(parentElementID) {
+  endCountdown() {
     this.stop();
-    ElementHandler.getByID(parentElementID).then(parentElement => {
-      ElementHandler.clearContent(parentElement);
+    this.#setEnd();
+    this.#counterParent.then((container) => {
+      ElementHandler.clearContent(container);
+      this.updateResults();
     });
   }
-  
-  
-  
-  
-
-
-
-
-
-
 }

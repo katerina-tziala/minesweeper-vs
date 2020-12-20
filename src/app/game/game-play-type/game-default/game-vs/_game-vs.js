@@ -30,10 +30,10 @@ export class GameVS extends Game {
       79,
       80,
     ];
-   this.turnSettings.turnTimer = false;
-    // this.turnSettings.consecutiveTurns = true;
-    // this.turnSettings.turnDuration = 8;
-    // this.turnSettings.missedTurnsLimit = 3;
+  // this.turnSettings.turnTimer = false;
+    this.turnSettings.consecutiveTurns = true;
+    this.turnSettings.turnDuration = 8;
+    this.turnSettings.missedTurnsLimit = 3;
 
     //this.optionsSettings.wrongFlagHint = true;
 
@@ -116,7 +116,7 @@ export class GameVS extends Game {
     this.initState();
   }
 
-  #initPlayersCards() {
+  initPlayersCards() {
     const targetValuesForPlayers = this.players.map((player) =>
       this.getPlayerTargetValue(player),
     );
@@ -130,7 +130,7 @@ export class GameVS extends Game {
     console.log(this.levelSettings.minesPositions);
     this.onAfterViewInit
       .then(() => {
-        return this.#initPlayersCards();
+        return this.initPlayersCards();
       })
       .then(() => {
         this.initDashBoard();

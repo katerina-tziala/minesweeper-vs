@@ -34,6 +34,7 @@ module.exports = {
             GameWizardStepper: path.resolve(__dirname, 'src/app/game/game-wizard-stepper/@game-wizard-stepper.module.js'),
             GameSetUp: path.resolve(__dirname, 'src/app/game/game-setup/@game-setup.module.js'),
             GamePlayComponents: path.resolve(__dirname, 'src/app/game/game-play-components/@game-play-components.module.js'),
+            GamePlayControllers: path.resolve(__dirname, 'src/app/game/game-play-controllers/@game-play-controllers.module.js'),
             GamePlayType: path.resolve(__dirname, 'src/app/game/game-play-type/@game-play-type.module.js')
         }
     },

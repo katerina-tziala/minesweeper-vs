@@ -3,3 +3,4 @@ export { DigitalCounter } from "./digital-counter/digital-counter";
 export { GameTimer } from "./game-timer/game-timer";
 export { MineField } from "./mine-field/mine-field";
 export { GamePlayerCard } from "./game-player-card/game-player-card";
+export { SneakPeekCounter } from "./sneak-peek-counter/sneak-peek-counter";
