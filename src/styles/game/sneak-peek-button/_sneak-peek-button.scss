@@ -1,0 +1,46 @@
+@use "sass:list";
+@use "../../theming/theming";
+@use "./sneak-peek-button-theming";
+
+@import "../../components/game-board/board-actions/board-actions";
+
+.sneak-peek-btn {
+  @extend .board-action-btn;
+  background: inherit;
+}
+
+.sneak-peek-btn-state {
+  height: 20px;
+  min-width: 30px;
+  max-width: 30px;
+  position: relative;
+  display: block;
+
+  &.sneak-peek-btn-state--not-peeking {
+    @include afterIcon("low-vision");
+    line-height: 21px;
+  }
+
+  &.sneak-peek-btn-state--peeking {
+    @include afterIcon("peeking");
+    font-size: 1.4rem;
+    line-height: 20px;
+  }
+}
+
+.sneak-peek-limit {
+  font-size: 0.9rem;
+  position: absolute;
+  font-weight: 900;
+  height: 15px;
+  line-height: 15px;
+  bottom: -3px;
+  left: -4px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include sneak-peek-button-theming.setTheming();
+
+// .btn-icon--sneak-peek {
+//
+// }

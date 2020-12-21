@@ -47,10 +47,6 @@
   @include afterIcon("sliders");
 }
 
-.btn-icon--sneak-peek {
-  @include afterIcon("low-vision");
-}
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
   .board-action-btn {

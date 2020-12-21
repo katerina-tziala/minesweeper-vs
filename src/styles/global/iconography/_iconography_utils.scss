@@ -28,6 +28,12 @@
   font-family: "Font Awesome 5 Brands";
 }
 
+%icon-brand-outline {
+  @extend %icon;
+  font-weight: 600;
+  font-family: "Font Awesome 5 Brands";
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

@@ -17,6 +17,13 @@
   border-radius: #{$size}px;
 }
 
+@mixin pseudoRectangle($size, $color: "transparent") {
+  content: "";
+  width: #{$size}px;
+  height: #{$size}px;
+  background-color: $color;
+}
+
 @mixin pseudoCircle($size, $color: "transparent") {
   content: "";
   width: #{$size}px;

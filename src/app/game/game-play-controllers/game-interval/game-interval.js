@@ -10,6 +10,9 @@ export class GameInterval {
   #onEnd;
 
   constructor() {
+    this.initialValue = 0;
+    this.step = 0;
+    this.value = 0;
   }
 
   set step(step) {
@@ -70,8 +73,8 @@ export class GameInterval {
       limit: this.limit,
       isRunning: this.isRunning,
       hittedLimit: this.hittedLimit,
-      value: this.value
-    }
+      value: this.value,
+    };
   }
 
   #checkLimitHit() {
@@ -120,7 +123,6 @@ export class GameInterval {
   }
 
   start() {
-    this.value = this.initialValue;
     this.stop();
     this.init();
     this.#run();
@@ -135,5 +137,4 @@ export class GameInterval {
     }
     this.#run();
   }
-
 }

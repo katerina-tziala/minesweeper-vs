@@ -111,3 +111,8 @@
   @extend %icon-regular;
   content: fa-content($fa-var-low-vision);
 }
+
+.icon-peeking {
+  @extend %icon-regular;
+  content: fa-content($fa-var-eye);
+}

@@ -10,8 +10,7 @@ import {
 export const ACTION_BUTTONS = {
   exit: EXIT_GAME_BTN,
   restart: RESTART_GAME_BTN,
-  reset: RESET_GAME_BTN,
-  sneakPeek: SNEAK_PEEK_GAME_BTN,
+  reset: RESET_GAME_BTN
 };
 
 export const DOM_ELEMENT_CLASS = {

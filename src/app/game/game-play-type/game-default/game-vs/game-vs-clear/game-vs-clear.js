@@ -18,7 +18,7 @@ import { GameViewHelper } from "../../_game-view-helper";
 
 import { GameVS } from "../_game-vs";
 
-import { SneakPeekController } from "./sneak-peek-controller/sneak-peek-controller";
+import { SneakPeekController } from "GamePlayControllers";
 
 export class GameVSClear extends GameVS {
   #gameTimerSnapshot;
@@ -27,7 +27,8 @@ export class GameVSClear extends GameVS {
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
     this.#sneakPeekController = new SneakPeekController(
-      this.#onSneakPeekEnd.bind(this),
+      // this.#onSneakPeekEnd.bind(this),
+      this.hiddenStrategy,
       this.roundTimer,
     );
     //console.log(new SneakPeekSettings());
@@ -39,39 +40,6 @@ export class GameVSClear extends GameVS {
     // sneakPeekDuration: 0
     // unlimitedFlags: true
     // vsMode: "clear"
-  }
-
-  get #sneakPeekAllowed() {
-    if (
-      this.hiddenStrategy & this.#sneakPeekController.allowed
-    ) {
-      return true;
-    }
-    return false;
-  }
-
-  get boardActionButtons() {
-    const boardActions = super.boardActionButtons;
-    if (this.#sneakPeekAllowed) {
-      const sneakPeekBtn = GameViewHelper.generateActionButton(
-        ACTION_BUTTONS.sneakPeek,
-        this.#onSneakPeek.bind(this),
-      );
-      boardActions.push(sneakPeekBtn);
-    }
-    return boardActions;
-  }
-
-  get goalTargetNumber() {
-    return this.levelSettings.numberOfEmptyTiles;
-  }
-
-  get detectedMines() {
-    if (this.hiddenStrategy) {
-      return this.getPlayerDetectedMines(this.playerOnTurn);
-    }
-
-    return super.detectedMines;
   }
 
   get strategyAllowed() {
@@ -90,7 +58,40 @@ export class GameVSClear extends GameVS {
   }
 
   get hiddenStrategy() {
-    return !this.openStrategy;
+    return this.strategyAllowed ? !this.openStrategy : false;
+  }
+
+  // get #sneakPeekAllowed() {
+  //   if (this.hiddenStrategy && this.#sneakPeekController.allowed) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  get boardActionButtons() {
+    let boardActions = super.boardActionButtons;
+
+    boardActions = this.#sneakPeekController.getUpdatedBoardActions(boardActions);
+    // if (this.#sneakPeekAllowed) {
+    //   const sneakPeekBtn = GameViewHelper.generateActionButton(
+    //     ACTION_BUTTONS.sneakPeek,
+    //     this.#onSneakPeek.bind(this),
+    //   );
+    //   boardActions.push(sneakPeekBtn);
+    // }
+    return boardActions;
+  }
+
+  get goalTargetNumber() {
+    return this.levelSettings.numberOfEmptyTiles;
+  }
+
+  get detectedMines() {
+    if (this.hiddenStrategy) {
+      return this.getPlayerDetectedMines(this.playerOnTurn);
+    }
+
+    return super.detectedMines;
   }
 
   getPlayerTargetValue(player) {
@@ -275,7 +276,10 @@ export class GameVSClear extends GameVS {
   startGameRound() {
     this.#hideOpponentStrategy().then(() => {
       this.updateMineCounter();
+      this.#sneakPeekController.updateButtonBasedOnOpponent(this.playerWaiting);
       super.startGameRound();
+      
+        
     });
   }
 
@@ -325,93 +329,82 @@ export class GameVSClear extends GameVS {
     return Promise.all(interfaceUpdates);
   }
 
-  get #sneakPeekTimerParams() {
-    return {
-      initialValue: this.optionsSettings.sneakPeekDuration,
-      step: -1,
-      limit: 0,
-      isRunning: false,
-      hittedLimit: false,
-      value: this.optionsSettings.sneakPeekDuration,
-    };
-  }
-
   #onSneakPeek() {
     if (!this.startedAt) {
       return;
     }
     // UPDATE BUTTON< TOGGLE SNEAK PEEK
 
-    const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(
-      this.playerOnTurn, this.playerWaiting, this.gameTimer.value,
-    );
+    this.pause();
+    // const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(
+    //   this.playerOnTurn, this.playerWaiting, this.gameTimer.value,
+    // );
 
-    if (!sneakPeekAllowed) {
-      return;
-    }
+    // if (!sneakPeekAllowed) {
+    //   return;
+    // }
 
-    this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
-    this.#revealOpponentStrategy().then(() => {
-      this.mineCounter.value =
-        this.levelSettings.numberOfMines -
-        this.getPlayerDetectedMines(this.playerWaiting);
-      //TODO: different icon
-      this.setSmileFace(this.playerWaiting.colorType);
-      this.#sneakPeekController.startCountdown(
-        this.playerOnTurn.id, this.playerWaiting.colorType,
-      );
-    });
+    // this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
+    // this.#revealOpponentStrategy().then(() => {
+    //   this.mineCounter.value =
+    //     this.levelSettings.numberOfMines -
+    //     this.getPlayerDetectedMines(this.playerWaiting);
+    //   //TODO: different icon
+    //   this.setSmileFace(this.playerWaiting.colorType);
+    //   this.#sneakPeekController.startCountdown(
+    //     this.playerOnTurn.id, this.playerWaiting.colorType,
+    //   );
+    // });
   }
 
   #onSneakPeekEnd() {
-    this.gameTimer.continue();
-    this.#hideOpponentStrategy().then(() => {
-      this.setSmileFace();
-      this.updateMineCounter();
-      this.#sneakPeekController.endCountdown();
-      this.mineField.enable();
-    });
-    return;
+    // this.gameTimer.continue();
+    // this.#hideOpponentStrategy().then(() => {
+    //   this.setSmileFace();
+    //   this.updateMineCounter();
+    //   this.#sneakPeekController.endCountdown();
+    //   this.mineField.enable();
+    // });
   }
 
   pause() {
-    if (this.#sneakPeekController.isRunning) {
-      this.#sneakPeekController.stop();
-    }
+    // if (this.#sneakPeekController.isRunning) {
+    //   this.#sneakPeekController.stop();
+    // }
 
     super.pause();
   }
 
   continue() {
-    if (this.#sneakPeekController.isPaused) {
-      this.#sneakPeekController.continue();
-      return;
-    }
+    // if (this.#sneakPeekController.isPaused) {
+    //   this.#sneakPeekController.continue();
+    //   return;
+    // }
 
     super.continue();
   }
 
-  start() {
-    console.log(this.levelSettings.minesPositions);
-    this.onAfterViewInit
-      .then(() => {
-        return this.initPlayersCards();
-      })
-      .then(() => {
-        this.initDashBoard();
+  // start() {
+  //   console.log(this.levelSettings.minesPositions);
+  //   this.onAfterViewInit
+  //     .then(() => {
+  //       return this.initPlayersCards();
+  //     })
+  //     .then(() => {
+  //       this.initDashBoard();
 
-        this.#sneakPeekController.parentElementID = this.mineField.freezerId;
+  //       // this.#sneakPeekController.parentElementID = this.mineField.freezerId;
 
+        
+  //       if (this.roundTimer) {
+  //         console.log("kkk");
+  //         this.setGameStart();
+  //       }
 
-        if (this.roundTimer) {
-          console.log("kkk");
-          this.setGameStart();
-        }
-
-        console.log("START GameVS GAME");
-        console.log("----------------------------");
-        console.log(" show start modal message");
-        this.startGameRound();
-      });
-  }
+  //       console.log("START GameVS GAME");
+  //       console.log("----------------------------");
+  //       console.log(" show start modal message");
+  //       this.startGameRound();
+  //     });
+  // }
 }

@@ -30,7 +30,8 @@ export class GameVS extends Game {
       79,
       80,
     ];
-  // this.turnSettings.turnTimer = false;
+  
+     this.turnSettings.turnTimer = false;
     this.turnSettings.consecutiveTurns = true;
     this.turnSettings.turnDuration = 8;
     this.turnSettings.missedTurnsLimit = 3;

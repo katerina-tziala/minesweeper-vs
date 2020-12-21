@@ -45,23 +45,26 @@ $thumb-position-right: 16;
     transition: all 0.3s linear;
     @extend ._thumb;
   }
-}
 
-[role="switch"][aria-checked="false"] {
-  @extend ._track--off;
-
-  &::after {
-    @extend ._thumb--off;
+  &[role="switch"][aria-checked="false"] {
+    @extend ._track--off;
+  
+    &::after {
+      @extend ._thumb--off;
+    }
   }
-}
-
-[role="switch"][aria-checked="true"] {
-  @extend ._track--on;
-
-  &::after {
-    @extend ._thumb--on;
+  
+  &[role="switch"][aria-checked="true"] {
+    @extend ._track--on;
+  
+    &::after {
+      @extend ._thumb--on;
+    }
   }
+
 }
+
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
