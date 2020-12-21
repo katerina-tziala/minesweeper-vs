@@ -1,5 +1,3 @@
-"use strict";
-
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import {
   ElementHandler,
@@ -11,9 +9,9 @@ import {
   DOM_ELEMENT_CLASS,
   BUTTON,
   ARIA,
-} from "./sneak-peek-controller.constants";
+} from "./sneak-peek-button.constants";
 
-export class SneakPeekButtonHelper {
+export class SneakPeekButton {
   #action;
 
   constructor(action, parralel = false) {
@@ -97,6 +95,12 @@ export class SneakPeekButtonHelper {
     return styles;
   }
 
+  #onClick() {
+    if (this.#action) {
+      this.#action(!this.peeking);
+    }
+  }
+
   generate() {
     const button = ElementGenerator.generateButton(
       BUTTON,
@@ -107,22 +111,17 @@ export class SneakPeekButtonHelper {
     return button;
   }
 
-  #onClick() {
-    if (this.#action) {
-      this.#action(this.peeking);
-    }
-  }
-
-
-  setState(disabled) {
+  setState(disabled, colorType, limit) {
     this.disabled = disabled;
     if (this.disabled) {
       this.peeking = false;
     }
-    this.#button.then(button => this.setState(button));
+    this.#button.then(button => this.#setButtonState(button, colorType, limit));
   }
 
-
-
+  playerPeeking(colorType) {
+    this.peeking = true;
+    this.#button.then(button => this.#setButtonState(button, colorType));
+  }
 
 }

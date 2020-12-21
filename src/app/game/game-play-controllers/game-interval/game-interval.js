@@ -49,7 +49,7 @@ export class GameInterval {
   }
 
   get isPaused() {
-    return this.#_timerValue > 0;
+    return !this.isRunning && this.#_timerValue > 0;
   }
 
   set onEnd(onEnd) {

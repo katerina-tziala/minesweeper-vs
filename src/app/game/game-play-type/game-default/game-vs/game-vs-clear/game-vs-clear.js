@@ -27,7 +27,8 @@ export class GameVSClear extends GameVS {
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
     this.#sneakPeekController = new SneakPeekController(
-      // this.#onSneakPeekEnd.bind(this),
+      this.#onSneakPeek.bind(this),
+      this.#onSneakPeekEnd.bind(this),
       this.hiddenStrategy,
       this.roundTimer,
     );
@@ -70,15 +71,9 @@ export class GameVSClear extends GameVS {
 
   get boardActionButtons() {
     let boardActions = super.boardActionButtons;
-
-    boardActions = this.#sneakPeekController.getUpdatedBoardActions(boardActions);
-    // if (this.#sneakPeekAllowed) {
-    //   const sneakPeekBtn = GameViewHelper.generateActionButton(
-    //     ACTION_BUTTONS.sneakPeek,
-    //     this.#onSneakPeek.bind(this),
-    //   );
-    //   boardActions.push(sneakPeekBtn);
-    // }
+    boardActions = this.#sneakPeekController.getUpdatedBoardActions(
+      boardActions,
+    );
     return boardActions;
   }
 
@@ -276,10 +271,12 @@ export class GameVSClear extends GameVS {
   startGameRound() {
     this.#hideOpponentStrategy().then(() => {
       this.updateMineCounter();
-      this.#sneakPeekController.updateButtonBasedOnOpponent(this.playerWaiting);
+      this.#sneakPeekController.updateToggleState(
+        this.playerOnTurn,
+        this.playerWaiting,
+        this.gameTimer.value,
+      );
       super.startGameRound();
-      
-        
     });
   }
 
@@ -330,81 +327,75 @@ export class GameVSClear extends GameVS {
   }
 
   #onSneakPeek() {
-    if (!this.startedAt) {
+    const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(
+      this.playerOnTurn,
+      this.playerWaiting,
+      this.gameTimer.value,
+    );
+
+    if (!sneakPeekAllowed) {
       return;
     }
-    // UPDATE BUTTON< TOGGLE SNEAK PEEK
 
-    this.pause();
-    // const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(
-    //   this.playerOnTurn, this.playerWaiting, this.gameTimer.value,
-    // );
-
-    // if (!sneakPeekAllowed) {
-    //   return;
-    // }
-
-    // this.#gameTimerSnapshot = Object.assign({}, this.gameTimer.state);
-    // this.#revealOpponentStrategy().then(() => {
-    //   this.mineCounter.value =
-    //     this.levelSettings.numberOfMines -
-    //     this.getPlayerDetectedMines(this.playerWaiting);
-    //   //TODO: different icon
-    //   this.setSmileFace(this.playerWaiting.colorType);
-    //   this.#sneakPeekController.startCountdown(
-    //     this.playerOnTurn.id, this.playerWaiting.colorType,
-    //   );
-    // });
+    this.#revealOpponentStrategy().then(() => {
+      this.mineCounter.value = this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
+      //TODO: different icon
+      this.setSmileFace(this.playerWaiting.colorType);
+      this.#sneakPeekController.playerPeeking(this.playerOnTurn, this.playerWaiting);
+    });
   }
 
   #onSneakPeekEnd() {
-    // this.gameTimer.continue();
-    // this.#hideOpponentStrategy().then(() => {
-    //   this.setSmileFace();
-    //   this.updateMineCounter();
-    //   this.#sneakPeekController.endCountdown();
-    //   this.mineField.enable();
-    // });
+    console.log("onSneakPeekEnd");
+    this.gameTimer.continue();
+    this.#hideOpponentStrategy().then(() => {
+      this.setSmileFace();
+      this.updateMineCounter();
+      this.#sneakPeekController.stopPeeking(
+        this.playerOnTurn,
+        this.playerWaiting,
+      );
+      this.mineField.enable();
+    });
   }
 
   pause() {
-    // if (this.#sneakPeekController.isRunning) {
-    //   this.#sneakPeekController.stop();
-    // }
-
-    super.pause();
+    this.gameTimer.stop();
+    if (this.#sneakPeekController.isRunning) {
+      this.#sneakPeekController.stop();
+      return;
+    }
+    this.mineField.disable();
   }
 
   continue() {
-    // if (this.#sneakPeekController.isPaused) {
-    //   this.#sneakPeekController.continue();
-    //   return;
-    // }
-
+    if (this.#sneakPeekController.isPaused) {
+      this.#sneakPeekController.continue();
+      return;
+    }
     super.continue();
   }
 
-  // start() {
-  //   console.log(this.levelSettings.minesPositions);
-  //   this.onAfterViewInit
-  //     .then(() => {
-  //       return this.initPlayersCards();
-  //     })
-  //     .then(() => {
-  //       this.initDashBoard();
+  start() {
+    console.log(this.levelSettings.minesPositions);
+    this.onAfterViewInit
+      .then(() => {
+        return this.initPlayersCards();
+      })
+      .then(() => {
+        this.initDashBoard();
 
-  //       // this.#sneakPeekController.parentElementID = this.mineField.freezerId;
+        this.#sneakPeekController.parentElementID = this.mineField.freezerId;
 
-        
-  //       if (this.roundTimer) {
-  //         console.log("kkk");
-  //         this.setGameStart();
-  //       }
+        if (this.roundTimer) {
+          console.log("kkk");
+          this.setGameStart();
+        }
 
-  //       console.log("START GameVS GAME");
-  //       console.log("----------------------------");
-  //       console.log(" show start modal message");
-  //       this.startGameRound();
-  //     });
-  // }
+        console.log("START GameVS GAME");
+        console.log("----------------------------");
+        console.log(" show start modal message");
+        this.startGameRound();
+      });
+  }
 }

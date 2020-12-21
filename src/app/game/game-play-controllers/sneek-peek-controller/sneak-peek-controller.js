@@ -1,31 +1,24 @@
 "use strict";
-
-import { ElementHandler } from "HTML_DOM_Manager";
 import { nowTimestamp } from "~/_utils/dates";
 import { SneakPeekSettings } from "GameModels";
 
 import { SneakPeekTimerController } from "./sneak-peek-timer-controller";
-import { GameInterval } from "GamePlayControllers";
+import { SneakPeekButton } from "GamePlayComponents";
 
-import { GameViewHelper } from "../../game-play-type/game-default/_game-view-helper";
-
-import { DOM_ELEMENT_ID } from "./sneak-peek-controller.constants";
-import {SneakPeekButtonHelper} from  "./sneak-peek-button-helper"
 const ROUND_MARGIN = 2;
 
 export class SneakPeekController {
-  #_parentElementId;
-  #_counterColorType;
   #_playerId;
   #_start;
   #_end;
   #_results = [];
-
+  #onSneakPeek;
+  #onSneakPeekEnd;
   #timerController;
-
-  constructor(allowedByStrategy = false, roundBased = false) {
-    //super();
-    // this.onEnd = onEnd;
+  #peekToggle;
+  constructor(onSneakPeek, onSneakPeekEnd, allowedByStrategy = false, roundBased = false) {
+    this.#onSneakPeek = onSneakPeek;
+    this.#onSneakPeekEnd = onSneakPeekEnd;
     this.allowedByStrategy = allowedByStrategy;
     this.roundBased = roundBased;
 
@@ -35,176 +28,153 @@ export class SneakPeekController {
     this.settings = new SneakPeekSettings();
     this.settings.selected = true;
     this.settings.duration = 3;
-    // this.config.limit = 3;
+    this.settings.limit = 3;
 
-    // this.limit = 0;
-    // this.step = -1;
-    // this.initialValue = this.config.duration;
-    // this.#_results = [];
+  
+    
 
-    this.#timerController = new SneakPeekTimerController(
-      this.settings.duration,
-      this.#onSneakPeekEnd.bind(this),
-    );
-    console.log("SneakPeekController");
+    //TODO: update state on round timer
+    this.#timerController = new SneakPeekTimerController(this.settings.duration, this.#onSneakPeekEnd);
+    this.#peekToggle = new SneakPeekButton(this.#onPeekingToggle.bind(this));
+  }
 
-    console.log(this);
-    console.log(this.#timerController);
-    this.peekToggle = new SneakPeekButtonHelper(this.#onPeekingToggle.bind(this));
+  set playerID(id) {
+    this.#_playerId = id;
+  }
+
+  get playerID() {
+    return this.#_playerId;
+  }
+
+  set parentElementID(elementId) {
+    this.#_results = [];
+    this.#timerController.parentElementID = elementId;
+  }
+
+  get results() {
+    return this.#_results;
+  }
+
+  #setStart() {
+    this.#_start = nowTimestamp();
+  }
+
+  #setEnd() {
+    this.#_end = nowTimestamp();
   }
 
   get #allowed() {
     return this.allowedByStrategy && this.settings.allowed;
   }
 
+  get #peekData() {
+    return {
+      start: this.#_start,
+      end: this.#_end,
+      playerId: this.playerID,
+    };
+  }
+
+  #updateResults() {
+    this.#_results.push(this.#peekData);
+  }
+
+  #onPeekingToggle(peek) {
+    peek ? this.#onSneakPeek() : this.#onSneakPeekEnd();
+  }
+
   getUpdatedBoardActions(boardActions) {
     if (this.#allowed) {
-      const sneakPeekBtn = this.peekToggle.generate();
+      const sneakPeekBtn = this.#peekToggle.generate();
       boardActions.push(sneakPeekBtn);
     }
     return boardActions;
   }
 
-
-  updateButtonBasedOnOpponent(opponent) {
-    console.log(opponent);
-    //this.peekToggle.setState(opponent.hasStrategy);
+  updateToggleState(player, opponent, roundSecond) {
+    const disabled = !this.sneakPeekAllowed(player, opponent, roundSecond);
+    const colorType = player ? player.colorType : undefined;
+    this.#peekToggle.setState(
+      disabled,
+      colorType,
+      this.#playerSneakPeeksLimit(player.id),
+    );
   }
 
-  
-  #onPeekingToggle(peeking) {
-    console.log("#onPeekingToggle");
-    console.log(peeking);
-  }
-  #onSneakPeek() {
-    console.log("#onSneakPeek");
+  playerPeeking(player, opponent) {
+    this.playerID = player.id;
+    this.#peekToggle.playerPeeking(player.colorType);
+    this.#timerController.startCountdown(opponent.colorType);
+    this.#setStart();
   }
 
-  #onSneakPeekEnd() {
-    console.log("#onSneakPeekEnd");
+  stopPeeking(player, opponent) {
+    this.#timerController.stopCountDown();
+
+    this.#setEnd();
+    this.#updateResults();
+
+    this.#peekToggle.peeking = false;
+    this.updateToggleState(player, opponent);
   }
 
-  // set playerID(id) {
-  //   this.#_playerId = id;
-  // }
+  #playerSneakPeeks(playerId) {
+    return this.results.filter((result) => result.playerId === playerId).length;
+  }
 
-  // get playerID() {
-  //   return this.#_playerId;
-  // }
+  #playerSneakPeeksLimit(playerId) {
+    if (this.settings.limit === null) {
+      return null;
+    }
+    return this.settings.limit - this.#playerSneakPeeks(playerId);
+  }
 
-  // set parentElementID(elementId) {
-  //   this.#_results = [];
-  //   this.#_parentElementId = elementId;
-  // }
+  #sneakPeekAllowedForPlayer(playerId) {
+    if (this.settings.limit === null) {
+      return true;
+    }
+    return this.#playerSneakPeeks(playerId) < this.settings.limit;
+  }
 
-  // get parentElementID() {
-  //   return this.#_parentElementId;
-  // }
+  #sneakPeekAllowedInDuration(roundSecond = 0) {
+    if (!this.roundBased || !roundSecond) {
+      return true;
+    }
 
-  // set counterColorType(type) {
-  //   this.#_counterColorType = type;
-  // }
+    const actualPeakDuration = this.settings.duration + ROUND_MARGIN;
+    return actualPeakDuration <= roundSecond;
+  }
 
-  // get counterColorType() {
-  //   return this.#_counterColorType;
-  // }
+  sneakPeekAllowed(player, opponent, roundSecond) {
+    if (!this.#allowed) {
+      return false;
+    }
 
-  // #setStart() {
-  //   this.#_start = nowTimestamp();
-  // }
+    if (!opponent.hasStrategy) {
+      return false;
+    }
 
-  // #setEnd() {
-  //   this.#_end = nowTimestamp();
-  // }
+    if (!this.#sneakPeekAllowedForPlayer(player.id)) {
+      return false;
+    }
 
-  // get #peekData() {
-  //   return {
-  //     start: this.#_start,
-  //     end: this.#_end,
-  //     playerId: this.playerID,
-  //   };
-  // }
+    return this.#sneakPeekAllowedInDuration(roundSecond);
+  }
 
-  // updateResults() {
-  //   this.#_results.push(this.#peekData);
-  // }
+  get isRunning() {
+    return this.#timerController.isRunning;
+  }
 
-  // get results() {
-  //   return this.#_results;
-  // }
+  get isPaused() {
+    return this.#timerController.isPaused;
+  }
 
-  // onInit() {
-  //   SneakPeekCounter.updateValue(this.value, this.counterColorType);
-  // }
+  stop() {
+    this.#timerController.stop();
+  }
 
-  // onUpdate() {
-  //   SneakPeekCounter.updateValue(this.value, this.counterColorType);
-  // }
+  continue() {
+    this.#timerController.continue();
+  }
 
-  // get #counterParent() {
-  //   return ElementHandler.getByID(this.parentElementID);
-  // }
-
-  // #playerSneakPeeks(player) {
-  //   return this.results.filter((result) => result.playerId === player.id)
-  //     .length;
-  // }
-
-  // #sneakPeekAllowedForPlayer(player) {
-  //   if (this.config.limit === null) {
-  //     return true;
-  //   }
-  //   return this.#playerSneakPeeks(player) < this.config.limit;
-  // }
-
-  // #sneakPeekAllowedInDuration(roundSecond = 0) {
-  //   if (!this.roundBased) {
-  //     return true;
-  //   }
-
-  //   const actualPeakDuration = this.config.duration + ROUND_MARGIN;
-  //   return actualPeakDuration <= roundSecond;
-  // }
-
-  // sneakPeekAllowed(playerOnTurn, playerWaiting, roundSecond) {
-  //   if (!this.parentElementID || !this.config.allowed) {
-  //     return false;
-  //   }
-
-  //   if (!playerWaiting.hasStrategy) {
-  //     return false;
-  //   }
-
-  //   if (!this.#sneakPeekAllowedForPlayer(playerOnTurn)) {
-  //     return false;
-  //   }
-
-  //   if (!this.#sneakPeekAllowedInDuration(roundSecond)) {
-  //     return false;
-  //   }
-
-  //   return this.#sneakPeekAllowedInDuration(roundSecond);
-  // }
-
-  // startCountdown(playerId, colorType) {
-  //   this.playerID = playerId;
-  //   this.counterColorType = colorType;
-
-  //   this.stop();
-  //   this.#counterParent.then((container) => {
-  //     container.append(SneakPeekCounter.generate);
-  //     ElementHandler.display(container);
-  //     this.#setStart();
-  //     this.start();
-  //   });
-  // }
-
-  // endCountdown() {
-  //   this.stop();
-  //   this.#setEnd();
-  //   this.#counterParent.then((container) => {
-  //     ElementHandler.clearContent(container);
-  //     this.updateResults();
-  //   });
-  // }
 }
