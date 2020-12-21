@@ -1,6 +1,6 @@
 @use "../game-board-styles";
 @use "../../../theming/theming";
-@import "../../button/button";
+@import "../../../components/button/button";
 
 .board-actions {
   @extend ._board-section;

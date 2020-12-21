@@ -31,7 +31,7 @@ export class GameVS extends Game {
       80,
     ];
   
-     this.turnSettings.turnTimer = false;
+     //this.turnSettings.turnTimer = false;
     this.turnSettings.consecutiveTurns = true;
     this.turnSettings.turnDuration = 8;
     this.turnSettings.missedTurnsLimit = 3;
@@ -127,12 +127,14 @@ export class GameVS extends Game {
     );
   }
 
+  get onAfterViewInit() {
+    return super.onAfterViewInit.then(() => this.initPlayersCards());
+  }
+
+
   start() {
     console.log(this.levelSettings.minesPositions);
     this.onAfterViewInit
-      .then(() => {
-        return this.initPlayersCards();
-      })
       .then(() => {
         this.initDashBoard();
 
@@ -148,13 +150,18 @@ export class GameVS extends Game {
       });
   }
 
+  startRoundTimer() {
+    if (this.roundTimer) {
+      this.gameTimer.start();
+    }
+  }
+
+
   startGameRound() {
     // TODO: ROUND STATISTICS
     this.initRoundTiles();
     this.setSmileFace();
-    if (this.roundTimer) {
-      this.gameTimer.start();
-    }
+    this.startRoundTimer();
 
     this.vsDashboard.setCardOnTurn(this.players).then(() => {
       if (this.playerOnTurn.isBot) {

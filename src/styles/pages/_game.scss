@@ -5,11 +5,10 @@
 
 @import "../components/button/button";
 
-@import "../components/game-board/game-board";
+@import "../game/game-board/game-board";
 @import "../components/game-vs-dashboard/game-vs-dashboard";
-@import "../components/sneak-peak-counter/sneak-peak-counter";
 
-
+@import "../game/sneak-peak-counter/sneak-peak-counter";
 @import "../game/sneak-peek-button/sneak-peek-button";
 
 .game-container {

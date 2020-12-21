@@ -16,13 +16,15 @@ export class SneakPeekController {
   #onSneakPeekEnd;
   #timerController;
   #peekToggle;
+
   constructor(onSneakPeek, onSneakPeekEnd, allowedByStrategy = false, roundBased = false) {
     this.#onSneakPeek = onSneakPeek;
     this.#onSneakPeekEnd = onSneakPeekEnd;
     this.allowedByStrategy = allowedByStrategy;
     this.roundBased = roundBased;
 
-    // TODO IMPLEMENT SneakPeekCounter and manage sneak peek button
+    // update on round timer
+    this.#peekToggle = new SneakPeekButton(this.#onPeekingToggle.bind(this));
 
     // TODO IMPLEMENT IN SETTINGS AND PASS MODEL
     this.settings = new SneakPeekSettings();
@@ -30,12 +32,8 @@ export class SneakPeekController {
     this.settings.duration = 3;
     this.settings.limit = 3;
 
-  
-    
-
-    //TODO: update state on round timer
+    //
     this.#timerController = new SneakPeekTimerController(this.settings.duration, this.#onSneakPeekEnd);
-    this.#peekToggle = new SneakPeekButton(this.#onPeekingToggle.bind(this));
   }
 
   set playerID(id) {
@@ -92,7 +90,7 @@ export class SneakPeekController {
   }
 
   updateToggleState(player, opponent, roundSecond) {
-    const disabled = !this.sneakPeekAllowed(player, opponent, roundSecond);
+    const disabled = !player.isBot ? !this.sneakPeekAllowed(player, opponent, roundSecond): true;
     const colorType = player ? player.colorType : undefined;
     this.#peekToggle.setState(
       disabled,

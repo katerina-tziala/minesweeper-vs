@@ -268,14 +268,18 @@ export class GameVSClear extends GameVS {
     );
   }
 
+  startRoundTimer() {
+    super.startRoundTimer();
+    this.#sneakPeekController.updateToggleState(
+      this.playerOnTurn,
+      this.playerWaiting,
+      this.gameTimer.value,
+    );
+  }
+
   startGameRound() {
     this.#hideOpponentStrategy().then(() => {
       this.updateMineCounter();
-      this.#sneakPeekController.updateToggleState(
-        this.playerOnTurn,
-        this.playerWaiting,
-        this.gameTimer.value,
-      );
       super.startGameRound();
     });
   }
@@ -346,7 +350,6 @@ export class GameVSClear extends GameVS {
   }
 
   #onSneakPeekEnd() {
-    console.log("onSneakPeekEnd");
     this.gameTimer.continue();
     this.#hideOpponentStrategy().then(() => {
       this.setSmileFace();
@@ -379,9 +382,6 @@ export class GameVSClear extends GameVS {
   start() {
     console.log(this.levelSettings.minesPositions);
     this.onAfterViewInit
-      .then(() => {
-        return this.initPlayersCards();
-      })
       .then(() => {
         this.initDashBoard();
 

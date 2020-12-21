@@ -1,5 +1,5 @@
 @use "../game-board-styles";
-@import "../../table/table";
+@import "../../../components/table/table";
 
 .mine-field {
   @extend ._board-section;

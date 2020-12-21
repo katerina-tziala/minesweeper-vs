@@ -2,7 +2,7 @@
 @use "../../theming/theming";
 @use "./sneak-peek-button-theming";
 
-@import "../../components/game-board/board-actions/board-actions";
+@import "../game-board/board-actions/board-actions";
 
 .sneak-peek-btn {
   @extend .board-action-btn;
