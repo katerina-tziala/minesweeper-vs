@@ -115,6 +115,7 @@ export class Game extends AppModel {
   get dashboardFaceColor() {
     if (
       this.optionsSettings.vsMode
+      && this.optionsSettings.vsMode !== GameVSMode.Parallel
     ) {
       return this.playerOnTurn.colorType;
     }
