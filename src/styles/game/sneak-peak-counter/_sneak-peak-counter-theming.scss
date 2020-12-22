@@ -3,7 +3,7 @@
 
 @mixin setThemeStyles($theme) {
   .sneak-peek-counter {
-    @include theming.setThemeCard($theme, 0.4);
+    @include theming.setThemeCard($theme, 0.3);
   }
 
   .sneak-peek-counter-value {

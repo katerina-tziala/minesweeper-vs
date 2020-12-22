@@ -1,6 +1,6 @@
 "use strict";
 
-import { GameEndType, GameSubmission } from "GameEnums";
+import { GameEndType } from "GameEnums";
 import { GameVS } from "./_game-vs";
 
 export class GameVSDetect extends GameVS {
@@ -119,24 +119,6 @@ export class GameVSDetect extends GameVS {
   }
 
   /* UPDATE PLAYER CARD */
-  //TODO: COMPLETE THE CASES
-  onPlayerMoveEnd(boardTiles = []) {
-    this.updateMineCounter();
-    this.roundTilesUpdate = boardTiles;
-    if (this.isOnline) {
-      //TODO:
-      console.log("--  submit online move --");
-      console.log("GameVSDetect");
-      console.log("----------------------------");
-      this.submitResult(GameSubmission.MoveEnd);
-      console.log("decide how game is continued for this player");
-      this.pause();
-      return;
-    }
-    //console.log(this);
-    this.mineField.enable();
-  }
-
   updatePlayerCard(turnsUpdate, flagsUpdate) {
     const updates = this.getCardUpdates(turnsUpdate, flagsUpdate);
 

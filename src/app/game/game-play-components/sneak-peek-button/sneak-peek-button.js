@@ -80,7 +80,7 @@ export class SneakPeekButton {
     ElementHandler.setStyleClass(container, styles);
 
     if (limit !== undefined) {
-      container.innerHTML = limit;
+      container.innerHTML = 88;
     }
     return container;
   }

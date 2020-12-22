@@ -31,7 +31,7 @@ export class GameVS extends Game {
       80,
     ];
   
-    //  //this.turnSettings.turnTimer = false;
+    this.turnSettings.turnTimer = false;
     // this.turnSettings.consecutiveTurns = true;
     // this.turnSettings.turnDuration = 12;
     // this.turnSettings.missedTurnsLimit = 3;
@@ -43,7 +43,7 @@ export class GameVS extends Game {
 
     this.optionsSettings.unlimitedFlags = true;
   
-    // this.optionsSettings.tileRevealing = false;
+     this.optionsSettings.tileRevealing = true;
     this.optionsSettings.marks = true;
 
     this.optionsSettings.sneakPeek = true;
@@ -156,7 +156,6 @@ export class GameVS extends Game {
     }
   }
 
-
   startGameRound() {
     // TODO: ROUND STATISTICS
     this.initRoundTiles();
@@ -240,7 +239,6 @@ export class GameVS extends Game {
     return;
   }
 
-  
   // FUNCTIONS TO HANDLE TURNS
   get roundTimer() {
     return this.turnSettings && this.turnSettings.roundTimer;
@@ -265,7 +263,21 @@ export class GameVS extends Game {
 
   /* HANDLE GAME STATE AFTER PLAYER ACTION */
   onPlayerMoveEnd(boardTiles = []) {
-    return;
+    this.updateMineCounter();
+    this.roundTilesUpdate = boardTiles;
+    
+    if (this.isOnline) {
+      //TODO:
+      console.log("--  submit online move --");
+      console.log("GameVSDetect");
+      console.log("----------------------------");
+      this.submitResult(GameSubmission.MoveEnd);
+      console.log("decide how game is continued for this player");
+      this.pause();
+      return;
+    }
+    //console.log(this);
+    this.mineField.enable();
   }
 
   stopRoundTimer() {

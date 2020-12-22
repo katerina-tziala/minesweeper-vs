@@ -21,7 +21,6 @@
     &::after {
       @extend .icon-low-vision;
       text-align: left;
-      padding-left: 4px;
     }
   }
 
@@ -30,10 +29,8 @@
       @extend .icon-peeking;
       font-size: 1.4rem;
       text-align: left;
-      padding-left: 2px;
     }
   }
-  
 }
 
 .sneak-peek-limit {
@@ -43,7 +40,9 @@
   height: 15px;
   line-height: 15px;
   bottom: -3px;
-  right: -3px;
+  right: -9px;
+  text-align: left;
+  min-width: 16px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

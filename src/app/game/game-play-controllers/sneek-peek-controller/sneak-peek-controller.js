@@ -67,7 +67,7 @@ export class SneakPeekController {
     this.#_end = nowTimestamp();
   }
 
-  get #allowed() {
+  get allowed() {
     return this.allowedByStrategy && this.settings.allowed;
   }
 
@@ -88,7 +88,7 @@ export class SneakPeekController {
   }
 
   getUpdatedBoardActions(boardActions) {
-    if (this.#allowed) {
+    if (this.allowed) {
       const sneakPeekBtn = this.#peekToggle.generate();
       boardActions.push(sneakPeekBtn);
     }
@@ -148,12 +148,12 @@ export class SneakPeekController {
     if (!this.roundBased || !roundSecond) {
       return true;
     }
-    
+
     return this.durationWithMargin <= roundSecond;
   }
 
   sneakPeekAllowed(roundSecond) {
-    if (!this.#allowed || !this.player || !this.opponent) {
+    if (!this.allowed || !this.player || !this.opponent) {
       return false;
     }
 
@@ -169,11 +169,11 @@ export class SneakPeekController {
   }
 
   get isRunning() {
-    return this.#timerController.isRunning;
+    return this.allowed ? this.#timerController.isRunning : false;
   }
 
   get isPaused() {
-    return this.#timerController.isPaused;
+    return  this.allowed ? this.#timerController.isPaused : false;
   }
 
   stop() {

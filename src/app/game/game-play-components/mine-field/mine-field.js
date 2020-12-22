@@ -234,8 +234,9 @@ export class MineField {
     );
   }
 
-  hideStrategy(strategyPositions) {
-    const tilesToReset = this.getTilesByPositions(strategyPositions);
+  hideStrategy(player) {
+    console.log("hideStrategy", player);
+    const tilesToReset = this.getTilesByPositions(player.strategyPositions);
     tilesToReset.forEach(tile => {
       tile.resetState();
     });
