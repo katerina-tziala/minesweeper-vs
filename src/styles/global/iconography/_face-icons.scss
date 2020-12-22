@@ -20,7 +20,12 @@
   content: fa-content($fa-var-grin-stars);
 }
 
+.icon-rolling-eyes {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-meh-rolling-eyes);
+}
+
 @mixin setFaceIcons($base-selector) {
-  $icon-types: "smile", "surprise", "lost", "winner";
+  $icon-types: "smile", "surprise", "lost", "winner", "rolling-eyes";
   @include setIdentifierIcons($base-selector, $icon-types);
 }

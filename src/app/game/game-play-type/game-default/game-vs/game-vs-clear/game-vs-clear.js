@@ -342,11 +342,8 @@ export class GameVSClear extends GameVS {
     }
     this.#peekOnOpponentStrategy()
       .then(() => {
-        this.mineCounter.value =
-          this.levelSettings.numberOfMines -
-          this.getPlayerDetectedMines(this.playerWaiting);
-        //TODO: different icon
-        this.setSmileFace(this.playerWaiting.colorType);
+        this.mineCounter.value = this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
+        this.setRollingEyesFace(this.playerWaiting.colorType);
       })
       .catch((err) => {
         console.log(err);

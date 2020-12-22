@@ -23,8 +23,6 @@ export class SneakPeekController {
     this.#onSneakPeekEnd = onSneakPeekEnd;
     this.allowedByStrategy = allowedByStrategy;
     this.roundBased = roundBased;
-
-    // update on round timer
     this.#peekToggle = new SneakPeekButton(this.#onPeekingToggle.bind(this));
 
     // TODO IMPLEMENT IN SETTINGS AND PASS MODEL
@@ -45,11 +43,6 @@ export class SneakPeekController {
     return this.#_opponent;
   }
 
-  setPlayers(player, opponent) {
-    this.#_player = player;
-    this.#_opponent = opponent;
-  }
-
   set parentElementID(elementId) {
     this.#_results = [];
     this.#timerController.parentElementID = elementId;
@@ -59,12 +52,16 @@ export class SneakPeekController {
     return this.#_results;
   }
 
-  #setStart() {
-    this.#_start = nowTimestamp();
+  get durationWithMargin() {
+    return this.settings ? this.settings.duration + ROUND_MARGIN : 0;
   }
 
-  #setEnd() {
-    this.#_end = nowTimestamp();
+  get isRunning() {
+    return this.allowed ? this.#timerController.isRunning : false;
+  }
+
+  get isPaused() {
+    return  this.allowed ? this.#timerController.isPaused : false;
   }
 
   get allowed() {
@@ -79,12 +76,51 @@ export class SneakPeekController {
     };
   }
 
+  #setStart() {
+    this.#_start = nowTimestamp();
+  }
+
+  #setEnd() {
+    this.#_end = nowTimestamp();
+  }
+
   #updateResults() {
     this.#_results.push(this.#peekData);
   }
 
   #onPeekingToggle(peek) {
     peek ? this.#onSneakPeek() : this.#onSneakPeekEnd();
+  }
+
+  #playerSneakPeeks() {
+    return this.player ? this.results.filter((result) => result.playerId === this.player.id).length : 0;
+  }
+
+  #playerSneakPeeksLimit() {
+    if (this.settings.limit === null) {
+      return null;
+    }
+    return this.settings.limit - this.#playerSneakPeeks();
+  }
+
+  #sneakPeekAllowedForPlayer() {
+    if (this.settings.limit === null) {
+      return true;
+    }
+    return this.#playerSneakPeeks() < this.settings.limit;
+  }
+
+  #sneakPeekAllowedInDuration(roundSecond = 0) {
+    if (!this.roundBased || !roundSecond) {
+      return true;
+    }
+
+    return this.durationWithMargin <= roundSecond;
+  }
+
+  setPlayers(player, opponent) {
+    this.#_player = player;
+    this.#_opponent = opponent;
   }
 
   getUpdatedBoardActions(boardActions) {
@@ -122,36 +158,6 @@ export class SneakPeekController {
     });
   }
 
-  #playerSneakPeeks() {
-    return this.player ? this.results.filter((result) => result.playerId === this.player.id).length : 0;
-  }
-
-  #playerSneakPeeksLimit() {
-    if (this.settings.limit === null) {
-      return null;
-    }
-    return this.settings.limit - this.#playerSneakPeeks();
-  }
-
-  #sneakPeekAllowedForPlayer() {
-    if (this.settings.limit === null) {
-      return true;
-    }
-    return this.#playerSneakPeeks() < this.settings.limit;
-  }
-
-  get durationWithMargin() {
-    return this.settings ? this.settings.duration + ROUND_MARGIN : 0;
-  }
-
-  #sneakPeekAllowedInDuration(roundSecond = 0) {
-    if (!this.roundBased || !roundSecond) {
-      return true;
-    }
-
-    return this.durationWithMargin <= roundSecond;
-  }
-
   sneakPeekAllowed(roundSecond) {
     if (!this.allowed || !this.player || !this.opponent) {
       return false;
@@ -166,14 +172,6 @@ export class SneakPeekController {
     }
 
     return this.#sneakPeekAllowedInDuration(roundSecond);
-  }
-
-  get isRunning() {
-    return this.allowed ? this.#timerController.isRunning : false;
-  }
-
-  get isPaused() {
-    return  this.allowed ? this.#timerController.isPaused : false;
   }
 
   stop() {

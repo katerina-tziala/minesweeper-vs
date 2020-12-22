@@ -114,8 +114,7 @@ export class Game extends AppModel {
 
   get dashboardFaceColor() {
     if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode !== GameVSMode.Parallel
+      this.optionsSettings.vsMode
     ) {
       return this.playerOnTurn.colorType;
     }
@@ -256,6 +255,10 @@ export class Game extends AppModel {
 
   setSmileFace(color = this.dashboardFaceColor) {
     this.dashboardFace.setSmileFace(color);
+  }
+
+  setRollingEyesFace(color = this.dashboardFaceColor) {
+    this.dashboardFace.setRollingEyesFace(color);
   }
 
   setSurpriseFace() {

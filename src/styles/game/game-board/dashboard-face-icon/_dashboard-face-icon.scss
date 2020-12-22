@@ -38,12 +38,6 @@
   }
 
   @include setFaceIcons("&.face-icon");
-
-  // &.dashboard__face-icon--player {
-  //   &::after {
-  //     @extend .__player-face-icon;
-  //   }
-  // }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

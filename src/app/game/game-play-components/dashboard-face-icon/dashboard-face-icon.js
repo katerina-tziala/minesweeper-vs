@@ -69,4 +69,9 @@ export class DashboardFaceIcon {
   setLostFace(colorType) {
     this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.lost, colorType);
   }
+
+  setRollingEyesFace(colorType) {
+    this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.rollingEyes, colorType);
+  }
+  
 }

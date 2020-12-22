@@ -5,6 +5,7 @@ export const DOM_ELEMENT_CLASS = {
   smile: "face-icon--smile",
   surprise: "face-icon--surprise",
   lost: "face-icon--lost",
+  rollingEyes: "face-icon--rolling-eyes",
   winner: "face-icon--winner",
   player: "dashboard__face-icon--player",
   default: "dashboard__face-icon--default",
