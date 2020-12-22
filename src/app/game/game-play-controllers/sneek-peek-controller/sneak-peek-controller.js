@@ -8,7 +8,8 @@ import { SneakPeekButton } from "GamePlayComponents";
 const ROUND_MARGIN = 2;
 
 export class SneakPeekController {
-  #_playerId;
+  #_player;
+  #_opponent;
   #_start;
   #_end;
   #_results = [];
@@ -36,12 +37,17 @@ export class SneakPeekController {
     this.#timerController = new SneakPeekTimerController(this.settings.duration, this.#onSneakPeekEnd);
   }
 
-  set playerID(id) {
-    this.#_playerId = id;
+  get player() {
+    return this.#_player;
   }
 
-  get playerID() {
-    return this.#_playerId;
+  get opponent() {
+    return this.#_opponent;
+  }
+
+  setPlayers(player, opponent) {
+    this.#_player = player;
+    this.#_opponent = opponent;
   }
 
   set parentElementID(elementId) {
@@ -69,7 +75,7 @@ export class SneakPeekController {
     return {
       start: this.#_start,
       end: this.#_end,
-      playerId: this.playerID,
+      playerId: this.player.id,
     };
   }
 
@@ -89,70 +95,73 @@ export class SneakPeekController {
     return boardActions;
   }
 
-  updateToggleState(player, opponent, roundSecond) {
-    const disabled = !player.isBot ? !this.sneakPeekAllowed(player, opponent, roundSecond): true;
-    const colorType = player ? player.colorType : undefined;
-    this.#peekToggle.setState(
+  updateToggleState(roundSecond = 0) {
+    const disabled = !this.player.isBot ? !this.sneakPeekAllowed(roundSecond): true;
+    const colorType = this.player ? this.player.colorType : undefined;
+    return this.#peekToggle.setState(
       disabled,
       colorType,
-      this.#playerSneakPeeksLimit(player.id),
+      this.#playerSneakPeeksLimit(),
     );
   }
 
-  playerPeeking(player, opponent) {
-    this.playerID = player.id;
-    this.#peekToggle.playerPeeking(player.colorType);
-    this.#timerController.startCountdown(opponent.colorType);
-    this.#setStart();
+  playerPeeking() {
+    return this.#timerController.startCountdown(this.opponent.colorType).then(() => {
+      this.#setStart();
+      return this.#peekToggle.playerPeeking(this.player.colorType);
+    });
   }
 
-  stopPeeking(player, opponent) {
-    this.#timerController.stopCountDown();
-
-    this.#setEnd();
-    this.#updateResults();
-
-    this.#peekToggle.peeking = false;
-    this.updateToggleState(player, opponent);
+  stopPeeking(roundSecond = 0) {
+    return this.#timerController.stopCountDown().then(() => {
+      this.#setEnd();
+      this.#updateResults();
+  
+      this.#peekToggle.peeking = false;
+      return this.updateToggleState(roundSecond);
+    });
   }
 
-  #playerSneakPeeks(playerId) {
-    return this.results.filter((result) => result.playerId === playerId).length;
+  #playerSneakPeeks() {
+    return this.player ? this.results.filter((result) => result.playerId === this.player.id).length : 0;
   }
 
-  #playerSneakPeeksLimit(playerId) {
+  #playerSneakPeeksLimit() {
     if (this.settings.limit === null) {
       return null;
     }
-    return this.settings.limit - this.#playerSneakPeeks(playerId);
+    return this.settings.limit - this.#playerSneakPeeks();
   }
 
-  #sneakPeekAllowedForPlayer(playerId) {
+  #sneakPeekAllowedForPlayer() {
     if (this.settings.limit === null) {
       return true;
     }
-    return this.#playerSneakPeeks(playerId) < this.settings.limit;
+    return this.#playerSneakPeeks() < this.settings.limit;
+  }
+
+  get durationWithMargin() {
+    return this.settings ? this.settings.duration + ROUND_MARGIN : 0;
   }
 
   #sneakPeekAllowedInDuration(roundSecond = 0) {
     if (!this.roundBased || !roundSecond) {
       return true;
     }
-
-    const actualPeakDuration = this.settings.duration + ROUND_MARGIN;
-    return actualPeakDuration <= roundSecond;
+    
+    return this.durationWithMargin <= roundSecond;
   }
 
-  sneakPeekAllowed(player, opponent, roundSecond) {
-    if (!this.#allowed) {
+  sneakPeekAllowed(roundSecond) {
+    if (!this.#allowed || !this.player || !this.opponent) {
       return false;
     }
 
-    if (!opponent.hasStrategy) {
+    if (!this.opponent.hasStrategy) {
       return false;
     }
 
-    if (!this.#sneakPeekAllowedForPlayer(player.id)) {
+    if (!this.#sneakPeekAllowedForPlayer()) {
       return false;
     }
 

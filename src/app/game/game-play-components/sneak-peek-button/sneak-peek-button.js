@@ -101,6 +101,13 @@ export class SneakPeekButton {
     }
   }
 
+  #updateButtonState(colorType, limit) {
+    return this.#button.then(button => {
+      this.#setButtonState(button, colorType, limit);
+      return;
+    });
+  }
+
   generate() {
     const button = ElementGenerator.generateButton(
       BUTTON,
@@ -116,12 +123,12 @@ export class SneakPeekButton {
     if (this.disabled) {
       this.peeking = false;
     }
-    this.#button.then(button => this.#setButtonState(button, colorType, limit));
+    return this.#updateButtonState(colorType, limit);
   }
 
   playerPeeking(colorType) {
     this.peeking = true;
-    this.#button.then(button => this.#setButtonState(button, colorType));
+    return this.#updateButtonState(colorType);
   }
 
 }

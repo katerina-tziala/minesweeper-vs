@@ -148,7 +148,7 @@ export class Game extends AppModel {
   }
 
   handleTileRevealing(tile) {
-    if (this.revealingAllowed(tile.isUntouched)) {
+    if (this.revealingAllowed(tile)) {
       this.revealMinefieldArea(tile);
       return;
     }
@@ -172,7 +172,14 @@ export class Game extends AppModel {
   }
 
   resetingAllowed(tile) {
-    return tile.isUntouched
+    if (tile.isMarkedBy(this.playerOnTurn.id)) {
+      return true;
+    }
+    if (tile.isFlaggedBy(this.playerOnTurn.id) && !this.allowMarks) {
+      return true;
+    }
+
+    return false;
   }
 
   flaggingAllowed(tile, player = this.playerOnTurn) {

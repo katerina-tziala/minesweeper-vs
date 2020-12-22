@@ -270,14 +270,11 @@ export class GameVSClear extends GameVS {
 
   startRoundTimer() {
     super.startRoundTimer();
-    this.#sneakPeekController.updateToggleState(
-      this.playerOnTurn,
-      this.playerWaiting,
-      this.gameTimer.value,
-    );
+    this.#updateSneakPeekButtonBasedOnRoundTimer();
   }
 
   startGameRound() {
+    this.#sneakPeekController.setPlayers(this.playerOnTurn, this.playerWaiting);
     this.#hideOpponentStrategy().then(() => {
       this.updateMineCounter();
       super.startGameRound();
@@ -332,32 +329,44 @@ export class GameVSClear extends GameVS {
 
   #onSneakPeek() {
     const sneakPeekAllowed = this.#sneakPeekController.sneakPeekAllowed(
-      this.playerOnTurn,
-      this.playerWaiting,
       this.gameTimer.value,
     );
 
     if (!sneakPeekAllowed) {
+      console.log("jjj");
       return;
     }
 
-    this.#revealOpponentStrategy().then(() => {
+
+    const interfaceUpdates = [this.#revealOpponentStrategy(), this.#playerOnTurnPeeking];
+
+
+    Promise.all(interfaceUpdates).then(() => {
       this.mineCounter.value = this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
       //TODO: different icon
       this.setSmileFace(this.playerWaiting.colorType);
-      this.#sneakPeekController.playerPeeking(this.playerOnTurn, this.playerWaiting);
     });
+
   }
+
+
+
+  get #playerOnTurnPeeking() {
+    return this.#sneakPeekController.playerPeeking();
+  }
+
+  get #playerOnTurnStopPeeking() {
+    return this.#sneakPeekController.stopPeeking(this.gameTimer.value);
+  }
+
+
 
   #onSneakPeekEnd() {
     this.gameTimer.continue();
-    this.#hideOpponentStrategy().then(() => {
+    const interfaceUpdates = [this.#hideOpponentStrategy(), this.#playerOnTurnStopPeeking];
+    Promise.all(interfaceUpdates).then(() => {
       this.setSmileFace();
       this.updateMineCounter();
-      this.#sneakPeekController.stopPeeking(
-        this.playerOnTurn,
-        this.playerWaiting,
-      );
       this.mineField.enable();
     });
   }
@@ -390,6 +399,8 @@ export class GameVSClear extends GameVS {
         if (this.roundTimer) {
           console.log("kkk");
           this.setGameStart();
+          console.log(this.#sneakPeekController.durationWithMargin);
+          this.gameTimer.setNotificationUpdate(this.#updateSneakPeekButtonBasedOnRoundTimer.bind(this), this.#sneakPeekController.durationWithMargin -1);
         }
 
         console.log("START GameVS GAME");
@@ -398,4 +409,18 @@ export class GameVSClear extends GameVS {
         this.startGameRound();
       });
   }
+
+
+
+
+
+
+  #updateSneakPeekButtonBasedOnRoundTimer() {
+    this.#sneakPeekController.updateToggleState(this.gameTimer.value);
+  }
+
+
+
+
+
 }

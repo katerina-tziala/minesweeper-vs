@@ -31,12 +31,12 @@ export class GameVS extends Game {
       80,
     ];
   
-     //this.turnSettings.turnTimer = false;
-    this.turnSettings.consecutiveTurns = true;
-    this.turnSettings.turnDuration = 8;
-    this.turnSettings.missedTurnsLimit = 3;
+    //  //this.turnSettings.turnTimer = false;
+    // this.turnSettings.consecutiveTurns = true;
+    // this.turnSettings.turnDuration = 12;
+    // this.turnSettings.missedTurnsLimit = 3;
 
-    //this.optionsSettings.wrongFlagHint = true;
+    // //this.optionsSettings.wrongFlagHint = true;
 
     this.optionsSettings.tileFlagging = true;
     this.optionsSettings.openStrategy = false;
@@ -240,6 +240,7 @@ export class GameVS extends Game {
     return;
   }
 
+  
   // FUNCTIONS TO HANDLE TURNS
   get roundTimer() {
     return this.turnSettings && this.turnSettings.roundTimer;

@@ -16,8 +16,6 @@ export class GameVSDetect extends GameVS {
     return true;
   }
 
-
-
   /* UPDATE GAME AFTER REVEALING TILES */
   revealingAllowed(tile) {
     const tileRevealingAllowed = super.revealingAllowed(tile);

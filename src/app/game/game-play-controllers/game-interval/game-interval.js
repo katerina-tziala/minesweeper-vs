@@ -85,6 +85,10 @@ export class GameInterval {
 
   #onLimitHit() {
     this.stop();
+    this.submitEnd();
+  }
+
+  submitEnd() {
     if (this.#onEnd) {
       this.#onEnd();
     }

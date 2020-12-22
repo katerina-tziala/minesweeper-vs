@@ -39,25 +39,39 @@ export class SneakPeekTimerController extends GameInterval {
   startCountdown(colorType) {
     this.counterColorType = colorType;
     this.stop();
-    this.#counterParent.then((container) => {
+    return this.#counterParent.then((container) => {
       container.append(SneakPeekCounter.generate);
       ElementHandler.display(container);
       this.start();
+      return;
     });
   }
 
   stopCountDown() {
     this.stop();
-    this.#counterParent.then((container) =>
-      ElementHandler.clearContent(container),
-    );
+    return this.#counterParent.then((container) => {
+      ElementHandler.clearContent(container);
+      return;
+    });
   }
 
   onInit() {
-    SneakPeekCounter.updateValue(this.value, this.counterColorType);
+    SneakPeekCounter.updateValue(this.value, this.counterColorType)
+      .then(() => {
+        return;
+      })
+      .catch(() => {
+        this.submitEnd();
+      });
   }
 
   onUpdate() {
-    SneakPeekCounter.updateValue(this.value, this.counterColorType);
+    SneakPeekCounter.updateValue(this.value, this.counterColorType)
+      .then(() => {
+        return;
+      })
+      .catch(() => {
+        this.submitEnd();
+      });
   }
 }

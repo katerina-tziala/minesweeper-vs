@@ -35,13 +35,14 @@ export class SneakPeekCounter {
   }
 
   static updateValue(value, colorType) {
-    SneakPeekCounter.valueContainer.then((container) => {
+    return SneakPeekCounter.valueContainer.then((container) => {
       const animatedContainer = SneakPeekCounter.animatedValueContainer;
       animatedContainer.innerHTML = value;
       ElementHandler.addStyleClass(animatedContainer, SneakPeekCounter.getColorTypeClass(colorType));
 
       container.before(animatedContainer);
       container.remove();
+      return;
     });
   }
 }

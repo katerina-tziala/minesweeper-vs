@@ -80,7 +80,7 @@ export class GameSinglePlayer extends Game {
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
-
+console.log("revealedTiles");
     if (this.playerOnTurn.clearedMinefield) {
       this.setGameEnd(GameEndType.Cleared);
       this.updateMineCounter();
