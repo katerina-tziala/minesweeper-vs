@@ -18,6 +18,12 @@ export class GameViewHelper {
     );
   }
 
+  static generateBoardContainer() {
+    return ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.boardContainer,
+    ]);
+  }
+
   static getBoardID(gameID) {
     return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleUnderscore + gameID;
   }
@@ -42,7 +48,9 @@ export class GameViewHelper {
       event.preventDefault();
     });
     board.append(GameViewHelper.generateDashBoard(gameID));
-    board.append(GameViewHelper.generateBoardSection(BOARD_SECTION.mineField, gameID));
+    board.append(
+      GameViewHelper.generateBoardSection(BOARD_SECTION.mineField, gameID),
+    );
     return board;
   }
 

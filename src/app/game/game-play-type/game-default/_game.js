@@ -219,7 +219,7 @@ export class Game extends AppModel {
   }
 
   get gameBoard() {
-    const gameContainer = document.createDocumentFragment();
+    const gameContainer = GameViewHelper.generateBoardContainer();
     const board = GameViewHelper.generateBoard(this.id);
     board.insertBefore(this.boardActions, board.firstChild);
     gameContainer.append(board);
@@ -362,6 +362,7 @@ export class Game extends AppModel {
       this.getBoardSectionID(DASHBOARD_SECTION.mineCounter),
     );
     this.dashboardFace = new DashboardFaceIcon(
+      this.id,
       this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon),
     );
     this.initTimeCounter();
@@ -379,6 +380,9 @@ export class Game extends AppModel {
     gameContainer.append(this.gameBoard);
     return gameContainer;
   }
+
+
+
 
   init() {
     return;

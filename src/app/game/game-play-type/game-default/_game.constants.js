@@ -3,8 +3,7 @@
 import {
   EXIT_GAME_BTN,
   RESTART_GAME_BTN,
-  RESET_GAME_BTN,
-  SNEAK_PEEK_GAME_BTN,
+  RESET_GAME_BTN
 } from "~/_constants/btn-icon.constants";
 
 export const ACTION_BUTTONS = {
@@ -14,6 +13,7 @@ export const ACTION_BUTTONS = {
 };
 
 export const DOM_ELEMENT_CLASS = {
+  boardContainer: "game-board-container",
   board: "game-board",
   actionButton: "board-action-btn",
 };

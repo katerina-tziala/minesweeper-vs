@@ -8,7 +8,7 @@
 }
 
 @mixin applyThemeDefaultDashboardIcon($theme) {
-  .dashboard__face-icon.dashboard__face-icon--default {
+  .face-icon.face-icon--default {
     &::before {
       background-color: theming.getThemeColor(
         $theme,
@@ -21,7 +21,7 @@
 }
 
 @mixin applyThemePlayerIcon($theme) {
-  .dashboard__face-icon.dashboard__face-icon--player {
+  .face-icon.face-icon--player {
     &::before {
       background-color: theming.getThemeColor(
         $theme,

@@ -1,25 +1,44 @@
 "use strict";
 
-import { ElementHandler } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS } from "./dashboard-face-icon.constants";
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./dashboard-face-icon.constants";
 
 export class DashboardFaceIcon {
-  #_id;
+  #_parentId;
+  #_gameId;
 
-  constructor(id) {
-    this.#id = id;
+  constructor(gameId, parentId) {
+    this.#parentID = parentId;
+    this.#gameID = gameId;
+    console.log(gameId, parentId);
   }
 
-  set #id(id) {
-    this.#_id = id;
+  set #gameID(id) {
+    this.#_gameId = id;
   }
 
-  get #id() {
-    return this.#_id;
+  get #gameID() {
+    return this.#_gameId;
+  }
+
+  set #parentID(id) {
+    this.#_parentId = id;
+  }
+
+  get #parentID() {
+    return this.#_parentId;
+  }
+
+  get #iconID() {
+    return DOM_ELEMENT_ID.faceIcon + this.#gameID;
+  }
+
+  get #parentElement() {
+    return ElementHandler.getByID(this.#parentID);
   }
 
   get #iconElement() {
-    return ElementHandler.getByID(this.#id);
+    return ElementHandler.getByID(this.#iconID);
   }
 
   set #iconStyles(iconStyles) {
@@ -40,15 +59,22 @@ export class DashboardFaceIcon {
   }
 
   #getIconStyles(stateStyle, colorType) {
-    let iconStyles = [DOM_ELEMENT_CLASS.dashboardIcon];
+    let iconStyles = [DOM_ELEMENT_CLASS.faceIcon];
     iconStyles.push(stateStyle);
     iconStyles = iconStyles.concat(this.#getIconStylesBasedOnPlayer(colorType));
     return iconStyles;
   }
 
+  #generateIcon() {
+   const icon = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.faceIcon], this.#iconID);
+   return icon;
+  }
+
   init() {
-    this.#iconStyles = [DOM_ELEMENT_CLASS.dashboardIcon];
-    return Promise.resolve();
+    return this.#parentElement.then(parentElement => {
+      ElementHandler.clearContent(parentElement);
+      parentElement.append(this.#generateIcon());
+    });
   }
 
   setSmileFace(colorType) {

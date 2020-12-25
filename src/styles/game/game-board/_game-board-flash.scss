@@ -2,14 +2,17 @@
 @use "../../theming/theming";
 
 .__board-flash {
-  &::before {
     content: "";
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    @extend .__board-flash-before;
+}
+
+.__board-flash-before {
+  &::before {
+    @extend .__board-flash;
   }
 }
 
@@ -40,7 +43,7 @@
 
   @each $theme in $themes {
     .theme-#{$theme} {
-      .__board-flash-before {
+      .__board-flash {
       @include boardPulse($theme);
       }
     }

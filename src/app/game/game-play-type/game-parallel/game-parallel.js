@@ -45,4 +45,6 @@ export class GameParallel extends AppModel {
       game.start();
     });
   }
+
+  
 }

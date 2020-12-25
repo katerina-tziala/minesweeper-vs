@@ -8,7 +8,7 @@
   height: 100%;
   position: absolute;
   overflow: hidden;
-  @extend .__board-flash;
+  @extend .__board-flash-before;
 }
 
 .sneak-peek-counter-value {
