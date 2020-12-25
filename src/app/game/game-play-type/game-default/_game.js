@@ -1,6 +1,5 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { AppModel } from "~/_models/app-model";
@@ -219,7 +218,8 @@ export class Game extends AppModel {
   }
 
   get gameBoard() {
-    const gameContainer = GameViewHelper.generateBoardContainer();
+    const gameContainer = document.createDocumentFragment();
+    // const gameContainer = GameViewHelper.generateBoardContainer();
     const board = GameViewHelper.generateBoard(this.id);
     board.insertBefore(this.boardActions, board.firstChild);
     gameContainer.append(board);

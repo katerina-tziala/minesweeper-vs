@@ -1,11 +1,6 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-
-import { AppModel } from "~/_models/app-model";
-
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-
+import { ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./game-vs-dashboard.constants";
 import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
 
@@ -56,9 +51,6 @@ export class GameVSDashboard {
   setCardOnTurn(players) {
     const cardUpdates = [];
     players.forEach((player) => {
-      const playerGameStatistics = this.clearMinefield
-        ? player.revealedTiles
-        : player.minesDetected;
       cardUpdates.push(PlayerCard.updateTurnStatus(player));
     });
     return Promise.all(cardUpdates);

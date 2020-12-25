@@ -37,6 +37,13 @@
   align-content: flex-end;
 }
 
+%second-axis-around {
+  align-items:space-around;
+  align-content: space-around;
+}
+
+
+
 %center-center {
   @extend %flexbox;
   @extend %first-axis-centered;
@@ -89,4 +96,10 @@
   @extend %flexbox;
   @extend %first-axis-evenly;
   @extend %second-axis-centered;
+}
+
+%end-around {
+  @extend %flexbox;
+  @extend %first-axis-evenly;
+  @extend %second-axis-around;
 }

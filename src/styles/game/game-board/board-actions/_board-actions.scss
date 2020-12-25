@@ -1,5 +1,6 @@
 @use "../game-board-styles";
 @use "../../../theming/theming";
+@use "./board-actions-theming";
 @import "../../../components/button/button";
 
 .board-actions {
@@ -47,29 +48,6 @@
   @include afterIcon("sliders");
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  .board-action-btn {
-    color: theming.getThemeColor("light", "theme-primary");
-    @include game-board-styles.boardBorders("light");
-    background-color: theming.getThemeColor("light", "board-button-background");
 
-    &:hover,
-    &:focus {
-      color: theming.getThemeColor("light", "theme-primary-intense");
-    }
-  }
-}
-
-.theme-dark {
-  .board-action-btn {
-    color: theming.getThemeColor("dark", "theme-primary");
-    background-color: theming.getThemeColor("dark", "board-button-background");
-    @include game-board-styles.boardBorders("dark");
-
-    &:hover,
-    &:focus {
-      color: theming.getThemeColor("dark", "theme-primary-intense");
-    }
-  }
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include board-actions-theming.setTheming();

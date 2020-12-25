@@ -1,0 +1,40 @@
+@use "../../theming/theming";
+
+@import "./game-player-card/game-player-card";
+@import "../game-board/board-actions/board-actions";
+
+// .game-vs-dashboard {
+//   @extend %center-center;
+//   width: 100%;
+//   padding: 10px;
+
+//   //border: 2px solid red;
+//   // add parallel actions
+// }
+
+// .game-vs-dashboard__player {
+//   @extend %center-center;
+//   width: 320px;
+// }
+
+.vs-dashboard__area {
+  width: 100%;
+  border: 2px solid red;
+  min-height: 300px;
+  @extend %center-end;
+}
+
+.vs-dashboard__player {
+  @extend %center-center;
+  width: 320px;
+  height: 94px;
+  // background: yellow;
+  // height: 50px;
+  // width: 100px;
+}
+
+.vs-dashboard__vs-container {
+  border: 2px solid blue;
+  height: 50px;
+  width: 50px;
+}

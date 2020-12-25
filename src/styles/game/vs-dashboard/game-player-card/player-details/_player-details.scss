@@ -1,0 +1,109 @@
+._player-details {
+  width: 152px;
+  position: absolute;
+  z-index: 2;
+}
+
+._details-background-shape {
+  content: "";
+  position: absolute;
+  top: 0px;
+  @include pseudoIsoscelesTrapezoid($card-size, 20);
+  display: block;
+  height: 0;
+  width: 50px;
+  border-radius: 5px;
+  transform-origin: top right;
+}
+
+@mixin detailsSectionShape($direction: 1) {
+  $right-position: $card-size;
+
+  @if $direction==-1 {
+    $right-position: 0;
+  }
+
+  &::after {
+    @extend ._details-background-shape;
+    right: #{$right-position}px;
+    transform: rotate(-90deg) scaleY($direction);
+  }
+}
+
+.game-player-card__details-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.player-name {
+  @extend ._player-details;
+  height: 22px;
+  top: 25px;
+  @extend %ellipsis-text;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.game-player-card__player-goal-details {
+  @extend ._player-details;
+  @extend %start-center;
+  height: 14px;
+  line-height: 15px;
+  bottom: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+
+  .player-goal-details__target {
+    text-transform: capitalize;
+    font-style: italic;
+    display: inline-block;
+  }
+
+  .player-goal-details-target-result {
+    @extend %center-center;
+  }
+
+  .game-player-result {
+    width: 26px;
+    text-align: right;
+  }
+  .game-target-value {
+    margin-left: 4px;
+  }
+}
+
+// LEFT TO RIGHT ORIENTATION
+.game-player-card__details-section--left {
+  @include detailsSectionShape(-1);
+
+  ._player-details {
+    left: 42px;
+  }
+
+  .player-name {
+    text-align: left;
+  }
+
+  .game-player-card__player-goal-details {
+    @extend %start-center;
+  }
+}
+
+// RIGHT TO LEFT ORIENTATION
+.game-player-card__details-section--right {
+  @include detailsSectionShape(1);
+
+  ._player-details {
+    left: 28px;
+  }
+
+  .player-name {
+    text-align: right;
+  }
+
+  .game-player-card__player-goal-details {
+    @extend %end-center;
+  }
+}

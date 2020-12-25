@@ -1,0 +1,23 @@
+.person-icon {
+  @extend %center-center;
+  position: absolute;
+  overflow: hidden;
+  font-size: 2.4rem;
+
+  &::before {
+    @include circle(58px);
+    line-height: 56px;
+  }
+
+  &.person-icon--bot {
+    &::before {
+      @extend .icon-bot;
+    }
+  }
+
+  &.person-icon--player {
+    &::before {
+      @extend .icon-user;
+    }
+  }
+}

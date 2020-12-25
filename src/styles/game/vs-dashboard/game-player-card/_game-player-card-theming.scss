@@ -1,0 +1,97 @@
+@use "../../../theming/theming";
+
+@mixin applyAllowedFlagsThemeStyle($theme) {
+  .allowed-flags {
+    @include theming.setThemeCard($theme);
+
+    &.allowed-flags--0 {
+      color: theming.getThemeColor($theme, "error-primary");
+    }
+
+    &.allowed-flags--1 {
+      color: theming.getThemeColor($theme, "warning-primary");
+    }
+
+    &.allowed-flags--infinite {
+      color: theming.getThemeColor($theme, "game-card-details-intense");
+    }
+  }
+}
+
+@mixin applyPersonIconThemeStyle($theme) {
+  .person-icon {
+    color: theming.getThemeColor($theme, "theme-secondary");
+    filter: drop-shadow(
+      0px 0px 3px theming.getThemeColor($theme, "game-card-circle-shadow")
+    );
+  }
+}
+
+@mixin applyTurnsIndicatorThemeStyle($theme) {
+  ._turn-indicator-background {
+    background-color: theming.getThemeColor($theme, "theme-secondary-intense");
+  }
+
+  ._turn-indicator {
+    filter: drop-shadow(
+      0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow")
+    );
+
+    &.turn-indicator--on {
+      background-color: theming.getThemeColor($theme, "success-primary");
+    }
+
+    &.turn-indicator--off {
+      background-color: theming.getThemeColor($theme, "error-primary");
+    }
+  }
+}
+
+@mixin applyCardUtilitiesThemeStyle($theme) {
+  ._player-card-circle {
+    @include theming.setThemeCard($theme);
+    border-color: theming.getThemeColor($theme, "theme-secondary-intense");
+  }
+
+  ._details-background-shape {
+    border-bottom-color: theming.getThemeColor(
+      $theme,
+      "theme-secondary-intense"
+    );
+  }
+
+  ._card-circle-border {
+    border-color: theming.getThemeColor($theme, "game-card-details");
+  }
+}
+
+@mixin applyCardTypeThemeStyle($theme, $color-type) {
+  &.game-player-card__color-type--#{$color-type} {
+    $game-color-type: theming.getThemeColor($theme, "game-type-#{$color-type}");
+
+    .person-icon {
+      &::before {
+        background-color: $game-color-type;
+      }
+    }
+
+    ._state-icon {
+      color: $game-color-type;
+    }
+  }
+}
+
+@mixin applyPlayerCardThemeStyle($theme) {
+  .game-player-card {
+    @include theming.dropThemeShadow($theme);
+
+    @for $i from 1 through 8 {
+      @include applyCardTypeThemeStyle($theme, $i);
+    }
+  }
+
+  @include applyCardUtilitiesThemeStyle($theme);
+  @include applyPersonIconThemeStyle($theme);
+  @include applyTurnsIndicatorThemeStyle($theme);
+  @include applyAllowedFlagsThemeStyle($theme);
+}

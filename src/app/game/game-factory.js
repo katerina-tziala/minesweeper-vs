@@ -151,7 +151,7 @@ export class GameFactory {
     ];
     return Promise.all(gamesForPlayers).then(([playerGame, opponentGame]) => {
       return import(`GamePlayType`).then((module) => {
-        return new module.GameParallel(gameId, gamingOptions.parallelGame, playerGame, opponentGame);
+        return new module.GameParallel(gameId, gameParams.type, gamingOptions.parallelGame, playerGame, opponentGame);
       });
     });
   }

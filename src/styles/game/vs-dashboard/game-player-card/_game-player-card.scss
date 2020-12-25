@@ -1,0 +1,92 @@
+@import "./game-player-card-utils";
+@import "./card-icons/card-icons";
+@import "./turns-indicator/turns-indicator";
+@import "./player-details/player-details";
+@import "./card-state/card-state";
+@import "./game-player-card-theming";
+
+.game-player-card {
+  width: #{$card-size}px;
+  height: 90px;
+  position: relative;
+  position: relative;
+  margin: 10px;
+  opacity: 0.5;
+
+  &.game-player-card--turn--on {
+    opacity: 1;
+  }
+
+  &.direction-left {
+    .game-player-card__player-section {
+      left: -48px;
+
+      .turn-indicator-container {
+        @include setIndicatorsPositions(-1);
+      }
+    }
+
+    .game-player-card__details-section {
+      @extend .game-player-card__details-section--left;
+    }
+
+    .game-player-card__state-section {
+      right: -24px;
+    }
+  }
+
+  &.direction-right {
+    .game-player-card__player-section {
+      right: -48px;
+
+      .turn-indicator-container {
+        @include setIndicatorsPositions(1);
+      }
+    }
+
+    .game-player-card__state-section {
+      left: -24px;
+    }
+
+    .game-player-card__details-section {
+      @extend .game-player-card__details-section--right;
+    }
+  }
+}
+
+.game-player-card__player-section {
+  @include circle(90px);
+  @extend ._player-card-circle;
+  top: 0px;
+  border-width: 2px;
+
+  @extend %center-center;
+
+  &::after {
+    position: absolute;
+    @extend %center-start;
+    @include circle(74px);
+    @extend ._card-circle-border;
+    position: absolute;
+    content: "";
+  }
+}
+
+.game-player-card__state-section {
+  @include circle(50px);
+  @extend ._player-card-circle;
+  top: 20px;
+  border-width: 2px;
+  @extend %center-center;
+  overflow: hidden;
+  padding: 2px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  @include applyPlayerCardThemeStyle("light");
+}
+
+.theme-dark {
+  @include applyPlayerCardThemeStyle("dark");
+}

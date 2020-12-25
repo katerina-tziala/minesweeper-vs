@@ -7,24 +7,52 @@ import { AppModel } from "~/_models/app-model";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
+
+import { VSDashboardController } from "GamePlayControllers";
 export class GameParallel extends AppModel {
-  constructor(id, optionsSettings, playerGame, opponentGame) {
+
+  
+  constructor(id, type, optionsSettings, playerGame, opponentGame) {
     super();
+    this.type = type;
     this.id = id ? id : this.type;
     this.optionsSettings = optionsSettings;
     this.playerGame = playerGame;
     this.opponentGame = opponentGame;
     this.games = [this.playerGame, this.opponentGame];
     console.log(this.optionsSettings);
+    this.vsDashboard = new VSDashboardController();
   }
 
   generateView() {
     const gameContainer = document.createDocumentFragment();
-
+    gameContainer.append(this.#generateDashboardView());
     gameContainer.append(this.#generateGamingArea());
-
     return gameContainer;
   }
+
+  get player() {
+    return this.playerGame.player;
+  }
+
+  get opponent() {
+    return this.opponentGame.player;
+  }
+
+
+  
+
+
+  #generateDashboardView() {
+    const fragment = document.createDocumentFragment();
+    console.log("twra");
+    
+    fragment.append(this.vsDashboard.generateView(this.player, this.opponent));
+   
+    return fragment;
+  }
+
+
 
 
 
@@ -57,7 +85,7 @@ export class GameParallel extends AppModel {
     this.games.forEach((game) => {
       game.start();
 
-     //console.log(game);
+      //console.log(game);
     });
   }
 }
