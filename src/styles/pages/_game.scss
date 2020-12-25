@@ -23,3 +23,15 @@
   // background-color: pink;
   // border: 2px solid red;
 }
+
+.parallel-gaming-area {
+  border: 1px solid blue;
+  width: 100%;
+  @extend %center-center;
+}
+
+.parallel-game-container {
+  border: 1px solid red;
+  @extend %center-center;
+  width: 50%;
+}

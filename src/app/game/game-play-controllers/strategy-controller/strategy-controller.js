@@ -39,7 +39,6 @@ export class StrategyController {
   }
 
   #hideStrategyForPlayer(player, mineField) {
-    console.log(this.#strategyUpdate(player));
     if (this.#strategyUpdate(player)) {
       mineField.hideStrategy(player);
       return Promise.resolve();
@@ -59,8 +58,8 @@ export class StrategyController {
 
   revealOpponentStrategy(player, opponent, mineField) {
     const interfaceUpdates = [];
-    interfaceUpdates.push(this.#hideStrategyForPlayer(opponent, mineField));
-    interfaceUpdates.push(this.#displayStrategyForPlayer(player, mineField));
+    interfaceUpdates.push(this.#hideStrategyForPlayer(player, mineField));
+    interfaceUpdates.push(this.#displayStrategyForPlayer(opponent, mineField));
     return Promise.all(interfaceUpdates);
   }
 

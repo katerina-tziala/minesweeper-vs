@@ -116,6 +116,7 @@ console.log("revealedTiles");
 
     this.mineField.enable();
   }
+
   //TODO: COMPLETE THE CASES
   startBotRound() {
     this.initRoundTiles();
