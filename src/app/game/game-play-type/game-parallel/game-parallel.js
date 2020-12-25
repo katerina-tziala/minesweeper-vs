@@ -8,12 +8,13 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
 export class GameParallel extends AppModel {
-  constructor(id, playerGame, opponentGame) {
+  constructor(id, optionsSettings, playerGame, opponentGame) {
     super();
     this.id = id ? id : this.type;
     this.playerGame = playerGame;
     this.opponentGame = opponentGame;
     this.games = [this.playerGame, this.opponentGame];
+    console.log(optionsSettings);
   }
 
   generateView() {
@@ -39,11 +40,13 @@ export class GameParallel extends AppModel {
 
   start() {
     console.log("start parallel");
-    // this.onAfterViewInit.then(() => {
-    //   this.initDashBoard();
+
+    
     this.games.forEach((game) => {
       game.start();
     });
+
+
   }
 
   

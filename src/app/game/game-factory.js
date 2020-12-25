@@ -1,6 +1,7 @@
 "use strict";
 
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+import { clone } from "~/_utils/utils.js";
 
 import { GameType, GameVSMode } from "GameEnums";
 import { LevelSettings, TurnSettings, Player, BotPlayer } from "GameModels";
@@ -118,15 +119,39 @@ export class GameFactory {
     });
   }
 
+  static parallelGameOptions(gameParams) {
+    const parallelOptions = clone(gameParams.optionsSettings);
+    delete parallelOptions.marks;
+    delete parallelOptions.wrongFlagHint;
+    delete parallelOptions.vsMode;
+    return parallelOptions;
+  }
+
+  static parallelGamingOptions(gameParams) {
+    const parallelGame = GameFactory.parallelGameOptions(gameParams);
+    const playerGame = {
+      marks: gameParams.optionsSettings.marks,
+      wrongFlagHint: gameParams.optionsSettings.wrongFlagHint,
+      vsMode: gameParams.optionsSettings.vsMode
+    };
+    return {parallelGame, playerGame};
+  }
+
+
+
   static loadParrallelGame(gameId, gameParams, opponent) {
     const player = GameFactory.getPlayer();
+
+    const gamingOptions = GameFactory.parallelGamingOptions(gameParams);
+    gameParams.optionsSettings = gamingOptions.playerGame;
+
     const gamesForPlayers = [
       GameFactory.loadPlayerGame(player.id, gameParams, player),
       GameFactory.loadPlayerGame(opponent.id, gameParams, opponent),
     ];
     return Promise.all(gamesForPlayers).then(([playerGame, opponentGame]) => {
       return import(`GamePlayType`).then((module) => {
-        return new module.GameParallel(gameId, playerGame, opponentGame);
+        return new module.GameParallel(gameId, gamingOptions.parallelGame, playerGame, opponentGame);
       });
     });
   }

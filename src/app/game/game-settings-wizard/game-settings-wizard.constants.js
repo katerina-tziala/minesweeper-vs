@@ -28,7 +28,7 @@ export const CONTENT = {
   turnDuration: "turn duration (sec)",
   missedTurnsLimit: "allowed missed turns",
   consecutiveTurns: "consecutive missed turns",
-  sameMinePositions: "identical minefield",
+  identicalMines: "identical minefield",
   botMode: "bot mode",
 };
 

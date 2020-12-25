@@ -10,7 +10,6 @@ export class DashboardFaceIcon {
   constructor(gameId, parentId) {
     this.#parentID = parentId;
     this.#gameID = gameId;
-    console.log(gameId, parentId);
   }
 
   set #gameID(id) {

@@ -2,10 +2,19 @@
 
 export const SETTINGS_PROPERTIES = {
   default: ["marks", "wrongFlagHint"],
-  clear: ["unlimitedFlags", "wrongFlagHint", "marks", "openStrategy", "sneakPeek", "sneakPeekDuration"],
+  clear: [
+    "unlimitedFlags",
+    "wrongFlagHint",
+    "marks",
+    "openStrategy",
+    "sneakPeek",
+    "sneakPeekDuration",
+  ],
   detect: ["unlimitedFlags", "wrongFlagHint", "marks", "tileRevealing"],
   parallel: [
-    "sameMinePositions",
+    "marks",
+    "wrongFlagHint",
+    "identicalMines",
     "openStrategy",
     "sneakPeek",
     "sneakPeekDuration",

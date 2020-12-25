@@ -32,7 +32,7 @@ export class OptionsSettings extends AppModel {
         this.tileRevealing = true;
         break;
       case GameVSMode.Parallel:
-        this.sameMinePositions = true;
+        this.identicalMines = true;
         this.openStrategy = false;
         this.sneakPeek = false;
         this.sneakPeekDuration = 0;
