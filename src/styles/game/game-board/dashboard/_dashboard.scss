@@ -14,5 +14,10 @@
     min-height: 30px;
     height: 100%;
     border-width: 2px;
+    position: relative;
+    &::after {
+      @extend .__board-flash;
+      z-index: 2;
+    }
   }
 }
