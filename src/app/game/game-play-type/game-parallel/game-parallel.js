@@ -21,7 +21,7 @@ export class GameParallel extends AppModel {
     this.opponentGame = opponentGame;
     this.games = [this.playerGame, this.opponentGame];
     console.log(this.optionsSettings);
-    this.vsDashboard = new VSDashboardController();
+    this.vsDashboard = new VSDashboardController(this.isOnline);
   }
 
   generateView() {
@@ -39,7 +39,15 @@ export class GameParallel extends AppModel {
     return this.opponentGame.player;
   }
 
-
+  get isOnline() {
+    if (
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode === GameVSMode.Online
+    ) {
+      return true;
+    }
+    return false;
+  }
   
 
 

@@ -222,6 +222,7 @@ export class GameVSClear extends GameVS {
     this.onAfterViewInit.then(() => {
       this.initDashBoard();
 
+      //on restart?
       this.#setSneakPeekParentElementID();
 
       if (this.roundTimer) {

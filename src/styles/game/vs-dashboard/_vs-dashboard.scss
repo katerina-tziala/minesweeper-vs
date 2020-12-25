@@ -2,6 +2,7 @@
 
 @import "./game-player-card/game-player-card";
 @import "../game-board/board-actions/board-actions";
+@import "../game-board/game-board";
 
 // .game-vs-dashboard {
 //   @extend %center-center;
@@ -33,8 +34,9 @@
   // width: 100px;
 }
 
-.vs-dashboard__vs-container {
-  border: 2px solid blue;
+.vs-dashboard__vs-board {
+  // border: 1px solid blue;
   height: 50px;
-  width: 50px;
+  width: 128px;
+  @extend .game-board;
 }

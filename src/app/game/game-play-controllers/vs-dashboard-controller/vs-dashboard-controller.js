@@ -3,12 +3,15 @@
 import { ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./vs-dashboard-controller.constants";
 import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
+import { BoardActionsController } from "GamePlayControllers";
 
 export class VSDashboardController {
 
-  constructor(clearMinefield = true, wrongFlagHint = false) {
+  constructor(online = false, clearMinefield = true, wrongFlagHint = false) {
+    this.online = online;
     this.clearMinefield = clearMinefield;
     this.wrongFlagHint = wrongFlagHint;
+    this.actionsController = new BoardActionsController(this.online);
   }
 
   generateView(player, opponent) {
@@ -50,14 +53,8 @@ export class VSDashboardController {
       DOM_ELEMENT_CLASS.vsContainer,
     ]);
 
-    // const playerCard = PlayerCard.generate(
-    //   player,
-    //   directionLeft,
-    //   this.clearMinefield,
-    //   this.wrongFlagHint
-    // );
-
-    // container.append(playerCard);
+    
+    container.append(this.actionsController.generateView());
 
     return container;
   }
