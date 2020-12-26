@@ -111,7 +111,9 @@ export class GameParallel extends Game {
   }
 
   #gameContainerID(gameID) {
-    return DOM_ELEMENT_CLASS.gameContainer + TYPOGRAPHY.doubleUnderscore + gameID;
+    return (
+      DOM_ELEMENT_CLASS.gameContainer + TYPOGRAPHY.doubleUnderscore + gameID
+    );
   }
 
   #generateGameView(game) {
@@ -133,9 +135,13 @@ export class GameParallel extends Game {
     });
   }
 
+  #pauseGames() {
+    this.#individualGames.forEach((game) => game.pause());
+  }
+
   pause() {
     console.log("pause parallel");
-
+    this.#pauseGames();
     return;
   }
 
@@ -150,14 +156,4 @@ export class GameParallel extends Game {
 
     return;
   }
-
-
-  
-
-
-
-
-
-
-
 }
