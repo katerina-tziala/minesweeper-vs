@@ -34,19 +34,6 @@ export class BoardActionsController {
     return this.#_actionsAllowed;
   }
 
-  generateView() {
-    const container = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.container,
-    ]);
-    const buttons = this.#buttons;
-    if (buttons.length) {
-      buttons.forEach((button) => container.append(button));
-    } else {
-      ElementHandler.hide(container);
-    }
-    return container;
-  }
-
   get #buttons() {
     if (!this.#actionsAllowed) {
       return [];
@@ -100,4 +87,18 @@ export class BoardActionsController {
       this.#onAction(actionType);
     }
   }
+
+  generateView() {
+    const container = ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.container,
+    ]);
+    const buttons = this.#buttons;
+    if (buttons.length) {
+      buttons.forEach((button) => container.append(button));
+    } else {
+      ElementHandler.hide(container);
+    }
+    return container;
+  }
+
 }

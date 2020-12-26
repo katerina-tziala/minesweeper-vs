@@ -1,0 +1,10 @@
+@import "../game-board/game-board";
+@import "./vs-board-indicator/vs-board-indicator";
+
+.vs-board {
+  @extend .game-board;
+  @extend %center-center;
+  flex-direction: column;
+  height: 90px;
+  min-width: 126px;
+}

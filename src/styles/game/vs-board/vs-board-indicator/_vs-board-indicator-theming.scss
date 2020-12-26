@@ -1,0 +1,24 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .vs-board__indicator-item {
+    border-color: theming.getThemeColor($theme, "board-grid");
+    @include theming.setTextShadow($theme);
+
+    @include theming.applyGameColorsStyle(
+      $theme,
+      "&.vs-board__indicator-item-color",
+      "color"
+    );
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

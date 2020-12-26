@@ -7,6 +7,11 @@ import { GameDefault } from "../_game-default";
 
 import { VSDashboardController } from "GamePlayControllers";
 
+
+import {
+  VSBoard,
+} from "GamePlayComponents";
+
 export class GameVS extends GameDefault {
   constructor(id, params, player, opponent) {
     super(id, params, player);
@@ -97,13 +102,28 @@ export class GameVS extends GameDefault {
 
   generateView() {
     const gameContainer = super.generateView();
+    // const vsDashboard = this.vsDashboard.generateView(
+    //   this.player,
+    //   this.opponent,
+    // );
+    const vsDashboard = this.#generateVSDashBoard();
+
+    gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
+    return gameContainer;
+  }
+
+  #generateVSDashBoard() {
     const vsDashboard = this.vsDashboard.generateView(
       this.player,
       this.opponent,
     );
-    gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
-    return gameContainer;
+    const vsBoard = VSBoard.generateView(this.player.colorType, this.opponent.colorType);
+    this.vsDashboard.addElementInDashboard(vsDashboard, vsBoard);
+    return vsDashboard;
   }
+
+
+
 
   init() {
     this.players.forEach((player) => {
@@ -116,6 +136,11 @@ export class GameVS extends GameDefault {
     });
     this.initState();
   }
+
+
+
+
+
 
   initPlayersCards() {
     const targetValuesForPlayers = this.players.map((player) =>

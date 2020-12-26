@@ -77,4 +77,8 @@ export class ElementHandler {
   static getID(element) {
     return element.getAttribute("id");
   }
+
+  static addInChildNodes(parent, element, position = 1) {
+    parent.insertBefore(element, parent.childNodes[position]);
+  }
 }

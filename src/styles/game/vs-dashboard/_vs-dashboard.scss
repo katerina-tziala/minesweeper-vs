@@ -3,7 +3,7 @@
 @import "../game-player-card/game-player-card";
 
 
-@import "../game-board/game-board";
+@import "../vs-board/vs-board";
 
 // .game-vs-dashboard {
 //   @extend %center-center;
@@ -35,9 +35,4 @@
   // width: 100px;
 }
 
-.vs-dashboard__vs-board {
-  // border: 1px solid blue;
-  height: 50px;
-  width: 128px;
-  @extend .game-board;
-}
+

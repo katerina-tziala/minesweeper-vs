@@ -9,18 +9,22 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
 
-import { VSDashboardController } from "GamePlayControllers";
+import { VSDashboardController, BoardActionsController } from "GamePlayControllers";
 
 import { Game } from "../_game";
 
 
-
+import {
+  VSBoard,
+} from "GamePlayComponents";
 
 
 export class GameParallel extends Game {
   #_individualGames = [];
   #PlayerGame;
   #OpponentGame;
+  #vsDashboard;
+  #boardActionsController;
   
 
   constructor(id, params, playerGame, opponentGame) {
@@ -28,8 +32,12 @@ export class GameParallel extends Game {
     this.#setIndividualGames(playerGame, opponentGame);
    
     //console.log(this);
-    this.vsDashboard = new VSDashboardController(this.wrongFlagHint);
-
+    this.#vsDashboard = new VSDashboardController(this.wrongFlagHint);
+    this.#boardActionsController = new BoardActionsController(
+      true,
+      this.isOnline,
+      this.#onBoardButtonAction.bind(this),
+    );
   }
 
   #setIndividualGames(playerGame, opponentGame) {
@@ -70,13 +78,25 @@ export class GameParallel extends Game {
     console.log(this.#player, this.#opponent);
   
 
-    const dashboard = this.vsDashboard.generateView(this.#player, this.#opponent);
+    const vsDashboard = this.#vsDashboard.generateView(this.#player, this.#opponent);
+    const vsBoard = this.#generateVSBoard();
+    
 
-    return dashboard;
+    this.#vsDashboard.addElementInDashboard(vsDashboard, vsBoard);
+
+    
+    
+
+
+    return vsDashboard;
   }
 
   
-
+  #generateVSBoard() {
+    const vsBoard = VSBoard.generateView(this.#player.colorType, this.#opponent.colorType);
+    vsBoard.append(this.#boardActionsController.generateView());
+    return vsBoard;
+  }
 
 
   #generateGamingArea() {
@@ -111,4 +131,20 @@ export class GameParallel extends Game {
       //console.log(game);
     });
   }
+
+
+  #onBoardButtonAction(actionType) {
+    console.log("onBoardButtonAction", actionType);
+    // this.pause();
+    // if (!this.isIdle) {
+    //   self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
+    //     confirmed ? this.#executeBoardAction(actionType) : this.continue();
+    //   });
+    //   return;
+    // }
+    // this.#executeBoardAction(actionType);
+  }
+
+
+
 }
