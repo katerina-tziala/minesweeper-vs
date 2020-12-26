@@ -16,6 +16,7 @@ export const DOM_ELEMENT_CLASS = {
   boardContainer: "game-board-container",
   board: "game-board",
   actionButton: "board-action-btn",
+  gameFooter: "gaming-footer-area",
 };
 
 export const BOARD_SECTION = {

@@ -24,6 +24,12 @@ export class GameViewHelper {
     ]);
   }
 
+  static generateGameFooter() {
+    return ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.gameFooter,
+    ]);
+  }
+
   static getBoardID(gameID) {
     return DOM_ELEMENT_CLASS.board + TYPOGRAPHY.doubleUnderscore + gameID;
   }

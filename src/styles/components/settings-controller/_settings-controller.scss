@@ -52,10 +52,19 @@
   @include settings-controller-theming.applySettingsControllerThemeStyle(
     "light"
   );
+  .game-color-option {
+    border: 1px solid theming.getThemeColor("light", "theme-secondary-intense");
+    
+  }
+  
 }
 
 .theme-dark {
   @include settings-controller-theming.applySettingsControllerThemeStyle(
     "dark"
   );
+  .game-color-option {
+    border: 1px solid theming.getThemeColor("dark", "theme-secondary-intense");
+    
+  }
 }

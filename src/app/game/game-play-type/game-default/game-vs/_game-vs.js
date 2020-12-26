@@ -7,7 +7,7 @@ import { GameDefault } from "../_game-default";
 
 import { VSDashboardController } from "GamePlayControllers";
 
-
+import { GameViewHelper } from "../_game-view-helper";
 import {
   VSBoard,
 } from "GamePlayComponents";
@@ -109,6 +109,19 @@ export class GameVS extends GameDefault {
     const vsDashboard = this.#generateVSDashBoard();
 
     gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
+
+
+
+    const footer = GameViewHelper.generateGameFooter();
+    
+
+    gameContainer.append(footer);
+
+
+
+
+
+
     return gameContainer;
   }
 

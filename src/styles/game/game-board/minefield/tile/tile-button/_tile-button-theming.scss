@@ -10,6 +10,15 @@
       "color"
     );
 
+    &:hover,
+    &:focus {
+      @include theming.applyGameColorsStyle(
+        $theme,
+        "&.tile-button-color",
+        "color"
+      );
+    }
+
     &.tile-button--active {
       background-color: theming.getThemeColor($theme, "board-background");
     }

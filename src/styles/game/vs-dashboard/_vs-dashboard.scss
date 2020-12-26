@@ -1,38 +1,16 @@
 @use "../../theming/theming";
 
 @import "../game-player-card/game-player-card";
-
-
 @import "../vs-board/vs-board";
-
-// .game-vs-dashboard {
-//   @extend %center-center;
-//   width: 100%;
-//   padding: 10px;
-
-//   //border: 2px solid red;
-//   // add parallel actions
-// }
-
-// .game-vs-dashboard__player {
-//   @extend %center-center;
-//   width: 320px;
-// }
 
 .vs-dashboard__area {
   width: 100%;
-  border: 2px solid red;
-  min-height: 300px;
   @extend %center-end;
+  padding-bottom: 30px;
 }
 
 .vs-dashboard__player {
   @extend %center-center;
   width: 320px;
-  height: 94px;
-  // background: yellow;
-  // height: 50px;
-  // width: 100px;
+  height: 95px;
 }
-
-

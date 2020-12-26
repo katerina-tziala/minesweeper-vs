@@ -1,11 +1,14 @@
 @import "../../../components/table/table";
 @import "../board-section/board-section";
 @import "./tile/tile";
+@import "../../../components/scrollbar/scrollbar";
 
 .mine-field {
   @extend ._board-section;
-  @extend %center-center;
   position: relative;
+  max-height: 65vh;
+  overflow: auto;
+  @extend ._scrollbar;
 
   .mine-field__freezer {
     position: absolute;

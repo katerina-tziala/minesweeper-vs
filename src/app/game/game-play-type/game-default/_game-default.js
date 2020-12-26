@@ -43,47 +43,22 @@ export class GameDefault extends Game {
     this.players = [this.player];
 
 
-    this.boardActionsController = new BoardActionsController(
-      this.boardActionsAllowed,
-      this.isOnline,
-      this.#onBoardButtonAction.bind(this),
-    );
+  
 
     // catch error on interface update
   }
 
-  get isOver() {
-    return this.gameOverType ? true : false;
-  }
 
-  get isIdle() {
-    return !this.startedAt ||
-      this.isOver ||
-      this.players.every((player) => !player.moves)
-      ? true
-      : false;
-  }
+
+
 
   get allowMarks() {
     return this.optionsSettings ? this.optionsSettings.marks : false;
   }
 
-  setGameStart() {
-    this.startedAt = nowTimestamp();
-  }
-
-  setGameEnd(type) {
-    if (type && type.length) {
-      this.gameOverType = type;
-      this.completedAt = nowTimestamp();
-    }
-  }
-
   initState() {
+    super.initState();
     this.initRoundTiles();
-    this.gameOverType = null;
-    this.completedAt = null;
-    this.startedAt = null;
   }
 
   initRoundTiles() {
@@ -298,43 +273,22 @@ export class GameDefault extends Game {
   }
 
   get gameBoard() {
-    const gameContainer = document.createDocumentFragment();
-    // const gameContainer = GameViewHelper.generateBoardContainer();
+    //const gameContainer = document.createDocumentFragment();
+     const gameContainer = GameViewHelper.generateBoardContainer();
     const board = GameViewHelper.generateBoard(this.id);
     board.insertBefore(this.boardActions, board.firstChild);
     gameContainer.append(board);
+
+
     return gameContainer;
   }
 
-  get boardActions() {
-    return this.boardActionsController.generateView();
-  }
+  
 
-  get boardActionsAllowed() {
-    return true;
-  }
+ 
 
-  #onBoardButtonAction(actionType) {
-    this.pause();
-    if (!this.isIdle) {
-      self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
-        confirmed ? this.#executeBoardAction(actionType) : this.continue();
-      });
-      return;
-    }
-    this.#executeBoardAction(actionType);
-  }
 
-  #executeBoardAction(actionType) {
-    switch (actionType) {
-      case GameAction.Restart:
-        this.restart();
-        break;
-      default:
-        this.dashBoardActions[actionType]();
-        break;
-    }
-  }
+  
 
   
   init() {
