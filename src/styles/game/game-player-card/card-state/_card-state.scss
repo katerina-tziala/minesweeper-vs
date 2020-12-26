@@ -1,3 +1,5 @@
+@use "./card-state-theming";
+
 ._state-section-container {
   @include circle(100%);
   @extend %center-center;
@@ -52,3 +54,7 @@
     }
   }
 }
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include card-state-theming.setTheming();

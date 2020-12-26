@@ -1,6 +1,6 @@
 @use "../../theming/theming";
 
-@import "./game-player-card/game-player-card";
+@import "../../game/game-player-card/game-player-card";
 
 .game-vs-dashboard {
   @extend %center-center;

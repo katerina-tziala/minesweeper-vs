@@ -1,3 +1,4 @@
+@use "./turns-indicator-theming";
 @import "./turns-indicator-utils";
 
 $container-size: 84;
@@ -31,3 +32,7 @@ $container-size: 84;
   height: #{$container-size / 2}px;
   transform-origin: 0 100%;
 }
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include turns-indicator-theming.setTheming();

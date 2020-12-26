@@ -1,0 +1,31 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  ._turn-indicator-background {
+    background-color: theming.getThemeColor($theme, "theme-secondary-intense");
+  }
+
+  ._turn-indicator {
+    filter: drop-shadow(
+      0px 0px 1px theming.getThemeColor($theme, "game-card-circle-shadow")
+    );
+
+    &.turn-indicator--on {
+      background-color: theming.getThemeColor($theme, "success-primary");
+    }
+
+    &.turn-indicator--off {
+      background-color: theming.getThemeColor($theme, "error-primary");
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

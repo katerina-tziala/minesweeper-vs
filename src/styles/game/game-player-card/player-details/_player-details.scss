@@ -1,3 +1,6 @@
+@use "./player-details-theming";
+
+
 ._player-details {
   width: 152px;
   position: absolute;
@@ -107,3 +110,7 @@
     @extend %end-center;
   }
 }
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include player-details-theming.setTheming();

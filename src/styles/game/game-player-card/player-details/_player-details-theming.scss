@@ -1,0 +1,20 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  ._details-background-shape {
+    border-bottom-color: theming.getThemeColor(
+      $theme,
+      "theme-secondary-intense"
+    );
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

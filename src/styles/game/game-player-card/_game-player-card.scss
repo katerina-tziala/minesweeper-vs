@@ -1,9 +1,10 @@
-@import "./game-player-card-utils";
-@import "./card-icons/card-icons";
-@import "./turns-indicator/turns-indicator";
+@use "./game-player-card-theming";
+
+@import "./card-utils/card-utils";
+@import "./person-icon/person-icon";
 @import "./player-details/player-details";
 @import "./card-state/card-state";
-@import "./game-player-card-theming";
+@import "./turns-indicator/turns-indicator";
 
 .game-player-card {
   width: #{$card-size}px;
@@ -82,11 +83,6 @@
   padding: 2px;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  @include applyPlayerCardThemeStyle("light");
-}
 
-.theme-dark {
-  @include applyPlayerCardThemeStyle("dark");
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-player-card-theming.setTheming();

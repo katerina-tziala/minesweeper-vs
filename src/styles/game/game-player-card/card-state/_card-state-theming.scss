@@ -1,0 +1,29 @@
+@use "../../../theming/theming";
+
+@mixin applyAllowedFlagsThemeStyle($theme) {
+  .allowed-flags {
+    @include theming.setThemeCard($theme);
+
+    &.allowed-flags--0 {
+      color: theming.getThemeColor($theme, "error-primary");
+    }
+
+    &.allowed-flags--1 {
+      color: theming.getThemeColor($theme, "warning-primary");
+    }
+
+    &.allowed-flags--infinite {
+      color: theming.getThemeColor($theme, "game-card-details-intense");
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include applyAllowedFlagsThemeStyle($theme);
+    }
+  }
+}

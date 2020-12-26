@@ -1,0 +1,20 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .person-icon {
+    color: theming.getThemeColor($theme, "theme-secondary");
+    filter: drop-shadow(
+      0px 0px 3px theming.getThemeColor($theme, "game-card-circle-shadow")
+    );
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

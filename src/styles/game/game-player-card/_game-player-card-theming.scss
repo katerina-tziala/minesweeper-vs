@@ -1,0 +1,37 @@
+@use "../../theming/theming";
+
+@mixin applyCardTypeThemeStyle($theme, $color-type) {
+  &.game-player-card__color-type--#{$color-type} {
+    $game-color-type: theming.getThemeColor($theme, "game-type-#{$color-type}");
+
+    .person-icon {
+      &::before {
+        background-color: $game-color-type;
+      }
+    }
+
+    ._state-icon {
+      color: $game-color-type;
+    }
+  }
+}
+
+@mixin setThemeStyles($theme) {
+  .game-player-card {
+    @include theming.dropThemeShadow($theme);
+
+    @for $i from 1 through 8 {
+      @include applyCardTypeThemeStyle($theme, $i);
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

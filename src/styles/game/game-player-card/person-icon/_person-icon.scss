@@ -1,3 +1,5 @@
+@use "./person-icon-theming";
+
 .person-icon {
   @extend %center-center;
   position: absolute;
@@ -21,3 +23,7 @@
     }
   }
 }
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include person-icon-theming.setTheming();

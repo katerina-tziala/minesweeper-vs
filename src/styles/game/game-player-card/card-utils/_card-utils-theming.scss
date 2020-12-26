@@ -1,0 +1,22 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  ._card-circle-border {
+    border-color: theming.getThemeColor($theme, "game-card-details");
+  }
+
+  ._player-card-circle {
+    @include theming.setThemeCard($theme);
+    border-color: theming.getThemeColor($theme, "theme-secondary-intense");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

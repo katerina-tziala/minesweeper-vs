@@ -1,3 +1,5 @@
+@use "./card-utils-theming";
+
 $card-size: 220;
 
 ._card-circle-border {
@@ -10,3 +12,7 @@ $card-size: 220;
   z-index: 2;
   border-style: solid;
 }
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include card-utils-theming.setTheming();
