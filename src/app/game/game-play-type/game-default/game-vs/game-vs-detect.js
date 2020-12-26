@@ -29,13 +29,13 @@ export class GameVSDetect extends GameVS {
     if (this.revealingAllowed(tile)) {
       this.revealMinefieldArea(tile);
       return;
-    } 
-    
+    }
+
     if (this.flaggingAllowed(tile)) {
       this.updateStateOnFlaggedTile(tile);
       return;
     }
-    
+
     this.mineField.enable();
   }
 
@@ -74,7 +74,7 @@ export class GameVSDetect extends GameVS {
 
   updatePlayerCardGameInfoAndCheckGameOver(boardTiles) {
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    
+
     if (this.mineField.allMinesDetected) {
       this.setGameEnd(GameEndType.Detected);
     }
@@ -129,7 +129,11 @@ export class GameVSDetect extends GameVS {
     return Promise.resolve();
   }
 
-  getCardUpdates(turnsUpdate = false, flagsUpdate = false, player = this.playerOnTurn) {
+  getCardUpdates(
+    turnsUpdate = false,
+    flagsUpdate = false,
+    player = this.playerOnTurn,
+  ) {
     const updates = super.getCardUpdates(turnsUpdate);
 
     if (flagsUpdate) {
@@ -147,13 +151,10 @@ export class GameVSDetect extends GameVS {
   }
 
   updatePlayerGameGoalStatistics(player = this.playerOnTurn) {
-    if (this.wrongFlagHint) {
-      const playerTargetValue = this.getPlayerTargetValue(player);
-      return this.vsDashboard.updatePlayerGameGoalStatistics(
-        player,
-        playerTargetValue,
-      );
-    }
-    return Promise.resolve();
+    const playerTargetValue = this.getPlayerTargetValue(player);
+    return this.vsDashboard.updatePlayerGameGoalStatistics(
+      player,
+      playerTargetValue,
+    );
   }
 }

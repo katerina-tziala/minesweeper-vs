@@ -5,7 +5,7 @@ import { GameType, GameVSMode, GameEndType, GameSubmission } from "GameEnums";
 
 import { Game } from "../_game";
 
-import { GameVSDashboard } from "../../game-vs-dashboard/game-vs-dashboard";
+import { VSDashboardController } from "GamePlayControllers";
 
 export class GameVS extends Game {
   constructor(id, params, player, opponent) {
@@ -56,9 +56,9 @@ export class GameVS extends Game {
   }
 
   setDashBoard() {
-    this.vsDashboard = new GameVSDashboard(
-      !this.isDetectMinesGoal,
+    this.vsDashboard = new VSDashboardController(
       this.wrongFlagHint,
+      !this.isDetectMinesGoal,
     );
   }
 
@@ -196,7 +196,7 @@ export class GameVS extends Game {
     if (this.playerOnTurn.exceededTurnsLimit) {
       this.setGameEnd(GameEndType.ExceededTurnsLimit);
     }
-    this.vsDashboard.updatePlayerMissedTurns(this.playerOnTurn).then(() => {
+    this.updatePlayerCardMissedTurns().then(() => {
       if (this.isOver) {
         this.onGameOver();
         return;

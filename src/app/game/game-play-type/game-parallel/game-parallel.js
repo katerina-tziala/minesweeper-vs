@@ -21,7 +21,7 @@ export class GameParallel extends AppModel {
     this.opponentGame = opponentGame;
     this.games = [this.playerGame, this.opponentGame];
     console.log(this.optionsSettings);
-    this.vsDashboard = new VSDashboardController(this.isOnline);
+   // this.vsDashboard = new VSDashboardController(this.isOnline);
   }
 
   generateView() {
@@ -55,7 +55,7 @@ export class GameParallel extends AppModel {
     const fragment = document.createDocumentFragment();
     console.log("twra");
     
-    fragment.append(this.vsDashboard.generateView(this.player, this.opponent));
+    //fragment.append(this.vsDashboard.generateView(this.player, this.opponent));
    
     return fragment;
   }
