@@ -23,13 +23,15 @@ export class GameVSClear extends GameVS {
     );
   }
 
-  get boardActionButtons() {
-    let boardActions = super.boardActionButtons;
-    boardActions = this.#sneakPeekController.getUpdatedBoardActions(
-      boardActions,
-    );
+  get boardActions() {
+    const boardActions = super.boardActions;
+    const sneakPeekToggle = this.#sneakPeekController.toggleButton;
+    if (sneakPeekToggle) {
+      boardActions.append(sneakPeekToggle);
+    }
     return boardActions;
   }
+
 
   get goalTargetNumber() {
     return this.levelSettings.numberOfEmptyTiles;

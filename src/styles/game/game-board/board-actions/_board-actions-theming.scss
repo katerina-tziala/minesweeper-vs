@@ -3,8 +3,6 @@
 @use "../game-board-styles";
 @use "../../../theming/theming";
 
-
-
 @mixin setThemeStyles($theme) {
   .board-action-btn {
     color: theming.getThemeColor($theme, "theme-primary");

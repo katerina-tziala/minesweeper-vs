@@ -5,7 +5,13 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
 
-import { GameType, GameVSMode, GameAction, GameEndType, GameSubmission } from "GameEnums";
+import {
+  GameType,
+  GameVSMode,
+  GameAction,
+  GameEndType,
+  GameSubmission,
+} from "GameEnums";
 import { GameViewHelper } from "./_game-view-helper";
 import {
   ACTION_BUTTONS,
@@ -19,10 +25,9 @@ import {
   MineField,
 } from "GamePlayComponents";
 
-import {
-  GameTimer
-} from "GamePlayControllers";
+import { GameTimer } from "GamePlayControllers";
 import { CONFIRMATION } from "../../../components/modal/modal.constants";
+import { BoardActionsController } from "GamePlayControllers";
 
 export class Game extends AppModel {
   #dashBoardActions = {};
@@ -36,6 +41,13 @@ export class Game extends AppModel {
     this.players = [this.player];
     this.createdAt = nowTimestamp();
     this.onActionTimer = true;
+
+    this.boardActionsController = new BoardActionsController(
+      this.boardActionsAllowed,
+      this.isOnline,
+      this.#onBoardButtonAction.bind(this),
+    );
+
     // catch error on interface update
   }
 
@@ -113,8 +125,8 @@ export class Game extends AppModel {
 
   get dashboardFaceColor() {
     if (
-      this.optionsSettings.vsMode
-      && this.optionsSettings.vsMode !== GameVSMode.Parallel
+      this.optionsSettings.vsMode &&
+      this.optionsSettings.vsMode !== GameVSMode.Parallel
     ) {
       return this.playerOnTurn.colorType;
     }
@@ -156,14 +168,14 @@ export class Game extends AppModel {
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
     this.mineField
-    .revealMinefieldTile(tile, player.id)
-    .then((revealedTiles) => {
-      if (this.tileDetonated(revealedTiles)) {
-        this.updateStateOnTileDetonation(revealedTiles);
-        return;
-      }
-      this.updateStateOnRevealedTiles(revealedTiles);
-    });
+      .revealMinefieldTile(tile, player.id)
+      .then((revealedTiles) => {
+        if (this.tileDetonated(revealedTiles)) {
+          this.updateStateOnTileDetonation(revealedTiles);
+          return;
+        }
+        this.updateStateOnRevealedTiles(revealedTiles);
+      });
   }
 
   markingAllowed(tile, player = this.playerOnTurn) {
@@ -217,29 +229,6 @@ export class Game extends AppModel {
     });
   }
 
-  get gameBoard() {
-    const gameContainer = document.createDocumentFragment();
-    // const gameContainer = GameViewHelper.generateBoardContainer();
-    const board = GameViewHelper.generateBoard(this.id);
-    board.insertBefore(this.boardActions, board.firstChild);
-    gameContainer.append(board);
-    return gameContainer;
-  }
-
-  get boardActions() {
-    const boardActions = GameViewHelper.generateBoardSection(
-      BOARD_SECTION.boardActions,
-      this.id,
-    );
-    const boardActionButtons = this.boardActionButtons;
-    if (boardActionButtons.length) {
-      boardActionButtons.forEach((button) => boardActions.append(button));
-    } else {
-      ElementHandler.hide(boardActions);
-    }
-    return boardActions;
-  }
-
   get onViewInit() {
     const viewParts = [
       this.renderMineField(),
@@ -289,37 +278,6 @@ export class Game extends AppModel {
     this.mineField.enable();
   }
 
-  #executeBoardAction(action, confirmation = CONFIRMATION.quitGame) {
-    this.pause();
-    if (action) {
-      this.isIdle
-        ? action()
-        : self.modal.displayConfirmation(confirmation, (confirmed) => {
-            confirmed ? action() : this.continue();
-          });
-    }
-  }
-
-  onExit() {
-    console.log("onExit - check online");
-    this.#executeBoardAction(this.#dashBoardActions.onExit.bind(this));
-    return;
-  }
-
-  onRestart() {
-    console.log("onRestart");
-    this.#executeBoardAction(this.restart.bind(this), CONFIRMATION.restartGame);
-  }
-
-  onReset() {
-    console.log("onReset");
-    this.#executeBoardAction(
-      this.#dashBoardActions.onReset.bind(this),
-      CONFIRMATION.resetGame,
-    );
-    return;
-  }
-
   // OVERRIDEN FUNCTIONS
   get gameTimerSettings() {
     const step = 1;
@@ -330,31 +288,6 @@ export class Game extends AppModel {
 
   get playerOnTurn() {
     return this.player;
-  }
-
-  get boardActionButtons() {
-    const boardActions = [];
-    boardActions.push(
-      GameViewHelper.generateActionButton(
-        ACTION_BUTTONS.exit,
-        this.onExit.bind(this),
-      ),
-    );
-    if (!this.isOnline) {
-      boardActions.push(
-        GameViewHelper.generateActionButton(
-          ACTION_BUTTONS.restart,
-          this.onRestart.bind(this),
-        ),
-      );
-      boardActions.push(
-        GameViewHelper.generateActionButton(
-          ACTION_BUTTONS.reset,
-          this.onReset.bind(this),
-        ),
-      );
-    }
-    return boardActions;
   }
 
   get initViewControllers() {
@@ -381,9 +314,46 @@ export class Game extends AppModel {
     return gameContainer;
   }
 
+  get gameBoard() {
+    const gameContainer = document.createDocumentFragment();
+    // const gameContainer = GameViewHelper.generateBoardContainer();
+    const board = GameViewHelper.generateBoard(this.id);
+    board.insertBefore(this.boardActions, board.firstChild);
+    gameContainer.append(board);
+    return gameContainer;
+  }
 
+  get boardActions() {
+    return this.boardActionsController.generateView();
+  }
 
+  get boardActionsAllowed() {
+    return true;
+  }
 
+  #onBoardButtonAction(actionType) {
+    this.pause();
+    if (!this.isIdle) {
+      self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
+        confirmed ? this.#executeBoardAction(actionType) : this.continue();
+      });
+      return;
+    }
+    this.#executeBoardAction(actionType);
+  }
+
+  #executeBoardAction(actionType) {
+    switch (actionType) {
+      case GameAction.Restart:
+        this.restart();
+        break;
+      default:
+        this.#dashBoardActions[actionType]();
+        break;
+    }
+  }
+
+  
   init() {
     return;
   }
@@ -413,7 +383,6 @@ export class Game extends AppModel {
       80,
     ];
   }
-
 
   handleTileMarking(tile) {
     // set flag
@@ -484,7 +453,6 @@ export class Game extends AppModel {
     console.log("----------------------------");
     console.log("update state: ", type);
     //console.log(this);
-
   }
 
   onGameOver(boardTiles = []) {

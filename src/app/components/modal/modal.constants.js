@@ -28,19 +28,19 @@ export const MOVEMENT_DURATION = {
 };
 
 export const CONFIRMATION = {
-  quitGame: {
+  quit: {
     title: "Quit Game",
     content: "Quiting game in...",
     timer: 3,
     confirmButton: QUIT_BTN,
   },
-  restartGame: {
+  restart: {
     title: "Restart Game",
     content: "Restarting game in...",
     timer: 3,
     confirmButton: RESTART_BTN,
   },
-  resetGame: {
+  reset: {
     title: "Reset Game",
     content: "Reseting game in...",
     timer: 3,

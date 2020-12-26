@@ -76,6 +76,13 @@ export class SneakPeekController {
     };
   }
 
+  get toggleButton() {
+    if (this.allowed) {
+      return this.#peekToggle.generate();
+    }
+    return undefined;
+  }
+
   #setStart() {
     this.#_start = nowTimestamp();
   }
@@ -121,14 +128,6 @@ export class SneakPeekController {
   setPlayers(player, opponent) {
     this.#_player = player;
     this.#_opponent = opponent;
-  }
-
-  getUpdatedBoardActions(boardActions) {
-    if (this.allowed) {
-      const sneakPeekBtn = this.#peekToggle.generate();
-      boardActions.push(sneakPeekBtn);
-    }
-    return boardActions;
   }
 
   updateToggleState(roundSecond = 0) {

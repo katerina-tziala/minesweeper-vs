@@ -12,11 +12,8 @@ export class GameSinglePlayer extends Game {
     this.init();
   }
 
-  get boardActionButtons() {
-    if (this.isParallel) {
-      return [];
-    }
-    return super.boardActionButtons;
+  get boardActionsAllowed() {
+    return !this.isParallel;
   }
 
   get isParallel() {

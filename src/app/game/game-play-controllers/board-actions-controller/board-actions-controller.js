@@ -1,27 +1,44 @@
 "use strict";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { GameAction } from "GameEnums";
 import {
   BUTTONS,
   DOM_ELEMENT_CLASS,
 } from "./board-actions-controller.constants";
 
 export class BoardActionsController {
-  constructor(online = false) {
-    this.online = online;
+  #_online;
+  #_actionsAllowed;
+  #onAction;
+
+  constructor(actionsAllowed = false, online = false, onAction) {
+    this.#actionsAllowed = actionsAllowed;
+    this.#online = online;
+    this.#onAction = onAction;
+  }
+
+  set #online(online) {
+    return this.#_online = online;
+  }
+
+  get #online() {
+    return this.#_online;
+  }
+
+  set #actionsAllowed(allowed) {
+    return this.#_actionsAllowed = allowed;
+  }
+
+  get #actionsAllowed() {
+    return this.#_actionsAllowed;
   }
 
   generateView() {
-    const fragment = document.createDocumentFragment();
-    fragment.append(this.#boardActions);
-    return fragment;
-  }
-
-  get #boardActions() {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.container,
     ]);
-    const buttons = this.buttons;
+    const buttons = this.#buttons;
     if (buttons.length) {
       buttons.forEach((button) => container.append(button));
     } else {
@@ -30,10 +47,15 @@ export class BoardActionsController {
     return container;
   }
 
-  get buttons() {
+  get #buttons() {
+    if (!this.#actionsAllowed) {
+      return [];
+    }
+
     const actionButtons = [];
+
     actionButtons.push(this.#generatedExitButton);
-    if (!this.online) {
+    if (!this.#online) {
       actionButtons.push(this.#generatedRestartButton);
       actionButtons.push(this.#generatedResetButton);
     }
@@ -47,7 +69,7 @@ export class BoardActionsController {
   }
 
   get #generatedExitButton() {
-    return this.#generateActionButton(BUTTONS.exit, this.#onExit.bind(this));
+    return this.#generateActionButton(BUTTONS.exit, this.#onQuit.bind(this));
   }
 
   get #generatedRestartButton() {
@@ -61,15 +83,21 @@ export class BoardActionsController {
     return this.#generateActionButton(BUTTONS.reset, this.#onReset.bind(this));
   }
 
-  #onExit() {
-    console.log("onExit");
+  #onQuit() {
+    this.#submitAction(GameAction.Quit);
   }
 
   #onRestart() {
-    console.log("onRestart");
+    this.#submitAction(GameAction.Restart);
   }
 
   #onReset() {
-    console.log("onReset");
+    this.#submitAction(GameAction.Reset);
+  }
+
+  #submitAction(actionType) {
+    if (this.#onAction) {
+      this.#onAction(actionType);
+    }
   }
 }
