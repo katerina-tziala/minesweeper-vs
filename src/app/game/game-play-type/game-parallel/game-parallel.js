@@ -1,6 +1,7 @@
 "use strict";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { clone } from "~/_utils/utils.js";
 
 import { AppModel } from "~/_models/app-model";
 
@@ -9,20 +10,49 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
 
 import { VSDashboardController } from "GamePlayControllers";
-export class GameParallel extends AppModel {
 
+import { Game } from "../_game";
+
+
+
+
+
+export class GameParallel extends Game {
+  #_individualGames = [];
+  #PlayerGame;
+  #OpponentGame;
   
-  constructor(id, type, optionsSettings, playerGame, opponentGame) {
-    super();
-    this.type = type;
-    this.id = id ? id : this.type;
-    this.optionsSettings = optionsSettings;
-    this.playerGame = playerGame;
-    this.opponentGame = opponentGame;
-    this.games = [this.playerGame, this.opponentGame];
-    console.log(this.optionsSettings);
-   // this.vsDashboard = new VSDashboardController(this.isOnline);
+
+  constructor(id, params, playerGame, opponentGame) {
+    super(id, params);
+    this.#setIndividualGames(playerGame, opponentGame);
+   
+    //console.log(this);
+    this.vsDashboard = new VSDashboardController(this.wrongFlagHint);
+
   }
+
+  #setIndividualGames(playerGame, opponentGame) {
+    this.#PlayerGame = playerGame;
+   
+    opponentGame.player.turn = false;
+    this.#OpponentGame = opponentGame;
+    
+    this.#_individualGames = [this.#PlayerGame, this.#OpponentGame];
+  }
+
+  get #individualGames() {
+    return this.#_individualGames;
+  }
+
+  get #player() {
+    return this.#PlayerGame.player;
+  }
+
+  get #opponent() {
+    return this.#OpponentGame.player;
+  }
+
 
   generateView() {
     const gameContainer = document.createDocumentFragment();
@@ -31,36 +61,21 @@ export class GameParallel extends AppModel {
     return gameContainer;
   }
 
-  get player() {
-    return this.playerGame.player;
-  }
-
-  get opponent() {
-    return this.opponentGame.player;
-  }
-
-  get isOnline() {
-    if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode === GameVSMode.Online
-    ) {
-      return true;
-    }
-    return false;
-  }
-  
-
-
   #generateDashboardView() {
-    const fragment = document.createDocumentFragment();
+    // const opponent = this.#opponentData;
+    // opponent.turn = false;
     console.log("twra");
     
-    //fragment.append(this.vsDashboard.generateView(this.player, this.opponent));
-   
-    return fragment;
+
+    console.log(this.#player, this.#opponent);
+  
+
+    const dashboard = this.vsDashboard.generateView(this.#player, this.#opponent);
+
+    return dashboard;
   }
 
-
+  
 
 
 
@@ -68,7 +83,7 @@ export class GameParallel extends AppModel {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gamingArea,
     ]);
-    this.games.forEach((game) => {
+    this.#individualGames.forEach((game) => {
       container.append(this.#generateGameView(game));
     });
     return container;
@@ -90,7 +105,7 @@ export class GameParallel extends AppModel {
   start() {
     console.log("start parallel");
 
-    this.games.forEach((game) => {
+    this.#individualGames.forEach((game) => {
       game.start();
 
       //console.log(game);

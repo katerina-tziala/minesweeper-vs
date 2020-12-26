@@ -3,11 +3,11 @@ import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
 import { GameType, GameVSMode, GameEndType, GameSubmission } from "GameEnums";
 
-import { Game } from "../_game";
+import { GameDefault } from "../_game-default";
 
 import { VSDashboardController } from "GamePlayControllers";
 
-export class GameVS extends Game {
+export class GameVS extends GameDefault {
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;

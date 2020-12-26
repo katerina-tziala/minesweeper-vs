@@ -29,18 +29,19 @@ import { GameTimer } from "GamePlayControllers";
 import { CONFIRMATION } from "../../../components/modal/modal.constants";
 import { BoardActionsController } from "GamePlayControllers";
 
-export class Game extends AppModel {
-  #dashBoardActions = {};
+import { Game } from "../_game";
 
+
+export class GameDefault extends Game {
+ 
+  
   //round statistics
   constructor(id, params, player) {
-    super();
-    this.update(params);
-    this.id = id ? id : this.type;
+    super(id, params);
+
     this.player = player;
     this.players = [this.player];
-    this.createdAt = nowTimestamp();
-    this.onActionTimer = true;
+
 
     this.boardActionsController = new BoardActionsController(
       this.boardActionsAllowed,
@@ -49,20 +50,6 @@ export class Game extends AppModel {
     );
 
     // catch error on interface update
-  }
-
-  set dashBoardActions(actions) {
-    return (this.#dashBoardActions = actions);
-  }
-
-  get isOnline() {
-    if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode === GameVSMode.Online
-    ) {
-      return true;
-    }
-    return false;
   }
 
   get isOver() {
@@ -79,10 +66,6 @@ export class Game extends AppModel {
 
   get allowMarks() {
     return this.optionsSettings ? this.optionsSettings.marks : false;
-  }
-
-  get wrongFlagHint() {
-    return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
   }
 
   setGameStart() {
@@ -348,7 +331,7 @@ export class Game extends AppModel {
         this.restart();
         break;
       default:
-        this.#dashBoardActions[actionType]();
+        this.dashBoardActions[actionType]();
         break;
     }
   }

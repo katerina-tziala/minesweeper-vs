@@ -2,11 +2,10 @@
 import { replaceStringParameter } from "~/_utils/utils";
 
 import { GameEndType, GameVSMode, GameSubmission } from "GameEnums";
-import { Game } from "../_game";
-
+import { GameDefault } from "../_game-default";
 import { MESSAGE } from "./game-single-player.constants";
 
-export class GameSinglePlayer extends Game {
+export class GameSinglePlayer extends GameDefault {
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
