@@ -1,0 +1,57 @@
+@use "sass:list";
+@use "../../../../../theming/theming";
+
+@mixin setTextShadow($theme) {
+  $shadow-color: theming.getThemeColor($theme, "theme-primary");
+  text-shadow: -1px -1px 1px rgba($shadow-color, 0.3),
+    1px -1px 1px rgba($shadow-color, 0.3), -1px 1px 1px rgba($shadow-color, 0.3),
+    1px 1px 1px rgba($shadow-color, 0.3);
+}
+
+@mixin setThemeStyles($theme) {
+  .tile-button {
+    @include theming.applyGameColorsStyle(
+      $theme,
+      "&.tile-button-color",
+      "color"
+    );
+
+    &.tile-button--active {
+      background-color: theming.getThemeColor($theme, "board-background");
+    }
+
+    &.tile-button--revealed {
+      background-color: rgba(
+        theming.getThemeColor($theme, "board-button-background"),
+        0.5
+      );
+    }
+
+    &.tile-button--flagged {
+      &::before {
+        @include setTextShadow($theme);
+      }
+    }
+
+    &.tile-button--marked {
+      &::after {
+        @include setTextShadow($theme);
+      }
+    }
+  }
+
+  ._wrong-flag-hint {
+    color: theming.getThemeColor($theme, "error-primary");
+    @include setTextShadow($theme);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@use "../../theming/theming";
+@use "./game-board-utils";
+
+@mixin setThemeStyles($theme) {
+  .game-board {
+    background-color: theming.getThemeColor($theme, "board-background");
+    color: theming.getThemeColor($theme, "board-color");
+    @include theming.setThemeBoxShadow($theme);
+    @include game-board-utils.boardBorders($theme);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

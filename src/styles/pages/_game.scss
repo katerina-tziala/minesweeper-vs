@@ -3,13 +3,17 @@
 @import "../global/_module-global";
 @import "../utils/_module-utils";
 
-@import "../components/button/button";
 
-@import "../game/game-board/game-board";
+
+
+
+@import "../game/minesweeper-board/minesweeper-board";
+
+
 @import "../components/game-vs-dashboard/game-vs-dashboard";
 
 
- @import "../game/game-board/sneak-peek/sneak-peek";
+
 
 @import "../game/vs-dashboard/vs-dashboard";
 

@@ -1,0 +1,17 @@
+@use "./tile-styles";
+@import "./tile-button/tile-button";
+
+.tile-cell {
+  @include rectangle(22px);
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid;
+  @include tile-styles.setNumberContent();
+  cursor: pointer;
+}
+
+@include tile-styles.setMineTypeIcons();
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include tile-styles.setTheming();

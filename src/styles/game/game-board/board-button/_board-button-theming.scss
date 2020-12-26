@@ -1,12 +1,12 @@
 
 @use "sass:list";
 @use "../../../theming/theming";
-@use "../game-board-styles";
+@use "../game-board-utils";
 
 
 @mixin setThemeStyles($theme) {
   ._board-button {
-    @include game-board-styles.applyThemeBoardButtonStyle($theme);
+    @include game-board-utils.applyThemeBoardButtonStyle($theme);
     color: theming.getThemeColor($theme, "theme-primary");
     background-color: theming.getThemeColor($theme, "board-button-background");
     &:hover,
