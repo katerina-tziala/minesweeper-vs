@@ -1,0 +1,10 @@
+@use "./board-section-theming";
+
+._board-section {
+  border-width: 2px;
+  border-style: solid;
+  min-height: 30px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include board-section-theming.setTheming();

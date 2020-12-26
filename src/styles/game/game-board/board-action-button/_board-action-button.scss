@@ -1,0 +1,14 @@
+@import "../board-button/board-button";
+
+.board-action-btn {
+  @extend .btn-icon;
+  @extend ._board-button;
+  max-height: 30px;
+  flex-grow: 1;
+  font-size: 1.3rem;
+
+  &::after {
+    width: 30px;
+    border: 1px solid transparent;
+  }
+}

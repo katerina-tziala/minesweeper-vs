@@ -1,6 +1,5 @@
-@use "../../theming/theming";
 @use "./sneak-peak-counter-theming";
-@import "../../game/game-board/game-board-flash";
+@import "../../game-board-flash";
 
 .sneak-peek-counter {
   @extend %center-center;

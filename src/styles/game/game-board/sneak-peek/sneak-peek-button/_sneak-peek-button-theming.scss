@@ -1,21 +1,19 @@
 @use "sass:list";
-@use "../../theming/theming";
+@use "../../../../theming/theming";
 
 @mixin setThemeStyles($theme) {
   .sneak-peek-btn {
-    @include theming.applyGameColorsStyle($theme,"&.sneak-peek-btn","color");
-   
+    @include theming.applyGameColorsStyle($theme, "&.sneak-peek-btn", "color");
   }
 
   .sneak-peek-btn-state {
     &.sneak-peek-btn-state--peeking {
-      text-shadow: 0 0 2px theming.getThemeColor($theme,"theme-primary");
+      text-shadow: 0 0 2px theming.getThemeColor($theme, "theme-primary");
     }
   }
 
   .sneak-peek-limit {
-   
-     &.sneak-peek-limit--0 {
+    &.sneak-peek-limit--0 {
       color: theming.getThemeColor($theme, "error-primary");
     }
     &.sneak-peek-limit--1 {

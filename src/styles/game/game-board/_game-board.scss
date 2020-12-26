@@ -3,21 +3,16 @@
 @use "../../theming/theming";
 @use "./game-board-styles";
 
-._board-section {
-  border-width: 2px;
-  border-style: solid;
-  min-height: 30px;
-}
 
-._board-button {
-  height: 30px;
-  min-width: 30px;
-}
 
 @import "./board-actions/board-actions";
+
+
 @import "./dashboard/dashboard";
 @import "./minefield/minefield";
 @import "./tile/tile";
+
+
 
 .game-board {
   padding: 5px;
@@ -29,31 +24,11 @@
     @include game-board-styles.applyThemeBoardStyle("light");
   }
 
-  ._board-section {
-    @include game-board-styles.twoSideBorderDirectionTopLeft(
-      theming.getThemeColor("light", "board-grid-dark"),
-      theming.getThemeColor("light", "board-grid-light")
-    );
-  }
-
-  ._board-button {
-    @include game-board-styles.applyThemeBoardButtonStyle("light");
-  }
 }
 
 .theme-dark {
   .game-board {
     @include game-board-styles.applyThemeBoardStyle("dark");
   }
-
-  ._board-section {
-    @include game-board-styles.twoSideBorderDirectionTopLeft(
-      theming.getThemeColor("dark", "board-grid-dark"),
-      theming.getThemeColor("dark", "board-grid-light")
-    );
-  }
-
-  ._board-button {
-    @include game-board-styles.applyThemeBoardButtonStyle("dark");
-  }
+  
 }

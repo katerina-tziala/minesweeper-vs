@@ -1,7 +1,19 @@
-@use "../game-board-styles";
+@import "../game-board-flash";
+@import "../board-section/board-section";
+@import "./digital-counter/digital-counter";
+@import "./dashboard-face-icon/dashboard-face-icon";
 
-@import "../dashboard-face-icon/dashboard-face-icon";
-@import "../digital-counter/digital-counter";
+
+._dashboard-counter {
+  @extend ._board-button;
+  height: 34px;
+  position: relative;
+
+  &::after {
+    @extend .__board-flash;
+    z-index: 2;
+  }
+}
 
 .dashboard {
   @extend ._board-section;
@@ -10,14 +22,6 @@
 
   .dashboard__time-counter,
   .dashboard__mine-counter {
-    @extend ._board-button;
-    min-height: 30px;
-    height: 100%;
-    border-width: 2px;
-    position: relative;
-    &::after {
-      @extend .__board-flash;
-      z-index: 2;
-    }
+    @extend ._dashboard-counter;
   }
 }

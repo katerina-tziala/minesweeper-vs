@@ -11,7 +11,7 @@ export class VSDashboardController {
     this.online = online;
     this.clearMinefield = clearMinefield;
     this.wrongFlagHint = wrongFlagHint;
-    this.actionsController = new BoardActionsController(this.online);
+    this.actionsController = new BoardActionsController(true, this.online);
   }
 
   generateView(player, opponent) {

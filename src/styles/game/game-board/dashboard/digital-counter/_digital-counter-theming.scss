@@ -1,0 +1,17 @@
+@use "../../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .digital-counter {
+    background-color: theming.getThemeColor($theme, "digit-background");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

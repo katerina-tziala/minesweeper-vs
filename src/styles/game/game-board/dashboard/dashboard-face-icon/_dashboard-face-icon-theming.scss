@@ -1,4 +1,5 @@
-@use "../../../theming/theming";
+@use "sass:list";
+@use "../../../../theming/theming";
 
 @mixin setIconShadow($theme) {
   $shadow-color: theming.getThemeColor($theme, "theme-primary");
@@ -33,7 +34,17 @@
   }
 }
 
-@mixin applyThemStyles($theme) {
+@mixin setThemeStyles($theme) {
   @include applyThemeDefaultDashboardIcon($theme);
   @include applyThemePlayerIcon($theme);
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
 }

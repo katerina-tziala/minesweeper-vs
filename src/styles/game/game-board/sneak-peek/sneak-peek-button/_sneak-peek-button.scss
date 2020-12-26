@@ -1,8 +1,5 @@
-@use "sass:list";
-@use "../../theming/theming";
 @use "./sneak-peek-button-theming";
-
-@import "../game-board/board-actions/board-actions";
+@import "../../board-action-button/board-action-button";
 
 .sneak-peek-btn {
   @extend .board-action-btn;

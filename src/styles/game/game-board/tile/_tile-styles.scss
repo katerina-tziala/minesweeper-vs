@@ -65,12 +65,12 @@
   }
 
   .tile-cell-btn {
-    @include game-board-styles.applyThemeBoardButtonStyle($theme);
-    @include theming.applyGameColorsStyle(
-      $theme,
-      "&.tile-cell-btn-color",
-      "color"
-    );
+    // @include game-board-styles.applyThemeBoardButtonStyle($theme);
+    // @include theming.applyGameColorsStyle(
+    //   $theme,
+    //   "&.tile-cell-btn-color",
+    //   "color"
+    // );
 
     &.tile-cell-btn--active {
       background-color: theming.getThemeColor($theme, "board-background");

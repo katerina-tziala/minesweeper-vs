@@ -1,0 +1,26 @@
+
+@use "sass:list";
+@use "../../../theming/theming";
+@use "../game-board-styles";
+
+
+@mixin setThemeStyles($theme) {
+  ._board-section {
+    $top-left-color: theming.getThemeColor($theme, "board-grid-dark");
+    $bottom-right-color: theming.getThemeColor($theme, "board-grid-light");
+    @include game-board-styles.twoSideBorderDirectionTopLeft(
+      $top-left-color,
+      $bottom-right-color
+    );
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

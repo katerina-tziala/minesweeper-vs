@@ -1,6 +1,5 @@
-@use "../../../theming/theming";
-
-@import "./digit";
+@use "./digital-counter-theming";
+@import "./digit/digit";
 
 .digital-counter {
   @extend %center-center;
@@ -59,15 +58,6 @@
   top: 12px;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  .digital-counter {
-    background-color: theming.getThemeColor("light", "digit-background");
-  }
-}
 
-.theme-dark {
-  .digital-counter {
-    background-color: theming.getThemeColor("dark", "digit-background");
-  }
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include digital-counter-theming.setTheming();

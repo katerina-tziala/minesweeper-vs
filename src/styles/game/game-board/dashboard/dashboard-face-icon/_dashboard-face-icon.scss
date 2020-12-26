@@ -1,5 +1,6 @@
-@use "../../../theming/theming";
-@use "./dashboard-face-icon-styles";
+@use "./dashboard-face-icon-theming";
+@import "../../board-button/board-button";
+@import "../../game-board-flash";
 
 %absolute-center {
   position: absolute;
@@ -33,12 +34,11 @@
 }
 
 .face-icon {
-  width: 100%;
-  height: 100%;
+  @include rectangle(28px);
   @extend %center-center;
   font-size: 22px;
   position: relative;
- 
+  
 
   &::before {
     @extend .__face-background;
@@ -51,14 +51,5 @@
   @include setFaceIcons("&.face-icon");
 }
 
-
-
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  @include dashboard-face-icon-styles.applyThemStyles("light");
-}
-
-.theme-dark {
-  @include dashboard-face-icon-styles.applyThemStyles("dark");
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include dashboard-face-icon-theming.setTheming();

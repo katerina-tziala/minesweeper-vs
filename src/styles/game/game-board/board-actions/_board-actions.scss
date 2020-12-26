@@ -1,25 +1,9 @@
-@use "../game-board-styles";
-@use "../../../theming/theming";
-@use "./board-actions-theming";
-@import "../../../components/button/button";
+@import "../board-section/board-section";
+@import "../board-action-button/board-action-button";
 
 .board-actions {
   @extend ._board-section;
   @extend %evenly-center;
-}
-
-.board-action-btn {
-  @extend .btn-icon;
-  height: 30px;
-  min-width: 30px;
-  flex-grow: 1;
-  font-size: 1.3rem;
-  border-width: 2px;
-
-  &::after {
-    width: 30px;
-    border: 1px solid transparent;
-  }
 }
 
 .btn-icon--exit-game {
@@ -47,7 +31,3 @@
 .btn-icon--reset-game {
   @include afterIcon("sliders");
 }
-
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-@include board-actions-theming.setTheming();

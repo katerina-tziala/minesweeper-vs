@@ -1,0 +1,12 @@
+@use "./board-button-theming";
+@import "../../../components/button/button";
+
+._board-button {
+  min-height: 30px;
+  min-width: 30px;
+  border-width: 2px;
+  box-sizing: border-box;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include board-button-theming.setTheming();

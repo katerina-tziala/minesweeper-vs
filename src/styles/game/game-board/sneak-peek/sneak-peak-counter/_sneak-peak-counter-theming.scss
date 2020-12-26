@@ -1,5 +1,5 @@
 @use "sass:list";
-@use "../../theming/theming";
+@use "../../../../theming/theming";
 
 @mixin setThemeStyles($theme) {
   .sneak-peek-counter {

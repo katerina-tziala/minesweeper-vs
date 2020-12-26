@@ -1,0 +1,53 @@
+@use "../../../../../theming/theming";
+
+@mixin digitLineColors($color-off, $color-on, $position) {
+  border-#{$position}-color: $color-off;
+
+  &.digit__line--on {
+    border-#{$position}-color: $color-on;
+  }
+}
+
+@mixin setThemeStyles($theme) {
+  $color-off: theming.getThemeColor($theme, "digit-off");
+  $color-on: theming.getThemeColor($theme, "digit-on");
+
+  ._right__line {
+    @include digitLineColors($color-off, $color-on, "right");
+  }
+
+  ._left__line {
+    @include digitLineColors($color-off, $color-on, "left");
+  }
+
+  ._top__line {
+    @include digitLineColors($color-off, $color-on, "top");
+  }
+
+  ._bottom__line {
+    @include digitLineColors($color-off, $color-on, "bottom");
+  }
+
+  ._middle__line {
+    @include digitLineColors($color-off, $color-on, "bottom");
+
+    &::after {
+      border-top-color: $color-off;
+    }
+    &.digit__line--on {
+      &::after {
+        border-top-color: $color-on;
+      }
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

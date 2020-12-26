@@ -1,6 +1,12 @@
 @use "sass:list";
 @use "../../../theming/theming";
 @use "./tile-styles";
+@import "../board-button/board-button";
+
+
+
+
+
 
 .tile-cell {
   @include rectangle(22px);
@@ -12,21 +18,25 @@
 }
 
 .tile-cell-btn {
+  // outline: none;
+  // border: none;
+  // cursor: pointer;
+  @extend ._board-button;
   @include rectangle(22px);
-  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+
+  
   position: absolute;
   top: 0;
   left: 0;
-  outline: none;
-  border: none;
-  cursor: pointer;
   overflow: hidden;
   text-align: center;
-  border-width: 2px;
+  // border-width: 2px;
 
-  &:disabled {
-    cursor: not-allowed !important;
-  }
+  // &:disabled {
+  //   cursor: not-allowed !important;
+  // }
 
   &.tile-cell-btn--active {
     border: 2px solid transparent !important;
