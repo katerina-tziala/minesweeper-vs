@@ -3,6 +3,12 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { clone } from "~/_utils/utils.js";
 
+
+import {
+  valueDefined
+} from "~/_utils/validator";
+
+
 import { AppModel } from "~/_models/app-model";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
@@ -24,15 +30,23 @@ export class GameParallel extends Game {
   #PlayerGame;
   #OpponentGame;
   #vsDashboard;
-  
+
   constructor(id, params, playerGame, opponentGame) {
     super(id, params);
 
     this.#setIndividualGames(playerGame, opponentGame);
     this.#setPlayers();
 
+
     console.log(this.optionsSettings);
     this.#vsDashboard = new VSDashboardController(this.wrongFlagHint);
+  }
+
+  get #identicalMinefields() {
+    if (valueDefined(this.optionsSettings.identicalMines)) {
+      return this.optionsSettings.identicalMines;
+    }
+    return true;
   }
 
   #setIndividualGames(playerGame, opponentGame) {
@@ -116,8 +130,24 @@ export class GameParallel extends Game {
     return gameContainer;
   }
 
+  #initMinesPositions() {
+    if (!this.#identicalMinefields) {
+      this.#individualGames.forEach((game) => game.setMinesPositions());
+    } else {
+      this.#PlayerGame.setMinesPositions();
+      this.#OpponentGame.levelSettings.minesPositions = this.#PlayerGame.levelSettings.minesPositions;
+    }
+  }
+
   start() {
-    console.log("start parallel");
+    if (this.isOnline) {
+      console.log("online gaming");
+
+      //TODO: identical mines on online
+
+      return;
+    }
+    this.#initMinesPositions();
 
     this.#individualGames.forEach((game) => {
       game.start();
@@ -127,7 +157,7 @@ export class GameParallel extends Game {
   }
 
 
-  
+
   #onPlayerGameMove(playerCardUpdate, gameData) {
     if (playerCardUpdate) {
       this.#updatePlayerCard(this.#PlayerGame);
@@ -144,22 +174,22 @@ export class GameParallel extends Game {
 
   #onPlayerGameOver(gameData) {
     this.#onGameOver(gameData);
-    
+
     this.#updatePlayerCard(this.#PlayerGame);
-   
+
     console.log("onPlayerGameOver");
     console.log(this);
-   
+
     this.#revealGameMinefield(this.#OpponentGame);
   }
 
   #onOpponentGameOver(gameData) {
     this.#onGameOver(gameData);
     this.#updatePlayerCard(this.#OpponentGame);
-   
+
     console.log("onOpponentGameOver");
     console.log(this);
-    
+
     this.#revealGameMinefield(this.#PlayerGame);
   }
 

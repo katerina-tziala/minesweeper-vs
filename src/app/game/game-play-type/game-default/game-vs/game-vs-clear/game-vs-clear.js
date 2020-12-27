@@ -32,7 +32,6 @@ export class GameVSClear extends GameVS {
     return boardActions;
   }
 
-
   get goalTargetNumber() {
     return this.levelSettings.numberOfEmptyTiles;
   }

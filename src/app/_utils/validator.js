@@ -10,9 +10,13 @@ export const emptyString = (value) => {
 };
 
 export const validValue = (value) => {
-  return !isNaN(value) && value !== null ? true : false;
+  return valueDefined(value) ? true : false;
 };
 
 export const valueInLimits = (value, limits) => {
   return limits.min <= value && value <= limits.max;
+};
+
+export const valueDefined = (value) => {
+  return !isNaN(value) && value !== null;
 };

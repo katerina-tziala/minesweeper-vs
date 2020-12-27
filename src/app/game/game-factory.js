@@ -9,6 +9,7 @@ import { LevelSettings, TurnSettings, Player, BotPlayer } from "GameModels";
 export class GameFactory {
 
   static getGameModelParams(gameParams) {
+    gameParams = clone(gameParams);
     gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
 
     if (gameParams.turnSettings) {
@@ -21,8 +22,6 @@ export class GameFactory {
   }
 
   static loadGame(gameParams, gameId) {
-    gameParams = GameFactory.getGameModelParams(gameParams);
- 
     const playersData = gameParams.players;
     delete gameParams.players;
 
@@ -95,12 +94,16 @@ export class GameFactory {
   }
 
   static loadPlayerGame(gameId, gameParams, player = GameFactory.getPlayer()) {
+    gameParams = GameFactory.getGameModelParams(gameParams);
+ 
     return import(`GamePlayType`).then((module) => {
       return new module.GameSinglePlayer(gameId, gameParams, player);
     });
   }
 
   static loadGameVs(gameId, gameParams, opponent) {
+    gameParams = GameFactory.getGameModelParams(gameParams);
+ 
     return import(`GamePlayType`).then((module) => {
       if (GameFactory.isVSModeDetect(gameParams)) {
         return new module.GameVSDetect(
@@ -140,8 +143,6 @@ export class GameFactory {
     return {parallelGame, playerGame};
   }
 
-
-
   static loadParrallelGame(gameId, gameParams, opponent) {
     const player = GameFactory.getPlayer();
 
@@ -152,6 +153,7 @@ export class GameFactory {
       GameFactory.loadPlayerGame(player.id, gameParams, player),
       GameFactory.loadPlayerGame(opponent.id, gameParams, opponent),
     ];
+
     return Promise.all(gamesForPlayers).then(([playerGame, opponentGame]) => {
       return import(`GamePlayType`).then((module) => {
         return new module.GameParallel(gameId, gamingOptions.parallelGame, playerGame, opponentGame);

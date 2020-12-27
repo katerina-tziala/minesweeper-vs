@@ -33,7 +33,7 @@ export class OptionsSettings extends AppModel {
         break;
       case GameVSMode.Parallel:
         this.identicalMines = true;
-        this.openStrategy = false;
+        this.openStrategy = true;
         this.sneakPeek = false;
         this.sneakPeekDuration = 0;
         break;
