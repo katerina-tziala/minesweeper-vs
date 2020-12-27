@@ -7,6 +7,7 @@ import { GameDefault } from "../_game-default";
 
 import { VSDashboardController } from "GamePlayControllers";
 
+import { ElementHandler } from "HTML_DOM_Manager";
 import { GameViewHelper } from "../_game-view-helper";
 import {
   VSBoard,
@@ -102,26 +103,8 @@ export class GameVS extends GameDefault {
 
   generateView() {
     const gameContainer = super.generateView();
-    // const vsDashboard = this.vsDashboard.generateView(
-    //   this.player,
-    //   this.opponent,
-    // );
     const vsDashboard = this.#generateVSDashBoard();
-
-    gameContainer.insertBefore(vsDashboard, gameContainer.firstChild);
-
-
-
-    const footer = GameViewHelper.generateGameFooter();
-    
-
-    gameContainer.append(footer);
-
-
-
-
-
-
+    ElementHandler.addInChildNodes(gameContainer, vsDashboard, 0);
     return gameContainer;
   }
 

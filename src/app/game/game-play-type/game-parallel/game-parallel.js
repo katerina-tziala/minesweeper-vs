@@ -24,7 +24,8 @@ export class GameParallel extends Game {
   #PlayerGame;
   #OpponentGame;
   #vsDashboard;
-  #boardActionsController;
+  
+
 
   constructor(id, params, playerGame, opponentGame) {
     super(id, params);
@@ -65,37 +66,21 @@ export class GameParallel extends Game {
     const gameContainer = document.createDocumentFragment();
     gameContainer.append(this.#generateDashboardView());
     gameContainer.append(this.#generateGamingArea());
-
-    const footer = GameViewHelper.generateGameFooter();
-
-    gameContainer.append(footer);
-
     return gameContainer;
   }
 
   #generateDashboardView() {
-    // const opponent = this.#opponentData;
-    // opponent.turn = false;
-    console.log("twra");
-
-    console.log(this.#player, this.#opponent);
-
     const vsDashboard = this.#vsDashboard.generateView(
       this.#player,
       this.#opponent,
     );
-    const vsBoard = this.#generateVSBoard();
-
+    const vsBoard = this.#generateVSBoardView();
     this.#vsDashboard.addElementInDashboard(vsDashboard, vsBoard);
-
     return vsDashboard;
   }
 
-  #generateVSBoard() {
-    const vsBoard = VSBoard.generateView(
-      this.#player.colorType,
-      this.#opponent.colorType,
-    );
+  #generateVSBoardView() {
+    const vsBoard = VSBoard.generateView(this.#player.colorType, this.#opponent.colorType);
     vsBoard.append(this.boardActions);
     return vsBoard;
   }
@@ -138,6 +123,8 @@ export class GameParallel extends Game {
   #pauseGames() {
     this.#individualGames.forEach((game) => game.pause());
   }
+
+  
 
   pause() {
     console.log("pause parallel");

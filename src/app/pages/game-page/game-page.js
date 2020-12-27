@@ -52,6 +52,15 @@ export class GamePage extends Page {
     return this.#_game;
   }
 
+  // init() {
+  //   this.displayLoader();
+  //   this.getClearedMainContainer().then((mainContainer) => {
+  //     this.renderPage(mainContainer);
+  //     this.hideLoader();
+  //   });
+  // }
+
+
   renderPage(mainContainer) {
     GameFactory.loadGame(this.gameParams).then((game) => {
       this.game = game;
@@ -62,6 +71,7 @@ export class GamePage extends Page {
       if (this.game) {
         mainContainer.append(this.game.generateView());
         this.game.start();
+        //edw na kanw hide to loader
       } else {
         console.log("no game");
       }

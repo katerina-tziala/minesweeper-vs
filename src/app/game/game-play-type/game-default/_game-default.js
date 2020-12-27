@@ -266,22 +266,23 @@ export class GameDefault extends Game {
     return Promise.resolve();
   }
 
+
+
+
   generateView() {
     const gameContainer = document.createDocumentFragment();
-    gameContainer.append(this.gameBoard);
+    gameContainer.append(this.#gameBoardInterface);
     return gameContainer;
   }
 
-  get gameBoard() {
-    //const gameContainer = document.createDocumentFragment();
-     const gameContainer = GameViewHelper.generateBoardContainer();
+  get #gameBoardInterface() {
+    const gameContainer = GameViewHelper.generateBoardContainer();
     const board = GameViewHelper.generateBoard(this.id);
-    board.insertBefore(this.boardActions, board.firstChild);
+    ElementHandler.addInChildNodes(board, this.boardActions, 0);
     gameContainer.append(board);
-
-
     return gameContainer;
   }
+
 
   
 

@@ -127,6 +127,11 @@ export class Game extends AppModel {
     }
   }
 
+  generateView() {
+    const fragment = document.createDocumentFragment();
+    return fragment;
+  }
+
   pause() {
     return;
   }
