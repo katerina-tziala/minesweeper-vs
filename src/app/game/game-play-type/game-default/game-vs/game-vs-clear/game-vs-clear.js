@@ -61,7 +61,7 @@ export class GameVSClear extends GameVS {
       this.revealMinefieldArea(tile);
       return;
     }
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
@@ -250,7 +250,7 @@ export class GameVSClear extends GameVS {
       this.#sneakPeekController.stop();
       return;
     }
-    this.mineField.disable();
+    this.disableMinefield();
   }
 
   continue() {
@@ -360,7 +360,7 @@ export class GameVSClear extends GameVS {
       .then(() => {
         this.setSmileFace();
         this.updateMineCounter();
-        this.mineField.enable();
+        this.enableMinefield();
       })
       .catch((err) => {
         console.log(err);

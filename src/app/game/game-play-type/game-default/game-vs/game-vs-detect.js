@@ -36,7 +36,7 @@ export class GameVSDetect extends GameVS {
       return;
     }
 
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
   updateStateOnRevealedTiles(revealedTiles) {

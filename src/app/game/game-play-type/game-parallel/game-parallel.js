@@ -25,23 +25,29 @@ export class GameParallel extends Game {
   #OpponentGame;
   #vsDashboard;
   
-
-
   constructor(id, params, playerGame, opponentGame) {
     super(id, params);
 
     this.#setIndividualGames(playerGame, opponentGame);
     this.#setPlayers();
 
-    //console.log(this);
+    console.log(this.optionsSettings);
     this.#vsDashboard = new VSDashboardController(this.wrongFlagHint);
   }
 
   #setIndividualGames(playerGame, opponentGame) {
     this.#PlayerGame = playerGame;
+    this.#PlayerGame.externalActions = {
+      onMoveSubmission: this.#onPlayerGameMove.bind(this),
+      onGameOverSubmission: this.#onPlayerGameOver.bind(this)
+    };
 
     opponentGame.player.turn = false;
     this.#OpponentGame = opponentGame;
+    this.#OpponentGame.externalActions = {
+      onMoveSubmission: this.#onOpponentGameMove.bind(this),
+      onGameOverSubmission: this.#onOpponentGameOver.bind(this)
+    };
 
     this.#_individualGames = [this.#PlayerGame, this.#OpponentGame];
   }
@@ -115,21 +121,86 @@ export class GameParallel extends Game {
 
     this.#individualGames.forEach((game) => {
       game.start();
-
+      game.setGameStart();
       //console.log(game);
     });
   }
+
+
+  
+  #onPlayerGameMove(playerCardUpdate, gameData) {
+    if (playerCardUpdate) {
+      this.#updatePlayerCard(this.#PlayerGame);
+    }
+    if (this.isOnline) {
+      console.log("send data online");
+      console.log(gameData);
+    }
+  }
+
+  #onOpponentGameMove() {
+    this.#updatePlayerCard(this.#OpponentGame);
+  }
+
+  #onPlayerGameOver(gameData) {
+    this.#onGameOver(gameData);
+    
+    this.#updatePlayerCard(this.#PlayerGame);
+   
+    console.log("onPlayerGameOver");
+    console.log(this);
+   
+    this.#revealGameMinefield(this.#OpponentGame);
+  }
+
+  #onOpponentGameOver(gameData) {
+    this.#onGameOver(gameData);
+    this.#updatePlayerCard(this.#OpponentGame);
+   
+    console.log("onOpponentGameOver");
+    console.log(this);
+    
+    this.#revealGameMinefield(this.#PlayerGame);
+  }
+
+  #onGameOver(gameData) {
+    this.setGameEnd(gameData.gameOverType);
+    this.#pauseGames();
+
+    console.log("onGameOver");
+    console.log(gameData);
+
+  }
+
+
+
+
+  #updatePlayerCard(game) {
+    this.#vsDashboard.updatePlayerGameGoalStatistics(game.player, game.playerTargetValue);
+  }
+
+  #revealGameMinefield(game) {
+    game.revealMinefield();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   #pauseGames() {
     this.#individualGames.forEach((game) => game.pause());
   }
 
-  
-
   pause() {
-    console.log("pause parallel");
     this.#pauseGames();
-    return;
   }
 
   restart() {

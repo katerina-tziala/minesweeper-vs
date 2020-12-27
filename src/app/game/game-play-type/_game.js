@@ -1,6 +1,7 @@
 "use strict";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { clone } from "~/_utils/utils";
 
 import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
@@ -30,7 +31,7 @@ import { CONFIRMATION } from "../../components/modal/modal.constants";
 import { BoardActionsController } from "GamePlayControllers";
 
 export class Game extends AppModel {
-  #dashBoardActions = {};
+  #externalActions = {};
 
   //loader after game view ready
   constructor(id, params) {
@@ -46,12 +47,12 @@ export class Game extends AppModel {
     );
   }
 
-  set dashBoardActions(actions) {
-    this.#dashBoardActions = actions;
+  set externalActions(actions) {
+    this.#externalActions = actions;
   }
 
-  get dashBoardActions() {
-    return this.#dashBoardActions;
+  get externalActions() {
+    return this.#externalActions;
   }
 
   get isOnline() {
@@ -94,6 +95,19 @@ export class Game extends AppModel {
     this.startedAt = null;
   }
 
+  get gameState() {
+    return {
+      id: this.id,
+      players: this.players,
+      gameOverType: this.gameOverType,
+      completedAt: this.completedAt,
+      startedAt: this.startedAt,
+      createdAt: this.createdAt,
+      completedAt: this.completedAt,
+      roundTiles: this.roundTiles
+    }
+  }
+
   setGameStart() {
     this.startedAt = nowTimestamp();
   }
@@ -122,7 +136,7 @@ export class Game extends AppModel {
         this.restart();
         break;
       default:
-        this.dashBoardActions[actionType]();
+        this.externalActions[actionType]();
         break;
     }
   }
@@ -143,4 +157,42 @@ export class Game extends AppModel {
   continue() {
     return;
   }
+
+
+  restart() {
+    // this.levelSettings.setMinesPositions();
+    this.levelSettings.minesPositions = [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+    ];
+  }
+  
+  ////////////////////////////////
+  submitResult(type) {
+    //TODO:
+    console.log("--  submit game state -- ");
+    console.log("----------------------------");
+    console.log("update state: ", type);
+    // console.log(this.externalActions);
+    if (this.externalActions.onMoveSubmission) {
+      console.log(clone(this));
+    }
+    //console.log(this);
+  }
+
+
 }

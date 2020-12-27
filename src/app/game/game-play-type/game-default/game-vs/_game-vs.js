@@ -189,7 +189,7 @@ export class GameVS extends GameDefault {
         return;
       }
 
-      this.mineField.enable();
+      this.enableMinefield();
     });
   }
 
@@ -199,8 +199,8 @@ export class GameVS extends GameDefault {
     console.log("--  get Bot move -- ");
     console.log("GameVS");
     console.log("----------------------------");
-    //this.mineField.disable();
-    this.mineField.enable();
+    //this.disableMinefield();
+    this.enableMinefield();
   }
 
   restart() {
@@ -298,7 +298,7 @@ export class GameVS extends GameDefault {
       return;
     }
     //console.log(this);
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
   stopRoundTimer() {

@@ -223,6 +223,7 @@ export class MineField {
   }
 
   revealField() {
+    this.disable();
     this.getUnrevealedTiles().forEach((tile) => {
       tile.reveal(undefined, false);
     });
@@ -235,7 +236,6 @@ export class MineField {
   }
 
   hideStrategy(player) {
-    console.log("hideStrategy", player);
     const tilesToReset = this.getTilesByPositions(player.strategyPositions);
     tilesToReset.forEach(tile => {
       tile.resetState();

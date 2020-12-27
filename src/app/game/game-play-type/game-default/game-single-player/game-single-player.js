@@ -1,5 +1,6 @@
 "use strict";
-import { replaceStringParameter } from "~/_utils/utils";
+import { clone, replaceStringParameter } from "~/_utils/utils";
+
 
 import { GameEndType, GameVSMode, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
@@ -30,16 +31,19 @@ export class GameSinglePlayer extends GameDefault {
     this.player.turn = true;
     this.initState();
   }
+
+
   //TODO: COMPLETE THE CASES
   start() {
     this.onAfterViewInit.then(() => {
       this.initDashBoard();
 
+      if (this.startedAt) {
+        this.gameTimer.start();
+      }
+
       if (this.isParallel) {
-        //TODO:
-        console.log("--  start parallel --");
-        console.log("GameSinglePlayer");
-        console.log("----------------------------");
+        this.startGameRound();
         return;
       }
       //TODO:
@@ -62,6 +66,11 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   restart() {
+    if (this.isParallel) {
+      
+      console.log("restart parallel");
+      return;
+    }
     super.restart();
     this.init();
     this.start();
@@ -76,14 +85,12 @@ export class GameSinglePlayer extends GameDefault {
 
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
-console.log("revealedTiles");
     if (this.playerOnTurn.clearedMinefield) {
       this.setGameEnd(GameEndType.Cleared);
       this.updateMineCounter();
       this.onGameOver(revealedTiles);
       return;
     }
-
     this.onPlayerMoveEnd(revealedTiles);
   }
 
@@ -110,43 +117,32 @@ console.log("revealedTiles");
       return;
     }
 
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
-  //TODO: COMPLETE THE CASES
   startBotRound() {
     this.initRoundTiles();
     //TODO:
     console.log("--  get Bot move -- ");
     console.log("GameSinglePlayer");
     console.log("----------------------------");
-    this.mineField.disable();
+    // this.mineField.disable();
+    this.enableMinefield();
   }
 
   onPlayerMoveEnd(boardTiles = []) {
     this.updateMineCounter();
     this.roundTilesUpdate = boardTiles;
-
-    if (this.isParallel) {
-      //TODO:
-      this.submitResult(GameSubmission.MoveEnd);
-      //TODO:
-      console.log("GameSinglePlayer PARRALLEL");
-      console.log("----------------------------");
-      console.log("decide how game is continued");
-      this.pause();
-      return;
-    }
-
-    //TODO:
+    this.submitResult(GameSubmission.MoveEnd);
     this.startGameRound();
   }
 
+  //TODO: COMPLETE THE CASES
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
 
     if (this.isParallel) {
-      this.submitResult(GameSubmission.GameOver);
+      this.#submitGameOver(GameSubmission.GameOver);
       return;
     }
 
@@ -169,4 +165,40 @@ console.log("revealedTiles");
     );
     return message;
   }
+
+  get #submissionAllowed() {
+    return this.isParallel && this.externalActions.onMoveSubmission;
+  }
+
+  get #updatePlayerCard() {
+    return this.roundTiles.length ? this.roundTiles.some(tile => tile.isRevealed) : false;
+  }
+
+  #submitBotUpdate() {
+    if (this.#updatePlayerCard) {
+      this.externalActions.onMoveSubmission(this.#updatePlayerCard);
+    }
+  }
+
+  get playerTargetValue() {
+    return this.playerOnTurn.revealedTiles;
+  }
+  
+  submitResult() {
+    if (!this.#submissionAllowed) {
+      return;
+    }
+    if (this.playerOnTurn.isBot) {
+      this.#submitBotUpdate();
+      return;
+    }
+    this.externalActions.onMoveSubmission(this.#updatePlayerCard, this.gameState);
+  }
+
+  #submitGameOver() {
+    if (this.externalActions.onGameOverSubmission) {
+      this.externalActions.onGameOverSubmission(this.gameState);
+    }
+  }
+
 }

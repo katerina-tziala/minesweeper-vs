@@ -6,8 +6,8 @@ import {
   valueInLimits,
   emptyString,
   validValue,
-} from "../../../../_utils/validator";
-import { clone, replaceStringParameter } from "../../../../_utils/utils";
+} from "~/_utils/validator";
+import { clone, replaceStringParameter } from "~/_utils/utils";
 
 import { TextInput } from "../text-input/text-input";
 

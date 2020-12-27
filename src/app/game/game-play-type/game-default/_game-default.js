@@ -121,7 +121,7 @@ export class GameDefault extends Game {
       this.revealMinefieldArea(tile);
       return;
     }
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
@@ -227,13 +227,13 @@ export class GameDefault extends Game {
 
   pause() {
     this.gameTimer.stop();
-    this.mineField.disable();
+    this.disableMinefield();
   }
 
   continue() {
     console.log("continue");
     this.gameTimer.continue();
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
   // OVERRIDEN FUNCTIONS
@@ -284,8 +284,18 @@ export class GameDefault extends Game {
   }
 
 
+  disableMinefield() {
+    this.mineField.disable();
+  }
   
-
+  enableMinefield() {
+    this.mineField.enable();
+  }
+  
+  revealMinefield() {
+    this.mineField.revealField();
+  }
+  
  
 
 
@@ -300,27 +310,6 @@ export class GameDefault extends Game {
     return;
   }
 
-  restart() {
-    // this.levelSettings.setMinesPositions();
-    this.levelSettings.minesPositions = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-    ];
-  }
 
   handleTileMarking(tile) {
     // set flag
@@ -339,7 +328,7 @@ export class GameDefault extends Game {
       return;
     }
 
-    this.mineField.enable();
+    this.enableMinefield();
   }
 
   updateStateOnFlaggedTile(tile) {
@@ -384,14 +373,7 @@ export class GameDefault extends Game {
     player.resetedTile = tile.position;
   }
 
-  ////////////////////////////////
-  submitResult(type) {
-    //TODO:
-    console.log("--  submit game state -- ");
-    console.log("----------------------------");
-    console.log("update state: ", type);
-    //console.log(this);
-  }
+
 
   onGameOver(boardTiles = []) {
     this.pause();
@@ -399,6 +381,6 @@ export class GameDefault extends Game {
     this.roundTilesUpdate = boardTiles;
     // Board state
     this.setFaceIconOnGameEnd();
-    this.mineField.revealField();
+    this.revealMinefield();
   }
 }

@@ -64,7 +64,7 @@ export class GamePage extends Page {
   renderPage(mainContainer) {
     GameFactory.loadGame(this.gameParams).then((game) => {
       this.game = game;
-      this.game.dashBoardActions = {
+      this.game.externalActions = {
         quit: this.onGameExit.bind(this),
         reset: this.onGameReset.bind(this),
       };
