@@ -19,9 +19,10 @@ export class OptionsSettings extends AppModel {
   }
 
   setModePropertiesVS() {
+    this.tileFlagging = true;
+
     switch (this.vsMode) {
       case GameVSMode.Clear:
-        // this.tileFlagging = true;
         this.unlimitedFlags = true;
         this.openStrategy = true;
         this.sneakPeek = false;
@@ -33,7 +34,7 @@ export class OptionsSettings extends AppModel {
         break;
       case GameVSMode.Parallel:
         this.identicalMines = true;
-        this.openStrategy = true;
+        this.openCompetition = true;
         this.sneakPeek = false;
         this.sneakPeekDuration = 0;
         break;

@@ -3,7 +3,7 @@ import { GameEndType } from "GameEnums";
 
 import { GameVS } from "../_game-vs";
 
-import { StrategyController, SneakPeekController } from "GamePlayControllers";
+import { StrategyController, SneakPeekStrategyController } from "GamePlayControllers";
 
 export class GameVSClear extends GameVS {
   #sneakPeekController;
@@ -15,7 +15,7 @@ export class GameVSClear extends GameVS {
       this.optionsSettings,
       this.wrongFlagHint,
     );
-    this.#sneakPeekController = new SneakPeekController(
+    this.#sneakPeekController = new SneakPeekStrategyController(
       this.#onSneakPeek.bind(this),
       this.#onSneakPeekEnd.bind(this),
       this.hiddenStrategy,

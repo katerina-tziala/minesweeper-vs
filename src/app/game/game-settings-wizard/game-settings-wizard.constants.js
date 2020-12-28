@@ -29,6 +29,7 @@ export const CONTENT = {
   missedTurnsLimit: "allowed missed turns",
   consecutiveTurns: "consecutive missed turns",
   identicalMines: "identical minefield",
+  openCompetition: "open competition",
   botMode: "bot mode",
 };
 

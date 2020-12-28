@@ -19,6 +19,7 @@ import {
   VSDashboardController,
   BoardActionsController,
 } from "GamePlayControllers";
+import { SneakPeekCompetitionController, SneakPeekStrategyController } from "GamePlayControllers";
 
 import { Game } from "../_game";
 
@@ -30,6 +31,7 @@ export class GameParallel extends Game {
   #PlayerGame;
   #OpponentGame;
   #vsDashboard;
+  #sneakPeekController;
 
   constructor(id, params, playerGame, opponentGame) {
     super(id, params);
@@ -37,9 +39,23 @@ export class GameParallel extends Game {
     this.#setIndividualGames(playerGame, opponentGame);
     this.#setPlayers();
 
-
+    this.optionsSettings.openCompetition = false;
     console.log(this.optionsSettings);
+
+
+    this.#sneakPeekController = new SneakPeekCompetitionController(this.#onSneakPeek.bind(this),
+      this.#onSneakPeekEnd.bind(this),
+      !this.optionsSettings.openCompetition);
+
+
     this.#vsDashboard = new VSDashboardController(this.wrongFlagHint);
+  }
+
+  get #openCompetition() {
+    if (valueDefined(this.optionsSettings.openCompetition)) {
+      return this.optionsSettings.openCompetition;
+    }
+    return true;
   }
 
   get #identicalMinefields() {
@@ -101,7 +117,11 @@ export class GameParallel extends Game {
 
   #generateVSBoardView() {
     const vsBoard = VSBoard.generateView(this.#player.colorType, this.#opponent.colorType);
-    vsBoard.append(this.boardActions);
+    const boardActions = this.boardActions;
+    if (this.#sneakPeekController.allowed) {
+      boardActions.append(this.#sneakPeekController.toggleButton);
+    }
+    vsBoard.append(boardActions);
     return vsBoard;
   }
 
@@ -109,26 +129,41 @@ export class GameParallel extends Game {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gamingArea,
     ]);
-    this.#individualGames.forEach((game) => {
-      container.append(this.#generateGameView(game));
-    });
+
+    container.append(this.#generateGameView(this.#PlayerGame));
+
+    const opponentGameView = this.#generateGameView(this.#OpponentGame);
+    if (!this.#openCompetition) {
+      ElementHandler.hide(opponentGameView);
+    }
+    if (this.#sneakPeekController.allowed) {
+      opponentGameView.append(this.#sneakPeekController.generatedSneakPeekLayer);
+    }
+    container.append(opponentGameView);
+
     return container;
   }
 
-  #gameContainerID(gameID) {
+  #gameContainerID(game) {
     return (
-      DOM_ELEMENT_CLASS.gameContainer + TYPOGRAPHY.doubleUnderscore + gameID
+      DOM_ELEMENT_CLASS.gameContainer + TYPOGRAPHY.doubleUnderscore + game.id
     );
+  }
+
+  #gameContainer(game) {
+    return ElementHandler.getByID(this.#gameContainerID(game));
   }
 
   #generateGameView(game) {
     const gameContainer = ElementGenerator.generateContainer(
       [DOM_ELEMENT_CLASS.gameContainer],
-      this.#gameContainerID(game.id),
+      this.#gameContainerID(game),
     );
     gameContainer.append(game.generateView());
     return gameContainer;
   }
+
+
 
   #initMinesPositions() {
     if (!this.#identicalMinefields) {
@@ -138,6 +173,12 @@ export class GameParallel extends Game {
       this.#OpponentGame.levelSettings.minesPositions = this.#PlayerGame.levelSettings.minesPositions;
     }
   }
+
+
+
+
+
+
 
   start() {
     if (this.isOnline) {
@@ -149,11 +190,16 @@ export class GameParallel extends Game {
     }
     this.#initMinesPositions();
 
+
     this.#individualGames.forEach((game) => {
-      game.start();
+
       game.setGameStart();
+      game.start();
       //console.log(game);
+
+
     });
+    this.#sneakPeekController.setControllerPlayer(this.#player);
   }
 
 
@@ -213,9 +259,40 @@ export class GameParallel extends Game {
     game.revealMinefield();
   }
 
+  #onSneakPeek() {
+    this.#gameContainer(this.#OpponentGame).then(gameContainer => {
+      ElementHandler.display(gameContainer);
+      return;
+    }).then(() => {
+      return this.#sneakPeekController.playerPeeking();
+    }).catch((err) => {
+      console.log(err);
+      console.log("error on onSneakPeek");
+    });
+  }
+
+  #onSneakPeekEnd() {
+    console.log("onSneakPeekEnd");
+
+
+    this.#sneakPeekController.stopPeeking().then(() => {
+      console.log("now hide");
+    })
 
 
 
+    // this.gameTimer.continue();
+    // this.#peekOnOpponentStrategyEnded()
+    //   .then(() => {
+    //     this.setSmileFace();
+    //     this.updateMineCounter();
+    //     this.enableMinefield();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     console.log("error on onSneakPeekEnd");
+    //   });
+  }
 
 
 

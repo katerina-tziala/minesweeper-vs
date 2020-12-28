@@ -28,17 +28,17 @@ export class OptionsWizard extends GameSettingsWizard {
     return SETTINGS_PROPERTIES.default;
   }
 
-  get #sneakPeakDisabled() {
-    return this.settings.openStrategy;
+  get #sneakPeekDisabled() {
+    return this.settings.openStrategy || this.settings.openCompetition;
   }
 
-  get #sneakPeakDurationDisabled() {
-    return this.settings.openStrategy ? true : !this.settings.sneakPeek;
+  get #sneakPeekDurationDisabled() {
+    return this.#sneakPeekDisabled ? true : !this.settings.sneakPeek;
   }
 
   get #sneakPeakDurationLimits() {
     const limits = clone(LIMITS.sneakPeekDuration);
-    if (this.#sneakPeakDurationDisabled) {
+    if (this.#sneakPeekDurationDisabled) {
       limits.min = 0;
     }
     return limits;
@@ -62,6 +62,7 @@ export class OptionsWizard extends GameSettingsWizard {
   #generateSettingController(fieldName) {
     switch (fieldName) {
       case FIELD_NAME.openStrategy:
+      case FIELD_NAME.openCompetition:
         return this.#generateSwitcher(
           fieldName,
           this.#onOpenStrategyChange.bind(this),
@@ -70,7 +71,7 @@ export class OptionsWizard extends GameSettingsWizard {
         return this.#generateSwitcher(
           fieldName,
           this.#onSneakPeekChange.bind(this),
-          this.#sneakPeakDisabled,
+          this.#sneakPeekDisabled,
         );
       case FIELD_NAME.sneakPeekDuration:
         return this.#generateSneakPeekDurationInput();
@@ -97,7 +98,7 @@ export class OptionsWizard extends GameSettingsWizard {
       this.#onSneakPeekDurationChange.bind(this),
     );
     controller.boundaries = this.#sneakPeakDurationLimits;
-    controller.disabled = this.#sneakPeakDurationDisabled;
+    controller.disabled = this.#sneakPeekDurationDisabled;
     return controller;
   }
 
@@ -109,7 +110,7 @@ export class OptionsWizard extends GameSettingsWizard {
   #onOpenStrategyChange(params) {
     this.settings[params.name] = params.value;
     const controller = this.inputsGroup.getController(FIELD_NAME.sneakPeek);
-    this.#sneakPeakDisabled ? controller.disable() : controller.enable();
+    this.#sneakPeekDisabled ? controller.disable() : controller.enable();
     this.#updateSneakPeekDuration();
   }
 
@@ -130,7 +131,7 @@ export class OptionsWizard extends GameSettingsWizard {
     const controller = this.inputsGroup.getController(
       FIELD_NAME.sneakPeekDuration,
     );
-    this.#sneakPeakDurationDisabled
+    this.#sneakPeekDurationDisabled
       ? controller.disable()
       : controller.enable();
     controller.boundaries = this.#sneakPeakDurationLimits;

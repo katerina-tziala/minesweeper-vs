@@ -4,6 +4,10 @@
 @mixin setThemeStyles($theme) {
   .sneak-peek-btn {
     @include theming.applyGameColorsStyle($theme, "&.sneak-peek-btn", "color");
+
+    &:hover, &:focus {
+      @include theming.applyGameColorsStyle($theme, "&.sneak-peek-btn", "color");
+    }
   }
 
   .sneak-peek-btn-state {

@@ -17,6 +17,7 @@ export class SneakPeekTimerController extends GameInterval {
   }
 
   set parentElementID(elementId) {
+    console.log(elementId);
     this.#_parentElementId = elementId;
   }
 
@@ -51,6 +52,7 @@ export class SneakPeekTimerController extends GameInterval {
     this.stop();
     return this.#counterParent.then((container) => {
       ElementHandler.clearContent(container);
+      ElementHandler.hide(container);
       return;
     });
   }

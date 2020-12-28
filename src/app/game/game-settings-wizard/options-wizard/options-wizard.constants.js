@@ -15,7 +15,7 @@ export const SETTINGS_PROPERTIES = {
     "marks",
     "wrongFlagHint",
     "identicalMines",
-    "openStrategy",
+    "openCompetition",
     "sneakPeek",
     "sneakPeekDuration",
   ],
@@ -23,6 +23,7 @@ export const SETTINGS_PROPERTIES = {
 
 export const FIELD_NAME = {
   openStrategy: "openStrategy",
+  openCompetition: "openCompetition",
   sneakPeek: "sneakPeek",
   sneakPeekDuration: "sneakPeekDuration",
 };

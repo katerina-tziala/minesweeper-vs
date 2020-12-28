@@ -3,13 +3,9 @@
 @import "../global/_module-global";
 @import "../utils/_module-utils";
 
-
-
 @import "../game/minesweeper-board/minesweeper-board";
 
 @import "../game/vs-dashboard/vs-dashboard";
-
-
 
 .gaming-area--parallel {
   width: 100%;
@@ -18,9 +14,19 @@
 
 .parallel-game-container {
   @extend %center-center;
-  width: 45%;
+  position: relative;
+  max-width: 45%;
   &:last-of-type {
     margin-left: 3%;
+  }
+
+  .sneak-peek-layer {
+    width: 100%;
+    height: calc(100% - 30px);
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    left: 0;
   }
 }
 
@@ -30,4 +36,3 @@
   flex-direction: column;
   margin-bottom: 30px;
 }
-

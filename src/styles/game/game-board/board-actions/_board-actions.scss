@@ -4,6 +4,7 @@
 .board-actions {
   @extend ._board-section;
   @extend %evenly-center;
+  width: 100%;
 }
 
 .btn-icon--exit-game {
