@@ -9,21 +9,18 @@ import {
 } from "~/_utils/validator";
 
 
-import { AppModel } from "~/_models/app-model";
-
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 
 import { DOM_ELEMENT_CLASS } from "./_game-parralel.constants";
 
 import {
-  VSDashboardController,
-  BoardActionsController,
+  VSDashboardController
 } from "GamePlayControllers";
-import { SneakPeekCompetitionController, SneakPeekStrategyController } from "GamePlayControllers";
+import { SneakPeekCompetitionController } from "GamePlayControllers";
 
 import { Game } from "../_game";
 
-import { GameViewHelper } from "../game-default/_game-view-helper";
+
 import { VSBoard } from "GamePlayComponents";
 
 export class GameParallel extends Game {

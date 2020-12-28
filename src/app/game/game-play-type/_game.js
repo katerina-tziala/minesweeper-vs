@@ -13,12 +13,7 @@ import {
   GameEndType,
   GameSubmission,
 } from "GameEnums";
-// import { GameViewHelper } from "./_game-view-helper";
-// import {
-//   ACTION_BUTTONS,
-//   BOARD_SECTION,
-//   DASHBOARD_SECTION,
-// } from "./_game.constants";
+
 import {
   valueDefined
 } from "~/_utils/validator";
@@ -50,14 +45,6 @@ export class Game extends AppModel {
     );
   }
 
-  set externalActions(actions) {
-    this.#externalActions = actions;
-  }
-
-  get externalActions() {
-    return this.#externalActions;
-  }
-
   get isOnline() {
     if (
       this.optionsSettings.vsMode &&
@@ -74,46 +61,6 @@ export class Game extends AppModel {
 
   get isOver() {
     return this.gameOverType ? true : false;
-  }
-
-
-
-  get boardActionsAllowed() {
-    return true;
-  }
-
-  get boardActions() {
-    return this.boardActionsController.generateView();
-  }
-
-  initState() {
-    this.gameOverType = null;
-    this.completedAt = null;
-    this.startedAt = null;
-  }
-
-  get gameState() {
-    return {
-      id: this.id,
-      players: this.players,
-      gameOverType: this.gameOverType,
-      completedAt: this.completedAt,
-      startedAt: this.startedAt,
-      createdAt: this.createdAt,
-      completedAt: this.completedAt,
-      roundTiles: this.roundTiles
-    }
-  }
-
-  setGameStart() {
-    this.startedAt = nowTimestamp();
-  }
-
-  setGameEnd(type) {
-    if (type && type.length) {
-      this.gameOverType = type;
-      this.completedAt = nowTimestamp();
-    }
   }
 
   get started() {
@@ -136,15 +83,54 @@ export class Game extends AppModel {
     return false;
   }
 
+  get boardActionsAllowed() {
+    return true;
+  }
+
+  set externalActions(actions) {
+    this.#externalActions = actions;
+  }
+
+  get externalActions() {
+    return this.#externalActions;
+  }
+
+  get gameState() {
+    return {
+      id: this.id,
+      players: this.players,
+      gameOverType: this.gameOverType,
+      completedAt: this.completedAt,
+      startedAt: this.startedAt,
+      createdAt: this.createdAt,
+      completedAt: this.completedAt,
+      roundTiles: this.roundTiles
+    }
+  }
+
+  get boardActions() {
+    return this.boardActionsController.generateView();
+  }
+
+  initState() {
+    this.gameOverType = null;
+    this.completedAt = null;
+    this.startedAt = null;
+  }
+
+  setGameStart() {
+    this.startedAt = nowTimestamp();
+  }
+
+  setGameEnd(type) {
+    if (type && type.length) {
+      this.gameOverType = type;
+      this.completedAt = nowTimestamp();
+    }
+  }
+
   #onBoardButtonAction(actionType) {
     this.pause();
-
-    // console.log("onBoardButtonAction");
-    // console.log(actionType);
-    // console.log(this.externalActions);
-    // console.log(this.isIdle);
-
-    // console.log(this.startedAt, this.isOver, this.players.map((player) => !player.moves));
     if (!this.isIdle) {
       self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
         confirmed ? this.#executeBoardAction(actionType) : this.continue();
