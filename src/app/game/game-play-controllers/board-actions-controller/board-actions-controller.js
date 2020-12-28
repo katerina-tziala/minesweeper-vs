@@ -83,7 +83,7 @@ export class BoardActionsController {
   }
 
   #submitAction(actionType) {
-    if (this.#onAction) {
+    if (this.#onAction && actionType) {
       this.#onAction(actionType);
     }
   }

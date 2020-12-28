@@ -7,9 +7,19 @@ import { GameDefault } from "../_game-default";
 import { MESSAGE } from "./game-single-player.constants";
 
 export class GameSinglePlayer extends GameDefault {
+  #_minefieldInteractionAllowed = true;
+
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
+  }
+
+  set minefieldInteractionAllowed(allowed) {
+    this.#_minefieldInteractionAllowed = allowed;
+  }
+
+  get minefieldInteractionAllowed() {
+    return this.#_minefieldInteractionAllowed;
   }
 
   get boardActionsAllowed() {
@@ -26,12 +36,17 @@ export class GameSinglePlayer extends GameDefault {
     return false;
   }
 
-  init() {
+  initPlayer() {
+    if (!this.isParallel) {
+      this.player.turn = true;
+    }
     this.player.initState(this.levelSettings.numberOfEmptyTiles);
-    this.player.turn = true;
-    this.initState();
   }
 
+  init() {
+    this.initPlayer();
+    this.initState();
+  }
 
   //TODO: COMPLETE THE CASES
   start() {
@@ -67,11 +82,9 @@ export class GameSinglePlayer extends GameDefault {
 
   restart() {
     if (this.isParallel) {
-      
-      console.log("restart parallel");
       return;
     }
-    super.restart();
+    this.setMinesPositions();
     this.init();
     this.start();
   }
@@ -201,4 +214,17 @@ export class GameSinglePlayer extends GameDefault {
     }
   }
 
+  continue() {
+    this.gameTimer.continue();
+    if (!this.playerOnTurn.isBot) {
+      this.enableMinefield();
+    }
+  }
+
+  enableMinefield() {
+    if (this.minefieldInteractionAllowed) {
+      this.mineField.enable();
+    }
+  }
+  
 }

@@ -159,10 +159,10 @@ export class SneakPeekController {
     // );
   }
 
-  playerPeeking(timerColorType, toggleColorType) {
-    return this.#timerController.startCountdown(timerColorType).then(() => {
+  playerPeeking(colorType = this.player.colorType) {
+    return this.#timerController.startCountdown(colorType).then(() => {
       this.#setStart();
-      return this.#peekToggle.playerPeeking(toggleColorType);
+      return this.#peekToggle.playerPeeking(colorType);
     });
   }
 

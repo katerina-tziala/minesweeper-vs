@@ -36,6 +36,7 @@ export class GameParallel extends Game {
   constructor(id, params, playerGame, opponentGame) {
     super(id, params);
 
+    this.initState();
     this.#setIndividualGames(playerGame, opponentGame);
     this.#setPlayers();
 
@@ -67,17 +68,20 @@ export class GameParallel extends Game {
 
   #setIndividualGames(playerGame, opponentGame) {
     this.#PlayerGame = playerGame;
+    this.#PlayerGame.player.turn = true;
     this.#PlayerGame.externalActions = {
       onMoveSubmission: this.#onPlayerGameMove.bind(this),
       onGameOverSubmission: this.#onPlayerGameOver.bind(this)
     };
 
-    opponentGame.player.turn = false;
+    
     this.#OpponentGame = opponentGame;
+    this.#OpponentGame.player.turn = false;
     this.#OpponentGame.externalActions = {
       onMoveSubmission: this.#onOpponentGameMove.bind(this),
       onGameOverSubmission: this.#onOpponentGameOver.bind(this)
     };
+    this.#OpponentGame.minefieldInteractionAllowed = false;
 
     this.#_individualGames = [this.#PlayerGame, this.#OpponentGame];
   }
@@ -136,9 +140,7 @@ export class GameParallel extends Game {
     if (!this.#openCompetition) {
       ElementHandler.hide(opponentGameView);
     }
-    if (this.#sneakPeekController.allowed) {
-      opponentGameView.append(this.#sneakPeekController.generatedSneakPeekLayer);
-    }
+ 
     container.append(opponentGameView);
 
     return container;
@@ -176,8 +178,27 @@ export class GameParallel extends Game {
 
 
 
+  restart() {
+    this.initState();
+    this.#initMinesPositions();
+
+    this.setGameStart();
+    //this.#OpponentGame.initPlayer();
 
 
+
+    // console.log("restart parallel");
+    // console.log(this.isIdle);
+    this.#individualGames.forEach((game) => {
+      game.init();
+      game.setGameStart();
+      game.start();
+      //console.log(game);
+
+
+    });
+    return;
+  }
 
 
   start() {
@@ -190,15 +211,18 @@ export class GameParallel extends Game {
     }
     this.#initMinesPositions();
 
-
+    this.setGameStart();
     this.#individualGames.forEach((game) => {
-
+      game.init();
       game.setGameStart();
       game.start();
       //console.log(game);
 
 
+
     });
+    this.#sneakPeekController.timerControllerParentID = this.#OpponentGame.freezerId;
+    
     this.#sneakPeekController.setControllerPlayer(this.#player);
   }
 
@@ -272,53 +296,38 @@ export class GameParallel extends Game {
   }
 
   #onSneakPeekEnd() {
-    console.log("onSneakPeekEnd");
-
-
     this.#sneakPeekController.stopPeeking().then(() => {
-      console.log("now hide");
-    })
-
-
-
-    // this.gameTimer.continue();
-    // this.#peekOnOpponentStrategyEnded()
-    //   .then(() => {
-    //     this.setSmileFace();
-    //     this.updateMineCounter();
-    //     this.enableMinefield();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     console.log("error on onSneakPeekEnd");
-    //   });
+      this.#OpponentGame.disableMinefield();
+      return this.#gameContainer(this.#OpponentGame);
+    }).then(gameContainer => {
+      ElementHandler.hide(gameContainer);
+      return;
+    }).catch((err) => {
+      console.log(err);
+      console.log("error on onSneakPeekEnd");
+    });
   }
 
 
-
-
-
-
-
-
-
+  
   #pauseGames() {
     this.#individualGames.forEach((game) => game.pause());
   }
 
   pause() {
     this.#pauseGames();
+    if (this.#sneakPeekController.isRunning) {
+      this.#sneakPeekController.stop();
+    }
   }
 
-  restart() {
-    console.log("restart parallel");
-
-    return;
-  }
+ 
 
   continue() {
-    console.log("continue parallel");
-
-    return;
+    if (this.#sneakPeekController.isPaused) {
+      this.#sneakPeekController.continue();
+    }
+    this.#individualGames.forEach((game) => game.continue());
   }
+
 }

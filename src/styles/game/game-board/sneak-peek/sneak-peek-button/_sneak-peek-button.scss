@@ -33,15 +33,16 @@
 }
 
 .sneak-peek-limit {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   position: absolute;
   font-weight: 900;
   height: 15px;
   line-height: 15px;
-  bottom: -3px;
+  bottom: -4px;
   right: -12px;
   text-align: left;
   min-width: 16px;
+  letter-spacing: -1px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

@@ -296,6 +296,9 @@ export class GameDefault extends Game {
     this.mineField.revealField();
   }
   
+  get freezerId() {
+    return this.mineField.freezerId;
+  }
  
 
 

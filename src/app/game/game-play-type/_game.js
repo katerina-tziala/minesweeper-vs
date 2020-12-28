@@ -19,6 +19,9 @@ import {
 //   BOARD_SECTION,
 //   DASHBOARD_SECTION,
 // } from "./_game.constants";
+import {
+  valueDefined
+} from "~/_utils/validator";
 
 import {
   DigitalCounter,
@@ -73,13 +76,7 @@ export class Game extends AppModel {
     return this.gameOverType ? true : false;
   }
 
-  get isIdle() {
-    return !this.startedAt ||
-      this.isOver ||
-      this.players.every((player) => !player.moves)
-      ? true
-      : false;
-  }
+
 
   get boardActionsAllowed() {
     return true;
@@ -119,8 +116,35 @@ export class Game extends AppModel {
     }
   }
 
+  get started() {
+    return valueDefined(this.startedAt);
+  }
+
+  get isIdle() {
+    if (this.isOver) {
+      return true;
+    }
+
+    if (!this.started) {
+      return true;
+    }
+
+    if (this.players.every((player) => !player.moves)) {
+      return true;
+    }
+
+    return false;
+  }
+
   #onBoardButtonAction(actionType) {
     this.pause();
+
+    // console.log("onBoardButtonAction");
+    // console.log(actionType);
+    // console.log(this.externalActions);
+    // console.log(this.isIdle);
+
+    // console.log(this.startedAt, this.isOver, this.players.map((player) => !player.moves));
     if (!this.isIdle) {
       self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
         confirmed ? this.#executeBoardAction(actionType) : this.continue();
@@ -160,7 +184,7 @@ export class Game extends AppModel {
 
 
   setMinesPositions() {
-     this.levelSettings.setMinesPositions();
+    this.levelSettings.setMinesPositions();
 
     // this.levelSettings.minesPositions = [
     //   0,

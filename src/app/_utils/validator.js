@@ -18,5 +18,5 @@ export const valueInLimits = (value, limits) => {
 };
 
 export const valueDefined = (value) => {
-  return !isNaN(value) && value !== null;
+  return (value !== undefined && value !== null) ? true : false;
 };
