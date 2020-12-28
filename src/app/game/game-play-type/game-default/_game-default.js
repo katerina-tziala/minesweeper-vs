@@ -225,8 +225,12 @@ export class GameDefault extends Game {
     this.setSmileFace();
   }
 
-  pause() {
+  stopTimer() {
     this.gameTimer.stop();
+  }
+
+  pause() {
+    this.stopTimer();
     this.disableMinefield();
   }
 

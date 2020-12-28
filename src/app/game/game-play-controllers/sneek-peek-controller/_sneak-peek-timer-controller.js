@@ -17,16 +17,15 @@ export class SneakPeekTimerController extends GameInterval {
   }
 
   set parentElementID(elementId) {
-    console.log(elementId);
     this.#_parentElementId = elementId;
   }
 
-  get #parentElementID() {
+  get parentElementID() {
     return this.#_parentElementId;
   }
 
   get #counterParent() {
-    return ElementHandler.getByID(this.#parentElementID);
+    return ElementHandler.getByID(this.parentElementID);
   }
 
   set counterColorType(type) {

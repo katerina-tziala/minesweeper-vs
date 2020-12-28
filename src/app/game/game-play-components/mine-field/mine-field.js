@@ -117,8 +117,10 @@ export class MineField {
 
   set freezerState(display) {
     this.#freezer.then((freezer) => {
-      ElementHandler.clearContent(freezer);
       display ? ElementHandler.display(freezer) : ElementHandler.hide(freezer);
+      if (!display) {
+        ElementHandler.clearContent(freezer);
+      }
     });
   }
 

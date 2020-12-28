@@ -68,22 +68,29 @@ export class GameParallel extends Game {
 
   #setIndividualGames(playerGame, opponentGame) {
     this.#PlayerGame = playerGame;
+    this.#setUpPlayerGame();
+
+    this.#OpponentGame = opponentGame;
+    this.#setUpOpponentGame();
+
+    this.#_individualGames = [this.#PlayerGame, this.#OpponentGame];
+  }
+
+  #setUpPlayerGame() {
     this.#PlayerGame.player.turn = true;
     this.#PlayerGame.externalActions = {
       onMoveSubmission: this.#onPlayerGameMove.bind(this),
       onGameOverSubmission: this.#onPlayerGameOver.bind(this)
     };
+  }
 
-    
-    this.#OpponentGame = opponentGame;
+  #setUpOpponentGame() {
     this.#OpponentGame.player.turn = false;
     this.#OpponentGame.externalActions = {
       onMoveSubmission: this.#onOpponentGameMove.bind(this),
       onGameOverSubmission: this.#onOpponentGameOver.bind(this)
     };
     this.#OpponentGame.minefieldInteractionAllowed = false;
-
-    this.#_individualGames = [this.#PlayerGame, this.#OpponentGame];
   }
 
   #setPlayers() {
@@ -133,16 +140,9 @@ export class GameParallel extends Game {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gamingArea,
     ]);
-
-    container.append(this.#generateGameView(this.#PlayerGame));
-
-    const opponentGameView = this.#generateGameView(this.#OpponentGame);
-    if (!this.#openCompetition) {
-      ElementHandler.hide(opponentGameView);
-    }
- 
-    container.append(opponentGameView);
-
+    this.#_individualGames.forEach(game => {
+      container.append(this.#generateGameView(game));
+    });
     return container;
   }
 
@@ -165,8 +165,6 @@ export class GameParallel extends Game {
     return gameContainer;
   }
 
-
-
   #initMinesPositions() {
     if (!this.#identicalMinefields) {
       this.#individualGames.forEach((game) => game.setMinesPositions());
@@ -176,29 +174,11 @@ export class GameParallel extends Game {
     }
   }
 
-
-
-  restart() {
-    this.initState();
-    this.#initMinesPositions();
-
-    this.setGameStart();
-    //this.#OpponentGame.initPlayer();
-
-
-
-    // console.log("restart parallel");
-    // console.log(this.isIdle);
-    this.#individualGames.forEach((game) => {
-      game.init();
-      game.setGameStart();
-      game.start();
-      //console.log(game);
-
-
-    });
-    return;
+  #initSneakPeekController() {
+    this.#sneakPeekController.parentElementID = this.#OpponentGame.freezerId;
+    this.#sneakPeekController.setControllerPlayer(this.#player);
   }
+
 
 
   start() {
@@ -212,21 +192,19 @@ export class GameParallel extends Game {
     this.#initMinesPositions();
 
     this.setGameStart();
-    this.#individualGames.forEach((game) => {
-      game.init();
-      game.setGameStart();
-      game.start();
-      //console.log(game);
+    this.#hideOpponentBoard().then(() => {
+      this.#individualGames.forEach((game) => {
+        game.init();
+        game.setGameStart();
+        game.start();
+        //console.log(game);
+      });
 
-
-
+      this.#initSneakPeekController();
     });
-    this.#sneakPeekController.timerControllerParentID = this.#OpponentGame.freezerId;
-    
-    this.#sneakPeekController.setControllerPlayer(this.#player);
+ 
+
   }
-
-
 
   #onPlayerGameMove(playerCardUpdate, gameData) {
     if (playerCardUpdate) {
@@ -244,22 +222,13 @@ export class GameParallel extends Game {
 
   #onPlayerGameOver(gameData) {
     this.#onGameOver(gameData);
-
     this.#updatePlayerCard(this.#PlayerGame);
-
-    console.log("onPlayerGameOver");
-    console.log(this);
-
     this.#revealGameMinefield(this.#OpponentGame);
   }
 
   #onOpponentGameOver(gameData) {
     this.#onGameOver(gameData);
     this.#updatePlayerCard(this.#OpponentGame);
-
-    console.log("onOpponentGameOver");
-    console.log(this);
-
     this.#revealGameMinefield(this.#PlayerGame);
   }
 
@@ -268,12 +237,33 @@ export class GameParallel extends Game {
     this.#pauseGames();
 
     console.log("onGameOver");
+    //show both boards
+    //disable peek
     console.log(gameData);
 
   }
 
+  #hideOpponentBoard() {
+    if (!this.#openCompetition) {
+      return this.#gameContainer(this.#OpponentGame).then(gameContainer => {
+        ElementHandler.hide(gameContainer);
+        return;
+      });
+    }
+ 
+    return Promise.resolve();
+  }
 
-
+  #displayOpponentBoard() {
+    if (!this.#openCompetition) {
+      return this.#gameContainer(this.#OpponentGame).then(gameContainer => {
+        ElementHandler.display(gameContainer);
+        return;
+      });
+    }
+ 
+    return Promise.resolve();
+  }
 
   #updatePlayerCard(game) {
     this.#vsDashboard.updatePlayerGameGoalStatistics(game.player, game.playerTargetValue);
@@ -284,10 +274,9 @@ export class GameParallel extends Game {
   }
 
   #onSneakPeek() {
-    this.#gameContainer(this.#OpponentGame).then(gameContainer => {
-      ElementHandler.display(gameContainer);
-      return;
-    }).then(() => {
+    //if game not idle
+    //what happens if on sneak peek players loses
+    this.#displayOpponentBoard().then(() => {
       return this.#sneakPeekController.playerPeeking();
     }).catch((err) => {
       console.log(err);
@@ -298,30 +287,28 @@ export class GameParallel extends Game {
   #onSneakPeekEnd() {
     this.#sneakPeekController.stopPeeking().then(() => {
       this.#OpponentGame.disableMinefield();
-      return this.#gameContainer(this.#OpponentGame);
-    }).then(gameContainer => {
-      ElementHandler.hide(gameContainer);
-      return;
+      return this.#hideOpponentBoard();
     }).catch((err) => {
       console.log(err);
       console.log("error on onSneakPeekEnd");
     });
   }
 
-
-  
   #pauseGames() {
     this.#individualGames.forEach((game) => game.pause());
   }
 
+  restart() {
+    this.initState();
+    this.start();
+  }
+
   pause() {
-    this.#pauseGames();
     if (this.#sneakPeekController.isRunning) {
       this.#sneakPeekController.stop();
     }
+    this.#pauseGames();
   }
-
- 
 
   continue() {
     if (this.#sneakPeekController.isPaused) {
