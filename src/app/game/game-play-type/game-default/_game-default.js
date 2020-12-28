@@ -23,6 +23,7 @@ import {
   DigitalCounter,
   DashboardFaceIcon,
   MineField,
+  MinesweeperBoard
 } from "GamePlayComponents";
 
 import { GameTimer } from "GamePlayControllers";
@@ -33,18 +34,33 @@ import { Game } from "../_game";
 
 
 export class GameDefault extends Game {
- 
+  #MinesweeperBoard;
   
   //round statistics
   constructor(id, params, player) {
     super(id, params);
     this.player = player;
     this.players = [this.player];
+    this.#MinesweeperBoard = new MinesweeperBoard(this.id);
+  }
+
+  get gameBoard() {
+    return this.#MinesweeperBoard;
   }
 
   get allowMarks() {
     return this.optionsSettings ? this.optionsSettings.marks : false;
   }
+
+
+
+
+
+
+
+
+
+
 
   initState() {
     super.initState();
@@ -73,8 +89,7 @@ export class GameDefault extends Game {
 
   get dashboardFaceColor() {
     if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode !== GameVSMode.Parallel
+      this.optionsSettings.vsMode
     ) {
       return this.playerOnTurn.colorType;
     }
@@ -262,11 +277,11 @@ export class GameDefault extends Game {
   }
 
 
-  
+
 
   generateView() {
     const gameContainer = document.createDocumentFragment();
-    gameContainer.append(this.#gameBoardInterface);
+    gameContainer.append(this.gameBoard.generateView());
     return gameContainer;
   }
 
@@ -275,12 +290,16 @@ export class GameDefault extends Game {
 
 
 
+
+
+
+
   get #gameBoardInterface() {
-    const gameContainer = GameViewHelper.generateBoardContainer();
-    const board = GameViewHelper.generateBoard(this.id);
-    ElementHandler.addInChildNodes(board, this.boardActions, 0);
-    gameContainer.append(board);
-    return gameContainer;
+    // const gameContainer = GameViewHelper.generateBoardContainer();
+    // const board = GameViewHelper.generateBoard(this.id);
+    // ElementHandler.addInChildNodes(board, this.boardActions, 0);
+    // gameContainer.append(board);
+    // return gameContainer;
   }
 
 
@@ -305,13 +324,13 @@ export class GameDefault extends Game {
   
 
   
-  init() {
-    return;
-  }
+  // init() {
+  //   return;
+  // }
 
-  start() {
-    return;
-  }
+  // start() {
+  //   return;
+  // }
 
 
   handleTileMarking(tile) {

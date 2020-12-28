@@ -25,7 +25,6 @@ export class Game extends AppModel {
     this.createdAt = nowTimestamp();
     this.players = [];
     this.setBoardActionsController();
-
   }
 
   setBoardActionsController() {
@@ -146,11 +145,6 @@ export class Game extends AppModel {
     }
   }
 
-  generateView() {
-    const fragment = document.createDocumentFragment();
-    return fragment;
-  }
-
   start() {
     return;
   }
@@ -167,7 +161,7 @@ export class Game extends AppModel {
     return;
   }
 
-
+  ////////////////////////////////
   setMinesPositions() {
     this.levelSettings.setMinesPositions();
 

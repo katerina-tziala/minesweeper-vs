@@ -50,25 +50,25 @@ export class GameSinglePlayer extends GameDefault {
 
   //TODO: COMPLETE THE CASES
   start() {
-    this.onAfterViewInit.then(() => {
-      this.initDashBoard();
+    // this.onAfterViewInit.then(() => {
+    //   this.initDashBoard();
 
-      if (this.startedAt) {
-        this.gameTimer.start();
-      }
+    //   if (this.startedAt) {
+    //     this.gameTimer.start();
+    //   }
 
-      if (this.isParallel) {
-        this.startGameRound();
-        return;
-      }
-      //TODO:
-      console.log("--  start original --");
-      console.log("GameSinglePlayer");
-      console.log("----------------------------");
-      console.log(" show start modal message");
-      console.log(this.startMessage);
-      this.startGameRound();
-    });
+    //   if (this.isParallel) {
+    //     this.startGameRound();
+    //     return;
+    //   }
+    //   //TODO:
+    //   console.log("--  start original --");
+    //   console.log("GameSinglePlayer");
+    //   console.log("----------------------------");
+    //   console.log(" show start modal message");
+    //   console.log(this.startMessage);
+    //   this.startGameRound();
+    // });
   }
 
   get startMessage() {
