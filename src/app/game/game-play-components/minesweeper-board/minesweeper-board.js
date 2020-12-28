@@ -53,34 +53,10 @@ export class MinesweeperBoard {
     return container;
   }
 
-
-
   generateView() {
     const gameContainer = this.#generatedBoardContainer;
     gameContainer.append(this.#generateBoard());
-
     return gameContainer;
   }
-
-
-
-  
-  // static getBoardSectionID(sectionName, gameID) {
-  //   return sectionName + TYPOGRAPHY.doubleUnderscore + gameID;
-  // }
-
-  // static generateBoardSection(sectionName, gameID) {
-  //   return ElementGenerator.generateContainer(
-  //     [sectionName],
-  //     GameViewHelper.getBoardSectionID(sectionName, gameID),
-  //   );
-  // }
-
-
-
-
-
-
-
 
 }

@@ -243,23 +243,7 @@ export class GameDefault extends Game {
     return this.player;
   }
 
-  get initViewControllers() {
-    this.mineCounter = new DigitalCounter(
-      this.getBoardSectionID(DASHBOARD_SECTION.mineCounter),
-    );
-    this.dashboardFace = new DashboardFaceIcon(
-      this.id,
-      this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon),
-    );
-    this.initTimeCounter();
-    this.mineField = new MineField(
-      this.id,
-      this.levelSettings,
-      this.#onActiveTileChange.bind(this),
-      this.#onTileAction.bind(this),
-    );
-    return Promise.resolve();
-  }
+
 
   #onActiveTileChange(activeTile) {
     if (!this.isOver) {
@@ -277,7 +261,23 @@ export class GameDefault extends Game {
   }
 
 
-
+  get initViewControllers() {
+    this.mineCounter = new DigitalCounter(
+      this.getBoardSectionID(DASHBOARD_SECTION.mineCounter),
+    );
+    this.dashboardFace = new DashboardFaceIcon(
+      this.id,
+      this.getBoardSectionID(DASHBOARD_SECTION.actionStateIcon),
+    );
+    this.initTimeCounter();
+    this.mineField = new MineField(
+      this.id,
+      this.levelSettings,
+      this.#onActiveTileChange.bind(this),
+      this.#onTileAction.bind(this),
+    );
+    return Promise.resolve();
+  }
 
   generateView() {
     const gameContainer = document.createDocumentFragment();
