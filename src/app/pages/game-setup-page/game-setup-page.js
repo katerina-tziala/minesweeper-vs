@@ -45,6 +45,7 @@ export class GameSetupPage extends Page {
     this.#initializeWizard().then((gameWizard) => {
       this.gameWizard = gameWizard;
       mainContainer.append(this.gameWizard.generateWizard());
+      this.hideLoader();
     });
   }
 

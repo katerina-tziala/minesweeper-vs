@@ -40,6 +40,7 @@ export class JoinPage extends Page {
 
   renderPage(mainContainer) {
     mainContainer.append(this.renderLoginForm());
+    this.hideLoader();
   }
 
   renderLoginForm() {

@@ -23,6 +23,7 @@ export class HomePage extends Page {
 
   renderPage(mainContainer) {
     mainContainer.append(this.generateMenu());
+    this.hideLoader();
   }
 
   generateMenu() {

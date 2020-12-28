@@ -204,7 +204,7 @@ export class GameVS extends GameDefault {
   }
 
   restart() {
-    super.restart();
+    this.setMinesPositions();
     const playersIds = this.players.map((player) => player.id);
     this.playerStartID = randomValueFromArray(playersIds);
     this.init();

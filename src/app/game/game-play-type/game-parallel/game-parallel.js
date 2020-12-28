@@ -37,7 +37,7 @@ export class GameParallel extends Game {
     this.#setIndividualGames(playerGame, opponentGame);
     this.#setPlayers();
 
-    this.optionsSettings.openCompetition = false;
+    //this.optionsSettings.openCompetition = false;
     console.log(this.optionsSettings);
 
 
@@ -176,31 +176,23 @@ export class GameParallel extends Game {
     this.#sneakPeekController.setControllerPlayer(this.#player);
   }
 
-
-
   start() {
     if (this.isOnline) {
       console.log("online gaming");
-
       //TODO: identical mines on online
-
       return;
     }
-    this.#initMinesPositions();
 
+    this.#initMinesPositions();
     this.setGameStart();
     this.#hideOpponentBoard().then(() => {
       this.#individualGames.forEach((game) => {
         game.init();
         game.setGameStart();
         game.start();
-        //console.log(game);
       });
-
       this.#initSneakPeekController();
     });
- 
-
   }
 
   #onPlayerGameMove(playerCardUpdate, gameData) {
@@ -233,11 +225,19 @@ export class GameParallel extends Game {
     this.setGameEnd(gameData.gameOverType);
     this.#pauseGames();
 
-    console.log("onGameOver");
-    //show both boards
-    //disable peek
-    console.log(gameData);
+    this.#displayOpponentBoard().then(() => {
+      if (this.#sneakPeekController.isRunning) {
+        this.#sneakPeekController.stopPeeking();
+      }
+    }).catch((err) => {
+      console.log(err);
+      console.log("error on onSneakPeek");
+    });
 
+    if (this.isOnline) {
+      console.log("online gaming");
+      console.log(gameData);
+    }
   }
 
   #hideOpponentBoard() {
@@ -271,8 +271,6 @@ export class GameParallel extends Game {
   }
 
   #onSneakPeek() {
-    //if game not idle
-    //what happens if on sneak peek players loses
     this.#displayOpponentBoard().then(() => {
       return this.#sneakPeekController.playerPeeking();
     }).catch((err) => {
@@ -283,7 +281,6 @@ export class GameParallel extends Game {
 
   #onSneakPeekEnd() {
     this.#sneakPeekController.stopPeeking().then(() => {
-      this.#OpponentGame.disableMinefield();
       return this.#hideOpponentBoard();
     }).catch((err) => {
       console.log(err);

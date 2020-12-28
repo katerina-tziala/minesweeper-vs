@@ -38,19 +38,9 @@ export class GameDefault extends Game {
   //round statistics
   constructor(id, params, player) {
     super(id, params);
-
     this.player = player;
     this.players = [this.player];
-
-
-  
-
-    // catch error on interface update
   }
-
-
-
-
 
   get allowMarks() {
     return this.optionsSettings ? this.optionsSettings.marks : false;
@@ -97,20 +87,6 @@ export class GameDefault extends Game {
     this.gameTimer = new GameTimer(params, this.onRoundTimerEnd.bind(this));
   }
 
-  #onActiveTileChange(activeTile) {
-    if (!this.isOver) {
-      this.checkGameStart();
-      activeTile ? this.setSurpriseFace() : this.setSmileFace();
-    }
-  }
-
-  #onTileAction(action, tile) {
-    if (!this.isOver) {
-      action === GameAction.Mark
-        ? this.handleTileMarking(tile)
-        : this.handleTileRevealing(tile);
-    }
-  }
 
   revealingAllowed(tile) {
     return tile.isUntouched || tile.isMarked;
@@ -240,7 +216,7 @@ export class GameDefault extends Game {
     this.enableMinefield();
   }
 
-  // OVERRIDEN FUNCTIONS
+  
   get gameTimerSettings() {
     const step = 1;
     const limit = null;
@@ -270,14 +246,34 @@ export class GameDefault extends Game {
     return Promise.resolve();
   }
 
+  #onActiveTileChange(activeTile) {
+    if (!this.isOver) {
+      this.checkGameStart();
+      activeTile ? this.setSurpriseFace() : this.setSmileFace();
+    }
+  }
+
+  #onTileAction(action, tile) {
+    if (!this.isOver) {
+      action === GameAction.Mark
+        ? this.handleTileMarking(tile)
+        : this.handleTileRevealing(tile);
+    }
+  }
 
 
+  
 
   generateView() {
     const gameContainer = document.createDocumentFragment();
     gameContainer.append(this.#gameBoardInterface);
     return gameContainer;
   }
+
+
+
+
+
 
   get #gameBoardInterface() {
     const gameContainer = GameViewHelper.generateBoardContainer();

@@ -71,6 +71,7 @@ export class GamePage extends Page {
       if (this.game) {
         mainContainer.append(this.game.generateView());
         this.game.start();
+        this.hideLoader();
         //edw na kanw hide to loader
       } else {
         console.log("no game");

@@ -14,7 +14,6 @@ export class Page {
     this.displayLoader();
     this.getClearedMainContainer().then((mainContainer) => {
       this.renderPage(mainContainer);
-      this.hideLoader();
     });
   }
 

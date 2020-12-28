@@ -1,10 +1,7 @@
 "use strict";
-
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { clone } from "~/_utils/utils";
-
 import { AppModel } from "~/_models/app-model";
 import { nowTimestamp } from "~/_utils/dates";
+import { valueDefined } from "~/_utils/validator";
 
 import {
   GameType,
@@ -14,23 +11,12 @@ import {
   GameSubmission,
 } from "GameEnums";
 
-import {
-  valueDefined
-} from "~/_utils/validator";
-
-import {
-  DigitalCounter,
-  DashboardFaceIcon,
-  MineField,
-} from "GamePlayComponents";
-
-import { GameTimer } from "GamePlayControllers";
 import { CONFIRMATION } from "../../components/modal/modal.constants";
 import { BoardActionsController } from "GamePlayControllers";
 
 export class Game extends AppModel {
   #externalActions = {};
-
+  #BoardActionsController;
   //loader after game view ready
   constructor(id, params) {
     super();
@@ -38,11 +24,20 @@ export class Game extends AppModel {
     this.id = id ? id : this.type;
     this.createdAt = nowTimestamp();
     this.players = [];
-    this.boardActionsController = new BoardActionsController(
+    this.setBoardActionsController();
+
+  }
+
+  setBoardActionsController() {
+    this.#BoardActionsController = new BoardActionsController(
       this.boardActionsAllowed,
       this.isOnline,
       this.#onBoardButtonAction.bind(this),
     );
+  }
+
+  get boardActionsController() {
+    return this.#BoardActionsController;
   }
 
   get isOnline() {
@@ -156,11 +151,15 @@ export class Game extends AppModel {
     return fragment;
   }
 
-  pause() {
+  start() {
     return;
   }
 
   restart() {
+    return;
+  }
+
+  pause() {
     return;
   }
 
@@ -172,28 +171,24 @@ export class Game extends AppModel {
   setMinesPositions() {
     this.levelSettings.setMinesPositions();
 
-    // this.levelSettings.minesPositions = [
-    //   0,
-    //   1,
-    //   2,
-    //   3,
-    //   4,
-    //   5,
-    //   6,
-    //   7,
-    //   73,
-    //   74,
-    //   75,
-    //   76,
-    //   77,
-    //   78,
-    //   79,
-    //   80,
-    // ];
-  }
-
-  restart() {
-    this.setMinesPositions();
+    this.levelSettings.minesPositions = [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+    ];
   }
 
   ////////////////////////////////
@@ -204,7 +199,7 @@ export class Game extends AppModel {
     console.log("update state: ", type);
     // console.log(this.externalActions);
     if (this.externalActions.onMoveSubmission) {
-      console.log(clone(this));
+      console.log(this.gameState);
     }
     //console.log(this);
   }
