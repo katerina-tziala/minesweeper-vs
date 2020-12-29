@@ -1,8 +1,8 @@
 "use strict";
 
 import { ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./dashboard-controller.constants";
-export class DashboardController {
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./dashboard.constants";
+export class Dashboard {
   #_gameId;
 
   constructor(gameId) {

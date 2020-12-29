@@ -10,4 +10,3 @@ export { SneakPeekCompetitionController } from "./sneek-peek-controller/sneak-pe
 
 
 export { MinesweeperBoardController } from "./minesweeper-board-controller/minesweeper-board-controller";
-export { DashboardController } from "./dashboard-controller/dashboard-controller";

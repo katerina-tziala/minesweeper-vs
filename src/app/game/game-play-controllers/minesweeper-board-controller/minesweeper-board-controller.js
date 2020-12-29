@@ -8,7 +8,8 @@ import {
   DigitalCounter,
   DashboardFaceIcon,
   MineField,
-  MinesweeperBoard
+  MinesweeperBoard,
+  Dashboard
 } from "GamePlayComponents";
 
 import {
@@ -23,7 +24,7 @@ import {
 
 
 
-import { DashboardController, GameTimer } from "GamePlayControllers";
+import { GameTimer } from "GamePlayControllers";
 
 
 export class MinesweeperBoardController {
@@ -54,7 +55,7 @@ export class MinesweeperBoardController {
     this.#onTileMarking = onTileMarking;
 
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
-    this.#Dashboard = new DashboardController(gameId);
+    this.#Dashboard = new Dashboard(gameId);
     this.#MineField = new MineField(
       gameId,
       this.#levelSettings,
