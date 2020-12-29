@@ -50,11 +50,6 @@ export class MinesweeperBoard {
     board.append(this.#generateMinefieldContainer);
     return board;
   }
-  // generateView() {
-  //   const gameContainer = this.#generatedBoardContainer;
-  //   gameContainer.append(this.#generateBoard());
-  //   return gameContainer;
-  // }
 
   insertOnBoardAsFirst(board, newElementInBoard) {
     ElementHandler.addInChildNodes(board, newElementInBoard, 0);

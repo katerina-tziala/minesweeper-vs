@@ -116,7 +116,7 @@ export class GameDefault extends Game {
   #checkGameStart() {
     if (this.isIdle) {
       this.setGameStart();
-      this.gameBoard.startTimer();
+      this.gameBoard.startGameTimer();
     }
   }
 
