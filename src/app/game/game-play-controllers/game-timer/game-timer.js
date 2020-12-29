@@ -5,19 +5,46 @@ import { GameInterval } from "GamePlayControllers";
 export class GameTimer extends GameInterval {
   #_digitalCounter;
   #_notificationPoint = 0;
+  #_turnSettings;
   #onPointNotify;
 
-  constructor(params, onEnd) {
+  constructor(turnSettings, parentId, onEnd) {
     super();
-    this.setConfiguration(params, onEnd);
-    this.digitalCounter = new DigitalCounter(params.id);
+    this.#turnSettings = turnSettings;
+    this.setConfiguration(this.#gameTimerSettings, onEnd);
+    this.#digitalCounter = new DigitalCounter(parentId);
   }
 
-  set digitalCounter(digitalCounter) {
+  set #turnSettings(settings) {
+    this.#_turnSettings = settings;
+  }
+
+  get #turnSettings() {
+    return this.#_turnSettings;
+  }
+
+  get roundTimer() {
+    return this.#turnSettings && this.#turnSettings.roundTimer;
+  }
+
+  get #gameTimerSettings() {
+    let step = 1;
+    let limit = null;
+    let initialValue = 0;
+
+    if (this.roundTimer) {
+      step = -1;
+      limit = 0;
+      initialValue = this.#turnSettings.turnDuration;
+    }
+    return { step, limit, initialValue };
+  }
+
+  set #digitalCounter(digitalCounter) {
     this.#_digitalCounter = digitalCounter;
   }
 
-  get digitalCounter() {
+  get #digitalCounter() {
     return this.#_digitalCounter;
   }
 
@@ -35,32 +62,40 @@ export class GameTimer extends GameInterval {
     }
   }
 
-  setNotificationUpdate(onPointNotify, notificationPoint) {
-    this.onPointNotify = onPointNotify;
-    this.notificationPoint = notificationPoint;
-  }
-
   get #notificationPointReached() {
-   return this.notificationPoint > 0 && this.notificationPoint === this.value;
+    return this.notificationPoint > 0 && this.notificationPoint === this.value;
   }
 
-
-  sendNotification() {
+  #sendNotification() {
     if (this.#onPointNotify && this.#notificationPointReached) {
       this.#onPointNotify();
     }
   }
 
+  #updateDigitalCounter() {
+    this.#digitalCounter.updateValue(this.value);
+  }
+
   onUpdate() {
-    this.digitalCounter.value = this.value;
-    this.sendNotification();
+    this.#updateDigitalCounter();
+    this.#sendNotification();
   }
 
   onInit() {
-    this.digitalCounter.value = this.value;
+    this.#updateDigitalCounter();
   }
 
   generate() {
-    return this.digitalCounter.generate();
+    this.stop();
+    return this.#digitalCounter.generate().then(() => {
+      this.#updateDigitalCounter();
+      return;
+    });
   }
+
+  setNotificationUpdate(onPointNotify, notificationPoint) {
+    this.onPointNotify = onPointNotify;
+    this.notificationPoint = notificationPoint;
+  }
+
 }

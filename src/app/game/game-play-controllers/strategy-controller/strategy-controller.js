@@ -34,12 +34,12 @@ export class StrategyController {
     return this.strategyAllowed ? !this.openStrategy : false;
   }
 
-  #strategyUpdate(player) {
+  #playerStrategy(player) {
     return this.hiddenStrategy && player.hasStrategy;
   }
 
   #hideStrategyForPlayer(player, mineField) {
-    if (this.#strategyUpdate(player)) {
+    if (this.#playerStrategy(player)) {
       mineField.hideStrategy(player);
       return Promise.resolve();
     }
@@ -48,7 +48,7 @@ export class StrategyController {
   }
 
   #displayStrategyForPlayer(player, mineField) {
-    if (this.#strategyUpdate(player)) {
+    if (this.#playerStrategy(player)) {
       mineField.showStrategy(player, this.#_wrongFlagHint);
       return Promise.resolve();
     }

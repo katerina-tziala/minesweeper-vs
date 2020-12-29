@@ -74,7 +74,6 @@ export class GameParallel extends Game {
   }
 
   #setUpPlayerGame() {
-    this.#PlayerGame.player.turn = true;
     this.#PlayerGame.externalActions = {
       onMoveSubmission: this.#onPlayerGameMove.bind(this),
       onGameOverSubmission: this.#onPlayerGameOver.bind(this)
@@ -82,12 +81,10 @@ export class GameParallel extends Game {
   }
 
   #setUpOpponentGame() {
-    this.#OpponentGame.player.turn = false;
     this.#OpponentGame.externalActions = {
       onMoveSubmission: this.#onOpponentGameMove.bind(this),
       onGameOverSubmission: this.#onOpponentGameOver.bind(this)
     };
-    this.#OpponentGame.minefieldInteractionAllowed = false;
   }
 
   #setPlayers() {
@@ -176,6 +173,22 @@ export class GameParallel extends Game {
     this.#sneakPeekController.setControllerPlayer(this.#player);
   }
 
+  #initGames() {
+    const viewUpdates = [];
+    this.#individualGames.forEach((game) => {
+      game.init();
+      game.setGameStart();
+      viewUpdates.push(game.onAfterViewInit);
+    });
+    return Promise.all(viewUpdates);
+  }
+
+  #startGames() {
+    this.#PlayerGame.player.turn = true;
+    this.#OpponentGame.player.turn = false;
+    this.#individualGames.forEach((game) => game.startGamePlay());
+  }
+
   start() {
     if (this.isOnline) {
       console.log("online gaming");
@@ -186,11 +199,12 @@ export class GameParallel extends Game {
     this.#initMinesPositions();
     this.setGameStart();
     this.#hideOpponentBoard().then(() => {
-      this.#individualGames.forEach((game) => {
-        game.init();
-        game.setGameStart();
-        game.start();
-      });
+      return  this.#initGames();
+    }).then(() => {
+      console.log("start message");
+  
+      this.#startGames();
+
       this.#initSneakPeekController();
     });
   }
@@ -212,19 +226,19 @@ export class GameParallel extends Game {
   #onPlayerGameOver(gameData) {
     this.#onGameOver(gameData);
     this.#updatePlayerCard(this.#PlayerGame);
-    this.#revealGameMinefield(this.#OpponentGame);
+    //this.#revealGameMinefield(this.#OpponentGame);
   }
 
   #onOpponentGameOver(gameData) {
     this.#onGameOver(gameData);
     this.#updatePlayerCard(this.#OpponentGame);
-    this.#revealGameMinefield(this.#PlayerGame);
+    //this.#revealGameMinefield(this.#PlayerGame);
   }
 
   #onGameOver(gameData) {
     this.setGameEnd(gameData.gameOverType);
-    this.#pauseGames();
-
+    this.#OpponentGame.setGameBoardOnGameOver();
+    this.#PlayerGame.setGameBoardOnGameOver();
     this.#displayOpponentBoard().then(() => {
       if (this.#sneakPeekController.isRunning) {
         this.#sneakPeekController.stopPeeking();
@@ -247,7 +261,7 @@ export class GameParallel extends Game {
         return;
       });
     }
- 
+
     return Promise.resolve();
   }
 
@@ -258,7 +272,7 @@ export class GameParallel extends Game {
         return;
       });
     }
- 
+
     return Promise.resolve();
   }
 

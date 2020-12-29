@@ -4,11 +4,9 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./dashboard-face-icon.constants";
 
 export class DashboardFaceIcon {
-  #_parentId;
   #_gameId;
 
-  constructor(gameId, parentId) {
-    this.#parentID = parentId;
+  constructor(gameId) {
     this.#gameID = gameId;
   }
 
@@ -20,31 +18,14 @@ export class DashboardFaceIcon {
     return this.#_gameId;
   }
 
-  set #parentID(id) {
-    this.#_parentId = id;
-  }
-
-  get #parentID() {
-    return this.#_parentId;
-  }
-
   get #iconID() {
     return DOM_ELEMENT_ID.faceIcon + this.#gameID;
-  }
-
-  get #parentElement() {
-    return ElementHandler.getByID(this.#parentID);
   }
 
   get #iconElement() {
     return ElementHandler.getByID(this.#iconID);
   }
 
-  set #iconStyles(iconStyles) {
-    this.#iconElement.then((icon) =>
-      ElementHandler.setStyleClass(icon, iconStyles),
-    );
-  }
 
   #getIconStylesBasedOnPlayer(colorType) {
     const iconStyles = [];
@@ -64,39 +45,41 @@ export class DashboardFaceIcon {
     return iconStyles;
   }
 
-  #generateIcon() {
-   const icon = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.faceIcon], this.#iconID);
-   return icon;
-  }
-
-  init() {
-    return this.#parentElement.then(parentElement => {
-      ElementHandler.clearContent(parentElement);
-      parentElement.append(this.#generateIcon());
+  #setIconStyles(iconStyles) {
+    return this.#iconElement.then((icon) => {
+      ElementHandler.setStyleClass(icon, iconStyles)
+      return;
     });
   }
 
+  generateIcon() {
+    const icon = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.faceIcon], this.#iconID);
+    return icon;
+  }
+
   setSmileFace(colorType) {
-    this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.smile, colorType);
+    const iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.smile, colorType);
+    return this.#setIconStyles(iconStyles);
   }
 
   setSurpriseFace(colorType) {
-    this.#iconStyles = this.#getIconStyles(
-      DOM_ELEMENT_CLASS.surprise,
-      colorType,
-    );
+    const iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.surprise, colorType);
+    return this.#setIconStyles(iconStyles);
   }
 
   setWinnerFace(colorType) {
-    this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.winner, colorType);
+    const iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.winner, colorType);
+    return this.#setIconStyles(iconStyles);
   }
 
   setLostFace(colorType) {
-    this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.lost, colorType);
+    const iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.lost, colorType);
+    return this.#setIconStyles(iconStyles);
   }
 
   setRollingEyesFace(colorType) {
-    this.#iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.rollingEyes, colorType);
+    const iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.rollingEyes, colorType);
+    return this.#setIconStyles(iconStyles);
   }
-  
+
 }

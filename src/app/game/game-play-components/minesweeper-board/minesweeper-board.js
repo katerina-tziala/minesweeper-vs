@@ -1,6 +1,5 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./minesweeper-board.constants";
@@ -28,24 +27,10 @@ export class MinesweeperBoard {
     return DOM_ELEMENT_ID.minefield + this.#gameId;
   }
 
-  get #generatedBoardContainer() {
-    return ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.boardContainer,
-    ]);
-  }
-
   get #boardStyles() {
     const styles = [DOM_ELEMENT_CLASS.board];
     styles.push(DOM_ELEMENT_CLASS.boardModifier + LocalStorageHelper.appSettings.mineType);
     return styles;
-  }
-
-  #generateBoard() {
-    const board = ElementGenerator.generateContainer(this.#boardStyles, this.#boardId);
-    board.addEventListener("contextmenu", (event) => event.preventDefault());
-    board.append(this.#generateMinefieldContainer);
-
-    return board;
   }
 
   get #generateMinefieldContainer() {
@@ -53,10 +38,29 @@ export class MinesweeperBoard {
     return container;
   }
 
-  generateView() {
-    const gameContainer = this.#generatedBoardContainer;
-    gameContainer.append(this.#generateBoard());
-    return gameContainer;
+  get generatedBoardContainer() {
+    return ElementGenerator.generateContainer([
+      DOM_ELEMENT_CLASS.boardContainer,
+    ]);
   }
 
+  generateView() {
+    const board = ElementGenerator.generateContainer(this.#boardStyles, this.#boardId);
+    board.addEventListener("contextmenu", (event) => event.preventDefault());
+    board.append(this.#generateMinefieldContainer);
+    return board;
+  }
+  // generateView() {
+  //   const gameContainer = this.#generatedBoardContainer;
+  //   gameContainer.append(this.#generateBoard());
+  //   return gameContainer;
+  // }
+
+  insertOnBoardAsFirst(board, newElementInBoard) {
+    ElementHandler.addInChildNodes(board, newElementInBoard, 0);
+  }
+
+  get minefieldContainer() {
+    return ElementHandler.getByID(this.#minefieldId);
+  }
 }

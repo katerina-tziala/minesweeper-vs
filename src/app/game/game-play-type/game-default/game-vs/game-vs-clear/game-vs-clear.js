@@ -56,6 +56,10 @@ export class GameVSClear extends GameVS {
   }
 
   handleTileRevealing(tile) {
+    if (!this.gameActionAllowed) {
+      return;
+    }
+
     if (this.revealingAllowed(tile)) {
       this.revealMinefieldArea(tile);
       return;
@@ -64,14 +68,14 @@ export class GameVSClear extends GameVS {
   }
 
   updateStateOnRevealedTiles(revealedTiles) {
-    const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
+    const revealedPositions = this.getTilesPositions(revealedTiles);
     super.updateStateOnRevealedTiles(revealedTiles);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
     const playerFlagsAffected = this.playerOnTurn.inStrategyPositions(
       revealedPositions,
     );
 
-    if (this.mineField.isCleared) {
+    if (this.gameBoard.minefieldCleared) {
       this.setGameEnd(GameEndType.Cleared);
     }
 
@@ -88,7 +92,7 @@ export class GameVSClear extends GameVS {
     this.stopRoundTimer();
     Promise.all(playerCardsUpdates).then(() => {
       if (this.isOver) {
-        this.updateMineCounter();
+        this.updateMinesCounter();
         this.onGameOver(revealedTiles);
         return;
       }
@@ -98,7 +102,7 @@ export class GameVSClear extends GameVS {
 
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
-    const revealedPositions = this.mineField.getTilesPositions(revealedTiles);
+    const revealedPositions = this.getTilesPositions(revealedTiles);
 
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
     const playerFlagsAffected = this.playerOnTurn.inStrategyPositions(
@@ -115,7 +119,7 @@ export class GameVSClear extends GameVS {
       );
     }
     Promise.all(playerCardsUpdates).then(() => {
-      this.updateMineCounter();
+      this.updateMinesCounter();
       this.onGameOver(revealedTiles);
     });
   }
@@ -130,6 +134,9 @@ export class GameVSClear extends GameVS {
   }
 
   handleTileMarking(tile) {
+    if (!this.gameActionAllowed) {
+      return;
+    }
     if (!this.strategyAllowed) {
       this.revealMinefieldArea(tile);
       return;
@@ -212,25 +219,26 @@ export class GameVSClear extends GameVS {
 
   startGameRound() {
     this.#sneakPeekController.setPlayers(this.playerOnTurn, this.playerWaiting);
+    
+    this.#updateSneakPeekButtonBasedOnRoundTimer();
+
     this.#hideOpponentStrategy().then(() => {
-      this.updateMineCounter();
+     
+      this.updateMinesCounter();
+
       super.startGameRound();
     });
   }
 
   start() {
     console.log(this.levelSettings.minesPositions);
+    
     this.onAfterViewInit.then(() => {
-      this.initDashBoard();
-
-      //on restart?
       this.#setSneakPeekParentElementID();
-
       if (this.roundTimer) {
         this.setGameStart();
         this.#setSneakPeekNotificationForRoundTimer();
       }
-
       console.log("START GameVS GAME");
       console.log("----------------------------");
       console.log(" show start modal message");
@@ -244,7 +252,7 @@ export class GameVSClear extends GameVS {
   }
 
   pause() {
-    this.gameTimer.stop();
+    this.stopTimer();
     if (this.#sneakPeekController.isRunning) {
       this.#sneakPeekController.stop();
       return;
@@ -277,7 +285,7 @@ export class GameVSClear extends GameVS {
     return this.#strategyController.revealOpponentStrategy(
       this.playerOnTurn,
       this.playerWaiting,
-      this.mineField,
+      this.gameBoard.mineField,
     );
   }
 
@@ -285,7 +293,7 @@ export class GameVSClear extends GameVS {
     return this.#strategyController.hideOpponentStrategy(
       this.playerOnTurn,
       this.playerWaiting,
-      this.mineField,
+      this.gameBoard.mineField,
     );
   }
 
@@ -293,7 +301,7 @@ export class GameVSClear extends GameVS {
   #setSneakPeekNotificationForRoundTimer() {
     if (this.#sneakPeekController.allowed) {
       const notifyAt = this.#sneakPeekController.durationWithMargin - 1;
-      this.gameTimer.setNotificationUpdate(
+      this.gameBoard.setNotificationUpdate(
         this.#updateSneakPeekButtonBasedOnRoundTimer.bind(this),
         notifyAt,
       );
@@ -301,11 +309,11 @@ export class GameVSClear extends GameVS {
   }
 
   #setSneakPeekParentElementID() {
-    this.#sneakPeekController.parentElementID = this.mineField.freezerId;
+    this.#sneakPeekController.parentElementID = this.gameBoard.freezerId;
   }
 
   get #sneakPeekAllowed() {
-    return this.#sneakPeekController.sneakPeekAllowed(this.gameTimer.value);
+    return this.#sneakPeekController.sneakPeekAllowed(this.gameBoard.timerValue);
   }
 
   get #playerOnTurnPeeking() {
@@ -313,12 +321,12 @@ export class GameVSClear extends GameVS {
   }
 
   get #playerOnTurnStopPeeking() {
-    return this.#sneakPeekController.stopPeeking(this.gameTimer.value);
+    return this.#sneakPeekController.stopPeeking(this.gameBoard.timerValue);
   }
 
   #updateSneakPeekButtonBasedOnRoundTimer() {
     if (this.hiddenStrategy) {
-      this.#sneakPeekController.updateToggleState(this.gameTimer.value);
+      this.#sneakPeekController.updateToggleState(this.gameBoard.timerValue);
     }
   }
 
@@ -339,13 +347,16 @@ export class GameVSClear extends GameVS {
   }
 
   #onSneakPeek() {
+    // if (this.isIdle) {
+    //   return;
+    // }
     if (!this.#sneakPeekAllowed) {
       return;
     }
     this.#peekOnOpponentStrategy()
       .then(() => {
-        this.mineCounter.value = this.levelSettings.numberOfMines - this.getPlayerDetectedMines(this.playerWaiting);
-        this.setRollingEyesFace(this.playerWaiting.colorType);
+        this.updateMinesCounter();
+        this.gameBoard.setRollingEyesFace(this.playerWaiting.colorType);
       })
       .catch((err) => {
         console.log(err);
@@ -354,11 +365,11 @@ export class GameVSClear extends GameVS {
   }
 
   #onSneakPeekEnd() {
-    this.gameTimer.continue();
+    this.continueTimer();
     this.#peekOnOpponentStrategyEnded()
       .then(() => {
-        this.setSmileFace();
-        this.updateMineCounter();
+        this.gameBoard.setSmileFace();
+        this.updateMinesCounter();
         this.enableMinefield();
       })
       .catch((err) => {

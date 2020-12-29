@@ -100,17 +100,22 @@ export class DigitalCounter {
 
   set value(value) {
     this.#_value = value;
-    this.#setDigitsValues();
   }
 
   get value() {
     return this.#_value;
   }
 
+  updateValue(value) {
+    this.value = value;
+    this.#setDigitsValues();
+  }
+
   generate() {
-    this.#digitalCounterContainer.then((digitalCounter) => {
+    return this.#digitalCounterContainer.then((digitalCounter) => {
       ElementHandler.clearContent(digitalCounter);
       digitalCounter.append(this.#generateCounter);
+      return;
     });
   }
 

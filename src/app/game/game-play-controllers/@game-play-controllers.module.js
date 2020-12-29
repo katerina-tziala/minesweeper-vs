@@ -7,3 +7,7 @@ export { BoardActionsController } from "./board-actions-controller/board-actions
 
 export { SneakPeekStrategyController } from "./sneek-peek-controller/sneak-peek-strategy-controller/sneak-peek-strategy-controller";
 export { SneakPeekCompetitionController } from "./sneek-peek-controller/sneak-peek-competition-controller/sneak-peek-competition-controller";
+
+
+export { MinesweeperBoardController } from "./minesweeper-board-controller/minesweeper-board-controller";
+export { DashboardController } from "./dashboard-controller/dashboard-controller";

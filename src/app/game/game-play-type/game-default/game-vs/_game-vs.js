@@ -37,26 +37,7 @@ export class GameVS extends GameDefault {
       80,
     ];
   
-    this.turnSettings.turnTimer = false;
-    // this.turnSettings.consecutiveTurns = true;
-    // this.turnSettings.turnDuration = 12;
-    // this.turnSettings.missedTurnsLimit = 3;
 
-    // //this.optionsSettings.wrongFlagHint = true;
-
-    this.optionsSettings.tileFlagging = true;
-    this.optionsSettings.openStrategy = false;
-
-    this.optionsSettings.unlimitedFlags = true;
-  
-     this.optionsSettings.tileRevealing = true;
-    this.optionsSettings.marks = true;
-
-    this.optionsSettings.sneakPeek = true;
-    this.optionsSettings.sneakPeekDuration = 5;
-
-    //console.log(this.turnSettings);
-    console.log(this.optionsSettings);
     this.init();
     this.setDashBoard();
   }
@@ -66,17 +47,6 @@ export class GameVS extends GameDefault {
       this.wrongFlagHint,
       !this.isDetectMinesGoal,
     );
-  }
-
-  // OVERRIDEN FUNCTIONS
-  get gameTimerSettings() {
-    const timerSettings = super.gameTimerSettings;
-    if (this.roundTimer) {
-      timerSettings.step = -1;
-      timerSettings.limit = 0;
-      timerSettings.initialValue = this.turnSettings.turnDuration;
-    }
-    return timerSettings;
   }
 
   get playerOnTurn() {
@@ -101,6 +71,18 @@ export class GameVS extends GameDefault {
       : null;
   }
 
+  init() {
+    this.players.forEach((player) => {
+      player.initState(
+        this.goalTargetNumber,
+        this.#turnsLimit,
+        this.#maxAllowedFlags,
+      );
+      player.turn = player.id === this.playerStartID;
+    });
+    this.initState();
+  }
+
   generateView() {
     const gameContainer = super.generateView();
     const vsDashboard = this.#generateVSDashBoard();
@@ -118,26 +100,6 @@ export class GameVS extends GameDefault {
     return vsDashboard;
   }
 
-
-
-
-  init() {
-    this.players.forEach((player) => {
-      player.initState(
-        this.goalTargetNumber,
-        this.#turnsLimit,
-        this.#maxAllowedFlags,
-      );
-      player.turn = player.id === this.playerStartID;
-    });
-    this.initState();
-  }
-
-
-
-
-
-
   initPlayersCards() {
     const targetValuesForPlayers = this.players.map((player) =>
       this.getPlayerTargetValue(player),
@@ -152,18 +114,12 @@ export class GameVS extends GameDefault {
     return super.onAfterViewInit.then(() => this.initPlayersCards());
   }
 
-
   start() {
-    console.log(this.levelSettings.minesPositions);
-    this.onAfterViewInit
-      .then(() => {
-        this.initDashBoard();
-
+    this.onAfterViewInit.then(() => {
         if (this.roundTimer) {
           console.log("kkk");
           this.setGameStart();
         }
-
         console.log("START GameVS GAME");
         console.log("----------------------------");
         console.log(" show start modal message");
@@ -171,19 +127,19 @@ export class GameVS extends GameDefault {
       });
   }
 
-  startRoundTimer() {
-    if (this.roundTimer) {
-      this.gameTimer.start();
-    }
-  }
 
+  
+
+  
   startGameRound() {
     // TODO: ROUND STATISTICS
     this.initRoundTiles();
-    this.setSmileFace();
-    this.startRoundTimer();
 
     this.vsDashboard.setCardOnTurn(this.players).then(() => {
+      return this.gameBoard.initBoardOnRound(this.playerOnTurn);
+    }).then(() => {
+ 
+      
       if (this.playerOnTurn.isBot) {
         this.startBotRound();
         return;
@@ -262,7 +218,7 @@ export class GameVS extends GameDefault {
 
   // FUNCTIONS TO HANDLE TURNS
   get roundTimer() {
-    return this.turnSettings && this.turnSettings.roundTimer;
+    return this.gameBoard.roundTimer;
   }
 
   get #turnsLimit() {
@@ -284,7 +240,7 @@ export class GameVS extends GameDefault {
 
   /* HANDLE GAME STATE AFTER PLAYER ACTION */
   onPlayerMoveEnd(boardTiles = []) {
-    this.updateMineCounter();
+    this.updateMinesCounter();
     this.roundTilesUpdate = boardTiles;
     
     if (this.isOnline) {
@@ -309,7 +265,7 @@ export class GameVS extends GameDefault {
 
   //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
-    this.updateMineCounter();
+    this.updateMinesCounter();
     this.stopRoundTimer();
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
@@ -360,5 +316,9 @@ export class GameVS extends GameDefault {
     }
 
     return updates;
+  }
+
+  getPlayerTargetValue(player) {
+    return 0;
   }
 }

@@ -1,25 +1,14 @@
 "use strict";
 import { clone, replaceStringParameter } from "~/_utils/utils";
-
-
 import { GameEndType, GameVSMode, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
 import { MESSAGE } from "./game-single-player.constants";
 
 export class GameSinglePlayer extends GameDefault {
-  #_minefieldInteractionAllowed = true;
 
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
-  }
-
-  set minefieldInteractionAllowed(allowed) {
-    this.#_minefieldInteractionAllowed = allowed;
-  }
-
-  get minefieldInteractionAllowed() {
-    return this.#_minefieldInteractionAllowed;
   }
 
   get boardActionsAllowed() {
@@ -37,10 +26,10 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   initPlayer() {
+    this.player.initState(this.levelSettings.numberOfEmptyTiles);
     if (!this.isParallel) {
       this.player.turn = true;
     }
-    this.player.initState(this.levelSettings.numberOfEmptyTiles);
   }
 
   init() {
@@ -48,27 +37,28 @@ export class GameSinglePlayer extends GameDefault {
     this.initState();
   }
 
-  //TODO: COMPLETE THE CASES
   start() {
-    // this.onAfterViewInit.then(() => {
-    //   this.initDashBoard();
+    this.onAfterViewInit.then(() => {
+      this.startGamePlay();
+    });
+  }
 
-    //   if (this.startedAt) {
-    //     this.gameTimer.start();
-    //   }
-
-    //   if (this.isParallel) {
-    //     this.startGameRound();
-    //     return;
-    //   }
-    //   //TODO:
-    //   console.log("--  start original --");
-    //   console.log("GameSinglePlayer");
-    //   console.log("----------------------------");
-    //   console.log(" show start modal message");
-    //   console.log(this.startMessage);
-    //   this.startGameRound();
-    // });
+  //TODO: COMPLETE THE CASES
+  startGamePlay() {
+    if (this.startedAt) {
+      this.gameBoard.startTimer();
+    }
+    if (this.isParallel) {
+      this.startGameRound();
+      return;
+    }
+    //TODO:
+    console.log("--  start original --");
+    console.log("GameSinglePlayer");
+    console.log("----------------------------");
+    console.log(" show start modal message");
+    console.log(this.startMessage);
+    this.startGameRound();
   }
 
   get startMessage() {
@@ -92,7 +82,6 @@ export class GameSinglePlayer extends GameDefault {
   /* UPDATE GAME AFTER MARKING TILES */
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
-    this.updateMineCounter();
     this.onGameOver(revealedTiles);
   }
 
@@ -100,7 +89,6 @@ export class GameSinglePlayer extends GameDefault {
     super.updateStateOnRevealedTiles(revealedTiles);
     if (this.playerOnTurn.clearedMinefield) {
       this.setGameEnd(GameEndType.Cleared);
-      this.updateMineCounter();
       this.onGameOver(revealedTiles);
       return;
     }
@@ -110,26 +98,27 @@ export class GameSinglePlayer extends GameDefault {
   updateStateOnFlaggedTile(tile) {
     this.setFlagOnMinefieldTile(tile);
     this.onPlayerMoveEnd([tile]);
+    this.updateMinesCounter();
   }
 
   updateStateOnMarkedTile(tile) {
     this.setMarkOnMinefieldTile(tile);
     this.onPlayerMoveEnd([tile]);
+    this.updateMinesCounter();
   }
 
   updateStateOnResetedTile(tile) {
     this.resetMinefieldTile(tile);
     this.onPlayerMoveEnd([tile]);
+    this.updateMinesCounter();
   }
 
   startGameRound() {
     this.initRoundTiles();
-
     if (this.playerOnTurn.isBot) {
       this.startBotRound();
       return;
     }
-
     this.enableMinefield();
   }
 
@@ -139,12 +128,10 @@ export class GameSinglePlayer extends GameDefault {
     console.log("--  get Bot move -- ");
     console.log("GameSinglePlayer");
     console.log("----------------------------");
-    // this.mineField.disable();
     this.enableMinefield();
   }
 
   onPlayerMoveEnd(boardTiles = []) {
-    this.updateMineCounter();
     this.roundTilesUpdate = boardTiles;
     this.submitResult(GameSubmission.MoveEnd);
     this.startGameRound();
@@ -196,7 +183,7 @@ export class GameSinglePlayer extends GameDefault {
   get playerTargetValue() {
     return this.playerOnTurn.revealedTiles;
   }
-  
+
   submitResult() {
     if (!this.#submissionAllowed) {
       return;
@@ -215,16 +202,16 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   continue() {
-    this.gameTimer.continue();
+    this.continueTimer();
     if (!this.playerOnTurn.isBot) {
       this.enableMinefield();
     }
   }
 
   enableMinefield() {
-    if (this.minefieldInteractionAllowed) {
-      this.mineField.enable();
+    if (this.playerOnTurn.turn) {
+      super.enableMinefield();
     }
   }
-  
+
 }
