@@ -1,6 +1,5 @@
 "use strict";
 
-import { clone, replaceStringParameter } from "~/_utils/utils";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, ANIMATIONS } from "./game-message-controller.constants";
 
@@ -63,9 +62,8 @@ export class GameMessageViewHelper {
   static onMessageBoxRemoved(messageBox) {
     GameMessageViewHelper.setMessageBoxSlideOutStyles(messageBox);
     return new Promise(resolve => {
-      setTimeout(() =>resolve(), ANIMATIONS.moveOutDuration);
+      setTimeout(() => resolve(), ANIMATIONS.moveOutDuration);
     });
   }
-  
 
 }

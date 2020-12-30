@@ -18,6 +18,14 @@ export class GameSinglePlayer extends GameDefault {
     }
   }
 
+  get #submissionAllowed() {
+    return this.isParallel && this.externalActions.onMoveSubmission;
+  }
+
+  get #updatePlayerCard() {
+    return this.roundTiles.length ? this.roundTiles.some(tile => tile.isRevealed) : false;
+  }
+
   get boardActionsAllowed() {
     return !this.isParallel;
   }
@@ -30,6 +38,14 @@ export class GameSinglePlayer extends GameDefault {
       return true;
     }
     return false;
+  }
+
+  get viewInitUpdates() {
+    const viewUpdates = super.viewInitUpdates;
+    if (this.#MessageController) {
+      viewUpdates.push(this.#MessageController.hide());
+    }
+    return viewUpdates;
   }
 
   initPlayer() {
@@ -52,17 +68,11 @@ export class GameSinglePlayer extends GameDefault {
     return gameContainer;
   }
 
-  get viewInitUpdates() {
-    const viewUpdates = super.viewInitUpdates;
-    if (this.#MessageController) {
-      viewUpdates.push(this.#MessageController.hide());
-    }
-    return viewUpdates;
-  }
-
   start() {
     this.onAfterViewInit.then(() => {
-      this.#startGamePlay();
+      return this.#MessageController.displayStartMessage(this.playerOnTurn)
+    }).then(() => {
+      this.startGameRound();
     });
   }
 
@@ -72,12 +82,6 @@ export class GameSinglePlayer extends GameDefault {
     }
     this.startGameRound();
     return;
-  }
-
-  #startGamePlay() {
-    this.#MessageController.displayStartMessage(this.playerOnTurn).then(() => {
-      this.startGameRound();
-    });
   }
 
   restart() {
@@ -147,7 +151,6 @@ export class GameSinglePlayer extends GameDefault {
     this.startGameRound();
   }
 
-  //TODO: COMPLETE THE CASES
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
 
@@ -157,29 +160,30 @@ export class GameSinglePlayer extends GameDefault {
     }
 
     this.#MessageController.displayEndMessage(this.playerOnTurn).then(() => {
-      console.log("--  game over --");
-      console.log("GameSinglePlayer");
-      console.log("----------------------------");
+      //TODO: ON WIN THROW CONFETTI
     });
-  }
-
-
-  
-
-
-
-
-  get #submissionAllowed() {
-    return this.isParallel && this.externalActions.onMoveSubmission;
-  }
-
-  get #updatePlayerCard() {
-    return this.roundTiles.length ? this.roundTiles.some(tile => tile.isRevealed) : false;
   }
 
   #submitBotUpdate() {
     if (this.#updatePlayerCard) {
       this.externalActions.onMoveSubmission(this.#updatePlayerCard);
+    }
+  }
+
+  #submitGameOver() {
+    if (this.externalActions.onGameOverSubmission) {
+      this.externalActions.onGameOverSubmission(this.gameState);
+    }
+  }
+
+  continue() {
+    this.continueTimer();
+    this.enableMinefield();
+  }
+
+  enableMinefield() {
+    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
+      super.enableMinefield();
     }
   }
 
@@ -193,24 +197,4 @@ export class GameSinglePlayer extends GameDefault {
     }
     this.externalActions.onMoveSubmission(this.#updatePlayerCard, this.gameState);
   }
-
-  #submitGameOver() {
-    if (this.externalActions.onGameOverSubmission) {
-      this.externalActions.onGameOverSubmission(this.gameState);
-    }
-  }
-
-  continue() {
-    this.continueTimer();
-    if (!this.playerOnTurn.isBot) {
-      this.enableMinefield();
-    }
-  }
-
-  enableMinefield() {
-    if (this.playerOnTurn.turn) {
-      super.enableMinefield();
-    }
-  }
-
 }

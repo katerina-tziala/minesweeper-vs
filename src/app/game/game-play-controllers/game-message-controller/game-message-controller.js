@@ -59,7 +59,6 @@ export class GameMessageController {
     return this.#getMessageForPlayer(message, player);
   }
 
-
   #messageDisplayCompleted(messageBox) {
     return this.#messageDurationCompleted().then(() => {
       return ViewHelper.onMessageBoxRemoved(messageBox);
@@ -76,8 +75,6 @@ export class GameMessageController {
     });
   }
 
-
-
   #display() {
     this.#clear();
     return ViewHelper.displayedContainer();
@@ -89,9 +86,5 @@ export class GameMessageController {
       this.#timeOut = 0;
     }
   }
-
-
-
-
 
 }
