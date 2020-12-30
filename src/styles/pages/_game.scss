@@ -4,8 +4,11 @@
 @import "../utils/_module-utils";
 
 @import "../game/minesweeper-board/minesweeper-board";
-
 @import "../game/vs-dashboard/vs-dashboard";
+@import "../game/game-message/game-message";
+
+
+
 
 .gaming-area--parallel {
   width: 100%;

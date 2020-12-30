@@ -61,9 +61,14 @@ export class GameDefault extends Game {
     return gameContainer;
   }
 
+  get viewInitUpdates() {
+    const viewUpdates = [this.gameBoard.initView()];
+    return viewUpdates;
+  }
+
   get onAfterViewInit() {
     this.gameBoard.faceColorType = this.dashboardFaceColor;
-    return this.gameBoard.initView();
+    return Promise.all(this.viewInitUpdates);
   }
 
   #checkGameStart() {

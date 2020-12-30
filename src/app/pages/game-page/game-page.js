@@ -7,6 +7,7 @@ import { Page } from "../page";
 
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 
+import { GameMessageController } from "GamePlayControllers";
 // import { User } from "~/_models/user";
 
 import { GameFactory } from "../../game/game-factory";
@@ -49,15 +50,28 @@ export class GamePage extends Page {
   }
 
   renderPage(mainContainer) {
+
+   
+
+
+
     GameFactory.loadGame(this.gameParams).then((game) => {
-      this.#onGameLoaded(game);
-      if (this.game) {
-        mainContainer.append(this.game.generateView());
-        this.hideLoader();
-        this.game.start();
-      } else {
-        console.log("no game");
-      }
+
+      const test = new GameMessageController();
+
+      mainContainer.append(test.generateView());
+      this.hideLoader();
+
+      // this.#onGameLoaded(game);
+      // if (this.game) {
+      //   mainContainer.append(this.game.generateView());
+      //   this.hideLoader();
+      //   this.game.start();
+      // } else {
+      //   console.log("no game");
+      // }
+
+
     });
   }
 

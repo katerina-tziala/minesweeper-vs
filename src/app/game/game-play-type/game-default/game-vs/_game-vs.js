@@ -45,10 +45,10 @@ export class GameVS extends GameDefault {
       : null;
   }
 
-  get onAfterViewInit() {
-    return super.onAfterViewInit.then(() => {
-      return this.vsDashboard.initCardsState(this.players);
-    });
+  get viewInitUpdates() {
+    const viewUpdates = super.viewInitUpdates;
+    viewUpdates.push(this.vsDashboard.initCardsState(this.players));
+    return viewUpdates;
   }
 
   get roundViewUpdates() {

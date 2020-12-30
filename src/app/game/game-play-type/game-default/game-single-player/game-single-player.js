@@ -4,11 +4,19 @@ import { GameEndType, GameVSMode, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
 import { MESSAGE } from "./game-single-player.constants";
 
+
+
+
+
+import { GameMessageController } from "GamePlayControllers";
+
 export class GameSinglePlayer extends GameDefault {
+  #MessageController;
 
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
+    this.#MessageController = new GameMessageController();
   }
 
   get boardActionsAllowed() {
@@ -37,6 +45,18 @@ export class GameSinglePlayer extends GameDefault {
     this.initState();
   }
 
+  generateView() {
+    const gameContainer = super.generateView();
+    if (!this.isParallel) {
+      console.log("not parallel game messages");
+      gameContainer.append(this.#MessageController.generateView())
+    }
+    return gameContainer;
+  }
+
+
+
+  //
   start() {
     this.onAfterViewInit.then(() => {
       this.startGamePlay();
