@@ -175,12 +175,4 @@ export class ModalView {
     }
   }
 
-  static generateWaitingDialog(message) {
-    return ModalView.newModalDialog.then((modalBox) => {
-      const confirmationContainer = ModalView.generateDialogContent(message, 0);
-      modalBox.append(confirmationContainer);
-      return;
-    });
-  }
-
 }

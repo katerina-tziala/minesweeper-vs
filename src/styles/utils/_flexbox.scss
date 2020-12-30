@@ -38,11 +38,9 @@
 }
 
 %second-axis-around {
-  align-items:space-around;
+  align-items: space-around;
   align-content: space-around;
 }
-
-
 
 %center-center {
   @extend %flexbox;

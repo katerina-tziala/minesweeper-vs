@@ -12,6 +12,26 @@ export class GameDefault extends Game {
     super(id, params);
     this.player = player;
     this.players = [this.player];
+
+ this.levelSettings.minesPositions = [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+    ];
+
     this.#gameBoardController = params;
   }
 
@@ -245,6 +265,7 @@ export class GameDefault extends Game {
   onGameOver(boardTiles = []) {
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
+    this.setGameBoardOnGameOver();
   }
 
   setGameBoardOnGameOver() {

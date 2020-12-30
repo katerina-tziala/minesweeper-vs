@@ -1,7 +1,19 @@
+
+
+@mixin slideIn($duration: .8) {
+  animation: slide-in #{$duration}s ease-out;
+  animation-fill-mode: forwards;
+}
+
+@mixin slideOut($duration: .8) {
+  animation: slide-out #{$duration}s ease-in;
+  animation-fill-mode: forwards;
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;
-    margin-left: -200px;
+    margin-left: -150vw;
   }
 
   to {
@@ -73,5 +85,17 @@
 
   100% {
     -webkit-transform: rotate(-360deg);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    opacity: 1;
+    margin-left: 0px;
+  }
+
+  to {
+    opacity: 0;
+    margin-left: 150vw;
   }
 }

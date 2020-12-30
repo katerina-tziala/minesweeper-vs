@@ -173,14 +173,4 @@ export class Modal {
       });
   }
 
-  // displayWaitingMessage(message, onAction) {
-  //   this.#hide()
-  //     .then(() => {
-  //       return ModalView.generateWaitingDialog(message);
-  //     })
-  //     .then(() => {
-  //       this.#display();
-  //       this.#setMessageTimer(message.timer, onAction);
-  //     });
-  // }
 }

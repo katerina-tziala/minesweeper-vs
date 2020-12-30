@@ -133,7 +133,7 @@ export class GameParallel extends Game {
   #startGames() {
     this.#PlayerGame.player.turn = true;
     this.#OpponentGame.player.turn = false;
-    this.#individualGames.forEach((game) => game.startGamePlay());
+    this.#individualGames.forEach((game) => game.startParallelGamePlay());
   }
 
   // HANDLE PLAYER ACTIONS

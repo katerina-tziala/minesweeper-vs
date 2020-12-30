@@ -1,13 +1,6 @@
 "use strict";
-import { clone, replaceStringParameter } from "~/_utils/utils";
 import { GameEndType, GameVSMode, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
-import { MESSAGE } from "./game-single-player.constants";
-
-
-
-
-
 import { GameMessageController } from "GamePlayControllers";
 
 export class GameSinglePlayer extends GameDefault {
@@ -16,7 +9,13 @@ export class GameSinglePlayer extends GameDefault {
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
-    this.#MessageController = new GameMessageController();
+    this.#setMessageController();
+  }
+
+  #setMessageController() {
+    if (!this.isParallel) {
+      this.#MessageController = new GameMessageController(this.type);
+    }
   }
 
   get boardActionsAllowed() {
@@ -47,47 +46,38 @@ export class GameSinglePlayer extends GameDefault {
 
   generateView() {
     const gameContainer = super.generateView();
-    if (!this.isParallel) {
-      console.log("not parallel game messages");
-      gameContainer.append(this.#MessageController.generateView())
+    if (this.#MessageController) {
+      gameContainer.append(this.#MessageController.generateView());
     }
     return gameContainer;
   }
 
+  get viewInitUpdates() {
+    const viewUpdates = super.viewInitUpdates;
+    if (this.#MessageController) {
+      viewUpdates.push(this.#MessageController.hide());
+    }
+    return viewUpdates;
+  }
 
-
-  //
   start() {
     this.onAfterViewInit.then(() => {
-      this.startGamePlay();
+      this.#startGamePlay();
     });
   }
 
-  //TODO: COMPLETE THE CASES
-  startGamePlay() {
+  startParallelGamePlay() {
     if (this.startedAt) {
       this.gameBoard.startTimer();
     }
-    if (this.isParallel) {
-      this.startGameRound();
-      return;
-    }
-    //TODO:
-    console.log("--  start original --");
-    console.log("GameSinglePlayer");
-    console.log("----------------------------");
-    console.log(" show start modal message");
-    console.log(this.startMessage);
     this.startGameRound();
+    return;
   }
 
-  get startMessage() {
-    const message = Object.assign(MESSAGE.gameOn);
-    message.content = replaceStringParameter(
-      message.content,
-      this.playerOnTurn.name,
-    );
-    return message;
+  #startGamePlay() {
+    this.#MessageController.displayStartMessage(this.playerOnTurn).then(() => {
+      this.startGameRound();
+    });
   }
 
   restart() {
@@ -166,25 +156,18 @@ export class GameSinglePlayer extends GameDefault {
       return;
     }
 
-    //TODO:
-    console.log("--  game over --");
-    console.log("GameSinglePlayer");
-    console.log("----------------------------");
-    console.log("show end modal message");
-    console.log(this.playerOnTurn);
-    console.log(this.endMessage);
+    this.#MessageController.displayEndMessage(this.playerOnTurn).then(() => {
+      console.log("--  game over --");
+      console.log("GameSinglePlayer");
+      console.log("----------------------------");
+    });
   }
 
-  get endMessage() {
-    const message = Object.assign(
-      this.playerOnTurn.lostGame ? MESSAGE.gameOverLoss : MESSAGE.gameOverWin,
-    );
-    message.content = replaceStringParameter(
-      message.content,
-      this.playerOnTurn.name,
-    );
-    return message;
-  }
+
+  
+
+
+
 
   get #submissionAllowed() {
     return this.isParallel && this.externalActions.onMoveSubmission;

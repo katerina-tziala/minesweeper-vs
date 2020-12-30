@@ -1,17 +1,73 @@
-
-
-
 .game-message-container {
   @extend %center-center;
   flex-direction: column;
-
   width: 100%;
   height: 100%;
-
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1500;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
 
-  background: rgba(0, 0, 0, 0.4);
+.game-message-box {
+  @extend %start-center;
+  flex-direction: column;
+  padding: 20px;
+  min-width: 300px;
+
+  .title {
+    width: 100%;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .sub-title {
+    width: 100%;
+    text-transform: capitalize;
+    font-size: 1rem;
+    text-align: center;
+    font-style: oblique;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    @extend %ellipsis-text;
+    width: 100%;
+    max-width: 500px;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+}
+
+.game-message-box--slide-in {
+  @include slideIn();
+}
+
+.game-message-box--slide-out {
+  @include slideOut();
+}
+
+
+
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  .game-message-box {
+    @include theming.setThemeCard("light");
+    @include theming.setThemeBoxShadow("light");
+  }
+}
+
+.theme-dark {
+  .game-message-box {
+    @include theming.setThemeCard("dark");
+    @include theming.setThemeBoxShadow("dark");
+  }
 }

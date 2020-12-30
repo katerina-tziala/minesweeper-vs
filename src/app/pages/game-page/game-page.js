@@ -57,19 +57,14 @@ export class GamePage extends Page {
 
     GameFactory.loadGame(this.gameParams).then((game) => {
 
-      const test = new GameMessageController();
-
-      mainContainer.append(test.generateView());
-      this.hideLoader();
-
-      // this.#onGameLoaded(game);
-      // if (this.game) {
-      //   mainContainer.append(this.game.generateView());
-      //   this.hideLoader();
-      //   this.game.start();
-      // } else {
-      //   console.log("no game");
-      // }
+      this.#onGameLoaded(game);
+      if (this.game) {
+        mainContainer.append(this.game.generateView());
+        this.hideLoader();
+        this.game.start();
+      } else {
+        console.log("no game");
+      }
 
 
     });
