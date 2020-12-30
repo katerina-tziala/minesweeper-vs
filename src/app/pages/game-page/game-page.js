@@ -1,14 +1,6 @@
 "use strict";
-
 import "../../../styles/pages/_game.scss";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { Page } from "../page";
 
 // import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
@@ -18,21 +10,16 @@ import { Page } from "../page";
 // import { User } from "~/_models/user";
 
 import { GameFactory } from "../../game/game-factory";
-import { Player } from "GameModels";
-// import { GameVSMode } from "GameEnums";
-
-import { GamePlayerCard } from "../../game/game-play-components/game-player-card/game-player-card";
 export class GamePage extends Page {
   #_gameParams;
   #_game;
 
   constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
     super();
-    self.settingsController.gameSettingsHidden = false;
+    self.settingsController.gameSettingsHidden = true;
     this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;
-
     this.init();
   }
 
@@ -52,27 +39,22 @@ export class GamePage extends Page {
     return this.#_game;
   }
 
-  // init() {
-  //   this.displayLoader();
-  //   this.getClearedMainContainer().then((mainContainer) => {
-  //     this.renderPage(mainContainer);
-  //     this.hideLoader();
-  //   });
-  // }
 
+  #onGameLoaded(game) {
+    this.game = game;
+    this.game.externalActions = {
+      quit: this.onGameExit.bind(this),
+      reset: this.onGameReset.bind(this),
+    };
+  }
 
   renderPage(mainContainer) {
     GameFactory.loadGame(this.gameParams).then((game) => {
-      this.game = game;
-      this.game.externalActions = {
-        quit: this.onGameExit.bind(this),
-        reset: this.onGameReset.bind(this),
-      };
+      this.#onGameLoaded(game);
       if (this.game) {
         mainContainer.append(this.game.generateView());
-        this.game.start();
         this.hideLoader();
-        //edw na kanw hide to loader
+        this.game.start();
       } else {
         console.log("no game");
       }

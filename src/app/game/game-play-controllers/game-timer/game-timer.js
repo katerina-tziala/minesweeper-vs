@@ -87,6 +87,7 @@ export class GameTimer extends GameInterval {
 
   generate() {
     this.stop();
+    this.value = this.initialValue;
     return this.#digitalCounter.generate().then(() => {
       this.#updateDigitalCounter();
       return;
@@ -98,4 +99,14 @@ export class GameTimer extends GameInterval {
     this.notificationPoint = notificationPoint;
   }
 
+  start(startValue) {
+    this.stop();
+    if (startValue) {
+      this.value = startValue;
+      this.#updateDigitalCounter();
+    } else {
+      this.init();
+    }
+    this.run();
+  }
 }

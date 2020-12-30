@@ -55,7 +55,10 @@ export class MinesweeperBoard {
     ElementHandler.addInChildNodes(board, newElementInBoard, 0);
   }
 
-  get minefieldContainer() {
-    return ElementHandler.getByID(this.#minefieldId);
+  get clearedMinefieldContainer() {
+    return ElementHandler.getByID(this.#minefieldId).then(container => {
+      ElementHandler.clearContent(container);
+      return container;
+    });
   }
 }

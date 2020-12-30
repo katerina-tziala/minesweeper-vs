@@ -1,7 +1,8 @@
 "use strict";
+import { valueDefined } from "~/_utils/validator";
 
 import { GameEndType } from "GameEnums";
-import { GameVS } from "./_game-vs";
+import { GameVS } from "../_game-vs";
 
 export class GameVSDetect extends GameVS {
   constructor(id, params, player, opponent) {
@@ -19,7 +20,7 @@ export class GameVSDetect extends GameVS {
   /* UPDATE GAME AFTER REVEALING TILES */
   revealingAllowed(tile) {
     const tileRevealingAllowed = super.revealingAllowed(tile);
-    if (this.optionsSettings.tileRevealing !== undefined) {
+    if (valueDefined(this.optionsSettings.tileRevealing)) {
       return this.optionsSettings.tileRevealing && tileRevealingAllowed;
     }
     return tileRevealingAllowed;
@@ -53,7 +54,7 @@ export class GameVSDetect extends GameVS {
     }
 
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatePlayerCard(missedTurnsUpdated).then(() => {
+    this.updatedPlayerCard(missedTurnsUpdated).then(() => {
       this.onPlayerMoveEnd(revealedTiles);
     });
   }
@@ -63,29 +64,27 @@ export class GameVSDetect extends GameVS {
     const unflaggedTiles = this.gameBoard.unrevealedMines;
     unflaggedTiles.forEach((tile) => this.setFlagOnMinefieldTile(tile));
     const boardTiles = unflaggedTiles.concat(revealedTiles);
-    this.updatePlayerCardGameInfoAndCheckGameOver(boardTiles);
+    this.updatePlayerCardAndCheckGameOver(boardTiles);
   }
 
   updateStateOnTileDetonation(revealedTiles) {
     super.updateStateOnTileDetonation(revealedTiles);
     this.#removeFromPlayerStrategy(revealedTiles);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatePlayerCard(missedTurnsUpdated).then(() => {
-      this.updateMinesCounter();
+    this.updatedPlayerCard(missedTurnsUpdated).then(() => {
       this.onGameOver(revealedTiles);
     });
   }
 
-  updatePlayerCardGameInfoAndCheckGameOver(boardTiles) {
+  updatePlayerCardAndCheckGameOver(boardTiles) {
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
 
     if (this.gameBoard.allMinesDetected) {
       this.setGameEnd(GameEndType.Detected);
     }
 
-    this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
+    this.updatedPlayerCard(missedTurnsUpdated, true).then(() => {
       if (this.isOver) {
-        this.updateMinesCounter();
         this.onGameOver(boardTiles);
         return;
       }
@@ -97,14 +96,14 @@ export class GameVSDetect extends GameVS {
   updateStateOnFlaggedTile(tile) {
     this.setFlagOnMinefieldTile(tile);
     this.#removeFromPlayerStrategy([tile]);
-    this.updatePlayerCardGameInfoAndCheckGameOver([tile]);
+    this.updatePlayerCardAndCheckGameOver([tile]);
   }
 
   updateStateOnMarkedTile(tile) {
     this.setMarkOnMinefieldTile(tile);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
 
-    this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
+    this.updatedPlayerCard(missedTurnsUpdated, true).then(() => {
       this.onPlayerMoveEnd([tile]);
     });
   }
@@ -112,7 +111,7 @@ export class GameVSDetect extends GameVS {
   updateStateOnResetedTile(tile) {
     this.resetMinefieldTile(tile);
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatePlayerCard(missedTurnsUpdated, true).then(() => {
+    this.updatedPlayerCard(missedTurnsUpdated, true).then(() => {
       this.onPlayerMoveEnd([tile]);
     });
   }
@@ -123,42 +122,13 @@ export class GameVSDetect extends GameVS {
   }
 
   /* UPDATE PLAYER CARD */
-  updatePlayerCard(turnsUpdate, flagsUpdate) {
-    const updates = this.getCardUpdates(turnsUpdate, flagsUpdate);
-
-    if (updates.length) {
-      return Promise.all(updates);
-    }
-
-    return Promise.resolve();
+  updatedPlayerCard(turnsUpdate, flagsUpdate) {
+    const params = {
+      turnsUpdate: turnsUpdate,
+      flagsUpdate: flagsUpdate,
+      goalUpdate: flagsUpdate
+    };
+    return super.updatedPlayerCard(params);
   }
 
-  getCardUpdates(
-    turnsUpdate = false,
-    flagsUpdate = false,
-    player = this.playerOnTurn,
-  ) {
-    const updates = super.getCardUpdates(turnsUpdate);
-
-    if (flagsUpdate) {
-      updates.push(this.updatePlayerCardAllowedFlags(player));
-      updates.push(this.updatePlayerGameGoalStatistics(player));
-    }
-
-    return updates;
-  }
-
-  getPlayerTargetValue(player) {
-    return this.wrongFlagHint
-      ? this.getPlayerDetectedMines(player)
-      : player.goalTargetNumber;
-  }
-
-  updatePlayerGameGoalStatistics(player = this.playerOnTurn) {
-    const playerTargetValue = this.getPlayerTargetValue(player);
-    return this.vsDashboard.updatePlayerGameGoalStatistics(
-      player,
-      playerTargetValue,
-    );
-  }
 }

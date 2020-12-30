@@ -2,6 +2,7 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { valueDefined } from "~/_utils/validator";
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
@@ -73,7 +74,7 @@ export class DigitalCounter {
   }
 
   get #valueArray() {
-    if (this.value === undefined || this.value === null) {
+    if (!valueDefined(this.value)) {
       return DEFAULT_DIGITS.undefined;
     }
     if (this.#exceedsUpperLimit) {

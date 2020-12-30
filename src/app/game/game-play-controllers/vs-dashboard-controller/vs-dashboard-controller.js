@@ -2,8 +2,8 @@
 
 import { ElementGenerator, ElementHandler } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./vs-dashboard-controller.constants";
-import { GamePlayerCard as PlayerCard } from "GamePlayComponents";
-
+import { GamePlayerCard as PlayerCard, VSBoard } from "GamePlayComponents";
+import { valueDefined } from "~/_utils/validator";
 export class VSDashboardController {
 
   constructor(wrongFlagHint = false, clearMinefield = true) {
@@ -11,13 +11,14 @@ export class VSDashboardController {
     this.clearMinefield = clearMinefield;
   }
 
-  generateView(player, opponent) {
+  generateView(player, opponent, boardActions) {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.area,
     ]);
     const playerCard = this.#generatePlayerCard(player);
+    const vsBoard = VSBoard.generateView(player.colorType, opponent.colorType, boardActions);
     const opponentCard = this.#generatePlayerCard(opponent, true);
-    container.append(playerCard, opponentCard);
+    container.append(playerCard, vsBoard, opponentCard);
     return container;
   }
 
@@ -39,15 +40,14 @@ export class VSDashboardController {
     return container;
   }
 
-  initCardsState(players, targetValues = []) {
+  initCardsState(players) {
     const cardUpdates = [];
-    players.forEach((player, index) => {
+    players.forEach((player) => {
+      const playerTargetValue = this.#getTargetValue(player);
       cardUpdates.push(PlayerCard.updateTurnStatus(player));
       cardUpdates.push(PlayerCard.updateState(player));
       cardUpdates.push(PlayerCard.updateMissedTurns(player));
-      if (targetValues.length) {
-        cardUpdates.push(PlayerCard.updateGameGoalStatistics(player, targetValues[index]));
-      }
+      cardUpdates.push(PlayerCard.updateGameGoalStatistics(player, playerTargetValue));
     });
     return Promise.all(cardUpdates);
   }
@@ -58,6 +58,22 @@ export class VSDashboardController {
       cardUpdates.push(PlayerCard.updateTurnStatus(player));
     });
     return Promise.all(cardUpdates);
+  }
+
+  addElementInDashboard(dashboardContainer, element, position = 1) {
+    ElementHandler.addInChildNodes(dashboardContainer, element, position);
+  }
+
+  #getTargetValue(player) {
+    if (this.clearMinefield) {
+      return player.revealedTiles;
+    }
+
+    if (this.wrongFlagHint) {
+      return player.minesDetected;
+    }
+
+    return player.goalTargetNumber;
   }
 
   updatePlayerMissedTurns(player) {
@@ -71,16 +87,38 @@ export class VSDashboardController {
     return Promise.resolve();
   }
 
-  updatePlayerGameGoalStatistics(player, targetValue = null) {
-    const cardUpdates = [];
-    if (targetValue !== null) {
-      cardUpdates.push(PlayerCard.updateGameGoalStatistics(player, targetValue));
+  updatePlayerGameGoalStatistics(player) {
+    if (this.clearMinefield) {
+      return PlayerCard.updateGameGoalStatistics(player, player.revealedTiles);
     }
-    return Promise.all(cardUpdates);
+
+    if (this.wrongFlagHint) {
+      return PlayerCard.updateGameGoalStatistics(player, player.minesDetected);
+    }
+
+    return Promise.resolve();
   }
 
- addElementInDashboard(dashboardContainer, element, position = 1) {
-    ElementHandler.addInChildNodes(dashboardContainer, element, position);
+  updatedPlayerCard(player, params) {
+    const updates = [];
+
+    if (params.turnsUpdate) {
+      updates.push(this.updatePlayerMissedTurns(player));
+    }
+
+    if (params.flagsUpdate) {
+      updates.push(this.updatePlayerAllowedFlags(player));
+    }
+
+    if (params.goalUpdate) {
+      updates.push(this.updatePlayerGameGoalStatistics(player));
+    }
+
+    if (updates.length) {
+      return Promise.all(updates);
+    }
+
+    return Promise.resolve();
   }
 
 }

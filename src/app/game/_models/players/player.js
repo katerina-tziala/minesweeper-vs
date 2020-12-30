@@ -1,4 +1,5 @@
 "use strict";
+import { valueDefined } from "~/_utils/validator";
 
 import { AppModel } from "~/_models/app-model";
 export class Player extends AppModel {
@@ -69,9 +70,7 @@ export class Player extends AppModel {
 
   /* CHECKS BASED ON MINEFIELD ACTIONS */
   get unlimitedFlags() {
-    return this.maxAllowedFlags === null || this.maxAllowedFlags === undefined
-      ? true
-      : false;
+    return !valueDefined(this.maxAllowedFlags)
   }
 
   get hasFlags() {

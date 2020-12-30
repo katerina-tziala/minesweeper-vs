@@ -2,6 +2,7 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { valueDefined } from "~/_utils/validator";
 
 import {
   DOM_ELEMENT_ID,
@@ -67,7 +68,7 @@ export class PlayerCardState {
     const styles = [DOM_ELEMENT_CLASS.allowedFlags];
     let content = "";
 
-    if (allowedFlags === null || allowedFlags === undefined) {
+    if (!valueDefined(allowedFlags)) {
       styles.push(DOM_ELEMENT_CLASS.allowedFlagsInfinite);
     } else {
       if (allowedFlags < 3) {

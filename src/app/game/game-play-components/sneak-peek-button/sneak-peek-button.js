@@ -1,9 +1,11 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { valueDefined } from "~/_utils/validator";
 import {
   ElementHandler,
   ElementGenerator,
   AriaHandler,
 } from "HTML_DOM_Manager";
+
 
 import {
   DOM_ELEMENT_CLASS,
@@ -79,7 +81,7 @@ export class SneakPeekButton {
     const container = document.createElement("span");
     ElementHandler.setStyleClass(container, styles);
 
-    if (limit !== undefined) {
+    if (valueDefined(limit)) {
       container.innerHTML = limit;
     }
     return container;

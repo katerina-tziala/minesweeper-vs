@@ -5,9 +5,12 @@ import { DOM_ELEMENT_CLASS } from "./vs-board.constants";
 
 export class VSBoard {
  
-  static generateView(vColorType, sColorType) {
+  static generateView(vColorType, sColorType, section) {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.vsBoard]);
     container.append(VSBoard.generateVSIndicator(vColorType, sColorType));
+    if (section) {
+      container.append(section);
+    }
     return container;
   }
 

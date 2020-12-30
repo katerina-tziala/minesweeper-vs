@@ -1,9 +1,4 @@
 "use strict";
-
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./minesweeper-board-controller.constants";
-
 import {
   DigitalCounter,
   DashboardFaceIcon,
@@ -12,63 +7,43 @@ import {
   Dashboard
 } from "GamePlayComponents";
 
-import {
-  GameType,
-  GameVSMode,
-  GameAction,
-  GameEndType,
-  GameSubmission,
-} from "GameEnums";
-
-
-
-
-
+import { GameAction } from "GameEnums";
 import { GameTimer } from "GamePlayControllers";
-
-
 export class MinesweeperBoardController {
-  #gameId;
   #_faceColorType;
-  #levelSettings;
-  #wrongFlagHint;
-
-
+  #_levelSettings;
+  #_wrongFlagHint;
+  // FUNCTIONS
   #onTileRevealing;
   #onTileMarking;
-
+  // HANDLERS
   #MinesweeperBoard;
   #Dashboard;
   #MineField;
-
   #MineCounter;
   #FaceIcon;
   #GameTimer;
 
-
-  constructor(gameId, levelSettings, wrongFlagHint, turnSettings, onTileRevealing, onTileMarking, onRoundTimerEnd) {
-    //this.#gameId = gameId;
-    this.#levelSettings = levelSettings;
-    this.#wrongFlagHint = wrongFlagHint;
-
+  constructor(gameId, params, onTileRevealing, onTileMarking, onRoundTimerEnd) {
+    this.#_levelSettings = params.levelSettings;
+    this.#_wrongFlagHint = params.optionsSettings.wrongFlagHint;
     this.#onTileRevealing = onTileRevealing;
     this.#onTileMarking = onTileMarking;
-
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
-    this.#Dashboard = new Dashboard(gameId);
     this.#MineField = new MineField(
       gameId,
-      this.#levelSettings,
+      this.#_levelSettings,
       this.#onActiveTileChange.bind(this),
       this.#onTileAction.bind(this),
     );
+    this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
+  }
 
-
+  #initDashboardHandlers(gameId, turnSettings, onRoundTimerEnd) {
+    this.#Dashboard = new Dashboard(gameId);
     this.#MineCounter = new DigitalCounter(this.#Dashboard.mineCounterId);
     this.#FaceIcon = new DashboardFaceIcon(gameId);
     this.#GameTimer = new GameTimer(turnSettings, this.#Dashboard.timerId, onRoundTimerEnd);
-
-
   }
 
   set faceColorType(type) {
@@ -79,8 +54,6 @@ export class MinesweeperBoardController {
     return this.#_faceColorType;
   }
 
-
-
   get #board() {
     return this.#MinesweeperBoard;
   }
@@ -89,41 +62,19 @@ export class MinesweeperBoardController {
     return this.#Dashboard;
   }
 
-  generateView(actionsContainer) {
-    const gameContainer = this.#board.generatedBoardContainer;
-    const board = this.#board.generateView();
-    const dashboard = this.#dashboard.generateView(this.#FaceIcon.generateIcon());
-
-    this.#board.insertOnBoardAsFirst(board, dashboard);
-    this.#board.insertOnBoardAsFirst(board, actionsContainer);
-    gameContainer.append(board);
-    return gameContainer;
-  }
-
-  initView() {
-    const viewUpdates = [this.#initMinefield()];
-    viewUpdates.push(this.setSmileFace());
-    viewUpdates.push(this.#initMinesCounter());
-    viewUpdates.push(this.#initTimer());
-    return Promise.all(viewUpdates);
-  }
-
   #initMinesCounter() {
     return this.#MineCounter.generate().then(() => {
-      this.#MineCounter.updateValue(this.#levelSettings.numberOfMines);
+      this.#MineCounter.updateValue(this.#_levelSettings.numberOfMines);
       return;
     });
   }
 
   #initTimer() {
-    this.#GameTimer.initialValue = 0;
-    this.#GameTimer.value = 0;
     return this.#GameTimer.generate();
   }
 
   #initMinefield() {
-    return this.#board.minefieldContainer.then(minefieldContainer => {
-      ElementHandler.clearContent(minefieldContainer);
+    return this.#board.clearedMinefieldContainer.then(minefieldContainer => {
       minefieldContainer.append(this.mineField.generate());
       return;
     });
@@ -141,6 +92,24 @@ export class MinesweeperBoardController {
     this.#onTileRevealing(tile);
   }
 
+  generateView(actionsContainer) {
+    const gameContainer = this.#board.generatedBoardContainer;
+    const board = this.#board.generateView();
+    const dashboard = this.#dashboard.generateView(this.#FaceIcon.generateIcon());
+    this.#board.insertOnBoardAsFirst(board, dashboard);
+    this.#board.insertOnBoardAsFirst(board, actionsContainer);
+    gameContainer.append(board);
+    return gameContainer;
+  }
+
+  initView() {
+    const viewUpdates = [this.#initMinefield()];
+    viewUpdates.push(this.setSmileFace());
+    viewUpdates.push(this.#initMinesCounter());
+    viewUpdates.push(this.#initTimer());
+    return Promise.all(viewUpdates);
+  }
+
   // TIMER
   get roundTimer() {
     return this.#GameTimer.roundTimer;
@@ -153,21 +122,19 @@ export class MinesweeperBoardController {
   }
 
   startGameTimer() {
-    this.#GameTimer.initialValue = 1;
-    this.startTimer();
+    this.#GameTimer.start(1);
   }
 
-
   startTimer() {
-    return this.#GameTimer.start();
+    this.#GameTimer.start();
   }
 
   stopTimer() {
-    return this.#GameTimer.stop();
+    this.#GameTimer.stop();
   }
 
   continueTimer() {
-    return this.#GameTimer.continue();
+    this.#GameTimer.continue();
   }
 
   timerRunning() {
@@ -248,8 +215,8 @@ export class MinesweeperBoardController {
 
   // MINES COUNTER
   updateMinesCounter() {
-    const minesToDetect = this.#wrongFlagHint ? this.numberOfDetectedMines : this.numberOfFlags;
-    this.#MineCounter.updateValue(this.#levelSettings.numberOfMines - minesToDetect);
+    const minesToDetect = this.#_wrongFlagHint ? this.numberOfDetectedMines : this.numberOfFlags;
+    this.#MineCounter.updateValue(this.#_levelSettings.numberOfMines - minesToDetect);
   }
 
   // SET BOARD STATE
@@ -265,6 +232,7 @@ export class MinesweeperBoardController {
 
   onGameOver(playerOnTurn) {
     this.pause();
+    this.updateMinesCounter();
     this.revealMinefield();
     this.#setFaceIconOnGameEnd(playerOnTurn);
   }
@@ -272,8 +240,27 @@ export class MinesweeperBoardController {
   initBoardOnRound(player) {
     this.faceColorType = player.colorType;
     return this.setSmileFace().then(() => {
+      this.updateMinesCounter();
       this.startRoundTimer();
       return;
     });
+  }
+
+  setBoardOnRoundEnd() {
+    this.updateMinesCounter();
+    if (this.roundTimer) {
+      this.pause();
+    }
+  }
+
+  setDashboardOnSneakPeek(opponentColorType) {
+    this.updateMinesCounter();
+    this.setRollingEyesFace(opponentColorType);
+  }
+
+  setDashboardAfterSneakPeek() {
+    this.setSmileFace();
+    this.updateMinesCounter();
+    this.enableMinefield();
   }
 }

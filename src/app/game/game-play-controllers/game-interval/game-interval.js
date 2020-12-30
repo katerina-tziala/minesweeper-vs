@@ -94,7 +94,7 @@ export class GameInterval {
     }
   }
 
-  #run() {
+  run() {
     this.#_timerInterval = setInterval(() => {
       this.value = this.value + this.step;
       this.onUpdate();
@@ -129,7 +129,7 @@ export class GameInterval {
   start() {
     this.stop();
     this.init();
-    this.#run();
+    this.run();
   }
 
   continue() {
@@ -139,6 +139,6 @@ export class GameInterval {
       this.#onLimitHit();
       return;
     }
-    this.#run();
+    this.run();
   }
 }

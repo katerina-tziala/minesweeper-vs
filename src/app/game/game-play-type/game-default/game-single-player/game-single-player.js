@@ -97,20 +97,20 @@ export class GameSinglePlayer extends GameDefault {
 
   updateStateOnFlaggedTile(tile) {
     this.setFlagOnMinefieldTile(tile);
-    this.onPlayerMoveEnd([tile]);
     this.updateMinesCounter();
+    this.onPlayerMoveEnd([tile]);
   }
 
   updateStateOnMarkedTile(tile) {
     this.setMarkOnMinefieldTile(tile);
-    this.onPlayerMoveEnd([tile]);
     this.updateMinesCounter();
+    this.onPlayerMoveEnd([tile]);
   }
 
   updateStateOnResetedTile(tile) {
     this.resetMinefieldTile(tile);
-    this.onPlayerMoveEnd([tile]);
     this.updateMinesCounter();
+    this.onPlayerMoveEnd([tile]);
   }
 
   startGameRound() {
@@ -178,10 +178,6 @@ export class GameSinglePlayer extends GameDefault {
     if (this.#updatePlayerCard) {
       this.externalActions.onMoveSubmission(this.#updatePlayerCard);
     }
-  }
-
-  get playerTargetValue() {
-    return this.playerOnTurn.revealedTiles;
   }
 
   submitResult() {

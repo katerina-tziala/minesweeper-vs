@@ -1,48 +1,22 @@
 "use strict";
+import { ElementHandler } from "HTML_DOM_Manager";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
-import { GameType, GameVSMode, GameEndType, GameSubmission } from "GameEnums";
+import { GameEndType, GameSubmission } from "GameEnums";
 
 import { GameDefault } from "../_game-default";
 
 import { VSDashboardController } from "GamePlayControllers";
-
-import { ElementHandler } from "HTML_DOM_Manager";
-import { GameViewHelper } from "../_game-view-helper";
-import {
-  VSBoard,
-} from "GamePlayComponents";
-
 export class GameVS extends GameDefault {
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
-    this.levelSettings.minesPositions = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-    ];
-  
-
     this.init();
-    this.setDashBoard();
+    this.#setDashBoard();
   }
 
-  setDashBoard() {
+  #setDashBoard() {
     this.vsDashboard = new VSDashboardController(
       this.wrongFlagHint,
       !this.isDetectMinesGoal,
@@ -71,6 +45,24 @@ export class GameVS extends GameDefault {
       : null;
   }
 
+  get onAfterViewInit() {
+    return super.onAfterViewInit.then(() => {
+      return this.vsDashboard.initCardsState(this.players);
+    });
+  }
+
+  get roundViewUpdates() {
+    const viewUpdates = [this.vsDashboard.setCardOnTurn(this.players)];
+    viewUpdates.push(this.gameBoard.initBoardOnRound(this.playerOnTurn));
+    return viewUpdates;
+  }
+
+  get #onAfterRoundViewInit() {
+    const viewUpdates = [this.vsDashboard.setCardOnTurn(this.players)];
+    viewUpdates.push(this.gameBoard.initBoardOnRound(this.playerOnTurn));
+    return Promise.all(viewUpdates);
+  }
+
   init() {
     this.players.forEach((player) => {
       player.initState(
@@ -85,116 +77,12 @@ export class GameVS extends GameDefault {
 
   generateView() {
     const gameContainer = super.generateView();
-    const vsDashboard = this.#generateVSDashBoard();
-    ElementHandler.addInChildNodes(gameContainer, vsDashboard, 0);
-    return gameContainer;
-  }
-
-  #generateVSDashBoard() {
     const vsDashboard = this.vsDashboard.generateView(
       this.player,
       this.opponent,
     );
-    const vsBoard = VSBoard.generateView(this.player.colorType, this.opponent.colorType);
-    this.vsDashboard.addElementInDashboard(vsDashboard, vsBoard);
-    return vsDashboard;
-  }
-
-  initPlayersCards() {
-    const targetValuesForPlayers = this.players.map((player) =>
-      this.getPlayerTargetValue(player),
-    );
-    return this.vsDashboard.initCardsState(
-      this.players,
-      targetValuesForPlayers,
-    );
-  }
-
-  get onAfterViewInit() {
-    return super.onAfterViewInit.then(() => this.initPlayersCards());
-  }
-
-  start() {
-    this.onAfterViewInit.then(() => {
-        if (this.roundTimer) {
-          console.log("kkk");
-          this.setGameStart();
-        }
-        console.log("START GameVS GAME");
-        console.log("----------------------------");
-        console.log(" show start modal message");
-        this.startGameRound();
-      });
-  }
-
-
-  
-
-  
-  startGameRound() {
-    // TODO: ROUND STATISTICS
-    this.initRoundTiles();
-
-    this.vsDashboard.setCardOnTurn(this.players).then(() => {
-      return this.gameBoard.initBoardOnRound(this.playerOnTurn);
-    }).then(() => {
- 
-      
-      if (this.playerOnTurn.isBot) {
-        this.startBotRound();
-        return;
-      }
-
-      this.enableMinefield();
-    });
-  }
-
-  //TODO: COMPLETE THE CASES
-  startBotRound() {
-    //TODO:
-    console.log("--  get Bot move -- ");
-    console.log("GameVS");
-    console.log("----------------------------");
-    //this.disableMinefield();
-    this.enableMinefield();
-  }
-
-  restart() {
-    this.setMinesPositions();
-    const playersIds = this.players.map((player) => player.id);
-    this.playerStartID = randomValueFromArray(playersIds);
-    this.init();
-    this.start();
-  }
-
-  onRoundTimerEnd() {
-    this.playerOnTurn.increaseMissedTurns();
-
-    if (this.playerOnTurn.exceededTurnsLimit) {
-      this.setGameEnd(GameEndType.ExceededTurnsLimit);
-    }
-    this.updatePlayerCardMissedTurns().then(() => {
-      if (this.isOver) {
-        this.onGameOver();
-        return;
-      }
-      this.onRoundEnd();
-    });
-  }
-
-  /* UPDATE GAME AFTER MINEFIELD ACTIONS */
-  playerMissedTurnsReseted(player = this.playerOnTurn) {
-    if (
-      this.turnSettings &&
-      this.turnSettings.resetMissedTurns &&
-      player.missedTurns
-        ? true
-        : false
-    ) {
-      player.resetMissedTurns();
-      return true;
-    }
-    return false;
+    ElementHandler.addInChildNodes(gameContainer, vsDashboard, 0);
+    return gameContainer;
   }
 
   flaggingAllowed(tile, player = this.playerOnTurn) {
@@ -229,20 +117,91 @@ export class GameVS extends GameDefault {
     this.players.forEach((player) => player.toggleTurn());
   }
 
-  /* UPDATE PLAYER CARD */
-  updatePlayerCardMissedTurns(player = this.playerOnTurn) {
-    return this.vsDashboard.updatePlayerMissedTurns(player);
+  playerMissedTurnsReseted(player = this.playerOnTurn) {
+    if (
+      this.turnSettings &&
+      this.turnSettings.resetMissedTurns &&
+      player.missedTurns
+    ) {
+      player.resetMissedTurns();
+      return true;
+    }
+    return false;
   }
 
-  updatePlayerCardAllowedFlags(player = this.playerOnTurn) {
-    return this.vsDashboard.updatePlayerAllowedFlags(player);
+  onRoundTimerEnd() {
+    this.playerOnTurn.increaseMissedTurns();
+
+    if (this.playerOnTurn.exceededTurnsLimit) {
+      this.setGameEnd(GameEndType.ExceededTurnsLimit);
+    }
+    this.updatedPlayerCard({ turnsUpdate: true }).then(() => {
+      if (this.isOver) {
+        this.onGameOver();
+        return;
+      }
+      this.onRoundEnd();
+    });
+  }
+
+  /* UPDATE PLAYER CARD */
+  updatedPlayerCard(params, player = this.playerOnTurn) {
+    return this.vsDashboard.updatedPlayerCard(player, params);
+  }
+
+  initRound() {
+    // TODO: ROUND STATISTICS
+    this.initRoundTiles();
+  }
+
+  startGameRound() {
+    this.#onAfterRoundViewInit.then(() => {
+      if (this.playerOnTurn.isBot) {
+        this.startBotRound();
+        return;
+      }
+
+      this.enableMinefield();
+    });
+  }
+
+  restart() {
+    this.setMinesPositions();
+    const playersIds = this.players.map((player) => player.id);
+    this.playerStartID = randomValueFromArray(playersIds);
+    this.init();
+    this.start();
+  }
+
+  start() {
+    this.onAfterViewInit.then(() => {
+      if (this.roundTimer) {
+        console.log("kkk");
+        this.setGameStart();
+      }
+      console.log("START GameVS GAME");
+      console.log("----------------------------");
+      console.log(" show start modal message");
+      this.startGameRound();
+    });
+  }
+
+
+  //TODO: COMPLETE THE CASES
+  startBotRound() {
+    //TODO:
+    console.log("--  get Bot move -- ");
+    console.log("GameVS");
+    console.log("----------------------------");
+    //this.disableMinefield();
+    this.enableMinefield();
   }
 
   /* HANDLE GAME STATE AFTER PLAYER ACTION */
   onPlayerMoveEnd(boardTiles = []) {
     this.updateMinesCounter();
     this.roundTilesUpdate = boardTiles;
-    
+
     if (this.isOnline) {
       //TODO:
       console.log("--  submit online move --");
@@ -257,16 +216,10 @@ export class GameVS extends GameDefault {
     this.enableMinefield();
   }
 
-  stopRoundTimer() {
-    if (this.roundTimer) {
-      this.pause();
-    }
-  }
-
   //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
-    this.updateMinesCounter();
-    this.stopRoundTimer();
+
+    this.gameBoard.setBoardOnRoundEnd();
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
 
@@ -308,17 +261,12 @@ export class GameVS extends GameDefault {
     console.log(this.playerOnTurn);
   }
 
-  getCardUpdates(turnsUpdate = false, player = this.playerOnTurn) {
-    const updates = [];
 
-    if (turnsUpdate) {
-      updates.push(this.updatePlayerCardMissedTurns(player));
-    }
 
-    return updates;
-  }
 
-  getPlayerTargetValue(player) {
-    return 0;
-  }
+
+
+
+
+
 }

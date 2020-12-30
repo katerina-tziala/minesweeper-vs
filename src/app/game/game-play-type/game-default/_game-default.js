@@ -1,37 +1,8 @@
 "use strict";
 
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-
-import { AppModel } from "~/_models/app-model";
-import { nowTimestamp } from "~/_utils/dates";
-
-import {
-  GameType,
-  GameVSMode,
-  GameAction,
-  GameEndType,
-  GameSubmission,
-} from "GameEnums";
-import { GameViewHelper } from "./_game-view-helper";
-import {
-  ACTION_BUTTONS,
-  BOARD_SECTION,
-  DASHBOARD_SECTION,
-} from "./_game.constants";
-
-import {
-  DigitalCounter,
-  DashboardFaceIcon,
-  MineField,
-  MinesweeperBoard
-} from "GamePlayComponents";
-
-import { GameTimer, MinesweeperBoardController } from "GamePlayControllers";
-import { CONFIRMATION } from "../../../components/modal/modal.constants";
-import { BoardActionsController } from "GamePlayControllers";
-
+import { GameEndType } from "GameEnums";
+import { MinesweeperBoardController } from "GamePlayControllers";
 import { Game } from "../_game";
-
 
 export class GameDefault extends Game {
   #MinesweeperBoard;
@@ -41,33 +12,15 @@ export class GameDefault extends Game {
     super(id, params);
     this.player = player;
     this.players = [this.player];
+    this.#gameBoardController = params;
+  }
 
-    // this.turnSettings.turnTimer = true;
-    // this.turnSettings.consecutiveTurns = true;
-    // this.turnSettings.turnDuration = 12;
-    // this.turnSettings.missedTurnsLimit = 3;
-
-
-    this.optionsSettings.wrongFlagHint = true;
-
-    this.optionsSettings.tileFlagging = true;
-    this.optionsSettings.openStrategy = false;
-
-    this.optionsSettings.unlimitedFlags = true;
-
-    this.optionsSettings.tileRevealing = true;
-    this.optionsSettings.marks = true;
-
-    this.optionsSettings.sneakPeek = true;
-    this.optionsSettings.sneakPeekDuration = 5;
-
-    //console.log(this.turnSettings);
-    console.log(this.optionsSettings);
-
-
-    this.#MinesweeperBoard = new MinesweeperBoardController(this.id, this.levelSettings,
-      this.wrongFlagHint, this.turnSettings,
-      this.handleTileRevealing.bind(this), this.handleTileMarking.bind(this), this.onRoundTimerEnd.bind(this));
+  set #gameBoardController(params) {
+    this.#MinesweeperBoard = new MinesweeperBoardController(this.id,
+      params,
+      this.handleTileRevealing.bind(this),
+      this.handleTileMarking.bind(this),
+      this.onRoundTimerEnd.bind(this));
   }
 
   set roundTilesUpdate(newMoveTiles = []) {
@@ -241,34 +194,6 @@ export class GameDefault extends Game {
     player.resetedTile = tile.position;
   }
 
-
-
-
-
-
-
-  getPlayerDetectedMines(player) {
-    return this.wrongFlagHint ? player.minesDetected : player.placedFlags;
-  }
-
-  get detectedMines() {
-    let detectedMines = 0;
-    this.players.forEach(
-      (player) => (detectedMines += this.getPlayerDetectedMines(player)),
-    );
-    return detectedMines;
-  }
-
-
-
-
-
-
-
-
-
-
-
   // MINEFIELD
   disableMinefield() {
     this.gameBoard.disableMinefield();
@@ -315,12 +240,9 @@ export class GameDefault extends Game {
   onGameOver(boardTiles = []) {
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
-    this.setGameBoardOnGameOver();
   }
 
   setGameBoardOnGameOver() {
     this.gameBoard.onGameOver(this.playerOnTurn);
-
   }
-
 }

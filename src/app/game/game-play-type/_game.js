@@ -165,24 +165,24 @@ export class Game extends AppModel {
   setMinesPositions() {
     this.levelSettings.setMinesPositions();
 
-    this.levelSettings.minesPositions = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-    ];
+    // this.levelSettings.minesPositions = [
+    //   0,
+    //   1,
+    //   2,
+    //   3,
+    //   4,
+    //   5,
+    //   6,
+    //   7,
+    //   73,
+    //   74,
+    //   75,
+    //   76,
+    //   77,
+    //   78,
+    //   79,
+    //   80,
+    // ];
   }
 
   ////////////////////////////////

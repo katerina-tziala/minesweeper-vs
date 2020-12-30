@@ -1,4 +1,5 @@
 "use strict";
+import { valueDefined } from "~/_utils/validator";
 
 export class StrategyController {
   #_strategyAllowed;
@@ -12,7 +13,7 @@ export class StrategyController {
   }
 
   set strategyAllowed(tileFlagging) {
-    if (tileFlagging !== undefined) {
+    if (valueDefined(tileFlagging)) {
       this.#_strategyAllowed = tileFlagging;
     }
     this.#_strategyAllowed = true;
