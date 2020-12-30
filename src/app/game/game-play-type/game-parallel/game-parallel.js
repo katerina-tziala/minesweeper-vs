@@ -214,10 +214,12 @@ export class GameParallel extends Game {
     this.#hideOpponentBoard().then(() => {
       return this.#initGames();
     }).then(() => {
+      this.#initSneakPeekController();
+
       console.log("start message");
 
-      this.#startGames();
-      this.#initSneakPeekController();
+      //this.#startGames();
+      
     });
   }
 

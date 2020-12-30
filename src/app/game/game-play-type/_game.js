@@ -17,7 +17,7 @@ import { BoardActionsController } from "GamePlayControllers";
 export class Game extends AppModel {
   #externalActions = {};
   #BoardActionsController;
-  //loader after game view ready
+  //check errors after view updates
   constructor(id, params) {
     super();
     this.update(params);

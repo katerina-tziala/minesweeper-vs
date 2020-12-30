@@ -29,18 +29,18 @@ export class GameParallelViewHelper {
     );
   }
 
-  gameContainer(game) {
+  static gameContainer(game) {
     return ElementHandler.getByID(GameParallelViewHelper.gameContainerID(game));
   }
 
-  displayGameContainer(game) {
+  static displayGameContainer(game) {
     return GameParallelViewHelper.gameContainer(game).then(gameContainer => {
       ElementHandler.display(gameContainer);
       return;
     });
   }
 
-  hideGameContainer(game) {
+  static hideGameContainer(game) {
     return GameParallelViewHelper.gameContainer(game).then(gameContainer => {
       ElementHandler.display(gameContainer);
       return;
