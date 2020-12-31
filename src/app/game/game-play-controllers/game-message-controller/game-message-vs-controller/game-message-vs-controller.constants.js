@@ -5,9 +5,6 @@ export const GAME_GOAL = {
   detect: "Detect All Mines"
 };
 
-
-
-
 export const MESSAGES = {
   gameOn: {
     title: "game on!",
@@ -32,13 +29,13 @@ export const MESSAGES = {
       content: "### you won the game!",
       subcontent: "### exceeded missed turns limit!"
     },
-    clear: {
+    clearedMinefield: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you won the game!",
       subcontent: "You cleared the most tiles!"
     },
-    detect: {
+    detectedAllMines: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you won the game!",
@@ -58,13 +55,13 @@ export const MESSAGES = {
       content: "### you lost the game!",
       subcontent: "You exceeded missed turns limit!"
     },
-    clear: {
+    clearedMinefield: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you lost the game!",
       subcontent: "### cleared the most tiles!"
     },
-    detect: {
+    detectedAllMines: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you lost the game!",

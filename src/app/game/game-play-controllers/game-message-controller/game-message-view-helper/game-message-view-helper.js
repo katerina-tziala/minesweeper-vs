@@ -17,6 +17,9 @@ export class GameMessageViewHelper {
     const subtitle = GameMessageViewHelper.generateSubtitle(message.subtitle);
     const content = GameMessageViewHelper.generateContent(message.content);
     container.append(title, subtitle, content);
+    if (message.subcontent) {
+      container.append(GameMessageViewHelper.generateSubcontent(message.subcontent));
+    }
     return container;
   }
 

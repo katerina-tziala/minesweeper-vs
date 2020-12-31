@@ -1,0 +1,54 @@
+@use "./game-message-box-theming";
+
+.game-message-box {
+  @extend %start-center;
+  flex-direction: column;
+  padding: 20px;
+  width: 380px;
+
+  .title {
+    width: 100%;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .sub-title {
+    width: 100%;
+    text-transform: capitalize;
+    font-size: 1rem;
+    text-align: center;
+    font-style: oblique;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    @extend %ellipsis-text;
+    width: 100%;
+    max-width: 500px;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .subcontent {
+    width: 100%;
+    word-wrap: break-word;
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+.game-message-box--slide-in {
+  @include slideIn();
+}
+
+.game-message-box--slide-out {
+  @include slideOut();
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-message-box-theming.setTheming();

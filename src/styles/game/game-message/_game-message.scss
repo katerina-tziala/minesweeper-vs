@@ -1,3 +1,6 @@
+@use "../../theming/theming";
+@import "./game-message-box/game-message-box";
+
 .game-message-container {
   @extend %center-center;
   flex-direction: column;
@@ -7,71 +10,18 @@
   top: 0;
   left: 0;
   z-index: 1500;
-  background: rgba(0, 0, 0, 0.5);
   overflow: hidden;
-}
-
-.game-message-box {
-  @extend %start-center;
-  flex-direction: column;
-  padding: 20px;
-  width: 380px;
-
-  .title {
-    width: 100%;
-    font-weight: 900;
-    text-transform: uppercase;
-    font-size: 1.4rem;
-    text-align: center;
-  }
-
-  .sub-title {
-    width: 100%;
-    text-transform: capitalize;
-    font-size: 1rem;
-    text-align: center;
-    font-style: oblique;
-    margin-bottom: 10px;
-  }
-
-  .content {
-    @extend %ellipsis-text;
-    width: 100%;
-    max-width: 500px;
-    font-weight: 600;
-    font-style: italic;
-    font-size: 1.3rem;
-    text-align: center;
-  }
-
-  .subcontent {
-    width: 100%;
-    word-wrap: break-word;
-    font-style: italic;
-    text-align: center;
-    margin-top: 10px;
-  }
-}
-
-.game-message-box--slide-in {
-  @include slideIn();
-}
-
-.game-message-box--slide-out {
-  @include slideOut();
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
-  .game-message-box {
-    @include theming.setThemeCard("light");
-    @include theming.setThemeBoxShadow("light");
+ .game-message-container {
+    @include theming.setPrimaryBackground("light", 0.2);
   }
 }
 
 .theme-dark {
-  .game-message-box {
-    @include theming.setThemeCard("dark");
-    @include theming.setThemeBoxShadow("dark");
+  .game-message-container {
+    @include theming.setPrimaryBackground("dark", 0.2);
   }
 }

@@ -23,6 +23,7 @@
   left: 0;
   overflow: hidden;
   text-align: center;
+  border-width: 1px!important;
 
   &.tile-button--flagged {
     &::before {

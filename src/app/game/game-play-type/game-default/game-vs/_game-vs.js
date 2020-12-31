@@ -273,7 +273,7 @@ export class GameVS extends GameDefault {
 
     //TODO:
     console.log("--  game over --");
-    // console.log(this.gameOverType);
+
     // // console.log("GameVS");
     // // console.log("----------------------------");
     // // console.log("show end modal message");
@@ -288,21 +288,34 @@ export class GameVS extends GameDefault {
     // // console.log(this.players);
     // console.log("wineeeer");
     // console.log(this.winner);
-   
+
 
     if (this.isDraw) {
       this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
-
+        //TODO: confetti of both colors
       });
       return;
     }
+
+
+    this.#MessageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
+      //TODO: confetti of both colors
+    });
+    
     //variation on local
     console.log("we have a winner");
     console.log(this.winner);
     console.log(this.players);
     console.log(this.isDraw);
     console.log(this.isSharedDevice);
+    console.log(this.gameOverType);
   }
+
+
+
+
+
+
 
   get gameOverBasedOnType() {
     return this.isOver && this.gameOverType !== GameOverType.DetonatedMine && this.gameOverType !== GameOverType.ExceededTurnsLimit;
