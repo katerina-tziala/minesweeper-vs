@@ -2,7 +2,7 @@
 import { ElementHandler } from "HTML_DOM_Manager";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
 
-import { GameEndType, GameSubmission } from "GameEnums";
+import { GameOverType, GameSubmission } from "GameEnums";
 
 import { GameDefault } from "../_game-default";
 
@@ -141,7 +141,7 @@ export class GameVS extends GameDefault {
     this.playerOnTurn.increaseMissedTurns();
 
     if (this.playerOnTurn.exceededTurnsLimit) {
-      this.setGameEnd(GameEndType.ExceededTurnsLimit);
+      this.setGameEnd(GameOverType.ExceededTurnsLimit);
     }
     this.updatedPlayerCard({ turnsUpdate: true }).then(() => {
       if (this.isOver) {
@@ -181,9 +181,6 @@ export class GameVS extends GameDefault {
     this.start();
   }
 
-
-
-
   start() {
     this.onAfterViewInit.then(() => {
       return this.#MessageController.displayStartMessage(this.playerOnTurn)
@@ -197,6 +194,7 @@ export class GameVS extends GameDefault {
       this.setGameStart();
     }
     this.startGameRound();
+    console.log(this);
   }
 
 
@@ -272,6 +270,13 @@ export class GameVS extends GameDefault {
     console.log("----------------------------");
     console.log("show end modal message");
     console.log(this.playerOnTurn);
+    console.log("----------------------------");
+    console.log("game over statistics");
+    console.log("winner:");
+    // When detonated mine			
+    // When turns: when turns limit reached			
+    // When all mines detected			
+    console.log(this.players);
   }
 
 

@@ -1,12 +1,12 @@
 "use strict";
 
-const GameEndType = {
+const GameOverType = {
   DetonatedMine: "detonated-mine",
   Cleared: "cleared-minefield",
   ExceededTurnsLimit: "exceeded-turns-limit",
   Detected: "detected-all-mines"
 };
 
-Object.freeze(GameEndType);
+Object.freeze(GameOverType);
 
-export { GameEndType };
+export { GameOverType };

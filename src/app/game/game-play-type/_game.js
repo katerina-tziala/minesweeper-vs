@@ -7,7 +7,7 @@ import {
   GameType,
   GameVSMode,
   GameAction,
-  GameEndType,
+  GameOverType,
   GameSubmission,
 } from "GameEnums";
 

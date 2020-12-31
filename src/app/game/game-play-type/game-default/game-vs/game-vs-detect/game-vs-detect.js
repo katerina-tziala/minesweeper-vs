@@ -1,7 +1,7 @@
 "use strict";
 import { valueDefined } from "~/_utils/validator";
 
-import { GameEndType } from "GameEnums";
+import { GameOverType } from "GameEnums";
 import { GameVS } from "../_game-vs";
 
 export class GameVSDetect extends GameVS {
@@ -80,7 +80,7 @@ export class GameVSDetect extends GameVS {
     const missedTurnsUpdated = this.playerMissedTurnsReseted();
 
     if (this.gameBoard.allMinesDetected) {
-      this.setGameEnd(GameEndType.Detected);
+      this.setGameEnd(GameOverType.Detected);
     }
 
     this.updatedPlayerCard(missedTurnsUpdated, true).then(() => {

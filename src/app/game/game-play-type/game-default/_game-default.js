@@ -1,6 +1,6 @@
 "use strict";
 
-import { GameEndType } from "GameEnums";
+import { GameOverType } from "GameEnums";
 import { MinesweeperBoardController } from "GamePlayControllers";
 import { Game } from "../_game";
 
@@ -134,7 +134,7 @@ export class GameDefault extends Game {
 
   updateStateOnTileDetonation(revealedTiles, player = this.playerOnTurn) {
     this.pause();
-    this.setGameEnd(GameEndType.DetonatedMine);
+    this.setGameEnd(GameOverType.DetonatedMine);
     player.detonatedTile = revealedTiles[0].position;
   }
 

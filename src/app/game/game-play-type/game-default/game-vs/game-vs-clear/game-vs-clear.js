@@ -1,5 +1,5 @@
 "use strict";
-import { GameEndType } from "GameEnums";
+import { GameOverType } from "GameEnums";
 
 import { GameVS } from "../_game-vs";
 
@@ -79,7 +79,7 @@ export class GameVSClear extends GameVS {
     );
 
     if (this.gameBoard.minefieldCleared) {
-      this.setGameEnd(GameEndType.Cleared);
+      this.setGameEnd(GameOverType.Cleared);
     }
 
     const playerCardsUpdates = [
@@ -298,10 +298,9 @@ export class GameVSClear extends GameVS {
       this.#setSneakPeekNotificationForRoundTimer();
     }
 
-    console.log(this.type, this.optionsSettings);
-    console.log("START GameVS GAME");
-    console.log("----------------------------");
-    console.log(" show start modal message");
+    
+    console.log("START GameVS CLEAR GAME");
+ 
     this.startGameRound();
 
   }
@@ -315,6 +314,8 @@ export class GameVSClear extends GameVS {
 
     console.log("check double flags");
     console.log(this.playerWaiting.strategyPositions);
+
+
   }
 
   pause() {

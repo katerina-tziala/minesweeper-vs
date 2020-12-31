@@ -2,7 +2,7 @@
 
 import { valueDefined } from "~/_utils/validator";
 
-import { GameEndType } from "GameEnums";
+import { GameOverType } from "GameEnums";
 
 import {
   VSDashboardController,
@@ -109,7 +109,7 @@ export class GameParallel extends Game {
   }
 
   get minefieldCleared() {
-    return this.gameOverType === GameEndType.Cleared;
+    return this.gameOverType === GameOverType.Cleared;
   }
 
   generateView() {

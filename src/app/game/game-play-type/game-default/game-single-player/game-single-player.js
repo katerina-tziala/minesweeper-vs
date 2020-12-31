@@ -1,5 +1,5 @@
 "use strict";
-import { GameEndType, GameVSMode, GameSubmission } from "GameEnums";
+import { GameOverType, GameVSMode, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
 import { GameMessageController } from "GamePlayControllers";
 
@@ -102,7 +102,7 @@ export class GameSinglePlayer extends GameDefault {
   updateStateOnRevealedTiles(revealedTiles) {
     super.updateStateOnRevealedTiles(revealedTiles);
     if (this.playerOnTurn.clearedMinefield) {
-      this.setGameEnd(GameEndType.Cleared);
+      this.setGameEnd(GameOverType.Cleared);
       this.onGameOver(revealedTiles);
       return;
     }
