@@ -318,12 +318,5 @@ export class GameVS extends GameDefault {
     }
   }
 
-  get looser() {
-    return this.player;
-  }
-
-  get isDraw() {
-    return !this.looser;
-  }
 
 }

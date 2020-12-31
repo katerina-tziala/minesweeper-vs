@@ -49,6 +49,20 @@ export class Game extends AppModel {
     return false;
   }
 
+  get looser() {
+    return this.players.reduce((playerA, playerB) => {
+       if (playerA.revealedTiles === playerB.revealedTiles) {
+         return undefined;
+       }
+       return playerA.revealedTiles < playerB.revealedTiles ? playerA : playerB;
+     });
+   }
+
+  get isDraw() {
+    return !this.looser;
+  }
+
+
   get wrongFlagHint() {
     return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
   }
