@@ -295,6 +295,7 @@ export class GameVS extends GameDefault {
 
       });
     }
+    //variation on local
     console.log("we have a winner");
     console.log(this.players);
     console.log(this.isDraw);

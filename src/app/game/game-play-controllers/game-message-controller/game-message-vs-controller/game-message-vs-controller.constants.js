@@ -19,35 +19,56 @@ export const MESSAGES = {
     subtitle: "minesweeper vs (###) game",
     content: "The game ended in a draw!</br>Congratulations ###, ###!"
   },
-
-
-
-
-
-
   gameOverWin: {
-    clearedMinefield: {
-      title: "game over!",
-      subtitle: "minesweeper compete game",
-      content: "### you won the game!"
-    },
     detonatedMine: {
       title: "game over!",
-      subtitle: "minesweeper compete game",
+      subtitle: "minesweeper vs (###) game",
       content: "### you won the game!",
       subcontent: "### detonated a mine!"
+    },
+    exceededTurnsLimit: {
+      title: "game over!",
+      subtitle: "minesweeper vs (###) game",
+      content: "### you won the game!",
+      subcontent: "### exceeded missed turns limit!"
+    },
+    clear: {
+      title: "game over!",
+      subtitle: "minesweeper vs (###) game",
+      content: "### you won the game!",
+      subcontent: "You cleared the most tiles!"
+    },
+    detect: {
+      title: "game over!",
+      subtitle: "minesweeper vs (###) game",
+      content: "### you won the game!",
+      subcontent: "You detected the most mines!"
     }
   },
   gameOverLoss: {
     detonatedMine: {
       title: "game over!",
-      subtitle: "minesweeper compete game",
-      content: "### you lost the game!"
+      subtitle: "minesweeper vs (###) game",
+      content: "### you lost the game!",
+      subcontent: "### detonated a mine!"
     },
-    clearedMinefield: {
+    exceededTurnsLimit: {
       title: "game over!",
-      subtitle: "minesweeper compete game",
-      content: "### you lost the game!"
+      subtitle: "minesweeper vs (###) game",
+      content: "### you lost the game!",
+      subcontent: "You exceeded missed turns limit!"
+    },
+    clear: {
+      title: "game over!",
+      subtitle: "minesweeper vs (###) game",
+      content: "### you lost the game!",
+      subcontent: "### cleared the most tiles!"
+    },
+    detect: {
+      title: "game over!",
+      subtitle: "minesweeper vs (###) game",
+      content: "### you lost the game!",
+      subcontent: "### detected the most mines!"
     }
   }
 };
