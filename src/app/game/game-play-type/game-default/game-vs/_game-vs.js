@@ -255,67 +255,36 @@ export class GameVS extends GameDefault {
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
     this.setWinnerOnGameOver();
-
-
-
-
-
-
-
-    if (this.isOnline) {
-      //TODO:
-      console.log("--  submit online game over -- ");
-      console.log("GameVS");
-      console.log("----------------------------");
-      this.submitResult(GameSubmission.GameOver);
-      return;
-    }
-
-    //TODO:
-    console.log("--  game over --");
-
-    // // console.log("GameVS");
-    // // console.log("----------------------------");
-    // // console.log("show end modal message");
-    // // console.log(this.playerOnTurn);
-    // console.log("----------------------------");
-    // // console.log("game over statistics");
-
-    // // console.log("winner:");
-    // // When detonated mine			
-    // // When turns: when turns limit reached			
-    // // When all mines detected			
-    // // console.log(this.players);
-    // console.log("wineeeer");
-    // console.log(this.winner);
-
-
-    if (this.isDraw) {
-      this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
-        //TODO: confetti of both colors
-      });
-      return;
-    }
-
-
-    this.#MessageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
-      //TODO: confetti of both colors
+    this.#displayGameOverMessage().then(() => {
+      if (this.isOnline) {
+        //TODO:
+        console.log("--  submit online game over -- ");
+        console.log("GameVS");
+        console.log("----------------------------");
+        this.submitResult(GameSubmission.GameOver);
+        return;
+      }
+  
+      
     });
-    
-    //variation on local
-    console.log("we have a winner");
-    console.log(this.winner);
-    console.log(this.players);
-    console.log(this.isDraw);
-    console.log(this.isSharedDevice);
-    console.log(this.gameOverType);
   }
 
+  #displayGameOverMessage() {
+    if (this.isDraw) {
+      return this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
+        //TODO: confetti of both colors
+      });
+    }
+    if (this.isSharedDevice) {
+      return this.#MessageController.displayDrawMessage(this.winner, this.looser, this.gameOverType).then(() => {
+        //TODO: confetti of winner
+      });
+    }
 
-
-
-
-
+    return this.#MessageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
+      //TODO: confetti of winner colors
+    });
+  }
 
   get gameOverBasedOnType() {
     return this.isOver && this.gameOverType !== GameOverType.DetonatedMine && this.gameOverType !== GameOverType.ExceededTurnsLimit;
