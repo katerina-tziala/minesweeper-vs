@@ -33,7 +33,7 @@ export class Switcher extends UserInput {
       id: this.name,
       "aria-label": this.ariaLabel,
     };
-    params.attributes = Object.assign(params.attributes, attributes);
+    params.attributes = clone(params.attributes, attributes);
     return params;
   }
 

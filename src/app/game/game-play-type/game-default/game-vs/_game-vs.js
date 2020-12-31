@@ -19,7 +19,7 @@ export class GameVS extends GameDefault {
     this.players = [this.player, this.opponent];
     this.init();
     this.#setDashBoard();
-    this.#MessageController = new MessageController();
+    this.#MessageController = new MessageController(this.optionsSettings.vsMode);
   }
 
   #setDashBoard() {

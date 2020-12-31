@@ -1,6 +1,5 @@
 "use strict";
-
-import { replaceStringParameter } from "~/_utils/utils";
+import { clone, replaceStringParameter } from "~/_utils/utils";
 import { MESSAGES } from "./game-message-controller.constants";
 import { GameMessageViewHelper as ViewHelper } from "./game-message-view-helper/game-message-view-helper";
 export class GameMessageController {
@@ -43,7 +42,7 @@ export class GameMessageController {
   }
 
   getMessageForPlayer(message, player) {
-    message = Object.assign(message);
+    message = clone(message);
     message.content = replaceStringParameter(
       message.content,
       player.name,

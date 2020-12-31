@@ -297,6 +297,8 @@ export class GameVSClear extends GameVS {
       this.setGameStart();
       this.#setSneakPeekNotificationForRoundTimer();
     }
+
+    console.log(this.type, this.optionsSettings);
     console.log("START GameVS GAME");
     console.log("----------------------------");
     console.log(" show start modal message");

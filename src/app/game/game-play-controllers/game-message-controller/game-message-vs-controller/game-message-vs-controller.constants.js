@@ -1,5 +1,13 @@
 "use strict";
 
+export const GAME_GOAL = {
+  clear: "Clear Minefield",
+  detect: "Detect All Mines"
+};
+
+
+
+
 export const MESSAGES = {
   gameOn: {
     title: "game on!",
