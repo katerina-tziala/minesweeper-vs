@@ -335,4 +335,14 @@ export class GameVSClear extends GameVS {
     super.continue();
   }
 
+
+  get looser() {
+   return this.players.reduce((playerA, playerB) => {
+      if (playerA.revealedTiles === playerB.revealedTiles) {
+        return undefined;
+      }
+      return playerA.revealedTiles < playerB.revealedTiles ? playerA : playerB;
+    });
+  }
+
 }

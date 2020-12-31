@@ -102,6 +102,10 @@ export class Game extends AppModel {
     }
   }
 
+  get gameOverClearedMinefield() {
+    return this.gameOverType === GameOverType.Cleared;
+  }
+
   get boardActions() {
     return this.boardActionsController.generateView();
   }

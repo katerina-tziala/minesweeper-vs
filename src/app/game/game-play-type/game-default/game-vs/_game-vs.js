@@ -254,6 +254,13 @@ export class GameVS extends GameDefault {
 
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
+    this.setWinnerOnGameOver();
+
+
+
+
+
+
 
     if (this.isOnline) {
       //TODO:
@@ -266,25 +273,54 @@ export class GameVS extends GameDefault {
 
     //TODO:
     console.log("--  game over --");
-    console.log("GameVS");
-    console.log("----------------------------");
-    console.log("show end modal message");
-    console.log(this.playerOnTurn);
-    console.log("----------------------------");
-    console.log("game over statistics");
-    console.log("winner:");
-    // When detonated mine			
-    // When turns: when turns limit reached			
-    // When all mines detected			
+    // console.log(this.gameOverType);
+    // // console.log("GameVS");
+    // // console.log("----------------------------");
+    // // console.log("show end modal message");
+    // // console.log(this.playerOnTurn);
+    // console.log("----------------------------");
+    // // console.log("game over statistics");
+
+    // // console.log("winner:");
+    // // When detonated mine			
+    // // When turns: when turns limit reached			
+    // // When all mines detected			
+    // // console.log(this.players);
+    // console.log("wineeeer");
+    // console.log(this.winner);
+   
+
+    if (this.isDraw) {
+      this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
+
+      });
+    }
+    console.log("we have a winner");
     console.log(this.players);
+    console.log(this.isDraw);
   }
 
+  get gameOverBasedOnType() {
+    return this.isOver && this.gameOverType !== GameOverType.DetonatedMine && this.gameOverType !== GameOverType.ExceededTurnsLimit;
+  }
 
+  setWinnerOnGameOver() {
+    if (!this.gameOverBasedOnType) {
+      return;
+    }
+    const looser = this.looser;
 
+    if (looser) {
+      looser.lostGame = true;
+    }
+  }
 
+  get looser() {
+    return this.player;
+  }
 
-
-
-
+  get isDraw() {
+    return !this.looser;
+  }
 
 }

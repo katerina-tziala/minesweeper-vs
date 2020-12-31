@@ -43,6 +43,10 @@ export class GameMessageController {
 
   getMessageForPlayer(message, player) {
     message = clone(message);
+    return this.setMessageContentForPlayer(message, player);
+  }
+
+  setMessageContentForPlayer(message, player) {
     message.content = replaceStringParameter(
       message.content,
       player.name,

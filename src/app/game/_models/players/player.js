@@ -103,7 +103,7 @@ export class Player extends AppModel {
 
   get clearedMinefield() {
     const cleared = this.goalTargetNumber
-      ? this.goalTargetNumber === this.revealedPositions.length
+      ? this.goalTargetNumber === this.revealedTiles
       : false;
     return cleared;
   }

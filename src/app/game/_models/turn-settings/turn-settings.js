@@ -6,9 +6,13 @@ export class TurnSettings extends AppModel {
   constructor() {
     super();
     this.turnTimer = true;
-    this.turnDuration = 30;
-    this.missedTurnsLimit = 10;
-    this.consecutiveTurns = false;
+    this.turnDuration = 5;
+    this.missedTurnsLimit = 3;
+    this.consecutiveTurns = true;
+    //default
+    // this.turnDuration = 30;
+    // this.missedTurnsLimit = 10;
+    // this.consecutiveTurns = false;
   }
 
   get roundTimer() {

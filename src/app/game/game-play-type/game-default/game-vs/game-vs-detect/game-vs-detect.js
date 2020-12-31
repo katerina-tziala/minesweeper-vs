@@ -131,4 +131,13 @@ export class GameVSDetect extends GameVS {
     return super.updatedPlayerCard(params);
   }
 
+  get looser() {
+    return this.players.reduce((playerA, playerB) => {
+       if (playerA.minesDetected === playerB.minesDetected) {
+         return undefined;
+       }
+       return playerA.minesDetected < playerB.minesDetected ? playerA : playerB;
+     });
+   }
+
 }

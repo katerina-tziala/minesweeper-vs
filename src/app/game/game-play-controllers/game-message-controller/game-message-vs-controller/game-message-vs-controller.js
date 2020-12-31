@@ -13,36 +13,34 @@ export class GameMessageVSController extends GameMessageController {
     this.gameMessages = MESSAGES;
   }
 
+
+  getMessageWithUpdatedSubtitle(message) {
+    message.subtitle = replaceStringParameter(
+      message.subtitle,
+      GAME_GOAL[this.vsMode],
+    );
+    return message;
+  }
+
   getMessageForPlayer(message, player) {
     message = super.getMessageForPlayer(message, player);
     if (this.vsMode) {
-      message.subtitle = replaceStringParameter(
-        message.subtitle,
-        GAME_GOAL[this.vsMode],
-      );
+      message = this.getMessageWithUpdatedSubtitle(message);
     }
     return message;
   }
 
- 
-  // #generateMessageBox(message) {
-  //   const messageBox = ViewHelper.generateMessageBox(message);
-  //   messageBox.append(ViewHelper.generateSubcontent(message.subcontent));
-  //   return messageBox;
-  // }
 
-  // displayEndMessage(player, opponent, clearedMinefield) {
-  //   return this.display().then(container => {
-  //     const message = this.endMessage(player, opponent, clearedMinefield);
-  //     const messageBox = this.#generateMessageBox(message);
-  //     container.append(messageBox);
-  //     return this.messageDisplayCompleted(messageBox);
-  //   });
-  // }
+   displayDrawMessage(player, opponent) {
+    return this.display().then(container => {
+      let message = this.getMessageForPlayer(this.gameMessages.gameOverDraw, player);
+      message = this.setMessageContentForPlayer(message, opponent);
+      
+      const messageBox = ViewHelper.generateMessageBox(message);
+      container.append(messageBox);
+      return this.messageDisplayCompleted(messageBox);
+    });
+  }
 
-  // endMessage(player, opponent, clearedMinefield) {
-  //   const messageType = player.lostGame ? MESSAGES.gameOverLoss : MESSAGES.gameOverWin;
-  //   const message = clearedMinefield ? messageType.clearedMinefield : messageType.detonatedMine;
-  //   return this.getMessageForPlayer(message, player, opponent);
-  // }
+  
 }

@@ -108,10 +108,6 @@ export class GameParallel extends Game {
     return Promise.all(viewUpdates);
   }
 
-  get minefieldCleared() {
-    return this.gameOverType === GameOverType.Cleared;
-  }
-
   generateView() {
     const gameContainer = document.createDocumentFragment();
     const vsDashboard = this.#VSDashboard.generateView(
@@ -188,7 +184,7 @@ export class GameParallel extends Game {
 
 
   #setResultsForPlayers(player) {
-    if (this.minefieldCleared) {
+    if (this.gameOverClearedMinefield) {
       player.lostGame = true;
     }
   }
@@ -290,7 +286,7 @@ export class GameParallel extends Game {
         console.log(gameData);
       }
 
-      this.#MessageController.displayEndMessage(this.#player, this.#opponent, this.minefieldCleared).then(() => {
+      this.#MessageController.displayEndMessage(this.#player, this.#opponent, this.gameOverClearedMinefield).then(() => {
         //TODO: ON PLAYER WIN SHOW CONFETTI
       });
     }).catch((err) => {
