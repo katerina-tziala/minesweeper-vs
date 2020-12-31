@@ -66,6 +66,10 @@ export class Game extends AppModel {
     return this.players.every(player => player.lostGame) || this.players.every(player => !player.lostGame);
   }
 
+  get bothPlayersEntered() {
+    return this.players.every(player => player.entered);
+  }
+
   get wrongFlagHint() {
     return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
   }

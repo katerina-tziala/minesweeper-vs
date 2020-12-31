@@ -49,6 +49,10 @@ export class GameVS extends GameDefault {
     return null;
   }
 
+  get isSharedDevice() {
+    return !this.isOnline && !this.opponent.isBot;
+  }
+
   get #maxAllowedFlags() {
     return !this.optionsSettings.unlimitedFlags
       ? this.levelSettings.numberOfMines
@@ -182,7 +186,6 @@ export class GameVS extends GameDefault {
       this.setGameStart();
     }
     this.startRoundGamePlay();
-    console.log(this);
   }
 
   startGameRound() {
@@ -240,7 +243,6 @@ export class GameVS extends GameDefault {
 
   //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
-
     this.gameBoard.setBoardOnRoundEnd();
     // TODO: ROUND STATISTICS
     this.roundTilesUpdate = boardTiles;
@@ -259,10 +261,10 @@ export class GameVS extends GameDefault {
     this.startGameRound();
   }
 
-
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
     this.setWinnerOnGameOver();
+    // TODO: ROUND STATISTICS
     this.#displayGameOverMessage().then(() => {
       if (this.isOnline) {
         //TODO:
@@ -278,8 +280,6 @@ export class GameVS extends GameDefault {
   }
 
   #displayGameOverMessage() {
-    // console.log(this.looser);
-    // console.log(this.isDraw);
     if (this.isDraw) {
       return this.messageController.displayDrawMessage(this.player, this.opponent).then(() => {
         //TODO: confetti of both colors
@@ -290,7 +290,6 @@ export class GameVS extends GameDefault {
         //TODO: confetti of winner
       });
     }
-
     return this.messageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
       //TODO: confetti of winner colors
     });
@@ -310,10 +309,5 @@ export class GameVS extends GameDefault {
     }
   }
 
-
-
-  get isSharedDevice() {
-    return !this.isOnline && !this.opponent.isBot;
-  }
 
 }
