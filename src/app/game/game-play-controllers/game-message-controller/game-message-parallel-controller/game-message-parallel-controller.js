@@ -8,7 +8,7 @@ export class GameMessageParallelController extends GameMessageController {
 
   constructor() {
     super();
-    this.messageDuration = 4500;
+    this.messageDuration = 4000;
   }
 
   displayStartMessage(player, opponent) {

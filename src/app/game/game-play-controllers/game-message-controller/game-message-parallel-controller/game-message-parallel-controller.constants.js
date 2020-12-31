@@ -19,7 +19,7 @@ export const MESSAGES = {
       subtitle: "minesweeper compete game",
       content: "### you won the game!",
       subcontent: "### detonated a mine!"
-    },
+    }
   },
   gameOverLoss: {
     detonatedMine: {
@@ -33,6 +33,6 @@ export const MESSAGES = {
       subtitle: "minesweeper compete game",
       content: "### you lost the game!",
       subcontent: "### cleared the minefield before you!"
-    },
+    }
   }
 };
