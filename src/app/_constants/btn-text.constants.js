@@ -71,3 +71,12 @@ export const RESET_BTN = {
   },
   actionType: "click",
 };
+
+export const PLAY_BTN = {
+  innerHTML: "play",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "play",
+  },
+  actionType: "click",
+};

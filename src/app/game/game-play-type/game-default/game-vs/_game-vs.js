@@ -29,6 +29,10 @@ export class GameVS extends GameDefault {
     );
   }
 
+  get messageController() {
+    return this.#MessageController;
+  }
+
   get playerOnTurn() {
     return this.players.find((player) => player.turn);
   }
@@ -167,7 +171,7 @@ export class GameVS extends GameDefault {
 
   start() {
     this.onAfterViewInit.then(() => {
-      return this.#MessageController.displayStartMessage(this.playerOnTurn)
+      return this.messageController.displayStartMessage(this.playerOnTurn)
     }).then(() => {
       this.onGamePlayStart();
     });
@@ -181,29 +185,30 @@ export class GameVS extends GameDefault {
     console.log(this);
   }
 
-
-  initRound() {
-    // TODO: ROUND STATISTICS
-    this.initRoundTiles();
-  }
-
   startGameRound() {
     this.startRoundGamePlay();
   }
 
   startRoundGamePlay() {
-    this.initRound();
-
-    this.onAfterRoundViewInit.then(() => {
-      if (this.playerOnTurn.isBot) {
-        this.startBotRound();
-        return;
-      }
-
-      this.enableMinefield();
-    });
+    this.setUpNewRound().then(() => this.onRoundPlayStart());
   }
-  
+
+  setUpNewRound() {
+    // TODO: ROUND STATISTICS
+    this.initRoundTiles();
+    return this.onAfterRoundViewInit;
+  }
+
+  onRoundPlayStart() {
+    this.gameBoard.startRoundTimer();
+    if (this.playerOnTurn.isBot) {
+      this.startBotRound();
+      return;
+    }
+
+    this.enableMinefield();
+  }
+
   //TODO: COMPLETE THE CASES
   startBotRound() {
     //TODO:
@@ -249,7 +254,7 @@ export class GameVS extends GameDefault {
       this.pause();
       return;
     }
-    
+
     this.switchTurns();
     this.startGameRound();
   }
@@ -276,17 +281,17 @@ export class GameVS extends GameDefault {
     // console.log(this.looser);
     // console.log(this.isDraw);
     if (this.isDraw) {
-      return this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
+      return this.messageController.displayDrawMessage(this.player, this.opponent).then(() => {
         //TODO: confetti of both colors
       });
     }
     if (this.isSharedDevice) {
-      return this.#MessageController.displayDrawMessage(this.winner, this.looser, this.gameOverType).then(() => {
+      return this.messageController.displayDrawMessage(this.winner, this.looser, this.gameOverType).then(() => {
         //TODO: confetti of winner
       });
     }
 
-    return this.#MessageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
+    return this.messageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
       //TODO: confetti of winner colors
     });
   }
@@ -305,7 +310,7 @@ export class GameVS extends GameDefault {
     }
   }
 
- 
+
 
   get isSharedDevice() {
     return !this.isOnline && !this.opponent.isBot;

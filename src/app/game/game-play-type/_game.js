@@ -63,7 +63,7 @@ export class Game extends AppModel {
   }
 
   get isDraw() {
-    return this.looser ? false : true;
+    return this.players.every(player => player.lostGame) || this.players.every(player => !player.lostGame);
   }
 
   get wrongFlagHint() {

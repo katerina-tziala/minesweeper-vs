@@ -11,6 +11,11 @@ export const MESSAGES = {
     subtitle: "minesweeper vs (###) game",
     content: "### starts!"
   },
+  gameTurn: {
+    title: "### it's your turn!",
+    subtitle: "minesweeper vs (###) game",
+    subcontent: "Press the button to play and show off your skills!"
+  },
   gameOverDraw: {
     title: "game over!",
     subtitle: "minesweeper vs (###) game",

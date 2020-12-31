@@ -12,8 +12,12 @@ export class GameMessageController {
 
   #messageDisplayCompleted(messageBox) {
     return this.#messageDurationCompleted().then(() => {
-      return ViewHelper.onMessageBoxRemoved(messageBox);
-    }).then(() => {
+      return this.onMessageBoxHidden(messageBox);
+    });
+  }
+
+  onMessageBoxHidden(messageBox) {
+    return ViewHelper.onMessageBoxRemoved(messageBox).then(() => {
       return this.hide();
     });
   }
@@ -26,9 +30,9 @@ export class GameMessageController {
     });
   }
 
-  #display() {
+  get onViewInit() {
     this.#clear();
-    return ViewHelper.displayedContainer();
+    return ViewHelper.clearedContainer();
   }
 
   #clear() {
@@ -58,9 +62,10 @@ export class GameMessageController {
   }
 
   displayWaitingMessage(message) {
-    return this.#display().then(container => {
+    return this.onViewInit.then(container => {
       const messageBox = ViewHelper.generateMessageBox(message);
       container.append(messageBox);
+      ViewHelper.displayContainer(container);
       return this.#messageDisplayCompleted(messageBox);
     });
   }
@@ -80,16 +85,26 @@ export class GameMessageController {
   }
 
   setMessageContentForPlayer(message, player) {
-    message.content = replaceStringParameter(
-      message.content,
-      player.name,
-    );
+    if (message.content) {
+      message.content = replaceStringParameter(
+        message.content,
+        player.name,
+      );
+    }
     return message;
   }
 
   setMessageSubcontentForPlayer(message, player) {
     message.subcontent = replaceStringParameter(
       message.subcontent,
+      player.name,
+    );
+    return message;
+  }
+
+  setMessageTitleForPlayer(message, player) {
+    message.title = replaceStringParameter(
+      message.title,
       player.name,
     );
     return message;

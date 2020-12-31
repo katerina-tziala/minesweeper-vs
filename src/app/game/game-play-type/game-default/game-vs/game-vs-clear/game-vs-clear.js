@@ -283,11 +283,12 @@ export class GameVSClear extends GameVS {
     return super.updatedPlayerCard(params);
   }
 
-  initRound() {
-    super.initRound();
+  setUpNewRound() {
+    // TODO: ROUND STATISTICS
+    this.initRoundTiles();
     this.#sneakPeekController.setPlayers(this.playerOnTurn, this.playerWaiting);
+    return this.onAfterRoundViewInit;
   }
-
 
   onGamePlayStart() {
     console.log(this.levelSettings.minesPositions);
@@ -300,22 +301,27 @@ export class GameVSClear extends GameVS {
   }
 
   startGameRound() {
-    // this.startRoundGamePlay();
-
-
-    console.log("startGameRound");
-    console.log(this.isSharedDevice);
+    this.setUpNewRound().then(() => {
+      if (this.isSharedDevice && this.hiddenStrategy) {
+        this.#startGameRoundWithManuallStart();
+        return;
+      }
+      this.onRoundPlayStart();
+    });
   }
 
+  #startGameRoundWithManuallStart() {
+    this.messageController.displayTurnMessage(this.playerOnTurn).then(() => {
+      this.onRoundPlayStart();
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
-
-
     console.log("check double flags");
     console.log(this.playerWaiting.strategyPositions);
-
-
   }
 
   pause() {

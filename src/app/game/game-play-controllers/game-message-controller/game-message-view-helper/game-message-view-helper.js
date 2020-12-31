@@ -15,11 +15,16 @@ export class GameMessageViewHelper {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.messsageBox, DOM_ELEMENT_CLASS.messsageBoxIn]);
     const title = GameMessageViewHelper.generateTitle(message.title);
     const subtitle = GameMessageViewHelper.generateSubtitle(message.subtitle);
-    const content = GameMessageViewHelper.generateContent(message.content);
-    container.append(title, subtitle, content);
+    container.append(title, subtitle);
+
+    if (message.content) {
+      container.append(GameMessageViewHelper.generateContent(message.content));
+    }
+
     if (message.subcontent) {
       container.append(GameMessageViewHelper.generateSubcontent(message.subcontent));
     }
+    
     return container;
   }
 
@@ -47,12 +52,16 @@ export class GameMessageViewHelper {
     return container;
   }
 
-  static displayedContainer() {
+  static clearedContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.container).then(container => {
       ElementHandler.clearContent(container);
       ElementHandler.display(container);
       return container;
     });
+  }
+
+  static displayContainer(container) {
+    ElementHandler.display(container);
   }
 
   static hideContainer() {

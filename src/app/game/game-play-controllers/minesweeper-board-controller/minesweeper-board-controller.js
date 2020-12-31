@@ -122,7 +122,9 @@ export class MinesweeperBoardController {
   }
 
   startGameTimer() {
-    this.#GameTimer.start(1);
+    if (!this.roundTimer) {
+      this.#GameTimer.start(1);
+    }
   }
 
   startTimer() {
@@ -241,7 +243,6 @@ export class MinesweeperBoardController {
     this.faceColorType = player.colorType;
     return this.setSmileFace().then(() => {
       this.updateMinesCounter();
-      this.startRoundTimer();
       return;
     });
   }
