@@ -294,9 +294,11 @@ export class GameVS extends GameDefault {
       this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
 
       });
+      return;
     }
     //variation on local
     console.log("we have a winner");
+    console.log(this.winner);
     console.log(this.players);
     console.log(this.isDraw);
   }

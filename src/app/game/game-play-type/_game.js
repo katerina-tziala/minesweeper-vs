@@ -106,6 +106,10 @@ export class Game extends AppModel {
     return this.gameOverType === GameOverType.Cleared;
   }
 
+  get winner() {
+    return this.players.find(player => !player.lostGame);
+  }
+
   get boardActions() {
     return this.boardActionsController.generateView();
   }
