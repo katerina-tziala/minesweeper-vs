@@ -1,7 +1,7 @@
 "use strict";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, ANIMATIONS } from "./game-message-controller.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, MOVE_OUT_DURATION } from "./game-message-view-helper.constants";
 
 export class GameMessageViewHelper {
 
@@ -38,6 +38,12 @@ export class GameMessageViewHelper {
     return container;
   }
   
+  static generateSubcontent(content) {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.subcontent]);
+    container.innerHTML = content;
+    return container;
+  }
+
   static displayedContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.container).then(container => {
       ElementHandler.clearContent(container);
@@ -62,7 +68,7 @@ export class GameMessageViewHelper {
   static onMessageBoxRemoved(messageBox) {
     GameMessageViewHelper.setMessageBoxSlideOutStyles(messageBox);
     return new Promise(resolve => {
-      setTimeout(() => resolve(), ANIMATIONS.moveOutDuration);
+      setTimeout(() => resolve(), MOVE_OUT_DURATION);
     });
   }
 

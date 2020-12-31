@@ -15,6 +15,10 @@ export class GameVSClear extends GameVS {
     this.#setSneakPeekController();
   }
 
+  get goalTargetNumber() {
+    return this.levelSettings.numberOfEmptyTiles;
+  }
+
   #setStrategyController() {
     this.#strategyController = new StrategyController(
       this.optionsSettings,

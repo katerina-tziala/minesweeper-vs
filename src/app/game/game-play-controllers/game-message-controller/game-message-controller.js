@@ -1,17 +1,13 @@
 "use strict";
 
-import { clone, replaceStringParameter } from "~/_utils/utils";
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, MESSAGES } from "./game-message-controller.constants";
-
-import { GameMessageViewHelper as ViewHelper } from "./game-message-view-helper";
+import { replaceStringParameter } from "~/_utils/utils";
+import { MESSAGES } from "./game-message-controller.constants";
+import { GameMessageViewHelper as ViewHelper } from "./game-message-view-helper/game-message-view-helper";
 export class GameMessageController {
   #timeOut;
-  constructor(type) {
-    this.messages = MESSAGES[type];
-    //console.log("GameMessageController");
-    console.log(this.messages);
 
+  constructor() {
+    this.messageDuration = 3500;
   }
 
   generateView() {
@@ -19,33 +15,33 @@ export class GameMessageController {
   }
 
   hide() {
-    this.#clear();
+    this.clear();
     return ViewHelper.hideContainer();
   }
 
   displayStartMessage(player) {
-    return this.#display().then(container => {
-      const message = this.#startMessage(player);
+    return this.display().then(container => {
+      const message = this.startMessage(player);
       const messageBox = ViewHelper.generateMessageBox(message);
       container.append(messageBox);
-      return this.#messageDisplayCompleted(messageBox);
+      return this.messageDisplayCompleted(messageBox);
     });
   }
 
   displayEndMessage(player) {
-    return this.#display().then(container => {
-      const message = this.#endMessage(player);
+    return this.display().then(container => {
+      const message = this.endMessage(player);
       const messageBox = ViewHelper.generateMessageBox(message);
       container.append(messageBox);
-      return this.#messageDisplayCompleted(messageBox);
+      return this.messageDisplayCompleted(messageBox);
     });
   }
 
-  #startMessage(player) {
-    return this.#getMessageForPlayer(this.messages.gameOn, player);
+  startMessage(player) {
+    return this.getMessageForPlayer(MESSAGES.gameOn, player);
   }
 
-  #getMessageForPlayer(message, player) {
+  getMessageForPlayer(message, player) {
     message = Object.assign(message);
     message.content = replaceStringParameter(
       message.content,
@@ -54,33 +50,33 @@ export class GameMessageController {
     return message;
   }
 
-  #endMessage(player) {
-    const message = player.lostGame ? this.messages.gameOverLoss : this.messages.gameOverWin;
-    return this.#getMessageForPlayer(message, player);
+  endMessage(player) {
+    const message = player.lostGame ? MESSAGES.gameOverLoss : MESSAGES.gameOverWin;
+    return this.getMessageForPlayer(message, player);
   }
 
-  #messageDisplayCompleted(messageBox) {
-    return this.#messageDurationCompleted().then(() => {
+  messageDisplayCompleted(messageBox) {
+    return this.messageDurationCompleted().then(() => {
       return ViewHelper.onMessageBoxRemoved(messageBox);
     }).then(() => {
       return this.hide();
     });
   }
 
-  #messageDurationCompleted() {
+  messageDurationCompleted() {
     return new Promise(resolve => {
       this.#timeOut = setTimeout(() => {
         resolve();
-      }, 3500);
+      }, this.messageDuration);
     });
   }
 
-  #display() {
-    this.#clear();
+  display() {
+    this.clear();
     return ViewHelper.displayedContainer();
   }
 
-  #clear() {
+  clear() {
     if (this.#timeOut) {
       clearTimeout(this.#timeOut);
       this.#timeOut = 0;

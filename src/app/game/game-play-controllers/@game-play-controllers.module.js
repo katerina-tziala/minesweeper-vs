@@ -7,3 +7,4 @@ export { SneakPeekStrategyController } from "./sneek-peek-controller/sneak-peek-
 export { SneakPeekCompetitionController } from "./sneek-peek-controller/sneak-peek-competition-controller/sneak-peek-competition-controller";
 export { MinesweeperBoardController } from "./minesweeper-board-controller/minesweeper-board-controller";
 export { GameMessageController } from "./game-message-controller/game-message-controller";
+export { GameMessageParallelController } from "./game-message-controller/game-message-parallel-controller/game-message-parallel-controller";

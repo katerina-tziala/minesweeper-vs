@@ -14,7 +14,7 @@ export class GameSinglePlayer extends GameDefault {
 
   #setMessageController() {
     if (!this.isParallel) {
-      this.#MessageController = new GameMessageController(this.type);
+      this.#MessageController = new GameMessageController();
     }
   }
 

@@ -3,7 +3,19 @@
 import { clone } from "~/_utils/utils.js";
 import { valueDefined } from "~/_utils/validator";
 
-import { VSDashboardController, SneakPeekCompetitionController } from "GamePlayControllers";
+import {
+  GameType,
+  GameVSMode,
+  GameAction,
+  GameEndType,
+  GameSubmission,
+} from "GameEnums";
+
+import {
+  VSDashboardController,
+  SneakPeekCompetitionController,
+  GameMessageParallelController as MessageController
+} from "GamePlayControllers";
 
 import { Game } from "../_game";
 import { GameParallelViewHelper as ViewHelper } from "./_game-parallel-view-helper";
@@ -11,8 +23,9 @@ export class GameParallel extends Game {
   #_individualGames = [];
   #PlayerGame;
   #OpponentGame;
-  #vsDashboard;
-  #sneakPeekController;
+  #VSDashboard;
+  #SneakPeekController;
+  #MessageController;
 
   constructor(id, params, playerGame, opponentGame) {
     super(id, params);
@@ -21,14 +34,15 @@ export class GameParallel extends Game {
     this.#setPlayers();
     this.#setVSDashboardHandler();
     this.#setSneakPeekController();
+    this.#MessageController = new MessageController();
   }
 
   #setVSDashboardHandler() {
-    this.#vsDashboard = new VSDashboardController(this.wrongFlagHint);
+    this.#VSDashboard = new VSDashboardController(this.wrongFlagHint);
   }
 
   #setSneakPeekController() {
-    this.#sneakPeekController = new SneakPeekCompetitionController(this.#onSneakPeek.bind(this),
+    this.#SneakPeekController = new SneakPeekCompetitionController(this.#onSneakPeek.bind(this),
       this.#onSneakPeekEnd.bind(this),
       !this.optionsSettings.openCompetition);
   }
@@ -89,35 +103,36 @@ export class GameParallel extends Game {
 
   get boardActions() {
     const boardActions = super.boardActions;
-    if (this.#sneakPeekController.allowed) {
-      boardActions.append(this.#sneakPeekController.toggleButton);
+    if (this.#SneakPeekController.allowed) {
+      boardActions.append(this.#SneakPeekController.toggleButton);
     }
     return boardActions;
   }
 
   generateView() {
     const gameContainer = document.createDocumentFragment();
-    const vsDashboard = this.#vsDashboard.generateView(
+    const vsDashboard = this.#VSDashboard.generateView(
       this.#player,
       this.#opponent,
       this.boardActions);
     gameContainer.append(vsDashboard);
     gameContainer.append(ViewHelper.generateGamingArea(this.#_individualGames));
+    gameContainer.append(this.#MessageController.generateView());
     return gameContainer;
   }
 
   #initMinesPositions() {
-    if (!this.#identicalMinefields) {
-      this.#individualGames.forEach((game) => game.setMinesPositions());
-    } else {
-      this.#PlayerGame.setMinesPositions();
-      this.#OpponentGame.levelSettings.minesPositions = this.#PlayerGame.levelSettings.minesPositions;
-    }
+    // if (!this.#identicalMinefields) {
+    //   this.#individualGames.forEach((game) => game.setMinesPositions());
+    // } else {
+    //   this.#PlayerGame.setMinesPositions();
+    //   this.#OpponentGame.levelSettings.minesPositions = this.#PlayerGame.levelSettings.minesPositions;
+    // }
   }
 
   #initSneakPeekController() {
-    this.#sneakPeekController.parentElementID = this.#OpponentGame.freezerId;
-    this.#sneakPeekController.setControllerPlayer(this.#player);
+    this.#SneakPeekController.parentElementID = this.#OpponentGame.freezerId;
+    this.#SneakPeekController.setControllerPlayer(this.#player);
   }
 
   #initGames() {
@@ -150,6 +165,7 @@ export class GameParallel extends Game {
   #onPlayerGameOver(gameData) {
     this.#onGameOver(gameData);
     this.#updatePlayerCard(this.#PlayerGame);
+    this.#setResultsForPlayers(this.#opponent);
   }
 
   // HANDLE OPPONENT ACTIONS
@@ -160,10 +176,21 @@ export class GameParallel extends Game {
   #onOpponentGameOver(gameData) {
     this.#onGameOver(gameData);
     this.#updatePlayerCard(this.#OpponentGame);
+    this.#setResultsForPlayers(this.#player);
+  }
+
+  get minefieldCleared() {
+    return this.gameOverType === GameEndType.Cleared;
+  }
+
+  #setResultsForPlayers(player) {
+    if (this.minefieldCleared) {
+      player.lostGame = true;
+    }
   }
 
   #updatePlayerCard(game) {
-    this.#vsDashboard.updatePlayerGameGoalStatistics(game.player);
+    this.#VSDashboard.updatePlayerGameGoalStatistics(game.player);
   }
 
   #hideOpponentBoard() {
@@ -184,7 +211,7 @@ export class GameParallel extends Game {
   // SNEAK PEEK
   #onSneakPeek() {
     this.#displayOpponentBoard().then(() => {
-      return this.#sneakPeekController.playerPeeking();
+      return this.#SneakPeekController.playerPeeking();
     }).catch((err) => {
       console.log(err);
       console.log("error on onSneakPeek");
@@ -192,13 +219,21 @@ export class GameParallel extends Game {
   }
 
   #onSneakPeekEnd() {
-    this.#sneakPeekController.stopPeeking().then(() => {
+    this.#SneakPeekController.stopPeeking().then(() => {
       return this.#hideOpponentBoard();
     }).catch((err) => {
       console.log(err);
       console.log("error on onSneakPeekEnd");
     });
   }
+
+  get onAfterViewInit() {
+    const viewUpdates = [this.#hideOpponentBoard()];
+    viewUpdates.push(this.#MessageController.hide());
+    return Promise.all(viewUpdates);
+  }
+
+
 
   // GAME STATE
   start() {
@@ -211,21 +246,19 @@ export class GameParallel extends Game {
     this.#initMinesPositions();
     this.setGameStart();
 
-    this.#hideOpponentBoard().then(() => {
+    this.onAfterViewInit.then(() => {
       return this.#initGames();
     }).then(() => {
       this.#initSneakPeekController();
-
-      console.log("start message");
-
-      //this.#startGames();
-      
+      this.#MessageController.displayStartMessage(this.#player, this.#opponent).then(() => {
+        this.#startGames();
+      });
     });
   }
 
   pause() {
-    if (this.#sneakPeekController.isRunning) {
-      this.#sneakPeekController.stop();
+    if (this.#SneakPeekController.isRunning) {
+      this.#SneakPeekController.stop();
     }
     this.#pauseGames();
   }
@@ -240,11 +273,17 @@ export class GameParallel extends Game {
   }
 
   continue() {
-    if (this.#sneakPeekController.isPaused) {
-      this.#sneakPeekController.continue();
+    if (this.#SneakPeekController.isPaused) {
+      this.#SneakPeekController.continue();
     }
     this.#individualGames.forEach((game) => game.continue());
   }
+
+
+
+
+
+
 
   #onGameOver(gameData) {
     this.setGameEnd(gameData.gameOverType);
@@ -252,15 +291,23 @@ export class GameParallel extends Game {
     this.#setGameViewsOnGameOver();
 
     this.#displayOpponentBoard().then(() => {
-      if (this.#sneakPeekController.isRunning) {
-        this.#sneakPeekController.stopPeeking();
+      if (this.#SneakPeekController.isRunning) {
+        this.#SneakPeekController.stopPeeking();
       }
-
 
       if (this.isOnline) {
         console.log("online gaming");
         console.log(gameData);
       }
+
+      this.#MessageController.displayEndMessage(this.#player, this.#opponent, this.minefieldCleared).then(() => {
+        //TODO: ON PLAYER WIN SHOW CONFETTI
+      });
+      // console.log(this.gameOverType);
+      // console.log(this.#player);
+      // console.log(this.#opponent);
+
+      // console.log(this.minefieldCleared);
     }).catch((err) => {
       console.log(err);
       console.log("error on onGameOver");

@@ -15,7 +15,7 @@
   @extend %start-center;
   flex-direction: column;
   padding: 20px;
-  min-width: 300px;
+  width: 380px;
 
   .title {
     width: 100%;
@@ -43,6 +43,14 @@
     font-size: 1.3rem;
     text-align: center;
   }
+
+  .subcontent {
+    width: 100%;
+    word-wrap: break-word;
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+  }
 }
 
 .game-message-box--slide-in {
@@ -52,10 +60,6 @@
 .game-message-box--slide-out {
   @include slideOut();
 }
-
-
-
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .theme-light {
