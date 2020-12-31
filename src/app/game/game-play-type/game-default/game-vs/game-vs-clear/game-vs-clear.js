@@ -292,20 +292,20 @@ export class GameVSClear extends GameVS {
   onGamePlayStart() {
     console.log(this.levelSettings.minesPositions);
     this.#setSneakPeekParentElementID();
-
     if (this.roundTimer) {
       this.setGameStart();
       this.#setSneakPeekNotificationForRoundTimer();
     }
-
-    
-    console.log("START GameVS CLEAR GAME");
- 
-    this.startGameRound();
-
+    this.startRoundGamePlay();
   }
 
+  startGameRound() {
+    // this.startRoundGamePlay();
 
+
+    console.log("startGameRound");
+    console.log(this.isSharedDevice);
+  }
 
 
   onGameOver(boardTiles = []) {
@@ -334,8 +334,5 @@ export class GameVSClear extends GameVS {
     }
     super.continue();
   }
-
-
-
 
 }

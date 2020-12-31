@@ -131,7 +131,7 @@ export class GameVSDetect extends GameVS {
     return super.updatedPlayerCard(params);
   }
 
-  get looser() {
+  get looserOnVsMode() {
     return this.players.reduce((playerA, playerB) => {
        if (playerA.minesDetected === playerB.minesDetected) {
          return undefined;

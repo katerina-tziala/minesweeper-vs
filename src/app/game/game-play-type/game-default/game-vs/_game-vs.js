@@ -64,7 +64,7 @@ export class GameVS extends GameDefault {
     return viewUpdates;
   }
 
-  get #onAfterRoundViewInit() {
+  get onAfterRoundViewInit() {
     const viewUpdates = [this.vsDashboard.setCardOnTurn(this.players)];
     viewUpdates.push(this.gameBoard.initBoardOnRound(this.playerOnTurn));
     return Promise.all(viewUpdates);
@@ -157,22 +157,6 @@ export class GameVS extends GameDefault {
     return this.vsDashboard.updatedPlayerCard(player, params);
   }
 
-  initRound() {
-    // TODO: ROUND STATISTICS
-    this.initRoundTiles();
-  }
-
-  startGameRound() {
-    this.#onAfterRoundViewInit.then(() => {
-      if (this.playerOnTurn.isBot) {
-        this.startBotRound();
-        return;
-      }
-
-      this.enableMinefield();
-    });
-  }
-
   restart() {
     this.setMinesPositions();
     const playersIds = this.players.map((player) => player.id);
@@ -193,11 +177,33 @@ export class GameVS extends GameDefault {
     if (this.roundTimer) {
       this.setGameStart();
     }
-    this.startGameRound();
+    this.startRoundGamePlay();
     console.log(this);
   }
 
 
+  initRound() {
+    // TODO: ROUND STATISTICS
+    this.initRoundTiles();
+  }
+
+  startGameRound() {
+    this.startRoundGamePlay();
+  }
+
+  startRoundGamePlay() {
+    this.initRound();
+
+    this.onAfterRoundViewInit.then(() => {
+      if (this.playerOnTurn.isBot) {
+        this.startBotRound();
+        return;
+      }
+
+      this.enableMinefield();
+    });
+  }
+  
   //TODO: COMPLETE THE CASES
   startBotRound() {
     //TODO:
@@ -243,14 +249,11 @@ export class GameVS extends GameDefault {
       this.pause();
       return;
     }
-    //TODO:
-    // console.log("--  move to next round -- ");
-    // console.log("GameVS");
-    // console.log("----------------------------");
-    // console.log("go on the next round");
+    
     this.switchTurns();
     this.startGameRound();
   }
+
 
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
@@ -264,12 +267,14 @@ export class GameVS extends GameDefault {
         this.submitResult(GameSubmission.GameOver);
         return;
       }
-  
-      
+    }).catch(err => {
+      console.log(err);
     });
   }
 
   #displayGameOverMessage() {
+    // console.log(this.looser);
+    // console.log(this.isDraw);
     if (this.isDraw) {
       return this.#MessageController.displayDrawMessage(this.player, this.opponent).then(() => {
         //TODO: confetti of both colors
@@ -294,12 +299,13 @@ export class GameVS extends GameDefault {
     if (!this.gameOverBasedOnType) {
       return;
     }
-    const looser = this.looser;
-
+    const looser = this.looserOnVsMode;
     if (looser) {
       looser.lostGame = true;
     }
   }
+
+ 
 
   get isSharedDevice() {
     return !this.isOnline && !this.opponent.isBot;

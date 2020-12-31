@@ -50,18 +50,21 @@ export class Game extends AppModel {
   }
 
   get looser() {
-    return this.players.reduce((playerA, playerB) => {
-       if (playerA.revealedTiles === playerB.revealedTiles) {
-         return undefined;
-       }
-       return playerA.revealedTiles < playerB.revealedTiles ? playerA : playerB;
-     });
-   }
-
-  get isDraw() {
-    return !this.looser;
+    return this.players.find(player => player.lostGame);
   }
 
+  get looserOnVsMode() {
+    return this.players.reduce((playerA, playerB) => {
+      if (playerA.revealedTiles === playerB.revealedTiles) {
+        return undefined;
+      }
+      return playerA.revealedTiles < playerB.revealedTiles ? playerA : playerB;
+    });
+  }
+
+  get isDraw() {
+    return this.looser ? false : true;
+  }
 
   get wrongFlagHint() {
     return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
@@ -187,24 +190,24 @@ export class Game extends AppModel {
   setMinesPositions() {
     this.levelSettings.setMinesPositions();
 
-    // this.levelSettings.minesPositions = [
-    //   0,
-    //   1,
-    //   2,
-    //   3,
-    //   4,
-    //   5,
-    //   6,
-    //   7,
-    //   73,
-    //   74,
-    //   75,
-    //   76,
-    //   77,
-    //   78,
-    //   79,
-    //   80,
-    // ];
+    this.levelSettings.minesPositions = [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+    ];
   }
 
   ////////////////////////////////
