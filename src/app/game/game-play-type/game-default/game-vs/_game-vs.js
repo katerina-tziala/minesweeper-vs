@@ -301,6 +301,7 @@ export class GameVS extends GameDefault {
     console.log(this.winner);
     console.log(this.players);
     console.log(this.isDraw);
+    console.log(this.isSharedDevice);
   }
 
   get gameOverBasedOnType() {
@@ -318,5 +319,8 @@ export class GameVS extends GameDefault {
     }
   }
 
+  get isSharedDevice() {
+    return !this.isOnline && !this.opponent.isBot;
+  }
 
 }
