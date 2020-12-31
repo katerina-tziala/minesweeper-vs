@@ -9,6 +9,7 @@ export class GameMessageParallelController extends GameMessageController {
   constructor() {
     super();
     this.messageDuration = 4000;
+    this.gameMessages = MESSAGES;
   }
 
   displayStartMessage(player, opponent) {
@@ -21,7 +22,7 @@ export class GameMessageParallelController extends GameMessageController {
   }
 
   startMessage(player, opponent) {
-    return this.getMessageForPlayer(MESSAGES.gameOn, player, opponent);
+    return this.getMessageForPlayer(this.gameMessages.gameOn, player, opponent);
   }
 
   getMessageForPlayer(message, player, opponent) {
@@ -49,7 +50,7 @@ export class GameMessageParallelController extends GameMessageController {
   }
 
   endMessage(player, opponent, clearedMinefield) {
-    const messageType = player.lostGame ? MESSAGES.gameOverLoss : MESSAGES.gameOverWin;
+    const messageType = player.lostGame ? this.gameMessages.gameOverLoss : this.gameMessages.gameOverWin;
     const message = clearedMinefield ? messageType.clearedMinefield : messageType.detonatedMine;
     return this.getMessageForPlayer(message, player, opponent);
   }

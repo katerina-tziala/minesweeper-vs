@@ -6,14 +6,20 @@ import { GameEndType, GameSubmission } from "GameEnums";
 
 import { GameDefault } from "../_game-default";
 
-import { VSDashboardController } from "GamePlayControllers";
+import {
+  VSDashboardController,
+  GameMessageVSController as MessageController
+} from "GamePlayControllers";
 export class GameVS extends GameDefault {
+  #MessageController;
+
   constructor(id, params, player, opponent) {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
     this.init();
     this.#setDashBoard();
+    this.#MessageController = new MessageController();
   }
 
   #setDashBoard() {
@@ -48,6 +54,7 @@ export class GameVS extends GameDefault {
   get viewInitUpdates() {
     const viewUpdates = super.viewInitUpdates;
     viewUpdates.push(this.vsDashboard.initCardsState(this.players));
+    viewUpdates.push(this.#MessageController.hide());
     return viewUpdates;
   }
 
@@ -82,6 +89,7 @@ export class GameVS extends GameDefault {
       this.opponent,
     );
     ElementHandler.addInChildNodes(gameContainer, vsDashboard, 0);
+    gameContainer.append(this.#MessageController.generateView());
     return gameContainer;
   }
 
@@ -173,17 +181,22 @@ export class GameVS extends GameDefault {
     this.start();
   }
 
+
+
+
   start() {
     this.onAfterViewInit.then(() => {
-      if (this.roundTimer) {
-        console.log("kkk");
-        this.setGameStart();
-      }
-      console.log("START GameVS GAME");
-      console.log("----------------------------");
-      console.log(" show start modal message");
-      this.startGameRound();
+      return this.#MessageController.displayStartMessage(this.playerOnTurn)
+    }).then(() => {
+      this.onGamePlayStart();
     });
+  }
+
+  onGamePlayStart() {
+    if (this.roundTimer) {
+      this.setGameStart();
+    }
+    this.startGameRound();
   }
 
 

@@ -289,27 +289,29 @@ export class GameVSClear extends GameVS {
   }
 
 
-  start() {
+  onGamePlayStart() {
     console.log(this.levelSettings.minesPositions);
+    this.#setSneakPeekParentElementID();
 
-    this.onAfterViewInit.then(() => {
-      this.#setSneakPeekParentElementID();
-      if (this.roundTimer) {
-        this.setGameStart();
-        this.#setSneakPeekNotificationForRoundTimer();
-      }
-      console.log("START GameVS GAME");
-      console.log("----------------------------");
-      console.log(" show start modal message");
-      this.startGameRound();
-    });
+    if (this.roundTimer) {
+      this.setGameStart();
+      this.#setSneakPeekNotificationForRoundTimer();
+    }
+    console.log("START GameVS GAME");
+    console.log("----------------------------");
+    console.log(" show start modal message");
+    this.startGameRound();
+
   }
+
+
+
 
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
 
 
-
+    console.log("check double flags");
     console.log(this.playerWaiting.strategyPositions);
   }
 

@@ -8,6 +8,7 @@ export class GameMessageController {
 
   constructor() {
     this.messageDuration = 3500;
+    this.gameMessages = MESSAGES;
   }
 
   generateView() {
@@ -38,7 +39,7 @@ export class GameMessageController {
   }
 
   startMessage(player) {
-    return this.getMessageForPlayer(MESSAGES.gameOn, player);
+    return this.getMessageForPlayer(this.gameMessages.gameOn, player);
   }
 
   getMessageForPlayer(message, player) {
@@ -51,7 +52,7 @@ export class GameMessageController {
   }
 
   endMessage(player) {
-    const message = player.lostGame ? MESSAGES.gameOverLoss : MESSAGES.gameOverWin;
+    const message = player.lostGame ? this.gameMessages.gameOverLoss : this.gameMessages.gameOverWin;
     return this.getMessageForPlayer(message, player);
   }
 
