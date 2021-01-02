@@ -49,6 +49,14 @@ export class Game extends AppModel {
     return false;
   }
 
+  get gameOverClearedMinefield() {
+    return this.gameOverType === GameOverType.Cleared;
+  }
+
+  get winner() {
+    return this.players.find(player => !player.lostGame);
+  }
+
   get looser() {
     return this.players.find(player => player.lostGame);
   }
@@ -121,14 +129,6 @@ export class Game extends AppModel {
       completedAt: this.completedAt,
       roundTiles: this.roundTiles
     }
-  }
-
-  get gameOverClearedMinefield() {
-    return this.gameOverType === GameOverType.Cleared;
-  }
-
-  get winner() {
-    return this.players.find(player => !player.lostGame);
   }
 
   get boardActions() {
