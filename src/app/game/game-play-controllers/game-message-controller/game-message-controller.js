@@ -56,6 +56,11 @@ export class GameMessageController {
     return this.displayWaitingMessage(message);
   }
 
+  displayReadyMessage(player) {
+    const message = this.readyMessage(player);
+    return this.displayWaitingMessage(message);
+  }
+
   displayEndMessage(player) {
     const message = this.endMessage(player);
     return this.displayWaitingMessage(message);
@@ -68,6 +73,10 @@ export class GameMessageController {
       ViewHelper.displayContainer(container);
       return this.#messageDisplayCompleted(messageBox);
     });
+  }
+
+  readyMessage(player) {
+    return this.getMessageForPlayer(this.gameMessages.gameReady, player);
   }
 
   startMessage(player) {

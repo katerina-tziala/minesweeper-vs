@@ -6,6 +6,11 @@ export const GAME_GOAL = {
 };
 
 export const MESSAGES = {
+  gameReady: {
+    title: "game ready!",
+    subtitle: "minesweeper vs (###) game",
+    content: "Wait for ### to join the game!"
+  },
   gameOn: {
     title: "game on!",
     subtitle: "minesweeper vs (###) game",

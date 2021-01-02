@@ -41,11 +41,7 @@ export class MinefieldFreezer {
     return ElementHandler.getByID(this.freezerId);
   }
 
-
-
-
   generateView() {
-    // this.#disabled = true;
     const boardFreezer = ElementGenerator.generateContainer(
       [DOM_ELEMENT_CLASS.freezer],
       this.freezerId,

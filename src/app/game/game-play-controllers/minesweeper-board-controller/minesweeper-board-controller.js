@@ -98,6 +98,7 @@ export class MinesweeperBoardController {
   }
 
   #onTileAction(action, tile) {
+    this.disableMinefield();
     if (action === GameAction.Mark) {
       this.#onTileMarking(tile);
       return;
@@ -181,11 +182,11 @@ export class MinesweeperBoardController {
   }
 
   disableMinefield() {
-    // this.mineField.disable();
+    this.#MinefieldFreezer.display();
   }
 
   enableMinefield() {
-    // this.mineField.enable();
+    this.#MinefieldFreezer.hide();
   }
 
 

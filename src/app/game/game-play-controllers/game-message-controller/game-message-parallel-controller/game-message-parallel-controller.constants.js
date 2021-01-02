@@ -1,6 +1,11 @@
 "use strict";
 
 export const MESSAGES = {
+  gameReady: {
+    title: "game ready!",
+    subtitle: "minesweeper compete game",
+    content: "Wait for ### to join the game!"
+  },
   gameOn: {
     title: "game on!",
     subtitle: "minesweeper compete game",

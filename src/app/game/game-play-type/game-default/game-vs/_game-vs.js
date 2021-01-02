@@ -173,32 +173,28 @@ export class GameVS extends GameDefault {
     this.start();
   }
 
-
-
   start() {
-    // console.log(this.players);
-    this.opponent.entered = false;
-
-
-    // if (!this.bothPlayersEntered) {
-   
-    // }
-  
-    
-
     this.onAfterViewInit.then(() => {
-      this.gameBoard.displayFreezerLoader(this.opponent);
-      console.log("now start");
+      if (!this.bothPlayersEntered) {
+        this.#displayReadyMessageAndWait();
+        return;
+      }
+      this.#displayStartMessageAndStart();
     });
+  }
 
-    // this.onAfterViewInit.then(() => {
+  #displayStartMessageAndStart() {
+    this.messageController.displayStartMessage(this.playerOnTurn).then(() => {
+      this.onGamePlayStart();
+    });
+  }
 
-
-    //   return this.messageController.displayStartMessage(this.playerOnTurn)
-    // }).then(() => {
-    //   this.onGamePlayStart();
-    //   // console.log(this.bothPlayersEntered);
-    // });
+  #displayReadyMessageAndWait() {
+    const updates = [
+      this.gameBoard.displayFreezerLoader(this.opponent),
+      this.messageController.displayReadyMessage(this.playerOnTurn)
+    ];
+    return Promise.all(updates);
   }
 
   onGamePlayStart() {
@@ -223,6 +219,9 @@ export class GameVS extends GameDefault {
 
   onRoundPlayStart() {
     this.gameBoard.startRoundTimer();
+    if (this.isOnline) {
+      console.log("onlineeeeeeeeeeeeeee");
+    }
     if (this.playerOnTurn.isBot) {
       this.startBotRound();
       return;
