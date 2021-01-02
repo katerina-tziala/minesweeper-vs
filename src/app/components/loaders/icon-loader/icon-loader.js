@@ -1,7 +1,6 @@
 "use strict";
 
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-
+import { ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./icon-loader.constants";
 
 export class IconLoader {

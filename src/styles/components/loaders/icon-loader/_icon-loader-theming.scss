@@ -1,0 +1,24 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .icon-loader-container {
+    @include theming.setThemeCard($theme, 0.5);
+  }
+  .icon-loader {
+    @include theming.applyGameColorsStyle(
+      $theme,
+      "&.icon-loader__color-type",
+      "color"
+    );
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

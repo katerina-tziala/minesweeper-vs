@@ -6,7 +6,7 @@ import { uniqueArray, arrayDifference } from "~/_utils/utils";
 
 import { preventInteraction } from "~/_utils/utils";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./minefield-freezer.constants";
-import { IconLoader } from "~/components/icon-loader/icon-loader";
+import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
 
 export class MinefieldFreezer {
   //#_levelSettings;
@@ -56,8 +56,7 @@ export class MinefieldFreezer {
 
   displayLoader(colorType) {
     return this.#freezer.then((freezer) => {
-      console.log(IconLoader);
-      freezer.append(IconLoader.generateIcon(colorType));
+      freezer.append(IconLoader.generate(colorType));
       ElementHandler.display(freezer);
     });
   }

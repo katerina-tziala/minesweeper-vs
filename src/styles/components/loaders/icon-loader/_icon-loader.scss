@@ -1,4 +1,4 @@
-@use "../../../theming/theming";
+@use "./icon-loader-theming";
 
 .icon-loader-container {
   @extend %center-center;
@@ -27,24 +27,5 @@
 }
 
 
-
-
-// /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-
-  .icon-loader-container {
-    @include theming.setThemeCard("light", 0.7);
-  }
-  .icon-loader {
-    @include theming.applyGameColorsStyle("light", "&.icon-loader__color-type", "color");
-  }
-}
-
-.theme-dark {
-  .icon-loader-container {
-    @include theming.setThemeCard("dark", 0.7);
-  }
-  .icon-loader {
-    @include theming.applyGameColorsStyle("dark", "&.icon-loader__color-type", "color");
-  }
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include icon-loader-theming.setTheming();

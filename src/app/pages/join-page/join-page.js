@@ -15,7 +15,6 @@ import {
 
 import { FormUsername } from "~/components/form/form-username/form-username";
 
-import { StateLoader } from "~/components/loaders/state-loader/state-loader";
 
 
 import { IconLoader } from "~/components/icon-loader/icon-loader";
