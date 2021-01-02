@@ -284,8 +284,7 @@ export class GameVSClear extends GameVS {
   }
 
   setUpNewRound() {
-    // TODO: ROUND STATISTICS
-    this.initRoundTiles();
+    this.initRoundStatistics();
     this.#sneakPeekController.setPlayers(this.playerOnTurn, this.playerWaiting);
     return this.onAfterRoundViewInit;
   }

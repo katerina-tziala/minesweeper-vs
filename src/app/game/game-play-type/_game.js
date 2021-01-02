@@ -11,12 +11,15 @@ import {
   GameSubmission,
 } from "GameEnums";
 
+import { RoundStatistics } from "GameModels";
+
 import { CONFIRMATION } from "../../components/modal/modal.constants";
 import { BoardActionsController } from "GamePlayControllers";
 
 export class Game extends AppModel {
   #externalActions = {};
   #BoardActionsController;
+  #roundStatistics;
   //check errors after view updates
   constructor(id, params) {
     super();
@@ -25,6 +28,7 @@ export class Game extends AppModel {
     this.createdAt = nowTimestamp();
     this.players = [];
     this.setBoardActionsController();
+    this.#roundStatistics = new RoundStatistics();
   }
 
   setBoardActionsController() {
@@ -118,6 +122,27 @@ export class Game extends AppModel {
     return this.#externalActions;
   }
 
+  get roundTiles() {
+    return this.#roundStatistics.roundTiles;
+  }
+
+  get rounds() {
+    return this.#roundStatistics.rounds;
+  }
+
+
+  set roundTilesUpdate(newMoveTiles = []) {
+    this.#roundStatistics.roundTiles = this.roundTiles.concat(newMoveTiles);
+  }
+
+  initRoundStatistics() {
+    this.#roundStatistics.initRoundStatistics();
+  }
+
+  setStatisticsOnRoundEnd(boardTiles) {
+    this.#roundStatistics.onRoundEnd(boardTiles);
+  }
+
   get gameState() {
     return {
       id: this.id,
@@ -127,7 +152,8 @@ export class Game extends AppModel {
       startedAt: this.startedAt,
       createdAt: this.createdAt,
       completedAt: this.completedAt,
-      roundTiles: this.roundTiles
+      roundTiles: this.roundTiles,
+      rounds: this.rounds
     }
   }
 
@@ -139,6 +165,7 @@ export class Game extends AppModel {
     this.gameOverType = null;
     this.completedAt = null;
     this.startedAt = null;
+    this.initRoundStatistics();
   }
 
   setGameStart() {

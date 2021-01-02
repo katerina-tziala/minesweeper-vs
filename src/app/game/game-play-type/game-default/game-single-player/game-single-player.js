@@ -128,7 +128,7 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   startGameRound() {
-    this.initRoundTiles();
+    this.initRoundStatistics();
     if (this.playerOnTurn.isBot) {
       this.startBotRound();
       return;
@@ -137,7 +137,6 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   startBotRound() {
-    this.initRoundTiles();
     //TODO:
     console.log("--  get Bot move -- ");
     console.log("GameSinglePlayer");

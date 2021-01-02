@@ -43,10 +43,6 @@ export class GameDefault extends Game {
       this.onRoundTimerEnd.bind(this));
   }
 
-  set roundTilesUpdate(newMoveTiles = []) {
-    this.roundTiles = this.roundTiles.concat(newMoveTiles);
-  }
-
   get playerOnTurn() {
     return this.player;
   }
@@ -64,15 +60,6 @@ export class GameDefault extends Game {
 
   get allowMarks() {
     return this.optionsSettings ? this.optionsSettings.marks : false;
-  }
-
-  initState() {
-    super.initState();
-    this.initRoundTiles();
-  }
-
-  initRoundTiles() {
-    this.roundTiles = [];
   }
 
   generateView() {
@@ -263,8 +250,7 @@ export class GameDefault extends Game {
   }
 
   onGameOver(boardTiles = []) {
-    // TODO: ROUND STATISTICS
-    this.roundTilesUpdate = boardTiles;
+    this.setStatisticsOnRoundEnd(boardTiles);
     this.setGameBoardOnGameOver();
   }
 

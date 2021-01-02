@@ -197,8 +197,7 @@ export class GameVS extends GameDefault {
   }
 
   setUpNewRound() {
-    // TODO: ROUND STATISTICS
-    this.initRoundTiles();
+    this.initRoundStatistics();
     return this.onAfterRoundViewInit;
   }
 
@@ -244,8 +243,9 @@ export class GameVS extends GameDefault {
   //TODO: COMPLETE THE CASES
   onRoundEnd(boardTiles = []) {
     this.gameBoard.setBoardOnRoundEnd();
-    // TODO: ROUND STATISTICS
-    this.roundTilesUpdate = boardTiles;
+    this.setStatisticsOnRoundEnd(boardTiles);
+
+
 
     if (this.isOnline) {
       //TODO:
@@ -264,7 +264,7 @@ export class GameVS extends GameDefault {
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
     this.setWinnerOnGameOver();
-    // TODO: ROUND STATISTICS
+    
     this.#displayGameOverMessage().then(() => {
       if (this.isOnline) {
         //TODO:
