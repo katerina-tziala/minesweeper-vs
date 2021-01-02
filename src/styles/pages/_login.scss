@@ -2,7 +2,8 @@
 @import "../global/_module-global";
 @import "../utils/_module-utils";
 @import "../components/form/form_username";
-@import "../components/loaders/state-loader";
+@import "../components/loaders/icon-loader/icon-loader";
+
 
 .login-container {
   min-width: 320px;
@@ -10,6 +11,10 @@
   position: relative;
   overflow: hidden;
   @include slideIn();
+
+  .icon-loader {
+    font-size: 3rem;
+  }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

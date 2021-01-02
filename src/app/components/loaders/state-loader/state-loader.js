@@ -4,6 +4,7 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./state-loader.constants";
 
 export class StateLoader {
+
   static renderStateLoader(iconSizeClass = DOM_ELEMENT_CLASS.loaderIconBasic) {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.stateLoader,

@@ -14,7 +14,13 @@ import {
 } from "./join-page.constants";
 
 import { FormUsername } from "~/components/form/form-username/form-username";
+
 import { StateLoader } from "~/components/loaders/state-loader/state-loader";
+
+
+import { IconLoader } from "~/components/icon-loader/icon-loader";
+
+
 
 import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 
@@ -48,15 +54,13 @@ export class JoinPage extends Page {
       [DOM_ELEMENT_CLASS.loginContainer],
       DOM_ELEMENT_ID.loginContainer,
     );
-    container.append(StateLoader.renderStateLoader());
     container.append(this.#loginForm.renderForm(FORM_PARAMS));
     return container;
   }
 
   login(formValues) {
     if (self.onlineConnection) {
-      this.loginContainer.then((container) => {
-        StateLoader.display(container);
+      this.#displayLoader().then(() => {
         self.onlineConnection.establishConnection(formValues);
       });
     } else {
@@ -64,9 +68,19 @@ export class JoinPage extends Page {
     }
   }
 
-  // Overridden functions
+  #displayLoader() {
+    return this.loginContainer.then((container) => {
+      container.append(IconLoader.generate());
+      return;
+    });
+  }
+
+  #hideLoader() {
+    return this.loginContainer.then((container) => IconLoader.remove(container));
+  }
+
   onConnectionError(errorMessage) {
     super.onConnectionError(errorMessage);
-    this.loginContainer.then((container) => StateLoader.hide(container));
+    this.#hideLoader();
   }
 }

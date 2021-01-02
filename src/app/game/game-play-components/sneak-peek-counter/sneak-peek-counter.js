@@ -27,7 +27,7 @@ export class SneakPeekCounter {
   }
 
   static getColorTypeClass(colorType) {
-    return DOM_ELEMENT_CLASS.value+"--"+colorType;
+    return DOM_ELEMENT_CLASS.valueColor + colorType;
   }
 
   static get valueContainer() {

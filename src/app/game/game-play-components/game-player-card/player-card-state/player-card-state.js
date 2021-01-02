@@ -3,6 +3,7 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { valueDefined } from "~/_utils/validator";
+import { IconLoader } from "~/components/icon-loader/icon-loader";
 
 import {
   DOM_ELEMENT_ID,
@@ -21,7 +22,7 @@ export class PlayerCardState {
   static getStateSectionContent(player) {
     return player.entered
       ? PlayerCardState.generateFlagState(player)
-      : PlayerCardState.generateLoadingState();
+      : PlayerCardState.generateLoadingState(player.colorType);
   }
 
   static generateStateSection(player) {
@@ -37,8 +38,11 @@ export class PlayerCardState {
     return stateSection;
   }
 
-  static generateLoadingState() {
-    return ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.loadingState]);
+  static generateLoadingState(colorType) {
+    const icon = IconLoader.generateIcon(colorType)
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.loadingState]);
+    container.append(icon);
+    return container;
   }
 
   static generateFlagState(player) {

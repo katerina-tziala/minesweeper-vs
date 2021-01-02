@@ -1,0 +1,50 @@
+@use "../../../theming/theming";
+
+.icon-loader-container {
+  @extend %center-center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 600;
+}
+
+.icon-loader {
+  @extend %center-center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 600;
+
+  &::after {
+    @extend .icon-spinner;
+    animation: spin 1s infinite linear;
+  }
+}
+
+
+
+
+// /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+
+  .icon-loader-container {
+    @include theming.setThemeCard("light", 0.7);
+  }
+  .icon-loader {
+    @include theming.applyGameColorsStyle("light", "&.icon-loader__color-type", "color");
+  }
+}
+
+.theme-dark {
+  .icon-loader-container {
+    @include theming.setThemeCard("dark", 0.7);
+  }
+  .icon-loader {
+    @include theming.applyGameColorsStyle("dark", "&.icon-loader__color-type", "color");
+  }
+}

@@ -1,7 +1,8 @@
 @import "../../../components/table/table";
+@import "../../../components/scrollbar/scrollbar";
 @import "../board-section/board-section";
 @import "./tile/tile";
-@import "../../../components/scrollbar/scrollbar";
+@import "./minefield-freezer/minefield-freezer";
 
 .mine-field {
   @extend ._board-section;
@@ -9,27 +10,4 @@
   max-height: 65vh;
   overflow: auto;
   @extend ._scrollbar;
-
-  .mine-field__freezer {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 1500;
-    cursor: not-allowed;
-  }
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  .mine-field__freezer {
-    // background: rgba(0, 0, 0, 0.1);
-  }
-}
-
-.theme-dark {
-  .mine-field__freezer {
-    // background: rgba(0, 0, 0, 0.3);
-  }
 }

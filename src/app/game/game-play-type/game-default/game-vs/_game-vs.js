@@ -173,12 +173,32 @@ export class GameVS extends GameDefault {
     this.start();
   }
 
+
+
   start() {
+    // console.log(this.players);
+    this.opponent.entered = false;
+
+
+    // if (!this.bothPlayersEntered) {
+   
+    // }
+  
+    
+
     this.onAfterViewInit.then(() => {
-      return this.messageController.displayStartMessage(this.playerOnTurn)
-    }).then(() => {
-      this.onGamePlayStart();
+      this.gameBoard.displayFreezerLoader(this.opponent);
+      console.log("now start");
     });
+
+    // this.onAfterViewInit.then(() => {
+
+
+    //   return this.messageController.displayStartMessage(this.playerOnTurn)
+    // }).then(() => {
+    //   this.onGamePlayStart();
+    //   // console.log(this.bothPlayersEntered);
+    // });
   }
 
   onGamePlayStart() {
@@ -264,7 +284,7 @@ export class GameVS extends GameDefault {
   onGameOver(boardTiles = []) {
     super.onGameOver(boardTiles);
     this.setWinnerOnGameOver();
-    
+
     this.#displayGameOverMessage().then(() => {
       if (this.isOnline) {
         //TODO:

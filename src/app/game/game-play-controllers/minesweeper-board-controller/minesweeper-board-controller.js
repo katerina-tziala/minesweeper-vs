@@ -3,6 +3,7 @@ import {
   DigitalCounter,
   DashboardFaceIcon,
   MineField,
+  MinefieldFreezer,
   MinesweeperBoard,
   Dashboard
 } from "GamePlayComponents";
@@ -20,6 +21,7 @@ export class MinesweeperBoardController {
   #MinesweeperBoard;
   #Dashboard;
   #MineField;
+  #MinefieldFreezer;
   #MineCounter;
   #FaceIcon;
   #GameTimer;
@@ -30,13 +32,18 @@ export class MinesweeperBoardController {
     this.#onTileRevealing = onTileRevealing;
     this.#onTileMarking = onTileMarking;
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
+    this.#initMinefieldHandlers(gameId);
+    this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
+  }
+
+  #initMinefieldHandlers(gameId) {
+    this.#MinefieldFreezer = new MinefieldFreezer(gameId);
     this.#MineField = new MineField(
       gameId,
       this.#_levelSettings,
       this.#onActiveTileChange.bind(this),
       this.#onTileAction.bind(this),
     );
-    this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
   }
 
   #initDashboardHandlers(gameId, turnSettings, onRoundTimerEnd) {
@@ -76,9 +83,15 @@ export class MinesweeperBoardController {
   #initMinefield() {
     return this.#board.clearedMinefieldContainer.then(minefieldContainer => {
       minefieldContainer.append(this.mineField.generate());
+      minefieldContainer.append(this.#MinefieldFreezer.generateView());
       return;
     });
   }
+
+
+
+
+
 
   #onActiveTileChange(activeTileOnBoard) {
     activeTileOnBoard ? this.setSurpriseFace() : this.setSmileFace();
@@ -156,21 +169,32 @@ export class MinesweeperBoardController {
     return this.#MineField;
   }
 
+
+
+  displayFreezerLoader(player) {
+    return this.#MinefieldFreezer.displayLoader(player.colorType);
+  }
+
+
+  get freezerId() {
+    // return this.mineField.freezerId;
+  }
+
   disableMinefield() {
-    this.mineField.disable();
+    // this.mineField.disable();
   }
 
   enableMinefield() {
-    this.mineField.enable();
+    // this.mineField.enable();
   }
+
+
 
   revealMinefield() {
-    this.mineField.revealField();
+    //this.mineField.revealField();
   }
 
-  get freezerId() {
-    return this.mineField.freezerId;
-  }
+
 
   getRevealedTilesResult(tile, playerId) {
     return this.mineField.getRevealedTilesResult(tile, playerId);

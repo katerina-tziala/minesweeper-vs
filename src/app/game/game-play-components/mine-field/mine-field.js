@@ -55,21 +55,38 @@ export class MineField {
     return ElementHandler.getByID(this.freezerId);
   }
 
-  #generateFieldFreezer() {
-    const boardFreezer = ElementGenerator.generateContainer(
-      [DOM_ELEMENT_CLASS.freezer],
-      this.freezerId,
-    );
-    boardFreezer.addEventListener("click", (event) => {
-      preventInteraction(event);
-    });
-    return boardFreezer;
-  }
+
+  // disable() {
+  //   this.freezerState = true;
+  // }
+
+  // enable() {
+  //   this.freezerState = false;
+  // }
+
+  // #generateFieldFreezer() {
+  //   const boardFreezer = ElementGenerator.generateContainer(
+  //     [DOM_ELEMENT_CLASS.freezer],
+  //     this.freezerId,
+  //   );
+  //   boardFreezer.addEventListener("click", (event) => {
+  //     preventInteraction(event);
+  //   });
+  //   return boardFreezer;
+  // }
+  // set freezerState(display) {
+  //   this.#freezer.then((freezer) => {
+  //     display ? ElementHandler.display(freezer) : ElementHandler.hide(freezer);
+  //     if (!display) {
+  //       ElementHandler.clearContent(freezer);
+  //     }
+  //   });
+  // }
+
 
   #onTileAction(tile, action) {
     if (action && tile) {
       this.#onActiveTileChange(false);
-      this.freezerState = true;
       this.#submitTileAction(action, tile);
     }
   }
@@ -110,19 +127,11 @@ export class MineField {
     const mineFieldTable = ElementGenerator.generateTable();
     mineFieldTable.append(this.#generateMinefieldRows);
     fragment.append(mineFieldTable);
-    fragment.append(this.#generateFieldFreezer());
     this.#tilesGenerator = undefined;
     return fragment;
   }
 
-  set freezerState(display) {
-    this.#freezer.then((freezer) => {
-      display ? ElementHandler.display(freezer) : ElementHandler.hide(freezer);
-      if (!display) {
-        ElementHandler.clearContent(freezer);
-      }
-    });
-  }
+
 
   getRevealedTilesResult(clickedTile, playerId) {
     return new Promise((resolve) => {
@@ -219,13 +228,6 @@ export class MineField {
     return tiles.filter((tile) => !tile.isFlagged);
   }
 
-  disable() {
-    this.freezerState = true;
-  }
-
-  enable() {
-    this.freezerState = false;
-  }
 
   getUnrevealedTiles(tiles = this.#tiles) {
     return tiles.filter((tile) => !tile.isRevealed);
