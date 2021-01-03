@@ -134,7 +134,7 @@ export class BoardController {
   }
 
   get timerRunning() {
-    return this.gameTimer.timerRunning;
+    return this.gameTimer.isRunning;
   }
 
   get roundTimer() {
@@ -152,6 +152,7 @@ export class BoardController {
   }
 
   startGameTimer() {
+    console.log(this.timerRunning);
     if (!this.roundTimer && !this.timerRunning) {
       this.gameTimer.start(1);
     }
@@ -208,9 +209,9 @@ export class BoardController {
   }
 
   enableMinefield() {
-    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
+  //  if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
       this.#MinefieldFreezer.hide();
-    }
+   // }
   }
 
   revealMinefield() {
@@ -358,9 +359,12 @@ export class BoardController {
     return this.#FaceIcon.setSmileFace(this.#faceColorType);
   }
 
-  #setFaceIconOnGameEnd(playerOnTurn) {
-    //check for draw
-    playerOnTurn.lostGame
+  #setFaceIconOnGameEnd(isDraw) {
+    if (isDraw) {
+      this.#FaceIcon.setGrintSquintFace();
+      return;
+    }
+    this.playerOnTurn.lostGame
       ? this.#FaceIcon.setLostFace(this.#faceColorType)
       : this.#FaceIcon.setWinnerFace(this.#faceColorType);
   }
@@ -382,11 +386,11 @@ export class BoardController {
     this.enableMinefield();
   }
 
-  setBoardOnGameOver(playerOnTurn) {
+  setBoardOnGameOver(isDraw) {
     this.pause();
     this.updateMinesCounter();
     this.revealMinefield();
-    this.#setFaceIconOnGameEnd(playerOnTurn);
+    this.#setFaceIconOnGameEnd(isDraw);
   }
 
 }

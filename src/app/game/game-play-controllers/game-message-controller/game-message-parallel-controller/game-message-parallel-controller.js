@@ -31,7 +31,9 @@ export class GameMessageParallelController extends GameMessageController {
 
   getMessageForPlayer(message, player, opponent) {
     message = super.getMessageForPlayer(message, player);
-    message = this.setMessageSubcontentForPlayer(message, opponent);
+    if (opponent) {
+      message = this.setMessageSubcontentForPlayer(message, opponent);
+    }
     return message;
   }
 

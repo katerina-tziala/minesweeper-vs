@@ -23,6 +23,7 @@ export class StrategyController {
   }
 
   set openStrategy(openStrategy) {
+
     if (valueDefined(openStrategy)) {
       this.#_oppenStrategy = this.strategyAllowed && openStrategy;
       return;

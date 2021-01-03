@@ -3,7 +3,7 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { valueDefined } from "~/_utils/validator";
-import { IconLoader } from "~/components/icon-loader/icon-loader";
+import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
 
 import {
   DOM_ELEMENT_ID,

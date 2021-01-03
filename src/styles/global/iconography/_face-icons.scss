@@ -25,7 +25,12 @@
   content: fa-content($fa-var-meh-rolling-eyes);
 }
 
+.icon-grin-squint {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-grin-squint);
+}
+
 @mixin setFaceIcons($base-selector) {
-  $icon-types: "smile", "surprise", "lost", "winner", "rolling-eyes";
+  $icon-types: "smile", "surprise", "lost", "winner", "rolling-eyes", "grin-squint";
   @include setIdentifierIcons($base-selector, $icon-types);
 }

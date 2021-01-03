@@ -1,7 +1,7 @@
 "use strict";
 import { ElementGenerator } from "HTML_DOM_Manager";
 import { uniqueArray, arrayDifference } from "~/_utils/utils";
-import { TileGenerator } from "./tile-generator";
+import { TileGenerator } from "./tile/tile-generator";
 
 export class MineField {
   #_levelSettings;
@@ -149,13 +149,16 @@ export class MineField {
   #getBlankAndEmptyNeighbors(referenceTile, currentEmptyTiles) {
     const blankTiles = [];
     const emptyTiles = [];
+ 
     const currentEmptyTilesPositions = this.getTilesByPositions(
       currentEmptyTiles,
     );
+
     const neighborsPositions = arrayDifference(
       referenceTile.neighbors,
       currentEmptyTilesPositions,
     );
+    
     let unrevealedNeighbors = this.getTilesByPositions(neighborsPositions);
     unrevealedNeighbors = this.getNonMineTiles(unrevealedNeighbors);
     unrevealedNeighbors = this.getNonFlaggedTiles(unrevealedNeighbors);

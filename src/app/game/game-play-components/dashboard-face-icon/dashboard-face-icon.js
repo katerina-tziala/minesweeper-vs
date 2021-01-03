@@ -82,4 +82,10 @@ export class DashboardFaceIcon {
     return this.#setIconStyles(iconStyles);
   }
 
+  setGrintSquintFace(colorType) {
+    const iconStyles = this.#getIconStyles(DOM_ELEMENT_CLASS.grinSquint, colorType);
+    return this.#setIconStyles(iconStyles);
+  }
+
+  
 }

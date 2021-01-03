@@ -75,7 +75,10 @@ export class Game extends AppModel {
   }
 
   get isDraw() {
-    return this.players.every(player => player.lostGame) || this.players.every(player => !player.lostGame);
+    if (this.players.length === 2) {
+      return this.players.every(player => player.lostGame) || this.players.every(player => !player.lostGame);
+    }
+    return false;
   }
 
   get bothPlayersEntered() {

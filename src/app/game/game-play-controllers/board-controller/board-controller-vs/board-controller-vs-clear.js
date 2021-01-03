@@ -9,6 +9,8 @@ export class BoardControllerVSClear extends BoardControllerVS {
 
   constructor(gameId, params, minefieldActions, onRoundTimerEnd) {
     super(gameId, params, minefieldActions, onRoundTimerEnd);
+
+    
     this.#StrategyController = new StrategyController(this.optionsSettings);
     this.#setSneakPeekController();
   }
@@ -26,8 +28,8 @@ export class BoardControllerVSClear extends BoardControllerVS {
     return this.#StrategyController.strategyAllowed;
   }
 
-  get hiddenStrategy() {
-    return this.#StrategyController.hiddenStrategy;
+  get openStrategy() {
+    return this.#StrategyController.openStrategy;
   }
 
   get hiddenStrategy() {
@@ -89,8 +91,11 @@ export class BoardControllerVSClear extends BoardControllerVS {
 
   get roundUpdates() {
     const updates = super.roundUpdates;
-    updates.unshift(this.#hideOpponentStrategy());
     updates.unshift(this.#updateSneakPeekToggleBasedOnRoundTimer());
+    console.log(this.#StrategyController);
+    if (this.hiddenStrategy) {
+      updates.unshift(this.#hideOpponentStrategy());
+    }
     return updates;
   }
 
@@ -198,8 +203,8 @@ export class BoardControllerVSClear extends BoardControllerVS {
     this.submitTileRevealing(revealedTiles);
   }
 
-  setBoardOnGameOver() {
-    super.setBoardOnGameOver(this.playerOnTurn);
+  setBoardOnGameOver(isDraw) {
+    super.setBoardOnGameOver(isDraw);
     console.log("check double flags");
     console.log(this.playerWaiting.strategyPositions);
   }

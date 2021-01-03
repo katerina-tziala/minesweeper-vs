@@ -42,7 +42,7 @@ export class GameParallelViewHelper {
 
   static hideGameContainer(game) {
     return GameParallelViewHelper.gameContainer(game).then(gameContainer => {
-      ElementHandler.display(gameContainer);
+      ElementHandler.hide(gameContainer);
       return;
     });
   }

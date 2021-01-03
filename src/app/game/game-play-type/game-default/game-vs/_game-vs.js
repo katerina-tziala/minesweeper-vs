@@ -183,8 +183,8 @@ export class GameVS extends GameDefault {
 
   #displayReadyMessageAndWait() {
     const updates = [
-      this.gameBoard.displayFreezerLoader(this.opponent),
-      this.messageController.displayReadyMessage(this.playerOnTurn)
+      this.displayMinefieldLoader(this.opponent),
+      this.messageController.displayReadyMessage(this.opponent)
     ];
     return Promise.all(updates);
   }

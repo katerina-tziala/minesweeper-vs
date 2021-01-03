@@ -32,20 +32,20 @@
 
     &.tile-button--flagged {
       &::before {
-        @include theming.setTextShadow($theme);
+        // @include theming.setTextShadow($theme);
       }
     }
 
     &.tile-button--marked {
       &::after {
-        @include theming.setTextShadow($theme);
+        // @include theming.setTextShadow($theme);
       }
     }
   }
 
   ._wrong-flag-hint {
     color: theming.getThemeColor($theme, "error-primary");
-    @include theming.setTextShadow($theme);
+    // @include theming.setTextShadow($theme);
   }
 }
 

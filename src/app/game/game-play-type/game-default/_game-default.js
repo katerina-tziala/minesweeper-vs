@@ -7,18 +7,11 @@ import { Game } from "../_game";
 export class GameDefault extends Game {
   #MinesweeperBoard;
 
-  //round statistics
   constructor(id, params, player) {
     super(id, params);
     this.player = player;
     this.players = [this.player];
 
-
-    this.optionsSettings.openStrategy = false;
-
-    this.optionsSettings.sneakPeek = true;
-
-    this.optionsSettings.sneakPeekDuration = 3;
 
     this.levelSettings.minesPositions = [
       0,
@@ -127,6 +120,10 @@ export class GameDefault extends Game {
     this.gameBoard.enableMinefield();
   }
 
+  displayMinefieldLoader(player = this.player) {
+    return this.gameBoard.displayFreezerLoader(player);
+  }
+
   get freezerId() {
     return this.gameBoard.freezerId;
   }
@@ -147,10 +144,11 @@ export class GameDefault extends Game {
   onGameOver(boardTiles = []) {
     this.setStatisticsOnRoundEnd(boardTiles);
     this.setGameBoardOnGameOver();
+    console.log(this.isDraw);
     //check for draw for board face
   }
 
-  setGameBoardOnGameOver() {
-    this.gameBoard.setBoardOnGameOver(this.playerOnTurn);
+  setGameBoardOnGameOver(isDraw = this.isDraw) {
+    this.gameBoard.setBoardOnGameOver(isDraw);
   }
 }

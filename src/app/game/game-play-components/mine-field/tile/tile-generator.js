@@ -1,33 +1,25 @@
 "use strict";
 
 import { sortNumbersArrayAsc, clone } from "~/_utils/utils";
-import { Tile } from "./tile/tile";
+import { Tile } from "./tile";
 
 export class TileGenerator {
-  #_rows;
-  #_columns;
-  #minesPositions;
+  #_levelSettings;
 
   constructor(levelSettings) {
-    this.#rows = levelSettings.rows;
-    this.#columns = levelSettings.columns;
-    this.#minesPositions = levelSettings.minesPositions;
-  }
-
-  set #rows(value) {
-    this.#_rows = value;
+    this.#_levelSettings = levelSettings;
   }
 
   get #rows() {
-    return this.#_rows;
-  }
-
-  set #columns(value) {
-    this.#_columns = value;
+    return this.#_levelSettings.rows;
   }
 
   get #columns() {
-    return this.#_columns;
+    return this.#_levelSettings.columns;
+  }
+
+  get #minesPositions() {
+    return this.#_levelSettings.minesPositions;
   }
 
   get #maxColumnPosition() {
@@ -38,73 +30,69 @@ export class TileGenerator {
     return this.#rows - 1;
   }
 
-  generateTile(gameId, rowIndex, columnIndex) {
-    return new Tile(gameId, this.getTileParams(rowIndex, columnIndex));
-  }
-
-  getTileParams(row, column) {
+  #getTileParams(row, column) {
     const coordinates = { row, column };
-    const position = this.getTilePosition(coordinates);
-    const params = this.getTileContentAndNeighbors(coordinates, position);
+    const position = this.#getTilePosition(coordinates);
+    const params = this.#getTileContentAndNeighbors(coordinates, position);
     params.position = position;
     return params;
   }
 
-  getTilePosition(coordinates) {
+  #getTilePosition(coordinates) {
     return coordinates.row * this.#columns + coordinates.column;
   }
 
-  getTileContentAndNeighbors(coordinates, position) {
+  #getTileContentAndNeighbors(coordinates, position) {
     let content;
     let neighbors = [];
-    if (this.positionInMinesList(position)) {
+    if (this.#positionInMinesList(position)) {
       content = "mine";
     } else {
-      const gridPositionsAround = this.getGridPositions(coordinates).filter(
+      const gridPositionsAround = this.#getGridPositions(coordinates).filter(
         (aroundPorition) => aroundPorition !== position,
       );
-      const minesAround = this.getMinesAround(gridPositionsAround);
+      const minesAround = this.#getMinesAround(gridPositionsAround);
       neighbors = gridPositionsAround;
       content = minesAround.length.toString();
     }
     return { content, neighbors };
   }
 
-  positionInMinesList(position) {
+  #positionInMinesList(position) {
     return this.#minesPositions.includes(position);
   }
 
-  getGridPositions(coordinates) {
-    const tilesPositions = this.getGridCoordinates(
+  #getGridPositions(coordinates) {
+    const tilesPositions = this.#getGridCoordinates(
       coordinates,
-    ).map((tileCoordinates) => this.getTilePosition(tileCoordinates));
+    ).map((tileCoordinates) => this.#getTilePosition(tileCoordinates));
     return sortNumbersArrayAsc(tilesPositions);
   }
 
-  getGridCoordinates(referenceCoordinates) {
+  #getGridCoordinates(referenceCoordinates) {
     let gridCoordinates = [];
-    this.getGridCoordinatesInRow(referenceCoordinates).forEach(
+    this.#getGridCoordinatesInRow(referenceCoordinates).forEach(
       (rowCoordinates) => {
         gridCoordinates = gridCoordinates.concat(
-          this.getGridCoordinatesInColumn(rowCoordinates),
+          this.#getGridCoordinatesInColumn(rowCoordinates),
         );
       },
     );
     return gridCoordinates;
   }
 
-  getGridCoordinatesInRow(coordinates) {
+  #getGridCoordinatesInRow(coordinates) {
     let rowCoordinates = [clone(coordinates)];
     rowCoordinates = rowCoordinates.concat(
-      this.getCoordinatesInSameRow(coordinates, 1),
+      this.#getCoordinatesInSameRow(coordinates, 1),
     );
     rowCoordinates = rowCoordinates.concat(
-      this.getCoordinatesInSameRow(coordinates, -1),
+      this.#getCoordinatesInSameRow(coordinates, -1),
     );
     return rowCoordinates;
   }
 
-  getCoordinatesInSameRow(coordinates, columnStep) {
+  #getCoordinatesInSameRow(coordinates, columnStep) {
     const newCoordinates = clone(coordinates);
     newCoordinates.column = newCoordinates.column + columnStep;
     return 0 <= newCoordinates.column &&
@@ -113,18 +101,18 @@ export class TileGenerator {
       : [];
   }
 
-  getGridCoordinatesInColumn(coordinates) {
+  #getGridCoordinatesInColumn(coordinates) {
     let columnCoordinates = [clone(coordinates)];
     columnCoordinates = columnCoordinates.concat(
-      this.getCoordinatesInSameColumn(coordinates, 1),
+      this.#getCoordinatesInSameColumn(coordinates, 1),
     );
     columnCoordinates = columnCoordinates.concat(
-      this.getCoordinatesInSameColumn(coordinates, -1),
+      this.#getCoordinatesInSameColumn(coordinates, -1),
     );
     return columnCoordinates;
   }
 
-  getCoordinatesInSameColumn(coordinates, rowStep) {
+  #getCoordinatesInSameColumn(coordinates, rowStep) {
     const newCoordinates = clone(coordinates);
     newCoordinates.row = newCoordinates.row + rowStep;
     return 0 <= newCoordinates.row && newCoordinates.row <= this.#maxRowPosition
@@ -132,9 +120,14 @@ export class TileGenerator {
       : [];
   }
 
-  getMinesAround(positionsToCheck) {
+  #getMinesAround(positionsToCheck) {
     return positionsToCheck.filter((position) =>
-      this.positionInMinesList(position),
+      this.#positionInMinesList(position),
     );
   }
+
+  generateTile(gameId, rowIndex, columnIndex) {
+    return new Tile(gameId, this.#getTileParams(rowIndex, columnIndex));
+  }
+
 }
