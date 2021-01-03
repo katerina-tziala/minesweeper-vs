@@ -1,7 +1,7 @@
 "use strict";
 import { GameOverType, GameVSMode, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
-import { GameMessageController } from "GamePlayControllers";
+import { GameMessageController, MinesweeperBoardController } from "GamePlayControllers";
 
 export class GameSinglePlayer extends GameDefault {
   #MessageController;
@@ -9,9 +9,18 @@ export class GameSinglePlayer extends GameDefault {
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
+    this.#initBoardController(params);
     this.#setMessageController();
   }
 
+  #initBoardController(params) {
+    this.gameBoardController =  new MinesweeperBoardController(this.id,
+      params,
+      this.handleTileRevealing.bind(this),
+      this.handleTileMarking.bind(this),
+      this.onRoundTimerEnd.bind(this));
+  }
+  
   #setMessageController() {
     if (!this.isParallel) {
       this.#MessageController = new GameMessageController();
@@ -69,6 +78,7 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   start() {
+    this.gameBoard.playerOnTurn = this.player;
     this.onAfterViewInit.then(() => {
       return this.#MessageController.displayStartMessage(this.playerOnTurn)
     }).then(() => {
@@ -180,11 +190,7 @@ export class GameSinglePlayer extends GameDefault {
     this.enableMinefield();
   }
 
-  enableMinefield() {
-    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
-      super.enableMinefield();
-    }
-  }
+
 
   submitResult() {
     if (!this.#submissionAllowed) {

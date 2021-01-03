@@ -8,6 +8,7 @@ export class OptionsSettings extends AppModel {
     super();
     this.marks = false;
     this.wrongFlagHint = false;
+    this.tileFlagging = true;
     this.propertiesVS = vsMode;
   }
 
@@ -19,8 +20,6 @@ export class OptionsSettings extends AppModel {
   }
 
   setModePropertiesVS() {
-    this.tileFlagging = true;
-
     switch (this.vsMode) {
       case GameVSMode.Clear:
         this.unlimitedFlags = true;

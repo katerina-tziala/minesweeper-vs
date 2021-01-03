@@ -7,6 +7,7 @@ import { GameOverType, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
 
 import {
+  MinesweeperVSBoardController,
   VSDashboardController,
   GameMessageVSController as MessageController
 } from "GamePlayControllers";
@@ -18,8 +19,17 @@ export class GameVS extends GameDefault {
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
     this.init();
+    this.#initBoardController(params);
     this.#setDashBoard();
     this.#MessageController = new MessageController(this.optionsSettings.vsMode);
+  }
+
+  #initBoardController(params) {
+    this.gameBoardController =  new MinesweeperVSBoardController(this.id,
+      params,
+      this.handleTileRevealing.bind(this),
+      this.handleTileMarking.bind(this),
+      this.onRoundTimerEnd.bind(this));
   }
 
   #setDashBoard() {
@@ -68,14 +78,12 @@ export class GameVS extends GameDefault {
 
   get roundViewUpdates() {
     const viewUpdates = [this.vsDashboard.setCardOnTurn(this.players)];
-    viewUpdates.push(this.gameBoard.initBoardOnRound(this.playerOnTurn));
+    viewUpdates.push(this.gameBoard.initBoardOnRound(this.playerOnTurn, this.playerWaiting));
     return viewUpdates;
   }
 
   get onAfterRoundViewInit() {
-    const viewUpdates = [this.vsDashboard.setCardOnTurn(this.players)];
-    viewUpdates.push(this.gameBoard.initBoardOnRound(this.playerOnTurn));
-    return Promise.all(viewUpdates);
+    return Promise.all(this.roundViewUpdates);
   }
 
   init() {
@@ -99,13 +107,6 @@ export class GameVS extends GameDefault {
     ElementHandler.addInChildNodes(gameContainer, vsDashboard, 0);
     gameContainer.append(this.#MessageController.generateView());
     return gameContainer;
-  }
-
-  flaggingAllowed(tile, player = this.playerOnTurn) {
-    if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
-      return true;
-    }
-    return false;
   }
 
   updateStateOnFlaggedTile(tile) {

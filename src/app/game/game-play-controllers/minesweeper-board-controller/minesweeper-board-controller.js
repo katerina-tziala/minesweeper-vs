@@ -10,10 +10,11 @@ import {
 
 import { GameAction } from "GameEnums";
 import { GameTimer } from "GamePlayControllers";
+
 export class MinesweeperBoardController {
   #_faceColorType;
   #_levelSettings;
-  #_wrongFlagHint;
+  #_playerOnTurn;
   // FUNCTIONS
   #onTileRevealing;
   #onTileMarking;
@@ -26,14 +27,31 @@ export class MinesweeperBoardController {
   #FaceIcon;
   #GameTimer;
 
+
   constructor(gameId, params, onTileRevealing, onTileMarking, onRoundTimerEnd) {
     this.#_levelSettings = params.levelSettings;
-    this.#_wrongFlagHint = params.optionsSettings.wrongFlagHint;
+    this.optionsSettings = params.optionsSettings;
     this.#onTileRevealing = onTileRevealing;
     this.#onTileMarking = onTileMarking;
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
     this.#initMinefieldHandlers(gameId);
     this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
+  }
+
+  set playerOnTurn(player) {
+    return this.#_playerOnTurn = player;
+  }
+
+  get playerOnTurn() {
+    return this.#_playerOnTurn;
+  }
+
+  get wrongFlagHint() {
+    return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
+  }
+
+  get allowMarks() {
+    return this.optionsSettings ? this.optionsSettings.marks : false;
   }
 
   #initMinefieldHandlers(gameId) {
@@ -88,11 +106,6 @@ export class MinesweeperBoardController {
     });
   }
 
-
-
-
-
-
   #onActiveTileChange(activeTileOnBoard) {
     activeTileOnBoard ? this.setSurpriseFace() : this.setSmileFace();
   }
@@ -125,8 +138,16 @@ export class MinesweeperBoardController {
   }
 
   // TIMER
+  get gameTimer() {
+    return this.#GameTimer;
+  }
+
   get roundTimer() {
-    return this.#GameTimer.roundTimer;
+    return this.gameTimer.roundTimer;
+  }
+
+  get timerValue() {
+    return this.gameTimer.value;
   }
 
   startRoundTimer() {
@@ -137,32 +158,24 @@ export class MinesweeperBoardController {
 
   startGameTimer() {
     if (!this.roundTimer) {
-      this.#GameTimer.start(1);
+      this.gameTimer.start(1);
     }
   }
 
   startTimer() {
-    this.#GameTimer.start();
+    this.gameTimer.start();
   }
 
   stopTimer() {
-    this.#GameTimer.stop();
+    this.gameTimer.stop();
   }
 
   continueTimer() {
-    this.#GameTimer.continue();
+    this.gameTimer.continue();
   }
 
   timerRunning() {
-    return this.#GameTimer.timerRunning;
-  }
-
-  setNotificationUpdate(onPointNotify, notificationPoint) {
-    return this.#GameTimer.setNotificationUpdate(onPointNotify, notificationPoint);
-  }
-
-  get timerValue() {
-    return this.#GameTimer.timerValue;
+    return this.gameTimer.timerRunning;
   }
 
   // MINEFIELD
@@ -170,15 +183,12 @@ export class MinesweeperBoardController {
     return this.#MineField;
   }
 
-
-
   displayFreezerLoader(player) {
     return this.#MinefieldFreezer.displayLoader(player.colorType);
   }
 
-
   get freezerId() {
-    // return this.mineField.freezerId;
+    return this.#MinefieldFreezer.freezerId;
   }
 
   disableMinefield() {
@@ -186,19 +196,22 @@ export class MinesweeperBoardController {
   }
 
   enableMinefield() {
-    this.#MinefieldFreezer.hide();
+    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
+      this.#MinefieldFreezer.hide();
+    }
   }
-
-
 
   revealMinefield() {
-    //this.mineField.revealField();
+    this.mineField.revealField();
+    this.#MinefieldFreezer.display();
   }
-
-
 
   getRevealedTilesResult(tile, playerId) {
     return this.mineField.getRevealedTilesResult(tile, playerId);
+  }
+
+  getTilesPositions(tiles) {
+    return this.mineField.getTilesPositions(tiles);
   }
 
   get minefieldCleared() {
@@ -219,6 +232,47 @@ export class MinesweeperBoardController {
 
   get numberOfFlags() {
     return this.mineField.numberOfFlags;
+  }
+
+  revealingAllowed(tile) {
+    return tile.isUntouched || tile.isMarked;
+  }
+  
+  flaggingAllowed(tile, player = this.playerOnTurn) {
+    if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
+      return true;
+    }
+    return false;
+  }
+
+  markingAllowed(tile, player = this.playerOnTurn) {
+    return tile.isFlaggedBy(player.id) && this.allowMarks;
+  }
+
+  resetingAllowed(tile) {
+    if (tile.isMarkedBy(this.playerOnTurn.id)) {
+      return true;
+    }
+    if (tile.isFlaggedBy(this.playerOnTurn.id) && !this.allowMarks) {
+      return true;
+    }
+
+    return false;
+  }
+
+  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
+    player.flaggedTile(tile.position, tile.isWronglyFlagged);
+  }
+
+  setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.setMark(player.id, player.colorType);
+    player.markedTile = tile.position;
+  }
+
+  resetMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.resetState();
+    player.resetedTile = tile.position;
   }
 
   // FACE ICON
@@ -242,7 +296,7 @@ export class MinesweeperBoardController {
 
   // MINES COUNTER
   updateMinesCounter() {
-    const minesToDetect = this.#_wrongFlagHint ? this.numberOfDetectedMines : this.numberOfFlags;
+    const minesToDetect = this.wrongFlagHint ? this.numberOfDetectedMines : this.numberOfFlags;
     this.#MineCounter.updateValue(this.#_levelSettings.numberOfMines - minesToDetect);
   }
 
@@ -257,36 +311,11 @@ export class MinesweeperBoardController {
     this.enableMinefield();
   }
 
-  onGameOver(playerOnTurn) {
+  setBoardOnGameOver(playerOnTurn) {
     this.pause();
     this.updateMinesCounter();
     this.revealMinefield();
     this.#setFaceIconOnGameEnd(playerOnTurn);
   }
 
-  initBoardOnRound(player) {
-    this.faceColorType = player.colorType;
-    return this.setSmileFace().then(() => {
-      this.updateMinesCounter();
-      return;
-    });
-  }
-
-  setBoardOnRoundEnd() {
-    this.updateMinesCounter();
-    if (this.roundTimer) {
-      this.pause();
-    }
-  }
-
-  setDashboardOnSneakPeek(opponentColorType) {
-    this.updateMinesCounter();
-    this.setRollingEyesFace(opponentColorType);
-  }
-
-  setDashboardAfterSneakPeek() {
-    this.setSmileFace();
-    this.updateMinesCounter();
-    this.enableMinefield();
-  }
 }

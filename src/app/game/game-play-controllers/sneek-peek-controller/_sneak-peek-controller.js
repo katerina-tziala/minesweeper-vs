@@ -165,4 +165,11 @@ export class SneakPeekController {
     this.#peekToggle.peeking = state;
   }
 
+  initPeekToggle() {
+    if (this.allowed) {
+      this.setTogglePeekingState(false);
+      return this.#peekToggle.setState(true);
+    }
+    return Promise.resolve();
+  }
 }

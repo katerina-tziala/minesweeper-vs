@@ -1,7 +1,7 @@
 "use strict";
 
 import { GameOverType } from "GameEnums";
-import { MinesweeperBoardController } from "GamePlayControllers";
+
 import { Game } from "../_game";
 
 export class GameDefault extends Game {
@@ -13,7 +13,14 @@ export class GameDefault extends Game {
     this.player = player;
     this.players = [this.player];
 
- this.levelSettings.minesPositions = [
+
+    this.optionsSettings.openStrategy = false;
+
+    this.optionsSettings.sneakPeek = true;
+
+    this.optionsSettings.sneakPeekDuration = 3;
+
+    this.levelSettings.minesPositions = [
       0,
       1,
       2,
@@ -32,15 +39,24 @@ export class GameDefault extends Game {
       80,
     ];
 
-    this.#gameBoardController = params;
   }
 
-  set #gameBoardController(params) {
-    this.#MinesweeperBoard = new MinesweeperBoardController(this.id,
-      params,
-      this.handleTileRevealing.bind(this),
-      this.handleTileMarking.bind(this),
-      this.onRoundTimerEnd.bind(this));
+  // get minefieldActions() {
+  //   return {
+  //     onTileDetonation: this.onTileDetonation.bind(this),
+  //     onRevealedTiles: this.onRevealedTiles.bind(this),
+  //     onFlaggedTile: this.onFlaggedTile.bind(this),
+  //     onMarkedTile: this.onMarkedTile.bind(this),
+  //     onResetedTile: this.onResetedTile.bind(this),
+  //   }
+  // }
+
+  set gameBoardController(boardController) {
+    this.#MinesweeperBoard = boardController;
+  }
+
+  get gameBoard() {
+    return this.#MinesweeperBoard;
   }
 
   get playerOnTurn() {
@@ -52,14 +68,6 @@ export class GameDefault extends Game {
       return this.playerOnTurn.colorType;
     }
     return undefined;
-  }
-
-  get gameBoard() {
-    return this.#MinesweeperBoard;
-  }
-
-  get allowMarks() {
-    return this.optionsSettings ? this.optionsSettings.marks : false;
   }
 
   generateView() {
@@ -98,15 +106,13 @@ export class GameDefault extends Game {
     if (!this.gameActionAllowed) {
       return;
     }
+  
     if (this.revealingAllowed(tile)) {
       this.revealMinefieldArea(tile);
       return;
     }
+  
     this.enableMinefield();
-  }
-
-  revealingAllowed(tile) {
-    return tile.isUntouched || tile.isMarked;
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
@@ -120,7 +126,6 @@ export class GameDefault extends Game {
   }
 
   updateStateOnTileDetonation(revealedTiles, player = this.playerOnTurn) {
-    this.pause();
     this.setGameEnd(GameOverType.DetonatedMine);
     player.detonatedTile = revealedTiles[0].position;
   }
@@ -130,7 +135,7 @@ export class GameDefault extends Game {
   }
 
   getTilesPositions(tiles) {
-    return tiles.map((tile) => tile.position);
+    return this.gameBoard.getTilesPositions(tiles);
   }
 
   // HANDLE TILE MARKING
@@ -157,26 +162,20 @@ export class GameDefault extends Game {
     this.enableMinefield();
   }
 
-  flaggingAllowed(tile, player = this.playerOnTurn) {
-    if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
-      return true;
-    }
-    return false;
+  revealingAllowed(tile) {
+    return this.gameBoard.revealingAllowed(tile);
   }
 
-  markingAllowed(tile, player = this.playerOnTurn) {
-    return tile.isFlaggedBy(player.id) && this.allowMarks;
+  flaggingAllowed(tile) {
+    return this.gameBoard.flaggingAllowed(tile);
+  }
+
+  markingAllowed(tile) {
+    return this.gameBoard.markingAllowed(tile);
   }
 
   resetingAllowed(tile) {
-    if (tile.isMarkedBy(this.playerOnTurn.id)) {
-      return true;
-    }
-    if (tile.isFlaggedBy(this.playerOnTurn.id) && !this.allowMarks) {
-      return true;
-    }
-
-    return false;
+    return this.gameBoard.resetingAllowed(tile);
   }
 
   updateStateOnFlaggedTile(tile) {
@@ -191,19 +190,16 @@ export class GameDefault extends Game {
     return;
   }
 
-  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
-    player.flaggedTile(tile.position, tile.isWronglyFlagged);
+  setFlagOnMinefieldTile(tile) {
+    this.gameBoard.setFlagOnMinefieldTile(tile);
   }
 
-  setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.setMark(player.id, player.colorType);
-    this.playerOnTurn.markedTile = tile.position;
+  setMarkOnMinefieldTile(tile) {
+    this.gameBoard.setMarkOnMinefieldTile(tile);
   }
 
-  resetMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.resetState();
-    player.resetedTile = tile.position;
+  resetMinefieldTile(tile) {
+    this.gameBoard.resetMinefieldTile(tile);
   }
 
   // MINEFIELD
@@ -213,10 +209,6 @@ export class GameDefault extends Game {
 
   enableMinefield() {
     this.gameBoard.enableMinefield();
-  }
-
-  revealMinefield() {
-    this.gameBoard.revealMinefield();
   }
 
   get freezerId() {
@@ -255,6 +247,6 @@ export class GameDefault extends Game {
   }
 
   setGameBoardOnGameOver() {
-    this.gameBoard.onGameOver(this.playerOnTurn);
+    this.gameBoard.setBoardOnGameOver(this.playerOnTurn);
   }
 }
