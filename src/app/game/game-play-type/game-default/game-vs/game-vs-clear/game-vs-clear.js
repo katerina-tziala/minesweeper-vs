@@ -2,47 +2,47 @@
 import { GameOverType } from "GameEnums";
 
 import { GameVS } from "../_game-vs";
-
+import {
+  BoardControllerVSClear as BoardController
+} from "GamePlayControllers";
 export class GameVSClear extends GameVS {
 
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
+    this.#initBoardController(params);
+  }
+
+  #initBoardController(params) {
+    this.gameBoardController = new BoardController(this.id,
+      params,
+      this.minefieldActions,
+      this.onRoundTimerEnd.bind(this));
   }
 
   get goalTargetNumber() {
     return this.levelSettings.numberOfEmptyTiles;
   }
 
-  revealingAllowed(tile) {
-    if (this.openStrategy) {
-      return true;
-    }
-    return super.revealingAllowed(tile);
+  get minefieldActions() {
+    const actions = super.minefieldActions;
+    actions.onFlaggedTile = this.onPlayerAction.bind(this);
+    actions.onMarkedTile = this.onPlayerAction.bind(this);
+    actions.onResetedTile = this.onPlayerAction.bind(this);
+    return actions;
   }
 
-  updateStateOnRevealedTiles(revealedTiles) {
-    const revealedPositions = this.getTilesPositions(revealedTiles);
-    super.updateStateOnRevealedTiles(revealedTiles);
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    const playerFlagsAffected = this.playerOnTurn.inStrategyPositions(
-      revealedPositions,
-    );
+  onTileDetonation(revealedTiles) {
+    this.setGameEnd(GameOverType.DetonatedMine);
+    this.updatedCards([revealedTiles[0].position]).then(() => {
+      this.onGameOver(revealedTiles);
+    });
+  }
 
-    if (this.gameBoard.minefieldCleared) {
+  onRevealedTiles(revealedTiles, positions, cleared) {
+    if (cleared) {
       this.setGameEnd(GameOverType.Cleared);
     }
-
-    const playerCardsUpdates = [
-      this.updatedPlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
-    ];
-
-    if (this.#playerStrategyAffected(revealedPositions)) {
-      playerCardsUpdates.push(
-        this.updatedPlayerCard(false, false, true, this.playerWaiting),
-      );
-    }
-
-    Promise.all(playerCardsUpdates).then(() => {
+    this.updatedCards(positions).then(() => {
       if (this.isOver) {
         this.onGameOver(revealedTiles);
         return;
@@ -51,73 +51,10 @@ export class GameVSClear extends GameVS {
     });
   }
 
-  updateStateOnTileDetonation(revealedTiles) {
-    super.updateStateOnTileDetonation(revealedTiles);
-    const revealedPositions = this.getTilesPositions(revealedTiles);
-
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    const playerFlagsAffected = this.playerOnTurn.inStrategyPositions(
-      revealedPositions,
-    );
-
-    const playerCardsUpdates = [
-      this.updatedPlayerCard(missedTurnsUpdated, true, playerFlagsAffected),
-    ];
-
-    if (this.#playerStrategyAffected(revealedPositions)) {
-      playerCardsUpdates.push(
-        this.updatedPlayerCard(false, false, true, this.playerWaiting),
-      );
-    }
-    Promise.all(playerCardsUpdates).then(() => {
-      this.onGameOver(revealedTiles);
-    });
-  }
-
-  handleTileMarking(tile) {
-    if (!this.gameActionAllowed) {
-      return;
-    }
-  
-    if (!this.strategyAllowed) {
-      this.revealMinefieldArea(tile);
-      return;
-    }
-  
-    super.handleTileMarking(tile);
-  }
-
-  updateStateOnFlaggedTile(tile) {
-    this.setFlagOnMinefieldTile(tile);
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatedPlayerCard(missedTurnsUpdated, false, true).then(() => {
+  onPlayerAction(tile) {
+    this.updatedPlayerOnTurnCardAfterAction().then(() => {
       this.onPlayerMoveEnd([tile]);
     });
-  }
-
-  updateStateOnMarkedTile(tile) {
-    this.setMarkOnMinefieldTile(tile);
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatedPlayerCard(missedTurnsUpdated, false, true).then(() => {
-      this.onPlayerMoveEnd([tile]);
-    });
-  }
-
-  updateStateOnResetedTile(tile) {
-    this.resetMinefieldTile(tile);
-    const missedTurnsUpdated = this.playerMissedTurnsReseted();
-    this.updatedPlayerCard(missedTurnsUpdated, false, true).then(() => {
-      this.onPlayerMoveEnd([tile]);
-    });
-  }
-
-  // STRATEGY
-  get strategyAllowed() {
-    return this.gameBoard.strategyAllowed;
-  }
-
-  get openStrategy() {
-    return this.gameBoard.openStrategy;
   }
 
   get hiddenStrategy() {
@@ -133,21 +70,9 @@ export class GameVSClear extends GameVS {
     return false;
   }
 
-
-  /* UPDATE PLAYER CARD */
-  updatedPlayerCard(turnsUpdate = false, goalUpdate = false, flagsUpdate = false) {
-    const params = {
-      turnsUpdate: turnsUpdate,
-      flagsUpdate: flagsUpdate,
-      goalUpdate: goalUpdate
-    };
-    return super.updatedPlayerCard(params);
-  }
-
   onGamePlayStart() {
     console.log(this.levelSettings.minesPositions);
 
-    
     if (this.roundTimer) {
       this.setGameStart();
     }
@@ -172,13 +97,37 @@ export class GameVSClear extends GameVS {
     });
   }
 
-  onGameOver(boardTiles = []) {
-    super.onGameOver(boardTiles);
-    console.log("check double flags");
-    console.log(this.playerWaiting.strategyPositions);
+  /* UPDATE PLAYERS CARD */
+  updatedCards(positions) {
+    const playerCardsUpdates = [this.updatedPlayerOnTurnCardAfterAction(true)];
+
+    if (this.#playerStrategyAffected(positions)) {
+      playerCardsUpdates.push(
+        this.updatedOpponentCard(false, true),
+      );
+    }
+
+    return Promise.all(playerCardsUpdates);
   }
 
-  
+  updatedOpponentCard(goalUpdate = false, flagsUpdate = false) {
+    const params = {
+      turnsUpdate: false,
+      flagsUpdate: flagsUpdate,
+      goalUpdate: goalUpdate
+    };
+    return this.updatedPlayerCard(params, this.playerWaiting);
+  }
 
+  updatedPlayerOnTurnCardAfterAction(goalUpdate = false) {
+    const missedTurnsUpdated = this.playerMissedTurnsReseted();
 
+    const params = {
+      turnsUpdate: missedTurnsUpdated,
+      flagsUpdate: goalUpdate,
+      goalUpdate: true
+    };
+
+    return this.updatedPlayerCard(params);
+  }
 }

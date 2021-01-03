@@ -1,6 +1,6 @@
 "use strict";
 
-import { GameOverType } from "GameEnums";
+import { GameOverType, GameAction } from "GameEnums";
 
 import { Game } from "../_game";
 
@@ -41,15 +41,32 @@ export class GameDefault extends Game {
 
   }
 
-  // get minefieldActions() {
-  //   return {
-  //     onTileDetonation: this.onTileDetonation.bind(this),
-  //     onRevealedTiles: this.onRevealedTiles.bind(this),
-  //     onFlaggedTile: this.onFlaggedTile.bind(this),
-  //     onMarkedTile: this.onMarkedTile.bind(this),
-  //     onResetedTile: this.onResetedTile.bind(this),
-  //   }
-  // }
+  get minefieldActions() {
+    return {
+      onTileAction: this.#onTileAction.bind(this),
+      onTileDetonation: this.onTileDetonation.bind(this),
+      onRevealedTiles: this.onRevealedTiles.bind(this)
+    }
+  }
+
+  #onTileAction(action, tile) {
+    if (!this.gameActionAllowed) {
+      return;
+    }
+    if (action === GameAction.Mark) {
+      this.gameBoard.handleTileMarking(tile);
+      return;
+    }
+    this.gameBoard.handleTileRevealing(tile);
+  }
+
+  onTileDetonation() {
+    return;
+  }
+
+  onRevealedTiles() {
+    return;
+  }
 
   set gameBoardController(boardController) {
     this.#MinesweeperBoard = boardController;
@@ -101,107 +118,6 @@ export class GameDefault extends Game {
     return true;
   }
 
-  // HANDLE TILE REVEALING
-  handleTileRevealing(tile) {
-    if (!this.gameActionAllowed) {
-      return;
-    }
-  
-    if (this.revealingAllowed(tile)) {
-      this.revealMinefieldArea(tile);
-      return;
-    }
-  
-    this.enableMinefield();
-  }
-
-  revealMinefieldArea(tile, player = this.playerOnTurn) {
-    this.gameBoard.getRevealedTilesResult(tile, player.id).then(result => {
-      if (result.detonatedMine) {
-        this.updateStateOnTileDetonation(result.tiles);
-        return;
-      }
-      this.updateStateOnRevealedTiles(result.tiles);
-    });
-  }
-
-  updateStateOnTileDetonation(revealedTiles, player = this.playerOnTurn) {
-    this.setGameEnd(GameOverType.DetonatedMine);
-    player.detonatedTile = revealedTiles[0].position;
-  }
-
-  updateStateOnRevealedTiles(revealedTiles, player = this.playerOnTurn) {
-    player.revealedTiles = this.getTilesPositions(revealedTiles);
-  }
-
-  getTilesPositions(tiles) {
-    return this.gameBoard.getTilesPositions(tiles);
-  }
-
-  // HANDLE TILE MARKING
-  handleTileMarking(tile) {
-    if (!this.gameActionAllowed) {
-      return;
-    }
-    // set flag
-    if (this.flaggingAllowed(tile)) {
-      this.updateStateOnFlaggedTile(tile);
-      return;
-    }
-    // set mark
-    if (this.markingAllowed(tile)) {
-      this.updateStateOnMarkedTile(tile);
-      return;
-    }
-    // reset
-    if (this.resetingAllowed(tile)) {
-      this.updateStateOnResetedTile(tile);
-      return;
-    }
-
-    this.enableMinefield();
-  }
-
-  revealingAllowed(tile) {
-    return this.gameBoard.revealingAllowed(tile);
-  }
-
-  flaggingAllowed(tile) {
-    return this.gameBoard.flaggingAllowed(tile);
-  }
-
-  markingAllowed(tile) {
-    return this.gameBoard.markingAllowed(tile);
-  }
-
-  resetingAllowed(tile) {
-    return this.gameBoard.resetingAllowed(tile);
-  }
-
-  updateStateOnFlaggedTile(tile) {
-    return;
-  }
-
-  updateStateOnMarkedTile(tile) {
-    return;
-  }
-
-  updateStateOnResetedTile(tile) {
-    return;
-  }
-
-  setFlagOnMinefieldTile(tile) {
-    this.gameBoard.setFlagOnMinefieldTile(tile);
-  }
-
-  setMarkOnMinefieldTile(tile) {
-    this.gameBoard.setMarkOnMinefieldTile(tile);
-  }
-
-  resetMinefieldTile(tile) {
-    this.gameBoard.resetMinefieldTile(tile);
-  }
-
   // MINEFIELD
   disableMinefield() {
     this.gameBoard.disableMinefield();
@@ -215,20 +131,7 @@ export class GameDefault extends Game {
     return this.gameBoard.freezerId;
   }
 
-  // MINES COUNTER
-  updateMinesCounter() {
-    this.gameBoard.updateMinesCounter();
-  }
-
   // TIMER
-  continueTimer() {
-    this.gameBoard.continueTimer();
-  }
-
-  stopTimer() {
-    this.gameBoard.stopTimer();
-  }
-
   onRoundTimerEnd() {
     return;
   }
@@ -244,6 +147,7 @@ export class GameDefault extends Game {
   onGameOver(boardTiles = []) {
     this.setStatisticsOnRoundEnd(boardTiles);
     this.setGameBoardOnGameOver();
+    //check for draw for board face
   }
 
   setGameBoardOnGameOver() {

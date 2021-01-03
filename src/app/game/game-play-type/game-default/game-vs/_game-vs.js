@@ -7,7 +7,7 @@ import { GameOverType, GameSubmission } from "GameEnums";
 import { GameDefault } from "../_game-default";
 
 import {
-  MinesweeperVSBoardController,
+  // MinesweeperVSBoardController,
   VSDashboardController,
   GameMessageVSController as MessageController
 } from "GamePlayControllers";
@@ -19,17 +19,8 @@ export class GameVS extends GameDefault {
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
     this.init();
-    this.#initBoardController(params);
     this.#setDashBoard();
     this.#MessageController = new MessageController(this.optionsSettings.vsMode);
-  }
-
-  #initBoardController(params) {
-    this.gameBoardController =  new MinesweeperVSBoardController(this.id,
-      params,
-      this.handleTileRevealing.bind(this),
-      this.handleTileMarking.bind(this),
-      this.onRoundTimerEnd.bind(this));
   }
 
   #setDashBoard() {
@@ -243,7 +234,6 @@ export class GameVS extends GameDefault {
 
   /* HANDLE GAME STATE AFTER PLAYER ACTION */
   onPlayerMoveEnd(boardTiles = []) {
-    this.updateMinesCounter();
     this.roundTilesUpdate = boardTiles;
 
     if (this.isOnline) {

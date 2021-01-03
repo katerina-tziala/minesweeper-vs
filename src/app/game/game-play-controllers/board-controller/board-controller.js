@@ -8,16 +8,12 @@ import {
   Dashboard
 } from "GamePlayComponents";
 
-import { GameAction } from "GameEnums";
 import { GameTimer } from "GamePlayControllers";
 
-export class MinesweeperBoardController {
+export class BoardController {
   #_faceColorType;
   #_levelSettings;
   #_playerOnTurn;
-  // FUNCTIONS
-  #onTileRevealing;
-  #onTileMarking;
   // HANDLERS
   #MinesweeperBoard;
   #Dashboard;
@@ -27,12 +23,10 @@ export class MinesweeperBoardController {
   #FaceIcon;
   #GameTimer;
 
-
-  constructor(gameId, params, onTileRevealing, onTileMarking, onRoundTimerEnd) {
+  constructor(gameId, params, minefieldActions, onRoundTimerEnd) {
     this.#_levelSettings = params.levelSettings;
     this.optionsSettings = params.optionsSettings;
-    this.#onTileRevealing = onTileRevealing;
-    this.#onTileMarking = onTileMarking;
+    this.minefieldActions = minefieldActions;
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
     this.#initMinefieldHandlers(gameId);
     this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
@@ -111,12 +105,9 @@ export class MinesweeperBoardController {
   }
 
   #onTileAction(action, tile) {
-    this.disableMinefield();
-    if (action === GameAction.Mark) {
-      this.#onTileMarking(tile);
-      return;
+    if (this.minefieldActions.onTileAction) {
+      this.minefieldActions.onTileAction(action, tile);
     }
-    this.#onTileRevealing(tile);
   }
 
   generateView(actionsContainer) {
@@ -142,6 +133,10 @@ export class MinesweeperBoardController {
     return this.#GameTimer;
   }
 
+  get timerRunning() {
+    return this.gameTimer.timerRunning;
+  }
+
   get roundTimer() {
     return this.gameTimer.roundTimer;
   }
@@ -157,7 +152,7 @@ export class MinesweeperBoardController {
   }
 
   startGameTimer() {
-    if (!this.roundTimer) {
+    if (!this.roundTimer && !this.timerRunning) {
       this.gameTimer.start(1);
     }
   }
@@ -174,44 +169,10 @@ export class MinesweeperBoardController {
     this.gameTimer.continue();
   }
 
-  timerRunning() {
-    return this.gameTimer.timerRunning;
-  }
 
   // MINEFIELD
   get mineField() {
     return this.#MineField;
-  }
-
-  displayFreezerLoader(player) {
-    return this.#MinefieldFreezer.displayLoader(player.colorType);
-  }
-
-  get freezerId() {
-    return this.#MinefieldFreezer.freezerId;
-  }
-
-  disableMinefield() {
-    this.#MinefieldFreezer.display();
-  }
-
-  enableMinefield() {
-    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
-      this.#MinefieldFreezer.hide();
-    }
-  }
-
-  revealMinefield() {
-    this.mineField.revealField();
-    this.#MinefieldFreezer.display();
-  }
-
-  getRevealedTilesResult(tile, playerId) {
-    return this.mineField.getRevealedTilesResult(tile, playerId);
-  }
-
-  getTilesPositions(tiles) {
-    return this.mineField.getTilesPositions(tiles);
   }
 
   get minefieldCleared() {
@@ -234,10 +195,37 @@ export class MinesweeperBoardController {
     return this.mineField.numberOfFlags;
   }
 
+  get freezerId() {
+    return this.#MinefieldFreezer.freezerId;
+  }
+
+  displayFreezerLoader(player) {
+    return this.#MinefieldFreezer.displayLoader(player.colorType);
+  }
+
+  disableMinefield() {
+    this.#MinefieldFreezer.display();
+  }
+
+  enableMinefield() {
+    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
+      this.#MinefieldFreezer.hide();
+    }
+  }
+
+  revealMinefield() {
+    this.mineField.revealField();
+    this.#MinefieldFreezer.display();
+  }
+
+  getTilesPositions(tiles) {
+    return this.mineField.getTilesPositions(tiles);
+  }
+
   revealingAllowed(tile) {
     return tile.isUntouched || tile.isMarked;
   }
-  
+
   flaggingAllowed(tile, player = this.playerOnTurn) {
     if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
       return true;
@@ -249,15 +237,73 @@ export class MinesweeperBoardController {
     return tile.isFlaggedBy(player.id) && this.allowMarks;
   }
 
-  resetingAllowed(tile) {
+  resetingAllowed(tile, player = this.playerOnTurn) {
     if (tile.isMarkedBy(this.playerOnTurn.id)) {
       return true;
     }
-    if (tile.isFlaggedBy(this.playerOnTurn.id) && !this.allowMarks) {
+    if (tile.isFlaggedBy(player.id) && !this.allowMarks) {
       return true;
     }
 
     return false;
+  }
+
+  handleTileMarking(tile) {
+    this.disableMinefield();
+    // set flag
+    if (this.flaggingAllowed(tile)) {
+      this.onFlaggedTile(tile);
+      return;
+    }
+    // set mark
+    if (this.markingAllowed(tile)) {
+      this.onMarkedTile(tile);
+      return;
+    }
+    // reset
+    if (this.resetingAllowed(tile)) {
+      this.onResetedTile(tile);
+      return;
+    }
+
+    this.enableMinefield();
+  }
+
+  handleTileRevealing(tile) {
+    this.disableMinefield();
+
+    if (this.revealingAllowed(tile)) {
+      this.revealMinefieldArea(tile);
+      return;
+    }
+
+    this.enableMinefield();
+  }
+
+  revealMinefieldArea(tile, player = this.playerOnTurn) {
+    this.mineField.getRevealedTilesResult(tile, player.id).then(result => {
+      if (result.detonatedMine) {
+        this.onTileDetonation(result.tiles);
+        return;
+      }
+      this.onRevealedTiles(result.tiles);
+    });
+  }
+
+  onTileDetonation(boardTiles, player = this.playerOnTurn) {
+    this.pause();
+    player.detonatedTile = boardTiles[0].position;
+    if (this.minefieldActions.onTileDetonation) {
+      this.minefieldActions.onTileDetonation(boardTiles);
+    }
+  }
+
+  onRevealedTiles(boardTiles, player = this.playerOnTurn) {
+    const tilesPositions = this.getTilesPositions(boardTiles);
+    player.revealedTiles = tilesPositions;
+    if (this.minefieldActions.onRevealedTiles) {
+      this.minefieldActions.onRevealedTiles(boardTiles);
+    }
   }
 
   setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
@@ -265,14 +311,38 @@ export class MinesweeperBoardController {
     player.flaggedTile(tile.position, tile.isWronglyFlagged);
   }
 
-  setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.setMark(player.id, player.colorType);
-    player.markedTile = tile.position;
+  onFlaggedTile(tile) {
+    this.setFlagOnMinefieldTile(tile);
+    this.updateMinesCounter();
+    if (this.minefieldActions.onFlaggedTile) {
+      this.minefieldActions.onFlaggedTile(tile);
+    }
   }
 
   resetMinefieldTile(tile, player = this.playerOnTurn) {
     tile.resetState();
     player.resetedTile = tile.position;
+  }
+
+  onResetedTile(tile) {
+    this.resetMinefieldTile(tile);
+    this.updateMinesCounter();
+    if (this.minefieldActions.onResetedTile) {
+      this.minefieldActions.onResetedTile(tile);
+    }
+  }
+
+  setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
+    tile.setMark(player.id, player.colorType);
+    player.markedTile = tile.position;
+  }
+
+  onMarkedTile(tile) {
+    this.setMarkOnMinefieldTile(tile);
+    this.updateMinesCounter();
+    if (this.minefieldActions.onMarkedTile) {
+      this.minefieldActions.onMarkedTile(tile);
+    }
   }
 
   // FACE ICON
@@ -289,6 +359,7 @@ export class MinesweeperBoardController {
   }
 
   #setFaceIconOnGameEnd(playerOnTurn) {
+    //check for draw
     playerOnTurn.lostGame
       ? this.#FaceIcon.setLostFace(this.#faceColorType)
       : this.#FaceIcon.setWinnerFace(this.#faceColorType);

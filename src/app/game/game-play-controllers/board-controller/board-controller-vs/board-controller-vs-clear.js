@@ -1,25 +1,14 @@
 "use strict";
-import {
-  DigitalCounter,
-  DashboardFaceIcon,
-  MineField,
-  MinefieldFreezer,
-  MinesweeperBoard,
-  Dashboard
-} from "GamePlayComponents";
 
-import { GameAction } from "GameEnums";
-// import { GameTimer, StrategyController } from "GamePlayControllers";
-// import { MinesweeperBoardController } from "./minesweeper-board-controller";
-import { MinesweeperBoardController, StrategyController, SneakPeekStrategyController } from "GamePlayControllers";
+import { StrategyController, SneakPeekStrategyController } from "GamePlayControllers";
+import { BoardControllerVS } from "./_board-controller-vs";
 
-export class MinesweeperVSBoardController extends MinesweeperBoardController {
-  #playerWaiting;
+export class BoardControllerVSClear extends BoardControllerVS {
   #SneakPeekController;
   #StrategyController;
 
-  constructor(gameId, params, boardUpdatesHandlers, onRoundTimerEnd) {
-    super(gameId, params, boardUpdatesHandlers, onRoundTimerEnd)
+  constructor(gameId, params, minefieldActions, onRoundTimerEnd) {
+    super(gameId, params, minefieldActions, onRoundTimerEnd);
     this.#StrategyController = new StrategyController(this.optionsSettings);
     this.#setSneakPeekController();
   }
@@ -70,13 +59,13 @@ export class MinesweeperVSBoardController extends MinesweeperBoardController {
   #revealOpponentStrategy() {
     const interfaceUpdates = [];
     interfaceUpdates.push(this.#hideStrategyForPlayer(this.playerOnTurn));
-    interfaceUpdates.push(this.#displayStrategyForPlayer(this.#playerWaiting));
+    interfaceUpdates.push(this.#displayStrategyForPlayer(this.playerWaiting));
     return Promise.all(interfaceUpdates);
   }
 
   #hideOpponentStrategy() {
     const interfaceUpdates = [];
-    interfaceUpdates.push(this.#hideStrategyForPlayer(this.#playerWaiting));
+    interfaceUpdates.push(this.#hideStrategyForPlayer(this.playerWaiting));
     interfaceUpdates.push(this.#displayStrategyForPlayer(this.playerOnTurn));
     return Promise.all(interfaceUpdates);
   }
@@ -98,24 +87,16 @@ export class MinesweeperVSBoardController extends MinesweeperBoardController {
     return super.initView();
   }
 
+  get roundUpdates() {
+    const updates = super.roundUpdates;
+    updates.unshift(this.#hideOpponentStrategy());
+    updates.unshift(this.#updateSneakPeekToggleBasedOnRoundTimer());
+    return updates;
+  }
 
   initBoardOnRound(playerOnTurn, playerWaiting) {
-    this.playerOnTurn = playerOnTurn;
-    this.#playerWaiting = playerWaiting;
-    this.faceColorType = playerOnTurn.colorType;
     this.#SneakPeekController.setPlayers(playerOnTurn, playerWaiting);
-
-    const updates = [
-      this.#hideOpponentStrategy(),
-      this.#updateSneakPeekToggleBasedOnRoundTimer(),
-      this.setSmileFace()
-    ];
-
-    return Promise.all(updates).then(() => {
-      this.updateMinesCounter();
-      return;
-    });
-
+    super.initBoardOnRound(playerOnTurn, playerWaiting);
   }
 
   #setSneakPeekNotificationForRoundTimer() {
@@ -139,12 +120,12 @@ export class MinesweeperVSBoardController extends MinesweeperBoardController {
     if (!this.#sneakPeekAllowed) {
       return;
     }
-    
+
     this.#revealOpponentStrategy()
       .then(() => {
         return this.#SneakPeekController.playerPeeking();
       }).then(() => {
-        return this.setRollingEyesFace(this.#playerWaiting.colorType);
+        return this.setRollingEyesFace(this.playerWaiting.colorType);
       }).then(() => {
         this.updateMinesCounter();
       });
@@ -165,13 +146,6 @@ export class MinesweeperVSBoardController extends MinesweeperBoardController {
       });
   }
 
-  setBoardOnRoundEnd() {
-    this.updateMinesCounter();
-    if (this.roundTimer) {
-      this.pause();
-    }
-  }
-
   pause() {
     this.stopTimer();
     if (this.#SneakPeekController.isRunning) {
@@ -188,5 +162,47 @@ export class MinesweeperVSBoardController extends MinesweeperBoardController {
     }
     super.continue();
   }
+
+  revealingAllowed(tile) {
+    if (this.openStrategy) {
+      return true;
+    }
+    return super.revealingAllowed(tile);
+  }
+
+  handleTileMarking(tile) {
+    if (!this.strategyAllowed) {
+      this.revealMinefieldArea(tile);
+      return;
+    }
+
+    super.handleTileMarking(tile);
+  }
+
+  submitTileRevealing(boardTiles, cleared = false) {
+    if (this.minefieldActions.onRevealedTiles) {
+      this.minefieldActions.onRevealedTiles(boardTiles, this.getTilesPositions(boardTiles), cleared);
+    }
+  }
+
+  onRevealedTiles(revealedTiles, player = this.playerOnTurn) {
+    const tilesPositions = this.getTilesPositions(revealedTiles);
+    player.revealedTiles = tilesPositions;
+   
+    if (this.minefieldCleared) {
+      this.pause();
+      this.submitTileRevealing(revealedTiles, true);
+      return;
+    }
+
+    this.submitTileRevealing(revealedTiles);
+  }
+
+  setBoardOnGameOver() {
+    super.setBoardOnGameOver(this.playerOnTurn);
+    console.log("check double flags");
+    console.log(this.playerWaiting.strategyPositions);
+  }
+
 
 }

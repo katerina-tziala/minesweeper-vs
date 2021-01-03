@@ -130,7 +130,6 @@ export class Game extends AppModel {
     return this.#roundStatistics.rounds;
   }
 
-
   set roundTilesUpdate(newMoveTiles = []) {
     this.#roundStatistics.roundTiles = this.roundTiles.concat(newMoveTiles);
   }
