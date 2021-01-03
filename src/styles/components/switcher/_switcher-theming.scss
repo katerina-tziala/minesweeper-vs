@@ -4,16 +4,16 @@
 @mixin applySwitcherFocusedTrackTheme($theme) {
   &:hover,
   &:focus {
-    @include theming.setThemeBoxShadow($theme);
+    // @include theming.setThemeBoxShadow($theme);
     background-color: theming.getThemeColor($theme, "theme-primary-intense");
   }
 
-  &:disabled {
-    &:hover,
-    &:focus {
-      box-shadow: none;
-    }
-  }
+  // &:disabled {
+  //   &:hover,
+  //   &:focus {
+  //     box-shadow: none;
+  //   }
+  // }
 }
 
 @mixin applySwitcherTheme($theme) {

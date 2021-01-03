@@ -1,7 +1,6 @@
 @use "sass:list";
 @use "../../../../../theming/theming";
 
-
 @mixin setThemeStyles($theme) {
   .tile-button {
     @include theming.applyGameColorsStyle(
@@ -44,8 +43,8 @@
   }
 
   ._wrong-flag-hint {
-    color: theming.getThemeColor($theme, "error-primary");
-    // @include theming.setTextShadow($theme);
+    background-color: theming.getThemeColor($theme, "error-primary");
+    @include theming.setThemeBoxShadow($theme);
   }
 }
 
