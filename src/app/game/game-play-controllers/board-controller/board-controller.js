@@ -9,7 +9,7 @@ import {
 } from "GamePlayComponents";
 
 import { GameTimer } from "GamePlayControllers";
-
+import * as FieldUtils from "../../game-play-components/mine-field/mine-field-utils";
 export class BoardController {
   #_faceColorType;
   #_levelSettings;
@@ -219,7 +219,7 @@ export class BoardController {
   }
 
   getTilesPositions(tiles) {
-    return this.mineField.getTilesPositions(tiles);
+    return FieldUtils.tilesPositions(tiles);
   }
 
   revealingAllowed(tile) {
@@ -272,7 +272,7 @@ export class BoardController {
 
   handleTileRevealing(tile) {
     this.disableMinefield();
-
+    console.log(tile);
     if (this.revealingAllowed(tile)) {
       this.revealMinefieldArea(tile);
       return;
@@ -282,6 +282,9 @@ export class BoardController {
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
+
+    console.log(tile);
+
     this.mineField.getRevealedTilesResult(tile, player.id).then(result => {
       if (result.detonatedMine) {
         this.onTileDetonation(result.tiles);
@@ -289,6 +292,7 @@ export class BoardController {
       }
       this.onRevealedTiles(result.tiles);
     });
+
   }
 
   onTileDetonation(boardTiles, player = this.playerOnTurn) {

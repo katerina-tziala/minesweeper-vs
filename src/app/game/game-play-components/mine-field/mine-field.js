@@ -1,21 +1,21 @@
 "use strict";
-import { ElementGenerator } from "HTML_DOM_Manager";
+
 import { uniqueArray, arrayDifference } from "~/_utils/utils";
-import { TileGenerator } from "./tile/tile-generator";
+import { MineFieldGenerator } from "./mine-field-generator";
+import * as FieldUtils from "./mine-field-utils";
 
 export class MineField {
   #_levelSettings;
   #_gameId;
   #tiles = [];
-  #tilesGenerator;
   #onActiveTileChange;
-  #submitTileAction;
+  #onTileAction;
 
   constructor(gameId, levelSettings, onActiveTileChange, onTileAction) {
     this.gameId = gameId;
     this.levelSettings = levelSettings;
     this.#onActiveTileChange = onActiveTileChange;
-    this.#submitTileAction = onTileAction;
+    this.#onTileAction = onTileAction;
   }
 
   set gameId(gameID) {
@@ -43,72 +43,30 @@ export class MineField {
     return this.#_levelSettings;
   }
 
-  #onTileAction(tile, action) {
-    if (action && tile) {
-      this.#onActiveTileChange(false);
-      this.#submitTileAction(action, tile);
-    }
-  }
-
-  get #generateMinefieldRows() {
-    const fragment = document.createDocumentFragment();
-    for (let index = 0; index < this.#levelSettings.rows; index++) {
-      const row = ElementGenerator.generateTableRow();
-      row.append(this.#generateMinefieldColumns(index));
-      fragment.append(row);
-    }
-    return fragment;
-  }
-
-  #generateMinefieldColumns(rowIndex) {
-    const fragment = document.createDocumentFragment();
-    for (let index = 0; index < this.#levelSettings.columns; index++) {
-      const tile = this.#tilesGenerator.generateTile(
-        this.gameId,
-        rowIndex,
-        index,
-      );
-      this.#tiles.push(tile);
-      
-      fragment.append(
-        tile.generateView(
-          this.#onActiveTileChange,
-          this.#onTileAction.bind(this),
-        ),
-      );
-    }
-    return fragment;
-  }
 
   generate() {
-    this.#tiles = [];
-    this.#tilesGenerator = new TileGenerator(this.#levelSettings);
-    const fragment = document.createDocumentFragment();
-    const mineFieldTable = ElementGenerator.generateTable();
-    mineFieldTable.append(this.#generateMinefieldRows);
-    fragment.append(mineFieldTable);
-    this.#tilesGenerator = undefined;
-    return fragment;
+    const generator = new MineFieldGenerator(this.gameId, this.#levelSettings, this.#onActiveTileChange, this.#onTileAction);
+    const generatedField = generator.generate();
+    this.#tiles = generatedField.tiles;
+    return generatedField.table;
   }
 
-
-
   getRevealedTilesResult(clickedTile, playerId) {
-    return new Promise((resolve) => {
-      if (clickedTile.isBlank) {
-        this.#getAreaToReveal([clickedTile]).then((revealedTiles) => {
-          this.#revealTiles(revealedTiles, playerId);
-          resolve({
-            tiles: revealedTiles,
-            detonatedMine: false
-          });
-        });
-      } else {
-        this.#revealTiles([clickedTile], playerId);
-        resolve({
-          tiles: [clickedTile],
-          detonatedMine: this.#tileDetonated([clickedTile])
-        });
+    if (clickedTile.isBlank) {
+      return this.#getAreaToReveal([clickedTile]).then((revealedTiles) => {
+        return this.#revealTiles(revealedTiles, playerId);
+      }).then(revealedTiles => {
+        return {
+          tiles: revealedTiles,
+          detonatedMine: false
+        }
+      });
+    }
+
+    return this.#revealTiles([clickedTile], playerId).then(revealedTiles => {
+      return {
+        tiles: revealedTiles,
+        detonatedMine: this.#tileDetonated([clickedTile])
       }
     });
   }
@@ -118,9 +76,11 @@ export class MineField {
   }
 
   #revealTiles(revealedTiles, playerId) {
-    const updates = revealedTiles.map((tile) => tile.reveal(playerId));
-    this.#tiles = this.#removeFromTiles(this.#tiles, revealedTiles);
-    return Promise.all(updates);
+    const updates = revealedTiles.map(tile => tile.reveal(playerId));
+    return Promise.all(updates).then(() => {
+      this.#tiles = this.#removeFromTiles(this.#tiles, revealedTiles);
+      return revealedTiles;
+    });
   }
 
   #removeFromTiles(tilesToFilter, tilesReference) {
@@ -174,7 +134,7 @@ export class MineField {
   }
 
   getTilesPositions(tiles) {
-    return tiles.map((tile) => tile.position);
+    return FieldUtils.tilesPositions(tiles);
   }
 
   getTilesByPositions(positionsToKeep) {
@@ -221,8 +181,8 @@ export class MineField {
   }
 
   revealField() {
-   const updates = this.getUnrevealedTiles().map((tile) => tile.expose());
-   return Promise.all(updates);
+    const updates = this.getUnrevealedTiles().map((tile) => tile.expose());
+    return Promise.all(updates);
   }
 
   hideStrategy(player) {

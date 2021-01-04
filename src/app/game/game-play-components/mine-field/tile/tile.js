@@ -126,7 +126,7 @@ export class Tile {
     this.#button.onActiveStateChange = onActivation;
   
     this.#button.onAction = (action) => {
-      onAction(this, action);
+      onAction(action, this);
     };
 
     tile.append(this.#button.generateView());
@@ -134,9 +134,9 @@ export class Tile {
   }
 
   /* ACTIONS */
-  reveal(playerID) {
+  reveal(playerId) {
     this.state = TileState.Revealed;
-    this.modifiedBy = playerID;
+    this.modifiedBy = playerId;
 
     return this.#button.destroyButton().then(() => {
       this.#button = undefined;
@@ -144,9 +144,9 @@ export class Tile {
     });
   }
 
-  setFlag(playerID, colorType, setWrongFlagHint = false) {
+  setFlag(playerId, colorType, setWrongFlagHint = false) {
     this.state = TileState.Flagged;
-    this.modifiedBy = playerID;
+    this.modifiedBy = playerId;
     const wrongFlagHint = this.isWronglyFlagged && setWrongFlagHint;
     return this.#button.setFlag(colorType, wrongFlagHint);
   }
@@ -156,9 +156,9 @@ export class Tile {
     return this.#button.resetTileButtonStyling();
   }
 
-  setMark(playerID, colorType) {
+  setMark(playerId, colorType) {
     this.state = TileState.Marked;
-    this.modifiedBy = playerID;
+    this.modifiedBy = playerId;
     return this.#button.setMark(colorType);
   }
 

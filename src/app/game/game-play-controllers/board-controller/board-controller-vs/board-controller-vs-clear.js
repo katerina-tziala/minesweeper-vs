@@ -92,7 +92,6 @@ export class BoardControllerVSClear extends BoardControllerVS {
   get roundUpdates() {
     const updates = super.roundUpdates;
     updates.unshift(this.#updateSneakPeekToggleBasedOnRoundTimer());
-    console.log(this.#StrategyController);
     if (this.hiddenStrategy) {
       updates.unshift(this.#hideOpponentStrategy());
     }
