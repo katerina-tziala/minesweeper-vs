@@ -69,6 +69,7 @@ export class MineField {
         index,
       );
       this.#tiles.push(tile);
+      
       fragment.append(
         tile.generateView(
           this.#onActiveTileChange,
@@ -116,10 +117,10 @@ export class MineField {
     return boardTiles.length === 1 && boardTiles[0].isDetonatedMine;
   }
 
-
   #revealTiles(revealedTiles, playerId) {
-    revealedTiles.map((tile) => tile.reveal(playerId));
+    const updates = revealedTiles.map((tile) => tile.reveal(playerId));
     this.#tiles = this.#removeFromTiles(this.#tiles, revealedTiles);
+    return Promise.all(updates);
   }
 
   #removeFromTiles(tilesToFilter, tilesReference) {
@@ -149,7 +150,7 @@ export class MineField {
   #getBlankAndEmptyNeighbors(referenceTile, currentEmptyTiles) {
     const blankTiles = [];
     const emptyTiles = [];
- 
+
     const currentEmptyTilesPositions = this.getTilesByPositions(
       currentEmptyTiles,
     );
@@ -158,7 +159,7 @@ export class MineField {
       referenceTile.neighbors,
       currentEmptyTilesPositions,
     );
-    
+
     let unrevealedNeighbors = this.getTilesByPositions(neighborsPositions);
     unrevealedNeighbors = this.getNonMineTiles(unrevealedNeighbors);
     unrevealedNeighbors = this.getNonFlaggedTiles(unrevealedNeighbors);
@@ -220,24 +221,61 @@ export class MineField {
   }
 
   revealField() {
-    this.getUnrevealedTiles().forEach((tile) => {
-      tile.reveal(undefined, false);
-    });
+   const updates = this.getUnrevealedTiles().map((tile) => tile.expose());
+   return Promise.all(updates);
   }
 
   hideStrategy(player) {
     const tilesToReset = this.getTilesByPositions(player.strategyPositions);
-    tilesToReset.forEach(tile => {
-      tile.resetState();
-    });
+    const updates = tilesToReset.map(tile => tile.resetState());
+    return Promise.all(updates);
   }
 
   showStrategy(player, wrongFlagHint) {
     const tilesToMark = this.getTilesByPositions(player.marksPositions);
-    tilesToMark.forEach(tile => tile.setMark(player.id, player.colorType));
-    
+    const marksUpdates = tilesToMark.map(tile => tile.setMark(player.id, player.colorType));
+
     const tilesToFlag = this.getTilesByPositions(player.flagsPositions);
-    tilesToFlag.forEach(tile => tile.setFlag(player.id, player.colorType, wrongFlagHint));
+    const flagsUpdates = tilesToFlag.map(tile => tile.setFlag(player.id, player.colorType, wrongFlagHint));
+    return Promise.all([...marksUpdates, ...flagsUpdates]);
   }
+
+
+  revealWithAdditionalStrategy(player, wrongFlagHint) {
+    return this.#revealWithAdditionalMarks(player).then(() => {
+      return this.#revealWithAdditionalFlags(player, wrongFlagHint);
+    }).then(() => {
+      return this.revealField();
+    });
+  }
+
+  #revealWithAdditionalMarks(player) {
+    const tilesForMarks = this.getTilesByPositions(player.marksPositions);
+    const updates = [];
+    tilesForMarks.forEach(tile => {
+      if (tile.isUntouched) {
+        updates.push(tile.setMark(player.id, player.colorType));
+      } else {
+        updates.push(tile.additionalMark(player.colorType));
+      }
+    });
+    return Promise.all(updates);
+  }
+
+  #revealWithAdditionalFlags(player, wrongFlagHint) {
+    const updates = [];
+    const tilesToFlag = this.getTilesByPositions(player.flagsPositions);
+    tilesToFlag.forEach(tile => {
+      if (tile.isUntouched) {
+        updates.push(tile.setFlag(player.id, player.colorType, wrongFlagHint));
+      } else {
+        updates.push(tile.additionalFlag(player.colorType));
+      }
+    });
+    return Promise.all(updates);
+  }
+
+
+
 
 }

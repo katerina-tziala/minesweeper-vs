@@ -4,7 +4,6 @@
 .tile-cell {
   @include rectangle(22px);
   position: relative;
-  box-sizing: border-box;
   border: 1px solid;
   @include tile-styles.setNumberContent();
   cursor: pointer;

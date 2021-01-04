@@ -152,7 +152,6 @@ export class BoardController {
   }
 
   startGameTimer() {
-    console.log(this.timerRunning);
     if (!this.roundTimer && !this.timerRunning) {
       this.gameTimer.start(1);
     }
@@ -224,6 +223,7 @@ export class BoardController {
   }
 
   revealingAllowed(tile) {
+    console.log(tile);
     return tile.isUntouched || tile.isMarked;
   }
 
@@ -387,10 +387,13 @@ export class BoardController {
   }
 
   setBoardOnGameOver(isDraw) {
-    this.pause();
-    this.updateMinesCounter();
+    this.setDashboardoardOnGameOver(isDraw);
     this.revealMinefield();
-    this.#setFaceIconOnGameEnd(isDraw);
   }
 
+  setDashboardoardOnGameOver(isDraw) {
+    this.pause();
+    this.updateMinesCounter();
+    this.#setFaceIconOnGameEnd(isDraw);
+  }
 }

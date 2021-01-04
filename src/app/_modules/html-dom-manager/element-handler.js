@@ -34,6 +34,12 @@ export class ElementHandler {
     element.classList.add(className);
   }
 
+  static addStyles(element, styleClasses) {
+    styleClasses.forEach(style => {
+      ElementHandler.addStyleClass(element, style);
+    });
+  }
+
   static setStyleClass(element, styleClasses) {
     let className = TYPOGRAPHY.emptyString;
     if (styleClasses.length) {

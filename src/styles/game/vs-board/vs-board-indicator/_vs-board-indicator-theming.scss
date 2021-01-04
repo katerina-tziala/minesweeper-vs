@@ -3,7 +3,6 @@
 @mixin setThemeStyles($theme) {
   .vs-board__indicator-item {
     border-color: theming.getThemeColor($theme, "board-grid");
-    @include theming.setTextShadow($theme);
 
     @include theming.applyGameColorsStyle(
       $theme,

@@ -204,9 +204,9 @@ export class BoardControllerVSClear extends BoardControllerVS {
   }
 
   setBoardOnGameOver(isDraw) {
-    super.setBoardOnGameOver(isDraw);
-    console.log("check double flags");
-    console.log(this.playerWaiting.strategyPositions);
+    this.mineField.revealWithAdditionalStrategy(this.playerWaiting, this.wrongFlagHint).then(() => {
+      this.setDashboardoardOnGameOver(isDraw);
+    });
   }
 
 

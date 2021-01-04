@@ -1,9 +1,11 @@
 "use strict";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
+import { valueDefined } from "~/_utils/validator";
 
 import { TileState } from "./tile-state.enum";
-import { TileView } from "./tile.view";
+import { TileCell } from "./tile-cell/tile-cell";
+import { TileButton } from "./tile-button/tile-button";
 
 export class Tile {
   #_id;
@@ -12,80 +14,53 @@ export class Tile {
   #_content;
   #_state;
   #_modifiedBy;
-  #viewController;
+  #cell;
+  #button;
 
-  constructor(gameID, params) {
-    this.id = gameID + TYPOGRAPHY.hyphen + params.position;
-    this.position = params.position;
-    this.neighbors = params.neighbors;
-    this.content = params.content;
+  constructor(gameId, params) {
+    this.#_position = params.position;
+    this.#_neighbors = params.neighbors;
+    this.#_content = params.content;
+    this.id = gameId;
     this.initState();
-    this.#viewController = new TileView(this.id);
-  }
-
-  set position(position) {
-    return (this.#_position = position);
+    this.#cell = new TileCell(this.id);
+    this.#button = new TileButton(this.id);
   }
 
   get position() {
     return this.#_position;
   }
 
-  set id(id) {
-    return (this.#_id = id);
-  }
-
-  get id() {
-    return this.#_id;
-  }
-
-  set neighbors(neighbors) {
-    return (this.#_neighbors = neighbors);
-  }
-
   get neighbors() {
     return this.#_neighbors;
-  }
-
-  set content(content) {
-    return (this.#_content = content);
   }
 
   get content() {
     return this.#_content;
   }
 
+  set id(gameId) {
+    this.#_id = this.position + TYPOGRAPHY.hyphen + gameId;
+  }
+
+  get id() {
+    return this.#_id;
+  }
+
   set state(state) {
-    return (this.#_state = state);
+    this.#_state = state;
   }
 
   get state() {
     return this.#_state;
   }
 
-  set modifiedBy(modifiedBy) {
-    return (this.#_modifiedBy = modifiedBy);
+  set modifiedBy(playerId) {
+    this.#_modifiedBy = playerId;
   }
 
   get modifiedBy() {
     return this.#_modifiedBy;
-  }
-
-  generateView(onActivation, onAction) {
-    return this.#viewController.generateView(
-      this.content,
-      (activated) => {
-        if (this.isUntouched) {
-          onActivation(activated);
-        } else {
-          //this.#viewController.deActivate();
-          onActivation(false);
-        }
-      },
-      (action) => {
-        onAction(this, action);
-      },
-    );
   }
 
   initState() {
@@ -122,7 +97,7 @@ export class Tile {
   }
 
   get isDetonatedMine() {
-    return this.isMine && this.isRevealed;
+    return this.isMine && this.isRevealed && valueDefined(this.modifiedBy);
   }
 
   get isWronglyFlagged() {
@@ -133,37 +108,86 @@ export class Tile {
     return this.isMine && this.isFlagged;
   }
 
-  isFlaggedBy(playerID) {
-    return this.isFlagged && this.modifiedBy === playerID;
+  #isModifiedBy(playerId) {
+    return this.modifiedBy === playerId;
   }
 
-  isMarkedBy(playerID) {
-    return this.isMarked && this.modifiedBy === playerID;
+  isFlaggedBy(playerId) {
+    return this.isFlagged && this.#isModifiedBy(playerId);
+  }
+
+  isMarkedBy(playerId) {
+    return this.isMarked && this.#isModifiedBy(playerId);
+  }
+
+  generateView(onActivation, onAction) {
+    const tile = this.#cell.generateView();
+
+    this.#button.onActiveStateChange = onActivation;
+  
+    this.#button.onAction = (action) => {
+      onAction(this, action);
+    };
+
+    tile.append(this.#button.generateView());
+    return tile;
   }
 
   /* ACTIONS */
-  reveal(playerID, userAction = true) {
+  reveal(playerID) {
     this.state = TileState.Revealed;
     this.modifiedBy = playerID;
-    this.#viewController.setRevealedView(this.isDetonatedMine, userAction);
+
+    return this.#button.destroyButton().then(() => {
+      this.#button = undefined;
+      return this.#cell.revealCellContent(this.content, this.isDetonatedMine);
+    });
   }
 
   setFlag(playerID, colorType, setWrongFlagHint = false) {
     this.state = TileState.Flagged;
     this.modifiedBy = playerID;
     const wrongFlagHint = this.isWronglyFlagged && setWrongFlagHint;
-    this.#viewController.setFlag(colorType, wrongFlagHint);
+    return this.#button.setFlag(colorType, wrongFlagHint);
   }
 
   resetState() {
     this.initState();
-    this.#viewController.resetTileButtonStyling();
+    return this.#button.resetTileButtonStyling();
   }
 
   setMark(playerID, colorType) {
     this.state = TileState.Marked;
     this.modifiedBy = playerID;
-    this.#viewController.setMark(colorType);
+    return this.#button.setMark(colorType);
+  }
+
+  expose() {
+    this.state = TileState.Revealed;
+    this.modifiedBy = null;
+  
+    return this.#button.revealButton().then(() => {
+      this.#button = undefined;
+      return this.#cell.revealCellContent(this.content, this.isDetonatedMine);
+    });
+  }
+
+  additionalMark(colorType) {
+    this.state = TileState.Revealed;
+    this.modifiedBy = null;
+    
+    return this.#button.revealAdditionalMark(colorType).then(() => {
+      return this.#cell.revealCellContent(this.content, this.isDetonatedMine);
+    });
+  }
+
+  additionalFlag(colorType) {
+    this.state = TileState.Revealed;
+    this.modifiedBy = null;
+
+    return this.#button.revealAdditionalFlag(colorType).then(() => {
+      return this.#cell.revealCellContent(this.content, this.isDetonatedMine);
+    });
   }
 
 }

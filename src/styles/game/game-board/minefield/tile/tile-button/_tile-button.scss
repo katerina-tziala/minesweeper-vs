@@ -1,48 +1,74 @@
 @use "./tile-button-theming";
 @import "../../../board-button/board-button";
 
-._wrong-flag-hint {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  z-index: 5;
-  content: "";
-  @include circle(4px);
-}
-
 .tile-button {
   @extend ._board-button;
   @include rectangle(22px);
-  outline: none;
-  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;
   overflow: hidden;
-  text-align: center;
-  // border-width: 1px!important;
+  outline: none;
+  cursor: pointer;
+  outline: none;
+}
 
-  &.tile-button--flagged {
-    &::before {
-      @extend .icon-flag;
-      line-height: 19px;
-    }
-  }
-
-  &.tile-button--wrongly-flagged {
-    &::after {
-      @extend ._wrong-flag-hint;
-    }
-  }
-
-  &.tile-button--marked {
-    &::after {
-      @extend .icon-question-mark;
-      line-height: 19px;
-    }
+.tile-button.tile-button--flagged {
+  &::before {
+    @extend .icon-flag;
+    line-height: 19px;
   }
 }
 
+.tile-button.tile-button--marked {
+  &::before {
+    @extend .icon-question-mark;
+    line-height: 19px;
+  }
+}
+
+._double-strategy-primary-icon {
+  &::before {
+    font-size: 10px;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+  }
+}
+
+._double-strategy-secondary-icon {
+  font-size: 10px;
+      position: absolute;
+      bottom: 2px;
+      right: -4px;
+      z-index: 5;
+}
+
+.tile-button.tile-button-double-strategy {
+
+  &.tile-button--flagged {
+    @extend ._double-strategy-primary-icon;
+  }
+
+  &.tile-button--marked {
+    @extend ._double-strategy-primary-icon;
+  }
+
+  &.tile-button--double-strategy-flag {
+    &::after {
+      @extend .icon-flag;
+      @extend ._double-strategy-secondary-icon;
+    }
+  }
+
+  &.tile-button--double-strategy-mark {
+    &::after {
+      @extend .icon-question-mark;
+      @extend ._double-strategy-secondary-icon;
+    }
+  }
+
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include tile-button-theming.setTheming();

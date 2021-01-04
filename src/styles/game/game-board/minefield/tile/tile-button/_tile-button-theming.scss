@@ -1,51 +1,82 @@
 @use "sass:list";
 @use "../../../../../theming/theming";
+@use "../../../game-board-utils";
+
+@mixin setActiveButtonTheming($theme) {
+  .tile-button.tile-button--active {
+    $active-color: theming.getThemeColor($theme, "board-background");
+    background-color: $active-color;
+    border-color: $active-color;
+  }
+}
+
+@mixin setButtonGameColors($theme) {
+  @for $i from 1 through 8 {
+    $color: theming.getThemeColor($theme, "game-type-#{$i}");
+    @include setButtonColor($i, $color);
+  }
+}
+
+@mixin setButtonDoubleStrategyColor($color) {
+  &::after {
+    color: $color;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    color: $color;
+  }
+}
+
+@mixin setButtonColor($i, $color) {
+  .tile-button.tile-button-color--#{$i} {
+    color: $color;
+    &:hover,
+    &:focus {
+      color: $color;
+    }
+  }
+
+  .tile-button.tile-button-double-strategy-color--#{$i} {
+    &.tile-button--double-strategy-flag {
+      @include setButtonDoubleStrategyColor($color);
+    }
+
+    &.tile-button--double-strategy-mark {
+      @include setButtonDoubleStrategyColor($color);
+    }
+  }
+}
+
+@mixin wronglyFlaggedBorders($theme, $opacity: 1) {
+  &.tile-button--wrongly-flagged {
+    $top-left-color: theming.getThemeColor($theme, "error-pale", $opacity);
+    $bottom-right-color: theming.getThemeColor($theme, "error-primary", $opacity);
+    @include game-board-utils.twoSideBorderDirectionTopLeft(
+      $top-left-color,
+      $bottom-right-color
+    );
+  }
+}
+
+@mixin setRevealedButtonTheming($theme) {
+  .tile-button.tile-button--revealed {
+    $color: rgba(theming.getThemeColor($theme, "board-button-background"), 0.5);
+    background-color: $color;
+    border-color: $color;
+    @include wronglyFlaggedBorders($theme, 0.5);
+    border-width: 1px !important;
+  }
+}
 
 @mixin setThemeStyles($theme) {
   .tile-button {
-    @include theming.applyGameColorsStyle(
-      $theme,
-      "&.tile-button-color",
-      "color"
-    );
-
-    &:hover,
-    &:focus {
-      @include theming.applyGameColorsStyle(
-        $theme,
-        "&.tile-button-color",
-        "color"
-      );
-    }
-
-    &.tile-button--active {
-      background-color: theming.getThemeColor($theme, "board-background");
-    }
-
-    &.tile-button--revealed {
-      background-color: rgba(
-        theming.getThemeColor($theme, "board-button-background"),
-        0.5
-      );
-    }
-
-    &.tile-button--flagged {
-      &::before {
-        // @include theming.setTextShadow($theme);
-      }
-    }
-
-    &.tile-button--marked {
-      &::after {
-        // @include theming.setTextShadow($theme);
-      }
-    }
+    @include theming.setTextShadow($theme);
+    @include wronglyFlaggedBorders($theme);
   }
-
-  ._wrong-flag-hint {
-    background-color: theming.getThemeColor($theme, "error-primary");
-    @include theming.setThemeBoxShadow($theme);
-  }
+  @include setButtonGameColors($theme);
+  @include setActiveButtonTheming($theme);
+  @include setRevealedButtonTheming($theme);
 }
 
 @mixin setTheming() {

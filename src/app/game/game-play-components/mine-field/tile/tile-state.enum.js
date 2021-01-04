@@ -4,7 +4,7 @@ const TileState = {
   Untouched: "untouched",
   Revealed: "revealed",
   Flagged: "flagged",
-  Marked: "marked",
+  Marked: "marked"
 };
 
 Object.freeze(TileState);
