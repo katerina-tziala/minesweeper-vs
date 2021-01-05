@@ -10,7 +10,7 @@ export class BoardControllerVSClear extends BoardControllerVS {
   constructor(gameId, params, minefieldActions, onRoundTimerEnd) {
     super(gameId, params, minefieldActions, onRoundTimerEnd);
 
-    
+
     this.#StrategyController = new StrategyController(this.optionsSettings);
     this.#setSneakPeekController();
   }
@@ -34,6 +34,15 @@ export class BoardControllerVSClear extends BoardControllerVS {
 
   get hiddenStrategy() {
     return this.#StrategyController.hiddenStrategy;
+  }
+
+  get roundUpdates() {
+    const updates = super.roundUpdates;
+    updates.unshift(this.#updateSneakPeekToggleBasedOnRoundTimer());
+    if (this.hiddenStrategy) {
+      updates.unshift(this.#hideOpponentStrategy());
+    }
+    return updates;
   }
 
   get #sneakPeekAllowed() {
@@ -87,15 +96,6 @@ export class BoardControllerVSClear extends BoardControllerVS {
     this.#SneakPeekController.parentElementID = this.freezerId;
     this.#SneakPeekController.initPeekToggle();
     return super.initView();
-  }
-
-  get roundUpdates() {
-    const updates = super.roundUpdates;
-    updates.unshift(this.#updateSneakPeekToggleBasedOnRoundTimer());
-    if (this.hiddenStrategy) {
-      updates.unshift(this.#hideOpponentStrategy());
-    }
-    return updates;
   }
 
   initBoardOnRound(playerOnTurn, playerWaiting) {
@@ -167,10 +167,14 @@ export class BoardControllerVSClear extends BoardControllerVS {
     super.continue();
   }
 
-  revealingAllowed(tile) {
-    if (this.openStrategy) {
+  revealingAllowed(tile, player = this.playerOnTurn) {
+    if (tile.isFlagged && !tile.isFlaggedBy(player.id)) {
+
+      console.log("flagged by oppopjnrnr");
+     
       return true;
     }
+    console.log();
     return super.revealingAllowed(tile);
   }
 
@@ -192,7 +196,7 @@ export class BoardControllerVSClear extends BoardControllerVS {
   onRevealedTiles(revealedTiles, player = this.playerOnTurn) {
     const tilesPositions = this.getTilesPositions(revealedTiles);
     player.revealedTiles = tilesPositions;
-   
+
     if (this.minefieldCleared) {
       this.pause();
       this.submitTileRevealing(revealedTiles, true);
@@ -203,10 +207,14 @@ export class BoardControllerVSClear extends BoardControllerVS {
   }
 
   setBoardOnGameOver(isDraw) {
-    this.mineField.revealWithAdditionalStrategy(this.playerWaiting, this.wrongFlagHint).then(() => {
-      this.setDashboardoardOnGameOver(isDraw);
-    });
+    console.log(isDraw);
+    if (!this.openStrategy) {
+      this.mineField.revealWithAdditionalStrategy(this.playerWaiting, this.wrongFlagHint).then(() => {
+        this.setDashboardoardOnGameOver(isDraw);
+      });
+      return;
+    }
+    super.setBoardOnGameOver(isDraw);
   }
-
 
 }

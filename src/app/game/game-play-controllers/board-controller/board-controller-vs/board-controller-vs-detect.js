@@ -11,9 +11,11 @@ export class BoardControllerVSDetect extends BoardControllerVS {
 
   revealingAllowed(tile) {
     const tileRevealingAllowed = super.revealingAllowed(tile);
+
     if (valueDefined(this.optionsSettings.tileRevealing)) {
       return this.optionsSettings.tileRevealing && tileRevealingAllowed;
     }
+    
     return tileRevealingAllowed;
   }
 

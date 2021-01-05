@@ -28,24 +28,15 @@ export class BoardController {
     this.optionsSettings = params.optionsSettings;
     this.minefieldActions = minefieldActions;
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
+
+
+
+    console.log(this.optionsSettings);
+
+
+    
     this.#initMinefieldHandlers(gameId);
     this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
-  }
-
-  set playerOnTurn(player) {
-    return this.#_playerOnTurn = player;
-  }
-
-  get playerOnTurn() {
-    return this.#_playerOnTurn;
-  }
-
-  get wrongFlagHint() {
-    return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
-  }
-
-  get allowMarks() {
-    return this.optionsSettings ? this.optionsSettings.marks : false;
   }
 
   #initMinefieldHandlers(gameId) {
@@ -65,20 +56,28 @@ export class BoardController {
     this.#GameTimer = new GameTimer(turnSettings, this.#Dashboard.timerId, onRoundTimerEnd);
   }
 
+  set playerOnTurn(player) {
+    return this.#_playerOnTurn = player;
+  }
+
+  get playerOnTurn() {
+    return this.#_playerOnTurn;
+  }
+
+  get wrongFlagHint() {
+    return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
+  }
+
+  get allowMarks() {
+    return this.optionsSettings ? this.optionsSettings.marks : false;
+  }
+
   set faceColorType(type) {
     this.#_faceColorType = type;
   }
 
   get #faceColorType() {
     return this.#_faceColorType;
-  }
-
-  get #board() {
-    return this.#MinesweeperBoard;
-  }
-
-  get #dashboard() {
-    return this.#Dashboard;
   }
 
   #initMinesCounter() {
@@ -93,7 +92,7 @@ export class BoardController {
   }
 
   #initMinefield() {
-    return this.#board.clearedMinefieldContainer.then(minefieldContainer => {
+    return this.#MinesweeperBoard.clearedMinefieldContainer.then(minefieldContainer => {
       minefieldContainer.append(this.mineField.generate());
       minefieldContainer.append(this.#MinefieldFreezer.generateView());
       return;
@@ -111,11 +110,11 @@ export class BoardController {
   }
 
   generateView(actionsContainer) {
-    const gameContainer = this.#board.generatedBoardContainer;
-    const board = this.#board.generateView();
-    const dashboard = this.#dashboard.generateView(this.#FaceIcon.generateIcon());
-    this.#board.insertOnBoardAsFirst(board, dashboard);
-    this.#board.insertOnBoardAsFirst(board, actionsContainer);
+    const gameContainer = this.#MinesweeperBoard.generatedBoardContainer;
+    const board = this.#MinesweeperBoard.generateView();
+    const dashboard = this.#Dashboard.generateView(this.#FaceIcon.generateIcon());
+    this.#MinesweeperBoard.insertOnBoardAsFirst(board, dashboard);
+    this.#MinesweeperBoard.insertOnBoardAsFirst(board, actionsContainer);
     gameContainer.append(board);
     return gameContainer;
   }
@@ -169,7 +168,6 @@ export class BoardController {
     this.gameTimer.continue();
   }
 
-
   // MINEFIELD
   get mineField() {
     return this.#MineField;
@@ -208,22 +206,27 @@ export class BoardController {
   }
 
   enableMinefield() {
-  //  if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
-      this.#MinefieldFreezer.hide();
-   // }
+    //  if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
+    this.#MinefieldFreezer.hide();
+    // }
   }
 
   revealMinefield() {
-    this.mineField.revealField();
     this.#MinefieldFreezer.display();
+    return this.mineField.revealField();
   }
+
+
+
+
+
 
   getTilesPositions(tiles) {
     return FieldUtils.tilesPositions(tiles);
   }
 
+  //TODO: check logic per game
   revealingAllowed(tile) {
-    console.log(tile);
     return tile.isUntouched || tile.isMarked;
   }
 
@@ -272,7 +275,7 @@ export class BoardController {
 
   handleTileRevealing(tile) {
     this.disableMinefield();
-    console.log(tile);
+
     if (this.revealingAllowed(tile)) {
       this.revealMinefieldArea(tile);
       return;
@@ -282,10 +285,7 @@ export class BoardController {
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
-
-    console.log(tile);
-
-    this.mineField.getRevealedTilesResult(tile, player.id).then(result => {
+    this.mineField.getRevealedTiles(tile, player.id).then(result => {
       if (result.detonatedMine) {
         this.onTileDetonation(result.tiles);
         return;
@@ -391,8 +391,9 @@ export class BoardController {
   }
 
   setBoardOnGameOver(isDraw) {
-    this.setDashboardoardOnGameOver(isDraw);
-    this.revealMinefield();
+    return this.revealMinefield().then(() => {
+      this.setDashboardoardOnGameOver(isDraw);
+    });
   }
 
   setDashboardoardOnGameOver(isDraw) {

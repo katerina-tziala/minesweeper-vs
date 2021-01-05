@@ -272,9 +272,9 @@ export class GameVS extends GameDefault {
   }
 
   onGameOver(boardTiles = []) {
-    super.onGameOver(boardTiles);
+   
     this.setWinnerOnGameOver();
-
+    super.onGameOver(boardTiles);
     this.#displayGameOverMessage().then(() => {
       if (this.isOnline) {
         //TODO:

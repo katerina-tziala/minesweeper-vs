@@ -1,6 +1,6 @@
 "use strict";
 
-import { BoardController} from "../board-controller";
+import { BoardController } from "../board-controller";
 
 export class BoardControllerVS extends BoardController {
   #_playerWaiting;
@@ -32,7 +32,6 @@ export class BoardControllerVS extends BoardController {
       this.updateMinesCounter();
       return;
     });
-
   }
 
   setBoardOnRoundEnd() {

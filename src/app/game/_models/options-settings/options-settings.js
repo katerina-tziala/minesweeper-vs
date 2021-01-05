@@ -9,6 +9,7 @@ export class OptionsSettings extends AppModel {
     this.marks = false;
     this.wrongFlagHint = false;
     this.tileFlagging = true;
+    this.tileRevealing = true;
     this.propertiesVS = vsMode;
   }
 
@@ -29,7 +30,6 @@ export class OptionsSettings extends AppModel {
         break;
       case GameVSMode.Detect:
         this.unlimitedFlags = true;
-        this.tileRevealing = true;
         break;
       case GameVSMode.Parallel:
         this.identicalMines = true;
