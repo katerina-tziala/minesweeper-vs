@@ -7,60 +7,19 @@
 @import "../switcher/switcher";
 @import "../dropdown-select/dropdown-select";
 
+@import "./game-settings-wizard-title/game-settings-wizard-title";
+
+
 .settings-wizard {
   position: relative;
-  border: 1px solid;
   padding: 10px;
 }
 
-.settings-wizard-title-container {
-  @extend %center-end;
-  height: 24px;
-  text-transform: uppercase;
-  overflow: hidden;
-  position: absolute;
-  top: -13px;
-  left: 5px;
-  padding: 0 5px;
-}
 
-.settings-wizard-title-icon {
-  width: 22px;
-  height: 22px;
-  margin-right: 5px;
-  font-size: 1.2rem;
-  line-height: 22px;
-
-  &.settings-wizard-title-icon--levelSettings {
-    font-size: 1rem;
-    @include afterIcon("level");
-  }
-
-  &.settings-wizard-title-icon--vsModeSettings {
-    @include afterIcon("mode");
-  }
-
-  &.settings-wizard-title-icon--optionsSettings {
-    @include afterIcon("sliders");
-  }
-
-  &.settings-wizard-title-icon--turnSettings {
-    @include afterIcon("stopwatch");
-  }
-
-  &.settings-wizard-title-icon--botMode {
-    @include afterIcon("bot");
-  }
-}
-
-.settings-wizard-title {
-  flex-grow: 1;
-  font-size: 1.1rem;
-}
 
 .settings-wizard-section {
   @extend %start-center;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .settings-wizard-label {
@@ -95,7 +54,7 @@
 
 .settings-wizard-field-explanation {
   @extend %center-center;
-  padding: 10px 10px 0;
+  padding: 0px 10px 0;
   text-align: center;
   font-style: italic;
   height: 48px;
@@ -115,14 +74,6 @@
     );
   }
 
-  .settings-wizard-title-container {
-    @include theming.setThemeCard($theme);
-    color: color.adjust(
-      theming.getThemeColor($theme, "theme-primary"),
-      $lightness: 1,
-      $alpha: -0.3
-    );
-  }
 }
 
 .theme-light {

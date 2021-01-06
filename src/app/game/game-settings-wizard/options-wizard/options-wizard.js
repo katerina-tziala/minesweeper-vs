@@ -13,11 +13,14 @@ import {
   SETTINGS_PROPERTIES,
   FIELD_NAME,
   LIMITS,
+  CONTENT
 } from "./options-wizard.constants";
 
 export class OptionsWizard extends GameSettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit);
+    this.title = CONTENT.title;
+    this.labels = CONTENT.labels;
     this.#init(settings);
   }
 

@@ -19,3 +19,13 @@ export const LIMITS = {
   maxMinesPercentage: 0.9,
   minMinesPercentage: 0.12,
 };
+
+export const CONTENT = {
+  title: "game level",
+  labels: {
+    level: "level",
+    rows: "minefield rows",
+    columns: "minefield columns",
+    numberOfMines: "number of mines",
+  }
+};

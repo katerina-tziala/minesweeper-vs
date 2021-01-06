@@ -1,16 +1,20 @@
 "use strict";
 
+export const EXPLANATIONS = {
+  clear:  "clear more tiles on the minefield than opponent!",
+  detect: "detect more mines on the minefield than opponent!",
+  parallel: "clear your minefield before opponent!"
+};
+
+export const OPTION_LABELS = {
+  clear: "clear minefield",
+  detect: "detect mines",
+  parallel: "compete"
+};
+
 export const CONTENT = {
-  clear: {
-    label: "clear minefield",
-    explanation: "clear more tiles on the minefield than opponent.",
-  },
-  detect: {
-    label: "detect mines",
-    explanation: "detect more mines on the minefield than opponent.",
-  },
-  parallel: {
-    label: "compete",
-    explanation: "clear your minefield before opponent does.",
-  },
+  title: "VS mode",
+  labels: {
+    vsMode: "game goal"
+  }
 };

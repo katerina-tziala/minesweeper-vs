@@ -6,9 +6,12 @@ import { BotMode } from "GameEnums";
 
 import { GameSettingsWizard } from "../game-settings-wizard";
 
+import { CONTENT } from "./bot-mode-wizard.constants";
 export class BotModeWizard extends GameSettingsWizard {
   constructor(onSubmit, botMode) {
     super(onSubmit, undefined);
+    this.title = CONTENT.title;
+    this.labels = CONTENT.labels;
     this.#setModeSettings(botMode);
     this.#init();
   }
@@ -31,7 +34,6 @@ export class BotModeWizard extends GameSettingsWizard {
     this.emitChanges();
   }
 
-  // OVERIDDEN FUNCTIONS
   get name() {
     return "botMode";
   }

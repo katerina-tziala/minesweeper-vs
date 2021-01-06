@@ -12,25 +12,16 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const CONTENT = {
-  level: "level",
-  rows: "minefield rows",
-  columns: "minefield columns",
-  numberOfMines: "number of mines",
-  marks: "marks",
-  wrongFlagHint: "wrong flag hint",
+  // level: "level",
+  // rows: "minefield rows",
+  // columns: "minefield columns",
+  // numberOfMines: "number of mines",
+  // marks: "marks",
+  // wrongFlagHint: "wrong flag hint",
   vsMode: "VS mode",
-  unlimitedFlags: "unlimited flags",
-  openStrategy: "open strategy",
-  sneakPeek: "sneak peek",
-  sneakPeekDuration: "sneak peek duration",
-  tileRevealing: "reveal tiles",
-  turnTimer: "turn timer",
-  turnDuration: "turn duration (sec)",
-  missedTurnsLimit: "allowed missed turns",
-  consecutiveTurns: "consecutive missed turns",
-  identicalMines: "identical minefield",
-  openCompetition: "open competition",
-  botMode: "bot mode",
+
+  botMode: "bot difficulty",
+  // tileFlagging: "strategy",
 };
 
 export const WIZARD_NAME = {
@@ -41,9 +32,9 @@ export const WIZARD_NAME = {
 };
 
 export const TITLES = {
-  levelSettings: "set up game level",
-  optionsSettings: "set up game options",
-  turnSettings: "set up turn options",
-  vsModeSettings: "set up VS mode",
-  botMode: "set up bot mode",
+  // levelSettings: "game level",
+  // optionsSettings: "game options",
+  // turnSettings: "turn options",
+  vsModeSettings: "VS mode",
+  botMode: "bot",
 };

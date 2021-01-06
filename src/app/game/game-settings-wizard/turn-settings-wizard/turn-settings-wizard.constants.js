@@ -17,3 +17,13 @@ export const LIMITS = {
     min: 3,
   },
 };
+
+export const CONTENT = {
+  title: "game turns",
+  labels: {
+    turnTimer: "turn timer",
+    turnDuration: "turn duration (sec)",
+    missedTurnsLimit: "allowed missed turns",
+    consecutiveTurns: "consecutive missed turns"
+  }
+};

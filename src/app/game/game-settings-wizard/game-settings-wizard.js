@@ -3,11 +3,6 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-import { clone } from "~/_utils/utils";
-import { DropdownSelect, Switcher } from "UserInputs";
-
 import { UserInputsGroupController } from "UserInputs";
 import {
   DOM_ELEMENT_CLASS,
@@ -22,6 +17,7 @@ export class GameSettingsWizard {
   constructor(onSubmit) {
     this.onSubmit = onSubmit;
     this.#inputsGroup = new UserInputsGroupController();
+    this.labels = CONTENT;
   }
 
   get inputsGroup() {
@@ -96,22 +92,22 @@ export class GameSettingsWizard {
   }
 
   generateSettingsWizard() {
+    const fragment = document.createDocumentFragment();
     const wizardContainer = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.wizardContainer,
     ]);
     wizardContainer.append(this.generateWizardTitle());
     wizardContainer.append(this.generateWizardInputs());
-    return wizardContainer;
+    fragment.append(wizardContainer);
+    return fragment;
   }
 
   generateWizardTitle() {
-    const titleContainer = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.wizardTitleContainer,
-    ]);
-    titleContainer.innerHTML = `<div class="${
-      DOM_ELEMENT_CLASS.wizardTitleIcon
-    } ${this.titleStyleClass}"></div>
-    <div class="${DOM_ELEMENT_CLASS.wizardTitle}">${TITLES[this.name]}</div>`;
+    const titleContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardTitleContainer]);
+    const titleIcon = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardTitleIcon, this.titleStyleClass]);
+    const title = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizardTitle]);
+    title.innerHTML = this.title;
+    titleContainer.append(titleIcon, title);
     return titleContainer;
   }
 
@@ -136,6 +132,9 @@ export class GameSettingsWizard {
     return sectionContainer;
   }
 
+
+
+  
   getFieldExplanationID(fieldName) {
     return (
       DOM_ELEMENT_CLASS.sectionContainer +
@@ -159,7 +158,7 @@ export class GameSettingsWizard {
 
   generateSectionLabel(inputName) {
     const label = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.label]);
-    label.innerHTML = CONTENT[inputName];
+    label.innerHTML = this.labels[inputName];
     return label;
   }
 }

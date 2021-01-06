@@ -1,0 +1,19 @@
+@use "sass:color";
+@use "sass:list";
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .settings-wizard-title-container {
+    color: color.adjust(theming.getThemeColor($theme, "theme-primary"), $lightness: 1, $alpha: -0.3);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

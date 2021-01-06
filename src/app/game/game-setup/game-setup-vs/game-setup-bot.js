@@ -39,11 +39,13 @@ export class GameSetupBot extends GameSetupVS {
   }
 
   generateContent() {
-    const fragment = super.generateContent();
+    const fragment = document.createDocumentFragment();
+    //const fragment = super.generateContent();
     if (this.#onVsMode) {
       const botWizard = this.#initBotModeWizard();
       fragment.append(botWizard.generateSettingsWizard());
     }
+    fragment.append(super.generateContent());
     return fragment;
   }
 

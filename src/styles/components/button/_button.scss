@@ -48,7 +48,10 @@
 .btn-icon--close {
   @include afterIcon(x);
   &::after {
-    width: 13px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 18px;
   }
 }
 
@@ -65,14 +68,14 @@
   }
 
   &.btn-icon--reset {
-    font-size: 1.1rem;
-    padding-left: 1px;
+    font-size: 16px;
   }
 
   &.btn-icon--play {
-    font-size: 1rem;
+    font-size: 14px;
+
     &::after {
-      width: 9px;
+      width: 10px;
     }
   }
 

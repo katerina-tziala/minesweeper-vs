@@ -8,13 +8,15 @@ import { GameVSMode } from "GameEnums";
 import { GameSettingsWizard } from "../game-settings-wizard";
 import { WIZARD_NAME } from "../game-settings-wizard.constants";
 
-import { CONTENT } from "./vs-mode-wizard.constants";
+import { CONTENT, OPTION_LABELS, EXPLANATIONS } from "./vs-mode-wizard.constants";
 
 export class VSModeWizard extends GameSettingsWizard {
   #_parallelAllowed;
 
   constructor(onSubmit, settings, parallelAllowed = false) {
     super(onSubmit, settings);
+    this.title = CONTENT.title;
+    this.labels = CONTENT.labels;
     this.#parallelAllowed = parallelAllowed;
     this.#init();
   }
@@ -32,7 +34,7 @@ export class VSModeWizard extends GameSettingsWizard {
   }
 
   get #modeExplanation() {
-    return `<div>${CONTENT[this.settings.vsMode].explanation}</div>`;
+    return `<div>${EXPLANATIONS[this.settings.vsMode]}</div>`;
   }
 
   get #initialSettingsMode() {
@@ -80,7 +82,7 @@ export class VSModeWizard extends GameSettingsWizard {
   }
 
   getOptionLabel(enumValue) {
-    return CONTENT[enumValue].label;
+    return OPTION_LABELS[enumValue];
   }
 
   get defaultSettings() {

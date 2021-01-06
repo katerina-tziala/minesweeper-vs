@@ -10,7 +10,7 @@ import { LevelSettings } from "GameModels";
 import { GameSettingsWizard } from "../game-settings-wizard";
 import { WIZARD_NAME } from "../game-settings-wizard.constants";
 
-import { SETTINGS_PROPERTIES, LIMITS } from "./level-wizard.constants";
+import { SETTINGS_PROPERTIES, LIMITS, CONTENT } from "./level-wizard.constants";
 
 export class LevelWizard extends GameSettingsWizard {
   #_customLevelSettings;
@@ -18,6 +18,8 @@ export class LevelWizard extends GameSettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit);
     this.#init(settings);
+    this.title = CONTENT.title;
+    this.labels = CONTENT.labels;
   }
 
   get #customLevelSettings() {

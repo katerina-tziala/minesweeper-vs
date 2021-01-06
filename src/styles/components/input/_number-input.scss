@@ -30,26 +30,32 @@
 
 .number-input-control-btn {
   width: 100%;
-  height: 11px;
   font-size: 10px;
-  line-height: 9px;
+  height: 11px;
 
   &.number-input-control-btn--up {
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     margin-bottom: 1px;
-    @include afterIcon("caret-up");
+    position: relative;
+
+    &::after {
+      @extend .icon-caret-up;
+      position: absolute;
+      top: 0px;
+    }
   }
 
   &.number-input-control-btn--down {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    @include afterIcon("caret-down");
-  }
-
-  &::after {
-    height: 10px;
-    width: 6px !important;
+    position: relative;
+  
+    &::after {
+      @extend .icon-caret-down;
+      position: absolute;
+      top: 0px;
+    }
   }
 }
 

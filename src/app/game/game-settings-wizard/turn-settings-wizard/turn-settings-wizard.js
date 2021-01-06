@@ -7,11 +7,13 @@ import { TurnSettings } from "GameModels";
 import { GameSettingsWizard } from "../game-settings-wizard";
 import { WIZARD_NAME } from "../game-settings-wizard.constants";
 
-import { FIELD_NAME, LIMITS } from "./turn-settings-wizard.constants";
+import { FIELD_NAME, LIMITS, CONTENT } from "./turn-settings-wizard.constants";
 
 export class TurnSettingsWizard extends GameSettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit, settings);
+    this.title = CONTENT.title;
+    this.labels = CONTENT.labels;
     this.#init();
   }
 

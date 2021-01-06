@@ -42,6 +42,7 @@ export class GameSetupPage extends Page {
   }
 
   renderPage(mainContainer) {
+    console.log("GameSetupPage");
     this.#initializeWizard().then((gameWizard) => {
       this.gameWizard = gameWizard;
       mainContainer.append(this.gameWizard.generateWizard());

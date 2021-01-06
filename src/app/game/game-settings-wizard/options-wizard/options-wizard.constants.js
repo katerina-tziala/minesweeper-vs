@@ -6,18 +6,21 @@ export const SETTINGS_PROPERTIES = {
     "unlimitedFlags",
     "wrongFlagHint",
     "marks",
+    "tileFlagging",
     "openStrategy",
     "sneakPeek",
     "sneakPeekDuration",
+    "sneakPeekLimit",
   ],
-  detect: ["unlimitedFlags", "wrongFlagHint", "marks", "tileRevealing"],
+  detect: ["unlimitedFlags", "wrongFlagHint", "tileRevealing", "marks"],
   parallel: [
+    "identicalMines",
     "marks",
     "wrongFlagHint",
-    "identicalMines",
     "openCompetition",
     "sneakPeek",
     "sneakPeekDuration",
+    "sneakPeekLimit",
   ],
 };
 
@@ -33,4 +36,35 @@ export const LIMITS = {
     max: 10,
     min: 3,
   },
+};
+
+export const LABELS = {
+  marks: "marks",
+  tileRevealing: "reveal tiles",
+  identicalMines: "identical minefield",
+  tileFlagging: "strategy",
+  wrongFlagHint: "wrong flag hint",
+  unlimitedFlags: "unlimited flags",
+  openCompetition: "open competition",
+  openStrategy: "open strategy",
+  sneakPeek: "sneak peek",
+  sneakPeekDuration: "sneak peek duration",
+  sneakPeekLimit: "sneak peeks limit",
+};
+
+
+export const CONTENT = {
+  title: "game options",
+  labels: {
+    marks: "marks",
+    tileRevealing: "reveal tiles",
+    identicalMines: "identical minefield",
+    tileFlagging: "strategy",
+    wrongFlagHint: "wrong flag hint",
+    unlimitedFlags: "unlimited flags",
+    openCompetition: "open competition",
+    openStrategy: "open strategy",
+    sneakPeek: "sneak peek",
+    sneakPeekDuration: "sneak peek duration",
+  }
 };
