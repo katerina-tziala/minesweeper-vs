@@ -7,7 +7,6 @@ export class LocalStorageHelper {
 
   static retrieve(keyName) {
     const item = localStorage.getItem(keyName);
-    console.log(keyName, item);
     return item ? JSON.parse(item) : undefined;
   }
 
