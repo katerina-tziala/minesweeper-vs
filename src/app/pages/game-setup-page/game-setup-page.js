@@ -43,7 +43,9 @@ export class GameSetupPage extends Page {
         console.log("now animate");
         console.log(wizard.getBoundingClientRect());
 
-
+        // var height = elem.scrollHeight + 'px'; // Get it's height
+        // elem.style.display = ''; //  Hide it again
+        // return height;
       });
      
     });
