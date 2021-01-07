@@ -7,6 +7,7 @@ export class LocalStorageHelper {
 
   static retrieve(keyName) {
     const item = localStorage.getItem(keyName);
+    console.log(keyName, item);
     return item ? JSON.parse(item) : undefined;
   }
 
@@ -24,10 +25,6 @@ export class LocalStorageHelper {
 
   static get appSettings() {
     return LocalStorageHelper.retrieve("appSettings");
-  }
-
-  static getGameSetUp(type) {
-    return LocalStorageHelper.retrieve(`gameSetup-${type}`);
   }
 
   static removeGameSetUp(type) {

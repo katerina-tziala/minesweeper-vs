@@ -40,7 +40,7 @@ export class GameSetup {
 
   initGameParams() {
     this.#_gameParams = {};
-    const currentParams = LocalStorageHelper.getGameSetUp(this.type);
+    const currentParams = LocalStorageHelper.getGameSetUp(this.gameType);
     if (currentParams) {
       this.#_gameParams = currentParams;
     }
