@@ -36,8 +36,16 @@ export class GameSetupPage extends Page {
   renderPage(mainContainer) {
     this.#loadWizard().then((gameWizard) => {
       this.gameWizard = gameWizard;
-      mainContainer.append(this.gameWizard.generateWizard());
-      this.hideLoader();
+      this.gameWizard.generateWizard().then(wizard => {
+        this.hideLoader();
+        mainContainer.append(wizard);
+
+        console.log("now animate");
+        console.log(wizard.getBoundingClientRect());
+
+
+      });
+     
     });
   }
 

@@ -115,8 +115,7 @@ export class GameSetup {
     wizardContainer.append(this.generateWizardHeader());
     wizardContainer.append(this.generateContentSection());
     wizardContainer.append(this.generateStepperSection());
-    console.log("now animate");
-    return wizardContainer;
+    return Promise.resolve(wizardContainer);
   }
 
   generateWizardContainer() {

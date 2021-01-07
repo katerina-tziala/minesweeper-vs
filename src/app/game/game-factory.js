@@ -4,13 +4,14 @@ import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone } from "~/_utils/utils.js";
 
 import { GameType, GameVSMode } from "GameEnums";
-import { LevelSettings, TurnSettings, Player, BotPlayer } from "GameModels";
+import { LevelSettings, OptionsSettings, TurnSettings, Player, BotPlayer } from "GameModels";
 
 export class GameFactory {
 
   static getGameModelParams(gameParams) {
     gameParams = clone(gameParams);
     gameParams.levelSettings = GameFactory.getLevelSettings(gameParams.levelSettings);
+    gameParams.optionsSettings = GameFactory.getOptionsSettings(gameParams.optionsSettings);
 
     if (gameParams.turnSettings) {
       const turnSettings = new TurnSettings();
@@ -19,6 +20,19 @@ export class GameFactory {
     }
 
     return gameParams;
+  }
+
+  static getLevelSettings(settingsData) {
+    const settings = new LevelSettings();
+    settings.update(settingsData);
+    return settings;
+  }
+
+  static getOptionsSettings(settingsData) {
+    const settings = new OptionsSettings();
+    settings.update(settingsData);
+    settings.initOptionsBasedOnTileFlagging();
+    return settings;
   }
 
   static loadGame(gameParams, gameId) {
@@ -37,12 +51,6 @@ export class GameFactory {
       default:
         return undefined;
     }
-  }
-
-  static getLevelSettings(settings) {
-    const levelSettings = new LevelSettings();
-    levelSettings.update(settings);
-    return levelSettings;
   }
 
   static getPlayer() {
