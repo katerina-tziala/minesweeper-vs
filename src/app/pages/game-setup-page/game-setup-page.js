@@ -1,14 +1,9 @@
 "use strict";
 
 import "../../../styles/pages/_game-setup.scss";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { enumKey } from "~/_utils/utils";
-
 import { Page } from "../page";
-
 import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
-
 import { GameType } from "GameEnums";
 
 export class GameSetupPage extends Page {
@@ -31,19 +26,15 @@ export class GameSetupPage extends Page {
     return this.#_gameType;
   }
 
-  #initializeWizard() {
+  #loadWizard() {
     const wizardName = `GameSetup${enumKey(GameType, this.#_gameType)}`;
     return import(`GameSetUp`).then((module) => {
-      return new module[wizardName](
-        this.navigateToHome,
-        this.onPlayGame.bind(this),
-      );
+      return new module[wizardName](this.navigateToHome, this.onPlayGame.bind(this));
     });
   }
 
   renderPage(mainContainer) {
-    console.log("GameSetupPage");
-    this.#initializeWizard().then((gameWizard) => {
+    this.#loadWizard().then((gameWizard) => {
       this.gameWizard = gameWizard;
       mainContainer.append(this.gameWizard.generateWizard());
       this.hideLoader();

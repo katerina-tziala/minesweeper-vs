@@ -144,11 +144,9 @@ export class GameDefault extends Game {
   onGameOver(boardTiles = []) {
     this.setStatisticsOnRoundEnd(boardTiles);
     this.setGameBoardOnGameOver();
-    console.log(this.isDraw);
-    //check for draw for board face
   }
 
   setGameBoardOnGameOver(isDraw = this.isDraw) {
-    this.gameBoard.setBoardOnGameOver(isDraw);
+    return this.gameBoard.setBoardOnGameOver(isDraw);
   }
 }

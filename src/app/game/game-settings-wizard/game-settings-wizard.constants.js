@@ -11,30 +11,9 @@ export const DOM_ELEMENT_CLASS = {
   fieldExplanation: "settings-wizard-field-explanation",
 };
 
-export const CONTENT = {
-  // level: "level",
-  // rows: "minefield rows",
-  // columns: "minefield columns",
-  // numberOfMines: "number of mines",
-  // marks: "marks",
-  // wrongFlagHint: "wrong flag hint",
-  vsMode: "VS mode",
-
-  botMode: "bot difficulty",
-  // tileFlagging: "strategy",
-};
-
 export const WIZARD_NAME = {
   vsModeSettings: "vsModeSettings",
   levelSettings: "levelSettings",
   turnSettings: "turnSettings",
   optionsSettings: "optionsSettings",
-};
-
-export const TITLES = {
-  // levelSettings: "game level",
-  // optionsSettings: "game options",
-  // turnSettings: "turn options",
-  vsModeSettings: "VS mode",
-  botMode: "bot",
 };

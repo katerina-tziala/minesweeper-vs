@@ -93,9 +93,7 @@ export class GameSetup {
   }
 
   getGameParamsForWizard(wizardName) {
-    return Object.keys(this.gameParams).includes(wizardName)
-      ? this.gameParams[wizardName]
-      : undefined;
+    return Object.keys(this.gameParams).includes(wizardName) ? this.gameParams[wizardName] : undefined;
   }
 
   initLevelWizard() {
@@ -117,6 +115,7 @@ export class GameSetup {
     wizardContainer.append(this.generateWizardHeader());
     wizardContainer.append(this.generateContentSection());
     wizardContainer.append(this.generateStepperSection());
+    console.log("now animate");
     return wizardContainer;
   }
 

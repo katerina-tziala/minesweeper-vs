@@ -4,11 +4,7 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { UserInputsGroupController } from "UserInputs";
-import {
-  DOM_ELEMENT_CLASS,
-  CONTENT,
-  TITLES,
-} from "./game-settings-wizard.constants";
+import { DOM_ELEMENT_CLASS } from "./game-settings-wizard.constants";
 
 export class GameSettingsWizard {
   #settings;
@@ -17,7 +13,6 @@ export class GameSettingsWizard {
   constructor(onSubmit) {
     this.onSubmit = onSubmit;
     this.#inputsGroup = new UserInputsGroupController();
-    this.labels = CONTENT;
   }
 
   get inputsGroup() {
@@ -132,9 +127,6 @@ export class GameSettingsWizard {
     return sectionContainer;
   }
 
-
-
-  
   getFieldExplanationID(fieldName) {
     return (
       DOM_ELEMENT_CLASS.sectionContainer +

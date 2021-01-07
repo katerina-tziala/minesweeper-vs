@@ -1,5 +1,5 @@
 "use strict";
-import { GameType } from "GameEnums";
+import { GameType, BotMode } from "GameEnums";
 import { BotPlayer } from "GameModels";
 
 import { GameSetupVS } from "./_game-setup-vs";
@@ -29,7 +29,6 @@ export class GameSetupBot extends GameSetupVS {
     this.opponent.mode = params.value.botMode;
   }
 
-  // OVERIDDEN FUNCTIONS
   get gameType() {
     return GameType.Bot;
   }
@@ -40,7 +39,6 @@ export class GameSetupBot extends GameSetupVS {
 
   generateContent() {
     const fragment = document.createDocumentFragment();
-    //const fragment = super.generateContent();
     if (this.#onVsMode) {
       const botWizard = this.#initBotModeWizard();
       fragment.append(botWizard.generateSettingsWizard());
@@ -55,4 +53,5 @@ export class GameSetupBot extends GameSetupVS {
       this.opponent.mode = BotMode.Easy;
     }
   }
+
 }

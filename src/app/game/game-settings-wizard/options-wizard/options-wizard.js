@@ -13,7 +13,9 @@ import {
   SETTINGS_PROPERTIES,
   FIELD_NAME,
   LIMITS,
-  CONTENT
+  CONTENT,
+  FIELDS_BASED_ON_STRATEGY,
+  SNEAK_PEEK_NUMBER_INPUTS
 } from "./options-wizard.constants";
 
 export class OptionsWizard extends GameSettingsWizard {
@@ -35,13 +37,23 @@ export class OptionsWizard extends GameSettingsWizard {
     return this.settings.openStrategy || this.settings.openCompetition;
   }
 
-  get #sneakPeekDurationDisabled() {
+  get #sneakPeekNumberDisabled() {
     return this.#sneakPeekDisabled ? true : !this.settings.sneakPeek;
   }
 
-  get #sneakPeakDurationLimits() {
-    const limits = clone(LIMITS.sneakPeekDuration);
-    if (this.#sneakPeekDurationDisabled) {
+  get #controllersBasedOnStrategy() {
+    return Object.keys(this.settings)
+      .filter(settingName => FIELDS_BASED_ON_STRATEGY.includes(settingName))
+      .map(inputName => this.inputsGroup.getController(inputName));
+  }
+
+  get #sneakPeekNumberControllers() {
+    return SNEAK_PEEK_NUMBER_INPUTS.map(inputName => this.inputsGroup.getController(inputName));
+  }
+
+  #sneakPeakBoundaries(fieldName) {
+    const limits = clone(LIMITS[fieldName]);
+    if (this.#sneakPeekNumberDisabled) {
       limits.min = 0;
     }
     return limits;
@@ -64,6 +76,11 @@ export class OptionsWizard extends GameSettingsWizard {
 
   #generateSettingController(fieldName) {
     switch (fieldName) {
+      case FIELD_NAME.tileFlagging:
+        return this.#generateSwitcher(
+          fieldName,
+          this.#onTileFlaggingChange.bind(this),
+        );
       case FIELD_NAME.openStrategy:
       case FIELD_NAME.openCompetition:
         return this.#generateSwitcher(
@@ -77,7 +94,8 @@ export class OptionsWizard extends GameSettingsWizard {
           this.#sneakPeekDisabled,
         );
       case FIELD_NAME.sneakPeekDuration:
-        return this.#generateSneakPeekDurationInput();
+      case FIELD_NAME.sneakPeeksLimit:
+        return this.#generateSneakPeekNumberInput(fieldName);
       default:
         return this.#generateSwitcher(fieldName);
     }
@@ -94,15 +112,26 @@ export class OptionsWizard extends GameSettingsWizard {
     return controller;
   }
 
-  #generateSneakPeekDurationInput() {
-    const controller = new NumberInput(
-      FIELD_NAME.sneakPeekDuration,
-      this.settings.sneakPeekDuration.toString(),
-      this.#onSneakPeekDurationChange.bind(this),
-    );
-    controller.boundaries = this.#sneakPeakDurationLimits;
-    controller.disabled = this.#sneakPeekDurationDisabled;
+  #generateSneakPeekNumberInput(fieldName) {
+    const controller = new NumberInput(fieldName, this.settings[fieldName].toString(), this.#onSneakPeekNumberInputChange.bind(this));
+    controller.boundaries = this.#sneakPeakBoundaries(fieldName);
+    controller.disabled = this.#sneakPeekNumberDisabled;
     return controller;
+  }
+
+  #onTileFlaggingChange(params) {
+    this.settings[params.name] = params.value;
+    const controllers = this.#controllersBasedOnStrategy;
+
+    if (!this.settings.tileFlagging) {
+      controllers.forEach(controller => controller.disable());
+      this.#sneakPeekNumberControllers.forEach(controller => controller.disable());
+      this.emitChanges();
+      return;
+    }
+
+    controllers.forEach(controller => controller.enable());
+    this.#updateSneakPeekSettings();
   }
 
   #onOptionSettingChange(params) {
@@ -112,17 +141,26 @@ export class OptionsWizard extends GameSettingsWizard {
 
   #onOpenStrategyChange(params) {
     this.settings[params.name] = params.value;
+    this.#updateSneakPeekSettings();
+  }
+
+  #updateSneakPeekSettings() {
     const controller = this.inputsGroup.getController(FIELD_NAME.sneakPeek);
+    if (this.#sneakPeekDisabled) {
+      this.settings.sneakPeek = false;
+      controller.value = false;
+      controller.updateSwitcherDisplay();
+    }
     this.#sneakPeekDisabled ? controller.disable() : controller.enable();
-    this.#updateSneakPeekDuration();
+    this.#updateSneakPeekNumberInputs();
   }
 
   #onSneakPeekChange(params) {
     this.settings[params.name] = params.value;
-    this.#updateSneakPeekDuration();
+    this.#updateSneakPeekNumberInputs();
   }
 
-  #onSneakPeekDurationChange(params) {
+  #onSneakPeekNumberInputChange(params) {
     if (!params.valid) {
       this.emitChanges();
       return;
@@ -130,19 +168,18 @@ export class OptionsWizard extends GameSettingsWizard {
     this.#onOptionSettingChange(params);
   }
 
-  #updateSneakPeekDuration() {
-    const controller = this.inputsGroup.getController(
-      FIELD_NAME.sneakPeekDuration,
-    );
-    this.#sneakPeekDurationDisabled
-      ? controller.disable()
-      : controller.enable();
-    controller.boundaries = this.#sneakPeakDurationLimits;
-    controller.value = this.settings.sneakPeekDuration.toString();
+  #updateSneakPeekNumberInputs() {
+    this.#sneakPeekNumberControllers.forEach(controller => this.#updateSneakPeekNumberController(controller));
+  }
+
+  #updateSneakPeekNumberController(controller) {
+    this.#sneakPeekNumberDisabled ? controller.disable() : controller.enable();
+    controller.boundaries = this.#sneakPeakBoundaries(controller.name);
+    controller.value = controller.boundaries.min.toString();
+    controller.setFieldValue();
     controller.validateInputTypeValue();
   }
 
-  // OVERIDDEN FUNCTIONS
   get name() {
     return WIZARD_NAME.optionsSettings;
   }

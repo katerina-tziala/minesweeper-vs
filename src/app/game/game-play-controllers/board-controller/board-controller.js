@@ -31,7 +31,7 @@ export class BoardController {
 
 
 
-    console.log(this.optionsSettings);
+    // console.log(this.optionsSettings);
 
 
     

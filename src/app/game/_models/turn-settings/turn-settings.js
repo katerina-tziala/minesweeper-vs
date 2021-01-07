@@ -23,4 +23,8 @@ export class TurnSettings extends AppModel {
     return this.roundTimer && this.consecutiveTurns;
   }
 
+  get turnsLimit() {
+    return this.roundTimer ? this.missedTurnsLimit : null;
+  }
+
 }

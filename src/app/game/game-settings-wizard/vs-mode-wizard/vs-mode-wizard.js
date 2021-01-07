@@ -14,7 +14,8 @@ export class VSModeWizard extends GameSettingsWizard {
   #_parallelAllowed;
 
   constructor(onSubmit, settings, parallelAllowed = false) {
-    super(onSubmit, settings);
+    super(onSubmit);
+    this.settings = settings;
     this.title = CONTENT.title;
     this.labels = CONTENT.labels;
     this.#parallelAllowed = parallelAllowed;

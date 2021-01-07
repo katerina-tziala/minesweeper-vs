@@ -39,10 +39,10 @@ export class GameSetupVS extends GameSetup {
     this.#_wizardSteps =
       selectedMode === GameVSMode.Parallel
         ? [
-            WIZARD_NAME.vsModeSettings,
-            WIZARD_NAME.levelSettings,
-            WIZARD_NAME.optionsSettings,
-          ]
+          WIZARD_NAME.vsModeSettings,
+          WIZARD_NAME.levelSettings,
+          WIZARD_NAME.optionsSettings,
+        ]
         : Object.keys(WIZARD_NAME);
   }
 
@@ -106,8 +106,7 @@ export class GameSetupVS extends GameSetup {
   }
 
   getSettingsController(wizardName) {
-    const controller =
-      super.getSettingsController(wizardName) ||
+    const controller = super.getSettingsController(wizardName) ||
       this.generateSettingsController(wizardName);
     return controller;
   }
@@ -163,11 +162,13 @@ export class GameSetupVS extends GameSetup {
 
   onStepChange() {
     this.stepper.submissionButtonDisabled = false;
+
     this.settingsControllers.forEach((controller) => {
       if (controller.name !== this.wizardStepName) {
         this.removeController(controller.name);
       }
     });
+
     this.updateWizardContent();
   }
 

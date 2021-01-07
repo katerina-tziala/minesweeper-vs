@@ -78,6 +78,10 @@ export class GameVS extends GameDefault {
   }
 
   init() {
+
+
+    console.log(this.turnSettings);
+
     this.players.forEach((player) => {
       player.initState(
         this.goalTargetNumber,
@@ -118,7 +122,7 @@ export class GameVS extends GameDefault {
   }
 
   get #turnsLimit() {
-    return this.turnSettings ? this.turnSettings.missedTurnsLimit : null;
+    return this.turnSettings ? this.turnSettings.turnsLimit : null;
   }
 
   switchTurns() {
@@ -272,7 +276,6 @@ export class GameVS extends GameDefault {
   }
 
   onGameOver(boardTiles = []) {
-   
     this.setWinnerOnGameOver();
     super.onGameOver(boardTiles);
     this.#displayGameOverMessage().then(() => {
@@ -293,11 +296,6 @@ export class GameVS extends GameDefault {
     if (this.isDraw) {
       return this.messageController.displayDrawMessage(this.player, this.opponent).then(() => {
         //TODO: confetti of both colors
-      });
-    }
-    if (this.isSharedDevice) {
-      return this.messageController.displayDrawMessage(this.winner, this.looser, this.gameOverType).then(() => {
-        //TODO: confetti of winner
       });
     }
     return this.messageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {

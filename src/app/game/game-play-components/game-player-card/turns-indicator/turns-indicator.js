@@ -2,6 +2,7 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { valueDefined } from "~/_utils/validator";
 
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./turns-indicator.constants";
 
@@ -49,6 +50,9 @@ export class TurnsIndicator {
 
   // UPDATE
   static update(player) {
+    if (!valueDefined(player.allowedTurns)) {
+      return Promise.resolve();
+    }
     return TurnsIndicator.getTurnsIndicatorContainer(player).then(
       (turnsContainer) => {
         const turnsIndicators = turnsContainer.childNodes;

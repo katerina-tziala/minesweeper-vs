@@ -41,7 +41,6 @@ export class GameParallel extends Game {
   }
 
   get #openCompetition() {
-    console.log(this.optionsSettings);
     if (valueDefined(this.optionsSettings.openCompetition)) {
       return this.optionsSettings.openCompetition;
     }

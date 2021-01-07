@@ -3,7 +3,6 @@
 import { ElementGenerator, ElementHandler } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./vs-dashboard-controller.constants";
 import { GamePlayerCard as PlayerCard, VSBoard } from "GamePlayComponents";
-import { valueDefined } from "~/_utils/validator";
 export class VSDashboardController {
 
   constructor(wrongFlagHint = false, clearMinefield = true) {

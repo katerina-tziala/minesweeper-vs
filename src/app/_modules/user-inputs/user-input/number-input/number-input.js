@@ -177,7 +177,7 @@ export class NumberInput extends TextInput {
       this.notifyForChanges();
       return;
     }
-    if (!this.valueInLimits()) {
+    if (!this.valueInLimits) {
       this.onValueOutOfLimits();
       return;
     }
@@ -193,7 +193,7 @@ export class NumberInput extends TextInput {
     this.notifyForChanges();
   }
 
-  valueInLimits() {
+  get valueInLimits() {
     return this.boundaries
       ? valueInLimits(this.valueInteger, this.boundaries)
       : true;

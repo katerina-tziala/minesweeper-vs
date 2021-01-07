@@ -15,8 +15,17 @@ export class OptionsSettings extends AppModel {
 
   set propertiesVS(vsMode) {
     this.vsMode = vsMode ? vsMode : null;
-    if (vsMode) {
-      this.setModePropertiesVS();
+    this.setModePropertiesVS();
+  }
+
+  initOptionsBasedOnTileFlagging() {
+    if (!this.tileFlagging) {
+      this.marks = false;
+      this.wrongFlagHint = false;
+      this.tileRevealing = true;
+      this.unlimitedFlags = true;
+      this.openStrategy = true;
+      this.setDefaultSneakPeekOptions();
     }
   }
 
@@ -25,8 +34,7 @@ export class OptionsSettings extends AppModel {
       case GameVSMode.Clear:
         this.unlimitedFlags = true;
         this.openStrategy = true;
-        this.sneakPeek = false;
-        this.sneakPeekDuration = 0;
+        this.setDefaultSneakPeekOptions();
         break;
       case GameVSMode.Detect:
         this.unlimitedFlags = true;
@@ -34,9 +42,15 @@ export class OptionsSettings extends AppModel {
       case GameVSMode.Parallel:
         this.identicalMines = true;
         this.openCompetition = true;
-        this.sneakPeek = false;
-        this.sneakPeekDuration = 0;
+        this.setDefaultSneakPeekOptions();
         break;
     }
   }
+
+  setDefaultSneakPeekOptions() {
+    this.sneakPeek = false;
+    this.sneakPeekDuration = 0;
+    this.sneakPeeksLimit = 0;
+  }
+
 }
