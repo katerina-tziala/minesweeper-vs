@@ -140,6 +140,7 @@ export class GameSetupVS extends GameSetup {
     const fragment = document.createDocumentFragment();
     if (this.opponent) {
       fragment.append(this.stepper.generateStepper());
+      console.log("stepper timeline");
     }
     return fragment;
   }
