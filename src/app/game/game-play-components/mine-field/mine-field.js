@@ -1,4 +1,5 @@
 "use strict";
+import { valueDefined } from "~/_utils/validator";
 import { MineFieldGenerator } from "./mine-field-generator";
 import { MineFieldGridSearch } from "./mine-field-grid-search";
 import * as FieldUtils from "./mine-field-utils";
@@ -42,6 +43,18 @@ export class MineField {
     return this.#_optionsSettings;
   }
 
+  get #wrongFlagHint() {
+    return this.#optionsSettings ? this.#optionsSettings.wrongFlagHint : false;
+  }
+
+  get #allowMarks() {
+    return this.#optionsSettings ? this.#optionsSettings.marks : false;
+  }
+
+  get #reveallingAllowed() {
+    return this.#optionsSettings && valueDefined(this.#optionsSettings.tileRevealing) ? this.#optionsSettings.tileRevealing : true;
+  }
+
   get isCleared() {
     return this.#tiles.every((tile) => tile.isMine);
   }
@@ -68,7 +81,7 @@ export class MineField {
   }
 
   get unrevealedMines() {
-    return FieldUtils.nonFlaggedTiles(this.mineTilesOnField).length;
+    return FieldUtils.nonFlaggedTiles(this.mineTilesOnField);
   }
 
   get #unrevealedTilesOnBoard() {
@@ -131,19 +144,65 @@ export class MineField {
     return gridSearch.getAreaToReveal([clickedTile]);
   }
 
-
-  
-  handleTileMarking(player) {
-    console.log("handleTileMarking");
-    console.log(this.#optionsSettings);
+  markingAllowed(tile, player) {
+    return tile.isFlaggedBy(player.id) && this.#allowMarks;
   }
 
-  handleTileRevealing(player) {
-   console.log("handleTileRevealing");
-   console.log(this.#optionsSettings);
+  resetingAllowed(tile, player) {
+    if (tile.isMarkedBy(player.id)) {
+      return true;
+    }
+    if (tile.isFlaggedBy(player.id) && !this.#allowMarks) {
+      return true;
+    }
+
+    return false;
   }
 
+  flaggingAllowed(tile, player) {
+    if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
+      return true;
+    }
+    return false;
+  }
 
+  revealingAllowed(tile) {
+    const tileRevealingAllowed = tile.isUntouched || tile.isMarked;
+    return this.#reveallingAllowed && tileRevealingAllowed;
+  }
+
+  tileFlaggedByOpponent(tile, player) {
+    return tile.isFlagged && !tile.isFlaggedBy(player.id);
+  }
+
+  setFlagOnMinefield(tile, player) {
+    return tile.setFlag(player.id, player.colorType, this.#wrongFlagHint).then(() => {
+      player.flaggedTile(tile.position, tile.isWronglyFlagged);
+      return;
+    });
+  }
+
+  setMarkOnMinefield(tile, player) {
+    return tile.setMark(player.id, player.colorType).then(() => {
+      player.markedTile = tile.position;
+      return;
+    });
+  }
+
+  resetTile(tile, player) {
+    return tile.resetState().then(() => {
+      player.resetedTile = tile.position;
+      return;
+    });
+  }
+
+  flagUnrevealedMines(player) {
+    const unflaggedTiles = this.unrevealedMines;
+    const updates = unflaggedTiles.map((tile) => this.setFlagOnMinefield(tile, player));
+    return Promise.all(updates).then(() => {
+      return unflaggedTiles;
+    });
+  }
 
   // STRATEGY
   hideStrategy(player) {

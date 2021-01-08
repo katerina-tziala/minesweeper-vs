@@ -5,17 +5,18 @@ import {
   MineField,
   MinefieldFreezer,
   MinesweeperBoard,
-  Dashboard
+  Dashboard,
+  MineFieldUtils 
 } from "GamePlayComponents";
 import { GameAction } from "GameEnums";
 
 import { GameTimer } from "GamePlayControllers";
-import * as FieldUtils from "../../game-play-components/mine-field/mine-field-utils";
+
+
 export class BoardController {
   #_faceColorType;
   #_levelSettings;
   #_playerOnTurn;
-  // HANDLERS
   #MinesweeperBoard;
   #Dashboard;
   #MineField;
@@ -29,13 +30,6 @@ export class BoardController {
     this.optionsSettings = params.optionsSettings;
     this.minefieldActions = minefieldActions;
     this.#MinesweeperBoard = new MinesweeperBoard(gameId);
-
-
-
-    console.log(this.optionsSettings);
-
-
-
     this.#initMinefieldHandlers(gameId);
     this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
   }
@@ -179,10 +173,6 @@ export class BoardController {
     return this.mineField.isCleared;
   }
 
-  get unrevealedMines() {
-    return this.mineField.unrevealedMines;
-  }
-
   get allMinesDetected() {
     return this.mineField.allMinesDetected;
   }
@@ -222,46 +212,31 @@ export class BoardController {
   handleTileAction(action, tile) {
     //console.log(action, tile);
     if (action === GameAction.Mark) {
-      this.mineField.handleTileMarking(tile);
+      this.handleTileMarking(tile);
       return;
     }
-    this.mineField.handleTileRevealing(tile);
+    this.handleTileRevealing(tile);
   }
 
-
-
-
-
-
   getTilesPositions(tiles) {
-    return FieldUtils.tilesPositions(tiles);
+    return MineFieldUtils.tilesPositions(tiles);
   }
 
   //TODO: check logic per game
   revealingAllowed(tile) {
-    return tile.isUntouched || tile.isMarked;
+    return this.mineField.revealingAllowed(tile);
   }
 
-  flaggingAllowed(tile, player = this.playerOnTurn) {
-    if (!tile.isFlagged && !tile.isMarkedBy(player.id) && player.hasFlags) {
-      return true;
-    }
-    return false;
+  markingAllowed(tile) {
+    return this.mineField.markingAllowed(tile, this.playerOnTurn);
   }
 
-  markingAllowed(tile, player = this.playerOnTurn) {
-    return tile.isFlaggedBy(player.id) && this.allowMarks;
+  resetingAllowed(tile) {
+    return this.mineField.resetingAllowed(tile, this.playerOnTurn);
   }
 
-  resetingAllowed(tile, player = this.playerOnTurn) {
-    if (tile.isMarkedBy(this.playerOnTurn.id)) {
-      return true;
-    }
-    if (tile.isFlaggedBy(player.id) && !this.allowMarks) {
-      return true;
-    }
-
-    return false;
+  flaggingAllowed(tile) {
+    return this.mineField.flaggingAllowed(tile, this.playerOnTurn);
   }
 
   handleTileMarking(tile) {
@@ -283,6 +258,33 @@ export class BoardController {
       this.onResetedTile(tile);
       return;
     }
+  }
+
+  onFlaggedTile(tile) {
+    this.mineField.setFlagOnMinefield(tile, this.playerOnTurn).then(() => {
+      this.updateMinesCounter();
+      if (this.minefieldActions.onFlaggedTile) {
+        this.minefieldActions.onFlaggedTile(tile);
+      }
+    });
+  }
+
+  onMarkedTile(tile) {
+    this.mineField.setMarkOnMinefield(tile, this.playerOnTurn).then(() => {
+      this.updateMinesCounter();
+      if (this.minefieldActions.onMarkedTile) {
+        this.minefieldActions.onMarkedTile(tile);
+      }
+    });
+  }
+
+  onResetedTile(tile) {
+    this.mineField.resetTile(tile, this.playerOnTurn).then(() => {
+      this.updateMinesCounter();
+      if (this.minefieldActions.onResetedTile) {
+        this.minefieldActions.onResetedTile(tile);
+      }
+    });
   }
 
   handleTileRevealing(tile) {
@@ -315,47 +317,12 @@ export class BoardController {
   onRevealedTiles(boardTiles, player = this.playerOnTurn) {
     const tilesPositions = this.getTilesPositions(boardTiles);
     player.revealedTiles = tilesPositions;
+    this.submitTileRevealing(boardTiles);
+  }
+
+  submitTileRevealing(boardTiles, cleared = false) {
     if (this.minefieldActions.onRevealedTiles) {
-      this.minefieldActions.onRevealedTiles(boardTiles);
-    }
-  }
-
-  setFlagOnMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.setFlag(player.id, player.colorType, this.wrongFlagHint);
-    player.flaggedTile(tile.position, tile.isWronglyFlagged);
-  }
-
-  onFlaggedTile(tile) {
-    this.setFlagOnMinefieldTile(tile);
-    this.updateMinesCounter();
-    if (this.minefieldActions.onFlaggedTile) {
-      this.minefieldActions.onFlaggedTile(tile);
-    }
-  }
-
-  resetMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.resetState();
-    player.resetedTile = tile.position;
-  }
-
-  onResetedTile(tile) {
-    this.resetMinefieldTile(tile);
-    this.updateMinesCounter();
-    if (this.minefieldActions.onResetedTile) {
-      this.minefieldActions.onResetedTile(tile);
-    }
-  }
-
-  setMarkOnMinefieldTile(tile, player = this.playerOnTurn) {
-    tile.setMark(player.id, player.colorType);
-    player.markedTile = tile.position;
-  }
-
-  onMarkedTile(tile) {
-    this.setMarkOnMinefieldTile(tile);
-    this.updateMinesCounter();
-    if (this.minefieldActions.onMarkedTile) {
-      this.minefieldActions.onMarkedTile(tile);
+      this.minefieldActions.onRevealedTiles(boardTiles, cleared);
     }
   }
 

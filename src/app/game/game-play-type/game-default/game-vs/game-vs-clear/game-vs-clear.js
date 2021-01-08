@@ -5,6 +5,9 @@ import { GameVS } from "../_game-vs";
 import {
   BoardControllerVSClear as BoardController
 } from "GamePlayControllers";
+
+import { tilesPositions } from "~/game/game-play-components/mine-field/mine-field-utils";
+
 export class GameVSClear extends GameVS {
 
   constructor(id, params, player, opponent) {
@@ -38,10 +41,11 @@ export class GameVSClear extends GameVS {
     });
   }
 
-  onRevealedTiles(revealedTiles, positions, cleared) {
+  onRevealedTiles(revealedTiles, cleared) {
     if (cleared) {
       this.setGameEnd(GameOverType.Cleared);
     }
+    const positions = tilesPositions(revealedTiles);
     this.updatedCards(positions).then(() => {
       if (this.isOver) {
         this.onGameOver(revealedTiles);
@@ -130,4 +134,5 @@ export class GameVSClear extends GameVS {
 
     return this.updatedPlayerCard(params);
   }
+
 }

@@ -2,6 +2,7 @@ export { MinesweeperBoard } from "./minesweeper-board/minesweeper-board";
 export { DashboardFaceIcon } from "./dashboard-face-icon/dashboard-face-icon";
 export { DigitalCounter } from "./digital-counter/digital-counter";
 export { MineField } from "./mine-field/mine-field";
+export * as MineFieldUtils from "./mine-field/mine-field-utils";
 export { MinefieldFreezer } from "./minefield-freezer/minefield-freezer";
 
 

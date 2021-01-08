@@ -1,22 +1,10 @@
 "use strict";
-
-import { valueDefined } from "~/_utils/validator";
 import { BoardControllerVS } from "./_board-controller-vs";
 
 export class BoardControllerVSDetect extends BoardControllerVS {
 
   constructor(gameId, params, minefieldActions, onRoundTimerEnd) {
     super(gameId, params, minefieldActions, onRoundTimerEnd);
-  }
-
-  revealingAllowed(tile) {
-    const tileRevealingAllowed = super.revealingAllowed(tile);
-
-    if (valueDefined(this.optionsSettings.tileRevealing)) {
-      return this.optionsSettings.tileRevealing && tileRevealingAllowed;
-    }
-    
-    return tileRevealingAllowed;
   }
 
   handleTileRevealing(tile) {
@@ -48,16 +36,10 @@ export class BoardControllerVSDetect extends BoardControllerVS {
 
   updateStateOnClearedMinefield(revealedTiles) {
     this.pause();
-    const unflaggedTiles = this.unrevealedMines;
-    unflaggedTiles.forEach((tile) => this.setFlagOnMinefieldTile(tile));
-    const boardTiles = unflaggedTiles.concat(revealedTiles);
-    this.submitTileRevealing(boardTiles, true);
-  }
-
-  submitTileRevealing(boardTiles, cleared = false) {
-    if (this.minefieldActions.onRevealedTiles) {
-      this.minefieldActions.onRevealedTiles(boardTiles, cleared);
-    }
+    this.mineField.flagUnrevealedMines(this.playerOnTurn).then(flaggedTiles => {
+      const boardTiles = flaggedTiles.concat(revealedTiles);
+      this.submitTileRevealing(boardTiles, true);
+    });
   }
 
   onTileDetonation(boardTiles) {
@@ -73,14 +55,6 @@ export class BoardControllerVSDetect extends BoardControllerVS {
   onFlaggedTile(tile) {
     this.#removeFromPlayerStrategy([tile]);
     super.onFlaggedTile(tile);
-  }
-
-  onResetedTile(tile) {
-    this.resetMinefieldTile(tile);
-    this.updateMinesCounter();
-    if (this.minefieldActions.onResetedTile) {
-      this.minefieldActions.onResetedTile(tile);
-    }
   }
 
 }
