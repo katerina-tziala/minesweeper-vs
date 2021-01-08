@@ -12,6 +12,7 @@ import {
 
 import { Game } from "../_game";
 import { GameParallelViewHelper as ViewHelper } from "./_game-parallel-view-helper";
+import { SneakPeekSettings } from "GameModels";
 export class GameParallel extends Game {
   #_individualGames = [];
   #PlayerGame;
@@ -35,9 +36,9 @@ export class GameParallel extends Game {
   }
 
   #setSneakPeekController() {
-    this.#SneakPeekController = new SneakPeekCompetitionController(this.#onSneakPeek.bind(this),
-      this.#onSneakPeekEnd.bind(this),
-      !this.optionsSettings.openCompetition);
+    const sneakPeekAllowed = !this.optionsSettings.openCompetition && this.optionsSettings.sneakPeek;
+    const sneakPeekSettings = new SneakPeekSettings(sneakPeekAllowed, this.optionsSettings.sneakPeekDuration, this.optionsSettings.sneakPeeksLimit);
+    this.#SneakPeekController = new SneakPeekCompetitionController(sneakPeekSettings, this.#onSneakPeek.bind(this), this.#onSneakPeekEnd.bind(this));
   }
 
   get #openCompetition() {
@@ -308,7 +309,7 @@ export class GameParallel extends Game {
     this.#setResultsForPlayers(opponent);
 
     this.#setGameViewOnGameOver(initiator).then(() => {
-  
+
       if (this.isOnline) {
         console.log("online gaming");
         console.log(gameData);

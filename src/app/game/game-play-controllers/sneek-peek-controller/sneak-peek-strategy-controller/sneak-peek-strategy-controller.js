@@ -8,8 +8,8 @@ export class SneakPeekStrategyController extends SneakPeekController {
   #_opponent;
   #_roundBased;
 
-  constructor(onSneakPeek, onSneakPeekEnd, allowedByStrategy = true, roundBased = false) {
-    super(onSneakPeek, onSneakPeekEnd, allowedByStrategy, false);
+  constructor(settings, onSneakPeek, onSneakPeekEnd, roundBased = false) {
+    super(settings, onSneakPeek, onSneakPeekEnd);
     this.#roundBased = roundBased;
   }
 

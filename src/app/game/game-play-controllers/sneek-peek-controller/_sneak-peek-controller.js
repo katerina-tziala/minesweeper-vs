@@ -15,20 +15,11 @@ export class SneakPeekController {
   #timerController;
   #peekToggle;
 
-  constructor(onSneakPeek, onSneakPeekEnd, allowedByStrategy = true) {
+  constructor(settings, onSneakPeek, onSneakPeekEnd) {
+    this.settings = settings;
     this.#onSneakPeek = onSneakPeek;
     this.#onSneakPeekEnd = onSneakPeekEnd;
-    this.allowedByStrategy = allowedByStrategy;
-
     this.#peekToggle = new SneakPeekButton(this.#onPeekingToggle.bind(this));
-
-    // TODO IMPLEMENT IN SETTINGS AND PASS MODEL
-    this.settings = new SneakPeekSettings();
-    this.settings.selected = true;
-    this.settings.duration = 3;
-    this.settings.limit = 3;
-    //
-
     this.#timerController = new SneakPeekTimerController(this.settings.duration, this.#onSneakPeekEnd);
   }
 
@@ -108,7 +99,7 @@ export class SneakPeekController {
   }
 
   get allowed() {
-    return this.allowedByStrategy && this.settings.allowed;
+    return this.settings.allowed;
   }
 
   get isRunning() {

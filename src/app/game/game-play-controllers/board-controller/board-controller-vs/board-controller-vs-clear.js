@@ -2,7 +2,7 @@
 
 import { StrategyController, SneakPeekStrategyController } from "GamePlayControllers";
 import { BoardControllerVS } from "./_board-controller-vs";
-
+import { SneakPeekSettings } from "GameModels";
 export class BoardControllerVSClear extends BoardControllerVS {
   #SneakPeekController;
   #StrategyController;
@@ -14,10 +14,12 @@ export class BoardControllerVSClear extends BoardControllerVS {
   }
 
   #setSneakPeekController() {
+    const sneakPeekAllowed = this.hiddenStrategy && this.optionsSettings.sneakPeek;
+    const sneakPeekSettings = new SneakPeekSettings(sneakPeekAllowed, this.optionsSettings.sneakPeekDuration, this.optionsSettings.sneakPeeksLimit);
     this.#SneakPeekController = new SneakPeekStrategyController(
+      sneakPeekSettings,
       this.#onSneakPeek.bind(this),
       this.#onSneakPeekEnd.bind(this),
-      this.hiddenStrategy,
       this.roundTimer,
     );
   }
