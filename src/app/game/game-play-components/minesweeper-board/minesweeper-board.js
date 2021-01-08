@@ -44,6 +44,13 @@ export class MinesweeperBoard {
     ]);
   }
 
+  get clearedMinefieldContainer() {
+    return ElementHandler.getByID(this.#minefieldId).then(container => {
+      ElementHandler.clearContent(container);
+      return container;
+    });
+  }
+
   generateView() {
     const board = ElementGenerator.generateContainer(this.#boardStyles, this.#boardId);
     board.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -55,10 +62,4 @@ export class MinesweeperBoard {
     ElementHandler.addInChildNodes(board, newElementInBoard, 0);
   }
 
-  get clearedMinefieldContainer() {
-    return ElementHandler.getByID(this.#minefieldId).then(container => {
-      ElementHandler.clearContent(container);
-      return container;
-    });
-  }
 }

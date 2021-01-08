@@ -46,11 +46,7 @@ export class GameDefault extends Game {
     if (!this.gameActionAllowed) {
       return;
     }
-    if (action === GameAction.Mark) {
-      this.gameBoard.handleTileMarking(tile);
-      return;
-    }
-    this.gameBoard.handleTileRevealing(tile);
+    this.gameBoard.handleTileAction(action, tile);
   }
 
   onTileDetonation() {

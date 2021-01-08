@@ -7,6 +7,7 @@ import {
   MinesweeperBoard,
   Dashboard
 } from "GamePlayComponents";
+import { GameAction } from "GameEnums";
 
 import { GameTimer } from "GamePlayControllers";
 import * as FieldUtils from "../../game-play-components/mine-field/mine-field-utils";
@@ -31,10 +32,10 @@ export class BoardController {
 
 
 
-    // console.log(this.optionsSettings);
+    console.log(this.optionsSettings);
 
 
-    
+
     this.#initMinefieldHandlers(gameId);
     this.#initDashboardHandlers(gameId, params.turnSettings, onRoundTimerEnd);
   }
@@ -44,6 +45,7 @@ export class BoardController {
     this.#MineField = new MineField(
       gameId,
       this.#_levelSettings,
+      this.optionsSettings,
       this.#onActiveTileChange.bind(this),
       this.#onTileAction.bind(this),
     );
@@ -217,6 +219,16 @@ export class BoardController {
   }
 
 
+  handleTileAction(action, tile) {
+    //console.log(action, tile);
+    if (action === GameAction.Mark) {
+      this.mineField.handleTileMarking(tile);
+      return;
+    }
+    this.mineField.handleTileRevealing(tile);
+  }
+
+
 
 
 
@@ -253,35 +265,32 @@ export class BoardController {
   }
 
   handleTileMarking(tile) {
-    this.disableMinefield();
     // set flag
     if (this.flaggingAllowed(tile)) {
+      this.disableMinefield();
       this.onFlaggedTile(tile);
       return;
     }
     // set mark
     if (this.markingAllowed(tile)) {
+      this.disableMinefield();
       this.onMarkedTile(tile);
       return;
     }
     // reset
     if (this.resetingAllowed(tile)) {
+      this.disableMinefield();
       this.onResetedTile(tile);
       return;
     }
-
-    this.enableMinefield();
   }
 
   handleTileRevealing(tile) {
-    this.disableMinefield();
-
     if (this.revealingAllowed(tile)) {
+      this.disableMinefield();
       this.revealMinefieldArea(tile);
       return;
     }
-
-    this.enableMinefield();
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {

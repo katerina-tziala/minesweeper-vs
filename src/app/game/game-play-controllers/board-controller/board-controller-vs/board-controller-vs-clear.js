@@ -169,21 +169,17 @@ export class BoardControllerVSClear extends BoardControllerVS {
 
   revealingAllowed(tile, player = this.playerOnTurn) {
     if (tile.isFlagged && !tile.isFlaggedBy(player.id)) {
-
-      console.log("flagged by oppopjnrnr");
-     
       return true;
     }
-    console.log();
     return super.revealingAllowed(tile);
   }
 
   handleTileMarking(tile) {
     if (!this.strategyAllowed) {
+      this.disableMinefield();
       this.revealMinefieldArea(tile);
       return;
     }
-
     super.handleTileMarking(tile);
   }
 

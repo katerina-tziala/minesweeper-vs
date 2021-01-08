@@ -20,18 +20,17 @@ export class BoardControllerVSDetect extends BoardControllerVS {
   }
 
   handleTileRevealing(tile) {
-
     if (this.revealingAllowed(tile)) {
+      this.disableMinefield();
       this.revealMinefieldArea(tile);
       return;
     }
 
     if (this.flaggingAllowed(tile)) {
+      this.disableMinefield();
       this.onFlaggedTile(tile);
       return;
     }
-
-    this.enableMinefield();
   }
 
   onRevealedTiles(revealedTiles, player = this.playerOnTurn) {

@@ -4,14 +4,16 @@ import { MineFieldGridSearch } from "./mine-field-grid-search";
 import * as FieldUtils from "./mine-field-utils";
 export class MineField {
   #_levelSettings;
+  #_optionsSettings;
   #_gameId;
   #tiles = [];
   #onActiveTileChange;
   #onTileAction;
 
-  constructor(gameId, levelSettings, onActiveTileChange, onTileAction) {
+  constructor(gameId, levelSettings, optionsSettings, onActiveTileChange, onTileAction) {
     this.#gameId = gameId;
     this.#levelSettings = levelSettings;
+    this.#optionsSettings = optionsSettings;
     this.#onActiveTileChange = onActiveTileChange;
     this.#onTileAction = onTileAction;
   }
@@ -24,12 +26,20 @@ export class MineField {
     return this.#_gameId;
   }
 
-  set #levelSettings(game) {
-    this.#_levelSettings = game;
+  set #levelSettings(settings) {
+    this.#_levelSettings = settings;
   }
 
   get #levelSettings() {
     return this.#_levelSettings;
+  }
+
+  set #optionsSettings(settings) {
+    this.#_optionsSettings = settings;
+  }
+
+  get #optionsSettings() {
+    return this.#_optionsSettings;
   }
 
   get isCleared() {
@@ -122,12 +132,20 @@ export class MineField {
   }
 
 
+  
+  handleTileMarking(player) {
+    console.log("handleTileMarking");
+    console.log(this.#optionsSettings);
+  }
+
+  handleTileRevealing(player) {
+   console.log("handleTileRevealing");
+   console.log(this.#optionsSettings);
+  }
 
 
 
-
-
-
+  // STRATEGY
   hideStrategy(player) {
     const tilesToReset = this.#getTilesByPositions(player.strategyPositions);
     const updates = tilesToReset.map(tile => tile.resetState());
