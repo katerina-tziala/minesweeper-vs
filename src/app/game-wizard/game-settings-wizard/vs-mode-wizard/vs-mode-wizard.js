@@ -5,12 +5,12 @@ import { DropdownSelect } from "UserInputs";
 import { OptionsSettings } from "GameModels";
 import { GameVSMode } from "GameEnums";
 
-import { GameSettingsWizard } from "../game-settings-wizard";
-import { WIZARD_NAME } from "../game-settings-wizard.constants";
+import { SettingsWizard } from "../_settings-wizard";
+import { WIZARD_NAME } from "../_settings-wizard.constants";
 
 import { CONTENT, OPTION_LABELS, EXPLANATIONS } from "./vs-mode-wizard.constants";
 
-export class VSModeWizard extends GameSettingsWizard {
+export class VSModeWizard extends SettingsWizard {
   #_parallelAllowed;
 
   constructor(onSubmit, settings, parallelAllowed = false) {

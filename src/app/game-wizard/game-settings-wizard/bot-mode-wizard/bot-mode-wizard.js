@@ -4,10 +4,10 @@ import { DropdownSelect } from "UserInputs";
 
 import { BotMode } from "GameEnums";
 
-import { GameSettingsWizard } from "../game-settings-wizard";
+import { SettingsWizard } from "../_settings-wizard";
 
 import { CONTENT } from "./bot-mode-wizard.constants";
-export class BotModeWizard extends GameSettingsWizard {
+export class BotModeWizard extends SettingsWizard {
   constructor(onSubmit, botMode) {
     super(onSubmit, undefined);
     this.title = CONTENT.title;

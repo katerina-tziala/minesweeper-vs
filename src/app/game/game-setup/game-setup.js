@@ -14,11 +14,15 @@ import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-setup.constants";
 
 export class GameSetup {
   #_stepper;
+
   #_gameParams;
   #_defaultGameParams = {};
-  #_settingsControllers = new GroupController();
+
+  #SettingsControllers = new GroupController();
+
   #closeWizard;
   #submitGame;
+
 
   constructor(onClose, submitGame) {
     this.#closeWizard = onClose;
@@ -67,21 +71,21 @@ export class GameSetup {
   }
 
   set settingsControllers(controller) {
-    this.#_settingsControllers.controllers = controller;
+    this.#SettingsControllers.controllers = controller;
     this.gameParams = controller.data;
     this.defaultGameParams = controller.defaultSettings;
   }
 
   get settingsControllers() {
-    return this.#_settingsControllers.controllers;
+    return this.#SettingsControllers.controllers;
   }
 
   removeController(wizardName) {
-    return this.#_settingsControllers.removeController(wizardName);
+    return this.#SettingsControllers.removeController(wizardName);
   }
 
   getSettingsController(wizardName) {
-    return this.#_settingsControllers.getController(wizardName);
+    return this.#SettingsControllers.getController(wizardName);
   }
 
   get contentContainer() {
@@ -159,6 +163,7 @@ export class GameSetup {
   }
 
   onGameSettingsChange(params) {
+    // console.log(params);
     this.stepper.submissionButtonDisabled = !params.valid;
     this.gameParams = params;
   }

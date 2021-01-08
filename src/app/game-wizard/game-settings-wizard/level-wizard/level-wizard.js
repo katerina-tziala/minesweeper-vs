@@ -7,12 +7,12 @@ import { clone } from "~/_utils/utils";
 import { GameLevel } from "GameEnums";
 import { LevelSettings } from "GameModels";
 
-import { GameSettingsWizard } from "../game-settings-wizard";
-import { WIZARD_NAME } from "../game-settings-wizard.constants";
+import { SettingsWizard } from "../_settings-wizard";
+import { WIZARD_NAME } from "../_settings-wizard.constants";
 
 import { SETTINGS_PROPERTIES, LIMITS, CONTENT } from "./level-wizard.constants";
 
-export class LevelWizard extends GameSettingsWizard {
+export class LevelWizard extends SettingsWizard {
   #_customLevelSettings;
 
   constructor(onSubmit, settings) {

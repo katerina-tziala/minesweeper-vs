@@ -13,6 +13,7 @@ export class GameSetupFriend extends GameSetupVS {
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
+    console.log("GameSetupFriend");
   }
 
   #updateWizardView() {
@@ -49,7 +50,7 @@ export class GameSetupFriend extends GameSetupVS {
   }
 
   get gameType() {
-    return !this.opponent ? "addOpponent" : GameType.Friend;
+    return GameType.Friend;
   }
 
   generateContent() {

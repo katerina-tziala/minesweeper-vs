@@ -6,8 +6,8 @@ import { clone } from "~/_utils/utils.js";
 
 import { OptionsSettings } from "GameModels";
 
-import { GameSettingsWizard } from "../game-settings-wizard";
-import { WIZARD_NAME } from "../game-settings-wizard.constants";
+import { SettingsWizard } from "../_settings-wizard";
+import { WIZARD_NAME } from "../_settings-wizard.constants";
 
 import {
   SETTINGS_PROPERTIES,
@@ -18,7 +18,7 @@ import {
   SNEAK_PEEK_NUMBER_INPUTS
 } from "./options-wizard.constants";
 
-export class OptionsWizard extends GameSettingsWizard {
+export class OptionsWizard extends SettingsWizard {
   constructor(onSubmit, settings) {
     super(onSubmit);
     this.title = CONTENT.title;
@@ -33,8 +33,12 @@ export class OptionsWizard extends GameSettingsWizard {
     return SETTINGS_PROPERTIES.default;
   }
 
+  get #strategy() {
+    return this.settings.tileFlagging;
+  }
+
   get #sneakPeekDisabled() {
-    return this.settings.openStrategy || this.settings.openCompetition;
+    return !this.#strategy ? true : this.settings.openStrategy || this.settings.openCompetition;
   }
 
   get #sneakPeekNumberDisabled() {
@@ -59,12 +63,15 @@ export class OptionsWizard extends GameSettingsWizard {
     return limits;
   }
 
-  #init(settings) {
-    let initialSettings = new OptionsSettings();
+  #initSettings(settings) {
+    this.settings = new OptionsSettings();
     if (settings) {
-      initialSettings.update(settings);
+      this.settings.update(settings);
     }
-    this.settings = initialSettings;
+  }
+
+  #init(settings) {
+    this.#initSettings(settings);
     this.#initControllers();
   }
 
@@ -80,12 +87,13 @@ export class OptionsWizard extends GameSettingsWizard {
         return this.#generateSwitcher(
           fieldName,
           this.#onTileFlaggingChange.bind(this),
+          false
         );
       case FIELD_NAME.openStrategy:
       case FIELD_NAME.openCompetition:
         return this.#generateSwitcher(
           fieldName,
-          this.#onOpenStrategyChange.bind(this),
+          this.#onOpenStrategyChange.bind(this)
         );
       case FIELD_NAME.sneakPeek:
         return this.#generateSwitcher(
@@ -101,11 +109,7 @@ export class OptionsWizard extends GameSettingsWizard {
     }
   }
 
-  #generateSwitcher(
-    fieldName,
-    action = this.#onOptionSettingChange.bind(this),
-    disabled = false,
-  ) {
+  #generateSwitcher(fieldName, action = this.#onOptionSettingChange.bind(this), disabled = !this.#strategy) {
     const params = this.getControllerParams(fieldName);
     const controller = new Switcher(params, action);
     controller.disabled = disabled;
@@ -190,5 +194,10 @@ export class OptionsWizard extends GameSettingsWizard {
       valid: true,
       value: new OptionsSettings(),
     };
+  }
+
+  get data() {
+    this.settings.initOptionsBasedOnTileFlagging();
+    return super.data;
   }
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-import { replaceStringParameter } from "~/_utils/utils";
+import { clone, replaceStringParameter } from "~/_utils/utils";
 
 import { GameVSMode } from "GameEnums";
 import {
@@ -19,7 +19,6 @@ export class GameSetupVS extends GameSetup {
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
-    this.opponent = undefined;
     this.init();
   }
 
@@ -78,20 +77,23 @@ export class GameSetupVS extends GameSetup {
       this.parallelAllowed,
     );
     this.settingsControllers = controller;
-    this.setOptionsBasedOnVSMode(controller.data);
+    this.setOptionsBasedOnVSMode(clone(controller.data));
   }
 
   initTurnsWizard() {
-    this.settingsControllers = new TurnSettingsWizard(
+    const controller = new TurnSettingsWizard(
       this.onGameSettingsChange.bind(this),
       this.getGameParamsForWizard(WIZARD_NAME.turnSettings),
     );
+    this.settingsControllers = controller;
   }
 
   onVSModeChange(params) {
     super.onGameSettingsChange(params);
     this.setOptionsBasedOnVSMode(params);
+
     this.wizardSteps = params.value.vsMode;
+
     if (params.value.vsMode === GameVSMode.Parallel) {
       delete this.gameParams[GameVSMode.Parallel];
       delete this.defaultGameParams[GameVSMode.Parallel];
@@ -101,6 +103,11 @@ export class GameSetupVS extends GameSetup {
 
   setOptionsBasedOnVSMode(params) {
     params.name = WIZARD_NAME.optionsSettings;
+
+    if (this.gameParams.optionsSettings && params.value.vsMode === this.gameParams.optionsSettings.vsMode) {
+      params.value = Object.assign(this.gameParams.optionsSettings);
+    }
+
     this.gameParams = params;
     this.defaultGameParams = params;
   }
@@ -179,11 +186,13 @@ export class GameSetupVS extends GameSetup {
   }
 
   get title() {
-    let title = TITLE[this.gameType];
     if (this.opponent) {
+      let title = TITLE[this.gameType];
       title = replaceStringParameter(title, this.opponent.name);
+      return title;
+    } else {
+      return TITLE.addOpponent;
     }
-    return title;
   }
 
   get gameSetUp() {

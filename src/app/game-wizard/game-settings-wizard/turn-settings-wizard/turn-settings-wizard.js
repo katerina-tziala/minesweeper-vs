@@ -4,17 +4,17 @@ import { Switcher, NumberInput } from "UserInputs";
 
 import { TurnSettings } from "GameModels";
 
-import { GameSettingsWizard } from "../game-settings-wizard";
-import { WIZARD_NAME } from "../game-settings-wizard.constants";
+import { SettingsWizard } from "../_settings-wizard";
+import { WIZARD_NAME } from "../_settings-wizard.constants";
 
 import { FIELD_NAME, LIMITS, CONTENT } from "./turn-settings-wizard.constants";
 
-export class TurnSettingsWizard extends GameSettingsWizard {
+export class TurnSettingsWizard extends SettingsWizard {
   constructor(onSubmit, settings) {
-    super(onSubmit, settings);
+    super(onSubmit);
     this.title = CONTENT.title;
     this.labels = CONTENT.labels;
-    this.#init();
+    this.#init(settings);
   }
 
   get #turnProperties() {
@@ -37,8 +37,16 @@ export class TurnSettingsWizard extends GameSettingsWizard {
     this.#turnPropertyDisabled ? controller.disable() : controller.enable();
   }
 
-  #init() {
+  #initSettings(settings) {
     this.settings = new TurnSettings();
+    if (settings) {
+      this.settings.update(settings);
+    }
+  }
+  
+  #init(settings) {
+    this.#initSettings(settings);
+    
     this.inputsGroup.controllers = this.#generateSwitcher(
       FIELD_NAME.turnTimer,
       this.#onTurnTimerChange.bind(this),

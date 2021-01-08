@@ -4,9 +4,9 @@ import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { UserInputsGroupController } from "UserInputs";
-import { DOM_ELEMENT_CLASS } from "./game-settings-wizard.constants";
+import { DOM_ELEMENT_CLASS } from "./_settings-wizard.constants";
 
-export class GameSettingsWizard {
+export class SettingsWizard {
   #settings;
   #inputsGroup;
 

@@ -1,4 +1,4 @@
-export { WIZARD_NAME } from "./game-settings-wizard.constants";
+export { WIZARD_NAME } from "./_settings-wizard.constants";
 
 export { LevelWizard } from "./level-wizard/level-wizard";
 export { OptionsWizard } from "./options-wizard/options-wizard";
