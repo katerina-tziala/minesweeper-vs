@@ -9,9 +9,7 @@ import {
   MineFieldUtils 
 } from "GamePlayComponents";
 import { GameAction } from "GameEnums";
-
 import { GameTimer } from "GamePlayControllers";
-
 
 export class BoardController {
   #_faceColorType;
