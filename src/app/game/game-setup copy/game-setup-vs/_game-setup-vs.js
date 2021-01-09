@@ -34,23 +34,16 @@ export class GameSetupVS extends GameSetup {
     return this.#_opponent;
   }
 
-  generateWizardSteps(selectedMode) {
-    return selectedMode === GameVSMode.Parallel
-    ? [
-      WIZARD_NAME.vsModeSettings,
-      WIZARD_NAME.levelSettings,
-      WIZARD_NAME.optionsSettings,
-    ]
-    : [
-      WIZARD_NAME.vsModeSettings,
-      WIZARD_NAME.levelSettings,
-      WIZARD_NAME.turnSettings,
-      WIZARD_NAME.optionsSettings
-    ];
-  }
-
   set wizardSteps(selectedMode) {
-    this.#_wizardSteps = this.generateWizardSteps(selectedMode);
+    console.log(WIZARD_NAME);
+    this.#_wizardSteps =
+      selectedMode === GameVSMode.Parallel
+        ? [
+          WIZARD_NAME.vsModeSettings,
+          WIZARD_NAME.levelSettings,
+          WIZARD_NAME.optionsSettings,
+        ]
+        : Object.keys(WIZARD_NAME);
   }
 
   get wizardSteps() {

@@ -5,6 +5,7 @@ import { DropdownSelect } from "UserInputs";
 import { BotMode } from "GameEnums";
 
 import { SettingsWizard } from "../_settings-wizard";
+import { WIZARD_NAME } from "../_settings-wizard.constants";
 
 import { CONTENT } from "./bot-mode-wizard.constants";
 export class BotModeWizard extends SettingsWizard {
@@ -35,7 +36,7 @@ export class BotModeWizard extends SettingsWizard {
   }
 
   get name() {
-    return "botMode";
+    return WIZARD_NAME.botMode;
   }
 
   get defaultSettings() {

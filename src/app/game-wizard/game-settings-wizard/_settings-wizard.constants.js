@@ -12,6 +12,7 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const WIZARD_NAME = {
+  botMode: "botMode",
   vsModeSettings: "vsModeSettings",
   levelSettings: "levelSettings",
   turnSettings: "turnSettings",

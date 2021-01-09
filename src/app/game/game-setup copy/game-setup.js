@@ -30,12 +30,6 @@ export class GameSetup {
     this.initGameParams();
   }
 
-
-
-
-
-
-  
   set stepper(stepper) {
     this.#Stepper = stepper;
   }
