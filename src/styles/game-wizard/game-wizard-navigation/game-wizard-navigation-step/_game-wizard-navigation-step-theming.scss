@@ -1,0 +1,31 @@
+@use "../../../theming/theming";
+@use "sass:color";
+
+@mixin setThemeStyles($theme) {
+  .game-wizard-navigation-step__button {
+    // background-color: theming.getThemeColor($theme, "board-background");
+    // color: theming.getThemeColor($theme, "board-color");
+
+    // &:hover,
+    // &:focus {
+    //   color: theming.getThemeColor($theme, "theme-primary-intense");
+    // }
+  }
+
+  .game-wizard-navigation-step__button.game-wizard-navigation-step__button--selected {
+    // color: theming.getThemeColor($theme, "theme-secondary");
+    // background-color: theming.getThemeColor($theme, "theme-primary");
+    color: theming.getThemeColor($theme, "theme-secondary-intense");
+    background-color: theming.getThemeColor($theme, "theme-primary-intense");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

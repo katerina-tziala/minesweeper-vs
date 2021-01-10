@@ -35,7 +35,7 @@ export class GameSetup {
 
 
 
-  
+
   set stepper(stepper) {
     this.#Stepper = stepper;
   }
@@ -123,9 +123,16 @@ export class GameSetup {
   generateWizard() {
     const wizardContainer = this.generateWizardContainer();
     wizardContainer.append(this.generateWizardHeader());
+
+    wizardContainer.append(this.generateStepperNavigation());
     wizardContainer.append(this.generateContentSection());
     wizardContainer.append(this.generateStepperSection());
     return Promise.resolve(wizardContainer);
+  }
+
+  generateStepperNavigation() {
+    const fragment = document.createDocumentFragment();
+    return fragment;
   }
 
   generateWizardContainer() {

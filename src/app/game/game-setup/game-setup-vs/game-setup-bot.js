@@ -15,6 +15,9 @@ export class GameSetupBot extends GameSetupVS {
     this.init();
   }
 
+  get againstBot() {
+    return true;
+  }
   get #onBotMode() {
     return this.wizardStepName === WIZARD_NAME.botMode;
   }

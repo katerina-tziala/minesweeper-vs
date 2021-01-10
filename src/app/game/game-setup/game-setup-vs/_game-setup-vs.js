@@ -13,6 +13,11 @@ import { EndButtonType, GameWizardStepper } from "GameWizardStepper";
 import { GameSetup } from "../game-setup";
 import { TITLE } from "../game-setup.constants";
 
+
+import { GameWizardNavigation } from "../../../game-wizard/game-wizard-navigation/game-wizard-navigation";
+
+
+
 export class GameSetupVS extends GameSetup {
   #_opponent;
   #_wizardSteps;
@@ -20,6 +25,12 @@ export class GameSetupVS extends GameSetup {
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.init();
+
+    this.wizardNavigation = new GameWizardNavigation(this.againstBot);
+  }
+
+  get againstBot() {
+    return false;
   }
 
   get parallelAllowed() {
@@ -149,6 +160,12 @@ export class GameSetupVS extends GameSetup {
     console.log(this.wizardSteps);
     const controller = this.getSettingsController(this.wizardStepName);
     fragment.append(controller.generateSettingsWizard());
+    return fragment;
+  }
+
+  generateStepperNavigation() {
+    const fragment = document.createDocumentFragment();
+    fragment.append(this.wizardNavigation.generateView());
     return fragment;
   }
 
