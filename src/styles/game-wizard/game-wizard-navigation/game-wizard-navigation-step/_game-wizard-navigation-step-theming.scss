@@ -1,23 +1,76 @@
-@use "../../../theming/theming";
 @use "sass:color";
+@use "../../../theming/theming";
+
+@mixin setButtonThemeStyles($theme) {
+  .game-wizard-navigation-step__button {
+    background-color: theming.getThemeColor($theme, "wizard-step-background");
+    color: theming.getThemeColor($theme, "wizard-step-color");
+   
+    &::before {
+      background-color: theming.getThemeColor($theme, "wizard-step-background");
+    }
+  }
+}
+
+@mixin setCompletedButtonThemeStyles($theme) {
+  .game-wizard-navigation-step__button {
+    background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
+    color: theming.getThemeColor($theme, "wizard-step-completed-color");
+    &::before {
+      background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
+    }
+  }
+}
+
+@mixin setSelectedButtonThemeStyles($theme) {
+  .game-wizard-navigation-step__button {
+    background-color: theming.getThemeColor($theme, "wizard-step-selected-background");
+    color: theming.getThemeColor($theme, "wizard-step-selected-color");
+  }
+}
+
+@mixin setLabelThemeStyles($theme) {
+  $color: theming.getThemeColor($theme, "wizard-step-color");
+  @if $theme == dark {
+    $color: theming.getThemeColor($theme, "wizard-step-background");
+  } 
+  .game-wizard-navigation-step__label {
+    color: $color;
+  }
+}
+
+@mixin setCompletedLabelThemeStyles($theme) {
+  .game-wizard-navigation-step__label {
+    color: theming.getThemeColor($theme, "wizard-step-completed-background");
+  }
+}
+
+@mixin setSelectedLabelThemeStyles($theme) {
+  .game-wizard-navigation-step__label {
+    color: theming.getThemeColor($theme, "wizard-step-selected-background");
+  }
+}
 
 @mixin setThemeStyles($theme) {
-  .game-wizard-navigation-step__button {
-    // background-color: theming.getThemeColor($theme, "board-background");
-    // color: theming.getThemeColor($theme, "board-color");
+  @include setButtonThemeStyles($theme);
+  @include setLabelThemeStyles($theme);
 
-    // &:hover,
-    // &:focus {
-    //   color: theming.getThemeColor($theme, "theme-primary-intense");
-    // }
+  .game-wizard-navigation-step {
+    height: 100%;
+    width: 50px;
+
+    &.completed {
+      @include setCompletedButtonThemeStyles($theme);
+      @include setCompletedLabelThemeStyles($theme);
+    }
+  
+    &.selected {
+      @include setSelectedButtonThemeStyles($theme);
+      @include setSelectedLabelThemeStyles($theme);
+    }
+
   }
 
-  .game-wizard-navigation-step__button.game-wizard-navigation-step__button--selected {
-    // color: theming.getThemeColor($theme, "theme-secondary");
-    // background-color: theming.getThemeColor($theme, "theme-primary");
-    color: theming.getThemeColor($theme, "theme-secondary-intense");
-    background-color: theming.getThemeColor($theme, "theme-primary-intense");
-  }
 }
 
 @mixin setTheming() {

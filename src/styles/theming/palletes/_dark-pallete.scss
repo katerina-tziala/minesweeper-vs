@@ -37,3 +37,12 @@ $game-pallete: (
   game-card-circle-shadow: rgba(#00ffff, 0.8),
   board-stripe: #00ffff,
 );
+
+$wizard-step: (
+  wizard-step-completed-background: #009999,
+  wizard-step-completed-color: #1a1a1a,
+  wizard-step-selected-background: #00ffff,
+  wizard-step-selected-color: #000000,
+  wizard-step-background: #006666,
+  wizard-step-color: #1a1a1a,
+);

@@ -39,35 +39,62 @@ export class GameWizardNavigationStep {
     return CONTENT[this.name];
   }
 
+  get #buttonDisabled() {
+    return this.disabled || this.selected;
+  }
+
+  get #stateStyles() {
+    const stateStyles = [];
+
+    if (this.completed) {
+      stateStyles.push(DOM_ELEMENT_CLASS.completed);
+    }
+
+    if (this.selected) {
+      stateStyles.push(DOM_ELEMENT_CLASS.selected);
+    }
+
+    return stateStyles;
+  }
+
+  get #buttonStyles() {
+    let buttonStyles = [
+      DOM_ELEMENT_CLASS.button,
+      DOM_ELEMENT_CLASS.buttonModifier + this.name
+    ];
+
+    buttonStyles.concat(this.#stateStyles);
+    return buttonStyles;
+  }
+
+  get #containerStyles() {
+    const styles = this.#stateStyles;
+    styles.push(DOM_ELEMENT_CLASS.container);
+    return styles;
+  }
+
   generateView() {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#id);
-
-
-
-    container.append(this.#generateButton());
+    const container = ElementGenerator.generateContainer(this.#containerStyles, this.#id);
+    const button = this.#generateButton();
+    const label = this.#generateLabel();
+    container.append(button, label);
     return container;
   }
+
+  #generateLabel() {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.label]);
+    container.innerHTML = this.#content;
+    return container;
+  }
+
 
   #generateButton() {
     const button = ElementGenerator.generateButton(this.#buttonParams);
     ElementHandler.setStyleClass(button, this.#buttonStyles);
-    
-    ElementHandler.setDisabled(button, this.disabled || this.selected);
+    ElementHandler.setDisabled(button, this.#buttonDisabled);
     return button;
   }
 
-
-  get #buttonStyles() {
-    const buttonStyles = [
-      DOM_ELEMENT_CLASS.button,
-      DOM_ELEMENT_CLASS.buttonModifier + this.name
-    ];
-    if (this.selected) {
-      buttonStyles.push(DOM_ELEMENT_CLASS.buttonSelected);
-    }
-
-    return buttonStyles;
-  }
 
 
 

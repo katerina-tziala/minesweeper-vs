@@ -9,7 +9,9 @@ export const DOM_ELEMENT_CLASS = {
   container: "game-wizard-navigation-step",
   button: "game-wizard-navigation-step__button",
   buttonModifier: "game-wizard-navigation-step__button--",
-  buttonSelected: "game-wizard-navigation-step__button--selected",
+  selected: "selected",
+  completed: "completed",
+  label: "game-wizard-navigation-step__label",
 };
 
 
