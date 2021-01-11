@@ -1,14 +1,6 @@
-@import "../game-settings-wizard/game-settings-wizard";
-
-
-
-
-
-
-
-
-
-
+@import "./game-wizard-navigation/game-wizard-navigation";
+@import "./game-wizard-actions/game-wizard-actions";
+@import "./game-settings-wizard/game-settings-wizard";
 
 .game-wizard-container {
   min-width: 360px;
@@ -40,18 +32,14 @@
 }
 
 .game-wizard-content {
-  padding: 15px 0px 0px;
+  padding: 0 10px;
+  margin-top: 30px;
 
   > .settings-wizard {
     &:not(:first-of-type) {
-      margin-top: 20px;
+      margin-top: 30px;
     }
   }
-}
-
-.stepper-container {
-  @extend %between-center;
-  padding-top: 30px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

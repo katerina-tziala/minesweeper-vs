@@ -9,6 +9,7 @@ import {
 
 export class GameWizardActions {
   #previousDisabled = true;
+  #submissionDisabled = false;
   #nextButtonOnActions = true;
   #invite;
   #onReset;
@@ -76,8 +77,15 @@ export class GameWizardActions {
   }
 
   #generateResetButton() {
-    const button = ElementGenerator.generateButton(BUTTONS.reset, this.#onReset.bind(this));
+    const button = ElementGenerator.generateButton(BUTTONS.reset, this.#onResetAction.bind(this));
     return button;
+  }
+
+  #onResetAction() {
+    if (this.#onReset) {
+      this.#onReset();
+    }
+    this.updateSubmissionButtonState(false);
   }
 
   #generateSubmissionButton() {
@@ -144,10 +152,20 @@ export class GameWizardActions {
     ];
 
     submissionButton
-    ? updates.push(this.setSubmissionButton())
-    : updates.push(this.setNextButton());
+      ? updates.push(this.setSubmissionButton())
+      : updates.push(this.setNextButton());
 
     return Promise.all(updates);
   }
 
+  updateSubmissionButtonState(newState) {
+    if (this.#submissionDisabled !== newState) {
+      this.#submissionDisabled = newState;
+      return this.#submissionButton.then(button => {
+        ElementHandler.setDisabled(button, this.#submissionDisabled);
+        return;
+      });
+    }
+    return Promise.resolve();
+  }
 }

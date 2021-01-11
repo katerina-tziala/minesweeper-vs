@@ -148,7 +148,7 @@ export class GameWizardNavigation {
       container.append(this.#generateStepsView());
       return container;
     }).then(container => {
-      ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.containerExpandedFast);
+      ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.containerExpanded);
       return;
     });
   }

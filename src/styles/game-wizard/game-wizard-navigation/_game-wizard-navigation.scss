@@ -10,11 +10,6 @@
 
 .game-wizard-navigation--expanded {
   width: 0%;
-  @include expandWidth(.8);
-}
-
-.game-wizard-navigation--expanded-fast {
-  width: 0%;
   @include expandWidth(.5);
 }
 

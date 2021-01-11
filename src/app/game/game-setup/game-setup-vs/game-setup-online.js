@@ -2,26 +2,26 @@
 
 import { GameType } from "GameEnums";
 import { Player } from "GameModels";
-
 import { GameSetupVS } from "./_game-setup-vs";
-import { EndButtonType } from "GameWizardStepper";
 export class GameSetupOnline extends GameSetupVS {
   constructor(onClose, submitGame, clientToInvite) {
     super(onClose, submitGame);
-    this.opponent = new Player(
-      clientToInvite.id,
-      clientToInvite.username,
-      false,
-    );
-    this.init();
+    this.init(clientToInvite);
   }
 
-  // OVERIDDEN FUNCTIONS
+  get invite() {
+    return true;
+  }
+
   get gameType() {
     return GameType.Online;
   }
 
-  get stepperSubmissionType() {
-    return EndButtonType.invite;
+  init(clientToInvite) {
+    if (clientToInvite) {
+      this.opponent = new Player(clientToInvite.id, clientToInvite.username, false);
+    }
+    super.init();
   }
+  
 }

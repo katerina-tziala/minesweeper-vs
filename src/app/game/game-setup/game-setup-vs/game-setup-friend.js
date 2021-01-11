@@ -19,9 +19,7 @@ export class GameSetupFriend extends GameSetupVS {
   #updateWizardView() {
     this.wizardContainer.then((wizardContainer) => {
       ElementHandler.clearContent(wizardContainer);
-      wizardContainer.append(this.generateWizardHeader());
-      wizardContainer.append(this.generateContentSection());
-      wizardContainer.append(this.generateStepperSection());
+      wizardContainer.append(this.generateWizardView());
     });
   }
 

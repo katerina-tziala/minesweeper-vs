@@ -1,21 +1,14 @@
-@use "sass:color";
-@use "../../theming/theming";
-
-@import "../button/button";
+@import "../../components/button/button";
 @import "../../components/form/form_username";
-@import "../input/number-input";
-@import "../switcher/switcher";
-@import "../dropdown-select/dropdown-select";
+@import "../../components/input/number-input";
+@import "../../components/switcher/switcher";
+@import "../../components/dropdown-select/dropdown-select";
 
 @import "./game-settings-wizard-title/game-settings-wizard-title";
 
-
 .settings-wizard {
   position: relative;
-  padding: 10px;
 }
-
-
 
 .settings-wizard-section {
   @extend %start-center;
@@ -62,24 +55,4 @@
   > div {
     @extend %capitalize-first-letter;
   }
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-@mixin setScrollbarThemeStyles($theme) {
-  .settings-wizard {
-    border-color: color.adjust(
-      theming.getThemeColor($theme, "theme-primary"),
-      $lightness: 1,
-      $alpha: -0.7
-    );
-  }
-
-}
-
-.theme-light {
-  @include setScrollbarThemeStyles("light");
-}
-
-.theme-dark {
-  @include setScrollbarThemeStyles("dark");
 }

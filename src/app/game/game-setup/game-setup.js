@@ -38,12 +38,6 @@ export class GameSetup {
     return this.#WizardActions;
   }
 
-
-
-
-
-
-
   get player() {
     return new Player(self.user.id, self.user.username);
   }
@@ -120,25 +114,23 @@ export class GameSetup {
     );
   }
 
-
+  generateWizardView() {
+    const fragment = document.createDocumentFragment();
+    fragment.append(this.generateWizardHeader());
+    fragment.append(this.generateWizardNavigation());
+    fragment.append(this.generateContentSection());
+    fragment.append(this.generateWizardActions());
+    return fragment;
+  }
 
   
-  
-
-
   generateWizard() {
     const wizardContainer = this.generateWizardContainer();
-    wizardContainer.append(this.generateWizardHeader());
-
-    wizardContainer.append(this.generateStepperNavigation());
-    wizardContainer.append(this.generateContentSection());
-    wizardContainer.append(this.generateStepperSection());
+    wizardContainer.append(this.generateWizardView());
     return Promise.resolve(wizardContainer);
   }
 
-
-
-  generateStepperNavigation() {
+  generateWizardNavigation() {
     const fragment = document.createDocumentFragment();
     return fragment;
   }
@@ -178,15 +170,17 @@ export class GameSetup {
     return wizardContent;
   }
 
-  generateStepperSection() {
+  generateWizardActions() {
     const fragment = document.createDocumentFragment();
     return fragment;
   }
 
   onGameSettingsChange(params) {
-    // console.log(params);
-    //this.stepper.submissionButtonDisabled = !params.valid;
-    this.gameParams = params;
+    const validSettings = params.valid;
+    if (validSettings) {
+      this.gameParams = params;
+    }
+    this.wizardActions.updateSubmissionButtonState(!validSettings);
   }
 
   onSubmit() {

@@ -8,7 +8,6 @@ import {
   VSModeWizard,
   TurnSettingsWizard,
 } from "GameSettingsWizard";
-import { EndButtonType, GameWizardStepper } from "GameWizardStepper";
 
 import { GameSetup } from "../game-setup";
 import { TITLE } from "../game-setup.constants";
@@ -20,36 +19,57 @@ import { GameWizardActions } from "../../../game-wizard/game-wizard-actions/game
 
 export class GameSetupVS extends GameSetup {
   #_opponent;
-  #_wizardSteps;
-
-  #_wizardStep;
-
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.init();
+  }
 
+  get invite() {
+    return false;
+  }
+
+  init() {
     this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot);
 
     this.wizardActions = new GameWizardActions({
       onReset: this.onReset.bind(this),
       onSubmit: this.onSubmit.bind(this),
       onStepChange: this.#onStepChange.bind(this),
-    });
+    }, this.invite);
   }
 
+  get againstBot() {
+    return false;
+  }
 
-  init() {
-    this.wizardSteps = undefined;
-    // this.stepper = new GameWizardStepper(
-    //   {
-    //     onReset: this.onReset.bind(this),
-    //     onSubmit: this.onSubmit.bind(this),
-    //     onStepChange: this.onStepChange.bind(this),
-    //   },
-    //   this.wizardSteps.length,
-    //   this.stepperSubmissionType,
-    // );
+  get parallelAllowed() {
+    return true;
+  }
+
+  set opponent(opponent) {
+    this.#_opponent = opponent;
+  }
+
+  get opponent() {
+    return this.#_opponent;
+  }
+
+  get title() {
+    if (this.opponent) {
+      let title = TITLE[this.gameType];
+      title = replaceStringParameter(title, this.opponent.name);
+      return title;
+    } else {
+      return TITLE.addOpponent;
+    }
+  }
+
+  get gameSetUp() {
+    const gameSetUp = super.gameSetUp;
+    gameSetUp.players.push(this.opponent);
+    delete gameSetUp.vsModeSettings;
+    return gameSetUp;
   }
 
   get wizardStepName() {
@@ -78,7 +98,6 @@ export class GameSetupVS extends GameSetup {
       });
   }
 
-
   onReset() {
     this.resetStepValues();
     this.removeController(this.wizardStepName);
@@ -96,23 +115,6 @@ export class GameSetupVS extends GameSetup {
   #onStepChange(step) {
     this.wizardNavigation.updateByIndex(step);
   }
-
-  get againstBot() {
-    return false;
-  }
-
-  get parallelAllowed() {
-    return true;
-  }
-
-  set opponent(opponent) {
-    this.#_opponent = opponent;
-  }
-
-  get opponent() {
-    return this.#_opponent;
-  }
-
 
   initModeWizard() {
     const controller = new VSModeWizard(
@@ -135,13 +137,13 @@ export class GameSetupVS extends GameSetup {
   onVSModeChange(params) {
     super.onGameSettingsChange(params);
     this.setOptionsBasedOnVSMode(params);
-  
+
     const parallelSelected = params.value.vsMode === GameVSMode.Parallel;
     if (parallelSelected) {
       delete this.gameParams[GameVSMode.Parallel];
       delete this.defaultGameParams[GameVSMode.Parallel];
     }
-   
+
     this.wizardNavigation.updateOptionsOnVSModeChange(parallelSelected);
   }
 
@@ -187,13 +189,15 @@ export class GameSetupVS extends GameSetup {
     return fragment;
   }
 
-  generateStepperNavigation() {
+  generateWizardNavigation() {
     const fragment = document.createDocumentFragment();
-    fragment.append(this.wizardNavigation.generateView());
+    if (this.opponent) {
+      fragment.append(this.wizardNavigation.generateView());
+    }
     return fragment;
   }
 
-  generateStepperSection() {
+  generateWizardActions() {
     const fragment = document.createDocumentFragment();
     if (this.opponent) {
       fragment.append(this.wizardActions.generateView());
@@ -211,26 +215,4 @@ export class GameSetupVS extends GameSetup {
     }
   }
 
-
-  // OVERIDDEN FUNCTIONS
-  get stepperSubmissionType() {
-    return EndButtonType.play;
-  }
-
-  get title() {
-    if (this.opponent) {
-      let title = TITLE[this.gameType];
-      title = replaceStringParameter(title, this.opponent.name);
-      return title;
-    } else {
-      return TITLE.addOpponent;
-    }
-  }
-
-  get gameSetUp() {
-    const gameSetUp = super.gameSetUp;
-    gameSetUp.players.push(this.opponent);
-    delete gameSetUp.vsModeSettings;
-    return gameSetUp;
-  }
 }

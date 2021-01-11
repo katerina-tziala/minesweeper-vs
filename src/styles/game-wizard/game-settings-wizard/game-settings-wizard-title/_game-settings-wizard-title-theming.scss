@@ -5,6 +5,7 @@
 @mixin setThemeStyles($theme) {
   .settings-wizard-title-container {
     color: color.adjust(theming.getThemeColor($theme, "theme-primary"), $lightness: 1, $alpha: -0.3);
+    color: theming.getThemeColor($theme, "theme-primary-intense");
   }
 }
 
