@@ -26,8 +26,17 @@ export class GameSetupVS extends GameSetup {
     super(onClose, submitGame);
     this.init();
 
-    this.wizardNavigation = new GameWizardNavigation(this.againstBot);
+    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStep.bind(this), this.againstBot);
   }
+
+
+  #onSelectedStep(selectedStep) {
+    console.log(selectedStep);
+  }
+
+
+
+
 
   get againstBot() {
     return false;

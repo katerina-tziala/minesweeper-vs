@@ -1,5 +1,4 @@
 "use strict";
-import { clone } from "~/_utils/utils.js";
 
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import {
@@ -10,13 +9,13 @@ import { WIZARD_NAME } from "GameSettingsWizard";
 import { GameWizardNavigationStep } from "./game-wizard-navigation-step/game-wizard-navigation-step";
 
 export class GameWizardNavigation {
-
   #_navigationSteps = [];
   #_selectedStep;
+  #onSelectedStep;
 
-
-  constructor(botMode = false) {
+  constructor(onSelectedStep, botMode = false) {
     this.#initNavigationSteps(botMode);
+    this.#onSelectedStep = onSelectedStep;
   }
 
   get #steps() {
@@ -26,71 +25,62 @@ export class GameWizardNavigation {
   #generateSteps(botMode) {
     const steps = [];
     if (botMode) {
-      steps.push(new GameWizardNavigationStep(WIZARD_NAME.botMode));
+      steps.push(new GameWizardNavigationStep(WIZARD_NAME.botMode, this.#onStepSelection.bind(this)));
     }
     NAVIGATION_STEPS.forEach(stepName => {
-      steps.push(new GameWizardNavigationStep(stepName));
+      steps.push(new GameWizardNavigationStep(stepName, this.#onStepSelection.bind(this)));
     });
     return steps;
   }
 
+  #onStepSelection(selectedStep) {
+    this.#steps.find(step => step.selected && step.name !== selectedStep).setSelected(false);
+    this.#setStepsState(true);
+
+    this.#_selectedStep = selectedStep;
+
+    if (this.#onSelectedStep) {
+      this.#onSelectedStep(this.#_selectedStep);
+    }
+  }
+
   #initNavigationSteps(botMode) {
     this.#_navigationSteps = this.#generateSteps(botMode);
-    
+
     this.#steps[0].completed = true;
     this.#steps[0].disabled = false;
     this.#steps[0].selected = true;
 
-    
     this.#_selectedStep = this.#steps[0].name;
     this.#setStepsState();
   }
 
-  #setStepsState() {
+  #setStepsState(updateView = false) {
     this.#steps.forEach((step, index) => {
       const previousSteps = this.#steps.slice(0, index);
       if (previousSteps.length) {
-        step.disabled = !previousSteps.every(step => step.completed)
+        step.disabled = !previousSteps.every(step => step.completed);
+      }
+      if (updateView) {
+        step.updateDisabled();
       }
     });
   }
 
-
   generateView() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_ID.container);
-
-    console.log(this.#steps);
-    console.log(this.#_selectedStep);
-    const stepsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stepsContainer]);
-
-    const fragment = document.createDocumentFragment();
-    this.#steps.forEach(step => {
-      fragment.append(step.generateView(step));
-    })
-    stepsContainer.append(fragment);
-    container.append(stepsContainer);
-
+    container.append(this.#generateStepsView());
     return container;
   }
 
-
-
-  
-
-  // #generateNavigationIcon(step) {
-  //   const styles = [
-  //     DOM_ELEMENT_CLASS.icon,
-  //     DOM_ELEMENT_CLASS.iconModifier + step.name
-  //   ];
-
-  //   const icon = ElementGenerator.generateContainer(styles, DOM_ELEMENT_ID.icon + step.name);
-
-
-  //   console.log(step);
-
-
-  //   return icon;
-  // }
-
+  #generateStepsView() {
+    const fragment = document.createDocumentFragment();
+    const stepsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stepsContainer]);
+    this.#steps.forEach(step => {
+      stepsContainer.append(step.generateView(step));
+    });
+    fragment.append(stepsContainer);
+    return fragment;
+  }
 
 }
