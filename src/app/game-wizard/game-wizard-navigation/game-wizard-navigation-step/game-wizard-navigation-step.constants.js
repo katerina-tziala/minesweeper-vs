@@ -34,6 +34,6 @@ export const CONTENT = {
   botMode: "bot",
   vsModeSettings: "vs mode",
   levelSettings: "level",
-  turnSettings: "turn",
+  turnSettings: "turns",
   optionsSettings: "options",
 };

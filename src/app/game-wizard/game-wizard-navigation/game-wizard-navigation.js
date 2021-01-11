@@ -14,12 +14,44 @@ export class GameWizardNavigation {
   #onSelectedStep;
 
   constructor(onSelectedStep, botMode = false) {
-    this.#initNavigationSteps(botMode);
     this.#onSelectedStep = onSelectedStep;
+    this.#initNavigationSteps(botMode);
+  }
+
+  get selectedStep() {
+    return this.#_selectedStep;
+  }
+
+  get onLastStep() {
+    return this.#steps.length - 1 === this.#currentIndex;
+  }
+
+  get onFirstStep() {
+    return this.#currentIndex === 0;
   }
 
   get #steps() {
     return this.#_navigationSteps;
+  }
+
+  get #displayedSteps() {
+    return this.#steps.filter(step => step.displayed);
+  }
+
+  get #currentIndex() {
+    return this.#steps.findIndex(step => step.name === this.selectedStep);
+  }
+
+  get #optionsStep() {
+    return this.#steps.find(step => step.name === WIZARD_NAME.optionsSettings);
+  }
+
+  get #turnsStep() {
+    return this.#steps.find(step => step.name === WIZARD_NAME.turnSettings);
+  }
+
+  get #container() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.container);
   }
 
   #generateSteps(botMode) {
@@ -34,13 +66,15 @@ export class GameWizardNavigation {
   }
 
   #onStepSelection(selectedStep) {
-    this.#steps.find(step => step.selected && step.name !== selectedStep).setSelected(false);
-    this.#setStepsState(true);
-
+    this.#steps.find(step => step.selected && step.name !== selectedStep.name).setSelected(false);
     this.#_selectedStep = selectedStep.name;
+    this.#setStepsState(true);
+    this.#submitSelectedStep();
+  }
 
+  #submitSelectedStep() {
     if (this.#onSelectedStep) {
-      this.#onSelectedStep(this.#_selectedStep);
+      this.#onSelectedStep();
     }
   }
 
@@ -56,8 +90,8 @@ export class GameWizardNavigation {
   }
 
   #setStepsState(updateView = false) {
-    this.#steps.forEach((step, index) => {
-      const previousSteps = this.#steps.slice(0, index);
+    this.#displayedSteps.forEach((step, index) => {
+      const previousSteps = this.#displayedSteps.slice(0, index);
       if (previousSteps.length) {
         step.disabled = !previousSteps.every(step => step.completed);
       }
@@ -67,20 +101,56 @@ export class GameWizardNavigation {
     });
   }
 
-  generateView() {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_ID.container);
-    container.append(this.#generateStepsView());
-    return container;
-  }
-
   #generateStepsView() {
     const fragment = document.createDocumentFragment();
     const stepsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stepsContainer]);
-    this.#steps.forEach(step => {
+    this.#displayedSteps.forEach(step => {
       stepsContainer.append(step.generateView(step));
     });
     fragment.append(stepsContainer);
     return fragment;
+  }
+
+  generateView() {
+    const styles = [DOM_ELEMENT_CLASS.container, DOM_ELEMENT_CLASS.containerExpanded];
+    const container = ElementGenerator.generateContainer(styles, DOM_ELEMENT_ID.container);
+    container.append(this.#generateStepsView());
+    return container;
+  }
+
+  updateByIndex(step) {
+    const newIndex = this.#currentIndex + step;
+    const newSelectedStep = this.#steps[newIndex];
+    newSelectedStep.completed = true;
+    newSelectedStep.setSelected(true);
+    this.#onStepSelection(newSelectedStep);
+  }
+
+  #intOptionsStep() {
+    const optionsStep = this.#optionsStep;
+    optionsStep.completed = false;
+  }
+
+  #intTurnsStep(parallelSelected) {
+    const turnsStep = this.#turnsStep;
+    turnsStep.completed = false;
+    turnsStep.displayed = !parallelSelected;
+  }
+
+  updateOptionsOnVSModeChange(parallelSelected) {
+    this.#intOptionsStep();
+    this.#intTurnsStep(parallelSelected);
+    this.#setStepsState();
+
+    return this.#container.then(container => {
+      container.className = DOM_ELEMENT_CLASS.container;
+      ElementHandler.clearContent(container);
+      container.append(this.#generateStepsView());
+      return container;
+    }).then(container => {
+      ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.containerExpandedFast);
+      return;
+    });
   }
 
 }

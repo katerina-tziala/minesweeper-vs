@@ -1,0 +1,40 @@
+.game-wizard-actions-container {
+  width: 100%;
+  @extend %between-center;
+  margin-top: 30px;
+
+  &>button {
+    min-width: 80px;
+    height: 28px;
+    line-height: 30px;
+  }
+}
+
+._action-button-icon {
+  width: 13px;
+  height: 0px;
+  position: relative;
+  top: 1px;
+  font-size: 15px;
+  display: inline-block;
+}
+
+.game-wizard-action-next {
+  line-height: 28px!important;
+  &::after {
+    @extend .icon-double-right;
+    @extend ._action-button-icon;
+    right: -4px;
+    margin-left: 1px;
+  }
+}
+
+.game-wizard-action-back {
+  line-height: 28px!important;
+  &::before {
+    @extend .icon-double-left;
+    @extend ._action-button-icon;
+    left: -4px;
+    margin-right: 1px;
+  }
+}

@@ -18,7 +18,7 @@ export class GameSetup {
   #_defaultGameParams = {};
 
   #SettingsControllers = new GroupController();
-  #Stepper;
+  #WizardActions;
 
   #closeWizard;
   #submitGame;
@@ -30,19 +30,19 @@ export class GameSetup {
     this.initGameParams();
   }
 
-
-
-
-
-
-
-  set stepper(stepper) {
-    this.#Stepper = stepper;
+  set wizardActions(stepper) {
+    this.#WizardActions = stepper;
   }
 
-  get stepper() {
-    return this.#Stepper;
+  get wizardActions() {
+    return this.#WizardActions;
   }
+
+
+
+
+
+
 
   get player() {
     return new Player(self.user.id, self.user.username);
@@ -120,6 +120,12 @@ export class GameSetup {
     );
   }
 
+
+
+  
+  
+
+
   generateWizard() {
     const wizardContainer = this.generateWizardContainer();
     wizardContainer.append(this.generateWizardHeader());
@@ -129,6 +135,8 @@ export class GameSetup {
     wizardContainer.append(this.generateStepperSection());
     return Promise.resolve(wizardContainer);
   }
+
+
 
   generateStepperNavigation() {
     const fragment = document.createDocumentFragment();
@@ -177,7 +185,7 @@ export class GameSetup {
 
   onGameSettingsChange(params) {
     // console.log(params);
-    this.stepper.submissionButtonDisabled = !params.valid;
+    //this.stepper.submissionButtonDisabled = !params.valid;
     this.gameParams = params;
   }
 

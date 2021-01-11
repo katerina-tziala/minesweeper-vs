@@ -16,27 +16,86 @@ import { TITLE } from "../game-setup.constants";
 
 import { GameWizardNavigation } from "../../../game-wizard/game-wizard-navigation/game-wizard-navigation";
 
-
+import { GameWizardActions } from "../../../game-wizard/game-wizard-actions/game-wizard-actions"
 
 export class GameSetupVS extends GameSetup {
   #_opponent;
   #_wizardSteps;
 
+  #_wizardStep;
+
+
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.init();
 
-    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStep.bind(this), this.againstBot);
+    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot);
+
+    this.wizardActions = new GameWizardActions({
+      onReset: this.onReset.bind(this),
+      onSubmit: this.onSubmit.bind(this),
+      onStepChange: this.#onStepChange.bind(this),
+    });
   }
 
 
-  #onSelectedStep(selectedStep) {
-    console.log(selectedStep);
+  init() {
+    this.wizardSteps = undefined;
+    // this.stepper = new GameWizardStepper(
+    //   {
+    //     onReset: this.onReset.bind(this),
+    //     onSubmit: this.onSubmit.bind(this),
+    //     onStepChange: this.onStepChange.bind(this),
+    //   },
+    //   this.wizardSteps.length,
+    //   this.stepperSubmissionType,
+    // );
+  }
+
+  get wizardStepName() {
+    return this.wizardNavigation ? this.wizardNavigation.selectedStep : undefined;
+  }
+
+  #onSelectedStepChange() {
+    // if (!this.#_wizardStep) {
+    //   this.#_wizardStep = selectedStep;
+    //   return;
+    // }
+    console.log("onSelectedStepChange");
+    // console.log(this.wizardNavigation);
+
+    console.log(this.wizardStepName);
+
+
+    this.wizardActions.updateActionButtons(this.wizardNavigation.onFirstStep, this.wizardNavigation.onLastStep)
+      .then(() => {
+
+        this.#keepStepController();
+
+        this.updateWizardContent();
+
+        console.log("update with animation");
+      });
   }
 
 
+  onReset() {
+    this.resetStepValues();
+    this.removeController(this.wizardStepName);
+    this.updateWizardContent();
+  }
 
+  #keepStepController() {
+    this.settingsControllers.forEach((controller) => {
+      if (controller.name !== this.wizardStepName) {
+        this.removeController(controller.name);
+      }
+    });
+  }
 
+  #onStepChange(step) {
+    this.wizardNavigation.updateByIndex(step);
+  }
 
   get againstBot() {
     return false;
@@ -54,49 +113,6 @@ export class GameSetupVS extends GameSetup {
     return this.#_opponent;
   }
 
-  generateWizardSteps(selectedMode) {
-    return selectedMode === GameVSMode.Parallel
-    ? [
-      WIZARD_NAME.vsModeSettings,
-      WIZARD_NAME.levelSettings,
-      WIZARD_NAME.optionsSettings,
-    ]
-    : [
-      WIZARD_NAME.vsModeSettings,
-      WIZARD_NAME.levelSettings,
-      WIZARD_NAME.turnSettings,
-      WIZARD_NAME.optionsSettings
-    ];
-  }
-
-  set wizardSteps(selectedMode) {
-    this.#_wizardSteps = this.generateWizardSteps(selectedMode);
-  }
-
-  get wizardSteps() {
-    return this.#_wizardSteps;
-  }
-
-  get wizardStep() {
-    return this.stepper.currentStep - 1;
-  }
-
-  get wizardStepName() {
-    return this.wizardSteps[this.wizardStep];
-  }
-
-  init() {
-    this.wizardSteps = undefined;
-    this.stepper = new GameWizardStepper(
-      {
-        onReset: this.onReset.bind(this),
-        onSubmit: this.onSubmit.bind(this),
-        onStepChange: this.onStepChange.bind(this),
-      },
-      this.wizardSteps.length,
-      this.stepperSubmissionType,
-    );
-  }
 
   initModeWizard() {
     const controller = new VSModeWizard(
@@ -119,14 +135,14 @@ export class GameSetupVS extends GameSetup {
   onVSModeChange(params) {
     super.onGameSettingsChange(params);
     this.setOptionsBasedOnVSMode(params);
-
-    this.wizardSteps = params.value.vsMode;
-
-    if (params.value.vsMode === GameVSMode.Parallel) {
+  
+    const parallelSelected = params.value.vsMode === GameVSMode.Parallel;
+    if (parallelSelected) {
       delete this.gameParams[GameVSMode.Parallel];
       delete this.defaultGameParams[GameVSMode.Parallel];
     }
-    this.stepper.updateNumberOfSteps(this.wizardSteps.length);
+   
+    this.wizardNavigation.updateOptionsOnVSModeChange(parallelSelected);
   }
 
   setOptionsBasedOnVSMode(params) {
@@ -166,7 +182,6 @@ export class GameSetupVS extends GameSetup {
 
   generateContent() {
     const fragment = document.createDocumentFragment();
-    console.log(this.wizardSteps);
     const controller = this.getSettingsController(this.wizardStepName);
     fragment.append(controller.generateSettingsWizard());
     return fragment;
@@ -181,8 +196,7 @@ export class GameSetupVS extends GameSetup {
   generateStepperSection() {
     const fragment = document.createDocumentFragment();
     if (this.opponent) {
-      fragment.append(this.stepper.generateStepper());
-      console.log("stepper timeline");
+      fragment.append(this.wizardActions.generateView());
     }
     return fragment;
   }
@@ -197,23 +211,6 @@ export class GameSetupVS extends GameSetup {
     }
   }
 
-  onReset() {
-    this.resetStepValues();
-    this.removeController(this.wizardStepName);
-    this.updateWizardContent();
-  }
-
-  onStepChange() {
-    this.stepper.submissionButtonDisabled = false;
-
-    this.settingsControllers.forEach((controller) => {
-      if (controller.name !== this.wizardStepName) {
-        this.removeController(controller.name);
-      }
-    });
-
-    this.updateWizardContent();
-  }
 
   // OVERIDDEN FUNCTIONS
   get stepperSubmissionType() {

@@ -8,6 +8,8 @@ export const DOM_ELEMENT_ID = {
 
 export const DOM_ELEMENT_CLASS = {
   container: "game-wizard-navigation",
+  containerExpanded: "game-wizard-navigation--expanded",
+  containerExpandedFast: "game-wizard-navigation--expanded-fast",
   stepsContainer: "game-wizard-navigation__steps-container",
 };
 

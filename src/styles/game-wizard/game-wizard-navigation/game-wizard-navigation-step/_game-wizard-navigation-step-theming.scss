@@ -6,7 +6,8 @@
     background-color: theming.getThemeColor($theme, "wizard-step-background");
     color: theming.getThemeColor($theme, "wizard-step-color");
     border: 2px solid theming.getThemeColor($theme, "theme-secondary-intense");
-
+    $shadow-color: theming.getThemeColor($theme, "wizard-step-selected-color");
+    box-shadow: 0px 0px 5px 0px $shadow-color inset;
     &::before {
       background-color: theming.getThemeColor($theme, "wizard-step-background");
     }
@@ -25,10 +26,9 @@
 
 @mixin setSelectedButtonThemeStyles($theme) {
   .game-wizard-navigation-step__button {
-    $color:theming.getThemeColor($theme, "wizard-step-selected-color");
     background-color: theming.getThemeColor($theme, "wizard-step-selected-background");
-    color: $color;
-    box-shadow: 0px 0px 5px 0px $color inset;
+    color: theming.getThemeColor($theme, "wizard-step-selected-color");
+    box-shadow: none;
   }
 }
 

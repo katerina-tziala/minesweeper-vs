@@ -116,3 +116,13 @@
   @extend %icon-regular;
   content: fa-content($fa-var-eye);
 }
+
+.icon-double-right {
+  @extend %icon-regular;
+  content: fa-content($fa-var-angle-double-right);
+}
+
+.icon-double-left {
+  @extend %icon-regular;
+  content: fa-content($fa-var-angle-double-left);
+}

@@ -164,6 +164,7 @@ export class GameWizardNavigationStep {
 
   setCompleted(completed) {
     this.completed = completed;
+
     return this.#updateStyles();
   }
 
