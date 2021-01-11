@@ -118,7 +118,7 @@ export class GameWizardNavigationStep {
     this.completed = true;
     this.setSelected(true).then(() => {
       if (this.#submitSelected) {
-        this.#submitSelected(this.name);
+        this.#submitSelected(this);
       }
     });
   }

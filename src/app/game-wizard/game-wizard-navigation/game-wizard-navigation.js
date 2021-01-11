@@ -37,7 +37,7 @@ export class GameWizardNavigation {
     this.#steps.find(step => step.selected && step.name !== selectedStep).setSelected(false);
     this.#setStepsState(true);
 
-    this.#_selectedStep = selectedStep;
+    this.#_selectedStep = selectedStep.name;
 
     if (this.#onSelectedStep) {
       this.#onSelectedStep(this.#_selectedStep);
