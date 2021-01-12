@@ -36,6 +36,8 @@ export class Page {
     self.toastNotifications.show(errorMessage);
   }
 
-  //
-  renderPage(mainContainer) {}
+  renderPage(mainContainer) {
+    const fragment = document.createDocumentFragment();
+    mainContainer.append(fragment);
+  }
 }

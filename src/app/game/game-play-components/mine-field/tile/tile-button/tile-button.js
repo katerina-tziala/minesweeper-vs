@@ -5,7 +5,6 @@ import { clone } from "~/_utils/utils.js";
 import { GameAction } from "GameEnums";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTON_PARAMS } from "./tile-button.constants";
 
-
 export class TileButton {
   #_id;
   #_active;
@@ -193,7 +192,7 @@ export class TileButton {
 
   revealButton() {
     return this.#button.then(button => {
-      ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.revealed)
+      ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.revealed);
       return;
     });
   }

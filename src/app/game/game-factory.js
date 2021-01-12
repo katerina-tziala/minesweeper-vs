@@ -15,7 +15,7 @@ export class GameFactory {
 
     if (gameParams.turnSettings) {
       const turnSettings = new TurnSettings();
-      turnSettings.update(gameParams.turnSettings)
+      turnSettings.update(gameParams.turnSettings);
       gameParams.turnSettings = turnSettings;
     }
 
@@ -104,7 +104,7 @@ export class GameFactory {
   static loadPlayerGame(gameId, gameParams, player = GameFactory.getPlayer()) {
     gameParams = GameFactory.getGameModelParams(gameParams);
  
-    return import(`GamePlayType`).then((module) => {
+    return import("GamePlayType").then((module) => {
       return new module.GameSinglePlayer(gameId, gameParams, player);
     });
   }
@@ -112,7 +112,7 @@ export class GameFactory {
   static loadGameVs(gameId, gameParams, opponent) {
     gameParams = GameFactory.getGameModelParams(gameParams);
  
-    return import(`GamePlayType`).then((module) => {
+    return import("GamePlayType").then((module) => {
       if (GameFactory.isVSModeDetect(gameParams)) {
         return new module.GameVSDetect(
           gameId,
@@ -163,7 +163,7 @@ export class GameFactory {
     ];
 
     return Promise.all(gamesForPlayers).then(([playerGame, opponentGame]) => {
-      return import(`GamePlayType`).then((module) => {
+      return import("GamePlayType").then((module) => {
         return new module.GameParallel(gameId, gamingOptions.parallelGame, playerGame, opponentGame);
       });
     });

@@ -19,7 +19,7 @@ export class BoardActionsController {
   }
 
   set #online(online) {
-    return this.#_online = online;
+    this.#_online = online;
   }
 
   get #online() {
@@ -27,7 +27,7 @@ export class BoardActionsController {
   }
 
   set #actionsAllowed(allowed) {
-    return this.#_actionsAllowed = allowed;
+    this.#_actionsAllowed = allowed;
   }
 
   get #actionsAllowed() {

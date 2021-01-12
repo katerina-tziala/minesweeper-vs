@@ -4,11 +4,9 @@ import { nowTimestamp } from "~/_utils/dates";
 import { valueDefined } from "~/_utils/validator";
 
 import {
-  GameType,
   GameVSMode,
   GameAction,
   GameOverType,
-  GameSubmission,
 } from "GameEnums";
 
 import { RoundStatistics } from "GameModels";
@@ -150,13 +148,12 @@ export class Game extends AppModel {
       id: this.id,
       players: this.players,
       gameOverType: this.gameOverType,
-      completedAt: this.completedAt,
       startedAt: this.startedAt,
       createdAt: this.createdAt,
       completedAt: this.completedAt,
       roundTiles: this.roundTiles,
       rounds: this.rounds
-    }
+    };
   }
 
   get boardActions() {

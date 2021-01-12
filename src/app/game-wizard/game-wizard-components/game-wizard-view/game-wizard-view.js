@@ -36,7 +36,7 @@ export class GameWizardView {
   }
 
   static generateWizard(content) {
-    const box = GameWizardView.generateWizardBox()
+    const box = GameWizardView.generateWizardBox();
     const contentContainer = GameWizardView.generateWizardContent(content);
     box.append(contentContainer);
     return Promise.resolve(box);
@@ -104,26 +104,26 @@ export class GameWizardView {
 
   static updateMainView(content) {
     return GameWizardView.resetWizardHeight(150)
-    .then(() => {
-      return GameWizardView.updateMainSection(content);
-    })
-    .then(() => {
-      GameWizardView.expandWizard();
-      return;
-    });
+      .then(() => {
+        return GameWizardView.updateMainSection(content);
+      })
+      .then(() => {
+        GameWizardView.expandWizard();
+        return;
+      });
   }
 
   static updateView(content) {
     return GameWizardView.resetWizardHeight()
-    .then(() => {
-      return this.container;
-    })
-    .then(container => {
-      ElementHandler.clearContent(container);
-      container.append(content);
-    }).then(() => {
-      GameWizardView.expandWizard();
-      return;
-    });
+      .then(() => {
+        return this.container;
+      })
+      .then(container => {
+        ElementHandler.clearContent(container);
+        container.append(content);
+      }).then(() => {
+        GameWizardView.expandWizard();
+        return;
+      });
   }
 }

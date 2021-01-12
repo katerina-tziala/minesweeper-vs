@@ -1,14 +1,8 @@
 "use strict";
 import "../../../styles/pages/_game.scss";
-
 import { Page } from "../page";
 
-// import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BOARD_SECTION } from "./game-page.constants";
-
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
-
-import { GameMessageController } from "GamePlayControllers";
-// import { User } from "~/_models/user";
 
 import { GameFactory } from "../../game/game-factory";
 export class GamePage extends Page {

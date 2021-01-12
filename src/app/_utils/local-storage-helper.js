@@ -38,7 +38,4 @@ export class LocalStorageHelper {
     return LocalStorageHelper.retrieve(`gameSetup-${type}`);
   }
 
-  static removeGameSetUp(type) {
-    return localStorage.removeItem(`gameSetup-${type}`);
-  }
 }

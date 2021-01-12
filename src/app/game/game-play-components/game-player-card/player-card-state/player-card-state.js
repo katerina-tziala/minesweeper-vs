@@ -39,7 +39,7 @@ export class PlayerCardState {
   }
 
   static generateLoadingState(colorType) {
-    const icon = IconLoader.generateIcon(colorType)
+    const icon = IconLoader.generateIcon(colorType);
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.loadingState]);
     container.append(icon);
     return container;

@@ -1,6 +1,5 @@
 "use strict";
 
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { CANCEL_BTN } from "~/_constants/btn-text.constants";
 import {
   ElementHandler,
@@ -10,8 +9,7 @@ import {
 
 import {
   DOM_ELEMENT_ID,
-  DOM_ELEMENT_CLASS,
-  CONFIRMATION,
+  DOM_ELEMENT_CLASS
 } from "./modal.constants";
 import { preventInteraction } from "~/_utils/utils";
 
@@ -168,8 +166,8 @@ export class ModalView {
           nextIndex < 0
             ? buttons.length - 1
             : nextIndex < buttons.length
-            ? nextIndex
-            : 0;
+              ? nextIndex
+              : 0;
         buttons[nextIndex].focus();
       }
     }

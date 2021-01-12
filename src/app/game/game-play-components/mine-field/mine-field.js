@@ -112,7 +112,7 @@ export class MineField {
       return {
         tiles: revealedTiles,
         detonatedMine: this.#tileDetonated(revealedTiles)
-      }
+      };
     });
   }
 
@@ -135,7 +135,7 @@ export class MineField {
       return {
         tiles: revealedTiles,
         detonatedMine: false
-      }
+      };
     });
   }
 

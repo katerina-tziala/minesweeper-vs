@@ -101,7 +101,7 @@ export class GameWizardNavigationStep {
   }
 
   #generateLabel() {
-    const button =  ElementGenerator.generateButton(this.#labelParams, this.#onSelection.bind(this));
+    const button = ElementGenerator.generateButton(this.#labelParams, this.#onSelection.bind(this));
     button.innerHTML = this.#content;
     ElementHandler.setDisabled(button, this.#buttonDisabled);
     return button;
@@ -144,8 +144,8 @@ export class GameWizardNavigationStep {
 
   #setStepDisplay(container) {
     this.displayed
-    ? ElementHandler.display(container)
-    : ElementHandler.hide(container);
+      ? ElementHandler.display(container)
+      : ElementHandler.hide(container);
   }
 
   generateView() {

@@ -103,7 +103,7 @@ export class GameSinglePlayer extends GameDefault {
 
   start() {
     this.onAfterViewInit.then(() => {
-      return this.#MessageController.displayStartMessage(this.player)
+      return this.#MessageController.displayStartMessage(this.player);
     }).then(() => {
       this.startGameRound();
     });

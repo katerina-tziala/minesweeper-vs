@@ -4,7 +4,7 @@ import { ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS } from "./vs-board.constants";
 
 export class VSBoard {
- 
+
   static generateView(vColorType, sColorType, section) {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.vsBoard]);
     container.append(VSBoard.generateVSIndicator(vColorType, sColorType));
@@ -31,9 +31,9 @@ export class VSBoard {
 
   static getIndicatorStyles(colorType) {
     const styles = [DOM_ELEMENT_CLASS.vsIndicatorItem];
-   if (colorType) {
-    styles.push(VSBoard.getIndicatorColorTypeStyle(colorType));
-   }
+    if (colorType) {
+      styles.push(VSBoard.getIndicatorColorTypeStyle(colorType));
+    }
     return styles;
   }
 

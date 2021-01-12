@@ -6,7 +6,7 @@ import {
   MinefieldFreezer,
   MinesweeperBoard,
   Dashboard,
-  MineFieldUtils 
+  MineFieldUtils
 } from "GamePlayComponents";
 import { GameAction } from "GameEnums";
 import { GameTimer } from "GamePlayControllers";
@@ -51,7 +51,7 @@ export class BoardController {
   }
 
   set playerOnTurn(player) {
-    return this.#_playerOnTurn = player;
+    this.#_playerOnTurn = player;
   }
 
   get playerOnTurn() {

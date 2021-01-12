@@ -6,11 +6,11 @@ export class BoardControllerVS extends BoardController {
   #_playerWaiting;
 
   constructor(gameId, params, minefieldActions, onRoundTimerEnd) {
-    super(gameId, params, minefieldActions, onRoundTimerEnd)
+    super(gameId, params, minefieldActions, onRoundTimerEnd);
   }
 
   set playerWaiting(player) {
-    return this.#_playerWaiting = player;
+    this.#_playerWaiting = player;
   }
 
   get playerWaiting() {

@@ -1,13 +1,9 @@
 "use strict";
 import { ElementHandler } from "HTML_DOM_Manager";
-import { clone, randomValueFromArray } from "~/_utils/utils.js";
-
+import { randomValueFromArray } from "~/_utils/utils.js";
 import { GameOverType, GameSubmission } from "GameEnums";
-
 import { GameDefault } from "../_game-default";
-
 import {
-  // MinesweeperVSBoardController,
   VSDashboardController,
   GameMessageVSController as MessageController
 } from "GamePlayControllers";
@@ -104,15 +100,15 @@ export class GameVS extends GameDefault {
     return gameContainer;
   }
 
-  updateStateOnFlaggedTile(tile) {
+  updateStateOnFlaggedTile() {
     return;
   }
 
-  updateStateOnMarkedTile(tile) {
+  updateStateOnMarkedTile() {
     return;
   }
 
-  updateStateOnResetedTile(tile) {
+  updateStateOnResetedTile() {
     return;
   }
 

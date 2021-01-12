@@ -1,6 +1,6 @@
 
 
-@mixin slideIn($duration: .8) {
+@mixin slideIn($duration: 1) {
   animation: slide-in #{$duration}s ease-out;
   animation-fill-mode: forwards;
 }

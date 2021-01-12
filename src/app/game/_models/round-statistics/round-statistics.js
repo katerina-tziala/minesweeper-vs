@@ -33,14 +33,14 @@ export class RoundStatistics extends AppModel {
   onRoundEnd(boardTiles) {
     this.roundTilesUpdate = boardTiles;
     this.end = nowTimestamp();
-    this.end = this.#updateRounds();
+    this.#updateRounds();
   }
 
   #updateRounds() {
     this.rounds.push({
       start: this.start,
       end: this.end,
-      end: this.roundTiles,
+      tiles: this.roundTiles,
     });
   }
 

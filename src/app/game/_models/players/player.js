@@ -70,7 +70,7 @@ export class Player extends AppModel {
 
   /* CHECKS BASED ON MINEFIELD ACTIONS */
   get unlimitedFlags() {
-    return !valueDefined(this.maxAllowedFlags)
+    return !valueDefined(this.maxAllowedFlags);
   }
 
   get hasFlags() {

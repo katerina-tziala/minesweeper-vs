@@ -1,7 +1,5 @@
 "use strict";
 import { nowTimestamp } from "~/_utils/dates";
-import { SneakPeekSettings } from "GameModels";
-
 import { SneakPeekTimerController } from "./_sneak-peek-timer-controller";
 import { SneakPeekButton } from "GamePlayComponents";
 
@@ -82,7 +80,7 @@ export class SneakPeekController {
   }
 
   set results(results) {
-    return this.#_results = results;
+    this.#_results = results;
   }
 
   get results() {

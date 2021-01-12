@@ -16,7 +16,7 @@ export class GameInterval {
   }
 
   set step(step) {
-    return (this.#_step = step);
+    this.#_step = step;
   }
 
   get step() {
@@ -24,7 +24,7 @@ export class GameInterval {
   }
 
   set limit(limit) {
-    return (this.#_limit = limit !== null ? limit : null);
+    this.#_limit = limit !== null ? limit : null;
   }
 
   get limit() {
@@ -134,7 +134,6 @@ export class GameInterval {
 
   continue() {
     this.stop();
-    this.value = this.value;
     if (this.hittedLimit) {
       this.#onLimitHit();
       return;

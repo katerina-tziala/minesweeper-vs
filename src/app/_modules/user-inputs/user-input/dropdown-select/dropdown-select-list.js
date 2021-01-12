@@ -90,13 +90,13 @@ export class DropdownSelectList {
     );
     this.isScrollable
       ? ElementHandler.addStyleClass(
-          listbox,
-          DOM_ELEMENT_CLASS.listboxScrollable,
-        )
+        listbox,
+        DOM_ELEMENT_CLASS.listboxScrollable,
+      )
       : ElementHandler.removeStyleClass(
-          listbox,
-          DOM_ELEMENT_CLASS.listboxScrollable,
-        );
+        listbox,
+        DOM_ELEMENT_CLASS.listboxScrollable,
+      );
   }
 
   getListBoxAttributes(options, selectText) {

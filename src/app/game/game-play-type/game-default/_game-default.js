@@ -1,7 +1,4 @@
 "use strict";
-
-import { GameOverType, GameAction } from "GameEnums";
-
 import { Game } from "../_game";
 
 export class GameDefault extends Game {
@@ -39,7 +36,7 @@ export class GameDefault extends Game {
       onTileAction: this.#onTileAction.bind(this),
       onTileDetonation: this.onTileDetonation.bind(this),
       onRevealedTiles: this.onRevealedTiles.bind(this)
-    }
+    };
   }
 
   #onTileAction(action, tile) {

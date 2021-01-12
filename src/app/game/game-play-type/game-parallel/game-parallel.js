@@ -1,9 +1,5 @@
 "use strict";
-
 import { valueDefined } from "~/_utils/validator";
-
-import { GameOverType } from "GameEnums";
-
 import {
   VSDashboardController,
   SneakPeekCompetitionController,

@@ -47,7 +47,7 @@ export class DashboardFaceIcon {
 
   #setIconStyles(iconStyles) {
     return this.#iconElement.then((icon) => {
-      ElementHandler.setStyleClass(icon, iconStyles)
+      ElementHandler.setStyleClass(icon, iconStyles);
       return;
     });
   }
