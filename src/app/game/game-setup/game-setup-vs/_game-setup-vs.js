@@ -1,7 +1,5 @@
 "use strict";
-
 import { clone, replaceStringParameter } from "~/_utils/utils";
-
 import { GameVSMode } from "GameEnums";
 import {
   WIZARD_NAME,
@@ -27,16 +25,6 @@ export class GameSetupVS extends GameSetup {
 
   get invite() {
     return false;
-  }
-
-  init() {
-    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot);
-
-    this.wizardActions = new GameWizardActions({
-      onReset: this.onReset.bind(this),
-      onSubmit: this.onSubmit.bind(this),
-      onStepChange: this.#onStepChange.bind(this),
-    }, this.invite);
   }
 
   get againstBot() {
@@ -76,32 +64,28 @@ export class GameSetupVS extends GameSetup {
     return this.wizardNavigation ? this.wizardNavigation.selectedStep : undefined;
   }
 
+  init() {
+    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot);
+    this.wizardActions = new GameWizardActions({
+      onReset: this.onReset.bind(this),
+      onSubmit: this.onSubmit.bind(this),
+      onStepChange: this.#onStepChange.bind(this),
+    }, this.invite);
+  }
+
   #onSelectedStepChange() {
-    // if (!this.#_wizardStep) {
-    //   this.#_wizardStep = selectedStep;
-    //   return;
-    // }
-    console.log("onSelectedStepChange");
-    // console.log(this.wizardNavigation);
-
-    console.log(this.wizardStepName);
-
-
-    this.wizardActions.updateActionButtons(this.wizardNavigation.onFirstStep, this.wizardNavigation.onLastStep)
-      .then(() => {
-
-        this.#keepStepController();
-
-        this.updateWizardContent();
-
-        console.log("update with animation");
-      });
+    const onFirstStep = this.wizardNavigation.onFirstStep;
+    const onLastStep = this.wizardNavigation.onLastStep;
+    this.wizardActions.updateActionButtons(onFirstStep, onLastStep).then(() => {
+      this.#keepStepController();
+      this.updateMainView();
+    });
   }
 
   onReset() {
     this.resetStepValues();
     this.removeController(this.wizardStepName);
-    this.updateWizardContent();
+    this.rerenderCurrentMainView();
   }
 
   #keepStepController() {
@@ -182,29 +166,6 @@ export class GameSetupVS extends GameSetup {
     return super.getSettingsController(wizardName);
   }
 
-  generateContent() {
-    const fragment = document.createDocumentFragment();
-    const controller = this.getSettingsController(this.wizardStepName);
-    fragment.append(controller.generateSettingsWizard());
-    return fragment;
-  }
-
-  generateWizardNavigation() {
-    const fragment = document.createDocumentFragment();
-    if (this.opponent) {
-      fragment.append(this.wizardNavigation.generateView());
-    }
-    return fragment;
-  }
-
-  generateWizardActions() {
-    const fragment = document.createDocumentFragment();
-    if (this.opponent) {
-      fragment.append(this.wizardActions.generateView());
-    }
-    return fragment;
-  }
-
   resetStepValues() {
     const wizardName = this.wizardStepName;
     if (wizardName === WIZARD_NAME.optionsSettings) {
@@ -213,6 +174,29 @@ export class GameSetupVS extends GameSetup {
       delete this.gameParams[wizardName];
       delete this.defaultGameParams[wizardName];
     }
+  }
+
+  generateMainContent() {
+    const fragment = document.createDocumentFragment();
+    const controller = this.getSettingsController(this.wizardStepName);
+    fragment.append(controller.generateSettingsWizard());
+    return fragment;
+  }
+
+  generateNavigation() {
+    const fragment = super.generateNavigation();
+    if (this.opponent) {
+      fragment.append(this.wizardNavigation.generateView());
+    }
+    return fragment;
+  }
+
+  generateActions() {
+    const fragment = super.generateActions();
+    if (this.opponent) {
+      fragment.append(this.wizardActions.generateView());
+    }
+    return fragment;
   }
 
 }

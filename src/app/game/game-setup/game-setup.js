@@ -1,28 +1,20 @@
 "use strict";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { GroupController } from "~/_utils/group-controller";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
-
 import { Player } from "GameModels";
-
 import { WIZARD_NAME, LevelWizard, OptionsWizard } from "GameSettingsWizard";
-
-import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-setup.constants";
+import { GameWizardView } from "../../game-wizard/game-wizard-view/game-wizard-view";
 
 export class GameSetup {
-
   #_gameParams;
   #_defaultGameParams = {};
-
   #SettingsControllers = new GroupController();
   #WizardActions;
-
   #closeWizard;
   #submitGame;
-
 
   constructor(onClose, submitGame) {
     this.#closeWizard = onClose;
@@ -42,12 +34,21 @@ export class GameSetup {
     return new Player(self.user.id, self.user.username);
   }
 
-  initGameParams() {
-    this.#_gameParams = {};
-    const currentParams = LocalStorageHelper.getGameSetUp(this.gameType);
-    if (currentParams) {
-      this.#_gameParams = currentParams;
-    }
+  get gameType() {
+    return TYPOGRAPHY.emptyString;
+  }
+
+  get title() {
+    return TYPOGRAPHY.emptyString;
+  }
+
+  get gameSetUp() {
+    LocalStorageHelper.setGameSetUp(this.gameType, this.gameParams);
+    const gameSetUp = this.gameParams;
+    gameSetUp.type = this.gameType;
+    gameSetUp.levelSettings.setMinesPositions();
+    gameSetUp.players = [this.player];
+    return gameSetUp;
   }
 
   set gameParams(params) {
@@ -80,20 +81,20 @@ export class GameSetup {
     return this.#SettingsControllers.controllers;
   }
 
+  initGameParams() {
+    this.#_gameParams = {};
+    const currentParams = LocalStorageHelper.getGameSetUp(this.gameType);
+    if (currentParams) {
+      this.#_gameParams = currentParams;
+    }
+  }
+
   removeController(wizardName) {
     return this.#SettingsControllers.removeController(wizardName);
   }
 
   getSettingsController(wizardName) {
     return this.#SettingsControllers.getController(wizardName);
-  }
-
-  get contentContainer() {
-    return ElementHandler.getByID(DOM_ELEMENT_CLASS.wizardContent);
-  }
-
-  get wizardContainer() {
-    return ElementHandler.getByID(DOM_ELEMENT_CLASS.wizardContainer);
   }
 
   getGameParamsForWizard(wizardName) {
@@ -114,67 +115,6 @@ export class GameSetup {
     );
   }
 
-  generateWizardView() {
-    const fragment = document.createDocumentFragment();
-    fragment.append(this.generateWizardHeader());
-    fragment.append(this.generateWizardNavigation());
-    fragment.append(this.generateContentSection());
-    fragment.append(this.generateWizardActions());
-    return fragment;
-  }
-
-  
-  generateWizard() {
-    const wizardContainer = this.generateWizardContainer();
-    wizardContainer.append(this.generateWizardView());
-    return Promise.resolve(wizardContainer);
-  }
-
-  generateWizardNavigation() {
-    const fragment = document.createDocumentFragment();
-    return fragment;
-  }
-
-  generateWizardContainer() {
-    const wizardContainer = ElementGenerator.generateContainer(
-      [DOM_ELEMENT_CLASS.wizardContainer],
-      DOM_ELEMENT_CLASS.wizardContainer,
-    );
-    return wizardContainer;
-  }
-
-  generateWizardHeader() {
-    const wizardHeader = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.wizardHeader,
-    ]);
-    const closeBnt = ElementGenerator.generateButton(
-      CLOSE_BTN,
-      this.onClose.bind(this),
-    );
-    wizardHeader.append(this.generateWizardTitle(), closeBnt);
-    return wizardHeader;
-  }
-
-  generateWizardTitle() {
-    const wizardTitle = document.createElement("h2");
-    wizardTitle.innerHTML = this.title;
-    return wizardTitle;
-  }
-
-  generateContentSection() {
-    const wizardContent = ElementGenerator.generateContainer(
-      [DOM_ELEMENT_CLASS.wizardContent],
-      DOM_ELEMENT_CLASS.wizardContent,
-    );
-    wizardContent.append(this.generateContent());
-    return wizardContent;
-  }
-
-  generateWizardActions() {
-    const fragment = document.createDocumentFragment();
-    return fragment;
-  }
-
   onGameSettingsChange(params) {
     const validSettings = params.valid;
     if (validSettings) {
@@ -185,48 +125,82 @@ export class GameSetup {
 
   onSubmit() {
     const gameSetUp = this.gameSetUp;
-    gameSetUp.playerStartID = randomValueFromArray(
-      gameSetUp.players.map((player) => player.id),
-    );
-    this.#submitGame(clone(gameSetUp));
+    gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map((player) => player.id));
+    this.collapseWizard().then(() => {
+      this.#submitGame(clone(gameSetUp));
+    });
   }
 
   onClose() {
-    this.#closeWizard();
     LocalStorageHelper.removeGameSetUp(this.gameType);
-  }
-
-  // OVERRIDEN FUNCTIONS
-  get gameType() {
-    return TYPOGRAPHY.emptyString;
-  }
-
-  get title() {
-    return TYPOGRAPHY.emptyString;
-  }
-
-  get gameSetUp() {
-    LocalStorageHelper.setGameSetUp(this.gameType, this.gameParams);
-    const gameSetUp = this.gameParams;
-    gameSetUp.type = this.gameType;
-    gameSetUp.levelSettings.setMinesPositions();
-    gameSetUp.players = [this.player];
-    return gameSetUp;
-  }
-
-  generateContent() {
-    const fragment = document.createDocumentFragment();
-    return fragment;
+    this.collapseWizard().then(() => {
+      this.#closeWizard();
+    });
   }
 
   onReset() {
     return;
   }
 
-  updateWizardContent() {
-    this.contentContainer.then((contentContainer) => {
-      ElementHandler.clearContent(contentContainer);
-      contentContainer.append(this.generateContent());
-    });
+  /*
+  ** FUNCTIONS TO UPDATE WIZARD INTERFACE
+  */
+  generateWizardView() {
+    const fragment = document.createDocumentFragment();
+    fragment.append(this.#generateHeader());
+    fragment.append(this.generateNavigation());
+    fragment.append(this.generateMainSection());
+    fragment.append(this.generateActions());
+    return fragment;
   }
+
+  #generateHeader() {
+    return GameWizardView.generateHeader(this.title, this.onClose.bind(this));
+  }
+
+  generateNavigation() {
+    return document.createDocumentFragment();
+  }
+
+  generateActions() {
+    return document.createDocumentFragment();
+  }
+
+  generateMainSection() {
+    const content = this.generateMainContent();
+    return GameWizardView.generateMainSection(content);
+  }
+
+  generateMainContent() {
+    return document.createDocumentFragment();
+  }
+
+  generateView() {
+    const content = this.generateWizardView();
+    return GameWizardView.generateWizard(content);
+  }
+
+  updateView() {
+    const content = this.generateWizardView();
+    return GameWizardView.updateView(content);
+  }
+  
+  expandWizard() {
+    return GameWizardView.expandWizard();
+  }
+
+  updateMainView() {
+    const content = this.generateMainContent();
+    return GameWizardView.updateMainView(content);
+  }
+
+  rerenderCurrentMainView() {
+    const content = this.generateMainContent();
+    return GameWizardView.updateMainSection(content);
+  }
+
+  collapseWizard() {
+    return GameWizardView.resetWizardHeight();
+  }
+
 }

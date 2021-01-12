@@ -39,13 +39,15 @@ export class GameSetupPage extends Page {
 
       //console.log(this.gameWizard);
 
-      this.gameWizard.generateWizard().then(wizard => {
+      this.gameWizard.generateView().then(wizard => {
         this.hideLoader();
         mainContainer.append(wizard);
 
+        this.gameWizard.expandWizard();
+        const sdf = wizard.getBoundingClientRect();
         console.log("now animate");
-       // console.log(wizard.getBoundingClientRect());
-
+        // console.log(sdf);
+        // wizard.style.height = "500px";
         // var height = elem.scrollHeight + 'px'; // Get it's height
         // elem.style.display = ''; //  Hide it again
         // return height;

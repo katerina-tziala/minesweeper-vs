@@ -1,9 +1,7 @@
 "use strict";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler } from "HTML_DOM_Manager";
 import { ADD_PLAYER_BTN } from "~/_constants/btn-text.constants";
 import { FormUsername } from "~/components/form/form-username/form-username";
-
 import { GameType } from "GameEnums";
 import { Player } from "GameModels";
 import { GameSetupVS } from "./_game-setup-vs";
@@ -16,11 +14,24 @@ export class GameSetupFriend extends GameSetupVS {
     console.log("GameSetupFriend");
   }
 
-  #updateWizardView() {
-    this.wizardContainer.then((wizardContainer) => {
-      ElementHandler.clearContent(wizardContainer);
-      wizardContainer.append(this.generateWizardView());
-    });
+  get parallelAllowed() {
+    return false;
+  }
+
+  get gameType() {
+    return GameType.Friend;
+  }
+
+  #addOpponent(formValues) {
+    this.opponent = new Player("localFriend", formValues.username);
+    this.#addOpponentForm = undefined;
+    this.updateView();
+  }
+
+  generateMainContent() {
+    return this.opponent
+      ? super.generateMainContent()
+      : this.#generateAddPlayerForm();
   }
 
   #generateAddPlayerForm() {
@@ -33,27 +44,5 @@ export class GameSetupFriend extends GameSetupVS {
       this.#addOpponentForm.renderForm({ submitBtn: ADD_PLAYER_BTN }),
     );
     return fragment;
-  }
-
-  #addOpponent(formValues) {
-    this.opponent = new Player("localFriend", formValues.username);
-    this.#addOpponentForm = undefined;
-    this.init();
-    this.#updateWizardView();
-  }
-
-  // OVERIDDEN FUNCTIONS
-  get parallelAllowed() {
-    return false;
-  }
-
-  get gameType() {
-    return GameType.Friend;
-  }
-
-  generateContent() {
-    return this.opponent
-      ? super.generateContent()
-      : this.#generateAddPlayerForm();
   }
 }

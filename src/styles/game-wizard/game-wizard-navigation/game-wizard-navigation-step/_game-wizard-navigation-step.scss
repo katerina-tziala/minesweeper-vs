@@ -17,7 +17,7 @@
   width: 50px;
 }
 
-.game-wizard-navigation-step__button {
+.game-wizard-navigation-step-button {
   cursor: pointer;
   outline: none;
   @include circle(50px);
@@ -34,23 +34,23 @@
     z-index: -1;
   }
   
-  &.game-wizard-navigation-step__button--botMode {
+  &.game-wizard-navigation-step-button--botMode {
     @include navigationStepButton("bot", 39, 22);
   }
 
-  &.game-wizard-navigation-step__button--vsModeSettings {
+  &.game-wizard-navigation-step-button--vsModeSettings {
     @include navigationStepButton("mode", 39);
   }
 
-  &.game-wizard-navigation-step__button--levelSettings {
+  &.game-wizard-navigation-step-button--levelSettings {
     @include navigationStepButton("level", 41, 21);
   }
 
-  &.game-wizard-navigation-step__button--turnSettings {
+  &.game-wizard-navigation-step-button--turnSettings {
     @include navigationStepButton("stopwatch", 39);
   }
 
-  &.game-wizard-navigation-step__button--optionsSettings {
+  &.game-wizard-navigation-step-button--optionsSettings {
     @include navigationStepButton("sliders", 40, 20);
   }
 
@@ -60,7 +60,7 @@
   
 }
 
-.game-wizard-navigation-step__label {
+.game-wizard__navigation-step-label {
   cursor: pointer;
   outline: none;
   border: none;

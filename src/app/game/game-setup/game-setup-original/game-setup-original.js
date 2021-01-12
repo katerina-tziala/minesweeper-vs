@@ -16,18 +16,6 @@ export class GameSetupOriginal extends GameSetup {
     this.#init();
   }
 
-  #init() {
-    this.initLevelWizard();
-    this.initOptionsWizard();
-  }
-
-  onReset() {
-    this.initGameParams();
-    this.#init();
-    this.updateWizardContent();
-  }
-
-  // OVERIDDEN FUNCTIONS
   get gameType() {
     return GameType.Original;
   }
@@ -36,7 +24,18 @@ export class GameSetupOriginal extends GameSetup {
     return TITLE[this.gameType];
   }
 
-  generateContent() {
+  #init() {
+    this.initLevelWizard();
+    this.initOptionsWizard();
+  }
+
+  onReset() {
+    this.initGameParams();
+    this.#init();
+    this.rerenderCurrentMainView();
+  }
+
+  generateMainContent() {
     const fragment = document.createDocumentFragment();
     this.settingsControllers.forEach((controller) =>
       fragment.append(controller.generateSettingsWizard()),
@@ -44,8 +43,8 @@ export class GameSetupOriginal extends GameSetup {
     return fragment;
   }
 
-  generateWizardActions() {
-    const fragment = document.createDocumentFragment();
+  generateActions() {
+    const fragment = super.generateActions();
     fragment.append(this.wizardActions.generateView());
     return fragment;
   }

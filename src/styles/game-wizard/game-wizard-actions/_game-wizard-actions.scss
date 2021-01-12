@@ -2,39 +2,37 @@
   width: 100%;
   @extend %between-center;
   margin-top: 30px;
-
-  &>button {
+ 
+  &>.btn-text.btn-primary {
     min-width: 80px;
-    height: 28px;
-    line-height: 30px;
+    position: relative;
   }
+  
 }
 
 ._action-button-icon {
   width: 13px;
   height: 0px;
-  position: relative;
-  top: 1px;
+  position: absolute;
+  top: 0px;
   font-size: 15px;
   display: inline-block;
 }
 
 .game-wizard-action-next {
-  line-height: 28px!important;
+  padding-right: 24px!important;
   &::after {
     @extend .icon-double-right;
     @extend ._action-button-icon;
-    right: -4px;
-    margin-left: 1px;
+    right: -23px;
   }
 }
 
 .game-wizard-action-back {
-  line-height: 28px!important;
+  padding-left: 22px!important;
   &::before {
     @extend .icon-double-left;
     @extend ._action-button-icon;
-    left: -4px;
-    margin-right: 1px;
+    left: -23px;
   }
 }

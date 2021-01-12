@@ -1,0 +1,23 @@
+
+@use "sass:list";
+@use "../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .game-wizard__box {
+    @include theming.setThemeCard($theme);
+    @include theming.setThemeBoxShadow($theme);
+  }
+  .game-wizard__container {
+    @include theming.setThemeCard($theme);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

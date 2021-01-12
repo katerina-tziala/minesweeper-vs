@@ -1,37 +1,27 @@
+@use "./game-wizard-theming";
+
+@import "./game-wizard-header/game-wizard-header";
 @import "./game-wizard-navigation/game-wizard-navigation";
 @import "./game-wizard-actions/game-wizard-actions";
 @import "./game-settings-wizard/game-settings-wizard";
 
-.game-wizard-container {
+
+.game-wizard__box {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.5s;
+  @include slideIn();
+}
+
+.game-wizard__container {
   min-width: 360px;
   max-width: 360px;
   padding: 15px;
   position: relative;
-  @include slideIn();
+  overflow: hidden;
 }
 
-.game-wizard-header {
-  @extend %between-start;
-  position: relative;
-  
-  > h2 {
-    @extend %ellipsis-text;
-    flex-grow: 1;
-    max-width: 300px;
-    min-height: 26px;
-    line-height: 26px;
-  }
-
-  .btn-icon--close {
-    @extend .btn-icon--normal;
-    @extend .btn-primary;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-  }
-}
-
-.game-wizard-content {
+.game-wizard__main {
   padding: 0 10px;
   margin-top: 30px;
 
@@ -42,17 +32,6 @@
   }
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  .game-wizard-container {
-    @include theming.setThemeCard("light");
-    @include theming.setThemeBoxShadow("light");
-  }
-}
 
-.theme-dark {
-  .game-wizard-container {
-    @include theming.setThemeCard("dark");
-    @include theming.setThemeBoxShadow("dark");
-  }
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-wizard-theming.setTheming();

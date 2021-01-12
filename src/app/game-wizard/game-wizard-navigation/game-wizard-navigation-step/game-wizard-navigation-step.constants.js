@@ -2,14 +2,14 @@
 
 export const DOM_ELEMENT_ID = {
   container: "game-wizard-navigation-step__",
-  button: "game-wizard-navigation-step__button__",
-  label: "game-wizard-navigation-step__label__",
+  button: "game-wizard-navigation-step-button__",
+  label: "game-wizard__navigation-step-label__",
 };
 
 export const DOM_ELEMENT_CLASS = {
   container: "game-wizard-navigation-step",
-  button: "game-wizard-navigation-step__button",
-  buttonModifier: "game-wizard-navigation-step__button--",
+  button: "game-wizard-navigation-step-button",
+  buttonModifier: "game-wizard-navigation-step-button--",
   selected: "selected",
   completed: "completed"
 };
@@ -22,7 +22,7 @@ export const BUTTONS = {
     actionType: "click",
   },
   label: {
-    className: "game-wizard-navigation-step__label",
+    className: "game-wizard__navigation-step-label",
     attributes: {
       "aria-label": "go to ### settings",
     },

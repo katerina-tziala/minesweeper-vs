@@ -1,0 +1,20 @@
+.game-wizard__header {
+  @extend %between-start;
+  position: relative;
+  
+  > h2 {
+    @extend %ellipsis-text;
+    flex-grow: 1;
+    max-width: 300px;
+    min-height: 26px;
+    line-height: 26px;
+  }
+
+  .btn-icon--close {
+    @extend .btn-icon--normal;
+    @extend .btn-primary;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+}

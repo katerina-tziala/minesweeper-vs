@@ -3,13 +3,13 @@
 import { WIZARD_NAME } from "GameSettingsWizard";
 
 export const DOM_ELEMENT_ID = {
-  container: "game-wizard-navigation-container",
+  container: "game-wizard__navigation-container",
 };
 
 export const DOM_ELEMENT_CLASS = {
-  container: "game-wizard-navigation",
-  containerExpanded: "game-wizard-navigation--expanded",
-  stepsContainer: "game-wizard-navigation__steps-container",
+  container: "game-wizard__navigation",
+  containerExpanded: "game-wizard__navigation--expanded",
+  stepsContainer: "game-wizard-navigation__steps",
 };
 
 export const NAVIGATION_STEPS = [

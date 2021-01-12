@@ -1,6 +1,6 @@
 @import "./game-wizard-navigation-step/game-wizard-navigation-step";
 
-.game-wizard-navigation {
+.game-wizard__navigation {
   overflow: hidden;
   position: relative;
   height: 65px;
@@ -8,12 +8,12 @@
   width: 0px;
 }
 
-.game-wizard-navigation--expanded {
+.game-wizard__navigation--expanded {
   width: 0%;
   @include expandWidth(.5);
 }
 
-.game-wizard-navigation__steps-container {
+.game-wizard-navigation__steps {
   width: 100%;
   min-width: 330px;
   @extend %between-center;
