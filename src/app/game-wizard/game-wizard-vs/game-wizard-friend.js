@@ -1,4 +1,5 @@
 "use strict";
+
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ADD_PLAYER_BTN } from "~/_constants/btn-text.constants";
 import { FormUsername } from "~/components/form/form-username/form-username";
