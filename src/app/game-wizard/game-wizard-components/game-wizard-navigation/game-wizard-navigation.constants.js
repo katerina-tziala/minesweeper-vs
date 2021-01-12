@@ -1,6 +1,7 @@
 "use strict";
 
-import { WIZARD_NAME } from "GameSettingsWizard";
+import { WIZARD_NAME } from "GameWizardComponents";
+export { WIZARD_NAME } from "GameWizardComponents";
 
 export const DOM_ELEMENT_ID = {
   container: "game-wizard__navigation-container",

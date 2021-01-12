@@ -1,10 +1,10 @@
 "use strict";
 import { GameType, BotMode } from "GameEnums";
 import { BotPlayer } from "GameModels";
-import { GameSetupVS } from "./_game-setup-vs";
-import { TITLE } from "../game-setup.constants";
-import { WIZARD_NAME, BotModeWizard } from "GameSettingsWizard";
-export class GameSetupBot extends GameSetupVS {
+import { WIZARD_NAME, BotModeWizard } from "GameWizardComponents";
+import { GameWizardVS } from "./_game-wizard-vs";
+
+export class GameWizardBot extends GameWizardVS {
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.opponent = new BotPlayer();
@@ -32,10 +32,6 @@ export class GameSetupBot extends GameSetupVS {
 
   get gameType() {
     return GameType.Bot;
-  }
-
-  get title() {
-    return TITLE[this.gameType];
   }
 
   resetStepValues() {

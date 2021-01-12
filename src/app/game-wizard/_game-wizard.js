@@ -5,10 +5,17 @@ import { GroupController } from "~/_utils/group-controller";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
 import { Player } from "GameModels";
-import { WIZARD_NAME, LevelWizard, OptionsWizard } from "GameSettingsWizard";
-import { GameWizardView } from "../../game-wizard/game-wizard-view/game-wizard-view";
 
-export class GameSetup {
+import {
+  WIZARD_NAME,
+  LevelWizard,
+  OptionsWizard,
+  GameWizardView
+} from "GameWizardComponents";
+
+import { TITLES } from "./_game-wizard.constants";
+
+export class GameWizard {
   #_gameParams;
   #_defaultGameParams = {};
   #SettingsControllers = new GroupController();
@@ -39,7 +46,7 @@ export class GameSetup {
   }
 
   get title() {
-    return TYPOGRAPHY.emptyString;
+    return TITLES[this.gameType];
   }
 
   get gameSetUp() {

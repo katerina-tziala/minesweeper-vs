@@ -3,19 +3,15 @@ import { clone, replaceStringParameter } from "~/_utils/utils";
 import { GameVSMode } from "GameEnums";
 import {
   WIZARD_NAME,
+  GameWizardNavigation,
+  GameWizardActions,
   VSModeWizard,
-  TurnSettingsWizard,
-} from "GameSettingsWizard";
+  TurnSettingsWizard
+} from "GameWizardComponents";
 
-import { GameSetup } from "../game-setup";
-import { TITLE } from "../game-setup.constants";
-
-
-import { GameWizardNavigation } from "../../../game-wizard/game-wizard-navigation/game-wizard-navigation";
-
-import { GameWizardActions } from "../../../game-wizard/game-wizard-actions/game-wizard-actions"
-
-export class GameSetupVS extends GameSetup {
+import { GameWizard } from "../_game-wizard";
+import { TITLES } from "../_game-wizard.constants";
+export class GameWizardVS extends GameWizard {
   #_opponent;
 
   constructor(onClose, submitGame) {
@@ -45,11 +41,11 @@ export class GameSetupVS extends GameSetup {
 
   get title() {
     if (this.opponent) {
-      let title = TITLE[this.gameType];
+      let title = TITLES[this.gameType];
       title = replaceStringParameter(title, this.opponent.name);
       return title;
     } else {
-      return TITLE.addOpponent;
+      return TITLES.addOpponent;
     }
   }
 

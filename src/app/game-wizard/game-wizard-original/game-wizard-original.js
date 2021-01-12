@@ -1,12 +1,10 @@
 "use strict";
 
 import { GameType } from "GameEnums";
+import { GameWizardActions } from "GameWizardComponents";
+import { GameWizard } from "../_game-wizard";
 
-import { GameSetup } from "../game-setup";
-import { TITLE } from "../game-setup.constants";
-import { GameWizardActions } from "~/game-wizard/game-wizard-actions/game-wizard-actions";
-
-export class GameSetupOriginal extends GameSetup {
+export class GameWizardOriginal extends GameWizard {
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.wizardActions = new GameWizardActions({
@@ -18,10 +16,6 @@ export class GameSetupOriginal extends GameSetup {
 
   get gameType() {
     return GameType.Original;
-  }
-
-  get title() {
-    return TITLE[this.gameType];
   }
 
   #init() {

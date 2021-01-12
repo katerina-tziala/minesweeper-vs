@@ -1,6 +1,6 @@
 "use strict";
 
-export const TITLE = {
+export const TITLES = {
   original: "play the original minesweeper game",
   bot: "play minesweeperVS against bot",
   friend: "play minesweeperVS against ###",

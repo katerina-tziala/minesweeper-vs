@@ -30,9 +30,8 @@ module.exports = {
             HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/@html-dom-manager.module.js'),
             GameEnums: path.resolve(__dirname, 'src/app/game/_enums/@game-enums.module.js'),
             GameModels: path.resolve(__dirname, 'src/app/game/_models/@game-models.module.js'),
-            GameSettingsWizard: path.resolve(__dirname, 'src/app/game-wizard/game-settings-wizard/@game-settings-wizard.module.js'),
-            GameWizardStepper: path.resolve(__dirname, 'src/app/game/game-wizard-stepper/@game-wizard-stepper.module.js'),
-            GameSetUp: path.resolve(__dirname, 'src/app/game/game-setup/@game-setup.module.js'),
+            GameWizardComponents: path.resolve(__dirname, 'src/app/game-wizard/game-wizard-components/@game-wizard-components.module'),
+            GameWizard: path.resolve(__dirname, 'src/app/game-wizard/@game-wizard.module.js'),
             GamePlayComponents: path.resolve(__dirname, 'src/app/game/game-play-components/@game-play-components.module.js'),
             GamePlayControllers: path.resolve(__dirname, 'src/app/game/game-play-controllers/@game-play-controllers.module.js'),
             GamePlayType: path.resolve(__dirname, 'src/app/game/game-play-type/@game-play-type.module.js')

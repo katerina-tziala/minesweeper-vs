@@ -27,8 +27,8 @@ export class GameSetupPage extends Page {
   }
 
   #loadWizard() {
-    const wizardName = `GameSetup${enumKey(GameType, this.#_gameType)}`;
-    return import(`GameSetUp`).then((module) => {
+    const wizardName = `GameWizard${enumKey(GameType, this.#_gameType)}`;
+    return import(`GameWizard`).then((module) => {
       return new module[wizardName](this.navigateToHome, this.onPlayGame.bind(this));
     });
   }

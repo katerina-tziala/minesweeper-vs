@@ -5,7 +5,7 @@ import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS, NAVIGATION_STEPS
 } from "./game-wizard-navigation.constants";
-import { WIZARD_NAME } from "GameSettingsWizard";
+import { WIZARD_NAME } from "./game-wizard-navigation.constants";
 import { GameWizardNavigationStep } from "./game-wizard-navigation-step/game-wizard-navigation-step";
 
 export class GameWizardNavigation {

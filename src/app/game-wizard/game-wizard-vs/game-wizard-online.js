@@ -2,8 +2,8 @@
 
 import { GameType } from "GameEnums";
 import { Player } from "GameModels";
-import { GameSetupVS } from "./_game-setup-vs";
-export class GameSetupOnline extends GameSetupVS {
+import { GameWizardVS } from "./_game-wizard-vs";
+export class GameWizardOnline extends GameWizardVS {
   constructor(onClose, submitGame, clientToInvite) {
     super(onClose, submitGame);
     this.init(clientToInvite);
