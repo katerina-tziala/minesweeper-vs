@@ -29,7 +29,6 @@ export class RoundStatistics extends AppModel {
     this.start = nowTimestamp();
   }
 
-
   onRoundEnd(boardTiles) {
     this.roundTilesUpdate = boardTiles;
     this.end = nowTimestamp();

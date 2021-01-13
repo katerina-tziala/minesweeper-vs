@@ -7,7 +7,7 @@ import { BotMode } from "GameEnums";
 import { SettingsWizard } from "../_settings-wizard";
 import { WIZARD_NAME } from "../_settings-wizard.constants";
 
-import { CONTENT } from "./bot-mode-wizard.constants";
+import { CONTENT, EXPLANATION } from "./bot-mode-wizard.constants";
 export class BotModeWizard extends SettingsWizard {
   constructor(onSubmit, botMode) {
     super(onSubmit, undefined);
@@ -16,6 +16,31 @@ export class BotModeWizard extends SettingsWizard {
     this.#setModeSettings(botMode);
     this.#init();
   }
+
+  get name() {
+    return WIZARD_NAME.botMode;
+  }
+
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: { botMode: BotMode.Easy },
+    };
+  }
+
+  get #explanation() {
+    return `<div>${EXPLANATION}</div>`;
+  }
+
+  generateSettingsWizard() {
+    const wizardContainer = super.generateSettingsWizard();
+    wizardContainer.append(
+      this.generateFieldExplanation(this.name, this.#explanation),
+    );
+    return wizardContainer;
+  }
+
 
   #setModeSettings(botMode) {
     const settings = { botMode };
@@ -35,15 +60,4 @@ export class BotModeWizard extends SettingsWizard {
     this.emitChanges();
   }
 
-  get name() {
-    return WIZARD_NAME.botMode;
-  }
-
-  get defaultSettings() {
-    return {
-      name: this.name,
-      valid: true,
-      value: { botMode: BotMode.Easy },
-    };
-  }
 }

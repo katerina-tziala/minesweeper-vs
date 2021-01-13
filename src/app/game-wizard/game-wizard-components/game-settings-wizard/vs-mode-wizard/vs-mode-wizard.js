@@ -22,6 +22,30 @@ export class VSModeWizard extends SettingsWizard {
     this.#init();
   }
 
+  get name() {
+    return WIZARD_NAME.vsModeSettings;
+  }
+
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new OptionsSettings(GameVSMode.Clear),
+    };
+  }
+
+  generateSettingsWizard() {
+    const wizardContainer = super.generateSettingsWizard();
+    wizardContainer.append(
+      this.generateFieldExplanation("vsMode", this.#modeExplanation),
+    );
+    return wizardContainer;
+  }
+
+  getOptionLabel(enumValue) {
+    return OPTION_LABELS[enumValue];
+  }
+
   get #parallelAllowed() {
     return this.#_parallelAllowed;
   }
@@ -69,28 +93,4 @@ export class VSModeWizard extends SettingsWizard {
     this.emitChanges();
   }
 
-  // OVERIDDEN FUNCTIONS
-  get name() {
-    return WIZARD_NAME.vsModeSettings;
-  }
-
-  generateSettingsWizard() {
-    const wizardContainer = super.generateSettingsWizard();
-    wizardContainer.append(
-      this.generateFieldExplanation("vsMode", this.#modeExplanation),
-    );
-    return wizardContainer;
-  }
-
-  getOptionLabel(enumValue) {
-    return OPTION_LABELS[enumValue];
-  }
-
-  get defaultSettings() {
-    return {
-      name: this.name,
-      valid: true,
-      value: new OptionsSettings(GameVSMode.Clear),
-    };
-  }
 }
