@@ -62,9 +62,12 @@ export class BoardController {
     return this.optionsSettings ? this.optionsSettings.wrongFlagHint : false;
   }
 
-  get allowMarks() {
-    return this.optionsSettings ? this.optionsSettings.marks : false;
+  get strategyAllowed() {
+    return true;
   }
+  // get allowMarks() {
+  //   return this.optionsSettings ? this.optionsSettings.marks : false;
+  // }
 
   set faceColorType(type) {
     this.#_faceColorType = type;

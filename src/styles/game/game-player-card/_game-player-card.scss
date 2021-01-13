@@ -59,10 +59,9 @@
 .game-player-card__player-section {
   @include circle(90px);
   @extend ._player-card-circle;
+  @extend %center-center;
   top: 0px;
   border-width: 2px;
-
-  @extend %center-center;
 
   &::after {
     position: absolute;

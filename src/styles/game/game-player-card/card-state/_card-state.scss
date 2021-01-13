@@ -13,6 +13,7 @@
   display: block;
 }
 
+
 .state-flag {
   @extend ._state-section-container;
   font-size: 1.6rem;
@@ -20,6 +21,18 @@
   &::after {
     @extend ._state-icon;
     @extend .icon-flag;
+    margin-left: 5px;
+    line-height: 27px;
+  }
+}
+
+.state-reveal {
+  @extend ._state-section-container;
+  font-size: 1.6rem;
+
+  &::after {
+    @extend ._state-icon;
+    @extend .icon-tiles;
     margin-left: 5px;
     line-height: 27px;
   }

@@ -126,3 +126,8 @@
   @extend %icon-regular;
   content: fa-content($fa-var-angle-double-left);
 }
+
+.icon-tiles {
+  @extend %icon-regular;
+  content: fa-content($fa-var-th-large);
+}

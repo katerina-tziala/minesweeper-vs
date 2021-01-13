@@ -23,6 +23,7 @@ export class GameVS extends GameDefault {
     this.vsDashboard = new VSDashboardController(
       this.wrongFlagHint,
       !this.isDetectMinesGoal,
+      this.optionsSettings.tileFlagging
     );
   }
 
@@ -76,7 +77,7 @@ export class GameVS extends GameDefault {
   init() {
 
 
-    console.log(this.turnSettings);
+    // console.log(this.turnSettings);
 
     this.players.forEach((player) => {
       player.initState(

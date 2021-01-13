@@ -51,7 +51,7 @@
   }
 
   &.game-wizard-navigation-step-button--optionsSettings {
-    @include navigationStepButton("sliders", 40, 20);
+    @include navigationStepButton("sliders", 42, 20);
   }
 
   &:disabled {

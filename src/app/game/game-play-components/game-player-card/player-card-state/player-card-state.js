@@ -19,13 +19,15 @@ export class PlayerCardState {
     return DOM_ELEMENT_ID.allowedFlags + player.id;
   }
 
-  static getStateSectionContent(player) {
-    return player.entered
-      ? PlayerCardState.generateFlagState(player)
-      : PlayerCardState.generateLoadingState(player.colorType);
+  static getStateSectionContent(player, flaggingAllowed = true) {
+    if (player.entered) {
+
+      return flaggingAllowed ? PlayerCardState.generateFlagState(player) : PlayerCardState.generateRevealState();
+    }
+    return PlayerCardState.generateLoadingState(player.colorType);
   }
 
-  static generateStateSection(player) {
+  static generateStateSection(player, flaggingAllowed = true) {
     const stateSection = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.stateSection,
     ]);
@@ -33,7 +35,7 @@ export class PlayerCardState {
       stateSection,
       PlayerCardState.getStateSectionID(player),
     );
-    const content = PlayerCardState.getStateSectionContent(player);
+    const content = PlayerCardState.getStateSectionContent(player, flaggingAllowed);
     stateSection.append(content);
     return stateSection;
   }
@@ -43,6 +45,10 @@ export class PlayerCardState {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.loadingState]);
     container.append(icon);
     return container;
+  }
+
+  static generateRevealState() {
+    return ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.revealState]);
   }
 
   static generateFlagState(player) {
@@ -78,8 +84,8 @@ export class PlayerCardState {
       if (allowedFlags < 3) {
         styles.push(
           DOM_ELEMENT_CLASS.allowedFlags +
-            TYPOGRAPHY.doubleHyphen +
-            allowedFlags,
+          TYPOGRAPHY.doubleHyphen +
+          allowedFlags,
         );
       }
       content = allowedFlags.toString();
@@ -94,11 +100,12 @@ export class PlayerCardState {
   static getAllowedFlagsContainer(player) {
     return ElementHandler.getByID(PlayerCardState.getAllowedFlagsID(player));
   }
+
   // UPDATES
-  static updateStateSection(player) {
+  static updateStateSection(player, flaggingAllowed = true) {
     return PlayerCardState.getStateSection(player).then((stateSection) => {
       ElementHandler.clearContent(stateSection);
-      const content = PlayerCardState.getStateSectionContent(player);
+      const content = PlayerCardState.getStateSectionContent(player, flaggingAllowed);
       stateSection.append(content);
     });
   }

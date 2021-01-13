@@ -5,9 +5,10 @@ import { DOM_ELEMENT_CLASS } from "./vs-dashboard-controller.constants";
 import { GamePlayerCard as PlayerCard, VSBoard } from "GamePlayComponents";
 export class VSDashboardController {
 
-  constructor(wrongFlagHint = false, clearMinefield = true) {
+  constructor(wrongFlagHint = false, clearMinefield = true, tileFlagging = false) {
     this.wrongFlagHint = wrongFlagHint;
     this.clearMinefield = clearMinefield;
+    this.tileFlagging = tileFlagging;
   }
 
   generateView(player, opponent, boardActions) {
@@ -32,6 +33,7 @@ export class VSDashboardController {
         directionLeft,
         this.clearMinefield,
         this.wrongFlagHint,
+        this.tileFlagging,
       );
       container.append(playerCard);
     }
@@ -44,7 +46,7 @@ export class VSDashboardController {
     players.forEach((player) => {
       const playerTargetValue = this.#getTargetValue(player);
       cardUpdates.push(PlayerCard.updateTurnStatus(player));
-      cardUpdates.push(PlayerCard.updateState(player));
+      cardUpdates.push(PlayerCard.updateState(player, this.tileFlagging));
       cardUpdates.push(PlayerCard.updateMissedTurns(player));
       cardUpdates.push(PlayerCard.updateGameGoalStatistics(player, playerTargetValue));
     });
