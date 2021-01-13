@@ -120,7 +120,7 @@ export class GameWizardNavigation {
 
   updateByIndex(step) {
     const newIndex = this.#currentIndex + step;
-    const newSelectedStep = this.#steps[newIndex];
+    const newSelectedStep = this.#displayedSteps[newIndex];
     newSelectedStep.completed = true;
     newSelectedStep.setSelected(true);
     this.#onStepSelection(newSelectedStep);
