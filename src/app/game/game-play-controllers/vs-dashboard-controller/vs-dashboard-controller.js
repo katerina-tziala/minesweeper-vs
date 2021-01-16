@@ -5,9 +5,8 @@ import { DOM_ELEMENT_CLASS } from "./vs-dashboard-controller.constants";
 import { GamePlayerCard as PlayerCard, VSBoard } from "GamePlayComponents";
 export class VSDashboardController {
 
-  constructor(wrongFlagHint = false, clearMinefield = true, tileFlagging = false) {
+  constructor(wrongFlagHint = false, tileFlagging = false) {
     this.wrongFlagHint = wrongFlagHint;
-    this.clearMinefield = clearMinefield;
     this.tileFlagging = tileFlagging;
   }
 
@@ -31,7 +30,6 @@ export class VSDashboardController {
       const playerCard = PlayerCard.generate(
         player,
         directionLeft,
-        this.clearMinefield,
         this.wrongFlagHint,
         this.tileFlagging,
       );
@@ -66,7 +64,7 @@ export class VSDashboardController {
   }
 
   #getTargetValue(player) {
-    if (this.clearMinefield) {
+    if (!player.detectGoal) {
       return player.revealedTiles;
     }
 
@@ -89,7 +87,7 @@ export class VSDashboardController {
   }
 
   updatePlayerGameGoalStatistics(player) {
-    if (this.clearMinefield) {
+    if (!player.detectGoal) {
       return PlayerCard.updateGameGoalStatistics(player, player.revealedTiles);
     }
 

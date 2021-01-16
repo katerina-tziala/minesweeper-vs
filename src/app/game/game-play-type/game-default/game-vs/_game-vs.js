@@ -22,7 +22,6 @@ export class GameVS extends GameDefault {
   #setDashBoard() {
     this.vsDashboard = new VSDashboardController(
       this.wrongFlagHint,
-      !this.isDetectMinesGoal,
       this.optionsSettings.tileFlagging
     );
   }
@@ -37,10 +36,6 @@ export class GameVS extends GameDefault {
 
   get playerWaiting() {
     return this.players.find((player) => !player.turn);
-  }
-
-  get isDetectMinesGoal() {
-    return false;
   }
 
   get goalTargetNumber() {

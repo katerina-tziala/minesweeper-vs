@@ -25,6 +25,10 @@ export class Player extends AppModel {
     return this.#_colorType;
   }
 
+  get detectGoal() {
+    return this.goal === GameVSMode.Detect;
+  }
+
   initState(goalTargetNumber = 0, allowedTurns = null, maxAllowedFlags = null) {
     this.goalTargetNumber = goalTargetNumber;
     this.maxAllowedFlags = maxAllowedFlags;

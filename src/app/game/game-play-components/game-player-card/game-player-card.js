@@ -46,24 +46,17 @@ export class GamePlayerCard {
     return card;
   }
 
-  static generate(player, directionLeft = false, clearMinefield = true, wrongFlagHint = false, flaggingAllowed = false) {
+  static generate(player, directionLeft = false, wrongFlagHint = false, flaggingAllowed = false) {
     const playerCard = GamePlayerCard.generateCard(player, directionLeft);
 
     const playerSection = GamePlayerCard.generatePlayerSection(player);
 
-    const detailsSection = GamePlayerCard.generateDetailsSection(player, clearMinefield, wrongFlagHint);
+    const detailsSection = PlayerCardDetails.generateDetailsSection(player, wrongFlagHint);
  
     const stateSection = PlayerCardState.generateStateSection(player, flaggingAllowed);
 
     playerCard.append(playerSection, detailsSection, stateSection);
     return playerCard;
-  }
-
-  static generateDetailsSection(player, clearMinefield, wrongFlagHint) {
-    if (clearMinefield) {
-      return PlayerCardDetails.generateClearGameDetailsSection(player);
-    } 
-    return PlayerCardDetails.generateDetectGameDetailsSection(player, wrongFlagHint);
   }
 
   static generatePlayerSection(player) {

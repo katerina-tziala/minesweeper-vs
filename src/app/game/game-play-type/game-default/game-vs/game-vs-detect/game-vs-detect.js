@@ -18,10 +18,6 @@ export class GameVSDetect extends GameVS {
     return this.levelSettings.numberOfMines;
   }
 
-  get isDetectMinesGoal() {
-    return true;
-  }
-
   get looserOnVsMode() {
     return this.players.reduce((playerA, playerB) => {
       if (playerA.minesDetected === playerB.minesDetected) {
@@ -31,19 +27,19 @@ export class GameVSDetect extends GameVS {
     });
   }
 
-  #initBoardController(params) {
-    this.gameBoardController = new BoardController(this.id,
-      params,
-      this.minefieldActions,
-      this.onRoundTimerEnd.bind(this));
-  }
-
   get minefieldActions() {
     const actions = super.minefieldActions;
     actions.onFlaggedTile = this.onFlaggedTile.bind(this);
     actions.onMarkedTile = this.onPlayerAction.bind(this);
     actions.onResetedTile = this.onPlayerAction.bind(this);
     return actions;
+  }
+
+  #initBoardController(params) {
+    this.gameBoardController = new BoardController(this.id,
+      params,
+      this.minefieldActions,
+      this.onRoundTimerEnd.bind(this));
   }
 
   onTileDetonation(revealedTiles) {

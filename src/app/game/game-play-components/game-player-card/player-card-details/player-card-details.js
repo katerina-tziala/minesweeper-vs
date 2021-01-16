@@ -40,19 +40,28 @@ export class PlayerCardDetails {
     return expectedResult;
   }
 
-  // CLEAR GAME DETAILS
-  static generateClearGameDetailsSection(player) {
+  static generateDetailsSection(player, wrongFlagHint) {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.detailsSection,
     ]);
     const playerName = PlayerCardDetails.generatePlayerName(player.name);
 
-    const playerTarget = PlayerCardDetails.generateClearGameDetails(player);
+    let playerTarget;
+    
+    if (player.detectGoal) {
+      playerTarget =  PlayerCardDetails.generateDetectGameDetails(
+        player,
+        wrongFlagHint,
+      );
+    } else {
+      playerTarget = PlayerCardDetails.generateClearGameDetails(player);
+    }
 
     container.append(playerName, playerTarget);
     return container;
   }
 
+  // CLEAR GAME DETAILS
   static generateClearGameDetails(player) {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.gameGoalDetails,
@@ -93,18 +102,18 @@ export class PlayerCardDetails {
   }
 
   // DETECT GAME DETAILS
-  static generateDetectGameDetailsSection(player, wrongFlagHint) {
-    const playerInstanceSection = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.detailsSection,
-    ]);
-    const playerName = PlayerCardDetails.generatePlayerName(player.name);
-    const playerTarget = PlayerCardDetails.generateDetectGameDetails(
-      player,
-      wrongFlagHint,
-    );
-    playerInstanceSection.append(playerName, playerTarget);
-    return playerInstanceSection;
-  }
+  // static generateDetectGameDetailsSection(player, wrongFlagHint) {
+  //   const playerInstanceSection = ElementGenerator.generateContainer([
+  //     DOM_ELEMENT_CLASS.detailsSection,
+  //   ]);
+  //   const playerName = PlayerCardDetails.generatePlayerName(player.name);
+  //   const playerTarget = PlayerCardDetails.generateDetectGameDetails(
+  //     player,
+  //     wrongFlagHint,
+  //   );
+  //   playerInstanceSection.append(playerName, playerTarget);
+  //   return playerInstanceSection;
+  // }
 
   static generateDetectGameDetails(player, wrongFlagHint) {
     const container = ElementGenerator.generateContainer([
