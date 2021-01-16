@@ -200,9 +200,9 @@ export class BoardController {
   }
 
   enableMinefield() {
-    //  if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
-    this.#MinefieldFreezer.hide();
-    // }
+    if (!this.playerOnTurn.isBot && this.playerOnTurn.turn) {
+      this.#MinefieldFreezer.hide();
+    }
   }
 
   revealMinefield() {
@@ -212,7 +212,6 @@ export class BoardController {
 
 
   handleTileAction(action, tile) {
-    //console.log(action, tile);
     if (action === GameAction.Mark) {
       this.handleTileMarking(tile);
       return;
