@@ -5,6 +5,7 @@ import { enumKey } from "~/_utils/utils";
 import { Page } from "../page";
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 import { GameType } from "GameEnums";
+
 export class GameSetupPage extends Page {
   #_gameType;
 
@@ -39,6 +40,7 @@ export class GameSetupPage extends Page {
         this.hideLoader();
         mainContainer.append(wizard);
         this.gameWizard.expandWizard();
+
       });
 
     });

@@ -1,6 +1,10 @@
 "use strict";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import {
+  timeoutPromise
+} from "~/_utils/utils";
 import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard-view.constants";
+
 
 export class GameWizardView {
 
@@ -89,16 +93,10 @@ export class GameWizardView {
     });
   }
 
-  static timeoutPromise(milliSeconds = 500) {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(), milliSeconds),
-    );
-  }
-
   static resetWizardHeight(height = 0) {
     return GameWizardView.box.then(box => {
       box.style.height = `${height}px`;
-      return GameWizardView.timeoutPromise();
+      return timeoutPromise();
     });
   }
 

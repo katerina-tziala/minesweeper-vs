@@ -6,4 +6,4 @@ export { SneakPeekSettings } from "./sneak-peek-settings/sneak-peek-settings";
 export { RoundStatistics } from "./round-statistics/round-statistics";
 
 export { Player } from "./players/player";
-export { BotPlayer } from "./players/bot-player";
+export { BotPlayer } from "./players/bot-player/bot-player";

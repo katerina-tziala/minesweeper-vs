@@ -135,6 +135,7 @@ export class GameFactory {
     delete parallelOptions.marks;
     delete parallelOptions.wrongFlagHint;
     delete parallelOptions.vsMode;
+
     return {
       optionsSettings: parallelOptions,
       type: gameParams.type
@@ -156,6 +157,7 @@ export class GameFactory {
 
     const gamingOptions = GameFactory.parallelGamingOptions(gameParams);
     gameParams.optionsSettings = gamingOptions.playerGame;
+    gameParams.turnSettings = new TurnSettings(false);
 
     const gamesForPlayers = [
       GameFactory.loadPlayerGame(player.id, gameParams, player),

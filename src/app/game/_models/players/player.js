@@ -2,6 +2,7 @@
 import { valueDefined } from "~/_utils/validator";
 
 import { AppModel } from "~/_models/app-model";
+import { GameVSMode } from "GameEnums";
 export class Player extends AppModel {
   #_colorType;
 
@@ -12,6 +13,8 @@ export class Player extends AppModel {
     this.entered = false;
     this.isBot = false;
     this.entered = entered;
+    this.goal = GameVSMode.Clear;
+    this.initState();
   }
 
   set colorType(colorType) {
@@ -44,20 +47,12 @@ export class Player extends AppModel {
   }
 
   /* TURN PARAMETERS */
-  toggleTurn() {
-    this.turn = !this.turn;
+  get unlimitedTurns() {
+    return !valueDefined(this.allowedTurns);
   }
 
   get turnsLeft() {
     return this.allowedTurns - this.missedTurns;
-  }
-
-  resetMissedTurns() {
-    this.missedTurns = 0;
-  }
-
-  increaseMissedTurns() {
-    this.missedTurns++;
   }
 
   get exceededTurnsLimit() {
@@ -66,6 +61,18 @@ export class Player extends AppModel {
       : false;
     this.lostGame = exceededLimits;
     return exceededLimits;
+  }
+
+  toggleTurn() {
+    this.turn = !this.turn;
+  }
+
+  resetMissedTurns() {
+    this.missedTurns = 0;
+  }
+
+  increaseMissedTurns() {
+    this.missedTurns++;
   }
 
   /* CHECKS BASED ON MINEFIELD ACTIONS */

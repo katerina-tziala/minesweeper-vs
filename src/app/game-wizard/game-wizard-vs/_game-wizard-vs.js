@@ -60,8 +60,15 @@ export class GameWizardVS extends GameWizard {
     return this.wizardNavigation ? this.wizardNavigation.selectedStep : undefined;
   }
 
+  get #turnsVisible() {
+    if (this.gameParams && this.gameParams.vsModeSettings && this.gameParams.vsModeSettings.vsMode === GameVSMode.Parallel) {
+      return false;
+    }
+    return true;
+  }
+
   init() {
-    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot);
+    this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot, this.#turnsVisible);
     this.wizardActions = new GameWizardActions({
       onReset: this.onReset.bind(this),
       onSubmit: this.onSubmit.bind(this),

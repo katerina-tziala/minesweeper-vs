@@ -5,6 +5,7 @@ const GameAction = {
   Quit: "quit",
   Restart: "restart",
   Reset: "reset",
+  Target: "targetMove",
 };
 
 Object.freeze(GameAction);

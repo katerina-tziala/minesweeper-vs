@@ -17,12 +17,20 @@ export const nonMineTiles = (tiles) => {
   return tiles.filter((tile) => !tile.isMine);
 };
 
+export const mineTiles = (tiles) => {
+  return tiles.filter((tile) => tile.isMine);
+};
+
 export const nonFlaggedTiles = (tiles) => {
   return tiles.filter((tile) => !tile.isFlagged);
 };
 
 export const blankTiles = (tiles) => {
   return tiles.filter((tile) => tile.isBlank);
+};
+
+export const nonBlankTiles = (tiles) => {
+  return tiles.filter((tile) => !tile.isBlank);
 };
 
 export const unrevealedTiles = (tiles) => {

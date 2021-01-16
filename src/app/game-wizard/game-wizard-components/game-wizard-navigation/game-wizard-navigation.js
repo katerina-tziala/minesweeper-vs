@@ -13,9 +13,9 @@ export class GameWizardNavigation {
   #_selectedStep;
   #onSelectedStep;
 
-  constructor(onSelectedStep, botMode = false) {
+  constructor(onSelectedStep, botMode = false, turnsVisible = true) {
     this.#onSelectedStep = onSelectedStep;
-    this.#initNavigationSteps(botMode);
+    this.#initNavigationSteps(botMode, turnsVisible);
   }
 
   get selectedStep() {
@@ -54,17 +54,6 @@ export class GameWizardNavigation {
     return ElementHandler.getByID(DOM_ELEMENT_ID.container);
   }
 
-  #generateSteps(botMode) {
-    const steps = [];
-    if (botMode) {
-      steps.push(new GameWizardNavigationStep(WIZARD_NAME.botMode, this.#onStepSelection.bind(this)));
-    }
-    NAVIGATION_STEPS.forEach(stepName => {
-      steps.push(new GameWizardNavigationStep(stepName, this.#onStepSelection.bind(this)));
-    });
-    return steps;
-  }
-
   #onStepSelection(selectedStep) {
     this.#steps.find(step => step.selected && step.name !== selectedStep.name).setSelected(false);
     this.#_selectedStep = selectedStep.name;
@@ -78,14 +67,32 @@ export class GameWizardNavigation {
     }
   }
 
-  #initNavigationSteps(botMode) {
-    this.#_navigationSteps = this.#generateSteps(botMode);
+  #generateSteps(botMode) {
+    const steps = [];
+    if (botMode) {
+      steps.push(new GameWizardNavigationStep(WIZARD_NAME.botMode, this.#onStepSelection.bind(this)));
+    }
+    NAVIGATION_STEPS.forEach(stepName => {
+      steps.push(new GameWizardNavigationStep(stepName, this.#onStepSelection.bind(this)));
+    });
+    return steps;
+  }
 
+  #selectFirstStep() {
     this.#steps[0].completed = true;
     this.#steps[0].disabled = false;
     this.#steps[0].selected = true;
-
     this.#_selectedStep = this.#steps[0].name;
+  }
+
+  #initNavigationSteps(botMode, turnsVisible) {
+    this.#_navigationSteps = this.#generateSteps(botMode);
+  
+    if (!turnsVisible) {
+      this.#intTurnsStep(false);
+    }
+
+    this.#selectFirstStep();
     this.#setStepsState();
   }
 
@@ -131,15 +138,15 @@ export class GameWizardNavigation {
     optionsStep.completed = false;
   }
 
-  #intTurnsStep(parallelSelected) {
+  #intTurnsStep(displayed) {
     const turnsStep = this.#turnsStep;
     turnsStep.completed = false;
-    turnsStep.displayed = !parallelSelected;
+    turnsStep.displayed = displayed;
   }
 
   updateOptionsOnVSModeChange(parallelSelected) {
     this.#intOptionsStep();
-    this.#intTurnsStep(parallelSelected);
+    this.#intTurnsStep(!parallelSelected);
     this.#setStepsState();
 
     return this.#container.then(container => {

@@ -133,18 +133,21 @@ export class GameParallel extends Game {
   }
 
   #initGames() {
+    this.initState();
     const viewUpdates = [];
-    this.#individualGames.forEach((game) => {
-      game.init();
-      game.setGameStart();
-      viewUpdates.push(game.onAfterViewInit);
-    });
+
+    this.#PlayerGame.init();
+    this.#PlayerGame.setGameStart();
+    viewUpdates.push(this.#PlayerGame.onAfterViewInit);
+
+    this.#OpponentGame.init(false);
+    this.#OpponentGame.setGameStart();
+    viewUpdates.push(this.#OpponentGame.onAfterViewInit);
+
     return Promise.all(viewUpdates);
   }
 
   #startGames() {
-    this.#PlayerGame.player.turn = true;
-    this.#OpponentGame.player.turn = false;
     this.#individualGames.forEach((game) => game.startParallelGamePlay());
   }
 
@@ -221,24 +224,32 @@ export class GameParallel extends Game {
     }
 
 
-    this.#opponent.entered = false;
-
+    console.log("start parallel");
     this.#initMinesPositions();
     this.setGameStart();
 
     this.onAfterViewInit.then(() => {
       return this.#initGames();
     }).then(() => {
-      this.#initSneakPeekController();
+      return this.#VSDashboard.setCardOnTurn(this.players);
+    })
+      .then(() => {
+        this.#initSneakPeekController();
 
-      if (!this.bothPlayersEntered) {
-        this.#displayReadyMessageAndWait();
-        return;
-      }
+        if (!this.bothPlayersEntered) {
+          this.#displayReadyMessageAndWait();
+          return;
+        }
 
-      this.#displayStartMessageAndPlay();
+        this.#displayStartMessageAndPlay();
 
-    });
+      });
+
+
+
+
+
+
   }
 
   #displayReadyMessageAndWait() {

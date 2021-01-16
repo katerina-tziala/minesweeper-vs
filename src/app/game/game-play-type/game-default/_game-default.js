@@ -31,28 +31,6 @@ export class GameDefault extends Game {
 
   }
 
-  get minefieldActions() {
-    return {
-      onTileAction: this.#onTileAction.bind(this),
-      onTileDetonation: this.onTileDetonation.bind(this),
-      onRevealedTiles: this.onRevealedTiles.bind(this)
-    };
-  }
-
-  #onTileAction(action, tile) {
-    if (!this.gameActionAllowed) {
-      return;
-    }
-    this.gameBoard.handleTileAction(action, tile);
-  }
-
-  onTileDetonation() {
-    return;
-  }
-
-  onRevealedTiles() {
-    return;
-  }
 
   set gameBoardController(boardController) {
     this.#MinesweeperBoard = boardController;
@@ -73,12 +51,6 @@ export class GameDefault extends Game {
     return undefined;
   }
 
-  generateView() {
-    const gameContainer = document.createDocumentFragment();
-    gameContainer.append(this.gameBoard.generateView(this.boardActions));
-    return gameContainer;
-  }
-
   get viewInitUpdates() {
     const viewUpdates = [this.gameBoard.initView()];
     return viewUpdates;
@@ -87,6 +59,12 @@ export class GameDefault extends Game {
   get onAfterViewInit() {
     this.gameBoard.faceColorType = this.dashboardFaceColor;
     return Promise.all(this.viewInitUpdates);
+  }
+
+  generateView() {
+    const gameContainer = document.createDocumentFragment();
+    gameContainer.append(this.gameBoard.generateView(this.boardActions));
+    return gameContainer;
   }
 
   #checkGameStart() {
@@ -105,6 +83,34 @@ export class GameDefault extends Game {
   }
 
   // MINEFIELD
+  get freezerId() {
+    return this.gameBoard.freezerId;
+  }
+
+  get minefieldActions() {
+    return {
+      onTileAction: this.#onTileAction.bind(this),
+      onTileDetonation: this.onTileDetonation.bind(this),
+      onRevealedTiles: this.onRevealedTiles.bind(this),
+      onActionAborted: this.checkBotAction.bind(this)
+    };
+  }
+
+  #onTileAction(action, tile) {
+    if (!this.gameActionAllowed) {
+      return;
+    }
+    this.gameBoard.handleTileAction(action, tile);
+  }
+
+  onTileDetonation() {
+    return;
+  }
+
+  onRevealedTiles() {
+    return;
+  }
+
   disableMinefield() {
     this.gameBoard.disableMinefield();
   }
@@ -117,8 +123,18 @@ export class GameDefault extends Game {
     return this.gameBoard.displayFreezerLoader(player);
   }
 
-  get freezerId() {
-    return this.gameBoard.freezerId;
+  submitBotMove() {
+    this.playerOnTurn.getMove(this.gameBoard.mineFieldTiles).then(result => {
+      if (result) {
+        this.#onTileAction(result.action, result.tile);
+      }
+    });
+  }
+
+  checkBotAction() {
+    if (this.playerOnTurn.isBot) {
+      this.submitBotMove();
+    }
   }
 
   // TIMER

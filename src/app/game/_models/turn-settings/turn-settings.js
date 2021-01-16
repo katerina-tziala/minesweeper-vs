@@ -3,16 +3,10 @@
 import { AppModel } from "~/_models/app-model";
 
 export class TurnSettings extends AppModel {
-  constructor() {
+  constructor(turnTimer = true) {
     super();
-    this.turnTimer = true;
-    this.turnDuration = 5;
-    this.missedTurnsLimit = 3;
-    this.consecutiveTurns = true;
-    //default
-    // this.turnDuration = 30;
-    // this.missedTurnsLimit = 10;
-    // this.consecutiveTurns = false;
+    this.turnTimer = turnTimer;
+    this.#setDefaultValues();
   }
 
   get roundTimer() {
@@ -25,6 +19,22 @@ export class TurnSettings extends AppModel {
 
   get turnsLimit() {
     return this.roundTimer ? this.missedTurnsLimit : null;
+  }
+
+  #setDefaultValues() {
+    if (this.turnTimer) {
+      this.turnDuration = 5;
+      this.missedTurnsLimit = 3;
+      this.consecutiveTurns = true;
+      //default
+      // this.turnDuration = 30;
+      // this.missedTurnsLimit = 10;
+      // this.consecutiveTurns = false;
+    } else {
+      this.turnDuration = 0;
+      this.missedTurnsLimit = 0;
+      this.consecutiveTurns = false;
+    }
   }
 
 }

@@ -27,6 +27,10 @@ export class MineField {
     return this.#_gameId;
   }
 
+  get tiles() {
+    return this.#tiles;
+  }
+
   set #levelSettings(settings) {
     this.#_levelSettings = settings;
   }

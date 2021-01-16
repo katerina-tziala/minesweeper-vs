@@ -216,20 +216,10 @@ export class GameVS extends GameDefault {
       console.log("onlineeeeeeeeeeeeeee");
     }
     if (this.playerOnTurn.isBot) {
-      this.startBotRound();
+      this.submitBotMove();
       return;
     }
 
-    this.enableMinefield();
-  }
-
-  //TODO: COMPLETE THE CASES
-  startBotRound() {
-    //TODO:
-    console.log("--  get Bot move -- ");
-    console.log("GameVS");
-    console.log("----------------------------");
-    //this.disableMinefield();
     this.enableMinefield();
   }
 
@@ -248,6 +238,10 @@ export class GameVS extends GameDefault {
       return;
     }
     //console.log(this);
+    if (this.playerOnTurn.isBot) {
+      this.submitBotMove();
+      return;
+    }
     this.enableMinefield();
   }
 

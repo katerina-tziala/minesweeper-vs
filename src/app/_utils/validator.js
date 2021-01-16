@@ -20,3 +20,7 @@ export const valueInLimits = (value, limits) => {
 export const valueDefined = (value) => {
   return (value !== undefined && value !== null) ? true : false;
 };
+
+export const valueInRange = (value, range) => {
+  return range[0] <= value && value < range[1];
+};

@@ -1,5 +1,5 @@
 "use strict";
-import { GameOverType } from "GameEnums";
+import { GameOverType, GameVSMode } from "GameEnums";
 import { GameVS } from "../_game-vs";
 
 import {
@@ -10,6 +10,7 @@ export class GameVSDetect extends GameVS {
 
   constructor(id, params, player, opponent) {
     super(id, params, player, opponent);
+    this.players.forEach(player => player.goal = GameVSMode.Detect);
     this.#initBoardController(params);
   }
 

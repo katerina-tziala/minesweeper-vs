@@ -12,51 +12,8 @@ export class GameSinglePlayer extends GameDefault {
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
-    this.#initBoardController(params);
+    this.#setBoardController(params);
     this.#setMessageController();
-  }
-
-  #initBoardController(params) {
-    this.gameBoardController = new BoardController(this.id,
-      params,
-      this.minefieldActions,
-      this.onRoundTimerEnd.bind(this));
-  }
-
-  #setMessageController() {
-    if (!this.isParallel) {
-      this.#MessageController = new GameMessageController();
-    }
-  }
-
-  get minefieldActions() {
-    const actions = super.minefieldActions;
-    actions.onFlaggedTile = this.onPlayerMoveEnd.bind(this);
-    actions.onMarkedTile = this.onPlayerMoveEnd.bind(this);
-    actions.onResetedTile = this.onPlayerMoveEnd.bind(this);
-    return actions;
-  }
-
-  onTileDetonation(boardTiles) {
-    this.setGameEnd(GameOverType.DetonatedMine);
-    this.onGameOver(boardTiles);
-  }
-
-  onRevealedTiles(boardTiles) {
-    if (this.playerOnTurn.clearedMinefield) {
-      this.setGameEnd(GameOverType.Cleared);
-      this.onGameOver(boardTiles);
-      return;
-    }
-    this.onPlayerMoveEnd(boardTiles);
-  }
-
-  get #submissionAllowed() {
-    return this.isParallel && this.externalActions.onMoveSubmission;
-  }
-
-  get #updatePlayerCard() {
-    return this.roundTiles.length ? this.roundTiles.some(tile => tile.isRevealed) : false;
   }
 
   get boardActionsAllowed() {
@@ -73,6 +30,14 @@ export class GameSinglePlayer extends GameDefault {
     return false;
   }
 
+  get minefieldActions() {
+    const actions = super.minefieldActions;
+    actions.onFlaggedTile = this.onPlayerMoveEnd.bind(this);
+    actions.onMarkedTile = this.onPlayerMoveEnd.bind(this);
+    actions.onResetedTile = this.onPlayerMoveEnd.bind(this);
+    return actions;
+  }
+
   get viewInitUpdates() {
     const viewUpdates = super.viewInitUpdates;
     if (this.#MessageController) {
@@ -81,15 +46,48 @@ export class GameSinglePlayer extends GameDefault {
     return viewUpdates;
   }
 
-  initPlayer() {
-    this.player.initState(this.levelSettings.numberOfEmptyTiles);
+  get #submissionAllowed() {
+    return this.isParallel && this.externalActions.onMoveSubmission;
+  }
+
+  get #updatePlayerCard() {
+    return this.roundTiles.length ? this.roundTiles.some(tile => tile.isRevealed) : false;
+  }
+
+  #setBoardController(params) {
+    this.gameBoardController = new BoardController(this.id,
+      params,
+      this.minefieldActions,
+      this.onRoundTimerEnd.bind(this));
+  }
+
+  #setMessageController() {
     if (!this.isParallel) {
-      this.player.turn = true;
+      this.#MessageController = new GameMessageController();
     }
   }
 
-  init() {
-    this.initPlayer();
+  onTileDetonation(boardTiles) {
+    this.setGameEnd(GameOverType.DetonatedMine);
+    this.onGameOver(boardTiles);
+  }
+
+  onRevealedTiles(boardTiles) {
+    if (this.playerOnTurn.clearedMinefield) {
+      this.setGameEnd(GameOverType.Cleared);
+      this.onGameOver(boardTiles);
+      return;
+    }
+    this.onPlayerMoveEnd(boardTiles);
+  }
+
+  initPlayer(playerTurn = true) {
+    this.player.initState(this.levelSettings.numberOfEmptyTiles);
+    this.player.turn = playerTurn;
+  }
+
+  init(playerTurn = true) {
+    this.initPlayer(playerTurn);
     this.initState();
   }
 
@@ -130,17 +128,9 @@ export class GameSinglePlayer extends GameDefault {
     this.initRoundStatistics();
     this.gameBoard.playerOnTurn = this.player;
     if (this.playerOnTurn.isBot) {
-      this.startBotRound();
+      this.submitBotMove();
       return;
     }
-    this.enableMinefield();
-  }
-
-  startBotRound() {
-    //TODO:
-    console.log("--  get Bot move -- ");
-    console.log("GameSinglePlayer");
-    console.log("----------------------------");
     this.enableMinefield();
   }
 

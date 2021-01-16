@@ -65,9 +65,6 @@ export class BoardController {
   get strategyAllowed() {
     return true;
   }
-  // get allowMarks() {
-  //   return this.optionsSettings ? this.optionsSettings.marks : false;
-  // }
 
   set faceColorType(type) {
     this.#_faceColorType = type;
@@ -170,6 +167,10 @@ export class BoardController {
     return this.#MineField;
   }
 
+  get mineFieldTiles() {
+    return this.#MineField.tiles;
+  }
+
   get minefieldCleared() {
     return this.mineField.isCleared;
   }
@@ -259,6 +260,13 @@ export class BoardController {
       this.onResetedTile(tile);
       return;
     }
+    this.submitAbortedAction();
+  }
+
+  submitAbortedAction() {
+    if (this.minefieldActions.onActionAborted) {
+      this.minefieldActions.onActionAborted();
+    }
   }
 
   onFlaggedTile(tile) {
@@ -294,6 +302,7 @@ export class BoardController {
       this.revealMinefieldArea(tile);
       return;
     }
+    this.submitAbortedAction();
   }
 
   revealMinefieldArea(tile, player = this.playerOnTurn) {
