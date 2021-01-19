@@ -43,51 +43,51 @@ export class GameSetupPage extends Page {
 
   renderPage(mainContainer) {
 
-    const gmc = new GameMessageController();
+    // const gmc = new GameMessageController();
 
-    mainContainer.append(gmc.generateView());
-
-
-    const player = new Player("KateId", "Kate");
-    player.colorType = "4";
-
-    const bot = new BotPlayer();
-    bot.colorType = "2";
-
-    //  gmc.displayStartMessage(player).then(() => {
-    //    console.log("done");
-    //  });
+    // mainContainer.append(gmc.generateView());
 
 
-    const gameResults = {
-      gameInfo: {
-        duration:{
-          hours: 1,
-          minutes: 0,
-          seconds: 35
-        },
-      },
-      playersResults: [player.reportData],
-      reportResults: [
-        "moves",
-        "clearedTiles",
-        "detectedMines",
-        "flags",
-        "marks",
-        "detonatedMine"
-      ]
-    };
+    // const player = new Player("KateId", "Kate");
+    // player.colorType = "4";
+
+    // const bot = new BotPlayer();
+    // bot.colorType = "2";
+
+    // //  gmc.displayStartMessage(player).then(() => {
+    // //    console.log("done");
+    // //  });
 
 
-    // console.log(gameResults);
+    // const gameResults = {
+    //   gameInfo: {
+    //     duration:{
+    //       hours: 1,
+    //       minutes: 0,
+    //       seconds: 35
+    //     },
+    //   },
+    //   playersResults: [player.reportData],
+    //   reportResults: [
+    //     "moves",
+    //     "clearedTiles",
+    //     "detectedMines",
+    //     "flags",
+    //     "marks",
+    //     "detonatedMine"
+    //   ]
+    // };
 
 
-    gmc.displayGameOverMessage(player, gameResults);
-
-    this.hideLoader();
+    // // console.log(gameResults);
 
 
-    return;
+    // gmc.displayGameOverMessage(player, gameResults);
+
+    // this.hideLoader();
+
+
+    // return;
 
 
 

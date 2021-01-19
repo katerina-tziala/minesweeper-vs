@@ -1,0 +1,29 @@
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  ._checkmark {
+    color: theming.getThemeColor($theme, "success-secondary");
+  }
+
+  ._xmark {
+    color: theming.getThemeColor($theme, "error-secondary");
+  }
+
+  ._table-border {
+    border-color: theming.getThemeColor($theme, "board-grid");
+  }
+
+  ._separator-cell {
+    background-color: theming.getThemeColor($theme, "board-grid", 0.5);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

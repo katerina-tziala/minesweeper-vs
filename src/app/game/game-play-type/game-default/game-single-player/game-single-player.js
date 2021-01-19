@@ -138,6 +138,19 @@ export class GameSinglePlayer extends GameDefault {
     this.startGameRound();
   }
 
+
+  get gameResults() {
+    return {
+      gameInfo: {
+        duration: this.duration,
+      },
+      playersResults: [this.player.reportData],
+      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine"]
+    };
+  }
+
+
+
   onGameOver(gameOverType, boardTiles = []) {
     super.onGameOver(gameOverType, boardTiles);
 
@@ -147,15 +160,16 @@ export class GameSinglePlayer extends GameDefault {
     }
 
 
+
+
     console.log(this);
     console.log(this.playerOnTurn.data);
 
     console.log(this.duration);
 
-    this.#MessageController.displayEndMessage(this.playerOnTurn).then(messageBox => {
-      //TODO: ON WIN THROW CONFETTI
-      console.log(messageBox);
-    });
+    this.#MessageController.displayGameOverMessage(this.playerOnTurn, this.gameResults);
+
+
   }
 
   #submitBotUpdate() {

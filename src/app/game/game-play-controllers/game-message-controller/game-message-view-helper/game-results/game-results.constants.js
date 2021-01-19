@@ -1,20 +1,11 @@
 "use strict";
 
-export const DOM_ELEMENT_ID = {
-  messsageBox: "game-message-box"
-};
-
-export const MOVE_OUT_DURATION = 1000;
-
 export const DOM_ELEMENT_CLASS = {
   container: "game-results-container",
   duration: "game-results-duration",
-  // title: "title",
-  // subtitle: "sub-title",
-  // content: "content",
-  // subcontent: "subcontent",
-  // messsageBoxIn: "game-message-box--slide-in",
-  // messsageBoxOut: "game-message-box--slide-out"
+  booleanResult: "result-boolean--",
+  numberResult: "result-number",
+  resultSeparator: "result-separator",
 };
 
 export const DURATION_CONTENT = {
@@ -31,6 +22,7 @@ export const CONTENT = {
   flags: "Flags",
   marks: "Marks",
   detonatedMine: "Detonated Mine",
+  exceededTurnsLimit: "Exceeded Missed Turns Limit",
 };
 
-export const BOOLEAN_RESULTS = ["detonatedMine"];
+export const BOOLEAN_RESULTS = ["detonatedMine", "exceededTurnsLimit"];

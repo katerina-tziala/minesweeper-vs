@@ -1,20 +1,84 @@
+@use "./game-results-theming";
 @import "../../../components/table/table";
 
+._xmark {
+  &::after {
+    @extend .icon-x;
+    font-size: 1.2rem;
+  }
+}
+
+._checkmark {
+  &::after {
+    @extend .icon-check;
+    font-size: 1.2rem;
+  }
+}
+
+._result {
+  display: inline-block;
+  height: 26px;
+  width: 60px;
+  line-height: 27px;
+}
+
+._table-border {
+  border: 1px solid;
+}
+
+._separator-cell {
+  width: 28px;
+}
+
 .game-results-container {
-  border: 2px solid red;
-  width: 100%;
+  display: inline-block;
+
+  .game-results-duration {
+    margin: 10px 0;
+    font-style: oblique;
+  }
 
   .table,
   td,
   th {
-    border: 1px solid red !important;
+    @extend ._table-border;
+  }
+
+  td,
+  th {
+    height: 28px;
+    overflow: hidden;
+    position: relative;
   }
 
   tr > th {
-    padding: 2px 5px;
+    padding: 0px 5px;
   }
 
   td {
     text-align: center;
+    min-width: 26px;
+  }
+
+  tr > td:nth-of-type(2) {
+    @extend ._separator-cell;
   }
 }
+
+.result-boolean--false {
+  @extend ._result;
+  @extend ._xmark;
+}
+
+.result-boolean--true {
+  @extend ._result;
+  @extend ._checkmark;
+}
+
+.result-number {
+  @extend ._result;
+  font-weight: 700;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-results-theming.setTheming();

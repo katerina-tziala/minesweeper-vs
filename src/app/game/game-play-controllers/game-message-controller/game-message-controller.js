@@ -33,24 +33,15 @@ export class GameMessageController {
 
   displayGameOverMessage(player, gameResults) {
     const message = this.endMessage(player);
-
-
-    ViewHelper.displayGameOverMessage(message, gameResults);
-
-    // ViewHelper.displayGameOverMessage(message, gameResults).then(messageBox => {
-    //   console.log(messageBox);
-    //   console.log(player, gameResults);
-    //   console.log("add stats");
-    // });
+    return ViewHelper.displayGameOverMessage(message, gameResults);
   }
 
 
+  
 
 
 
-
-
-
+  
   startMessage(player) {
     return this.getMessageForPlayer(this.gameMessages.gameOn, player);
   }

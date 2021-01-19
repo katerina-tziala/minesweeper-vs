@@ -54,7 +54,7 @@ export class ElementGenerator {
   static generateTableDataCell(content) {
     const tableCell = document.createElement("td");
     if (valueDefined(content)) {
-      tableCell.append(content);
+      tableCell.innerHTML = content;
     }
     return tableCell;
   }

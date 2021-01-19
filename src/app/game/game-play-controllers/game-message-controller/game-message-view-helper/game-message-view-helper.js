@@ -4,6 +4,8 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { GameMessageBox } from "./game-message-box/game-message-box";
 import { GameResults } from "./game-results/game-results";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-message-view-helper.constants";
+import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
+
 export class GameMessageViewHelper {
 
   static generateContainer() {
@@ -48,21 +50,27 @@ export class GameMessageViewHelper {
     return GameMessageViewHelper.displayMessage(message).then(() => {
       return timeoutPromise(duration);
     }).then(() => {
-      return GameMessageViewHelper.removeMessageBox();
-    }).then(() => {
+      return GameMessageViewHelper.removeMessageBoxAndClose();
+    });
+  }
+
+  static removeMessageBoxAndClose() {
+    return GameMessageViewHelper.removeMessageBox().then(() => {
       return GameMessageViewHelper.hideContainer();
     });
   }
 
 
   static displayGameOverMessage(message, gameResults) {
+
     GameMessageViewHelper.displayMessage(message).then(messageBox => {
-
-      messageBox.append(GameResults.generateView(gameResults));
-
-      // console.log(messageBox);
-
       // console.log(gameResults);
+      // throw confetti
+      const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
+        GameMessageViewHelper.removeMessageBoxAndClose();
+      });
+      messageBox.append(closeBnt);
+      messageBox.append(GameResults.generateView(gameResults));
     });
   }
 

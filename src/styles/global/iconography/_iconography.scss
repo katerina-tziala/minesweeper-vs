@@ -131,3 +131,8 @@
   @extend %icon-regular;
   content: fa-content($fa-var-th-large);
 }
+
+.icon-check {
+  @extend %icon-regular;
+  content: fa-content($fa-var-check);
+}

@@ -72,36 +72,44 @@ export class GameResults {
   static generateResultsTable(gameResults) {
     const table = ElementGenerator.generateTable();
 
-    console.log(gameResults);
+   // console.log(gameResults);
     if (gameResults.playersResults.length === 2) {
       console.log("vs table");
-    } else {
-
-      const tableBody = ElementGenerator.generateTableBody();
-
-      gameResults.reportResults.forEach(resultKey => {
-        const tableRow = ElementGenerator.generateTableRow();
-       
-        const tableHeader = GameResults.rowHeader(resultKey)
-        const rowCell = GameResults.rowCell(resultKey, gameResults.playersResults[0])
-        
-
-
-        
-        tableRow.append(tableHeader, rowCell);
-
-        tableBody.append(tableRow);
-        
-      });
-
-     // console.log(tableBody);
-      table.append(tableBody);
     }
 
+    const tableBody = GameResults.resultsTableBody(gameResults);
+    table.append(tableBody);
 
     return table;
   }
 
+
+  static resultsTableBody(gameResults) {
+    const fragment = document.createDocumentFragment();
+    gameResults.reportResults.forEach(resultKey => {
+      const tableRow = GameResults.resultsRow(resultKey, gameResults.playersResults);
+      fragment.append(tableRow);
+    });
+
+    const tableBody = ElementGenerator.generateTableBody();
+    tableBody.append(fragment);
+    return tableBody;
+  }
+
+  static resultsRow(resultKey, playersResults) {
+    const tableRow = ElementGenerator.generateTableRow();
+    const tableHeader = GameResults.rowHeader(resultKey);
+    const rowCellPlayerA = GameResults.rowCell(resultKey, playersResults[0]);
+    tableRow.append(tableHeader, rowCellPlayerA);
+
+    if (playersResults.length === 2) {
+      const separatorCell = GameResults.separatorCell();
+      const rowCellPlayerB = GameResults.rowCell(resultKey, playersResults[1]);
+      tableRow.append(separatorCell, rowCellPlayerB);
+    }
+
+    return tableRow;
+  }
 
   static rowHeader(headerKey) {
     return ElementGenerator.generateTableHeaderCell(CONTENT[headerKey]);
@@ -109,18 +117,26 @@ export class GameResults {
 
   static rowCell(resultKey, playerResults) {
     let content;
-
-    console.log(playerResults);
-
-
     if (BOOLEAN_RESULTS.includes(resultKey)) {
-      content = "boolean";
+      content = GameResults.booleanResult(playerResults[resultKey]);
     } else {
-      content = playerResults[resultKey];
+      content = GameResults.numberResult(playerResults[resultKey]);
     }
-    console.log(playerResults[resultKey]);
     return ElementGenerator.generateTableDataCell(content);
   }
 
+  static booleanResult(value) {
+    const style = `${DOM_ELEMENT_CLASS.booleanResult}${value}`;
+    const content = `<span class="${style}"></span>`;
+    return content;
+  }
+
+  static numberResult(value) {
+    return `<span class="${DOM_ELEMENT_CLASS.numberResult}">${value}</span>`;
+  }
+
+  static separatorCell() {
+    return ElementGenerator.generateTableDataCell();
+  }
 
 }
