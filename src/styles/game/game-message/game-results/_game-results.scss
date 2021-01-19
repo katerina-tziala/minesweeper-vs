@@ -1,0 +1,20 @@
+@import "../../../components/table/table";
+
+.game-results-container {
+  border: 2px solid red;
+  width: 100%;
+
+  .table,
+  td,
+  th {
+    border: 1px solid red !important;
+  }
+
+  tr > th {
+    padding: 2px 5px;
+  }
+
+  td {
+    text-align: center;
+  }
+}

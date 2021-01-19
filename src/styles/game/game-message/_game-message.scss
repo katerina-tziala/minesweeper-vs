@@ -1,5 +1,6 @@
 @use "../../theming/theming";
 @import "./game-message-box/game-message-box";
+@import "./game-results/game-results";
 
 .game-message-container {
   @extend %center-center;

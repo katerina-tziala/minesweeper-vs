@@ -3,17 +3,17 @@
 .game-message-box {
   @extend %start-center;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 10px;
   width: 380px;
 
   .title {
     width: 100%;
     font-weight: 900;
     text-transform: uppercase;
-    font-size: 1.4rem;
+    font-size: 2rem;
     text-align: center;
-    border-bottom: 1px solid;
-    margin-bottom: 10px;
+    // border-bottom: 1px solid;
+    // margin-bottom: 10px;
   }
 
   .sub-title {

@@ -43,9 +43,8 @@ export class GameVSDetect extends GameVS {
   }
 
   onTileDetonation(revealedTiles) {
-    this.setGameEnd(GameOverType.DetonatedMine);
     this.updatedPlayerCardAfterAction().then(() => {
-      this.onGameOver(revealedTiles);
+      this.onGameOver(GameOverType.DetonatedMine, revealedTiles);
     });
   }
 
@@ -70,13 +69,9 @@ export class GameVSDetect extends GameVS {
   }
 
   updatePlayerCardAndCheckGameOver(boardTiles) {
-    if (this.gameBoard.allMinesDetected) {
-      this.setGameEnd(GameOverType.Detected);
-    }
-
     this.updatedPlayerCardAfterAction(true).then(() => {
-      if (this.isOver) {
-        this.onGameOver(boardTiles);
+      if (this.gameBoard.allMinesDetected) {
+        this.onGameOver(GameOverType.Detecte, boardTiles);
         return;
       }
       this.onRoundEnd(boardTiles);

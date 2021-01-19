@@ -1,6 +1,6 @@
 "use strict";
 import { AppModel } from "~/_models/app-model";
-import { nowTimestamp } from "~/_utils/dates";
+import { nowTimestamp, dateDifferenceInHoursMinutesSeconds } from "~/_utils/dates";
 import { valueDefined } from "~/_utils/validator";
 
 import {
@@ -158,6 +158,10 @@ export class Game extends AppModel {
 
   get boardActions() {
     return this.boardActionsController.generateView();
+  }
+
+  get duration() {
+    return dateDifferenceInHoursMinutesSeconds(this.completedAt, this.startedAt);
   }
 
   initState() {

@@ -150,9 +150,10 @@ export class GameDefault extends Game {
     this.gameBoard.continue();
   }
 
-  onGameOver(boardTiles = []) {
+  onGameOver(gameOverType, boardTiles = []) {
     this.setStatisticsOnRoundEnd(boardTiles);
     this.setGameBoardOnGameOver();
+    this.setGameEnd(gameOverType);
   }
 
   setGameBoardOnGameOver(isDraw = this.isDraw) {

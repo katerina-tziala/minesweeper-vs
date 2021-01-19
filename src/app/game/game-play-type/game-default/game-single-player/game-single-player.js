@@ -68,14 +68,12 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   onTileDetonation(boardTiles) {
-    this.setGameEnd(GameOverType.DetonatedMine);
-    this.onGameOver(boardTiles);
+    this.onGameOver(GameOverType.DetonatedMine, boardTiles);
   }
 
   onRevealedTiles(boardTiles) {
     if (this.playerOnTurn.clearedMinefield) {
-      this.setGameEnd(GameOverType.Cleared);
-      this.onGameOver(boardTiles);
+      this.onGameOver(GameOverType.Cleared, boardTiles);
       return;
     }
     this.onPlayerMoveEnd(boardTiles);
@@ -140,16 +138,23 @@ export class GameSinglePlayer extends GameDefault {
     this.startGameRound();
   }
 
-  onGameOver(boardTiles = []) {
-    super.onGameOver(boardTiles);
+  onGameOver(gameOverType, boardTiles = []) {
+    super.onGameOver(gameOverType, boardTiles);
 
     if (this.isParallel) {
       this.#submitGameOver(GameSubmission.GameOver);
       return;
     }
 
-    this.#MessageController.displayEndMessage(this.playerOnTurn).then(() => {
+
+    console.log(this);
+    console.log(this.playerOnTurn.data);
+
+    console.log(this.duration);
+
+    this.#MessageController.displayEndMessage(this.playerOnTurn).then(messageBox => {
       //TODO: ON WIN THROW CONFETTI
+      console.log(messageBox);
     });
   }
 

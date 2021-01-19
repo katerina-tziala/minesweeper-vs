@@ -1,5 +1,5 @@
 "use strict";
-
+import { valueDefined } from "~/_utils/validator";
 import { ElementHandler } from "./element-handler";
 
 export class ElementGenerator {
@@ -45,7 +45,7 @@ export class ElementGenerator {
 
   static generateTableHeaderCell(content) {
     const tableHeader = document.createElement("th");
-    if (content) {
+    if (valueDefined(content)) {
       tableHeader.append(content);
     }
     return tableHeader;
@@ -53,8 +53,8 @@ export class ElementGenerator {
 
   static generateTableDataCell(content) {
     const tableCell = document.createElement("td");
-    if (content) {
-      tableCell.innerHTML(content);
+    if (valueDefined(content)) {
+      tableCell.append(content);
     }
     return tableCell;
   }

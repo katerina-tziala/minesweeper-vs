@@ -13,6 +13,7 @@ import { PageType } from "./_enums/page-type.enum";
 import { GameType } from "GameEnums";
 import { CONFIRMATION } from "./components/modal/modal.constants";
 
+
 export class App {
   constructor() {
     this.interfaceController = undefined;
@@ -31,16 +32,17 @@ export class App {
 
     self.user = new User("kateID", "kate", null);
     // this.setInterface(PageType.Home);
-    
+
     //  this.setInterface();
 
     //
-    //this.onGameSetUpNavigation(GameType.Original);
+    this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
-    this.onGameSetUpNavigation(GameType.Bot);
+    // this.onGameSetUpNavigation(GameType.Bot);
     // remove document listeners!!!
 
     //this.onPlayGame(undefined);
+
   }
 
   onConnectionError(event) {

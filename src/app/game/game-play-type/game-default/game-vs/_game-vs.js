@@ -136,12 +136,9 @@ export class GameVS extends GameDefault {
   onRoundTimerEnd() {
     this.playerOnTurn.increaseMissedTurns();
 
-    if (this.playerOnTurn.exceededTurnsLimit) {
-      this.setGameEnd(GameOverType.ExceededTurnsLimit);
-    }
     this.updatedPlayerCard({ turnsUpdate: true }).then(() => {
-      if (this.isOver) {
-        this.onGameOver();
+      if (this.playerOnTurn.exceededTurnsLimit) {
+        this.onGameOver(GameOverType.ExceededTurnsLimit);
         return;
       }
       this.onRoundEnd();
@@ -261,9 +258,11 @@ export class GameVS extends GameDefault {
     this.startGameRound();
   }
 
-  onGameOver(boardTiles = []) {
+  onGameOver(gameOverType, boardTiles = []) {
     this.setWinnerOnGameOver();
-    super.onGameOver(boardTiles);
+
+    super.onGameOver(gameOverType, boardTiles);
+
     this.#displayGameOverMessage().then(() => {
       if (this.isOnline) {
         //TODO:

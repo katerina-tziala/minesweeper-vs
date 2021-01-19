@@ -1,5 +1,6 @@
 "use strict";
 import { valueDefined } from "~/_utils/validator";
+import { clone } from "~/_utils/utils.js";
 
 import { AppModel } from "~/_models/app-model";
 import { GameVSMode } from "GameEnums";
@@ -136,6 +137,26 @@ export class Player extends AppModel {
 
   get hasStrategy() {
     return this.strategyPositions.length > 0;
+  }
+
+  get data() {
+    return clone(this);
+  }
+
+  get reportData() {
+    return {
+      id: this.id,
+      name: this.name,
+      isBot: this.isBot,
+      colorType: this.colorType,
+      moves: this.moves,
+      clearedTiles: this.revealedTiles,
+      detectedMines: this.minesDetected,
+      flags: this.placedFlags,
+      marks: this.marksPositions.length,
+      detonatedMine: this.detonatedMine,
+      exceededTurnsLimit: this.exceededTurnsLimit
+    }
   }
 
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */

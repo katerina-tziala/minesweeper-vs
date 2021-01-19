@@ -1,54 +1,29 @@
 "use strict";
-import { clone, replaceStringParameter } from "~/_utils/utils";
+import { clone, replaceStringParameter, timeoutPromise } from "~/_utils/utils";
 import { MESSAGES } from "./game-message-controller.constants";
 import { GameMessageViewHelper as ViewHelper } from "./game-message-view-helper/game-message-view-helper";
+
 export class GameMessageController {
-  #timeOut;
 
   constructor() {
-    this.messageDuration = 4000;
+    this.messageDuration = 3500;
     this.gameMessages = MESSAGES;
   }
 
-  #messageDisplayCompleted(messageBox) {
-    return this.#messageDurationCompleted().then(() => {
-      return this.onMessageBoxHidden(messageBox);
-    });
-  }
-
-  onMessageBoxHidden(messageBox) {
-    return ViewHelper.onMessageBoxRemoved(messageBox).then(() => {
-      return this.hide();
-    });
-  }
-
-  #messageDurationCompleted() {
-    return new Promise(resolve => {
-      this.#timeOut = setTimeout(() => {
-        resolve();
-      }, this.messageDuration);
-    });
-  }
-
-  get onViewInit() {
-    this.#clear();
-    return ViewHelper.clearedContainer();
-  }
-
-  #clear() {
-    if (this.#timeOut) {
-      clearTimeout(this.#timeOut);
-      this.#timeOut = 0;
-    }
-  }
+  // get onViewInit() {
+  //   return ViewHelper.clearedContainer();
+  // }
 
   generateView() {
     return ViewHelper.generateContainer();
   }
 
   hide() {
-    this.#clear();
     return ViewHelper.hideContainer();
+  }
+
+  displayWaitingMessage(message) {
+    return ViewHelper.displayWaitingMessage(message, this.messageDuration);
   }
 
   displayStartMessage(player) {
@@ -56,28 +31,25 @@ export class GameMessageController {
     return this.displayWaitingMessage(message);
   }
 
-  displayReadyMessage(player) {
-    const message = this.readyMessage(player);
-    return this.displayWaitingMessage(message);
-  }
-
-  displayEndMessage(player) {
+  displayGameOverMessage(player, gameResults) {
     const message = this.endMessage(player);
-    return this.displayWaitingMessage(message);
+
+
+    ViewHelper.displayGameOverMessage(message, gameResults);
+
+    // ViewHelper.displayGameOverMessage(message, gameResults).then(messageBox => {
+    //   console.log(messageBox);
+    //   console.log(player, gameResults);
+    //   console.log("add stats");
+    // });
   }
 
-  displayWaitingMessage(message) {
-    return this.onViewInit.then(container => {
-      const messageBox = ViewHelper.generateMessageBox(message);
-      container.append(messageBox);
-      ViewHelper.displayContainer(container);
-      return this.#messageDisplayCompleted(messageBox);
-    });
-  }
 
-  readyMessage(player) {
-    return this.getMessageForPlayer(this.gameMessages.gameReady, player);
-  }
+
+
+
+
+
 
   startMessage(player) {
     return this.getMessageForPlayer(this.gameMessages.gameOn, player);
@@ -118,5 +90,20 @@ export class GameMessageController {
     );
     return message;
   }
+
+  // onMessageBoxHidden(messageBox) {
+  //   return ViewHelper.onMessageBoxRemoved(messageBox).then(() => {
+  //     return this.hide();
+  //   });
+  // }
+
+  // displayReadyMessage(player) {
+  //   const message = this.readyMessage(player);
+  //   return this.displayWaitingMessage(message);
+  // }
+
+  // readyMessage(player) {
+  //   return this.getMessageForPlayer(this.gameMessages.gameReady, player);
+  // }
 
 }

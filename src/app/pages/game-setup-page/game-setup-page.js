@@ -5,6 +5,14 @@ import { enumKey } from "~/_utils/utils";
 import { Page } from "../page";
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 import { GameType } from "GameEnums";
+import {
+  GameMessageController
+} from "GamePlayControllers";
+
+
+import { LevelSettings, OptionsSettings, TurnSettings, Player, BotPlayer } from "GameModels";
+
+
 
 export class GameSetupPage extends Page {
   #_gameType;
@@ -34,15 +42,63 @@ export class GameSetupPage extends Page {
   }
 
   renderPage(mainContainer) {
+
+    const gmc = new GameMessageController();
+
+    mainContainer.append(gmc.generateView());
+
+
+    const player = new Player("KateId", "Kate");
+    player.colorType = "4";
+
+    const bot = new BotPlayer();
+    bot.colorType = "2";
+
+    //  gmc.displayStartMessage(player).then(() => {
+    //    console.log("done");
+    //  });
+
+
+    const gameResults = {
+      gameInfo: {
+        duration:{
+          hours: 1,
+          minutes: 0,
+          seconds: 35
+        },
+      },
+      playersResults: [player.reportData],
+      reportResults: [
+        "moves",
+        "clearedTiles",
+        "detectedMines",
+        "flags",
+        "marks",
+        "detonatedMine"
+      ]
+    };
+
+
+    // console.log(gameResults);
+
+
+    gmc.displayGameOverMessage(player, gameResults);
+
+    this.hideLoader();
+
+
+    return;
+
+
+
+
     this.#loadWizard().then((gameWizard) => {
       this.gameWizard = gameWizard;
       this.gameWizard.generateView().then(wizard => {
         this.hideLoader();
         mainContainer.append(wizard);
         this.gameWizard.expandWizard();
-
       });
-
     });
   }
 

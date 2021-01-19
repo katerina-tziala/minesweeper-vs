@@ -12,4 +12,5 @@ export const TYPOGRAPHY = {
   colon: ":",
   commaAndSpace: ", ",
   tripleHashtag: "###",
+  fullstop: ".",
 };
