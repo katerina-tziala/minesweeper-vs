@@ -277,15 +277,31 @@ export class GameVS extends GameDefault {
     });
   }
 
+  get gameResults() {
+    return {
+      gameInfo: {
+        duration: this.duration,
+        draw: this.isDraw,
+      },
+      playersResults: this.players.map(player => player.reportData),
+      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine"]
+    };
+  }
+
   #displayGameOverMessage() {
-    if (this.isDraw) {
-      return this.messageController.displayDrawMessage(this.player, this.opponent).then(() => {
-        //TODO: confetti of both colors
-      });
-    }
-    return this.messageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
-      //TODO: confetti of winner colors
-    });
+
+    console.log(this.gameResults);
+
+    // if (this.isDraw) {
+    //   return this.messageController.displayDrawMessage(this.player, this.opponent).then(() => {
+    //     //TODO: confetti of both colors
+    //   });
+    // }
+    // return this.messageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
+    //   //TODO: confetti of winner colors
+    // });
+
+
   }
 
   get gameOverBasedOnType() {

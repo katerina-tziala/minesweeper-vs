@@ -39,6 +39,7 @@ export class GameMessageViewHelper {
   }
 
   static displayMessage(message) {
+    delete message.duration;
     return GameMessageViewHelper.clearedContainer().then(container => {
       const messageBox = GameMessageViewHelper.generateMessageBox(message);
       container.append(messageBox);
@@ -46,7 +47,8 @@ export class GameMessageViewHelper {
     });
   }
 
-  static displayWaitingMessage(message, duration) {
+  static displayWaitingMessage(message) {
+    const duration = message.duration;
     return GameMessageViewHelper.displayMessage(message).then(() => {
       return timeoutPromise(duration);
     }).then(() => {

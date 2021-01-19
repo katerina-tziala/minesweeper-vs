@@ -6,13 +6,8 @@ import { GameMessageViewHelper as ViewHelper } from "./game-message-view-helper/
 export class GameMessageController {
 
   constructor() {
-    this.messageDuration = 3500;
     this.gameMessages = MESSAGES;
   }
-
-  // get onViewInit() {
-  //   return ViewHelper.clearedContainer();
-  // }
 
   generateView() {
     return ViewHelper.generateContainer();
@@ -23,7 +18,7 @@ export class GameMessageController {
   }
 
   displayWaitingMessage(message) {
-    return ViewHelper.displayWaitingMessage(message, this.messageDuration);
+    return ViewHelper.displayWaitingMessage(message);
   }
 
   displayStartMessage(player) {
@@ -37,11 +32,21 @@ export class GameMessageController {
   }
 
 
-  
+  displayReadyMessage(player) {
+    const message = this.readyMessage(player);
+    if (message) {
+      return this.displayWaitingMessage(message);
+    }
+    return Promise.resolve();
+  }
 
+  readyMessage(player) {
+    if (this.gameMessages.gameReady) {
+      return this.getMessageForPlayer(this.gameMessages.gameReady, player);
+    }
+    return undefined;
+  }
 
-
-  
   startMessage(player) {
     return this.getMessageForPlayer(this.gameMessages.gameOn, player);
   }
@@ -81,20 +86,5 @@ export class GameMessageController {
     );
     return message;
   }
-
-  // onMessageBoxHidden(messageBox) {
-  //   return ViewHelper.onMessageBoxRemoved(messageBox).then(() => {
-  //     return this.hide();
-  //   });
-  // }
-
-  // displayReadyMessage(player) {
-  //   const message = this.readyMessage(player);
-  //   return this.displayWaitingMessage(message);
-  // }
-
-  // readyMessage(player) {
-  //   return this.getMessageForPlayer(this.gameMessages.gameReady, player);
-  // }
 
 }

@@ -2,7 +2,7 @@
 
 @mixin setThemeStyles($theme) {
   .icon-loader-container {
-    @include theming.setThemeCard($theme, 0.5);
+    @include theming.setThemeCard($theme, 0.3);
   }
   .icon-loader {
     @include theming.applyGameColorsStyle(

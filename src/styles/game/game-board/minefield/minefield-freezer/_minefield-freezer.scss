@@ -8,7 +8,7 @@
   position: absolute;
   top: 0px;
   left: 0px;
-  z-index: 1500;
+  z-index: getIndex("minefield-freezer");
   cursor: not-allowed;
   overflow: hidden;
 

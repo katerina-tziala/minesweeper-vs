@@ -143,6 +143,7 @@ export class GameSinglePlayer extends GameDefault {
     return {
       gameInfo: {
         duration: this.duration,
+        draw: this.isDraw,
       },
       playersResults: [this.player.reportData],
       reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine"]
@@ -159,17 +160,7 @@ export class GameSinglePlayer extends GameDefault {
       return;
     }
 
-
-
-
-    console.log(this);
-    console.log(this.playerOnTurn.data);
-
-    console.log(this.duration);
-
     this.#MessageController.displayGameOverMessage(this.playerOnTurn, this.gameResults);
-
-
   }
 
   #submitBotUpdate() {

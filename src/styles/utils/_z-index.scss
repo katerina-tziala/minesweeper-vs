@@ -2,10 +2,12 @@
 
 $_indexes: (
   input: 500,
-  settings-panel: 1000,
-  modal: 2000,
-  loader: 2500,
-  toast-notification: 3000,
+  settings-panel: 2000,
+  modal: 3000,
+  loader: 4000,
+  toast-notification: 5000,
+  game-message: 1800,
+  minefield-freezer: 1500
 );
 
 @function getIndex($key) {
