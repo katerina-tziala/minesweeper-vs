@@ -16,3 +16,4 @@ export const DOM_ELEMENT_CLASS = {
   messsageBoxOut: "game-message-box--slide-out"
 };
 
+export const MESSAGE_FIELDS = ["title", "subtitle", "content", "subcontent"];

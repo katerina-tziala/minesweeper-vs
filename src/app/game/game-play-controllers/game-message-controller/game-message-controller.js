@@ -17,10 +17,18 @@ export class GameMessageController {
     return ViewHelper.hideContainer();
   }
 
+  close() {
+    return ViewHelper.removeMessageBoxAndClose();
+  }
+
   displayWaitingMessage(message) {
     return ViewHelper.displayWaitingMessage(message);
   }
 
+  displayFreezingMessage(message) {
+    return ViewHelper.displayMessage(message);
+  }
+  
   displayStartMessage(player) {
     const message = this.startMessage(player);
     return this.displayWaitingMessage(message);
@@ -28,9 +36,12 @@ export class GameMessageController {
 
   displayGameOverMessage(player, gameResults) {
     const message = this.endMessage(player);
-    return ViewHelper.displayGameOverMessage(message, gameResults);
+    return this.showGameOverMessage(message, gameResults);
   }
 
+  showGameOverMessage(message, gameResults) {
+    return ViewHelper.displayGameOverMessage(message, gameResults);
+  }
 
   displayReadyMessage(player) {
     const message = this.readyMessage(player);

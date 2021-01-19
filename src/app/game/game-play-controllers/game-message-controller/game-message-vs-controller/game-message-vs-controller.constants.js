@@ -21,29 +21,31 @@ export const MESSAGES = {
   gameTurn: {
     title: "### it's your turn!",
     subtitle: "minesweeper vs (###) game",
+    duration: 1400
+  },
+  gameTurnManual: {
+    title: "### it's your turn!",
+    subtitle: "minesweeper vs (###) game",
     subcontent: "Press the button to play and show off your skills!",
     duration: 3500
   },
   gameOverDraw: {
     title: "game over!",
     subtitle: "minesweeper vs (###) game",
-    content: "The game ended in a draw!</br>Congratulations ###, ###!",
-    duration: 3500
+    content: "The game ended in a draw!</br>Congratulations ###, ###!"
   },
   gameOverWin: {
     detonatedMine: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you won the game!",
-      subcontent: "### detonated a mine!",
-      duration: 3500
+      subcontent: "### detonated a mine!"
     },
     exceededTurnsLimit: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you won the game!",
-      subcontent: "### exceeded missed turns limit!",
-      duration: 3500
+      subcontent: "### exceeded missed turns limit!"
     },
     clearedMinefield: {
       title: "game over!",
@@ -55,8 +57,7 @@ export const MESSAGES = {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you won the game!",
-      subcontent: "You detected the most mines!",
-      duration: 3500
+      subcontent: "You detected the most mines!"
     }
   },
   gameOverLoss: {
@@ -64,29 +65,25 @@ export const MESSAGES = {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you lost the game!",
-      subcontent: "### detonated a mine!",
-      duration: 3500
+      subcontent: "### detonated a mine!"
     },
     exceededTurnsLimit: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you lost the game!",
-      subcontent: "You exceeded missed turns limit!",
-      duration: 3500
+      subcontent: "You exceeded missed turns limit!"
     },
     clearedMinefield: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you lost the game!",
-      subcontent: "### cleared the most tiles!",
-      duration: 3500
+      subcontent: "### cleared the most tiles!"
     },
     detectedAllMines: {
       title: "game over!",
       subtitle: "minesweeper vs (###) game",
       content: "### you lost the game!",
-      subcontent: "### detected the most mines!",
-      duration: 3500
+      subcontent: "### detected the most mines!"
     }
   }
 };

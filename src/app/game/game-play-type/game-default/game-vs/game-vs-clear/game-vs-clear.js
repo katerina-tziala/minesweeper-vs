@@ -94,11 +94,11 @@ export class GameVSClear extends GameVS {
   }
 
   #startGameRoundWithManuallStart() {
-    this.messageController.displayTurnMessage(this.playerOnTurn).then(() => {
-      this.onRoundPlayStart();
-    }).catch(err => {
-      console.log(err);
-    });
+    // this.messageController.displayTurnMessage(this.playerOnTurn).then(() => {
+    //   this.onRoundPlayStart();
+    // }).catch(err => {
+    //   console.log(err);
+    // });
   }
 
   /* UPDATE PLAYERS CARD */

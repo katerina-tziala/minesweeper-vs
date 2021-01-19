@@ -149,6 +149,7 @@ export class Player extends AppModel {
       name: this.name,
       isBot: this.isBot,
       colorType: this.colorType,
+      lostGame: this.lostGame,
       moves: this.moves,
       clearedTiles: this.revealedTiles,
       detectedMines: this.minesDetected,

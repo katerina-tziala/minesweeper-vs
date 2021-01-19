@@ -160,11 +160,18 @@ export class GameVS extends GameDefault {
 
   start() {
     this.onAfterViewInit.then(() => {
-      if (!this.bothPlayersEntered) {
-        this.#displayReadyMessageAndWait();
-        return;
-      }
-      this.#displayStartMessageAndStart();
+
+      this.messageController.displayTurnMessage(this.playerOnTurn).then(() => {
+        console.log("click");
+       // this.onRoundPlayStart();
+      }).catch(err => {
+        console.log(err);
+      });
+      // if (!this.bothPlayersEntered) {
+      //   this.#displayReadyMessageAndWait();
+      //   return;
+      // }
+      // this.#displayStartMessageAndStart();
     });
   }
 

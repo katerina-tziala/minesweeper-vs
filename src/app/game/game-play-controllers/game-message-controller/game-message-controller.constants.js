@@ -10,13 +10,11 @@ export const MESSAGES = {
   gameOverWin: {
     title: "game over!",
     subtitle: "original minesweeper game",
-    content: "### you won the game!",
-    duration: 3500
+    content: "### you won the game!"
   },
   gameOverLoss: {
     title: "game over!",
     subtitle: "original minesweeper game",
-    content: "### you lost the game!",
-    duration: 3500
+    content: "### you lost the game!"
   }
 };

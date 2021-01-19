@@ -1,7 +1,7 @@
 "use strict";
 import { timeoutPromise } from "~/_utils/utils";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, MOVE_OUT_DURATION } from "./game-message-box.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, MOVE_OUT_DURATION, MESSAGE_FIELDS } from "./game-message-box.constants";
 
 export class GameMessageBox {
 
@@ -23,7 +23,8 @@ export class GameMessageBox {
 
   static generateMessageContent(message) {
     const fragment = document.createDocumentFragment();
-    Object.keys(message).forEach(key => {
+    const messageFields = Object.keys(message).filter(key => MESSAGE_FIELDS.includes(key));
+    messageFields.forEach(key => {
       const style = DOM_ELEMENT_CLASS[key];
       const container = ElementGenerator.generateContainer([style]);
       container.innerHTML = message[key];

@@ -6,7 +6,8 @@ import { Page } from "../page";
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 import { GameType } from "GameEnums";
 import {
-  GameMessageController
+  GameMessageController,
+  GameMessageVSController
 } from "GamePlayControllers";
 
 
@@ -43,51 +44,62 @@ export class GameSetupPage extends Page {
 
   renderPage(mainContainer) {
 
-    // const gmc = new GameMessageController();
+    const gmc = new GameMessageVSController();
 
-    // mainContainer.append(gmc.generateView());
-
-
-    // const player = new Player("KateId", "Kate");
-    // player.colorType = "4";
-
-    // const bot = new BotPlayer();
-    // bot.colorType = "2";
-
-    // //  gmc.displayStartMessage(player).then(() => {
-    // //    console.log("done");
-    // //  });
+    mainContainer.append(gmc.generateView());
 
 
-    // const gameResults = {
-    //   gameInfo: {
-    //     duration:{
-    //       hours: 1,
-    //       minutes: 0,
-    //       seconds: 35
-    //     },
-    //   },
-    //   playersResults: [player.reportData],
-    //   reportResults: [
-    //     "moves",
-    //     "clearedTiles",
-    //     "detectedMines",
-    //     "flags",
-    //     "marks",
-    //     "detonatedMine"
-    //   ]
-    // };
+    const player = new Player("KateId", "Kate");
+    player.colorType = "4";
+
+    const bot = new BotPlayer();
+    bot.colorType = "2";
+
+    //  gmc.displayStartMessage(player).then(() => {
+    //    console.log("done");
+    //  });
+
+    // DetonatedMine: "detonatedMine",
+    // Cleared: "clearedMinefield",
+    // ExceededTurnsLimit: "exceededTurnsLimit",
+    // Detected: "detectedAllMines"
+    const gameResults = {
+      gameInfo: {
+        duration:{
+          hours: 1,
+          minutes: 0,
+          seconds: 35
+        },
+        draw: false,
+        gameOverType: "clearedMinefield",
+        rounds: 5
+      },
+      playersResults: [player.reportData, bot.reportData],
+      reportResults: [
+        "moves",
+        "clearedTiles",
+        "detectedMines",
+        "flags",
+        "marks",
+        "detonatedMine",
+        "exceededTurnsLimit"
+      ]
+    };
 
 
-    // // console.log(gameResults);
+    // console.log(gameResults);
 
 
-    // gmc.displayGameOverMessage(player, gameResults);
+    gmc.displayGameOverMessage(player, bot, gameResults);
+    // gmc.displayManualTurnMessage(player).then(() => {
+    //   console.log("closed");
+    // });
 
-    // this.hideLoader();
+    
+    this.hideLoader();
 
 
-    // return;
+    return;
 
 
 

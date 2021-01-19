@@ -2,7 +2,6 @@
 import { PLAY_BTN } from "~/_constants/btn-text.constants";
 import { replaceStringParameter } from "~/_utils/utils";
 import { ElementGenerator } from "HTML_DOM_Manager";
-import { GameMessageViewHelper as ViewHelper } from "../game-message-view-helper/game-message-view-helper";
 import { GameMessageController } from "../game-message-controller";
 import { MESSAGES, GAME_GOAL } from "./game-message-vs-controller.constants";
 export class GameMessageVSController extends GameMessageController {
@@ -13,35 +12,43 @@ export class GameMessageVSController extends GameMessageController {
     this.gameMessages = MESSAGES;
   }
 
-  displayDrawMessage(player, opponent) {
-    let message = this.getMessageForPlayer(this.gameMessages.gameOverDraw, player);
-    message = this.setMessageContentForPlayer(message, opponent);
-    return this.displayWaitingMessage(message);
-  }
-
-  displayEndMessage(player, opponent, gameOverType) {
-    const message = this.endMessage(player, opponent, gameOverType);
-    return this.displayWaitingMessage(message);
+  displayGameOverMessage(player, opponent, gameResults) {
+    const message = this.overMessage(player, opponent, gameResults);
+    return this.showGameOverMessage(message, gameResults);
   }
 
   displayTurnMessage(player) {
     const message = this.turnMessage(player);
-    return new Promise(resolve => {
-      this.onViewInit.then(container => {
-        const messageBox = ViewHelper.generateMessageBox(message);
+    return this.displayWaitingMessage(message);
+  }
+
+  displayManualTurnMessage(player) {
+    const message = this.turnMessage(player, this.gameMessages.gameTurnManual);
+    return new Promise((resolve, reject) => {
+      this.displayFreezingMessage(message).then(messageBox => {
         const button = ElementGenerator.generateButton(PLAY_BTN, () => {
-          this.onMessageBoxHidden(messageBox).then(() => resolve());
+          this.close().then(() => resolve()).catch(() => reject());
         });
         messageBox.append(button);
-        container.append(messageBox);
-        ViewHelper.displayContainer(container);
-      });
+      }).catch(() => reject());
     });
   }
 
-  turnMessage(player) {
-    const message = this.getMessageForPlayer(this.gameMessages.gameTurn, player);
+  turnMessage(player, messageStructure = this.gameMessages.gameTurn) {
+    const message = this.getMessageForPlayer(messageStructure, player);
     return this.setMessageTitleForPlayer(message, player);
+  }
+
+  overMessage(player, opponent, gameResults) {
+    if (gameResults.gameInfo.draw) {
+      return this.drawMessage(player, opponent);
+    }
+    return this.endMessage(player, opponent, gameResults.gameInfo.gameOverType);
+  }
+
+  drawMessage(player, opponent) {
+    const message = this.getMessageForPlayer(this.gameMessages.gameOverDraw, player);
+    return this.setMessageContentForPlayer(message, opponent);
   }
 
   endMessage(player, opponent, gameOverType) {
