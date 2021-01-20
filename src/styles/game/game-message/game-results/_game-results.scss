@@ -1,5 +1,6 @@
 @use "./game-results-theming";
 @import "../../../components/table/table";
+@import "../../../components/user-avatar/user-avatar";
 
 ._xmark {
   &::after {
@@ -39,30 +40,41 @@
     text-align: center;
   }
 
-  .table,
-  td,
-  th {
+  .table {
     @extend ._table-border;
   }
 
-  td,
-  th {
+  thead > tr > th {
+    // height: 28px;
+    // overflow: hidden;
+    position: relative;
+    padding: 0px 5px;
+    @extend ._table-border;
+
+    &:nth-of-type(3) {
+      @extend ._separator-cell;
+      font-weight: 900;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+    }
+  }
+
+  tbody > tr > td,
+  tbody > tr > th {
     height: 28px;
     overflow: hidden;
     position: relative;
-  }
-
-  tr > th {
     padding: 0px 5px;
+    @extend ._table-border;
   }
 
-  td {
+  tbody > tr > td {
     text-align: center;
     min-width: 26px;
-  }
 
-  tr > td:nth-of-type(2) {
-    @extend ._separator-cell;
+    &:nth-of-type(2) {
+      @extend ._separator-cell;
+    }
   }
 }
 
@@ -79,6 +91,34 @@
 .result-number {
   @extend ._result;
   font-weight: 700;
+}
+
+.game-result-player {
+  // border: 2px solid red;
+  // height: 100px;
+  @extend %start-center;
+  flex-direction: column;
+  min-width: 100px;
+  padding-top: 5px;
+
+  .user-avatar {
+    font-size: 1.5rem;
+    @include circle(40px);
+
+    &::before {
+      @include circle(40px);
+      line-height: 38px;
+    }
+  }
+
+  .game-result-player-name {
+    padding: 4px 0;
+    width: 100%;
+    max-width: 100px;
+    text-align: center;
+    word-break: break-all;
+    flex-grow: 1;
+  }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

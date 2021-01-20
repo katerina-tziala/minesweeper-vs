@@ -1,0 +1,30 @@
+@use "../../theming/theming";
+
+@mixin setAvatarThemeStyles($theme, $color-type) {
+  &.user-avatar-color-type--#{$color-type} {
+    &::before {
+      background-color: theming.getThemeColor($theme, "game-type-#{$color-type}");
+    }
+  }
+}
+
+@mixin setThemeStyles($theme) {
+  .user-avatar {
+    color: theming.getThemeColor($theme, "theme-secondary");
+    //TODO default background
+    @for $i from 1 through 8 {
+      @include setAvatarThemeStyles($theme, $i)
+    }
+  }
+
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

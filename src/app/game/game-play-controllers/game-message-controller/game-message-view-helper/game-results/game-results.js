@@ -5,6 +5,8 @@ import { timeoutPromise } from "~/_utils/utils";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DURATION_CONTENT, BOOLEAN_RESULTS } from "./game-results.constants";
 
+import { UserAvatar } from "~/components/user-avatar/user-avatar";
+
 export class GameResults {
 
   static get newContainer() {
@@ -68,20 +70,55 @@ export class GameResults {
     return undefined;
   }
 
-
   static generateResultsTable(gameResults) {
     const table = ElementGenerator.generateTable();
-
-   // console.log(gameResults);
     if (gameResults.playersResults.length === 2) {
-      console.log("vs table");
+      table.append(GameResults.resultsTableHead(gameResults.playersResults));
     }
-
     const tableBody = GameResults.resultsTableBody(gameResults);
     table.append(tableBody);
 
     return table;
   }
+
+  static resultsTableHead(playersResults) {
+    const tableRow = ElementGenerator.generateTableRow();
+
+    const rowHeader = ElementGenerator.generateTableHeaderCell();
+
+    const playerHeaders = playersResults.map(resultsOfPlayer => GameResults.playerHeader(resultsOfPlayer));
+
+    const separator = ElementGenerator.generateTableHeaderCell();
+    separator.innerHTML = CONTENT.vs;
+
+    tableRow.append(rowHeader, playerHeaders[0], separator, playerHeaders[1]);
+
+    const tableHead = ElementGenerator.generateTableHead();
+    tableHead.append(tableRow);
+    return tableHead;
+  }
+
+  static playerHeader(playerResults) {
+    const content = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.resultPlayer]);
+
+    const avatar = UserAvatar.generate(playerResults.colorType, playerResults.isBot);
+    console.log(playerResults);
+
+    const name = ElementGenerator.generateContainer(["game-result-player-name"]);
+    name.innerHTML = playerResults.name;
+
+    content.append(avatar, name);
+    console.log(avatar);
+
+    const playerHeader = ElementGenerator.generateTableHeaderCell(content);
+
+
+
+    return playerHeader;
+  }
+
+
+
 
 
   static resultsTableBody(gameResults) {

@@ -1,0 +1,26 @@
+@use "./user-avatar-theming";
+
+.user-avatar {
+  @extend %center-center;
+  position: relative;
+  overflow: hidden;
+  font-size: 2.4rem;
+  @include circle(58px);
+
+  &::before {
+    @include circle(58px);
+    line-height: 56px;
+    @extend .icon-user;
+  }
+
+  &.user-avatar--bot {
+    &::before {
+      @extend .icon-bot;
+    }
+  }
+
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include user-avatar-theming.setTheming();
