@@ -2,7 +2,7 @@
 
 export const DOM_ELEMENT_CLASS = {
   container: "game-results-container",
-  duration: "game-results-duration",
+  info: "game-results-info",
   booleanResult: "result-boolean--",
   numberResult: "result-number",
   resultPlayer: "game-result-player",
@@ -16,6 +16,7 @@ export const DURATION_CONTENT = {
 
 export const CONTENT = {
   duration: "Game completed in ",
+  rounds: "Total rounds: ",
   moves: "Moves",
   clearedTiles: "Cleared Tiles",
   detectedMines: "Detected Mines",

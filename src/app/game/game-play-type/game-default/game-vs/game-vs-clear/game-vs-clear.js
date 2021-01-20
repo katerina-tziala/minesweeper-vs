@@ -35,20 +35,16 @@ export class GameVSClear extends GameVS {
   }
 
   onTileDetonation(revealedTiles) {
-    this.setGameEnd(GameOverType.DetonatedMine);
     this.updatedCards([revealedTiles[0].position]).then(() => {
-      this.onGameOver(revealedTiles);
+      this.onGameOver(GameOverType.DetonatedMine, revealedTiles);
     });
   }
 
   onRevealedTiles(revealedTiles, cleared) {
-    if (cleared) {
-      this.setGameEnd(GameOverType.Cleared);
-    }
     const positions = tilesPositions(revealedTiles);
     this.updatedCards(positions).then(() => {
-      if (this.isOver) {
-        this.onGameOver(revealedTiles);
+      if (cleared) {
+        this.onGameOver(GameOverType.Cleared, revealedTiles);
         return;
       }
       this.onRoundEnd(revealedTiles);
@@ -75,8 +71,6 @@ export class GameVSClear extends GameVS {
   }
 
   onGamePlayStart() {
-    console.log(this.levelSettings.minesPositions);
-
     if (this.roundTimer) {
       this.setGameStart();
     }
@@ -94,11 +88,11 @@ export class GameVSClear extends GameVS {
   }
 
   #startGameRoundWithManuallStart() {
-    // this.messageController.displayTurnMessage(this.playerOnTurn).then(() => {
-    //   this.onRoundPlayStart();
-    // }).catch(err => {
-    //   console.log(err);
-    // });
+    this.messageController.displayManualTurnMessage(this.playerOnTurn).then(() => {
+      this.onRoundPlayStart();
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   /* UPDATE PLAYERS CARD */

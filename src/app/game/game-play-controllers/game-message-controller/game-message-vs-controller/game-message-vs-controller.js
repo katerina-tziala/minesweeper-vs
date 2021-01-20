@@ -13,7 +13,7 @@ export class GameMessageVSController extends GameMessageController {
   }
 
   displayGameOverMessage(player, opponent, gameResults) {
-    const message = this.overMessage(player, opponent, gameResults);
+    const message = this.overMessage(player, opponent, gameResults.gameInfo);
     return this.showGameOverMessage(message, gameResults);
   }
 
@@ -39,11 +39,11 @@ export class GameMessageVSController extends GameMessageController {
     return this.setMessageTitleForPlayer(message, player);
   }
 
-  overMessage(player, opponent, gameResults) {
-    if (gameResults.gameInfo.draw) {
+  overMessage(player, opponent, gameInfo) {
+    if (gameInfo.draw) {
       return this.drawMessage(player, opponent);
     }
-    return this.endMessage(player, opponent, gameResults.gameInfo.gameOverType);
+    return this.endMessage(player, opponent, gameInfo.gameOverType);
   }
 
   drawMessage(player, opponent) {

@@ -62,21 +62,18 @@ export class GameMessageViewHelper {
   }
 
   static displayGameOverMessage(message, gameResults) {
-
-    GameMessageViewHelper.displayMessage(message).then(messageBox => {
-      // console.log(gameResults);
-      // throw confetti
-      const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
-        GameMessageViewHelper.removeMessageBoxAndClose();
-      });
-      messageBox.append(closeBnt);
-      messageBox.append(GameResults.generateView(gameResults));
+    return new Promise((resolve, reject) => {
+      GameMessageViewHelper.displayMessage(message).then(messageBox => {
+        // console.log(gameResults);
+        // throw confetti
+        const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
+          GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
+        });
+        messageBox.append(closeBnt);
+        messageBox.append(GameResults.generateView(gameResults));
+      }).catch(() => reject());
     });
+
   }
-
-
-
-
-
 
 }

@@ -125,7 +125,8 @@ export class GameDefault extends Game {
 
   submitBotMove() {
     this.playerOnTurn.getMove(this.gameBoard.mineFieldTiles).then(result => {
-      if (result) {
+      console.log("submitBotMove", result);
+      if (result && this.playerOnTurn.isBot) {
         this.#onTileAction(result.action, result.tile);
       }
     });
@@ -151,12 +152,12 @@ export class GameDefault extends Game {
   }
 
   onGameOver(gameOverType, boardTiles = []) {
+    this.setGameEnd(gameOverType);
     this.setStatisticsOnRoundEnd(boardTiles);
     this.setGameBoardOnGameOver();
-    this.setGameEnd(gameOverType);
   }
 
   setGameBoardOnGameOver(isDraw = this.isDraw) {
-    return this.gameBoard.setBoardOnGameOver(isDraw);
+    this.gameBoard.setBoardOnGameOver(isDraw);
   }
 }

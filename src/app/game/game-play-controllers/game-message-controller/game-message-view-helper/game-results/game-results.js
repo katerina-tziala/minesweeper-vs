@@ -25,13 +25,19 @@ export class GameResults {
     const fragment = document.createDocumentFragment();
     const duration = GameResults.generateDurationInfo(gameInfo.duration);
     fragment.append(duration);
-    //console.log(gameInfo);
+
+    if (gameInfo.rounds) {
+      const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.info]);
+      container.innerHTML = CONTENT.rounds + gameInfo.rounds;
+      fragment.append(container);
+    }
+    console.log(gameInfo);
     return fragment;
   }
 
   static generateDurationInfo(duration) {
     const durationString = CONTENT.duration + GameResults.getDurationString(duration) + TYPOGRAPHY.fullstop;
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.duration]);
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.info]);
     container.innerHTML = durationString;
     return container;
   }
@@ -100,26 +106,13 @@ export class GameResults {
 
   static playerHeader(playerResults) {
     const content = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.resultPlayer]);
-
     const avatar = UserAvatar.generate(playerResults.colorType, playerResults.isBot);
-    console.log(playerResults);
-
     const name = ElementGenerator.generateContainer(["game-result-player-name"]);
     name.innerHTML = playerResults.name;
-
     content.append(avatar, name);
-    console.log(avatar);
-
     const playerHeader = ElementGenerator.generateTableHeaderCell(content);
-
-
-
     return playerHeader;
   }
-
-
-
-
 
   static resultsTableBody(gameResults) {
     const fragment = document.createDocumentFragment();

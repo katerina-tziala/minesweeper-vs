@@ -378,6 +378,7 @@ export class BoardController {
   setBoardOnGameOver(isDraw) {
     return this.revealMinefield().then(() => {
       this.setDashboardoardOnGameOver(isDraw);
+      return;
     });
   }
 

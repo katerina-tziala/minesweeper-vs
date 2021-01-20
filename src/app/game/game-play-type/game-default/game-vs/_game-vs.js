@@ -160,18 +160,11 @@ export class GameVS extends GameDefault {
 
   start() {
     this.onAfterViewInit.then(() => {
-
-      this.messageController.displayTurnMessage(this.playerOnTurn).then(() => {
-        console.log("click");
-       // this.onRoundPlayStart();
-      }).catch(err => {
-        console.log(err);
-      });
-      // if (!this.bothPlayersEntered) {
-      //   this.#displayReadyMessageAndWait();
-      //   return;
-      // }
-      // this.#displayStartMessageAndStart();
+      if (!this.bothPlayersEntered) {
+        this.#displayReadyMessageAndWait();
+        return;
+      }
+      this.#displayStartMessageAndStart();
     });
   }
 
@@ -197,6 +190,7 @@ export class GameVS extends GameDefault {
   }
 
   startGameRound() {
+    console.log("startGameRound");
     this.startRoundGamePlay();
   }
 
@@ -266,22 +260,18 @@ export class GameVS extends GameDefault {
   }
 
   onGameOver(gameOverType, boardTiles = []) {
+    this.setGameEnd(gameOverType);
+    this.setStatisticsOnRoundEnd(boardTiles);
     this.setWinnerOnGameOver();
-
-    super.onGameOver(gameOverType, boardTiles);
-
-    this.#displayGameOverMessage().then(() => {
-      if (this.isOnline) {
-        //TODO:
-        console.log("--  submit online game over -- ");
-        console.log("GameVS");
-        console.log("----------------------------");
-        this.submitResult(GameSubmission.GameOver);
-        return;
-      }
-    }).catch(err => {
-      console.log(err);
-    });
+    this.setGameBoardOnGameOver();
+    if (this.isOnline) {
+      //TODO:
+      console.log("--  submit online game over -- ");
+      console.log("GameVS");
+      console.log("----------------------------");
+      this.submitResult(GameSubmission.GameOver);
+    }
+    this.#displayGameOverMessage();
   }
 
   get gameResults() {
@@ -289,26 +279,21 @@ export class GameVS extends GameDefault {
       gameInfo: {
         duration: this.duration,
         draw: this.isDraw,
+        gameOverType: this.gameOverType,
+        rounds: this.numberOfRounds,
+
       },
       playersResults: this.players.map(player => player.reportData),
-      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine"]
+      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine", "exceededTurnsLimit"]
     };
   }
 
   #displayGameOverMessage() {
 
     console.log(this.gameResults);
+    console.log(this.player, this.opponent);
 
-    // if (this.isDraw) {
-    //   return this.messageController.displayDrawMessage(this.player, this.opponent).then(() => {
-    //     //TODO: confetti of both colors
-    //   });
-    // }
-    // return this.messageController.displayEndMessage(this.player, this.opponent, this.gameOverType).then(() => {
-    //   //TODO: confetti of winner colors
-    // });
-
-
+    return this.messageController.displayGameOverMessage(this.player, this.opponent, this.gameResults);
   }
 
   get gameOverBasedOnType() {
