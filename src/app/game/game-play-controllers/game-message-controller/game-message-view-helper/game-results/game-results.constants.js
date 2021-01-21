@@ -21,15 +21,18 @@ export const CONTENT = {
     playerStarted: "Player started the game: ",
   },
   playerStats: {
-    moves: "Moves",
-    clearedTiles: "Cleared Tiles",
-    detectedMines: "Detected Mines",
-    flags: "Flags",
-    marks: "Marks",
-    detonatedMine: "Detonated Mine",
-    exceededTurnsLimit: "Exceeded Missed Turns Limit",
-    vs: "vs"
+    moves: "moves",
+    clearedTiles: "cleared tiles",
+    detectedMines: "detected mines",
+    flags: "flags",
+    marks: "marks",
+    detonatedMine: "detonated mine",
+    exceededTurnsLimit: "exceeded missed turns limit",
+    vs: "vs",
+    sneakPeeks: "sneak peeks",
+    sneakPeeksDuration: "sneak peeks total duration"
   }
 };
 
 export const BOOLEAN_RESULTS = ["detonatedMine", "exceededTurnsLimit"];
+export const DURATION_RESULTS = ["sneakPeeksDuration"];

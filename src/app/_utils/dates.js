@@ -8,7 +8,7 @@ export const dateDifferenceInSeconds = (endDate, startDate) => {
   if (!endDate || !startDate) {
     return 0;
   }
-  const durationInMilliseconds = new Date(endDate).getTime() - new Date(startDate).getTime();
+  const durationInMilliseconds = Math.abs(new Date(endDate).getTime() - new Date(startDate).getTime());
   return Math.ceil(durationInMilliseconds / 1000);
 };
 

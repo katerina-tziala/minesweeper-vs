@@ -44,16 +44,31 @@ export class GameSetupPage extends Page {
 
   renderPage(mainContainer) {
 
-    // const gmc = new GameMessageVSController();
+    const gmc = new GameMessageVSController();
 
-    // mainContainer.append(gmc.generateView());
+    mainContainer.append(gmc.generateView());
 
 
-    // const player = new Player("KateId", "Kate");
-    // player.colorType = "4";
+    const player = new Player("KateId", "Kate");
+    player.colorType = "4";
 
-    // const bot = new BotPlayer();
-    // bot.colorType = "2";
+    const bot = new BotPlayer();
+    bot.colorType = "2";
+    const playerReport = player.reportData;
+    playerReport.sneakPeeks = 3;
+    playerReport.sneakPeeksDuration = {
+      hours: 5,
+      minutes: 1,
+      seconds: 12
+    };
+    const botReport = bot.reportData;
+    botReport.sneakPeeks = 0;
+    botReport.sneakPeeksDuration = {
+      hours: 0,
+      minutes: 0,
+      seconds: 0
+    };
+
 
     //  gmc.displayStartMessage(player).then(() => {
     //    console.log("done");
@@ -63,43 +78,45 @@ export class GameSetupPage extends Page {
     // Cleared: "clearedMinefield",
     // ExceededTurnsLimit: "exceededTurnsLimit",
     // Detected: "detectedAllMines"
-    // const gameResults = {
-    //   gameInfo: {
-    //     duration:{
-    //       hours: 1,
-    //       minutes: 0,
-    //       seconds: 35
-    //     },
-    //     draw: false,
-    //     gameOverType: "clearedMinefield",
-    //     rounds: 5
-    //   },
-    //   playersResults: [player.reportData, bot.reportData],
-    //   reportResults: [
-    //     "moves",
-    //     "clearedTiles",
-    //     "detectedMines",
-    //     "flags",
-    //     "marks",
-    //     "detonatedMine",
-    //     "exceededTurnsLimit"
-    //   ]
-    // };
+    const gameResults = {
+      gameInfo: {
+        duration:{
+          hours: 1,
+          minutes: 0,
+          seconds: 35
+        },
+        draw: false,
+        gameOverType: "clearedMinefield",
+        rounds: 5
+      },
+      playersResults: [playerReport, botReport],
+      reportResults: [
+        "moves",
+        "clearedTiles",
+        "detectedMines",
+        "flags",
+        "marks",
+        "detonatedMine",
+        "exceededTurnsLimit",
+        "sneakPeeks",
+        "sneakPeeksDuration"
+      ]
+    };
 
 
-    // // console.log(gameResults);
+    // console.log(gameResults);
 
 
-    // gmc.displayGameOverMessage(player, bot, gameResults);
-    // // gmc.displayManualTurnMessage(player).then(() => {
-    // //   console.log("closed");
-    // // });
+    gmc.displayGameOverMessage(gameResults);
+    // gmc.displayManualTurnMessage(player).then(() => {
+    //   console.log("closed");
+    // });
 
     
-    // this.hideLoader();
+    this.hideLoader();
 
 
-    // return;
+    return;
 
 
 

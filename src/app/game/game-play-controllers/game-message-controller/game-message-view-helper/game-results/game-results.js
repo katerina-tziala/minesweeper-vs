@@ -2,8 +2,9 @@
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
 import { timeoutPromise } from "~/_utils/utils";
+import { valueDefined } from "~/_utils/validator";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT, DURATION_CONTENT, BOOLEAN_RESULTS } from "./game-results.constants";
+import { DOM_ELEMENT_CLASS, CONTENT, DURATION_CONTENT, BOOLEAN_RESULTS, DURATION_RESULTS } from "./game-results.constants";
 
 import { UserAvatar } from "~/components/user-avatar/user-avatar";
 
@@ -18,7 +19,7 @@ export class GameResults {
     console.log(gameResults);
 
 
-    
+
     const container = GameResults.newContainer;
     const gameInfo = GameResults.generateGameInfo(gameResults.gameInfo);
     const resultsTable = GameResults.generateResultsTable(gameResults);
@@ -32,7 +33,7 @@ export class GameResults {
     fragment.append(duration);
 
     console.log(gameInfo);
-   
+
     Object.keys(CONTENT.gameInfo).forEach(infoKey => {
       if (gameInfo[infoKey]) {
         const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.info]);
@@ -117,17 +118,25 @@ export class GameResults {
     const content = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.resultPlayer]);
     const avatar = UserAvatar.generate(playerResults.colorType, playerResults.isBot);
     const name = ElementGenerator.generateContainer(["game-result-player-name"]);
+    //cup
     name.innerHTML = playerResults.name;
     content.append(avatar, name);
     const playerHeader = ElementGenerator.generateTableHeaderCell(content);
     return playerHeader;
   }
 
+  static includedInStatistics(resultKey, playerResults) {
+    return playerResults.every(resultsOfPlayer => valueDefined(resultsOfPlayer[resultKey]));
+  }
+
   static resultsTableBody(gameResults) {
     const fragment = document.createDocumentFragment();
+
     gameResults.reportResults.forEach(resultKey => {
-      const tableRow = GameResults.resultsRow(resultKey, gameResults.playersResults);
-      fragment.append(tableRow);
+      if (GameResults.includedInStatistics(resultKey, gameResults.playersResults)) {
+        const tableRow = GameResults.resultsRow(resultKey, gameResults.playersResults);
+        fragment.append(tableRow);
+      }
     });
 
     const tableBody = ElementGenerator.generateTableBody();
@@ -155,13 +164,20 @@ export class GameResults {
   }
 
   static rowCell(resultKey, playerResults) {
-    let content;
-    if (BOOLEAN_RESULTS.includes(resultKey)) {
-      content = GameResults.booleanResult(playerResults[resultKey]);
-    } else {
-      content = GameResults.numberResult(playerResults[resultKey]);
-    }
+    const content = GameResults.rowCellContent(resultKey, playerResults);
     return ElementGenerator.generateTableDataCell(content);
+  }
+
+  static rowCellContent(resultKey, playerResults) {
+    if (BOOLEAN_RESULTS.includes(resultKey)) {
+      return GameResults.booleanResult(playerResults[resultKey]);
+    }
+
+    if (DURATION_RESULTS.includes(resultKey)) {
+      return GameResults.getDurationString(playerResults[resultKey]);
+    }
+
+    return GameResults.numberResult(playerResults[resultKey]);
   }
 
   static booleanResult(value) {

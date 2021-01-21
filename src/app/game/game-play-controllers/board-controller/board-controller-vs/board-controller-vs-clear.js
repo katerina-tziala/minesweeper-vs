@@ -48,6 +48,10 @@ export class BoardControllerVSClear extends BoardControllerVS {
   get sneakPeeksResults() {
     return this.#SneakPeekController.results;
   }
+  
+  get sneakPeeksAllowed() {
+    return this.#SneakPeekController.allowed;
+  }
 
   get #sneakPeekAllowed() {
     return this.#SneakPeekController.sneakPeekAllowed(this.timerValue);

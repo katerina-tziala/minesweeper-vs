@@ -1,6 +1,6 @@
 "use strict";
 import { GameOverType } from "GameEnums";
-
+import { dateDifferenceInHoursMinutesSeconds } from "~/_utils/dates";
 import { GameVS } from "../_game-vs";
 import {
   BoardControllerVSClear as BoardController
@@ -34,12 +34,29 @@ export class GameVSClear extends GameVS {
     return actions;
   }
 
+  #getPlayerReport(player) {
+    const playerReport = player.reportData;
+    if (!this.gameBoard.sneakPeeksAllowed) {
+      return playerReport;
+    }
+    const playerSneakPeeks = this.gameBoard.sneakPeeksResults.filter(peakResult => peakResult.playerId === player.id);
+    playerReport.sneakPeeks = playerSneakPeeks.length;
+    if (playerReport.sneakPeeks) {
+      const end = playerSneakPeeks[playerSneakPeeks.length - 1].end;
+      const start = playerSneakPeeks[0].start;
+      playerReport.sneakPeeksDuration = dateDifferenceInHoursMinutesSeconds(end, start);
+    } else {
+      playerReport.sneakPeeksDuration = {
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      }
+    }
+    return playerReport;
+  }
+
   get gameResults() {
- 
-    console.log(this.gameBoard.sneakPeeksResults);
-
-
-
+    const playersResults = [this.#getPlayerReport(this.player), this.#getPlayerReport(this.opponent)];
     return {
       gameInfo: {
         duration: this.duration,
@@ -48,12 +65,10 @@ export class GameVSClear extends GameVS {
         rounds: this.numberOfRounds,
         playerStarted: this.players.find(player => player.id === this.playerStartID).name
       },
-      playersResults: [this.player.reportData, this.opponent.reportData],
+      playersResults: playersResults,
       reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine", "exceededTurnsLimit"]
     };
   }
-
-
 
   onTileDetonation(revealedTiles) {
     this.updatedCards([revealedTiles[0].position]).then(() => {

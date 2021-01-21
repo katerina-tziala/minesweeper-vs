@@ -53,6 +53,7 @@
     padding: 0px 5px;
     @extend ._table-border;
     vertical-align: top;
+ 
     &:nth-of-type(3) {
       @extend ._separator-cell;
       font-weight: 900;
@@ -71,12 +72,13 @@
 
   tbody > tr > th {
     max-width: 126px;
+    text-transform: capitalize;
   }
 
   tbody > tr > td {
     text-align: center;
     min-width: 26px;
-
+    max-width: 132px;
     &:nth-of-type(2) {
       @extend ._separator-cell;
     }
