@@ -12,13 +12,13 @@ export class GameMessageVSController extends GameMessageController {
     this.gameMessages = MESSAGES;
   }
 
-  displayGameOverMessage(player, opponent, gameResults) {
-    const message = this.overMessage(player, opponent, gameResults.gameInfo);
+  displayGameOverMessage(gameResults) {
+    const message = this.overMessage(gameResults.playersResults[0], gameResults.playersResults[1], gameResults.gameInfo);
     return this.showGameOverMessage(message, gameResults);
   }
 
   displayTurnMessage(player) {
-    const message = this.turnMessage(player);
+    const message = this.turnMessage(player, player.isBot ? this.gameMessages.gameTurnBot : this.gameMessages.gameTurn);
     return this.displayWaitingMessage(message);
   }
 

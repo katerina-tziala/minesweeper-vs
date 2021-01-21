@@ -16,15 +16,20 @@ export const DURATION_CONTENT = {
 
 export const CONTENT = {
   duration: "Game completed in ",
-  rounds: "Total rounds: ",
-  moves: "Moves",
-  clearedTiles: "Cleared Tiles",
-  detectedMines: "Detected Mines",
-  flags: "Flags",
-  marks: "Marks",
-  detonatedMine: "Detonated Mine",
-  exceededTurnsLimit: "Exceeded Missed Turns Limit",
-  vs: "vs"
+  gameInfo: {
+    rounds: "Total rounds: ",
+    playerStarted: "Player started the game: ",
+  },
+  playerStats: {
+    moves: "Moves",
+    clearedTiles: "Cleared Tiles",
+    detectedMines: "Detected Mines",
+    flags: "Flags",
+    marks: "Marks",
+    detonatedMine: "Detonated Mine",
+    exceededTurnsLimit: "Exceeded Missed Turns Limit",
+    vs: "vs"
+  }
 };
 
 export const BOOLEAN_RESULTS = ["detonatedMine", "exceededTurnsLimit"];

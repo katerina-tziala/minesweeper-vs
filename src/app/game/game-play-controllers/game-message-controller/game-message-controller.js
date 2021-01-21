@@ -34,8 +34,8 @@ export class GameMessageController {
     return this.displayWaitingMessage(message);
   }
 
-  displayGameOverMessage(player, gameResults) {
-    const message = this.endMessage(player);
+  displayGameOverMessage(gameResults) {
+    const message = this.endMessage(gameResults.playersResults[0]);
     return this.showGameOverMessage(message, gameResults);
   }
 

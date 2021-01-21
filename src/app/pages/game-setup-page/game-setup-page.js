@@ -44,16 +44,16 @@ export class GameSetupPage extends Page {
 
   renderPage(mainContainer) {
 
-    const gmc = new GameMessageVSController();
+    // const gmc = new GameMessageVSController();
 
-    mainContainer.append(gmc.generateView());
+    // mainContainer.append(gmc.generateView());
 
 
-    const player = new Player("KateId", "Kate");
-    player.colorType = "4";
+    // const player = new Player("KateId", "Kate");
+    // player.colorType = "4";
 
-    const bot = new BotPlayer();
-    bot.colorType = "2";
+    // const bot = new BotPlayer();
+    // bot.colorType = "2";
 
     //  gmc.displayStartMessage(player).then(() => {
     //    console.log("done");

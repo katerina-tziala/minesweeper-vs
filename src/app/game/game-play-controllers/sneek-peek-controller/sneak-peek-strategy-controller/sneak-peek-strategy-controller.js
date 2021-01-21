@@ -1,5 +1,5 @@
 "use strict";
-
+import { valueDefined } from "~/_utils/validator";
 import { SneakPeekController } from "../_sneak-peek-controller";
 
 const ROUND_MARGIN = 2;
@@ -64,7 +64,7 @@ export class SneakPeekStrategyController extends SneakPeekController {
   }
 
   #sneakPeekAllowedInDuration(roundSecond = 0) {
-    if (!this.#roundBased || !roundSecond) {
+    if (!this.#roundBased || !valueDefined(roundSecond)) {
       return true;
     }
 

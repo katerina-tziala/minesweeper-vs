@@ -36,7 +36,7 @@ export class GameVSDetect extends GameVS {
   }
 
   #initBoardController(params) {
-    this.gameBoardController = new BoardController(this.id,
+    this.gameBoard = new BoardController(this.id,
       params,
       this.minefieldActions,
       this.onRoundTimerEnd.bind(this));

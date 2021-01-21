@@ -14,6 +14,11 @@ export class GameResults {
   }
 
   static generateView(gameResults) {
+
+    console.log(gameResults);
+
+
+    
     const container = GameResults.newContainer;
     const gameInfo = GameResults.generateGameInfo(gameResults.gameInfo);
     const resultsTable = GameResults.generateResultsTable(gameResults);
@@ -26,12 +31,16 @@ export class GameResults {
     const duration = GameResults.generateDurationInfo(gameInfo.duration);
     fragment.append(duration);
 
-    if (gameInfo.rounds) {
-      const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.info]);
-      container.innerHTML = CONTENT.rounds + gameInfo.rounds;
-      fragment.append(container);
-    }
     console.log(gameInfo);
+   
+    Object.keys(CONTENT.gameInfo).forEach(infoKey => {
+      if (gameInfo[infoKey]) {
+        const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.info]);
+        container.innerHTML = CONTENT.gameInfo[infoKey] + gameInfo[infoKey];
+        fragment.append(container);
+      }
+    });
+
     return fragment;
   }
 
@@ -95,7 +104,7 @@ export class GameResults {
     const playerHeaders = playersResults.map(resultsOfPlayer => GameResults.playerHeader(resultsOfPlayer));
 
     const separator = ElementGenerator.generateTableHeaderCell();
-    separator.innerHTML = CONTENT.vs;
+    separator.innerHTML = CONTENT.playerStats.vs;
 
     tableRow.append(rowHeader, playerHeaders[0], separator, playerHeaders[1]);
 
@@ -142,7 +151,7 @@ export class GameResults {
   }
 
   static rowHeader(headerKey) {
-    return ElementGenerator.generateTableHeaderCell(CONTENT[headerKey]);
+    return ElementGenerator.generateTableHeaderCell(CONTENT.playerStats[headerKey]);
   }
 
   static rowCell(resultKey, playerResults) {

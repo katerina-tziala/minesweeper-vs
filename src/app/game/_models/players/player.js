@@ -38,7 +38,6 @@ export class Player extends AppModel {
     this.missedTurns = 0;
     this.moves = 0;
     this.lostGame = false;
-    this.sneakPeeks = 0;
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
@@ -165,7 +164,7 @@ export class Player extends AppModel {
     this.detonatedMinesPositions = [position];
     this.removeFromStrategyPositions = [position];
     this.increaseMoves();
-    this.lostGame = this.detonatedMine;
+    this.lostGame = true;
   }
 
   set revealedTiles(movePositions) {

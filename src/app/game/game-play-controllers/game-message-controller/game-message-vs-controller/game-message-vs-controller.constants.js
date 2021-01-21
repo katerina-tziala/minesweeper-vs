@@ -19,12 +19,17 @@ export const MESSAGES = {
     duration: 3500
   },
   gameTurn: {
-    title: "### it's your turn!",
+    title: "###, <br> it's your turn!",
+    subtitle: "minesweeper vs (###) game",
+    duration: 1400
+  },
+  gameTurnBot: {
+    title: "###, <br> on turn!",
     subtitle: "minesweeper vs (###) game",
     duration: 1400
   },
   gameTurnManual: {
-    title: "### it's your turn!",
+    title: "###, <br> it's your turn!",
     subtitle: "minesweeper vs (###) game",
     subcontent: "Press the button to play and show off your skills!",
     duration: 3500

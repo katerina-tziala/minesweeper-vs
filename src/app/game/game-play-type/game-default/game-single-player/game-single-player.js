@@ -55,7 +55,7 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   #setBoardController(params) {
-    this.gameBoardController = new BoardController(this.id,
+    this.gameBoard = new BoardController(this.id,
       params,
       this.minefieldActions,
       this.onRoundTimerEnd.bind(this));
@@ -160,7 +160,7 @@ export class GameSinglePlayer extends GameDefault {
       return;
     }
 
-    this.#MessageController.displayGameOverMessage(this.playerOnTurn, this.gameResults);
+    this.#MessageController.displayGameOverMessage(this.gameResults);
   }
 
   #submitBotUpdate() {

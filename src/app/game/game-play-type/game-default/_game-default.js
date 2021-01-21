@@ -32,7 +32,7 @@ export class GameDefault extends Game {
   }
 
 
-  set gameBoardController(boardController) {
+  set gameBoard(boardController) {
     this.#MinesweeperBoard = boardController;
   }
 
@@ -124,16 +124,18 @@ export class GameDefault extends Game {
   }
 
   submitBotMove() {
-    this.playerOnTurn.getMove(this.gameBoard.mineFieldTiles).then(result => {
-      console.log("submitBotMove", result);
-      if (result && this.playerOnTurn.isBot) {
-        this.#onTileAction(result.action, result.tile);
-      }
-    });
+    if (!this.isOver) {
+      this.playerOnTurn.getMove(this.gameBoard.mineFieldTiles).then(result => {
+        console.log("submitBotMove", result);
+        if (result && this.playerOnTurn.isBot) {
+          this.#onTileAction(result.action, result.tile);
+        }
+      });
+    }
   }
 
   checkBotAction() {
-    if (this.playerOnTurn.isBot) {
+    if (!this.isOver && this.playerOnTurn.isBot) {
       this.submitBotMove();
     }
   }

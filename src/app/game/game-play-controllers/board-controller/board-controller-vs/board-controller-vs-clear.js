@@ -38,11 +38,15 @@ export class BoardControllerVSClear extends BoardControllerVS {
 
   get roundUpdates() {
     const updates = super.roundUpdates;
-    updates.unshift(this.#updateSneakPeekToggleBasedOnRoundTimer());
+    updates.unshift(this.#SneakPeekController.updateToggleState(this.gameTimer.initialValue));
     if (this.hiddenStrategy) {
       updates.unshift(this.#hideOpponentStrategy());
     }
     return updates;
+  }
+
+  get sneakPeeksResults() {
+    return this.#SneakPeekController.results;
   }
 
   get #sneakPeekAllowed() {
@@ -114,7 +118,7 @@ export class BoardControllerVSClear extends BoardControllerVS {
   }
 
   #updateSneakPeekToggleBasedOnRoundTimer() {
-    if (this.hiddenStrategy && !this.#SneakPeekController.isRunning) {
+    if (this.roundTimer && this.hiddenStrategy && !this.#SneakPeekController.isRunning) {
       return this.#SneakPeekController.updateToggleState(this.timerValue);
     }
     return Promise.resolve();
@@ -124,7 +128,6 @@ export class BoardControllerVSClear extends BoardControllerVS {
     if (!this.#sneakPeekAllowed) {
       return;
     }
-
     this.#revealOpponentStrategy()
       .then(() => {
         return this.#SneakPeekController.playerPeeking();

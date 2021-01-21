@@ -16,7 +16,7 @@ export class GameVSClear extends GameVS {
   }
 
   #initBoardController(params) {
-    this.gameBoardController = new BoardController(this.id,
+    this.gameBoard = new BoardController(this.id,
       params,
       this.minefieldActions,
       this.onRoundTimerEnd.bind(this));
@@ -33,6 +33,27 @@ export class GameVSClear extends GameVS {
     actions.onResetedTile = this.onPlayerAction.bind(this);
     return actions;
   }
+
+  get gameResults() {
+ 
+    console.log(this.gameBoard.sneakPeeksResults);
+
+
+
+    return {
+      gameInfo: {
+        duration: this.duration,
+        draw: this.isDraw,
+        gameOverType: this.gameOverType,
+        rounds: this.numberOfRounds,
+        playerStarted: this.players.find(player => player.id === this.playerStartID).name
+      },
+      playersResults: [this.player.reportData, this.opponent.reportData],
+      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine", "exceededTurnsLimit"]
+    };
+  }
+
+
 
   onTileDetonation(revealedTiles) {
     this.updatedCards([revealedTiles[0].position]).then(() => {
@@ -74,21 +95,21 @@ export class GameVSClear extends GameVS {
     if (this.roundTimer) {
       this.setGameStart();
     }
-    this.startRoundGamePlay();
+    this.setUpNewRound().then(() => this.onRoundPlayStart());
   }
 
   startGameRound() {
-    this.setUpNewRound().then(() => {
-      if (this.isSharedDevice && this.hiddenStrategy) {
-        this.#startGameRoundWithManuallStart();
-        return;
-      }
-      this.onRoundPlayStart();
-    });
+    if (this.isSharedDevice && this.hiddenStrategy) {
+      this.#startGameRoundWithManuallStart();
+      return;
+    }
+    super.startGameRound();
   }
 
   #startGameRoundWithManuallStart() {
-    this.messageController.displayManualTurnMessage(this.playerOnTurn).then(() => {
+    this.setUpNewRound().then(() => {
+      return this.messageController.displayManualTurnMessage(this.playerOnTurn);
+    }).then(() => {
       this.onRoundPlayStart();
     }).catch(err => {
       console.log(err);

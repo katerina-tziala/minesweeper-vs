@@ -186,16 +186,17 @@ export class GameVS extends GameDefault {
     if (this.roundTimer) {
       this.setGameStart();
     }
-    this.startRoundGamePlay();
+    this.setUpNewRound().then(() => this.onRoundPlayStart());
   }
 
   startGameRound() {
-    console.log("startGameRound");
-    this.startRoundGamePlay();
-  }
-
-  startRoundGamePlay() {
-    this.setUpNewRound().then(() => this.onRoundPlayStart());
+    this.setUpNewRound().then(() => {
+      return this.messageController.displayTurnMessage(this.playerOnTurn);
+    }).then(() => {
+      this.onRoundPlayStart();
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   setUpNewRound() {
@@ -275,25 +276,22 @@ export class GameVS extends GameDefault {
   }
 
   get gameResults() {
+    console.log(this.players.map(player => player.sneakPeeks));
     return {
       gameInfo: {
         duration: this.duration,
         draw: this.isDraw,
         gameOverType: this.gameOverType,
         rounds: this.numberOfRounds,
-
+        playerStarted: this.players.find(player => player.id === this.playerStartID).name
       },
-      playersResults: this.players.map(player => player.reportData),
+      playersResults: [this.player.reportData, this.opponent.reportData],
       reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine", "exceededTurnsLimit"]
     };
   }
 
   #displayGameOverMessage() {
-
-    console.log(this.gameResults);
-    console.log(this.player, this.opponent);
-
-    return this.messageController.displayGameOverMessage(this.player, this.opponent, this.gameResults);
+    return this.messageController.displayGameOverMessage(this.gameResults);
   }
 
   get gameOverBasedOnType() {
@@ -309,6 +307,5 @@ export class GameVS extends GameDefault {
       looser.lostGame = true;
     }
   }
-
 
 }
