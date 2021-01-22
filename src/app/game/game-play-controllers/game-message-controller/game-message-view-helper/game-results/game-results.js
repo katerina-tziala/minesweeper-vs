@@ -89,7 +89,7 @@ export class GameResults {
   static generateResultsTable(gameResults) {
     const table = ElementGenerator.generateTable();
     if (gameResults.playersResults.length === 2) {
-      table.append(GameResults.resultsTableHead(gameResults.playersResults));
+      table.append(GameResults.resultsTableHead(gameResults.playersResults, gameResults.gameInfo.draw));
     }
     const tableBody = GameResults.resultsTableBody(gameResults);
     table.append(tableBody);
@@ -97,12 +97,12 @@ export class GameResults {
     return table;
   }
 
-  static resultsTableHead(playersResults) {
+  static resultsTableHead(playersResults, draw = false) {
     const tableRow = ElementGenerator.generateTableRow();
 
     const rowHeader = ElementGenerator.generateTableHeaderCell();
 
-    const playerHeaders = playersResults.map(resultsOfPlayer => GameResults.playerHeader(resultsOfPlayer));
+    const playerHeaders = playersResults.map(resultsOfPlayer => GameResults.playerHeader(resultsOfPlayer, draw));
 
     const separator = ElementGenerator.generateTableHeaderCell();
     separator.innerHTML = CONTENT.playerStats.vs;
@@ -114,12 +114,18 @@ export class GameResults {
     return tableHead;
   }
 
-  static playerHeader(playerResults) {
+  static playerHeader(playerResults, draw = false) {
     const content = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.resultPlayer]);
     const avatar = UserAvatar.generate(playerResults.colorType, playerResults.isBot);
-    const name = ElementGenerator.generateContainer(["game-result-player-name"]);
-    //cup
+    const name = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerName]);
     name.innerHTML = playerResults.name;
+    
+    if (!draw && !playerResults.lostGame) {
+      console.log("show me cup");
+    }
+    //cup
+    
+    
     content.append(avatar, name);
     const playerHeader = ElementGenerator.generateTableHeaderCell(content);
     return playerHeader;

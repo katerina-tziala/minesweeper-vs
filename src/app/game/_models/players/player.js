@@ -154,8 +154,9 @@ export class Player extends AppModel {
       detectedMines: this.minesDetected,
       flags: this.placedFlags,
       marks: this.marksPositions.length,
+      clearedMinefield: this.clearedMinefield,
       detonatedMine: this.detonatedMine,
-      exceededTurnsLimit: this.exceededTurnsLimit
+      exceededTurnsLimit: this.exceededTurnsLimit,
     }
   }
 

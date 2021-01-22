@@ -88,7 +88,7 @@ export class Game extends AppModel {
   }
 
   get isOver() {
-    return this.gameOverType ? true : false;
+    return this.gameOverType || this.completedAt ? true : false;
   }
 
   get started() {
@@ -137,13 +137,6 @@ export class Game extends AppModel {
   get rounds() {
     return this.#roundStatistics.rounds;
   }
-  initRoundStatistics() {
-    this.#roundStatistics.initRoundStatistics();
-  }
-
-  setStatisticsOnRoundEnd(boardTiles) {
-    this.#roundStatistics.onRoundEnd(boardTiles);
-  }
 
   get gameState() {
     return {
@@ -173,14 +166,26 @@ export class Game extends AppModel {
     this.initRoundStatistics();
   }
 
+  initRoundStatistics() {
+    this.#roundStatistics.initRoundStatistics();
+  }
+
+  setStatisticsOnRoundEnd(boardTiles) {
+    this.#roundStatistics.onRoundEnd(boardTiles);
+  }
+
   setGameStart() {
     this.startedAt = nowTimestamp();
+  }
+
+  setCompleted() {
+    this.completedAt = nowTimestamp();
   }
 
   setGameEnd(type) {
     if (type && type.length) {
       this.gameOverType = type;
-      this.completedAt = nowTimestamp();
+      this.setCompleted();
     }
   }
 

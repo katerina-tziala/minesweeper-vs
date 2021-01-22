@@ -7,7 +7,8 @@ import { Page } from "../page";
 import { GameType } from "GameEnums";
 import {
   GameMessageController,
-  GameMessageVSController
+  GameMessageVSController,
+  GameMessageParallelController
 } from "GamePlayControllers";
 
 
@@ -44,7 +45,7 @@ export class GameSetupPage extends Page {
 
   renderPage(mainContainer) {
 
-    const gmc = new GameMessageVSController();
+    const gmc = new GameMessageParallelController();
 
     mainContainer.append(gmc.generateView());
 
@@ -54,6 +55,7 @@ export class GameSetupPage extends Page {
 
     const bot = new BotPlayer();
     bot.colorType = "2";
+    
     const playerReport = player.reportData;
     playerReport.sneakPeeks = 3;
     playerReport.sneakPeeksDuration = {
@@ -70,10 +72,14 @@ export class GameSetupPage extends Page {
     };
 
 
-    //  gmc.displayStartMessage(player).then(() => {
+    //  gmc.displayStartMessage(player, bot).then(() => {
     //    console.log("done");
     //  });
 
+    //  gmc.displayReadyMessage(bot).then(() => {
+    //   console.log("done");
+    // });
+     
     // DetonatedMine: "detonatedMine",
     // Cleared: "clearedMinefield",
     // ExceededTurnsLimit: "exceededTurnsLimit",
@@ -99,18 +105,16 @@ export class GameSetupPage extends Page {
         "detonatedMine",
         "exceededTurnsLimit",
         "sneakPeeks",
-        "sneakPeeksDuration"
+        "sneakPeeksDuration",
+        "clearedMinefield"
       ]
     };
 
 
-    // console.log(gameResults);
+    // // console.log(gameResults);
 
 
     gmc.displayGameOverMessage(gameResults);
-    // gmc.displayManualTurnMessage(player).then(() => {
-    //   console.log("closed");
-    // });
 
     
     this.hideLoader();

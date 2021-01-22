@@ -6,6 +6,7 @@ export const DOM_ELEMENT_CLASS = {
   booleanResult: "result-boolean--",
   numberResult: "result-number",
   resultPlayer: "game-result-player",
+  playerName: "game-result-player-name",
 };
 
 export const DURATION_CONTENT = {
@@ -27,6 +28,7 @@ export const CONTENT = {
     flags: "flags",
     marks: "marks",
     detonatedMine: "detonated mine",
+    clearedMinefield: "cleared minefield",
     exceededTurnsLimit: "exceeded missed turns limit",
     vs: "vs",
     sneakPeeks: "sneak peeks",
@@ -34,5 +36,5 @@ export const CONTENT = {
   }
 };
 
-export const BOOLEAN_RESULTS = ["detonatedMine", "exceededTurnsLimit"];
+export const BOOLEAN_RESULTS = ["detonatedMine", "clearedMinefield", "exceededTurnsLimit"];
 export const DURATION_RESULTS = ["sneakPeeksDuration"];

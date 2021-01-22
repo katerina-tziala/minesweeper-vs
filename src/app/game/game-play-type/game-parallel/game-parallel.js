@@ -133,24 +133,19 @@ export class GameParallel extends Game {
   }
 
   #initGames() {
-    this.initState();
-    const viewUpdates = [];
-
-    this.#PlayerGame.init();
-    this.#PlayerGame.setGameStart();
-    viewUpdates.push(this.#PlayerGame.onAfterViewInit);
-
-    this.#OpponentGame.init(false);
-    this.#OpponentGame.setGameStart();
-    viewUpdates.push(this.#OpponentGame.onAfterViewInit);
-
+    const viewUpdates = this.#individualGames.map((game) => this.#initIndividualGame(game));
     return Promise.all(viewUpdates);
+  }
+
+  #initIndividualGame(game) {
+    game.init(false);
+    game.setGameStart();
+    return game.onAfterViewInit;
   }
 
   #startGames() {
     this.#individualGames.forEach((game) => game.startParallelGamePlay());
   }
-
 
   // HANDLE PLAYER ACTIONS
   #onPlayerGameMove(playerCardUpdate, gameData) {
@@ -175,7 +170,6 @@ export class GameParallel extends Game {
   #onOpponentGameOver(gameData) {
     this.#onGameOver(gameData, this.#opponent, this.#player);
   }
-
 
   #updatePlayerCard(player) {
     return this.#VSDashboard.updatePlayerGameGoalStatistics(player);
@@ -223,33 +217,25 @@ export class GameParallel extends Game {
       return;
     }
 
-
-    console.log("start parallel");
+    this.initState();
     this.#initMinesPositions();
     this.setGameStart();
 
     this.onAfterViewInit.then(() => {
       return this.#initGames();
-    }).then(() => {
+    })
+    .then(() => {
       return this.#VSDashboard.setCardOnTurn(this.players);
     })
-      .then(() => {
+    .then(() => {
         this.#initSneakPeekController();
 
         if (!this.bothPlayersEntered) {
           this.#displayReadyMessageAndWait();
           return;
         }
-
         this.#displayStartMessageAndPlay();
-
       });
-
-
-
-
-
-
   }
 
   #displayReadyMessageAndWait() {
@@ -291,7 +277,6 @@ export class GameParallel extends Game {
     this.#individualGames.forEach((game) => game.continue());
   }
 
-
   #setResultsForPlayers(player) {
     if (this.gameOverClearedMinefield) {
       player.lostGame = true;
@@ -308,31 +293,42 @@ export class GameParallel extends Game {
     });
   }
 
+  get gameResults() {
+    return {
+      gameInfo: {
+        duration: this.duration,
+        draw: this.isDraw,
+        gameOverType: this.gameOverType
+      },
+      playersResults: [this.#player.reportData, this.#opponent.reportData],
+      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "clearedMinefield", "detonatedMine"]
+    };
+  }
 
-
+  #completeGames() {
+    this.#individualGames.forEach((game) => {
+      game.setCompleted();
+      game.pause();
+    });
+  }
 
   #onGameOver(gameData, initiator, opponent) {
     this.setGameEnd(gameData.gameOverType);
+    this.#completeGames();
     this.#setResultsForPlayers(opponent);
-
-    this.#setGameViewOnGameOver(initiator).then(() => {
-
+    const viewUpdates = [
+      this.#setGameViewOnGameOver(initiator),
+      this.#MessageController.displayGameOverMessage(this.gameResults)
+    ];
+    Promise.all(viewUpdates).then(() => {
       if (this.isOnline) {
         console.log("online gaming");
         console.log(gameData);
       }
-
-      this.#MessageController.displayEndMessage(this.#player, this.#opponent, this.gameOverClearedMinefield).then(() => {
-        //TODO: ON PLAYER WIN SHOW CONFETTI
-      });
-
     }).catch((err) => {
       console.log(err);
       console.log("error on onGameOver");
     });
-
-
   }
-
 
 }

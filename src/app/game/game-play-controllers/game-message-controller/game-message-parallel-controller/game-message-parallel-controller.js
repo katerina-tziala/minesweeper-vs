@@ -10,23 +10,21 @@ export class GameMessageParallelController extends GameMessageController {
   }
 
   displayStartMessage(player, opponent) {
-    const message = this.startMessage(player, opponent);
+    const message = this.getMessageForPlayer(this.gameMessages.gameOn, player, opponent);
     return this.displayWaitingMessage(message);
   }
 
-  displayEndMessage(player, opponent, clearedMinefield) {
-    const message = this.endMessage(player, opponent, clearedMinefield);
-    return this.displayWaitingMessage(message);
+  displayGameOverMessage(gameResults) {
+    const message = this.getGameOverMessage(gameResults);
+    return this.showGameOverMessage(message, gameResults);
   }
 
-  startMessage(player, opponent) {
-    return this.getMessageForPlayer(this.gameMessages.gameOn, player, opponent);
-  }
-
-  endMessage(player, opponent, clearedMinefield) {
+  getGameOverMessage(gameResults) {
+    const player = gameResults.playersResults[0];
+    const opponent = gameResults.playersResults[1];
+    const gameOverType = gameResults.gameInfo.gameOverType;
     const messageType = player.lostGame ? this.gameMessages.gameOverLoss : this.gameMessages.gameOverWin;
-    const message = clearedMinefield ? messageType.clearedMinefield : messageType.detonatedMine;
-    return this.getMessageForPlayer(message, player, opponent);
+    return this.getMessageForPlayer(messageType[gameOverType], player, opponent);
   }
 
   getMessageForPlayer(message, player, opponent) {
