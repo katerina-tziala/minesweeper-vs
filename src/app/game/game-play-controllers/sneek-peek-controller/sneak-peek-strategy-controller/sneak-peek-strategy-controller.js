@@ -2,8 +2,6 @@
 import { valueDefined } from "~/_utils/validator";
 import { SneakPeekController } from "../_sneak-peek-controller";
 
-const ROUND_MARGIN = 2;
-
 export class SneakPeekStrategyController extends SneakPeekController {
   #_opponent;
   #_roundBased;
@@ -30,7 +28,7 @@ export class SneakPeekStrategyController extends SneakPeekController {
   }
 
   get durationWithMargin() {
-    return this.settings ? this.settings.duration + ROUND_MARGIN : 0;
+    return this.settings ? this.settings.durationWithMargin : 0;
   }
 
   setPlayers(player, opponent) {

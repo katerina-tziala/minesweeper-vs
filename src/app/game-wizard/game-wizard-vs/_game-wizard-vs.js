@@ -6,7 +6,8 @@ import {
   GameWizardNavigation,
   GameWizardActions,
   VSModeWizard,
-  TurnSettingsWizard
+  TurnSettingsWizard,
+  OptionsWizard
 } from "GameWizardComponents";
 
 import { GameWizard } from "../_game-wizard";
@@ -67,9 +68,25 @@ export class GameWizardVS extends GameWizard {
     return true;
   }
 
+  initOptionsWizard() {
+
+    const controller = new OptionsWizard(
+      this.onGameSettingsChange.bind(this),
+      this.getGameParamsForWizard(WIZARD_NAME.optionsSettings),
+    );
+
+
+
+    console.log(this.gameParams);
+
+
+
+    this.settingsControllers = controller;
+  }
+
   init() {
     this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot, this.#turnsVisible);
-    this.wizardNavigation.updateNavigationSteps(Object.keys(this.gameParams));
+    this.wizardNavigation.initCompletedSteps(Object.keys(this.gameParams));
     this.wizardActions = new GameWizardActions({
       onReset: this.onReset.bind(this),
       onSubmit: this.onSubmit.bind(this),
@@ -127,6 +144,7 @@ export class GameWizardVS extends GameWizard {
     this.setOptionsBasedOnVSMode(params);
 
     const parallelSelected = params.value.vsMode === GameVSMode.Parallel;
+
     if (parallelSelected) {
       delete this.gameParams[GameVSMode.Parallel];
       delete this.defaultGameParams[GameVSMode.Parallel];

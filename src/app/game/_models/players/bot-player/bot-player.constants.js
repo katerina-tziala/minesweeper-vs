@@ -64,8 +64,8 @@ export const MOVE_DURATIONS = {
 };
 
 export const BOT_NAME = {
-  easy: "Naive Bot",
-  medium: "Intelligent Bot",
-  hard: "Smart Bot",
-  evil: "Genius Bot"
+  easy: "Bot (Naive)",
+  medium: "Bot (Intelligent)",
+  hard: "Bot (Smart)",
+  evil: "Bot (Genius)"
 };

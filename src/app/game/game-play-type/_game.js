@@ -103,7 +103,7 @@ export class Game extends AppModel {
       return true;
     }
 
-    if (!this.started) {
+    if (!this.startedAt) {
       return true;
     }
 
@@ -218,6 +218,7 @@ export class Game extends AppModel {
 
   #onBoardButtonAction(actionType) {
     this.pause();
+    console.log(this.isIdle);
     if (!this.isIdle) {
       self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
         confirmed ? this.#executeBoardAction(actionType) : this.continue();

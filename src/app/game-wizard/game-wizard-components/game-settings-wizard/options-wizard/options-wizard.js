@@ -57,6 +57,9 @@ export class OptionsWizard extends SettingsWizard {
 
   #sneakPeakBoundaries(fieldName) {
     const limits = clone(LIMITS[fieldName]);
+    
+    //
+    
     if (this.#sneakPeekNumberDisabled) {
       limits.min = 0;
     }

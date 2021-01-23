@@ -75,7 +75,7 @@ export class TurnSettingsWizard extends SettingsWizard {
       this.#onTurnSettingsChange.bind(this),
     );
     controller.boundaries = LIMITS[fieldName];
-    this.#controllerDisabledState = controller;
+    controller.disabled = this.#turnPropertyDisabled;
     return controller;
   }
 

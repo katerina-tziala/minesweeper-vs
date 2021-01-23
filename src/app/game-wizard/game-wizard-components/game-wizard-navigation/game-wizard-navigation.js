@@ -78,37 +78,39 @@ export class GameWizardNavigation {
     return steps;
   }
 
-  #selectFirstStep() {
-    this.#steps[0].completed = true;
-    this.#steps[0].disabled = false;
-    this.#steps[0].selected = true;
-    this.#_selectedStep = this.#steps[0].name;
+  #selectStep(step) {
+    step.disabled = false;
+    step.selected = true;
+    step.completed = true;
+    this.#_selectedStep = step.name;
   }
 
   #initNavigationSteps(botMode, turnsVisible) {
     this.#_navigationSteps = this.#generateSteps(botMode);
-  
-    if (!turnsVisible) {
-      this.#intTurnsStep(false);
-    }
-
-    this.#selectFirstStep();
+    this.#intTurnsStep(turnsVisible);
+    this.#selectStep(this.#steps[0]);
     this.#setStepsState();
   }
 
-  updateNavigationSteps(completedSteps) {
-    this.#steps.forEach(step => {
-      step.completed = completedSteps.includes(step.name);
+  initCompletedSteps(completedSteps = []) {
+    this.#displayedSteps.forEach(step => {
+      if (step.name === this.selectedStep) {
+        step.completed = true;
+      } else {
+        step.completed = completedSteps.includes(step.name);
+      }
     });
-    this.#setStepsState(true);
+    this.#setStepsState();
   }
 
   #setStepsState(updateView = false) {
     this.#displayedSteps.forEach((step, index) => {
       const previousSteps = this.#displayedSteps.slice(0, index);
+
       if (previousSteps.length) {
         step.disabled = !previousSteps.every(step => step.completed);
       }
+
       if (updateView) {
         step.updateDisabled();
       }
@@ -147,8 +149,9 @@ export class GameWizardNavigation {
 
   #intTurnsStep(displayed) {
     const turnsStep = this.#turnsStep;
-    turnsStep.completed = false;
     turnsStep.displayed = displayed;
+    turnsStep.completed = false;
+    turnsStep.selected = false;
   }
 
   updateOptionsOnVSModeChange(parallelSelected) {

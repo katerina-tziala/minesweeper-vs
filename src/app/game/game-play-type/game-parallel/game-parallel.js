@@ -267,10 +267,10 @@ export class GameParallel extends Game {
   }
 
   pause() {
+    this.#pauseGames();
     if (this.#SneakPeekController.isRunning) {
       this.#SneakPeekController.stop();
     }
-    this.#pauseGames();
   }
 
   #pauseGames() {
