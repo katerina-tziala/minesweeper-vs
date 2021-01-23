@@ -12,14 +12,24 @@ import {
 import { Player } from "../player";
 import { BotMode, GameVSMode, GameAction } from "GameEnums";
 import { MineFieldUtils, MineFieldGridSearch } from "GamePlayComponents";
-import { LEVEL_ACTIONS, MISS_TURNS, MOVE_DURATIONS } from "./bot-player.constants";
+import { LEVEL_ACTIONS, MISS_TURNS, MOVE_DURATIONS, BOT_NAME } from "./bot-player.constants";
 
 export class BotPlayer extends Player {
 
   constructor() {
-    super("minesweeperBot", "Minesweeper-Bot");
+    super("minesweeper-bot", "minesweeper-bot");
     this.mode = BotMode.Easy;
     this.isBot = true;
+    this.setBotName();
+  }
+
+  update(updateData) {
+    super.update(updateData);
+    this.setBotName();
+  }
+
+  setBotName() {
+    this.name = BOT_NAME[this.mode];
   }
 
   get #isEvil() {

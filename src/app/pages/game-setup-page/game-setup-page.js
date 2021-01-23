@@ -5,16 +5,6 @@ import { enumKey } from "~/_utils/utils";
 import { Page } from "../page";
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 import { GameType } from "GameEnums";
-import {
-  GameMessageController,
-  GameMessageVSController,
-  GameMessageParallelController
-} from "GamePlayControllers";
-
-
-import { LevelSettings, OptionsSettings, TurnSettings, Player, BotPlayer } from "GameModels";
-
-
 
 export class GameSetupPage extends Page {
   #_gameType;
@@ -44,75 +34,6 @@ export class GameSetupPage extends Page {
   }
 
   renderPage(mainContainer) {
-
-    // const gmc = new GameMessageParallelController();
-
-    // mainContainer.append(gmc.generateView());
-
-
-    // const player = new Player("KateId", "Kate");
-    // player.colorType = "8";
-
-    // const bot = new BotPlayer();
-    // bot.colorType = "2";
-    // bot.lostGame = true;
-    
-    // const playerReport = player.reportData;
-    // playerReport.sneakPeeks = 3;
-    // playerReport.sneakPeeksDuration = {
-    //   hours: 5,
-    //   minutes: 1,
-    //   seconds: 12
-    // };
-    // const botReport = bot.reportData;
-    // botReport.sneakPeeks = 0;
-    // botReport.sneakPeeksDuration = {
-    //   hours: 0,
-    //   minutes: 0,
-    //   seconds: 0
-    // };
-
-    // const gameResults = {
-    //   gameInfo: {
-    //     duration:{
-    //       hours: 1,
-    //       minutes: 0,
-    //       seconds: 35
-    //     },
-    //     draw: false,
-    //     gameOverType: "clearedMinefield",
-    //     rounds: 5
-    //   },
-    //   playersResults: [playerReport, botReport],
-    //   reportResults: [
-    //     "moves",
-    //     "clearedTiles",
-    //     "detectedMines",
-    //     "flags",
-    //     "marks",
-    //     "detonatedMine",
-    //     "exceededTurnsLimit",
-    //     "sneakPeeks",
-    //     "sneakPeeksDuration",
-    //     "clearedMinefield"
-    //   ]
-    // };
-
-
-    // // // console.log(gameResults);
-
-
-    // gmc.displayGameOverMessage(gameResults);
-
-    
-    // this.hideLoader();
-
-
-    // return;
-
-
-
-
     this.#loadWizard().then((gameWizard) => {
       this.gameWizard = gameWizard;
       this.gameWizard.generateView().then(wizard => {

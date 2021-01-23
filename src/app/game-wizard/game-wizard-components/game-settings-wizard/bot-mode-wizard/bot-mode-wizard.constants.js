@@ -6,3 +6,10 @@ export const CONTENT = {
     botMode: "level of difficulty"
   }
 };
+
+export const BOT_LEVEL = {
+  easy: "Naive",
+  medium: "Intelligent",
+  hard: "Smart",
+  evil: "Genius"
+};

@@ -1,13 +1,11 @@
 "use strict";
 
 import { DropdownSelect } from "UserInputs";
-
 import { BotMode } from "GameEnums";
-
 import { SettingsWizard } from "../_settings-wizard";
 import { WIZARD_NAME } from "../_settings-wizard.constants";
+import { CONTENT, EXPLANATION, BOT_LEVEL } from "./bot-mode-wizard.constants";
 
-import { CONTENT, EXPLANATION } from "./bot-mode-wizard.constants";
 export class BotModeWizard extends SettingsWizard {
   constructor(onSubmit, botMode) {
     super(onSubmit, undefined);
@@ -33,6 +31,10 @@ export class BotModeWizard extends SettingsWizard {
     return `<div>${EXPLANATION}</div>`;
   }
 
+  getOptionLabel(enumValue) {
+    return BOT_LEVEL[enumValue];
+  }
+
   generateSettingsWizard() {
     const wizardContainer = super.generateSettingsWizard();
     wizardContainer.append(
@@ -40,7 +42,6 @@ export class BotModeWizard extends SettingsWizard {
     );
     return wizardContainer;
   }
-
 
   #setModeSettings(botMode) {
     const settings = { botMode };
