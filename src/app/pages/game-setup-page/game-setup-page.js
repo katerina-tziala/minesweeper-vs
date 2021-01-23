@@ -51,10 +51,11 @@ export class GameSetupPage extends Page {
 
 
     const player = new Player("KateId", "Kate");
-    player.colorType = "4";
+    player.colorType = "8";
 
     const bot = new BotPlayer();
     bot.colorType = "2";
+    bot.lostGame = true;
     
     const playerReport = player.reportData;
     playerReport.sneakPeeks = 3;

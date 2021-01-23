@@ -1,12 +1,10 @@
 "use strict";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
-import { timeoutPromise } from "~/_utils/utils";
 import { valueDefined } from "~/_utils/validator";
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS, CONTENT, DURATION_CONTENT, BOOLEAN_RESULTS, DURATION_RESULTS } from "./game-results.constants";
-
+import { ElementGenerator } from "HTML_DOM_Manager";
 import { UserAvatar } from "~/components/user-avatar/user-avatar";
+import { DOM_ELEMENT_CLASS, CONTENT, DURATION_CONTENT, BOOLEAN_RESULTS, DURATION_RESULTS } from "./game-results.constants";
 
 export class GameResults {
 
@@ -15,11 +13,6 @@ export class GameResults {
   }
 
   static generateView(gameResults) {
-
-    console.log(gameResults);
-
-
-
     const container = GameResults.newContainer;
     const gameInfo = GameResults.generateGameInfo(gameResults.gameInfo);
     const resultsTable = GameResults.generateResultsTable(gameResults);
@@ -119,14 +112,12 @@ export class GameResults {
     const avatar = UserAvatar.generate(playerResults.colorType, playerResults.isBot);
     const name = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.playerName]);
     name.innerHTML = playerResults.name;
-    
-    if (!draw && !playerResults.lostGame) {
-      console.log("show me cup");
-    }
-    //cup
-    
-    
+
     content.append(avatar, name);
+    if (!draw && !playerResults.lostGame) {
+      content.append(ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.winnerIndicator]));
+    }
+  
     const playerHeader = ElementGenerator.generateTableHeaderCell(content);
     return playerHeader;
   }

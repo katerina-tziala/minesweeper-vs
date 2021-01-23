@@ -7,6 +7,7 @@ export const DOM_ELEMENT_CLASS = {
   numberResult: "result-number",
   resultPlayer: "game-result-player",
   playerName: "game-result-player-name",
+  winnerIndicator: "game-result-winner-indicator"
 };
 
 export const DURATION_CONTENT = {

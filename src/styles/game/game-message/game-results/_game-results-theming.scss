@@ -16,6 +16,12 @@
   ._separator-cell {
     background-color: theming.getThemeColor($theme, "board-grid", 0.5);
   }
+
+  .game-result-winner-indicator {
+    color: theming.getThemeColor($theme, "winner-indicator");
+    text-shadow: 0px 0px 2px theming.getThemeColor($theme, "theme-primary-intense");
+  }
+
 }
 
 @mixin setTheming() {

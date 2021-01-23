@@ -136,3 +136,8 @@
   @extend %icon-regular;
   content: fa-content($fa-var-check);
 }
+
+.icon-crown {
+  @extend %icon-regular;
+  content: fa-content($fa-var-crown);
+}
