@@ -14,6 +14,9 @@ import { RoundStatistics } from "GameModels";
 import { CONFIRMATION } from "../../components/modal/modal.constants";
 import { BoardActionsController } from "GamePlayControllers";
 
+
+import { REPORT_KEYS } from "./_game.constants";
+
 export class Game extends AppModel {
   #externalActions = {};
   #BoardActionsController;
@@ -157,6 +160,30 @@ export class Game extends AppModel {
 
   get duration() {
     return dateDifferenceInHoursMinutesSeconds(this.completedAt, this.startedAt);
+  }
+
+  get gameInfoResults() {
+    return {
+      duration: this.duration,
+      draw: this.isDraw,
+      gameOverType: this.gameOverType
+    };
+  }
+
+  get gameReportKeys() {
+    return REPORT_KEYS.default;
+  }
+
+  get gamePlayersResults() {
+    return [];
+  }
+
+  get gameResults() {
+    return {
+      gameInfo: this.gameInfoResults,
+      playersResults: this.gamePlayersResults,
+      reportResults: this.gameReportKeys
+    };
   }
 
   initState() {

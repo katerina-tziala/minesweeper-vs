@@ -7,6 +7,7 @@ import {
 } from "GamePlayControllers";
 
 import { tilesPositions } from "~/game/game-play-components/mine-field/mine-field-utils";
+import { REPORT_KEYS } from "../../../_game.constants";
 
 export class GameVSClear extends GameVS {
 
@@ -34,6 +35,18 @@ export class GameVSClear extends GameVS {
     return actions;
   }
 
+  get gameReportKeys() {
+    const keys = super.gameReportKeys;
+    if (this.gameBoard.sneakPeeksAllowed) {
+      return keys.concat(REPORT_KEYS.peaks);
+    }
+    return keys;
+  }
+
+  get gamePlayersResults() {
+    return [this.#getPlayerReport(this.player), this.#getPlayerReport(this.opponent)];
+  }
+
   #getPlayerReport(player) {
     const playerReport = player.reportData;
     if (!this.gameBoard.sneakPeeksAllowed) {
@@ -53,21 +66,6 @@ export class GameVSClear extends GameVS {
       }
     }
     return playerReport;
-  }
-
-  get gameResults() {
-    const playersResults = [this.#getPlayerReport(this.player), this.#getPlayerReport(this.opponent)];
-    return {
-      gameInfo: {
-        duration: this.duration,
-        draw: this.isDraw,
-        gameOverType: this.gameOverType,
-        rounds: this.numberOfRounds,
-        playerStarted: this.players.find(player => player.id === this.playerStartID).name
-      },
-      playersResults: playersResults,
-      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine", "exceededTurnsLimit"]
-    };
   }
 
   onTileDetonation(revealedTiles) {

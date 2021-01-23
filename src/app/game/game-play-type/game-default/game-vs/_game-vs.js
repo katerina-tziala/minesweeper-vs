@@ -7,6 +7,10 @@ import {
   VSDashboardController,
   GameMessageVSController as MessageController
 } from "GamePlayControllers";
+
+import { REPORT_KEYS } from "../../_game.constants";
+
+
 export class GameVS extends GameDefault {
   #MessageController;
 
@@ -44,6 +48,22 @@ export class GameVS extends GameDefault {
 
   get isSharedDevice() {
     return !this.isOnline && !this.opponent.isBot;
+  }
+
+  get gameInfoResults() {
+    const gameInfo = super.gameInfoResults;
+    gameInfo.rounds = this.numberOfRounds;
+    gameInfo.playerStarted = this.players.find(player => player.id === this.playerStartID).name;
+    return gameInfo;
+  }
+
+  get gameReportKeys() {
+    const keys = super.gameReportKeys;
+    return keys.concat(REPORT_KEYS.vs);
+  }
+
+  get gamePlayersResults() {
+    return [this.player.reportData, this.opponent.reportData];
   }
 
   get #maxAllowedFlags() {
@@ -275,20 +295,8 @@ export class GameVS extends GameDefault {
     this.#displayGameOverMessage();
   }
 
-  get gameResults() {
-    console.log(this.players.map(player => player.sneakPeeks));
-    return {
-      gameInfo: {
-        duration: this.duration,
-        draw: this.isDraw,
-        gameOverType: this.gameOverType,
-        rounds: this.numberOfRounds,
-        playerStarted: this.players.find(player => player.id === this.playerStartID).name
-      },
-      playersResults: [this.player.reportData, this.opponent.reportData],
-      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine", "exceededTurnsLimit"]
-    };
-  }
+
+
 
   #displayGameOverMessage() {
     return this.messageController.displayGameOverMessage(this.gameResults);

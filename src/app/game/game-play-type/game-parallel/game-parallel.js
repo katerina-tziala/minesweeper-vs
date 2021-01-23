@@ -105,6 +105,10 @@ export class GameParallel extends Game {
     return Promise.all(viewUpdates);
   }
 
+  get gamePlayersResults() {
+    return [this.#player.reportData, this.#opponent.reportData];
+  }
+
   generateView() {
     const gameContainer = document.createDocumentFragment();
     const vsDashboard = this.#VSDashboard.generateView(
@@ -133,12 +137,14 @@ export class GameParallel extends Game {
   }
 
   #initGames() {
-    const viewUpdates = this.#individualGames.map((game) => this.#initIndividualGame(game));
+    const viewUpdates = [];
+    viewUpdates.push(this.#initIndividualGame(this.#PlayerGame, true));
+    viewUpdates.push(this.#initIndividualGame(this.#OpponentGame));
     return Promise.all(viewUpdates);
   }
 
-  #initIndividualGame(game) {
-    game.init(false);
+  #initIndividualGame(game, playerOnTurn = false) {
+    game.init(playerOnTurn);
     game.setGameStart();
     return game.onAfterViewInit;
   }
@@ -293,17 +299,7 @@ export class GameParallel extends Game {
     });
   }
 
-  get gameResults() {
-    return {
-      gameInfo: {
-        duration: this.duration,
-        draw: this.isDraw,
-        gameOverType: this.gameOverType
-      },
-      playersResults: [this.#player.reportData, this.#opponent.reportData],
-      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "clearedMinefield", "detonatedMine"]
-    };
-  }
+
 
   #completeGames() {
     this.#individualGames.forEach((game) => {

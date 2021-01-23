@@ -138,19 +138,9 @@ export class GameSinglePlayer extends GameDefault {
     this.startGameRound();
   }
 
-
-  get gameResults() {
-    return {
-      gameInfo: {
-        duration: this.duration,
-        draw: this.isDraw,
-      },
-      playersResults: [this.player.reportData],
-      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "detonatedMine"]
-    };
+  get gamePlayersResults() {
+    return [this.player.reportData];
   }
-
-
 
   onGameOver(gameOverType, boardTiles = []) {
     super.onGameOver(gameOverType, boardTiles);

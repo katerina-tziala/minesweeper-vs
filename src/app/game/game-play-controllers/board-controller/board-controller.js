@@ -223,7 +223,6 @@ export class BoardController {
     return MineFieldUtils.tilesPositions(tiles);
   }
 
-  //TODO: check logic per game
   revealingAllowed(tile) {
     return this.mineField.revealingAllowed(tile);
   }
@@ -312,7 +311,6 @@ export class BoardController {
       }
       this.onRevealedTiles(result.tiles);
     });
-
   }
 
   onTileDetonation(boardTiles, player = this.playerOnTurn) {

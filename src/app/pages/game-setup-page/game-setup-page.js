@@ -45,83 +45,70 @@ export class GameSetupPage extends Page {
 
   renderPage(mainContainer) {
 
-    const gmc = new GameMessageParallelController();
+    // const gmc = new GameMessageParallelController();
 
-    mainContainer.append(gmc.generateView());
+    // mainContainer.append(gmc.generateView());
 
 
-    const player = new Player("KateId", "Kate");
-    player.colorType = "8";
+    // const player = new Player("KateId", "Kate");
+    // player.colorType = "8";
 
-    const bot = new BotPlayer();
-    bot.colorType = "2";
-    bot.lostGame = true;
+    // const bot = new BotPlayer();
+    // bot.colorType = "2";
+    // bot.lostGame = true;
     
-    const playerReport = player.reportData;
-    playerReport.sneakPeeks = 3;
-    playerReport.sneakPeeksDuration = {
-      hours: 5,
-      minutes: 1,
-      seconds: 12
-    };
-    const botReport = bot.reportData;
-    botReport.sneakPeeks = 0;
-    botReport.sneakPeeksDuration = {
-      hours: 0,
-      minutes: 0,
-      seconds: 0
-    };
+    // const playerReport = player.reportData;
+    // playerReport.sneakPeeks = 3;
+    // playerReport.sneakPeeksDuration = {
+    //   hours: 5,
+    //   minutes: 1,
+    //   seconds: 12
+    // };
+    // const botReport = bot.reportData;
+    // botReport.sneakPeeks = 0;
+    // botReport.sneakPeeksDuration = {
+    //   hours: 0,
+    //   minutes: 0,
+    //   seconds: 0
+    // };
+
+    // const gameResults = {
+    //   gameInfo: {
+    //     duration:{
+    //       hours: 1,
+    //       minutes: 0,
+    //       seconds: 35
+    //     },
+    //     draw: false,
+    //     gameOverType: "clearedMinefield",
+    //     rounds: 5
+    //   },
+    //   playersResults: [playerReport, botReport],
+    //   reportResults: [
+    //     "moves",
+    //     "clearedTiles",
+    //     "detectedMines",
+    //     "flags",
+    //     "marks",
+    //     "detonatedMine",
+    //     "exceededTurnsLimit",
+    //     "sneakPeeks",
+    //     "sneakPeeksDuration",
+    //     "clearedMinefield"
+    //   ]
+    // };
 
 
-    //  gmc.displayStartMessage(player, bot).then(() => {
-    //    console.log("done");
-    //  });
-
-    //  gmc.displayReadyMessage(bot).then(() => {
-    //   console.log("done");
-    // });
-     
-    // DetonatedMine: "detonatedMine",
-    // Cleared: "clearedMinefield",
-    // ExceededTurnsLimit: "exceededTurnsLimit",
-    // Detected: "detectedAllMines"
-    const gameResults = {
-      gameInfo: {
-        duration:{
-          hours: 1,
-          minutes: 0,
-          seconds: 35
-        },
-        draw: false,
-        gameOverType: "clearedMinefield",
-        rounds: 5
-      },
-      playersResults: [playerReport, botReport],
-      reportResults: [
-        "moves",
-        "clearedTiles",
-        "detectedMines",
-        "flags",
-        "marks",
-        "detonatedMine",
-        "exceededTurnsLimit",
-        "sneakPeeks",
-        "sneakPeeksDuration",
-        "clearedMinefield"
-      ]
-    };
+    // // // console.log(gameResults);
 
 
-    // // console.log(gameResults);
-
-
-    gmc.displayGameOverMessage(gameResults);
+    // gmc.displayGameOverMessage(gameResults);
 
     
-    this.hideLoader();
+    // this.hideLoader();
 
 
-    return;
+    // return;
 
 
 
