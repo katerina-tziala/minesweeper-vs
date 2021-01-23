@@ -4,12 +4,6 @@
   &.game-player-card__color-type--#{$color-type} {
     $game-color-type: theming.getThemeColor($theme, "game-type-#{$color-type}");
 
-    .person-icon {
-      &::before {
-        background-color: $game-color-type;
-      }
-    }
-
     ._state-icon {
       color: $game-color-type;
     }

@@ -1,7 +1,7 @@
 @use "./game-player-card-theming";
 
+@import "../../components/user-avatar/user-avatar";
 @import "./card-utils/card-utils";
-@import "./person-icon/person-icon";
 @import "./player-details/player-details";
 @import "./card-state/card-state";
 @import "./turns-indicator/turns-indicator";

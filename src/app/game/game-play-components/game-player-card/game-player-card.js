@@ -7,9 +7,9 @@ import {
   DOM_ELEMENT_CLASS,
 } from "./game-player-card.constants";
 
+import { UserAvatar } from "~/components/user-avatar/user-avatar";
 import { PlayerCardState } from "./player-card-state/player-card-state";
 import { TurnsIndicator } from "./turns-indicator/turns-indicator";
-
 import { PlayerCardDetails } from "./player-card-details/player-card-details";
 
 export class GamePlayerCard {
@@ -66,18 +66,9 @@ export class GamePlayerCard {
     if (player.allowedTurns) {
       container.append(TurnsIndicator.generate(player));
     }
-    container.append(GamePlayerCard.generatePayerIcon(player.isBot));
+    const avatar = UserAvatar.generate(player.colorType, player.isBot);
+    container.append(avatar);
     return container;
-  }
-
-  static generatePayerIcon(isBot) {
-    const styles = [DOM_ELEMENT_CLASS.personIcon];
-    isBot
-      ? styles.push(DOM_ELEMENT_CLASS.botIcon)
-      : styles.push(DOM_ELEMENT_CLASS.playerIcon);
-    //TODO: add indicator for bot level
-    const playerIcon = ElementGenerator.generateContainer(styles);
-    return playerIcon;
   }
 
   static getPlayerCard(player) {
