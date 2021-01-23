@@ -48,24 +48,23 @@ export class GameVSClear extends GameVS {
   }
 
   #getPlayerReport(player) {
-    const playerReport = player.reportData;
     if (!this.gameBoard.sneakPeeksAllowed) {
-      return playerReport;
+      return player.reportData;
     }
+    const playerReport = Object.assign(player.reportData, this.#getSneakPeeksReport(player));
+    return playerReport;
+  }
+
+  #getSneakPeeksReport(player) {
     const playerSneakPeeks = this.gameBoard.sneakPeeksResults.filter(peakResult => peakResult.playerId === player.id);
-    playerReport.sneakPeeks = playerSneakPeeks.length;
+    const sneakPeeks = playerSneakPeeks.length;
+    let sneakPeeksDuration = dateDifferenceInHoursMinutesSeconds();
     if (playerReport.sneakPeeks) {
       const end = playerSneakPeeks[playerSneakPeeks.length - 1].end;
       const start = playerSneakPeeks[0].start;
-      playerReport.sneakPeeksDuration = dateDifferenceInHoursMinutesSeconds(end, start);
-    } else {
-      playerReport.sneakPeeksDuration = {
-        hours: 0,
-        minutes: 0,
-        seconds: 0
-      }
+      sneakPeeksDuration = dateDifferenceInHoursMinutesSeconds(end, start);
     }
-    return playerReport;
+    return { sneakPeeks, sneakPeeksDuration };
   }
 
   onTileDetonation(revealedTiles) {

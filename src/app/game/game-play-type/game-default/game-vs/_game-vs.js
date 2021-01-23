@@ -62,10 +62,6 @@ export class GameVS extends GameDefault {
     return keys.concat(REPORT_KEYS.vs);
   }
 
-  get gamePlayersResults() {
-    return [this.player.reportData, this.opponent.reportData];
-  }
-
   get #maxAllowedFlags() {
     return !this.optionsSettings.unlimitedFlags
       ? this.levelSettings.numberOfMines
@@ -155,7 +151,7 @@ export class GameVS extends GameDefault {
 
   onRoundTimerEnd() {
     this.playerOnTurn.increaseMissedTurns();
-
+    this.playerOnTurn.checkTurnsLimit();
     this.updatedPlayerCard({ turnsUpdate: true }).then(() => {
       if (this.playerOnTurn.exceededTurnsLimit) {
         this.onGameOver(GameOverType.ExceededTurnsLimit);

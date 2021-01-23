@@ -29,30 +29,6 @@ export class SneakPeekController {
     return this.sneakPeekAllowedForPlayer;
   }
 
-  get #peekData() {
-    return {
-      start: this.#_start,
-      end: this.#_end,
-      playerId: this.player.id,
-    };
-  }
-
-  #setStart() {
-    this.#_start = nowTimestamp();
-  }
-
-  #setEnd() {
-    this.#_end = nowTimestamp();
-  }
-
-  #updateResults() {
-    this.#_results.push(this.#peekData);
-  }
-
-  #onPeekingToggle(peek) {
-    peek ? this.#onSneakPeek() : this.#onSneakPeekEnd();
-  }
-
   set player(player) {
     this.#_player = player;
   }
@@ -113,6 +89,30 @@ export class SneakPeekController {
       return this.#peekToggle.generate();
     }
     return undefined;
+  }
+
+  get #peekData() {
+    return {
+      start: this.#_start,
+      end: this.#_end,
+      playerId: this.player.id,
+    };
+  }
+
+  #setStart() {
+    this.#_start = nowTimestamp();
+  }
+
+  #setEnd() {
+    this.#_end = nowTimestamp();
+  }
+
+  #updateResults() {
+    this.#_results.push(this.#peekData);
+  }
+
+  #onPeekingToggle(peek) {
+    peek ? this.#onSneakPeek() : this.#onSneakPeekEnd();
   }
 
   stop() {

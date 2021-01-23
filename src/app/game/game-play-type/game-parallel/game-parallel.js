@@ -70,8 +70,8 @@ export class GameParallel extends Game {
 
   #setUpOpponentGame() {
     this.#OpponentGame.externalActions = {
-      onMoveSubmission: this.#onOpponentGameMove.bind(this),
-      onGameOverSubmission: this.#onOpponentGameOver.bind(this)
+      onMoveSubmission: this.onOpponentGameMove.bind(this),
+      onGameOverSubmission: this.onOpponentGameOver.bind(this)
     };
   }
 
@@ -169,11 +169,15 @@ export class GameParallel extends Game {
   }
 
   // HANDLE OPPONENT ACTIONS
-  #onOpponentGameMove() {
-    this.#updatePlayerCard(this.#opponent);
+  onOpponentGameMove(gameData, playerCardUpdate) {
+    if (playerCardUpdate) {
+      this.#updatePlayerCard(this.#opponent);
+    }
+    this.#SneakPeekController.updateToggleState();
+    //this.#updatePlayerCard(this.#opponent);
   }
 
-  #onOpponentGameOver(gameData) {
+  onOpponentGameOver(gameData, playerCardUpdate) {
     this.#onGameOver(gameData, this.#opponent, this.#player);
   }
 
@@ -198,12 +202,14 @@ export class GameParallel extends Game {
 
   // SNEAK PEEK
   #onSneakPeek() {
-    this.#displayOpponentBoard().then(() => {
-      return this.#SneakPeekController.playerPeeking();
-    }).catch((err) => {
-      console.log(err);
-      console.log("error on onSneakPeek");
-    });
+    if (!this.isOver) {
+      this.#displayOpponentBoard().then(() => {
+        return this.#SneakPeekController.playerPeeking();
+      }).catch((err) => {
+        console.log(err);
+        console.log("error on onSneakPeek");
+      });
+    }
   }
 
   #onSneakPeekEnd() {
@@ -230,10 +236,10 @@ export class GameParallel extends Game {
     this.onAfterViewInit.then(() => {
       return this.#initGames();
     })
-    .then(() => {
-      return this.#VSDashboard.setCardOnTurn(this.players);
-    })
-    .then(() => {
+      .then(() => {
+        return this.#VSDashboard.setCardOnTurn(this.players);
+      })
+      .then(() => {
         this.#initSneakPeekController();
 
         if (!this.bothPlayersEntered) {
@@ -289,18 +295,6 @@ export class GameParallel extends Game {
     }
   }
 
-  #setGameViewOnGameOver(player) {
-    this.#individualGames.forEach((game) => game.setGameBoardOnGameOver(this.isDraw));
-    return this.#displayOpponentBoard().then(() => {
-      if (this.#SneakPeekController.isRunning) {
-        this.#SneakPeekController.stopPeeking();
-      }
-      return this.#updatePlayerCard(player);
-    });
-  }
-
-
-
   #completeGames() {
     this.#individualGames.forEach((game) => {
       game.setCompleted();
@@ -312,19 +306,32 @@ export class GameParallel extends Game {
     this.setGameEnd(gameData.gameOverType);
     this.#completeGames();
     this.#setResultsForPlayers(opponent);
+
+    if (this.isOnline) {
+      console.log("send data online");
+      console.log(gameData);
+    }
+
+    this.#setGameViewOnGameOver(initiator);
+  }
+
+  #setGameViewOnGameOver(player) {
     const viewUpdates = [
-      this.#setGameViewOnGameOver(initiator),
-      this.#MessageController.displayGameOverMessage(this.gameResults)
+      this.#displayOpponentBoard()
     ];
-    Promise.all(viewUpdates).then(() => {
-      if (this.isOnline) {
-        console.log("online gaming");
-        console.log(gameData);
-      }
-    }).catch((err) => {
-      console.log(err);
-      console.log("error on onGameOver");
+
+    if (this.#SneakPeekController.isRunning) {
+      viewUpdates.push(this.#SneakPeekController.stopPeeking());
+    }
+
+    this.#individualGames.forEach((game) => {
+      viewUpdates.push(game.setGameBoardOnGameOver(this.isDraw))
     });
+
+    viewUpdates.push(this.#updatePlayerCard(player));
+
+    viewUpdates.push(this.#MessageController.displayGameOverMessage(this.gameResults));
+    return Promise.all(viewUpdates);
   }
 
 }

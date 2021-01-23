@@ -126,8 +126,8 @@ export class GameDefault extends Game {
   submitBotMove() {
     if (!this.isOver) {
       this.playerOnTurn.getMove(this.gameBoard.mineFieldTiles).then(result => {
-        console.log("submitBotMove", result);
-        if (result && this.playerOnTurn.isBot) {
+        if (!this.isOver && result && this.playerOnTurn.isBot) {
+          console.log("submitBotMove", result);
           this.#onTileAction(result.action, result.tile);
         }
       });

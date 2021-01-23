@@ -12,7 +12,7 @@ export class GameSinglePlayer extends GameDefault {
   constructor(id, params, player) {
     super(id, params, player);
     this.init();
-    this.#setBoardController(params);
+    this.#initBoardController(params);
     this.#setMessageController();
   }
 
@@ -54,7 +54,7 @@ export class GameSinglePlayer extends GameDefault {
     return this.roundTiles.length ? this.roundTiles.some(tile => tile.isRevealed) : false;
   }
 
-  #setBoardController(params) {
+  #initBoardController(params) {
     this.gameBoard = new BoardController(this.id,
       params,
       this.minefieldActions,
@@ -122,9 +122,13 @@ export class GameSinglePlayer extends GameDefault {
     this.start();
   }
 
+  setPlayerOnBoard() {
+    this.gameBoard.playerOnTurn = this.player;
+  }
+
   startGameRound() {
     this.initRoundStatistics();
-    this.gameBoard.playerOnTurn = this.player;
+    this.setPlayerOnBoard();
     if (this.playerOnTurn.isBot) {
       this.submitBotMove();
       return;
@@ -138,25 +142,20 @@ export class GameSinglePlayer extends GameDefault {
     this.startGameRound();
   }
 
-  get gamePlayersResults() {
-    return [this.player.reportData];
-  }
-
   onGameOver(gameOverType, boardTiles = []) {
-    super.onGameOver(gameOverType, boardTiles);
+    this.setGameEnd(gameOverType);
+    this.setStatisticsOnRoundEnd(boardTiles);
 
     if (this.isParallel) {
       this.#submitGameOver(GameSubmission.GameOver);
       return;
     }
 
-    this.#MessageController.displayGameOverMessage(this.gameResults);
-  }
-
-  #submitBotUpdate() {
-    if (this.#updatePlayerCard) {
-      this.externalActions.onMoveSubmission(this.#updatePlayerCard);
-    }
+    const viewUpdates = [
+      this.setGameBoardOnGameOver(),
+      this.#MessageController.displayGameOverMessage(this.gameResults)
+    ];
+    return Promise.all(viewUpdates);
   }
 
   #submitGameOver() {
@@ -169,10 +168,6 @@ export class GameSinglePlayer extends GameDefault {
     if (!this.#submissionAllowed) {
       return;
     }
-    if (this.playerOnTurn.isBot) {
-      this.#submitBotUpdate();
-      return;
-    }
-    this.externalActions.onMoveSubmission(this.#updatePlayerCard, this.gameState);
+    this.externalActions.onMoveSubmission(this.gameState, this.#updatePlayerCard);
   }
 }

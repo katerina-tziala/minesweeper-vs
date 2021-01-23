@@ -210,6 +210,11 @@ export class BoardControllerVSClear extends BoardControllerVS {
       });
       return;
     }
+
+    if (this.sneakPeeksAllowed) {
+      this.#SneakPeekController.disable();
+    }
+
     super.setBoardOnGameOver(isDraw);
   }
 

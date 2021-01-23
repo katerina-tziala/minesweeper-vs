@@ -210,7 +210,6 @@ export class BoardController {
     return this.mineField.revealField();
   }
 
-
   handleTileAction(action, tile) {
     if (action === GameAction.Mark) {
       this.handleTileMarking(tile);

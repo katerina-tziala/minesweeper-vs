@@ -59,12 +59,16 @@ export class Player extends AppModel {
     return this.allowedTurns - this.missedTurns;
   }
 
-  get exceededTurnsLimit() {
-    const exceededLimits = this.allowedTurns
-      ? this.allowedTurns === this.missedTurns
-      : false;
+  checkTurnsLimit() {
+    const exceededLimits = this.exceededTurnsLimit;
     this.lostGame = exceededLimits;
-    return exceededLimits;
+  }
+
+  get exceededTurnsLimit() {
+    if (!this.allowedTurns) {
+      return false;
+    }
+    return this.allowedTurns === this.missedTurns;
   }
 
   toggleTurn() {
