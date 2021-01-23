@@ -115,6 +115,10 @@ export class SneakPeekController {
     peek ? this.#onSneakPeek() : this.#onSneakPeekEnd();
   }
 
+  disable() {
+    return this.updatePeekToggle(true);
+  }
+
   stop() {
     this.#timerController.stop();
   }

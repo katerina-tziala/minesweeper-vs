@@ -43,10 +43,6 @@ export class SneakPeekStrategyController extends SneakPeekController {
     return this.updatePeekToggle(disabled);
   }
 
-  disable() {
-    return this.updatePeekToggle(true);
-  }
-
   stopPeeking(roundSecond = 0) {
     return this.stopPeekingCountDown().then(() => this.updateToggleState(roundSecond));
   }

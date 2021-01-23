@@ -323,7 +323,7 @@ export class GameParallel extends Game {
     if (this.#SneakPeekController.isRunning) {
       viewUpdates.push(this.#SneakPeekController.stopPeeking());
     }
-
+    viewUpdates.push(this.#SneakPeekController.disable());
     this.#individualGames.forEach((game) => {
       viewUpdates.push(game.setGameBoardOnGameOver(this.isDraw))
     });
