@@ -1,6 +1,7 @@
 "use strict";
 
 import { DropdownSelect } from "UserInputs";
+
 import { BotMode } from "GameEnums";
 import { SettingsWizard } from "../_settings-wizard";
 import { WIZARD_NAME } from "../_settings-wizard.constants";

@@ -191,7 +191,7 @@ export class GameWizard {
     const content = this.generateWizardView();
     return GameWizardView.updateView(content);
   }
-  
+
   expandWizard() {
     return GameWizardView.expandWizard();
   }

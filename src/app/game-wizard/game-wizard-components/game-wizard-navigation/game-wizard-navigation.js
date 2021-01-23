@@ -96,6 +96,13 @@ export class GameWizardNavigation {
     this.#setStepsState();
   }
 
+  updateNavigationSteps(completedSteps) {
+    this.#steps.forEach(step => {
+      step.completed = completedSteps.includes(step.name);
+    });
+    this.#setStepsState(true);
+  }
+
   #setStepsState(updateView = false) {
     this.#displayedSteps.forEach((step, index) => {
       const previousSteps = this.#displayedSteps.slice(0, index);

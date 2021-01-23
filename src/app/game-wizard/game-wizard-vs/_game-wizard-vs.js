@@ -69,6 +69,7 @@ export class GameWizardVS extends GameWizard {
 
   init() {
     this.wizardNavigation = new GameWizardNavigation(this.#onSelectedStepChange.bind(this), this.againstBot, this.#turnsVisible);
+    this.wizardNavigation.updateNavigationSteps(Object.keys(this.gameParams));
     this.wizardActions = new GameWizardActions({
       onReset: this.onReset.bind(this),
       onSubmit: this.onSubmit.bind(this),

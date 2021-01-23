@@ -8,7 +8,10 @@ export class GameWizardBot extends GameWizardVS {
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.opponent = new BotPlayer();
-    this.init();
+  }
+
+  get gameType() {
+    return GameType.Bot;
   }
 
   get againstBot() {
@@ -20,18 +23,20 @@ export class GameWizardBot extends GameWizardVS {
   }
 
   #initBotModeWizard() {
-    return new BotModeWizard(
+    if (this.gameParams && this.gameParams.botMode && this.gameParams.botMode.botMode) {
+      this.opponent.mode = this.gameParams.botMode.botMode;
+    }
+    const controller = new BotModeWizard(
       this.#onBotModeChange.bind(this),
       this.opponent.mode,
     );
+    this.settingsControllers = controller;
+    return controller
   }
 
   #onBotModeChange(params) {
     this.opponent.mode = params.value.botMode;
-  }
-
-  get gameType() {
-    return GameType.Bot;
+    this.onGameSettingsChange(params);
   }
 
   resetStepValues() {
@@ -42,14 +47,14 @@ export class GameWizardBot extends GameWizardVS {
   }
 
   generateMainContent() {
-    const fragment = document.createDocumentFragment();
     if (this.#onBotMode) {
+      const fragment = document.createDocumentFragment();
       const botWizard = this.#initBotModeWizard();
       fragment.append(botWizard.generateSettingsWizard());
-    } else {
-      fragment.append(super.generateMainContent());
+      return fragment;
     }
-    return fragment;
+
+    return super.generateMainContent();
   }
 
 }
