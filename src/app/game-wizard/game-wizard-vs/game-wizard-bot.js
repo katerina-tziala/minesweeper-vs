@@ -31,7 +31,7 @@ export class GameWizardBot extends GameWizardVS {
       this.opponent.mode,
     );
     this.settingsControllers = controller;
-    return controller
+    return controller;
   }
 
   #onBotModeChange(params) {

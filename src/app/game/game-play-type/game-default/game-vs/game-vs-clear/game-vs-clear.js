@@ -59,7 +59,7 @@ export class GameVSClear extends GameVS {
     const playerSneakPeeks = this.gameBoard.sneakPeeksResults.filter(peakResult => peakResult.playerId === player.id);
     const sneakPeeks = playerSneakPeeks.length;
     let sneakPeeksDuration = dateDifferenceInHoursMinutesSeconds();
-    if (playerReport.sneakPeeks) {
+    if (sneakPeeks) {
       const end = playerSneakPeeks[playerSneakPeeks.length - 1].end;
       const start = playerSneakPeeks[0].start;
       sneakPeeksDuration = dateDifferenceInHoursMinutesSeconds(end, start);

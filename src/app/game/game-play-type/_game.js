@@ -137,9 +137,6 @@ export class Game extends AppModel {
   get numberOfRounds() {
     return this.#roundStatistics.rounds.length;
   }
-  get rounds() {
-    return this.#roundStatistics.rounds;
-  }
 
   get gameState() {
     return {

@@ -1,5 +1,5 @@
 "use strict";
-import { clone, replaceStringParameter, timeoutPromise } from "~/_utils/utils";
+import { clone, replaceStringParameter } from "~/_utils/utils";
 import { MESSAGES } from "./game-message-controller.constants";
 import { GameMessageViewHelper as ViewHelper } from "./game-message-view-helper/game-message-view-helper";
 

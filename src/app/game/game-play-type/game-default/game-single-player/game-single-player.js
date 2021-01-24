@@ -138,7 +138,7 @@ export class GameSinglePlayer extends GameDefault {
 
   onPlayerMoveEnd(boardTiles = []) {
     this.roundTilesUpdate = boardTiles;
-    this.submitResult(GameSubmission.MoveEnd);
+    this.submitResult();
     this.startGameRound();
   }
 
@@ -165,9 +165,9 @@ export class GameSinglePlayer extends GameDefault {
   }
 
   submitResult() {
-    if (!this.#submissionAllowed) {
+    if (!this.#submissionAllowed || !this.externalActions.onGameOverSubmission) {
       return;
     }
-    this.externalActions.onMoveSubmission(this.gameState, this.#updatePlayerCard);
+    this.externalActions.onMoveSubmission(this.#updatePlayerCard);
   }
 }

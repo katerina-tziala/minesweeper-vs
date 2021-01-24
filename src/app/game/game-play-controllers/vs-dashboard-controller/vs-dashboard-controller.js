@@ -11,11 +11,6 @@ export class VSDashboardController {
     this.turnsIndicator = false;
   }
 
-
-  setTurnsIndicaror(players) {
-    this.turnsIndicator = players.every(player => player.turnsLeft)
-  }
-
   generateView(player, opponent, boardActions) {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.area,

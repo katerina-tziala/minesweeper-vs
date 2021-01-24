@@ -32,14 +32,8 @@ export class GameParallel extends Game {
   }
 
   #setSneakPeekController() {
-    // const sneakPeekAllowed = !this.optionsSettings.openCompetition && this.optionsSettings.sneakPeek;
-    // const sneakPeekSettings = new SneakPeekSettings(sneakPeekAllowed, this.optionsSettings.sneakPeekDuration, this.optionsSettings.sneakPeeksLimit);
     const sneakPeekSettings = new SneakPeekSettings();
-    sneakPeekSettings.applied = !this.optionsSettings.openCompetition ? this.optionsSettings.sneakPeekSettings.applied : false;
     sneakPeekSettings.update(this.optionsSettings.sneakPeekSettings);
-  //sneakPeekSettings
-  
-  
     this.#SneakPeekController = new SneakPeekCompetitionController(sneakPeekSettings, this.#onSneakPeek.bind(this), this.#onSneakPeekEnd.bind(this));
   }
 
@@ -160,13 +154,12 @@ export class GameParallel extends Game {
   }
 
   // HANDLE PLAYER ACTIONS
-  #onPlayerGameMove(playerCardUpdate, gameData) {
+  #onPlayerGameMove(playerCardUpdate) {
     if (playerCardUpdate) {
       this.#updatePlayerCard(this.#player);
     }
     if (this.isOnline) {
-      console.log("send data online");
-      console.log(gameData);
+      console.log("send data online", this.#PlayerGame.gameState);
     }
   }
 
@@ -175,15 +168,14 @@ export class GameParallel extends Game {
   }
 
   // HANDLE OPPONENT ACTIONS
-  onOpponentGameMove(gameData, playerCardUpdate) {
+  onOpponentGameMove(playerCardUpdate) {
     if (playerCardUpdate) {
       this.#updatePlayerCard(this.#opponent);
     }
     this.#SneakPeekController.updateToggleState();
-    //this.#updatePlayerCard(this.#opponent);
   }
 
-  onOpponentGameOver(gameData, playerCardUpdate) {
+  onOpponentGameOver(gameData) {
     this.#onGameOver(gameData, this.#opponent, this.#player);
   }
 
@@ -212,8 +204,7 @@ export class GameParallel extends Game {
       this.#displayOpponentBoard().then(() => {
         return this.#SneakPeekController.playerPeeking();
       }).catch((err) => {
-        console.log(err);
-        console.log("error on onSneakPeek");
+        console.log("error on onSneakPeek", err);
       });
     }
   }
@@ -222,8 +213,7 @@ export class GameParallel extends Game {
     this.#SneakPeekController.stopPeeking().then(() => {
       return this.#hideOpponentBoard();
     }).catch((err) => {
-      console.log(err);
-      console.log("error on onSneakPeekEnd");
+      console.log("error on onSneakPeekEnd", err);
     });
   }
 
@@ -314,8 +304,7 @@ export class GameParallel extends Game {
     this.#setResultsForPlayers(opponent);
 
     if (this.isOnline) {
-      console.log("send data online");
-      console.log(gameData);
+      console.log("send data online", gameData);
     }
 
     this.#setGameViewOnGameOver(initiator);
@@ -331,7 +320,7 @@ export class GameParallel extends Game {
     }
     viewUpdates.push(this.#SneakPeekController.disable());
     this.#individualGames.forEach((game) => {
-      viewUpdates.push(game.setGameBoardOnGameOver(this.isDraw))
+      viewUpdates.push(game.setGameBoardOnGameOver(this.isDraw));
     });
 
     viewUpdates.push(this.#updatePlayerCard(player));

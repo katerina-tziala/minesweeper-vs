@@ -24,9 +24,6 @@ export class GameResults {
     const fragment = document.createDocumentFragment();
     const duration = GameResults.generateDurationInfo(gameInfo.duration);
     fragment.append(duration);
-
-    console.log(gameInfo);
-
     Object.keys(CONTENT.gameInfo).forEach(infoKey => {
       if (gameInfo[infoKey]) {
         const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.info]);
@@ -62,10 +59,10 @@ export class GameResults {
 
     if (durationStrings.length === 3) {
       readableDuration += TYPOGRAPHY.commaAndSpace;
-      readableDuration += `${durationStrings[1]} ${TYPOGRAPHY.and} `
+      readableDuration += `${durationStrings[1]} ${TYPOGRAPHY.and} `;
       readableDuration += durationStrings[2];
     } else if (durationStrings.length === 2) {
-      readableDuration += ` ${TYPOGRAPHY.and} ${durationStrings[1]}`
+      readableDuration += ` ${TYPOGRAPHY.and} ${durationStrings[1]}`;
     }
 
     return readableDuration;

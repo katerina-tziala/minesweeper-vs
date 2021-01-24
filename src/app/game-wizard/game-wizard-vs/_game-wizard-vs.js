@@ -71,7 +71,7 @@ export class GameWizardVS extends GameWizard {
   initOptionsWizard() {
     let turnDuration = null;
     if (this.gameParams.turnSettings) {
-      turnDuration = this.gameParams.turnSettings.turnTimer ? this.gameParams.turnSettings.turnDuration : null
+      turnDuration = this.gameParams.turnSettings.turnTimer ? this.gameParams.turnSettings.turnDuration : null;
     }
     const controller = new OptionsWizard(
       this.onGameSettingsChange.bind(this),

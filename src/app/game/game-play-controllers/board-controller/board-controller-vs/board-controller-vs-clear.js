@@ -15,7 +15,6 @@ export class BoardControllerVSClear extends BoardControllerVS {
 
   #setSneakPeekController() {
     const sneakPeekSettings = new SneakPeekSettings();
-    sneakPeekSettings.applied = this.hiddenStrategy ? this.optionsSettings.sneakPeekSettings.applied : false;
     sneakPeekSettings.update(this.optionsSettings.sneakPeekSettings);
     this.#SneakPeekController = new SneakPeekStrategyController(
       sneakPeekSettings,

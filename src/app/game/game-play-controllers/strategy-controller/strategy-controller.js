@@ -6,7 +6,7 @@ export class StrategyController {
   #_oppenStrategy;
 
   constructor(settings) {
-    this.strategyAllowed = settings.tileFlagging;
+    this.strategyAllowed = settings.strategy;
     this.openStrategy = settings.openStrategy;
   }
 

@@ -174,7 +174,7 @@ export class Player extends AppModel {
       clearedMinefield: this.clearedMinefield,
       detonatedMine: this.detonatedMine,
       exceededTurnsLimit: this.exceededTurnsLimit,
-    }
+    };
   }
 
   /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
