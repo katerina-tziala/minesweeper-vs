@@ -1,5 +1,5 @@
 "use strict";
-
+import { valueDefined } from "~/_utils/validator";
 import { Switcher, NumberInput } from "UserInputs";
 
 import { clone } from "~/_utils/utils.js";
@@ -18,12 +18,35 @@ import {
   SNEAK_PEEK_NUMBER_INPUTS
 } from "./options-wizard.constants";
 
+
+import { SneakPeekWizard } from "../sneak-peek-wizard/sneak-peek-wizard";
+
 export class OptionsWizard extends SettingsWizard {
-  constructor(onSubmit, settings) {
+  constructor(onSubmit, settings, roundDuration = null) {
     super(onSubmit);
     this.title = CONTENT.title;
     this.labels = CONTENT.labels;
+    this.roundDuration = roundDuration;
     this.#init(settings);
+  }
+
+  get name() {
+    return WIZARD_NAME.optionsSettings;
+  }
+
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new OptionsSettings(),
+    };
+  }
+
+  get isValid() {
+    if (!this.sneakPeekWizard) {
+      return this.inputsGroup.isValid;
+    }
+    return this.inputsGroup.isValid && this.sneakPeekWizard.isValid;
   }
 
   get #settingsProperties() {
@@ -34,15 +57,11 @@ export class OptionsWizard extends SettingsWizard {
   }
 
   get #strategy() {
-    return this.settings.tileFlagging;
+    return this.settings.strategy;
   }
 
   get #sneakPeekDisabled() {
-    return !this.#strategy ? true : this.settings.openStrategy || this.settings.openCompetition;
-  }
-
-  get #sneakPeekNumberDisabled() {
-    return this.#sneakPeekDisabled ? true : !this.settings.sneakPeek;
+    return this.settings.sneakPeekDisabled;
   }
 
   get #controllersBasedOnStrategy() {
@@ -51,26 +70,9 @@ export class OptionsWizard extends SettingsWizard {
       .map(inputName => this.inputsGroup.getController(inputName));
   }
 
-  get #sneakPeekNumberControllers() {
-    return SNEAK_PEEK_NUMBER_INPUTS.map(inputName => this.inputsGroup.getController(inputName));
-  }
-
-  #sneakPeakBoundaries(fieldName) {
-    const limits = clone(LIMITS[fieldName]);
-    
-    //
-    
-    if (this.#sneakPeekNumberDisabled) {
-      limits.min = 0;
-    }
-    return limits;
-  }
-
   #initSettings(settings) {
     this.settings = new OptionsSettings();
-    if (settings) {
-      this.settings.update(settings);
-    }
+    this.settings.update(settings);
   }
 
   #init(settings) {
@@ -80,8 +82,33 @@ export class OptionsWizard extends SettingsWizard {
 
   #initControllers() {
     this.#settingsProperties.forEach((property) => {
-      this.inputsGroup.controllers = this.#generateSettingController(property);
+      const controller = this.#generateSettingController(property);
+      if (controller) {
+        this.inputsGroup.controllers = controller;
+      }
     });
+    
+    if (this.settings.sneakPeekSettings) {
+      this.sneakPeekWizard = new SneakPeekWizard(
+        this.#onSneakPeekSettingsChange.bind(this),
+        this.settings.sneakPeekSettings,
+        !this.#sneakPeekDisabled,
+        this.roundDuration
+      );
+    }
+  }
+
+  generateWizardInputs() {
+    const fragment = super.generateWizardInputs();
+    if (this.sneakPeekWizard) {
+      fragment.append(this.sneakPeekWizard.generateWizardInputs());
+    }
+    return fragment;
+  }
+
+  #onSneakPeekSettingsChange(params) {
+    this.updateSettings(params);
+    this.emitChanges();
   }
 
   #generateSettingController(fieldName) {
@@ -98,15 +125,6 @@ export class OptionsWizard extends SettingsWizard {
           fieldName,
           this.#onOpenStrategyChange.bind(this)
         );
-      case FIELD_NAME.sneakPeek:
-        return this.#generateSwitcher(
-          fieldName,
-          this.#onSneakPeekChange.bind(this),
-          this.#sneakPeekDisabled,
-        );
-      case FIELD_NAME.sneakPeekDuration:
-      case FIELD_NAME.sneakPeeksLimit:
-        return this.#generateSneakPeekNumberInput(fieldName);
       default:
         return this.#generateSwitcher(fieldName);
     }
@@ -119,88 +137,33 @@ export class OptionsWizard extends SettingsWizard {
     return controller;
   }
 
-  #generateSneakPeekNumberInput(fieldName) {
-    const controller = new NumberInput(fieldName, this.settings[fieldName].toString(), this.#onSneakPeekNumberInputChange.bind(this));
-    controller.boundaries = this.#sneakPeakBoundaries(fieldName);
-    controller.disabled = this.#sneakPeekNumberDisabled;
-    return controller;
-  }
-
   #onTileFlaggingChange(params) {
-    this.settings[params.name] = params.value;
+    this.updateSettings(params);
     const controllers = this.#controllersBasedOnStrategy;
-
-    if (!this.settings.tileFlagging) {
+    if (this.#strategy) {
+      controllers.forEach(controller => controller.enable());
+    } else {
       controllers.forEach(controller => controller.disable());
-      this.#sneakPeekNumberControllers.forEach(controller => controller.disable());
-      this.emitChanges();
-      return;
     }
-
-    controllers.forEach(controller => controller.enable());
     this.#updateSneakPeekSettings();
   }
 
   #onOptionSettingChange(params) {
-    this.settings[params.name] = params.value;
+    this.updateSettings(params);
     this.emitChanges();
   }
 
   #onOpenStrategyChange(params) {
-    this.settings[params.name] = params.value;
+    this.updateSettings(params);
     this.#updateSneakPeekSettings();
   }
 
   #updateSneakPeekSettings() {
-    const controller = this.inputsGroup.getController(FIELD_NAME.sneakPeek);
-    if (this.#sneakPeekDisabled) {
-      this.settings.sneakPeek = false;
-      controller.value = false;
-      controller.updateSwitcherDisplay();
-    }
-    this.#sneakPeekDisabled ? controller.disable() : controller.enable();
-    this.#updateSneakPeekNumberInputs();
-  }
-
-  #onSneakPeekChange(params) {
-    this.settings[params.name] = params.value;
-    this.#updateSneakPeekNumberInputs();
-  }
-
-  #onSneakPeekNumberInputChange(params) {
-    if (!params.valid) {
+    if (this.sneakPeekWizard) {
+      this.sneakPeekWizard.updateControllers(this.#sneakPeekDisabled);
+    } else {
       this.emitChanges();
-      return;
     }
-    this.#onOptionSettingChange(params);
   }
 
-  #updateSneakPeekNumberInputs() {
-    this.#sneakPeekNumberControllers.forEach(controller => this.#updateSneakPeekNumberController(controller));
-  }
-
-  #updateSneakPeekNumberController(controller) {
-    this.#sneakPeekNumberDisabled ? controller.disable() : controller.enable();
-    controller.boundaries = this.#sneakPeakBoundaries(controller.name);
-    controller.value = controller.boundaries.min.toString();
-    controller.setFieldValue();
-    controller.validateInputTypeValue();
-  }
-
-  get name() {
-    return WIZARD_NAME.optionsSettings;
-  }
-
-  get defaultSettings() {
-    return {
-      name: this.name,
-      valid: true,
-      value: new OptionsSettings(),
-    };
-  }
-
-  get data() {
-    this.settings.initOptionsBasedOnTileFlagging();
-    return super.data;
-  }
 }

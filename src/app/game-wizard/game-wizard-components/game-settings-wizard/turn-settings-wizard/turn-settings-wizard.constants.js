@@ -7,7 +7,7 @@ export const FIELD_NAME = {
   consecutiveTurns: "consecutiveTurns",
 };
 
-export const LIMITS = {
+export const BOUNDARIES = {
   missedTurnsLimit: {
     max: 10,
     min: 0,

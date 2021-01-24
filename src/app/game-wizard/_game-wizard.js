@@ -49,11 +49,17 @@ export class GameWizard {
     return TITLES[this.gameType];
   }
 
+  #saveGameSetup() {
+    const gameParamsToSave = clone(this.gameParams);
+    LocalStorageHelper.setGameSetUp(this.gameType, clone(gameParamsToSave));
+    return Promise.resolve();
+  }
+
   get gameSetUp() {
-    LocalStorageHelper.setGameSetUp(this.gameType, this.gameParams);
     const gameSetUp = this.gameParams;
     gameSetUp.type = this.gameType;
     gameSetUp.levelSettings.setMinesPositions();
+    gameSetUp.optionsSettings.initOptionsBasedOnTileFlagging();
     gameSetUp.players = [this.player];
     return gameSetUp;
   }
@@ -131,9 +137,11 @@ export class GameWizard {
   }
 
   onSubmit() {
-    const gameSetUp = this.gameSetUp;
-    gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map((player) => player.id));
-    this.collapseWizard().then(() => {
+    this.#saveGameSetup().then(() => {
+      return this.collapseWizard();
+    }).then(() => {
+      const gameSetUp = this.gameSetUp;
+      gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map((player) => player.id));
       this.#submitGame(clone(gameSetUp));
     });
   }

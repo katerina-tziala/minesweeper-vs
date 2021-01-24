@@ -69,18 +69,15 @@ export class GameWizardVS extends GameWizard {
   }
 
   initOptionsWizard() {
-
+    let turnDuration = null;
+    if (this.gameParams.turnSettings) {
+      turnDuration = this.gameParams.turnSettings.turnTimer ? this.gameParams.turnSettings.turnDuration : null
+    }
     const controller = new OptionsWizard(
       this.onGameSettingsChange.bind(this),
       this.getGameParamsForWizard(WIZARD_NAME.optionsSettings),
+      turnDuration
     );
-
-
-
-    console.log(this.gameParams);
-
-
-
     this.settingsControllers = controller;
   }
 
@@ -104,6 +101,7 @@ export class GameWizardVS extends GameWizard {
   }
 
   onReset() {
+    //TO CHECK ALL STEPS
     this.resetStepValues();
     this.removeController(this.wizardStepName);
     this.rerenderCurrentMainView();
@@ -191,10 +189,10 @@ export class GameWizardVS extends GameWizard {
   resetStepValues() {
     const wizardName = this.wizardStepName;
     if (wizardName === WIZARD_NAME.optionsSettings) {
-      this.gameParams[wizardName] = this.defaultGameParams[wizardName];
+      this.gameParams[wizardName] = this.defaultGameParams[WIZARD_NAME.vsModeSettings];
     } else {
-      delete this.gameParams[wizardName];
-      delete this.defaultGameParams[wizardName];
+     // delete this.gameParams[wizardName];
+      this.gameParams[wizardName] = this.defaultGameParams[wizardName];
     }
   }
 

@@ -17,4 +17,5 @@ export const WIZARD_NAME = {
   levelSettings: "levelSettings",
   turnSettings: "turnSettings",
   optionsSettings: "optionsSettings",
+  sneakPeekSettings: "sneakPeekSettings",
 };

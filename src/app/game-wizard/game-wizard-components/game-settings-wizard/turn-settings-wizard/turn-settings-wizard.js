@@ -1,5 +1,6 @@
 "use strict";
 
+import { clone } from "~/_utils/utils.js";
 import { Switcher, NumberInput } from "UserInputs";
 
 import { TurnSettings } from "GameModels";
@@ -7,7 +8,7 @@ import { TurnSettings } from "GameModels";
 import { SettingsWizard } from "../_settings-wizard";
 import { WIZARD_NAME } from "../_settings-wizard.constants";
 
-import { FIELD_NAME, LIMITS, CONTENT } from "./turn-settings-wizard.constants";
+import { FIELD_NAME, BOUNDARIES, CONTENT } from "./turn-settings-wizard.constants";
 
 export class TurnSettingsWizard extends SettingsWizard {
   constructor(onSubmit, settings) {
@@ -17,16 +18,16 @@ export class TurnSettingsWizard extends SettingsWizard {
     this.#init(settings);
   }
 
-  get #turnProperties() {
-    return Object.keys(FIELD_NAME).filter(
-      (key) => FIELD_NAME[key] !== FIELD_NAME.turnTimer,
-    );
+  get name() {
+    return WIZARD_NAME.turnSettings;
   }
 
-  get #turnNumberProperties() {
-    return this.#turnProperties.filter(
-      (key) => FIELD_NAME[key] !== FIELD_NAME.consecutiveTurns,
-    );
+  get defaultSettings() {
+    return {
+      name: this.name,
+      valid: true,
+      value: new TurnSettings(),
+    };
   }
 
   get #turnPropertyDisabled() {
@@ -43,17 +44,18 @@ export class TurnSettingsWizard extends SettingsWizard {
       this.settings.update(settings);
     }
   }
-  
+
   #init(settings) {
     this.#initSettings(settings);
-    
+
     this.inputsGroup.controllers = this.#generateSwitcher(
       FIELD_NAME.turnTimer,
       this.#onTurnTimerChange.bind(this),
     );
-    this.#turnNumberProperties.forEach((property) => {
-      this.inputsGroup.controllers = this.#generateNumberInput(property);
-    });
+
+    this.inputsGroup.controllers = this.#generateNumberInput(FIELD_NAME.turnDuration);
+    this.inputsGroup.controllers = this.#generateNumberInput(FIELD_NAME.missedTurnsLimit);
+
     this.inputsGroup.controllers = this.#generateSwitcher(
       FIELD_NAME.consecutiveTurns,
       this.#onTurnSettingsChange.bind(this),
@@ -68,33 +70,51 @@ export class TurnSettingsWizard extends SettingsWizard {
     return controller;
   }
 
+  #getBoundaries(fieldName) {
+    let boundaries = clone(BOUNDARIES[fieldName]);
+    if (this.#turnPropertyDisabled) {
+      boundaries.min = 0;
+    }
+    return boundaries;
+  }
+
   #generateNumberInput(fieldName) {
     const controller = new NumberInput(
       fieldName,
       this.settings[fieldName].toString(),
       this.#onTurnSettingsChange.bind(this),
     );
-    controller.boundaries = LIMITS[fieldName];
+    controller.boundaries = this.#getBoundaries(fieldName);
     controller.disabled = this.#turnPropertyDisabled;
     return controller;
+  }
+
+  get #durationController() {
+    return this.inputsGroup ? this.inputsGroup.getController(FIELD_NAME.turnDuration) : undefined;
+  }
+
+  get #missedTurnsController() {
+    return this.inputsGroup ? this.inputsGroup.getController(FIELD_NAME.missedTurnsLimit) : undefined;
   }
 
   #onTurnTimerChange(params) {
     this.#onTurnSettingsChange(params);
     this.#setConsecutiveTurnsDisabledState();
-    this.#turnNumberProperties.forEach((property) => {
-      const controller = this.inputsGroup.getController(property);
-      this.#controllerDisabledState = controller;
-      if (!controller.valid) {
-        controller.updateValidFieldValue(this.settings[property]);
-      }
-    });
+    this.#updateNumberController(this.#durationController);
+    this.#updateNumberController(this.#missedTurnsController);
+  }
+
+  #updateNumberController(controller) {
+    const boundaries = this.#getBoundaries(controller.name);
+    this.#turnPropertyDisabled ? controller.disable() : controller.enable();
+    controller.boundaries = boundaries;
+    controller.value = controller.boundaries.min.toString();
+    controller.setFieldValue();
+    controller.validateInputTypeValue();
   }
 
   #onTurnSettingsChange(params) {
-    if (params.valid) {
-      this.settings[params.name] = params.value;
-    }
+    this.updateSettings(params);
     this.emitChanges();
   }
 
@@ -105,16 +125,4 @@ export class TurnSettingsWizard extends SettingsWizard {
     this.#controllerDisabledState = controller;
   }
 
-  // OVERIDDEN FUNCTIONS
-  get name() {
-    return WIZARD_NAME.turnSettings;
-  }
-
-  get defaultSettings() {
-    return {
-      name: this.name,
-      valid: true,
-      value: new TurnSettings(),
-    };
-  }
 }

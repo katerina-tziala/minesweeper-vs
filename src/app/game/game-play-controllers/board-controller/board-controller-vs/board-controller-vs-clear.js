@@ -14,8 +14,9 @@ export class BoardControllerVSClear extends BoardControllerVS {
   }
 
   #setSneakPeekController() {
-    const sneakPeekAllowed = this.hiddenStrategy && this.optionsSettings.sneakPeek;
-    const sneakPeekSettings = new SneakPeekSettings(sneakPeekAllowed, this.optionsSettings.sneakPeekDuration, this.optionsSettings.sneakPeeksLimit);
+    const sneakPeekSettings = new SneakPeekSettings();
+    sneakPeekSettings.applied = this.hiddenStrategy ? this.optionsSettings.sneakPeekSettings.applied : false;
+    sneakPeekSettings.update(this.optionsSettings.sneakPeekSettings);
     this.#SneakPeekController = new SneakPeekStrategyController(
       sneakPeekSettings,
       this.#onSneakPeek.bind(this),

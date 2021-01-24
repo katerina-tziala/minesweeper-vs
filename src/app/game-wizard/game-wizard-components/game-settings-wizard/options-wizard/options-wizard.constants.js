@@ -8,9 +8,6 @@ export const SETTINGS_PROPERTIES = {
     "wrongFlagHint",
     "marks",
     "openStrategy",
-    "sneakPeek",
-    "sneakPeekDuration",
-    "sneakPeeksLimit",
   ],
   detect: ["unlimitedFlags", "wrongFlagHint", "tileRevealing", "marks"],
   parallel: [
@@ -18,19 +15,13 @@ export const SETTINGS_PROPERTIES = {
     "marks",
     "wrongFlagHint",
     "openCompetition",
-    "sneakPeek",
-    "sneakPeekDuration",
-    "sneakPeeksLimit",
   ],
 };
 
 export const FIELD_NAME = {
   tileFlagging: "tileFlagging",
   openStrategy: "openStrategy",
-  openCompetition: "openCompetition",
-  sneakPeek: "sneakPeek",
-  sneakPeekDuration: "sneakPeekDuration",
-  sneakPeeksLimit: "sneakPeeksLimit"
+  openCompetition: "openCompetition"
 };
 
 export const FIELDS_BASED_ON_STRATEGY = [
@@ -38,25 +29,8 @@ export const FIELDS_BASED_ON_STRATEGY = [
   "wrongFlagHint",
   "marks",
   "openStrategy",
-  "openCompetition",
-  "sneakPeek"
+  "openCompetition"
 ];
-
-export const SNEAK_PEEK_NUMBER_INPUTS = [
-  "sneakPeekDuration",
-  "sneakPeeksLimit"
-];
-
-export const LIMITS = {
-  sneakPeekDuration: {
-    max: 10,
-    min: 3,
-  },
-  sneakPeeksLimit: {
-    max: 99,
-    min: 1,
-  },
-};
 
 export const CONTENT = {
   title: "game options",

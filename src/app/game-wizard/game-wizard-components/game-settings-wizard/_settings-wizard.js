@@ -67,14 +67,24 @@ export class SettingsWizard {
     return enumValue;
   }
 
+  updateSettings(params) {
+    if (params.valid) {
+      this.settings[params.name] = params.value;
+    }
+  }
+
   emitChanges() {
     this.onSubmit(this.data);
   }
 
+  get isValid() {
+    return this.inputsGroup.isValid;
+  }
+  
   get data() {
     return {
       name: this.name,
-      valid: this.inputsGroup.isValid,
+      valid: this.isValid,
       value: this.settings,
     };
   }

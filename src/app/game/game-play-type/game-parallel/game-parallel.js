@@ -32,8 +32,14 @@ export class GameParallel extends Game {
   }
 
   #setSneakPeekController() {
-    const sneakPeekAllowed = !this.optionsSettings.openCompetition && this.optionsSettings.sneakPeek;
-    const sneakPeekSettings = new SneakPeekSettings(sneakPeekAllowed, this.optionsSettings.sneakPeekDuration, this.optionsSettings.sneakPeeksLimit);
+    // const sneakPeekAllowed = !this.optionsSettings.openCompetition && this.optionsSettings.sneakPeek;
+    // const sneakPeekSettings = new SneakPeekSettings(sneakPeekAllowed, this.optionsSettings.sneakPeekDuration, this.optionsSettings.sneakPeeksLimit);
+    const sneakPeekSettings = new SneakPeekSettings();
+    sneakPeekSettings.applied = !this.optionsSettings.openCompetition ? this.optionsSettings.sneakPeekSettings.applied : false;
+    sneakPeekSettings.update(this.optionsSettings.sneakPeekSettings);
+  //sneakPeekSettings
+  
+  
     this.#SneakPeekController = new SneakPeekCompetitionController(sneakPeekSettings, this.#onSneakPeek.bind(this), this.#onSneakPeekEnd.bind(this));
   }
 
