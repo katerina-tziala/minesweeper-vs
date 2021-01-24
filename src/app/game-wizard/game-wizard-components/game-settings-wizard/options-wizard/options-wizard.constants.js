@@ -18,6 +18,8 @@ export const SETTINGS_PROPERTIES = {
   ],
 };
 
+export const ALLOW_SNEAK_PEEK_SETTINGS = ["clear", "parallel"];
+
 export const FIELD_NAME = {
   tileFlagging: "tileFlagging",
   openStrategy: "openStrategy",

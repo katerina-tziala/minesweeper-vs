@@ -1,21 +1,15 @@
 "use strict";
-import { valueDefined } from "~/_utils/validator";
-import { Switcher, NumberInput } from "UserInputs";
-
-import { clone } from "~/_utils/utils.js";
-
+import { Switcher } from "UserInputs";
 import { OptionsSettings } from "GameModels";
-
 import { SettingsWizard } from "../_settings-wizard";
 import { WIZARD_NAME } from "../_settings-wizard.constants";
 
 import {
   SETTINGS_PROPERTIES,
   FIELD_NAME,
-  LIMITS,
   CONTENT,
   FIELDS_BASED_ON_STRATEGY,
-  SNEAK_PEEK_NUMBER_INPUTS
+  ALLOW_SNEAK_PEEK_SETTINGS
 } from "./options-wizard.constants";
 
 
@@ -87,8 +81,8 @@ export class OptionsWizard extends SettingsWizard {
         this.inputsGroup.controllers = controller;
       }
     });
-    
-    if (this.settings.sneakPeekSettings) {
+
+    if (this.settings && this.settings.vsMode && ALLOW_SNEAK_PEEK_SETTINGS.includes(this.settings.vsMode)) {
       this.sneakPeekWizard = new SneakPeekWizard(
         this.#onSneakPeekSettingsChange.bind(this),
         this.settings.sneakPeekSettings,
