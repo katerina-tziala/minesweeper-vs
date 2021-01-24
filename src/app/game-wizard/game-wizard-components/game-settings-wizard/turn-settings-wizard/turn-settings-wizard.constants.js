@@ -10,7 +10,7 @@ export const FIELD_NAME = {
 export const BOUNDARIES = {
   missedTurnsLimit: {
     max: 10,
-    min: 0,
+    min: 1,
   },
   turnDuration: {
     max: 90,

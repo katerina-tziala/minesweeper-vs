@@ -30,19 +30,21 @@ export class TurnSettings extends AppModel {
       // this.turnDuration = 30;
       // this.missedTurnsLimit = 10;
       // this.consecutiveTurns = false;
-    } else {
-      this.turnDuration = 0;
-      this.missedTurnsLimit = 0;
-      this.consecutiveTurns = false;
+      return;
     }
+    this.#setSettingsWhenNoTurnTimer();
   }
 
   update(updateData) {
     super.update(updateData);
     if (!this.turnTimer) {
-      this.turnDuration = 0;
-      this.missedTurnsLimit = 0;
-      this.consecutiveTurns = false;
+      this.#setSettingsWhenNoTurnTimer();
     }
+  }
+
+  #setSettingsWhenNoTurnTimer() {
+    this.turnDuration = 0;
+    this.missedTurnsLimit = 0;
+    this.consecutiveTurns = false;
   }
 }
