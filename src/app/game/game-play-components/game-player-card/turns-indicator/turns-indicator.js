@@ -38,7 +38,7 @@ export class TurnsIndicator {
     for (let index = 1; index <= player.allowedTurns; index++) {
       const styles = TurnsIndicator.getIndicatorStyles(player, index);
       const turnIndicator = ElementGenerator.generateContainer(styles);
-      turnsContainer.append(turnIndicator);
+      fragment.append(turnIndicator);
     }
   
     return fragment;
