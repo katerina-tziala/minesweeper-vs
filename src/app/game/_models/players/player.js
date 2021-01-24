@@ -35,9 +35,9 @@ export class Player extends AppModel {
     this.maxAllowedFlags = maxAllowedFlags;
     this.allowedTurns = allowedTurns;
     this.turn = false;
-    this.missedTurns = undefined;
     this.moves = 0;
     this.lostGame = false;
+    this.resetMissedTurns();
     // minefield statistics
     this.redundantFlagsPositions = [];
     this.detectedMinesPositions = [];
@@ -82,7 +82,7 @@ export class Player extends AppModel {
   }
 
   resetMissedTurns() {
-    this.missedTurns = undefined;
+    this.missedTurns = !this.unlimitedTurns ? 0 : undefined;
   }
 
   increaseMissedTurns() {

@@ -61,7 +61,7 @@
 
 @mixin setRevealedButtonTheming($theme) {
   .tile-button.tile-button--revealed {
-    $color: rgba(theming.getThemeColor($theme, "board-button-background"), 0.6);
+    $color: rgba(theming.getThemeColor($theme, "board-button-background"), 0.5);
     background-color: $color;
     border-color: $color;
     @include wronglyFlaggedBorders($theme, 0.5);
