@@ -6,6 +6,7 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-message-view-helper.co
 import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
 
 import { GameResults } from "./game-results/game-results";
+import {Confetti} from "~/components/confetti/confetti";
 export class GameMessageViewHelper {
 
   static generateContainer() {
@@ -66,11 +67,17 @@ export class GameMessageViewHelper {
       GameMessageViewHelper.displayMessage(message).then(messageBox => {
         console.log("throw confetti", "load results module");
         // throw confetti
+        const confetti = new Confetti();
+        confetti.generateView();
+        
         const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
           GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
+          console.log("remove confetti");
         });
+
         messageBox.append(closeBnt);
         messageBox.append(GameResults.generateView(gameResults));
+       
       }).catch(() => reject());
     });
 
