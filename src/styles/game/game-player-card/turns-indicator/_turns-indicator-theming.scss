@@ -18,6 +18,11 @@
       background-color: theming.getThemeColor($theme, "error-primary");
     }
   }
+
+  .allowed-turns--infinite {
+    background-color: theming.getThemeColor($theme, "theme-secondary-intense");
+    color: theming.getThemeColor($theme, "game-card-details-intense");
+  }
 }
 
 @mixin setTheming() {

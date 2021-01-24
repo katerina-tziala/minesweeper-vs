@@ -6,7 +6,7 @@ export const DOM_ELEMENT_CLASS = {
   flagState: "state-flag",
   revealState: "state-reveal",
   allowedFlags: "allowed-flags",
-  allowedFlagsInfinite: "allowed-flags--infinite",
+  allowedFlagsInfinite: "allowed-flags--infinite"
 };
 
 export const DOM_ELEMENT_ID = {

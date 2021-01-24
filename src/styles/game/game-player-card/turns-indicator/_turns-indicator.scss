@@ -33,6 +33,19 @@ $container-size: 84;
   transform-origin: 0 100%;
 }
 
-
+.allowed-turns--infinite {
+  position: absolute;
+  bottom: 0px;
+  text-align: center;
+  height: 12px;
+  width: 20px;
+  overflow: hidden;
+  font-weight: 900;
+  &::after {
+    content: "\221E";
+    font-size: 18px;
+    line-height: 12px;
+  }
+}
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include turns-indicator-theming.setTheming();

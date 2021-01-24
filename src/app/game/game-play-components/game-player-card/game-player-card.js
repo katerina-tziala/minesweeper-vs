@@ -63,9 +63,7 @@ export class GamePlayerCard {
     const container = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.playerSection,
     ]);
-    if (!player.unlimitedTurns) {
-      container.append(TurnsIndicator.generate(player));
-    }
+    container.append(TurnsIndicator.generate(player));
     const avatar = UserAvatar.generate(player.colorType, player.isBot);
     container.append(avatar);
     return container;

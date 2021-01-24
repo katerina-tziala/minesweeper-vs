@@ -5,6 +5,7 @@ export const DOM_ELEMENT_CLASS = {
   indicator: "turn-indicator-container",
   indicatorOn: "turn-indicator--on",
   indicatorOff: "turn-indicator--off",
+  allowedTurnsInfinite: "allowed-turns--infinite"
 };
 
 export const DOM_ELEMENT_ID = {

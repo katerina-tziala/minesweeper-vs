@@ -13,7 +13,6 @@
   display: block;
 }
 
-
 .state-flag {
   @extend ._state-section-container;
   font-size: 1.6rem;
@@ -47,21 +46,22 @@
   position: absolute;
   font-size: 11px;
   font-weight: 900;
-  width: 24px;
+  width: 23px;
   height: 11px;
   line-height: 11px;
   text-align: center;
   bottom: -4px;
+  overflow: hidden;
 
   &.allowed-flags--infinite {
     &::after {
       content: "\221E";
+      display: block;
       font-size: 18px;
       line-height: 12px;
     }
   }
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include card-state-theming.setTheming();

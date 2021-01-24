@@ -15,16 +15,33 @@ export class TurnsIndicator {
     const turnsContainer = ElementGenerator.generateContainer([
       DOM_ELEMENT_CLASS.container,
     ]);
+
     ElementHandler.setID(
       turnsContainer,
       TurnsIndicator.getTurnsIndicatorID(player),
     );
+
+    if (!player.unlimitedTurns) {
+      turnsContainer.append(this.generateTurns(player));
+    } else {
+      const infinite = ElementGenerator.generateContainer([
+        DOM_ELEMENT_CLASS.allowedTurnsInfinite,
+      ]);
+      turnsContainer.append(infinite);
+    }
+    return turnsContainer;
+  }
+
+  static generateTurns(player) {
+    const fragment = document.createDocumentFragment();
+
     for (let index = 1; index <= player.allowedTurns; index++) {
       const styles = TurnsIndicator.getIndicatorStyles(player, index);
       const turnIndicator = ElementGenerator.generateContainer(styles);
       turnsContainer.append(turnIndicator);
     }
-    return turnsContainer;
+  
+    return fragment;
   }
 
   static getIndicatorBaseStyles(position) {
