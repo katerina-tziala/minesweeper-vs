@@ -37,4 +37,12 @@ export class TurnSettings extends AppModel {
     }
   }
 
+  update(updateData) {
+    super.update(updateData);
+    if (!this.turnTimer) {
+      this.turnDuration = 0;
+      this.missedTurnsLimit = 0;
+      this.consecutiveTurns = false;
+    }
+  }
 }

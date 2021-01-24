@@ -35,7 +35,7 @@ export class Player extends AppModel {
     this.maxAllowedFlags = maxAllowedFlags;
     this.allowedTurns = allowedTurns;
     this.turn = false;
-    this.missedTurns = 0;
+    this.missedTurns = undefined;
     this.moves = 0;
     this.lostGame = false;
     // minefield statistics
@@ -56,6 +56,9 @@ export class Player extends AppModel {
   }
 
   get turnsLeft() {
+    if (!valueDefined(this.missedTurns)) {
+      return this.allowedTurns;
+    }
     return this.allowedTurns - this.missedTurns;
   }
 
@@ -65,7 +68,10 @@ export class Player extends AppModel {
   }
 
   get exceededTurnsLimit() {
-    if (!this.allowedTurns) {
+    if (this.unlimitedTurns) {
+      return false;
+    }
+    if (!valueDefined(this.missedTurns)) {
       return false;
     }
     return this.allowedTurns === this.missedTurns;
@@ -76,11 +82,18 @@ export class Player extends AppModel {
   }
 
   resetMissedTurns() {
-    this.missedTurns = 0;
+    this.missedTurns = undefined;
   }
 
   increaseMissedTurns() {
-    this.missedTurns++;
+    if (!valueDefined(this.missedTurns)) {
+      this.missedTurns = 0;
+      return;
+    }
+
+    if (!this.exceededTurnsLimit && valueDefined(this.missedTurns)) {
+      this.missedTurns++;
+    }
   }
 
   /* CHECKS BASED ON MINEFIELD ACTIONS */

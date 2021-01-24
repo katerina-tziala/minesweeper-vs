@@ -152,6 +152,7 @@ export class GameVS extends GameDefault {
   onRoundTimerEnd() {
     this.playerOnTurn.increaseMissedTurns();
     this.playerOnTurn.checkTurnsLimit();
+
     this.updatedPlayerCard({ turnsUpdate: true }).then(() => {
       if (this.playerOnTurn.exceededTurnsLimit) {
         this.onGameOver(GameOverType.ExceededTurnsLimit);

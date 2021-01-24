@@ -59,9 +59,10 @@ export class GameWizardView {
   }
 
   static updateMainSection(content) {
-    GameWizardView.mainSection.then(mainSection => {
+    return GameWizardView.mainSection.then(mainSection => {
       ElementHandler.clearContent(mainSection);
       mainSection.append(content);
+      return;
     });
   }
 

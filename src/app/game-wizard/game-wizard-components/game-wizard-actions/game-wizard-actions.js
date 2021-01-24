@@ -11,6 +11,7 @@ export class GameWizardActions {
   #previousDisabled = true;
   #submissionDisabled = false;
   #nextButtonOnActions = true;
+  #resetDisabled = true;
   #invite;
   #onReset;
   #onSubmit;
@@ -33,6 +34,10 @@ export class GameWizardActions {
 
   get #backButton() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.backButton);
+  }
+
+  get #resetButton() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.resetButton);
   }
 
   #generateActionButtonsWithStepChange() {
@@ -78,7 +83,27 @@ export class GameWizardActions {
 
   #generateResetButton() {
     const button = ElementGenerator.generateButton(BUTTONS.reset, this.#onResetAction.bind(this));
+    ElementHandler.setID(button, DOM_ELEMENT_ID.resetButton);
+    ElementHandler.setDisabled(button, this.#resetDisabled);
     return button;
+  }
+
+  updateResetButtonState(disabled) {
+    if (this.#resetDisabled !== disabled) {
+      this.#resetDisabled = disabled;
+      return this.#resetButton.then((button) => {
+        ElementHandler.setDisabled(button, this.#resetDisabled);
+        return;
+      });
+    }
+    return Promise.resolve();
+  }
+
+  updateResetAndSubmissionButton(resetDisabled, submissionDisabled) {
+    return Promise.all([
+      this.updateResetButtonState(resetDisabled),
+      this.updateSubmissionButtonState(submissionDisabled),
+    ]);
   }
 
   #onResetAction() {
@@ -158,9 +183,9 @@ export class GameWizardActions {
     return Promise.all(updates);
   }
 
-  updateSubmissionButtonState(newState) {
-    if (this.#submissionDisabled !== newState) {
-      this.#submissionDisabled = newState;
+  updateSubmissionButtonState(disabled) {
+    if (this.#submissionDisabled !== disabled) {
+      this.#submissionDisabled = disabled;
       return this.#submissionButton.then(button => {
         ElementHandler.setDisabled(button, this.#submissionDisabled);
         return;

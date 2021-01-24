@@ -7,6 +7,7 @@ import {
 export const DOM_ELEMENT_ID = {
   submitButton: "game-wizard-action-button__submit",
   backButton: "game-wizard-action-button__back",
+  resetButton: "game-wizard-action-button__reset",
 };
 
 export const DOM_ELEMENT_CLASS = {

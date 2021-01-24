@@ -100,11 +100,23 @@ export class GameWizardVS extends GameWizard {
     });
   }
 
+  resetStepValues() {
+    if (this.wizardStepName === WIZARD_NAME.optionsSettings) {
+      this.gameParams[this.wizardStepName] = this.defaultGameParams[WIZARD_NAME.vsModeSettings];
+      return;
+    }
+    this.gameParams[this.wizardStepName] = this.defaultGameParams[this.wizardStepName];
+  }
+
   onReset() {
-    //TO CHECK ALL STEPS
     this.resetStepValues();
     this.removeController(this.wizardStepName);
-    this.rerenderCurrentMainView();
+    this.rerenderCurrentMainView().then(() => {
+      if (this.wizardStepName === WIZARD_NAME.vsModeSettings) {
+        this.wizardNavigation.updateOptionsOnVSModeChange(false);
+      }
+      this.wizardActions.updateResetAndSubmissionButton(true, false);
+    });
   }
 
   #keepStepController() {
@@ -136,18 +148,11 @@ export class GameWizardVS extends GameWizard {
     );
     this.settingsControllers = controller;
   }
-
+  
   onVSModeChange(params) {
     super.onGameSettingsChange(params);
     this.setOptionsBasedOnVSMode(params);
-
     const parallelSelected = params.value.vsMode === GameVSMode.Parallel;
-
-    if (parallelSelected) {
-      delete this.gameParams[GameVSMode.Parallel];
-      delete this.defaultGameParams[GameVSMode.Parallel];
-    }
-
     this.wizardNavigation.updateOptionsOnVSModeChange(parallelSelected);
   }
 
@@ -186,15 +191,6 @@ export class GameWizardVS extends GameWizard {
     return super.getSettingsController(wizardName);
   }
 
-  resetStepValues() {
-    const wizardName = this.wizardStepName;
-    if (wizardName === WIZARD_NAME.optionsSettings) {
-      this.gameParams[wizardName] = this.defaultGameParams[WIZARD_NAME.vsModeSettings];
-    } else {
-     // delete this.gameParams[wizardName];
-      this.gameParams[wizardName] = this.defaultGameParams[wizardName];
-    }
-  }
 
   generateMainContent() {
     const fragment = document.createDocumentFragment();

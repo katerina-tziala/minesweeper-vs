@@ -71,7 +71,9 @@ export class OptionsSettings extends AppModel {
 
   update(updateData) {
     super.update(updateData);
-    if (updateData && this.vsMode && this.vsMode !== GameVSMode.Detect) {
+    if (!this.tileFlagging) {
+      this.initOptionsBasedOnTileFlagging();
+    } else if (this.vsMode && this.vsMode !== GameVSMode.Detect) {
       this.updateSneakPeeks(updateData);
     } else {
       this.sneakPeekSettings = undefined;
@@ -80,11 +82,13 @@ export class OptionsSettings extends AppModel {
 
   updateSneakPeeks(updateData) {
     this.sneakPeekSettings = new SneakPeekSettings();
-    if (updateData.sneakPeekSettings) {
+    if (updateData && updateData.sneakPeekSettings) {
       this.sneakPeekSettings.update(updateData.sneakPeekSettings);
     }
     if (this.sneakPeekDisabled) {
       this.sneakPeekSettings.applied = false;
+    }
+    if (!this.sneakPeekSettings.applied) {
       this.sneakPeekSettings.updateBasedOnApplied();
     }
   }

@@ -8,6 +8,12 @@ export class VSDashboardController {
   constructor(wrongFlagHint = false, tileFlagging = false) {
     this.wrongFlagHint = wrongFlagHint;
     this.tileFlagging = tileFlagging;
+    this.turnsIndicator = false;
+  }
+
+
+  setTurnsIndicaror(players) {
+    this.turnsIndicator = players.every(player => player.turnsLeft)
   }
 
   generateView(player, opponent, boardActions) {

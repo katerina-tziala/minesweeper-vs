@@ -27,6 +27,7 @@ export class GameWizardOriginal extends GameWizard {
     this.initGameParams();
     this.#init();
     this.rerenderCurrentMainView();
+    this.wizardActions.updateResetAndSubmissionButton(true, false);
   }
 
   generateMainContent() {

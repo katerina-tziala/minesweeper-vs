@@ -1,19 +1,17 @@
 "use strict";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-
 import { GroupController } from "~/_utils/group-controller";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import { clone, randomValueFromArray } from "~/_utils/utils.js";
-import { Player } from "GameModels";
-
+import { LevelSettings, OptionsSettings, TurnSettings, Player } from "GameModels";
 import {
   WIZARD_NAME,
   LevelWizard,
   OptionsWizard,
   GameWizardView
 } from "GameWizardComponents";
-
 import { TITLES } from "./_game-wizard.constants";
+
 
 export class GameWizard {
   #_gameParams;
@@ -49,18 +47,13 @@ export class GameWizard {
     return TITLES[this.gameType];
   }
 
-  #saveGameSetup() {
-    const gameParamsToSave = clone(this.gameParams);
-    LocalStorageHelper.setGameSetUp(this.gameType, clone(gameParamsToSave));
-    return Promise.resolve();
-  }
-
   get gameSetUp() {
     const gameSetUp = this.gameParams;
     gameSetUp.type = this.gameType;
+    gameSetUp.players = [this.player];
     gameSetUp.levelSettings.setMinesPositions();
     gameSetUp.optionsSettings.initOptionsBasedOnTileFlagging();
-    gameSetUp.players = [this.player];
+    gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map((player) => player.id));
     return gameSetUp;
   }
 
@@ -94,10 +87,31 @@ export class GameWizard {
     return this.#SettingsControllers.controllers;
   }
 
+  getDefaultLevelSettings(updateData) {
+    const levelSettings = new LevelSettings();
+    levelSettings.update(updateData);
+    return levelSettings;
+  }
+
+  getDefaultOptionsSettings(updateData) {
+    const optionsSettings = new OptionsSettings();
+    optionsSettings.update(updateData);
+    return optionsSettings;
+  }
+
+  getDefaultTurnsSettings(updateData) {
+    const turnSettings = new TurnSettings();
+    turnSettings.update(updateData);
+    return turnSettings;
+  }
+
   initGameParams() {
     this.#_gameParams = {};
     const currentParams = LocalStorageHelper.getGameSetUp(this.gameType);
     if (currentParams) {
+      currentParams.levelSettings = this.getDefaultLevelSettings(currentParams.levelSettings);
+      currentParams.optionsSettings = this.getDefaultOptionsSettings(currentParams.optionsSettings);
+      currentParams.turnSettings = this.getDefaultTurnsSettings(currentParams.turnSettings);
       this.#_gameParams = currentParams;
     }
   }
@@ -130,10 +144,21 @@ export class GameWizard {
 
   onGameSettingsChange(params) {
     const validSettings = params.valid;
-    if (validSettings) {
+    if (params.valid) {
       this.gameParams = params;
     }
-    this.wizardActions.updateSubmissionButtonState(!validSettings);
+
+    this.wizardActions.updateResetAndSubmissionButton(false, !validSettings);
+  }
+
+  #saveGameSetup() {
+    const gameParamsToSave = {};
+    Object.keys(this.gameParams).forEach(key => {
+      gameParamsToSave[key] = clone(this.gameParams[key]);
+    });
+
+    LocalStorageHelper.setGameSetUp(this.gameType, gameParamsToSave);
+    return Promise.resolve();
   }
 
   onSubmit() {
@@ -141,7 +166,6 @@ export class GameWizard {
       return this.collapseWizard();
     }).then(() => {
       const gameSetUp = this.gameSetUp;
-      gameSetUp.playerStartID = randomValueFromArray(gameSetUp.players.map((player) => player.id));
       this.#submitGame(clone(gameSetUp));
     });
   }

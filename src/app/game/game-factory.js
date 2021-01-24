@@ -31,7 +31,6 @@ export class GameFactory {
   static getOptionsSettings(settingsData) {
     const settings = new OptionsSettings();
     settings.update(settingsData);
-    settings.initOptionsBasedOnTileFlagging();
     return settings;
   }
 
