@@ -2,10 +2,10 @@
 import { timeoutPromise } from "~/_utils/utils";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { GameMessageBox } from "./game-message-box/game-message-box";
-import { GameResults } from "./game-results/game-results";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-message-view-helper.constants";
 import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
 
+import { GameResults } from "./game-results/game-results";
 export class GameMessageViewHelper {
 
   static generateContainer() {
@@ -64,7 +64,7 @@ export class GameMessageViewHelper {
   static displayGameOverMessage(message, gameResults) {
     return new Promise((resolve, reject) => {
       GameMessageViewHelper.displayMessage(message).then(messageBox => {
-        // console.log(gameResults);
+        console.log("throw confetti", "load results module");
         // throw confetti
         const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
           GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());

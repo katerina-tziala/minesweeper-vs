@@ -172,7 +172,7 @@ export class Game extends AppModel {
   }
 
   get gamePlayersResults() {
-    return this.players.map(player => this.getPlayerReportData(player));
+    return this.players.map(player => player.reportData);
   }
 
   get gameResults() {
