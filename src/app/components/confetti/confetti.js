@@ -16,6 +16,10 @@ export class Confetti {
     const canvas = document.createElement('canvas');
     ElementHandler.setID(canvas, "confetti-canvas")
     document.body.appendChild(canvas);
+
+    console.log(window.innerWidth, window.innerHeight);
+   
+    
   }
 
 

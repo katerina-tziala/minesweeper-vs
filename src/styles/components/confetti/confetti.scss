@@ -12,4 +12,9 @@
   position: absolute;
   overflow: hidden;
   z-index: getIndex("confetti");
+
+  display: block;
+  pointer-events: none;
+
+
 }
