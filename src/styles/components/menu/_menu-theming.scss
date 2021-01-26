@@ -1,14 +1,13 @@
 @use "sass:list";
 @use "../../theming/theming";
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @mixin setMenuIconThemeStyles($theme) {
   $background: theming.getThemeColor($theme, "theme-primary");
   $color: theming.getThemeColor($theme, "theme-secondary");
   @include theming.setBoxTheming($background, $color);
 }
 
-@mixin setMenuThemeStyles($theme) {
+@mixin setThemeStyles($theme) {
   .menu-item {
     @include theming.setThemeCard($theme);
     @include theming.setThemeBoxShadow($theme);
@@ -16,15 +15,10 @@
     &:hover,
     &:focus {
       color: theming.getThemeColor($theme, "theme-secondary-intense");
-      // border-color: theming.getThemeColor($theme, "theme-primary-intense");
-
       background-color: theming.getThemeColor($theme, "theme-primary-intense");
       
       > .menu-item-icon {
-        background-color: theming.getThemeColor(
-          $theme,
-          "theme-secondary"
-        );
+        background-color: theming.getThemeColor($theme, "theme-secondary");
         color: theming.getThemeColor($theme, "theme-primary-intense");
       }
     }
@@ -32,5 +26,15 @@
 
   .menu-item-icon {
     @include setMenuIconThemeStyles($theme);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
   }
 }

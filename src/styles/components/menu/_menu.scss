@@ -93,12 +93,6 @@ $menu-content-height: 65px;
   }
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.theme-light {
-  @include menu-theming.setMenuThemeStyles("light");
-}
-
-.theme-dark {
-  @include menu-theming.setMenuThemeStyles("dark");
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include menu-theming.setTheming();
