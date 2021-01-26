@@ -66,3 +66,21 @@ export const timeoutPromise = (milliSeconds = 500, value) => {
   return new Promise((resolve) =>
     setTimeout(() => resolve(value), milliSeconds));
 };
+
+export const randomFromRange = (from, to) => {
+  return Math.round(Math.random() * (to - from + 1) + from);
+};
+
+export const maxFromArray = (array) => {
+  if (!array || !array.length) {
+    return undefined;
+  }
+  return Math.max(...array);
+};
+
+export const minFromArray = (array) => {
+  if (!array || !array.length) {
+    return undefined;
+  }
+  return Math.min(...array);
+};

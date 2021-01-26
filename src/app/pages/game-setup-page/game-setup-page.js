@@ -36,35 +36,41 @@ export class GameSetupPage extends Page {
   }
 
   renderPage(mainContainer) {
-    const confetti = new Confetti();
-    confetti.generateView();
+  
     
-    // const mg = new GameMessageVSController();
+    const mg = new GameMessageVSController();
 
 
-    // const player = new Player("kate", "Kate");
-    // player.colorType = "2";
-    // const bot = new BotPlayer();
-    // bot.colorType = "3";
-    // mainContainer.append(mg.generateView());
+     const player = new Player("kate", "Kate");
+    player.colorType = "2";
+    const bot = new BotPlayer();
+    bot.colorType = "3";
+    bot.lostGame = true;
+    mainContainer.append(mg.generateView());
+
+
+    // const confetti = new Confetti();
+    // confetti.dropConfetti([player.colorType, bot.colorType]);
+
+
     this.hideLoader();
 
 
-    // const gameResults = {
-    //   gameInfo: {
-    //     duration: {
-    //       hours: 0,
-    //       minutes: 7,
-    //       seconds: 35
-    //     },
-    //     draw: false,
-    //     gameOverType: "clearedMinefield"
-    //   },
-    //   playersResults: [player.reportData, bot.reportData],
-    //   reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "clearedMinefield", "detonatedMine"]
-    // }
+    const gameResults = {
+      gameInfo: {
+        duration: {
+          hours: 0,
+          minutes: 7,
+          seconds: 35
+        },
+        draw: false,
+        gameOverType: "clearedMinefield"
+      },
+      playersResults: [player.reportData, bot.reportData],
+      reportResults: ["moves", "clearedTiles", "detectedMines", "flags", "marks", "clearedMinefield", "detonatedMine"]
+    }
 
-    // mg.displayGameOverMessage(gameResults);
+    mg.displayGameOverMessage(gameResults);
 
 
     return;

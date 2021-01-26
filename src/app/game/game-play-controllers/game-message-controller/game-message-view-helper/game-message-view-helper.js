@@ -6,7 +6,7 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./game-message-view-helper.co
 import { CLOSE_BTN } from "~/_constants/btn-icon.constants";
 
 import { GameResults } from "./game-results/game-results";
-import {Confetti} from "~/components/confetti/confetti";
+import { Confetti } from "~/components/confetti/confetti";
 export class GameMessageViewHelper {
 
   static generateContainer() {
@@ -62,22 +62,35 @@ export class GameMessageViewHelper {
     });
   }
 
+  static confettiColors(gameResults) {
+    if (gameResults.playersResults.length !== 2) {
+      return [];
+    }
+    let playerColors = [];
+    if (gameResults.gameInfo.draw) {
+      playerColors = gameResults.playersResults.map(playerResults => playerResults.colorType);
+    } else {
+      const winner = gameResults.playersResults.find(playerResults => !playerResults.lostGame);
+      playerColors = [winner.colorType];
+    }
+    return playerColors;
+  }
+
   static displayGameOverMessage(message, gameResults) {
     return new Promise((resolve, reject) => {
       GameMessageViewHelper.displayMessage(message).then(messageBox => {
-        console.log("throw confetti", "load results module");
-        // throw confetti
-        // const confetti = new Confetti();
-        // confetti.generateView();
-        
+
+        const confetti = new Confetti();
+        confetti.drop(GameMessageViewHelper.confettiColors(gameResults));
+
         const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
           GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
-          console.log("remove confetti");
+          confetti.clear();
         });
 
         messageBox.append(closeBnt);
         messageBox.append(GameResults.generateView(gameResults));
-       
+
       }).catch(() => reject());
     });
 

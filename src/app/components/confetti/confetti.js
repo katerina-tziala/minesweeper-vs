@@ -1,149 +1,85 @@
 "use strict";
-
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONFETTI_COLORS, CONFIG } from "./confetti.constants";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 import "../../../styles/components/confetti/confetti.scss";
-import { ConfettiParticle } from "./confetti-particle";
 
+import { ElementHandler } from "HTML_DOM_Manager";
+import { DOM_ELEMENT_ID, COLOR_TYPES, CONFIG } from "./confetti.constants";
 import { randomValueFromArray } from "~/_utils/utils";
+import { ConfettiFlake } from "./confetti-flake/confetti-flake";
 export class Confetti {
-  #_gameId;
+  #colorTypes = COLOR_TYPES;
+  #confettiFlakes = [];
+  #updateRound = 0;
+  #height = 0;
+  #width = 0;
+  #confettiDropped = true;
+  #animationActive = false;
+  #start;
+  #animationTimer;
+  #duration = CONFIG.duration;
 
-  constructor() {
-    console.log("Confetti");
+  constructor() {}
 
-    this.colors = [];
-
-
-    this.confettiFlakes = [];
-    this.animationActive = false;
-    this.animationCompleted = false;
-    this.width = 0;
-    this.height = 0;
-
-    this.particlesNumber = 20;
-    this.density = Math.random() * this.particlesNumber;
-
-    this.angle = 0;
-    this.tiltAngle = 0;
-
-    this.deactivationTimerHandler = undefined;
-    this.reactivationTimerHandler = undefined;
-    this.animationHandler = undefined;
+  get #flakeColorType() {
+    return randomValueFromArray(this.#colorTypes);
   }
 
-  get #newFlakeVerticalPosition() {
-    return Math.random() * this.height;
+  get #flakeDensity() {
+    return Math.random() * CONFIG.numberOfFlakes + Math.ceil(CONFIG.numberOfFlakes / 2);
   }
 
-  get #newFlakeHorizontalPosition() {
-    return Math.random() * this.width;
+  get #newFlakeY() {
+    return Math.random() * this.#height;
   }
 
-  get #initialFlakeVerticalPosition() {
-    return (Math.random() * this.height) - this.height;
+  get #newFlakeX() {
+    return Math.random() * this.#width;
   }
 
-  get #newFlakeDensity() {
-   // this.d = (Math.random() * mp) + 90; //density;
-    return Math.random() * this.particlesNumber;
+  get #initialFlakeY() {
+    return this.#newFlakeY - this.#height;
   }
 
-  setColors(colorTypes, theme = LocalStorageHelper.selectedTheme) {
-    const colorsBasedOnTheme = CONFETTI_COLORS[theme];
-    const colorKeys = colorTypes.length ? colorTypes : Object.keys(colorsBasedOnTheme);
-    const colors = [];
-    for (const [key, value] of Object.entries(colorsBasedOnTheme)) {
-      if (colorKeys.includes(key)) {
-        colors.push(value);
-      }
-    }
-    this.colors = colors;
+  get #angleDegrees() {
+    return this.#updateRound / CONFIG.degreesExtractor;
   }
 
-
-  #init(colorTypes) {
-    this.setColors(colorTypes);
-    this.animationCompleted = false;
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    this.confettiFlakes = this.#generateParticles();
+  #setColorTypes(colorTypes) {
+    this.#colorTypes = (colorTypes && colorTypes.length) ? colorTypes : COLOR_TYPES;
   }
 
-  #generateParticles() {
+  #generateFlakes() {
     const confettiFlakes = [];
-    for (let index = 0; index < this.particlesNumber; index++) {
-      const particleColor = randomValueFromArray(this.colors);
-      const particle = new ConfettiParticle(particleColor, this.#newFlakeHorizontalPosition, this.#initialFlakeVerticalPosition, this.#newFlakeDensity);
-      confettiFlakes.push(particle);
+
+    for (let index = 0; index < CONFIG.numberOfFlakes; index++) {
+      const flake = new ConfettiFlake(this.#newFlakeX, this.#initialFlakeY, this.#flakeDensity, this.#flakeColorType);
+      confettiFlakes.push(flake);
     }
+
     return confettiFlakes;
   }
 
-  get #canvasContext() {
-    return ElementHandler.getByID(DOM_ELEMENT_ID.canvas).then(canvas => {
-      canvas.width = this.width;
-      canvas.height = this.height;
-      return canvas.getContext("2d")
-    });
+  #clearAnimationTimer() {
+    this.#confettiDropped = true;
+    clearTimeout(this.#animationTimer);
+    this.#animationTimer = undefined;
   }
 
-  get #canvasClearedContext() {
-    return this.#canvasContext.then(canvasContext => {
-      canvasContext.clearRect(0, 0, this.width, this.height);
-      return canvasContext;
-    });
+  #init(colorTypes) {
+    this.#clearAnimationTimer();
+    this.#setColorTypes(colorTypes);
+    this.#width = window.innerWidth;
+    this.#height = window.innerHeight;
+    this.#animationActive = false;
+    this.#confettiDropped = true;
+    this.#confettiFlakes = this.#generateFlakes();
   }
-
-
-
-  generateView() {
-    const canvas = document.createElement("canvas");
-    ElementHandler.setID(canvas, DOM_ELEMENT_ID.canvas);
-    document.body.appendChild(canvas);
-    this.dropConfetti();
-  }
-
-
-
-  #drawConfetti() {
-    return this.#canvasClearedContext.then(canvasContext => {
-      this.confettiFlakes.forEach(flake => flake.draw(canvasContext));
-      return;
-    });
-  }
-
-  dropConfetti(colorTypes = []) {
-    this.#init(colorTypes);
-
-    this.stop().then(() => {
-
-      console.log("dropConfetti");
-
-
-
-      console.log("stopped");
-      this.angle = 0;
-      this.tiltAngle = 0;
-      this.animationCompleted = false;
-      this.animationActive = true;
-      this.#startConfetti();
-    });
-  }
-
-
 
   #startConfetti() {
-    this.start = undefined;
-    this.animationHandler = this.#setConfettiAnimation();
-    // this.confettiFlakes = [];
-    // this.confettiFlakes.push(new ConfettiParticle(randomValueFromArray(this.colors), 10, 10, this.#newFlakeDensity));
-    // this.confettiFlakes.push(new ConfettiParticle(randomValueFromArray(this.colors), this.width, this.height, this.#newFlakeDensity));
-    // this.#drawConfetti();
-   
-    // console.log(this.confettiFlakes);
+    this.#start = undefined;
+    this.#confettiDropped = false;
+    this.#animationActive = true;
+    this.#updateRound = 0;
+    this.#animationTimer = this.#setConfettiAnimation();
   }
 
   #setConfettiAnimation(callBack = this.#animateConfetti.bind(this)) {
@@ -152,141 +88,143 @@ export class Confetti {
       window.mozRequestAnimationFrame(callBack) ||
       window.oRequestAnimationFrame(callBack) ||
       window.msRequestAnimationFrame(callBack) ||
-      window.setTimeout(callBack, 1000 / 60);
-  }
-
-
-  // 
-
-  #animateConfetti(timestamp) {
-
-    if (this.animationCompleted) {
-      console.log("animationCompleted stooop");
-      // this.stop().then(() => {
-      //   console.log("stopped");
-      // });
-      return 0;
-    }
-
-    if (this.start === undefined) {
-      this.start = timestamp;
-    }
-
-    const elapsed = timestamp - this.start;
-
-    //console.log(elapsed);
-
-    this.#drawConfetti().then(() => {
-      this.#updateParticles();
-
-      if (elapsed >= 5000) { // Stop the animation after 2 seconds
-        this.animationActive = false;
-      }
-      
-      this.animationHandler = this.#setConfettiAnimation();
-    })
-
-  }
-
-
-
-
-  get #angleDegrees() {
-    return ;
-  }
-
-
-  #updateParticles() {
-    console.log("#updateParticles");
-    
-    let remainingFlakes = 0;
- 
-    
-    this.angle++;
-    this.tiltAngle++;
-
-
-    this.confettiFlakes.forEach((flake, index) => {
-      if (!this.animationActive && flake.isOnTopOfCanvas()) {
-        flake.setDroppedPosition(this.height);
-        return;
-      }
-
-      flake.updatePositionBasedOnAngle(this.#angleDegrees);
-
-      if (!flake.isDropped(this.height)) {
-        remainingFlakes++;
-      }
-    
-      this.#repositionFlakeInCanvas(flake, index);
-    });
-
-
-
-
-    if (remainingFlakes === 0) {
-      console.log("no remainingFlakes");
-      console.log(remainingFlakes);
-      this.#clearTimers();
-
-      console.log(this.height);
-      console.log(this.confettiFlakes);
-
-      this.animationCompleted = true;
-    }
-
+      window.setTimeout(callBack, CONFIG.drawFrame);
   }
 
   #flakeOutOfCanvas(flake) {
-    if (!this.animationActive) {
-      return false;
-    }
-    return flake.outOfCanvas(this.width, this.height);
+    return flake.outOfCanvas(this.#width, this.#height);
   }
 
   #repositionFlakeInCanvas(flake, index) {
+    if (!this.#animationActive) {
+      return;
+    }
+
     if (!this.#flakeOutOfCanvas(flake)) {
       return;
     }
 
     if (index % 3 > 0 || index % 2 == 0) { // 66.67% OF THE FLAKES
-      flake.enterFromTop(this.#newFlakeHorizontalPosition);
+      flake.enterFromTop(this.#newFlakeX);
       return;
     }
 
     if (Math.sin(this.#angleDegrees) > 0) { // ENTER FROM LEFT
-      flake.enterFromLeft(this.#newFlakeVerticalPosition);
+      flake.enterFromLeft(this.#newFlakeY);
       return;
     }
 
     // ENTER FROM RIGHT
-    flake.enterFromRight(this.width, this.#newFlakeVerticalPosition);
+    flake.enterFromRight(this.#width, this.#newFlakeY);
   }
 
-
-  #clearTimers() {
-    clearTimeout(this.reactivationTimerHandler);
-    this.reactivationTimerHandler = undefined;
-
-    clearTimeout(this.animationHandler);
-    this.animationHandler = undefined;
+  #animateConfetti(timestamp) {
+    if (this.#confettiDropped) {
+      this.#clearAnimationTimer();
+      return;
+    }
+    if (this.#start === undefined) {
+      this.#start = timestamp;
+    }
+    const elapsed = timestamp - this.#start;
+    this.#drawConfetti().then(() => {
+      this.#updateFlakes();
+      if (elapsed >= this.#duration) { // Stop the animation after 2 seconds
+        this.#animationActive = false;
+      }
+      this.#animationTimer = this.#setConfettiAnimation();
+    });
   }
 
+  #updateFlakes() {
+    this.#updateRound++;
+
+    let remainingFlakes = 0;
+    this.#confettiFlakes.forEach((flake, index) => {
+
+      if (!this.#animationActive && flake.onTopOfCanvas) {
+        flake.setDroppedPosition(this.#height);
+        return;
+      }
+
+      flake.updateBasedOnAngle(this.#angleDegrees);
+
+      if (!flake.isDropped(this.#height)) {
+        remainingFlakes++;
+      }
+
+      this.#repositionFlakeInCanvas(flake, index);
+    });
+
+    if (remainingFlakes === 0) {
+      this.clear();
+    }
+  }
+
+  drop(colorTypes = [], duration = CONFIG.duration) {
+    this.#duration = duration;
+    this.#init(colorTypes);
+
+    this.stop().then(() => {
+      return this.#initCanvas();
+    }).then(() => {
+      this.#startConfetti()
+    });
+  }
+
+  clear() {
+    return Promise.all([
+      this.stop(),
+      this.#removeCanvas()
+    ]);
+  }
 
   stop() {
-    this.#clearTimers();
-    this.animationCompleted = true;
-    return this.#canvasClearedContext.then(() => {
+    this.#clearAnimationTimer();
+    return this.#initializedCanvasContext.then(() => {
       return;
     }).catch(() => Promise.resolve());
   }
 
+  // INTERFACE
+  #createCanvas(container = document.body) {
+    const canvas = document.createElement("canvas");
+    ElementHandler.setID(canvas, DOM_ELEMENT_ID.canvas);
+    container.appendChild(canvas);
+    return Promise.resolve();
+  }
 
+  #initCanvas(container) {
+    return this.#removeCanvas().then(() => {
+      return this.#createCanvas(container);
+    });
+  }
 
+  #removeCanvas() {
+    return this.#canvas.then(canvas => canvas.remove()).catch(() => Promise.resolve());
+  }
 
-  
+  get #canvas() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.canvas).then(canvas => {
+      return canvas;
+    });
+  }
 
+  get #initializedCanvasContext() {
+    return this.#canvas.then(canvas => {
+      canvas.width = this.#width;
+      canvas.height = this.#height;
+      const canvasContext = canvas.getContext("2d");
+      canvasContext.clearRect(0, 0, this.#width, this.#height);
+      return canvasContext;
+    });
+  }
 
-
+  #drawConfetti() {
+    return this.#initializedCanvasContext.then(canvasContext => {
+      this.#confettiFlakes.forEach(flake => flake.draw(canvasContext));
+      return;
+    });
+  }
 
 }
