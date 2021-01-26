@@ -33,14 +33,13 @@ export class App {
     self.user = new User("kateID", "kate", null);
     // this.setInterface(PageType.Home);
 
-    //  this.setInterface();
-
+   // this.setInterface();
+    this.onHomeNavigation();
     //
     //this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
-     this.onGameSetUpNavigation(GameType.Bot);
-    // remove document listeners!!!
-
+    // this.onGameSetUpNavigation(GameType.Bot);
+   
     //this.onPlayGame(undefined);
 
   }

@@ -12,10 +12,14 @@
   .menu-item {
     @include theming.setThemeCard($theme);
     @include theming.setThemeBoxShadow($theme);
+
     &:hover,
     &:focus {
       color: theming.getThemeColor($theme, "theme-primary-intense");
       border-color: theming.getThemeColor($theme, "theme-primary-intense");
+
+      background-color: theming.getThemeColor($theme, "theme-primary-intense");
+      
       > .menu-item-icon {
         background-color: theming.getThemeColor(
           $theme,
