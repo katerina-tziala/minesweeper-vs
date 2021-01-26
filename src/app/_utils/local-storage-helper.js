@@ -1,5 +1,5 @@
 "use strict";
-
+import { Theme } from "~/_enums/app-settings.enums";
 export class LocalStorageHelper {
   static save(keyName, value) {
     localStorage.setItem(keyName, JSON.stringify(value));
@@ -20,6 +20,14 @@ export class LocalStorageHelper {
 
   static set appSettings(data) {
     LocalStorageHelper.save("appSettings", data);
+  }
+
+  static get selectedTheme() {
+    const settings =  LocalStorageHelper.appSettings;
+    if (!settings || !settings.theme) {
+      return Theme.Default;
+    }
+    return settings.theme;
   }
 
   static get appSettings() {

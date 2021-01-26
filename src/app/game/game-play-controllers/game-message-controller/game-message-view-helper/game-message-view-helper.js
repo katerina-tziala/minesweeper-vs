@@ -67,8 +67,8 @@ export class GameMessageViewHelper {
       GameMessageViewHelper.displayMessage(message).then(messageBox => {
         console.log("throw confetti", "load results module");
         // throw confetti
-        const confetti = new Confetti();
-        confetti.generateView();
+        // const confetti = new Confetti();
+        // confetti.generateView();
         
         const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
           GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
