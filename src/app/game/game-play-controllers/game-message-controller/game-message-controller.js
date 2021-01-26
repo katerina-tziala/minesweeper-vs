@@ -10,16 +10,8 @@ export class GameMessageController {
   }
 
   generateView() {
-    const container =  ViewHelper.generateContainer();
-    this.shakeMessageBox = this.#shakeMessageBox.bind(this);
-    container.addEventListener("click", this.shakeMessageBox.bind(this), true);
-    return container;
+    return ViewHelper.generateContainer();
   }
-
-  #shakeMessageBox() {
-    console.log("shakeMessageBox");
-  }
-
 
   hide() {
     return ViewHelper.hideContainer();

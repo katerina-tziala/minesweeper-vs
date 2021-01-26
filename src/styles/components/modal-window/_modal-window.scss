@@ -1,4 +1,4 @@
-@use "../../theming/theming";
+@use "./modal-window-theming";
 
 .modal-window {
   @extend %center-center;
@@ -8,7 +8,6 @@
   z-index: getIndex("modal");
   transition: 0.3s ease-in-out;
   top: -100vh;
-  background: rgba(0, 0, 0, 0.65);
 }
 
 .modal-window--display {
@@ -39,24 +38,7 @@
   padding-left: 5px;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-@mixin setModalThemeStyles($theme) {
-  .modal-dialog-content-container {
-    @include theming.setThemeCard($theme);
-    @include theming.setThemeBoxShadow($theme);
-  }
-}
 
-.theme-light {
-  .modal-window {
-    background: rgba(0, 0, 0, 0.65);
-  }
-  @include setModalThemeStyles("light");
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include modal-window-theming.setTheming();
 
-.theme-dark {
-  .modal-window {
-    background: rgba(38, 38, 38, 0.85);
-  }
-  @include setModalThemeStyles("dark");
-}

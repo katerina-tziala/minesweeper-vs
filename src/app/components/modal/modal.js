@@ -1,7 +1,7 @@
 "use strict";
 
 import { ElementHandler } from "HTML_DOM_Manager";
-
+import { timeoutPromise } from "~/_utils/utils";
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
@@ -45,7 +45,7 @@ export class Modal {
             modalDialog,
             DOM_ELEMENT_CLASS.shakeDialog,
           );
-          return ModalView.timeoutPromise(MOVEMENT_DURATION.shake, modalDialog);
+          return timeoutPromise(MOVEMENT_DURATION.shake, modalDialog);
         })
         .then((modalDialog) => {
           this.#stopShaking(modalDialog);
@@ -74,7 +74,7 @@ export class Modal {
   #display(shake = true) {
     return ModalView.displayedModalWindow
       .then(() => {
-        return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
+        return timeoutPromise(MOVEMENT_DURATION.slideIn);
       })
       .then(() => {
         if (shake) {
@@ -91,7 +91,7 @@ export class Modal {
     if (this.#displayed) {
       return ModalView.hiddenModalWindow
         .then(() => {
-          return ModalView.timeoutPromise(MOVEMENT_DURATION.slideIn);
+          return timeoutPromise(MOVEMENT_DURATION.slideIn);
         })
         .then(() => {
           this.#displayed = false;

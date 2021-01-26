@@ -32,12 +32,6 @@ export class ModalView {
     });
   }
 
-  static timeoutPromise(milliSeconds, value) {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(value), milliSeconds),
-    );
-  }
-
   static get modalDialog() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.modalDialog);
   }

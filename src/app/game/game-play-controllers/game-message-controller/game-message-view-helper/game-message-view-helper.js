@@ -84,8 +84,8 @@ export class GameMessageViewHelper {
         confetti.drop(GameMessageViewHelper.confettiColors(gameResults));
 
         const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
-          GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
           confetti.clear();
+          GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
         });
 
         messageBox.append(closeBnt);
@@ -93,7 +93,6 @@ export class GameMessageViewHelper {
 
       }).catch(() => reject());
     });
-
   }
 
 }
