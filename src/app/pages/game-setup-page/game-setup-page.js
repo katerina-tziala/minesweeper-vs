@@ -45,7 +45,7 @@ export class GameSetupPage extends Page {
     player.colorType = "2";
     const bot = new BotPlayer();
     bot.colorType = "3";
-    bot.lostGame = true;
+    //bot.lostGame = true;
     mainContainer.append(mg.generateView());
 
 

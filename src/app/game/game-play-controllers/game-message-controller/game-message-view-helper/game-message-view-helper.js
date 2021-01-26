@@ -71,7 +71,7 @@ export class GameMessageViewHelper {
       playerColors = gameResults.playersResults.map(playerResults => playerResults.colorType);
     } else {
       const winner = gameResults.playersResults.find(playerResults => !playerResults.lostGame);
-      playerColors = [winner.colorType];
+      playerColors = winner ? [winner.colorType] : [];
     }
     return playerColors;
   }
