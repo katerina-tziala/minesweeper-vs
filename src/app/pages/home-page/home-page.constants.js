@@ -14,7 +14,7 @@ export const DOM_ELEMENT_CLASS = {
 export const MENU_CONTENT = {
   online: {
     title: "VS Online",
-    details: "Play online with other connected users or invite a friend",
+    details: "Play online against connected users or invite a friend",
   },
   bot: {
     title: "VS Bot",
@@ -22,7 +22,7 @@ export const MENU_CONTENT = {
   },
   friend: {
     title: "VS Friend",
-    details: "Play against a friend sharing the same device",
+    details: "Play against a friend sharing<br>the same device",
   },
   original: {
     title: "Original",

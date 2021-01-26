@@ -15,16 +15,17 @@
 
     &:hover,
     &:focus {
-      color: theming.getThemeColor($theme, "theme-primary-intense");
-      border-color: theming.getThemeColor($theme, "theme-primary-intense");
+      color: theming.getThemeColor($theme, "theme-secondary-intense");
+      // border-color: theming.getThemeColor($theme, "theme-primary-intense");
 
       background-color: theming.getThemeColor($theme, "theme-primary-intense");
       
       > .menu-item-icon {
         background-color: theming.getThemeColor(
           $theme,
-          "theme-primary-intense"
+          "theme-secondary"
         );
+        color: theming.getThemeColor($theme, "theme-primary-intense");
       }
     }
   }

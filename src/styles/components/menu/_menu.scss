@@ -8,7 +8,7 @@ $menu-content-height: 65px;
   @extend %start-center;
   max-width: 300px;
   margin-bottom: 30px;
-  padding: 8px;
+  padding: 10px;
   cursor: pointer;
   outline: none;
   border: 1px solid transparent;
@@ -20,12 +20,12 @@ $menu-content-height: 65px;
 }
 
 .menu-item-icon {
-  @include rectangle($menu-content-height);
+  @include circle($menu-content-height);
   line-height: 60px;
   font-size: 40px;
   text-align: center;
-  border-radius: 10px;
-  margin-right: 8px;
+  
+  margin-right: 12px;
   @include setIdentifierIcons("&.menu-item-icon", $menu-icons);
 
   &.menu-item-icon--online {
