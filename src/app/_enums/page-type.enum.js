@@ -5,6 +5,7 @@ const PageType = {
   Home: "home",
   Game: "game",
   GameSetup: "game-setup",
+  Lobby: "lobby",
 };
 Object.freeze(PageType);
 

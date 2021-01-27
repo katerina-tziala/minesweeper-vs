@@ -144,7 +144,7 @@ export class App {
 
   onGameTypeSelected(gameType) {
     if (gameType === GameType.Online) {
-      console.log("go to lobby");
+      this.onLobbyNavigation();
     } else {
       this.onGameSetUpNavigation(gameType);
     }
@@ -157,6 +157,14 @@ export class App {
         this.onHomeNavigation.bind(this),
         this.onGameSetUpNavigation.bind(this),
       );
+    });
+  }
+
+  onLobbyNavigation() {
+    console.log("onLobbyNavigation");
+    this.loadInterfaceController(PageType.Lobby).then(({ LobbyPage }) => {
+      console.log("go to lobby");
+      this.interfaceController = new LobbyPage(this.onHomeNavigation.bind(this));
     });
   }
 }

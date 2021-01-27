@@ -43,7 +43,6 @@ export class GameSetupPage extends Page {
         this.gameWizard.expandWizard();
       });
     });
-
   }
 
   onConnectionError(errorMessage) {
