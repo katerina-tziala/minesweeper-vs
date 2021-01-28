@@ -92,16 +92,15 @@ export class App {
     } else {
       // user just joined
       self.user = this.generateUser(data.user);
-      this.setPeers(data.peers);
+   
+      self.onlineConnection.peers = data.peers
       LocalStorageHelper.save("username", self.user.username);
       this.setInterface("home");
     }
   }
 
-  setPeers(peers) {
-    self.peers = peers.map((peerData) => this.generateUser(peerData));
-  }
 
+  
   generateUser(userData) {
     return new User(userData.id, userData.username, userData.gameRoomId);
   }

@@ -1,10 +1,12 @@
 "use strict";
-
+import { User } from "~/_models/user";
 import { CONNECTION_CONFIG } from "./connection-config.constants";
+
 
 export class OnlineConnection {
   #actions;
   #webSocket;
+  #peers = [];
 
   constructor(actions) {
     this.actions = actions;
@@ -16,6 +18,18 @@ export class OnlineConnection {
 
   get actions() {
     return this.#actions;
+  }
+
+  set peers(peers) {
+    return this.#peers = peers.map((peerData) => this.#generateUser(peerData));
+  }
+
+  #generateUser(userData) {
+    return new User(userData.id, userData.username, userData.gameRoomId);
+  }
+
+  get peers() {
+    return this.#peers;
   }
 
   set webSocket(webSocket) {

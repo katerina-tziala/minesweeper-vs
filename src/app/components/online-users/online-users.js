@@ -16,12 +16,10 @@ import { UserAvatar } from "~/components/user-avatar/user-avatar";
 
 export class OnlineUsers {
   #users = [];
-
-  constructor(users = []) {
+  #onSelectedUser;
+  constructor(users = [], onSelectedUser) {
     this.users = users;
-
-
-    console.log(this.#users);
+    this.#onSelectedUser = onSelectedUser;
   }
 
   set users(users) {
@@ -83,7 +81,9 @@ export class OnlineUsers {
     const params = clone(INVITE_BTN);
     params.attributes["aria-label"] = params.attributes["aria-label"] + user.username;
     const button = ElementGenerator.generateButton(params, () => {
-      console.log("inv");
+      if (this.#onSelectedUser) {
+        this.#onSelectedUser(user);
+      }
     });
     ElementHandler.setDisabled(button, valueDefined(user.gameRoomId));
     return button;

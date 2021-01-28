@@ -31,12 +31,12 @@ export class LobbyPage extends Page {
     this.peers = [];
     this.peers.push(new User("kate1", "kate", "asdf"));
 
-
+    console.log(self.onlineConnection.peers);
 
     for (let index = 0; index < 10; index++) {
       const stringNumber = index.toString();
-      const roomId  = index % 2 === 0 ? "room" + stringNumber : undefined;
-      let name = "kate"  + stringNumber;
+      const roomId = index % 2 === 0 ? "room" + stringNumber : undefined;
+      let name = "kate" + stringNumber;
       for (let i = 0; i < index; i++) {
         name += "kate";
       }
@@ -46,20 +46,19 @@ export class LobbyPage extends Page {
 
     // console.log(peers);
 
-    this.onlineUsers = new OnlineUsers(this.peers);
+    this.onlineUsers = new OnlineUsers(this.peers, this.#onUserSelected.bind(this));
+  }
+
+  #onUserSelected(user) {
+    console.log(user);
+
+
   }
 
 
 
-
   renderPage(mainContainer) {
-    console.log("render lobby");
     mainContainer.append(this.onlineUsers.generateView());
-
-    setTimeout(() => {
-      
-      this.onlineUsers.updateOnlineUsers([]);
-    }, 2000)
     this.hideLoader();
   }
 
