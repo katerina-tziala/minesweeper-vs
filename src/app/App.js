@@ -34,7 +34,8 @@ export class App {
     // this.setInterface(PageType.Home);
 
    // this.setInterface();
-    this.onHomeNavigation();
+    
+   //this.onHomeNavigation();
     this.onLobbyNavigation();
     //
     //this.onGameSetUpNavigation(GameType.Original);

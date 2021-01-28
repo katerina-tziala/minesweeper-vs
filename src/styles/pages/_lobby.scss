@@ -1,5 +1,14 @@
+@use "sass:list";
+@use "../theming/theming";
 @import "../global/_module-global";
 @import "../utils/_module-utils";
-
 @import "../game-wizard/game-wizard";
 @import "../components/online-users/online-users";
+@import "../components/link-invitation-button/link-invitation-button";
+
+.link-invitation-container {
+  @extend %center-center;
+  width: 100%;
+  min-height: 100px;
+  padding: 40px;
+}

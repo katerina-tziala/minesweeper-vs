@@ -8,15 +8,18 @@ import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 import { Page } from "../page";
 import {
-  DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
-  FORM_PARAMS,
+  LINK_INVITATION_BUTTON,
+  CONTENT
 } from "./lobby-page.constants";
 
 
 import { OnlineUsers } from "../../components/online-users/online-users";
 
 import { User } from "../../_models/user";
+import { LinkInvitationButton } from "../../components/link-invitation-button/link-invitation-button";
+
+
 
 // import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 
@@ -50,9 +53,38 @@ export class LobbyPage extends Page {
   }
 
   renderPage(mainContainer) {
-    mainContainer.append(this.onlineUsers.generateView());
+    const fragment = document.createDocumentFragment();
+    fragment.append(this.#renderLinkInvitationSection(), this.onlineUsers.generateView());
+    mainContainer.append(fragment);
     this.hideLoader();
   }
+
+
+
+  #generateLink() {
+    console.log("generateLink");
+
+    Promise.all([self.modal.displayModal(), this.#loadWizard()])
+    .then(([modalBox, wizard]) => {
+      modalBox.append(wizard);
+      return;
+    })
+    .then(() => {
+      this.#GameWizard.expandWizard();
+    })
+    .catch(err => {
+      console.log(err);
+      console.log("modal err");
+      this.#onWizardClosed();
+    });
+
+  }
+
+
+
+
+
+
 
 
 
@@ -64,6 +96,13 @@ export class LobbyPage extends Page {
   #onWizardClosed() {
     this.#GameWizard = undefined;
     self.modal.close();
+  }
+
+  #renderLinkInvitationSection() {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.linkInvitationContainer]);
+    const button = LinkInvitationButton.generate(this.#generateLink.bind(this))
+    container.append(button);
+    return container;
   }
 
   #loadWizard(user) {

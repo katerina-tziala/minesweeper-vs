@@ -12,6 +12,7 @@ export class GameWizardFriend extends GameWizardVS {
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
+    this.init();
   }
 
   get parallelAllowed() {

@@ -6,4 +6,5 @@ export const TITLES = {
   friend: "play minesweeperVS against ###",
   online: "invite ### in a minesweeperVS game",
   addOpponent: "add opponent:",
+  inviteFriend: "invite your friend in a minesweeperVS game",
 };

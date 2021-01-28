@@ -1,0 +1,49 @@
+@use "./link-invitation-button-theming";
+
+.link-invitation-button {
+  width: 280px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  @extend %start-center;
+  padding: 15px;
+}
+
+.link-invitation-button__icon {
+  @include circle(60px);
+  text-align: center;
+  margin-right: 12px;
+  position: relative;
+  display: inline-block;
+  position: relative;
+
+  &::before {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 28px;
+    @extend .icon-send;
+    position: absolute;
+    top: 14px;
+    left: 9px;
+  }
+
+  &::after {
+    @extend .icon-link;
+    font-size: 18px;
+    position: absolute;
+    bottom: 15px;
+    left: 13px;
+    transform: rotate(-50deg);
+  }
+}
+
+.link-invitation-button__text {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include link-invitation-button-theming.setTheming();

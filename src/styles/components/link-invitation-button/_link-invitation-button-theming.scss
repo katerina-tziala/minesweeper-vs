@@ -1,19 +1,14 @@
 @use "sass:list";
 @use "../../theming/theming";
 
-@mixin setMenuIconThemeStyles($theme) {
-  $background: theming.getThemeColor($theme, "theme-primary");
-  $color: theming.getThemeColor($theme, "theme-secondary");
-  @include theming.setBoxTheming($background, $color);
-}
-
 @mixin setThemeStyles($theme) {
-
-  .menu-item-icon {
-    @include setMenuIconThemeStyles($theme);
+  .link-invitation-button__icon {
+    $background: theming.getThemeColor($theme, "theme-primary");
+    $color: theming.getThemeColor($theme, "theme-secondary");
+    @include theming.setBoxTheming($background, $color);
   }
-  
-  .menu-item {
+
+  .link-invitation-button {
     @include theming.setThemeCard($theme);
     @include theming.setThemeBoxShadow($theme);
 
@@ -21,14 +16,13 @@
     &:focus {
       color: theming.getThemeColor($theme, "theme-secondary-intense");
       background-color: theming.getThemeColor($theme, "theme-primary-intense");
-      
-      > .menu-item-icon {
+
+      > .link-invitation-button__icon {
         background-color: theming.getThemeColor($theme, "theme-secondary");
         color: theming.getThemeColor($theme, "theme-primary-intense");
       }
     }
   }
-
 }
 
 @mixin setTheming() {
@@ -40,3 +34,5 @@
     }
   }
 }
+
+@include setTheming();

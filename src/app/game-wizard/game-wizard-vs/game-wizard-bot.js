@@ -8,6 +8,7 @@ export class GameWizardBot extends GameWizardVS {
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
     this.opponent = new BotPlayer();
+    this.init();
   }
 
   get gameType() {

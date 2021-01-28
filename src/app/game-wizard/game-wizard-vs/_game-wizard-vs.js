@@ -17,7 +17,6 @@ export class GameWizardVS extends GameWizard {
 
   constructor(onClose, submitGame) {
     super(onClose, submitGame);
-    this.init();
   }
 
   get invite() {
@@ -190,7 +189,6 @@ export class GameWizardVS extends GameWizard {
     }
     return super.getSettingsController(wizardName);
   }
-
 
   generateMainContent() {
     const fragment = document.createDocumentFragment();
