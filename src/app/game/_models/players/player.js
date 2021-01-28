@@ -7,7 +7,7 @@ import { GameVSMode } from "GameEnums";
 export class Player extends AppModel {
   #_colorType;
 
-  constructor(id, name, entered = true) {
+  constructor(id, name, entered = false) {
     super();
     this.id = id;
     this.name = name;

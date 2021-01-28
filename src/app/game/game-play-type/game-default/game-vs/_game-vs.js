@@ -18,9 +18,9 @@ export class GameVS extends GameDefault {
     super(id, params, player);
     this.opponent = opponent;
     this.players = [this.player, this.opponent];
-    this.init();
     this.#setDashBoard();
     this.#MessageController = new MessageController(this.optionsSettings.vsMode);
+    this.init();
   }
 
   #setDashBoard() {
@@ -86,10 +86,6 @@ export class GameVS extends GameDefault {
   }
 
   init() {
-
-
-    // console.log(this.turnSettings);
-
     this.players.forEach((player) => {
       player.initState(
         this.goalTargetNumber,
@@ -98,6 +94,7 @@ export class GameVS extends GameDefault {
       );
       player.turn = player.id === this.playerStartID;
     });
+
     this.initState();
   }
 
@@ -230,7 +227,10 @@ export class GameVS extends GameDefault {
       this.submitBotMove();
       return;
     }
-
+    // if (!this.isSharedDevice && this.playerOnTurn.id !== this.player.id) {
+    //   this.disableMinefield();
+    //   return;
+    // }
     this.enableMinefield();
   }
 

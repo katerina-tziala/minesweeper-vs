@@ -47,6 +47,10 @@ export class GameVSClear extends GameVS {
     return [this.#getPlayerReport(this.player), this.#getPlayerReport(this.opponent)];
   }
 
+  get hiddenStrategy() {
+    return this.gameBoard.hiddenStrategy;
+  }
+
   #getPlayerReport(player) {
     if (!this.gameBoard.sneakPeeksAllowed) {
       return player.reportData;
@@ -88,10 +92,6 @@ export class GameVSClear extends GameVS {
     this.updatedPlayerOnTurnCardAfterAction().then(() => {
       this.onPlayerMoveEnd([tile]);
     });
-  }
-
-  get hiddenStrategy() {
-    return this.gameBoard.hiddenStrategy;
   }
 
   #playerStrategyAffected(revealedPositions, player = this.playerWaiting) {

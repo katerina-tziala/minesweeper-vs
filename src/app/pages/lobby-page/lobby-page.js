@@ -43,6 +43,7 @@ export class LobbyPage extends Page {
   #onSendInvitation(game) {
     console.log("#onSendInvitation");
     console.log(game);
+    
     if (game.players.length === 2) {
       console.log("online user");
       this.onPlayGame(game);

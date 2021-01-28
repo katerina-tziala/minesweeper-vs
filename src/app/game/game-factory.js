@@ -53,7 +53,7 @@ export class GameFactory {
   }
 
   static getPlayer() {
-    const player = new Player(self.user.id, self.user.username);
+    const player = new Player(self.user.id, self.user.username, true);
     player.colorType = LocalStorageHelper.appSettings.playerColorType;
     return player;
   }

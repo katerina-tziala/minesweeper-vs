@@ -6,6 +6,7 @@ import { valueDefined } from "~/_utils/validator";
 import {
   GameVSMode,
   GameAction,
+  GameType,
   GameOverType,
 } from "GameEnums";
 
@@ -45,13 +46,7 @@ export class Game extends AppModel {
   }
 
   get isOnline() {
-    if (
-      this.optionsSettings.vsMode &&
-      this.optionsSettings.vsMode === GameVSMode.Online
-    ) {
-      return true;
-    }
-    return false;
+    return this.type === GameType.Online;
   }
 
   get gameOverClearedMinefield() {

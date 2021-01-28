@@ -16,9 +16,13 @@
   @extend %center-center;
   position: relative;
   overflow: hidden;
+  font-size: 2.4rem;
+  @include circle(58px);
 
   &::before {
     @extend .icon-user;
+    @include circle(58px);
+    line-height:56px
   }
 
   &.user-avatar--bot {
