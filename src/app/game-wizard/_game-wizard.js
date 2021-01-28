@@ -12,7 +12,6 @@ import {
 } from "GameWizardComponents";
 import { TITLES } from "./_game-wizard.constants";
 
-
 export class GameWizard {
   #_gameParams;
   #_defaultGameParams = {};

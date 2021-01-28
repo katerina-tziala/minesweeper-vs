@@ -51,7 +51,9 @@ export class GameWizardVS extends GameWizard {
 
   get gameSetUp() {
     const gameSetUp = super.gameSetUp;
-    gameSetUp.players.push(this.opponent);
+    if (this.opponent) {
+      gameSetUp.players.push(this.opponent);
+    }
     delete gameSetUp.vsModeSettings;
     return gameSetUp;
   }

@@ -1,25 +1,20 @@
 "use strict";
 
 import "../../../styles/pages/_lobby.scss";
-
+import { valueDefined } from "~/_utils/validator";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { ElementGenerator } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 import { Page } from "../page";
 import {
-  DOM_ELEMENT_CLASS,
-  LINK_INVITATION_BUTTON,
-  CONTENT
+  DOM_ELEMENT_CLASS
 } from "./lobby-page.constants";
-
 
 import { OnlineUsers } from "../../components/online-users/online-users";
 
 import { User } from "../../_models/user";
 import { LinkInvitationButton } from "../../components/link-invitation-button/link-invitation-button";
-
-
 
 // import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 
@@ -27,12 +22,12 @@ export class LobbyPage extends Page {
   #GameWizard;
   #OnlineUsers;
 
-  constructor(navigateToHome) {
+  constructor(onPlayGame) {
     super();
-    this.navigateToHome = navigateToHome;
+    this.onPlayGame = onPlayGame;
     self.settingsController.gameSettingsHidden = false;
 
-    this.#OnlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onDisplayWizard.bind(this));
+    this.#OnlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
     this.init();
   }
 
@@ -48,11 +43,16 @@ export class LobbyPage extends Page {
   #onSendInvitation(game) {
     console.log("#onSendInvitation");
     console.log(game);
-    if (this.game.players[1]) {
+    if (game.players.length === 2) {
       console.log("online user");
+      this.onPlayGame(game);
+      //close wizard join game
     } else {
       console.log("generate link");
+      //do not close modal
     }
+
+    this.#wizardClosed();
   }
 
 
@@ -63,26 +63,34 @@ export class LobbyPage extends Page {
 
 
 
-  #onWizardClosed() {
+  #wizardClosed() {
     this.#GameWizard = undefined;
     self.modal.close();
   }
 
   #renderLinkInvitationSection() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.linkInvitationContainer]);
-    const button = LinkInvitationButton.generate(this.#onDisplayWizard.bind(this))
+    const button = LinkInvitationButton.generate(this.#onGenerateLink.bind(this));
     container.append(button);
     return container;
   }
 
   #loadWizard(user) {
     return import("GameWizard").then((module) => {
-      this.#GameWizard = new module.GameWizardOnline(this.#onWizardClosed.bind(this), this.#onSendInvitation.bind(this), user);
+      this.#GameWizard = new module.GameWizardOnline(this.#wizardClosed.bind(this), this.#onSendInvitation.bind(this), user);
       return this.#GameWizard.generateView();
     });
   }
 
-  #onDisplayWizard(user) {
+  #onGenerateLink() {
+    this.#displayWizard();
+  }
+
+  #onUserSelected(user) {
+    this.#displayWizard(user);
+  }
+
+  #displayWizard(user) {
     Promise.all([self.modal.displayModal(), this.#loadWizard(user)])
       .then(([modalBox, wizard]) => {
         modalBox.append(wizard);
@@ -94,7 +102,7 @@ export class LobbyPage extends Page {
       .catch(err => {
         console.log(err);
         console.log("modal err");
-        this.#onWizardClosed();
+        this.#wizardClosed();
       });
   }
 
