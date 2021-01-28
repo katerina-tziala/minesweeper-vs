@@ -46,7 +46,8 @@ export class LobbyPage extends Page {
     
     if (game.players.length === 2) {
       console.log("online user");
-      this.onPlayGame(game);
+      console.log("send invitation");
+      //this.onPlayGame(game);
       //close wizard join game
     } else {
       console.log("generate link");
