@@ -1,7 +1,7 @@
 "use strict";
-import { valueDefined } from "~/_utils/validator";
 import { INVITE_BTN } from "~/_constants/btn-text.constants";
 import { clone } from "~/_utils/utils.js";
+import { valueDefined } from "~/_utils/validator";
 import {
   ElementHandler,
   ElementGenerator,
@@ -9,10 +9,10 @@ import {
 
 import {
   DOM_ELEMENT_CLASS,
-  DOM_ELEMENT_ID
+  DOM_ELEMENT_ID,
+  CONTENT
 } from "./online-users.constants";
 import { UserAvatar } from "~/components/user-avatar/user-avatar";
-import { User } from "~/_models/user";
 
 export class OnlineUsers {
   #users = [];
@@ -23,7 +23,6 @@ export class OnlineUsers {
 
     console.log(this.#users);
   }
-
 
   set users(users) {
     users.sort((userA, userB) => {
@@ -41,12 +40,22 @@ export class OnlineUsers {
 
   get #renderedUsers() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wrapper]);
-    this.#users.forEach(user => container.append(this.#generateUserCard(user)));
+    if (this.#users.length) {
+      this.#users.forEach(user => container.append(this.#generateUserCard(user)));
+    } else {
+      container.append(this.#noOnlineUsersMessage);
+    }
     return container;
   }
 
   get #container() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.container);
+  }
+
+  get #noOnlineUsersMessage() {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.noUserOnline]);
+    container.innerHTML = CONTENT.noUsersOnline;
+    return container;
   }
 
   #generateUserCard(user) {
@@ -80,7 +89,6 @@ export class OnlineUsers {
     return button;
   }
 
-
   generateView() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_ID.container);
     container.append(this.#renderedUsers);
@@ -94,6 +102,5 @@ export class OnlineUsers {
       container.append(this.#renderedUsers);
     });
   }
-
 
 }

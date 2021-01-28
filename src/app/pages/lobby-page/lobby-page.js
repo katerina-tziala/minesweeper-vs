@@ -55,6 +55,11 @@ export class LobbyPage extends Page {
   renderPage(mainContainer) {
     console.log("render lobby");
     mainContainer.append(this.onlineUsers.generateView());
+
+    setTimeout(() => {
+      
+      this.onlineUsers.updateOnlineUsers([]);
+    }, 2000)
     this.hideLoader();
   }
 

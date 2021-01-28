@@ -15,6 +15,7 @@
   @extend %center-center;
   flex-wrap: wrap;
   width: 100%;
+  min-height: 500px;
 }
 
 .online-user-card {
@@ -50,6 +51,14 @@
   }
 }
 
+.online-users-message {
+  font-weight: 900;
+  font-size: 2rem;
+  padding: 20px;
+  width: 100vw;
+  text-align: center;
+  font-style: italic;
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include online-users-theming.setTheming();
