@@ -25,73 +25,43 @@ import { LinkInvitationButton } from "../../components/link-invitation-button/li
 
 export class LobbyPage extends Page {
   #GameWizard;
+  #OnlineUsers;
 
   constructor(navigateToHome) {
     super();
     this.navigateToHome = navigateToHome;
     self.settingsController.gameSettingsHidden = false;
 
-
-
-    this.onlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
-
+    this.#OnlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onDisplayWizard.bind(this));
     this.init();
-  }
-
-
-
-
-
-
-
-
-  #onSendInvitation(game) {
-    console.log("#onSendInvitation");
-    console.log(game);
-
-
   }
 
   renderPage(mainContainer) {
     const fragment = document.createDocumentFragment();
-    fragment.append(this.#renderLinkInvitationSection(), this.onlineUsers.generateView());
+    fragment.append(this.#renderLinkInvitationSection(), this.#OnlineUsers.generateView());
     mainContainer.append(fragment);
     this.hideLoader();
   }
 
 
 
-  #generateLink() {
-    console.log("generateLink");
-
-    Promise.all([self.modal.displayModal(), this.#loadWizard()])
-    .then(([modalBox, wizard]) => {
-      modalBox.append(wizard);
-      return;
-    })
-    .then(() => {
-      this.#GameWizard.expandWizard();
-    })
-    .catch(err => {
-      console.log(err);
-      console.log("modal err");
-      this.#onWizardClosed();
-    });
-
+  #onSendInvitation(game) {
+    console.log("#onSendInvitation");
+    console.log(game);
+    if (this.game.players[1]) {
+      console.log("online user");
+    } else {
+      console.log("generate link");
+    }
   }
-
-
-
-
-
-
-
 
 
   onConnectionError(errorMessage) {
     //super.onConnectionError(errorMessage);
     console.log("onConnectionError");
   }
+
+
 
   #onWizardClosed() {
     this.#GameWizard = undefined;
@@ -100,7 +70,7 @@ export class LobbyPage extends Page {
 
   #renderLinkInvitationSection() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.linkInvitationContainer]);
-    const button = LinkInvitationButton.generate(this.#generateLink.bind(this))
+    const button = LinkInvitationButton.generate(this.#onDisplayWizard.bind(this))
     container.append(button);
     return container;
   }
@@ -112,19 +82,20 @@ export class LobbyPage extends Page {
     });
   }
 
-  #onUserSelected(user) {
+  #onDisplayWizard(user) {
     Promise.all([self.modal.displayModal(), this.#loadWizard(user)])
-    .then(([modalBox, wizard]) => {
-      modalBox.append(wizard);
-      return;
-    })
-    .then(() => {
-      this.#GameWizard.expandWizard();
-    })
-    .catch(err => {
-      console.log(err);
-      console.log("modal err");
-      this.#onWizardClosed();
-    });
+      .then(([modalBox, wizard]) => {
+        modalBox.append(wizard);
+        return;
+      })
+      .then(() => {
+        this.#GameWizard.expandWizard();
+      })
+      .catch(err => {
+        console.log(err);
+        console.log("modal err");
+        this.#onWizardClosed();
+      });
   }
+
 }

@@ -1,5 +1,5 @@
 "use strict";
-
+import { valueDefined } from "~/_utils/validator";
 import { GameType } from "GameEnums";
 import { Player } from "GameModels";
 import { GameWizardVS } from "./_game-wizard-vs";
@@ -20,7 +20,10 @@ export class GameWizardOnline extends GameWizardVS {
   }
 
   get title() {
-    return this.opponent ? super.title : TITLES.inviteFriend;
+    if (valueDefined(this.opponent)) {
+      return TITLES.inviteFriend;
+    }
+    return super.title;
   }
 
   #setOpponent(clientToInvite) {
