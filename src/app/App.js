@@ -35,6 +35,7 @@ export class App {
 
    // this.setInterface();
     this.onHomeNavigation();
+    this.onLobbyNavigation();
     //
     //this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
@@ -161,7 +162,7 @@ export class App {
   }
 
   onLobbyNavigation() {
-    console.log("onLobbyNavigation");
+    // console.log("onLobbyNavigation");
     this.loadInterfaceController(PageType.Lobby).then(({ LobbyPage }) => {
       console.log("go to lobby");
       this.interfaceController = new LobbyPage(this.onHomeNavigation.bind(this));

@@ -1,0 +1,25 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .online-user-card {
+    @include theming.setThemeCard($theme);
+    @include theming.setThemeBoxShadow($theme);
+  }
+
+  .online-user-card--in-game {
+    &::after {
+      color: theming.getThemeColor($theme, "success-primary");
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

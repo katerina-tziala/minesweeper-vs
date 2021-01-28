@@ -1,13 +1,6 @@
 "use strict";
-
-import {
-  ElementGenerator,
-} from "HTML_DOM_Manager";
-
-import {
-  DOM_ELEMENT_CLASS,
-} from "./user-avatar.constants";
-
+import { ElementGenerator } from "HTML_DOM_Manager";
+import { DOM_ELEMENT_CLASS } from "./user-avatar.constants";
 
 export class UserAvatar {
 

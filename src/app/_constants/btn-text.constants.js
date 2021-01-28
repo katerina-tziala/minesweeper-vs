@@ -80,3 +80,12 @@ export const PLAY_BTN = {
   },
   actionType: "click",
 };
+
+export const INVITE_BTN = {
+  innerHTML: "invite",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "invite ",
+  },
+  actionType: "click",
+};

@@ -1,15 +1,23 @@
 @use "./user-avatar-theming";
 
+@mixin setAvatarSize($size, $font-size, $line-height) {
+  .user-avatar {
+    font-size: $font-size;
+    @include circle($size);
+
+    &::before {
+      @include circle($size);
+      line-height: $line-height;
+    }
+  }
+}
+
 .user-avatar {
   @extend %center-center;
   position: relative;
   overflow: hidden;
-  font-size: 2.4rem;
-  @include circle(58px);
 
   &::before {
-    @include circle(58px);
-    line-height: 56px;
     @extend .icon-user;
   }
 
@@ -19,8 +27,8 @@
     }
   }
 
+  @include setAvatarSize(2.4rem, 58px, 56px);
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include user-avatar-theming.setTheming();

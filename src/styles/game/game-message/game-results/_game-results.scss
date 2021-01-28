@@ -106,15 +106,7 @@
   min-width: 120px;
   padding-top: 15px;
 
-  .user-avatar {
-    font-size: 21px;
-    @include circle(40px);
-
-    &::before {
-      @include circle(40px);
-      line-height: 40px;
-    }
-  }
+  @include setAvatarSize(21px, 40px, 40px);
 
   .game-result-player-name {
     padding: 4px 0;

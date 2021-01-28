@@ -1,6 +1,6 @@
 "use strict";
 
-import "../../../styles/pages/_login.scss";
+import "../../../styles/pages/_lobby.scss";
 
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
@@ -14,8 +14,9 @@ import {
 } from "./lobby-page.constants";
 
 
+import { OnlineUsers } from "../../components/online-users/online-users";
 
-
+import { User } from "../../_models/user";
 
 // import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 
@@ -27,16 +28,37 @@ export class LobbyPage extends Page {
     self.settingsController.gameSettingsHidden = false;
     this.init();
     console.log("LobbyPage");
+    this.peers = [];
+    this.peers.push(new User("kate1", "kate", "asdf"));
+
+
+
+    for (let index = 0; index < 10; index++) {
+      const stringNumber = index.toString();
+      const roomId  = index % 2 === 0 ? "room" + stringNumber : undefined;
+      let name = "kate"  + stringNumber;
+      for (let i = 0; i < index; i++) {
+        name += "kate";
+      }
+      this.peers.push(new User(stringNumber, name, roomId));
+
+    }
+
+    // console.log(peers);
+
+    this.onlineUsers = new OnlineUsers(this.peers);
   }
 
 
-  
+
 
   renderPage(mainContainer) {
     console.log("render lobby");
-    // mainContainer.append(this.renderLoginForm());
+    mainContainer.append(this.onlineUsers.generateView());
     this.hideLoader();
   }
+
+
 
   onConnectionError(errorMessage) {
     //super.onConnectionError(errorMessage);

@@ -141,3 +141,8 @@
   @extend %icon-regular;
   content: fa-content($fa-var-crown);
 }
+
+.icon-gamepad {
+  @extend %icon-regular;
+  content: fa-content($fa-var-gamepad);
+}

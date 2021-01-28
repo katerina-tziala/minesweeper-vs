@@ -11,7 +11,8 @@
 @mixin setThemeStyles($theme) {
   .user-avatar {
     color: theming.getThemeColor($theme, "theme-secondary");
-    //TODO default background
+    background-color: theming.getThemeColor($theme, "theme-primary");
+
     @for $i from 1 through 8 {
       @include setAvatarThemeStyles($theme, $i)
     }
