@@ -2,13 +2,8 @@
 @use "../../theming/theming";
 
 @mixin setThemeStyles($theme) {
-  .modal-window {
+  .game-message-container {
     @include theming.setPrimaryBackground($theme, 0.25);
-  }
-
-  .modal-dialog-content-container {
-    @include theming.setThemeCard($theme);
-    @include theming.setThemeBoxShadow($theme);
   }
 }
 

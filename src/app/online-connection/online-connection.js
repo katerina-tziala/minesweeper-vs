@@ -10,6 +10,21 @@ export class OnlineConnection {
 
   constructor(actions) {
     this.actions = actions;
+
+
+    const peers = [];
+    peers.push(new User("kate1", "kate", "asdf"));
+    for (let index = 0; index < 10; index++) {
+      const stringNumber = index.toString();
+      const roomId = index % 2 === 0 ? "room" + stringNumber : undefined;
+      let name = "kate" + stringNumber;
+      for (let i = 0; i < index; i++) {
+        name += "kate";
+      }
+      peers.push(new User(stringNumber, name, roomId));
+    }
+
+    this.peers = peers;
   }
 
   set actions(actions) {

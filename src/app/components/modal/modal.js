@@ -15,7 +15,7 @@ export class Modal {
   #confirmationCountdown;
   #displayed = false;
 
-  constructor() {}
+  constructor() { }
 
   // SHAKE DIALOG
   #addShakeEvent() {
@@ -173,4 +173,19 @@ export class Modal {
       });
   }
 
+
+  displayModal() {
+    return this.#hide().then(() => {
+      return this.#display()
+      
+    })
+    .then(() => {
+      return ModalView.newModalDialog;
+      });
+
+  }
+
+  close() {
+    return this.#hide();
+  }
 }

@@ -1,6 +1,7 @@
-@use "../../theming/theming";
+@use "./game-messag-theming";
 @import "./game-message-box/game-message-box";
 @import "./game-results/game-results";
+
 
 .game-message-container {
   @extend %center-center;
@@ -14,15 +15,6 @@
   overflow: hidden;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
- .game-message-container {
-    @include theming.setPrimaryBackground("light", 0.2);
-  }
-}
 
-.theme-dark {
-  .game-message-container {
-    @include theming.setPrimaryBackground("dark", 0.2);
-  }
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-messag-theming.setTheming();

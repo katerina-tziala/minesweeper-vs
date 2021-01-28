@@ -163,7 +163,6 @@ export class App {
   onLobbyNavigation() {
     // console.log("onLobbyNavigation");
     this.loadInterfaceController(PageType.Lobby).then(({ LobbyPage }) => {
-      console.log("go to lobby");
       this.interfaceController = new LobbyPage(this.onHomeNavigation.bind(this));
     });
   }
