@@ -33,10 +33,11 @@ export class App {
     self.user = new User("kateID", "kate", null);
     // this.setInterface(PageType.Home);
 
-   // this.setInterface();
+   
+     //this.setInterface();
     
-   //this.onHomeNavigation();
-    this.onLobbyNavigation();
+    this.onHomeNavigation();
+    //this.onLobbyNavigation();
     //
     //this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
