@@ -1,14 +1,35 @@
 @use "sass:map";
+@use "sass:color";
+
 @use "../../theming/theming";
 @use "../button/button-theming";
+@use "../../utils/shapes";
+
+@use "../toggle/toggle-theming";
 
 @import "../button/button";
+
+@import "../toggle/toggle";
 
 .header {
   @extend %start-center;
   height: 46px;
   width: 100%;
   padding: 0 15px;
+
+  .toggle {
+    margin-left: 15px;
+  }
+
+  .toggle-btn--invitations {
+    @extend .header-btn;
+    @include afterIcon("envelope");
+  }
+
+  .toggle-btn--settings {
+    @extend .header-btn;
+    @include afterIcon("settings");
+  }
 }
 
 .header-title {
@@ -19,7 +40,6 @@
 .header-btn {
   @extend .btn-icon;
   @extend .btn-icon--normal;
-
   background-color: transparent;
 
   &.header-btn--settings {
@@ -38,14 +58,10 @@
     @include afterIcon("wifi");
   }
 
-
   &.header-btn--invitations {
     @include afterIcon("envelope");
   }
-
-  
 }
-
 
 .header-actions-container {
   position: relative;
@@ -53,18 +69,10 @@
   //margin-left: 10px;
   @extend %center-center;
 
-  >.header-btn {
+  > .header-btn {
     margin-left: 15px;
   }
 }
-
-
-
-
-
-
-
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -73,16 +81,22 @@
     background: theming.getThemeColor("light", "app-primary");
     color: theming.getThemeColor("light", "theme-secondary");
     @include theming.setThemeBoxShadow("light");
-  }
 
-  .header-btn {
-    $base: (
-      color: theming.getThemeColor("light", "theme-base"),
-    );
-    $hovered: (
-      color: theming.getThemeColor("light", "theme-secondary-intense"),
-    );
-    @include button-theming.setButtonStyles($base, $hovered);
+    $button-color: theming.getThemeColor("light", "theme-secondary-intense");
+    $button-color-darker: color.adjust($button-color, $lightness: -20%);
+
+    
+    .header-btn {
+      $base: (
+        color: color.adjust($button-color, $lightness: -20%),
+      );
+      $hovered: (
+        color: $button-color,
+      );
+      @include button-theming.setButtonStyles($base, $hovered);
+    }
+
+    @include toggle-theming.setButtonThemeStyles($button-color);
   }
 }
 
@@ -91,15 +105,23 @@
     background: theming.getThemeColor("dark", "app-primary");
     color: theming.getThemeColor("dark", "theme-primary");
     @include theming.setThemeBoxShadow("dark");
+
+    $button-color: theming.getThemeColor("dark", "theme-primary-intense");
+    $button-color-darker: color.adjust($button-color, $lightness: -20%);
+
+    
+    .header-btn {
+      $base: (
+        color: color.adjust($button-color, $lightness: -20%),
+      );
+      $hovered: (
+        color: $button-color,
+      );
+      @include button-theming.setButtonStyles($base, $hovered);
+    }
+
+    @include toggle-theming.setButtonThemeStyles($button-color);
   }
 
-  .header-btn {
-    $base: (
-      color: theming.getThemeColor("dark", "theme-primary"),
-    );
-    $hovered: (
-      color: theming.getThemeColor("dark", "theme-primary-intense"),
-    );
-    @include button-theming.setButtonStyles($base, $hovered);
-  }
+  
 }

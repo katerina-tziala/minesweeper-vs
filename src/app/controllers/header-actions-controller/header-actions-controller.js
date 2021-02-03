@@ -14,6 +14,9 @@ import {
   DOM_ELEMENT_CLASS,
   BUTTONS
 } from "./header-actions-controller.constants";
+import {
+  Toggle
+} from "../../components/toggle/toggle";
 
 
 
@@ -24,6 +27,8 @@ export class HeaderActionsController {
     this.#onLogout = onLogout;
     console.log("HeaderActionsController");
     // console.log(self.user);
+    this.invitationsToggle = new Toggle("invitations");
+    this.settingsToggle = new Toggle("settings");
   }
 
   get #container() {
@@ -40,9 +45,14 @@ export class HeaderActionsController {
 
       const home = ElementGenerator.generateButton(BUTTONS.home, this.#onNavigateToHome.bind(this));
       const loggout = ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this));
-      const invitations = ElementGenerator.generateButton(BUTTONS.invitations, this.#onToggleInvitations.bind(this));
+      
+      const invitations = this.invitationsToggle.generateView();
+      const settingsToggle = this.settingsToggle.generateView();
 
-      navigation.append(home, connect, invitations, settings, loggout);
+      
+      
+      console.log(this.invitationsToggle);
+      navigation.append(home, connect, invitations, settingsToggle, loggout);
 
      // console.log(navigation);
     });

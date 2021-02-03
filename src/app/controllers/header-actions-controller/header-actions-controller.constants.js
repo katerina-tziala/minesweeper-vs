@@ -44,7 +44,7 @@ export const BUTTONS = {
   invitations: {
     className: "btn-icon header-btn header-btn--invitations",
     attributes: {
-      "aria-label": "connect online",
+      "aria-label": "display invitations",
       "aria-expanded": false,
       id: "header-btn__invitations"
     },

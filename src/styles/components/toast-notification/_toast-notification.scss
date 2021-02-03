@@ -1,5 +1,6 @@
 @use "./toast-notification-theming";
 @use "../button/button-theming";
+@import "../button/button";
 
 .toast-notification {
   width: 260px;

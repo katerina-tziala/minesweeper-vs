@@ -7,7 +7,11 @@
 @use "../palletes/success-pallete";
 @use "../palletes/light-pallete";
 
-$palleteList: app-pallete.$pallete, error-pallete.$pallete,
-  warning-pallete.$pallete, success-pallete.$pallete,
-  light-pallete.$game-pallete, light-pallete.$theme-pallete,
-  light-pallete.$wizard-step;
+$palleteList:
+app-pallete.$pallete,
+error-pallete.$pallete,
+warning-pallete.$pallete,
+success-pallete.$pallete,
+light-pallete.$game-pallete,
+light-pallete.$theme-pallete,
+light-pallete.$wizard-step;

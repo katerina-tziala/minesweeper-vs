@@ -1,0 +1,56 @@
+@use "sass:list";
+@use "sass:color";
+@use "../../theming/theming";
+
+@mixin indicator-collapsed($color) {
+  &::before {
+    bottom: -2px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-color: $color;
+  }
+}
+
+@mixin indicator-expanded($color) {
+  &::before {
+    bottom: -5px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-top-style: solid;
+    border-top-width: 6px;
+    border-top-color: $color;
+  }
+}
+
+@mixin setButtonThemeStyles($color) {
+  .toggle-btn {
+    $color-darker: color.adjust($color, $lightness: -20%);
+    @include indicator-collapsed($color-darker);
+    &:hover,
+    &:focus {
+      @include indicator-collapsed($color);
+    }
+
+    &.toggle-btn--expanded {
+      @include indicator-expanded($color-darker);
+
+      &:hover,
+      &:focus {
+        @include indicator-expanded($color);
+      }
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setButtonThemeStyles(theming.getThemeColor($theme, "theme-primary-intense"));
+    }
+  }
+}
