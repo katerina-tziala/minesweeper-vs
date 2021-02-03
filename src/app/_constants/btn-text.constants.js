@@ -89,3 +89,11 @@ export const INVITE_BTN = {
   },
   actionType: "click",
 };
+export const YES_BTN = {
+  innerHTML: "yes",
+  className: "btn-text btn-primary",
+  attributes: {
+    "aria-label": "confirm",
+  },
+  actionType: "click",
+};

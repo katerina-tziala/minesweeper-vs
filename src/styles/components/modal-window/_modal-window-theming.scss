@@ -3,7 +3,7 @@
 
 @mixin setThemeStyles($theme) {
   .modal-window {
-    @include theming.setPrimaryBackground($theme, 0.25);
+    @include theming.setPrimaryBackground($theme, 0.5);
   }
 
   .modal-dialog-content-container {

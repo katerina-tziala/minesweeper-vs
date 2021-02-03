@@ -5,7 +5,7 @@ import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import {
   valueInLimits,
   emptyString,
-  validValue,
+  valueDefined,
 } from "~/_utils/validator";
 import { clone, replaceStringParameter } from "~/_utils/utils";
 
@@ -54,7 +54,7 @@ export class NumberInput extends TextInput {
   }
 
   get validNumber() {
-    return validValue(this.valueInteger);
+    return valueDefined(this.valueInteger);
   }
 
   get inputError() {

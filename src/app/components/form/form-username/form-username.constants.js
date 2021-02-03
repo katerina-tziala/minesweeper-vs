@@ -5,3 +5,8 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const FIELD = "username";
+
+export const USERNAME_LENGTH = {
+  min: 3,
+  max: 16
+};

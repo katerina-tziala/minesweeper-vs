@@ -28,6 +28,11 @@
   content: fa-content($fa-var-cog);
 }
 
+.icon-loggout {
+  @extend %icon-regular;
+  content: fa-content($fa-var-sign-out-alt);
+}
+
 .icon-caret-up {
   @extend %icon-regular;
   content: fa-content($fa-var-caret-up);
@@ -152,3 +157,12 @@
   content: fa-content($fa-var-link);
 }
 
+.icon-wifi {
+  @extend %icon-regular;
+  content: fa-content($fa-var-wifi);
+}
+
+.icon-envelope {
+  @extend %icon-regular;
+  content: fa-content($fa-var-envelope);
+}

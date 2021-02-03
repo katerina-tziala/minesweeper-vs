@@ -1,41 +1,36 @@
 "use strict";
-
 import "../../../styles/pages/_login.scss";
-
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-
 import { Page } from "../page";
+import { User } from "~/_models/user";
+import { FormUsername } from "~/components/form/form-username/form-username";
+import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
+import { CONFIRMATION } from "~/components/modal/modal.constants";
+import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
   FORM_PARAMS,
 } from "./join-page.constants";
-
-import { FormUsername } from "~/components/form/form-username/form-username";
-
-
-
-import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
-
-
-
-import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
-
 export class JoinPage extends Page {
   #loginForm;
 
-  constructor() {
+  constructor(onPageChange) {
     super();
+    this.onPageChange = onPageChange;
+    
     const username = LocalStorageHelper.retrieve("username");
-    if (username) {
-      self.onlineConnection.establishConnection({ username });
+
+    if (self.onlineConnection) {
+      self.onlineConnection.onUserUpdate = this.#onUserUpdate.bind(this);
+      self.onlineConnection.onError = this.#onConnectionError.bind(this);
+      if (username) {
+        self.onlineConnection.establishConnection({ username });
+      }
     }
-    this.#loginForm = new FormUsername(
-      this.login.bind(this),
-      username ? username : TYPOGRAPHY.emptyString,
-    );
+    this.#loginForm = new FormUsername(this.login.bind(this),  username);
+
     this.init();
   }
 
@@ -58,13 +53,13 @@ export class JoinPage extends Page {
   }
 
   login(formValues) {
-    if (self.onlineConnection) {
-      this.#displayLoader().then(() => {
-        self.onlineConnection.establishConnection(formValues);
-      });
-    } else {
+    if (!self.onlineConnection) {
       self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionErrorRefresh);
+      return;
     }
+    this.#displayLoader().then(() => {
+      self.onlineConnection.establishConnection(formValues);
+    });
   }
 
   #displayLoader() {
@@ -78,8 +73,28 @@ export class JoinPage extends Page {
     return this.loginContainer.then((container) => IconLoader.remove(container));
   }
 
-  onConnectionError(errorMessage) {
-    super.onConnectionError(errorMessage);
+  #onConnectionError(errorType) {
     this.#hideLoader();
+    if (errorType && self.modal) {
+      // self.modal.displayConfirmation(CONFIRMATION.offline, (confirmed) => {
+      //   if (confirmed) {
+      //     const username = this.#loginForm.formValues.username;
+      //     self.user = new User(username, username);
+      //     this.#saveUsernameLocallyAndNavigate();
+      //   }
+      // });
+    }
   }
+
+  #onUserUpdate() {
+    if (self.user.conected) {
+      this.#saveUsernameLocallyAndNavigate();
+    }
+  }
+
+  #saveUsernameLocallyAndNavigate() {
+    LocalStorageHelper.save("username", self.user.username);
+    this.onPageChange();
+  }
+
 }

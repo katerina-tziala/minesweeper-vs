@@ -19,9 +19,52 @@
 .header-btn {
   @extend .btn-icon;
   @extend .btn-icon--normal;
-  @include afterIcon("settings");
+
   background-color: transparent;
+
+  &.header-btn--settings {
+    @include afterIcon("settings");
+  }
+
+  &.header-btn--logout {
+    @include afterIcon("loggout");
+  }
+
+  &.header-btn--home {
+    @include afterIcon("home");
+  }
+
+  &.header-btn--connect {
+    @include afterIcon("wifi");
+  }
+
+
+  &.header-btn--invitations {
+    @include afterIcon("envelope");
+  }
+
+  
 }
+
+
+.header-actions-container {
+  position: relative;
+  // border: 1px solid red;
+  //margin-left: 10px;
+  @extend %center-center;
+
+  >.header-btn {
+    margin-left: 15px;
+  }
+}
+
+
+
+
+
+
+
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

@@ -3,6 +3,7 @@ import {
   RESTART_BTN,
   QUIT_BTN,
   RESET_BTN,
+  YES_BTN
 } from "~/_constants/btn-text.constants";
 
 export const DOM_ELEMENT_ID = {
@@ -45,5 +46,11 @@ export const CONFIRMATION = {
     content: "Reseting game in...",
     timer: 3,
     confirmButton: RESET_BTN,
+  },
+  offline: {
+    title: "Continue offline",
+    content: "Do you want to continue offline?",
+    timer: 0,
+    confirmButton: YES_BTN,
   }
 };

@@ -9,10 +9,6 @@ export const emptyString = (value) => {
     : false;
 };
 
-export const validValue = (value) => {
-  return valueDefined(value) ? true : false;
-};
-
 export const valueInLimits = (value, limits) => {
   return limits.min <= value && value <= limits.max;
 };

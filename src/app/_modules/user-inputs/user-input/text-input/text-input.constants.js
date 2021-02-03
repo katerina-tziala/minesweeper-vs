@@ -15,4 +15,13 @@ export const FIELD_PARAMS = {
   },
 };
 
-export const FIELD_ERROR = "### is not valid!";
+export const FIELD_ERRORS = {
+  empty: "### cannot be empty!",
+  minLength: "### must be at least ### characters long!",
+  maxLength: "### cannot be longer than ### characters!"
+};
+
+export const VALUE_LENGTH = {
+  min: 3,
+  max: null
+};

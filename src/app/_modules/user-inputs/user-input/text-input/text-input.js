@@ -3,13 +3,14 @@
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
 import { ElementGenerator } from "HTML_DOM_Manager";
 
-import { emptyString } from "~/_utils/validator";
+import { emptyString, valueDefined } from "~/_utils/validator";
 import { clone, replaceStringParameter } from "~/_utils/utils";
 
 import {
   DOM_ELEMENT_CLASS,
   FIELD_PARAMS,
-  FIELD_ERROR,
+  FIELD_ERRORS,
+  VALUE_LENGTH
 } from "./text-input.constants";
 
 import { UserInput } from "../user-input";
@@ -17,6 +18,8 @@ import { InputError } from "../../input-error/input-error";
 
 export class TextInput extends UserInput {
   #errorController;
+  #minLength = VALUE_LENGTH.min;
+  #maxLength = VALUE_LENGTH.max;
 
   constructor(name, value = TYPOGRAPHY.emptyString, onValueChange) {
     super(name, value, onValueChange);
@@ -49,8 +52,19 @@ export class TextInput extends UserInput {
     return params;
   }
 
-  get inputError() {
-    return replaceStringParameter(FIELD_ERROR, this.name);
+  get #minLengthError() {
+    const errorMessage = this.#fieldError(FIELD_ERRORS.minLength);
+    return replaceStringParameter(errorMessage, this.#minLength);
+  }
+
+  get #maxLengthError() {
+    const errorMessage = this.#fieldError(FIELD_ERRORS.maxLength);
+    return replaceStringParameter(errorMessage, this.#maxLength);
+  }
+
+  setLengthBoundaries(minLength = VALUE_LENGTH.min, maxLength = VALUE_LENGTH.max) {
+    this.#minLength = minLength;
+    this.#maxLength = maxLength;
   }
 
   generateInputField() {
@@ -87,19 +101,30 @@ export class TextInput extends UserInput {
 
   validateInputTypeValue() {
     const trimmedValue = this.value.trim();
-    if (!emptyString(trimmedValue) && trimmedValue.length > 1) {
+
+    if (emptyString(trimmedValue)) {
+      this.valid = false;
+      this.showError(this.#fieldError());
+    } else if (trimmedValue.length < this.#minLength) {
+      this.valid = false;
+      this.showError(this.#minLengthError);
+    } else if (valueDefined(this.#maxLength) && trimmedValue.length > this.#maxLength) {
+      this.valid = false;
+      this.showError(this.#maxLengthError);
+    } else {
       this.value = trimmedValue;
       this.hideError();
       this.valid = true;
-      this.notifyForChanges();
-      return;
     }
-    this.valid = false;
-    this.showError(this.inputError);
+  
     this.notifyForChanges();
   }
 
-  showError(message = this.inputError) {
+  #fieldError(message = FIELD_ERRORS.empty) {
+    return replaceStringParameter(message, this.name);
+  }
+
+  showError(message) {
     this.errorController.show(message);
   }
 
