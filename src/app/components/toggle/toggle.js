@@ -14,6 +14,7 @@ import { clone, roundUpToNextDecade, replaceStringParameter } from "~/_utils/uti
 
 export class Toggle {
   #expanded = false;
+
   constructor(name, expanded = false) {
     this.name = name;
     console.log("toggle");
@@ -55,16 +56,11 @@ export class Toggle {
 
   #onToggleButtonChange() {
     this.#expanded = !this.#expanded;
-
     console.log("onToggleButtonChange");
     console.log(this.name);
-    console.log(this.#buttonId);
-    console.log(this.#expanded);
-
+   
     this.#setToggleButtonState();
   }
-
-
 
   #setToggleButtonState() {
     this.#toggleButton.then((btn) => {
