@@ -28,6 +28,10 @@ export class Toggle {
     return DOM_ELEMENT_ID.toggleButton + this.name;
   }
 
+  get #contentId() {
+    return DOM_ELEMENT_ID.toggleContent + this.name;
+  }
+
   get #toggleButton() {
     return ElementHandler.getByID(this.#buttonId);
   }
@@ -39,24 +43,19 @@ export class Toggle {
     return params;
   }
 
-
-
-  
   generateView() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#containerId);
     const button = ElementGenerator.generateButton(this.#toggleButtonParams, this.#onToggleButtonChange.bind(this));
     ElementHandler.setID(button, this.#buttonId);
-
-    // conntent container
-    container.append(button);
+    const content = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.toggleContent], this.#contentId);
+    container.append(button, content);
     return container;
   }
 
 
   #onToggleButtonChange() {
     this.#expanded = !this.#expanded;
-    // const expanded = JSON.parse(event.target.getAttribute("aria-expanded"));
-    // console.log(expanded);
+
     console.log("onToggleButtonChange");
     console.log(this.name);
     console.log(this.#buttonId);

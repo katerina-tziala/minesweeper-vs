@@ -1,13 +1,13 @@
-@use "sass:map";
-@use "sass:color";
+// @use "sass:map";
+// @use "sass:color";
 @use "./toggle-theming";
-@use "../../theming/theming";
-@use "../button/button-theming";
-@use "../../utils/shapes";
-@import "../button/button";
+// @use "../../theming/theming";
+// @use "../button/button-theming";
+@import "../../utils/z-index";
+// @import "../button/button";
 
 .toggle {
-  border: 1px solid red;
+  // border: 1px solid red;
   position: relative;
 }
 
@@ -19,9 +19,26 @@
     border-radius: 4px;
     width: 0;
     height: 0;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
   }
 }
+
+.toggle-content {
+  position: absolute;
+  top: 35px;
+  right: 2px;
+
+  z-index: getIndex("settings-panel");
+  // height: 0;
+
+  width: 20px;
+  height: 20px;
+
+  // transition: height 0.5s;
+}
+
+
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include toggle-theming.setTheming();

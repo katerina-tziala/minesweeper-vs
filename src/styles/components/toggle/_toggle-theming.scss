@@ -45,12 +45,21 @@
   }
 }
 
+@mixin setContentThemeStyles($theme) {
+  .toggle-content {
+    @include theming.setThemeCard($theme);
+    @include theming.setThemeBoxShadow($theme);
+  }
+}
+
 @mixin setTheming() {
   $themes: "light", "dark";
 
   @each $theme in $themes {
     .theme-#{$theme} {
       @include setButtonThemeStyles(theming.getThemeColor($theme, "theme-primary-intense"));
+      @include setContentThemeStyles($theme);
+
     }
   }
 }

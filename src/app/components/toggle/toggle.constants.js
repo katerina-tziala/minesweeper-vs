@@ -4,6 +4,7 @@
 export const DOM_ELEMENT_ID = {
   container: "toggle__",
   toggleButton: "toggle-btn__",
+  toggleContent: "toggle-content__",
 
   
 };
@@ -11,6 +12,7 @@ export const DOM_ELEMENT_ID = {
 export const DOM_ELEMENT_CLASS = {
   container: "toggle",
   toggleButtonExpanded: "toggle-btn--expanded",
+  toggleContent: "toggle-content",
 
   
 };
