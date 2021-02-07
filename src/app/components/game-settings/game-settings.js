@@ -1,7 +1,7 @@
 "use strict";
 import { COLOR_TYPES } from "~/_constants/ui.constants";
 import { MineType } from "~/_enums/app-settings.enums";
-import { ElementGenerator } from "HTML_DOM_Manager";
+import { ElementGenerator, ElementHandler } from "HTML_DOM_Manager";
 import {
   UserInputsGroupController,
   DropdownSelect,
@@ -21,6 +21,7 @@ export class GameSettings {
   constructor(settings) {
     this.#ColorsControllers = new UserInputsGroupController();
     this.#settings = settings;
+    this.#initControllers();
   }
 
   get #mineTypeOptions() {
@@ -30,6 +31,10 @@ export class GameSettings {
         innerHTML: `<div class="mine-type-option mine-type-option--${type}"></div>`,
       };
     });
+  }
+
+  get #container() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.container);
   }
 
   #colorOptions(colorToExclude) {
@@ -79,7 +84,6 @@ export class GameSettings {
   }
 
   generateView() {
-    this.#initControllers();
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_ID.container);
     container.append(SettingsItem.generateItem(this.#MineTypeController));
     this.#ColorsControllers.controllers.forEach(controller => {
@@ -87,8 +91,14 @@ export class GameSettings {
     });
     return container;
   }
-
-  destroy() {
-    console.log("destroy");
+ 
+  onDestroy() {
+    return this.#container.then(container => {
+      container.remove();
+      this.#settings = undefined;
+      this.#MineTypeController = undefined;
+      this.#ColorsControllers = undefined;
+      return;
+    });
   }
 }

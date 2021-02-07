@@ -39,7 +39,7 @@ export class HeaderActionsController {
 
     this.#invitationsController = new InvitationsController();
 
-    this.#settingsController = new SettingsController();
+    this.#settingsController = new SettingsController(true);
   }
 
   get #container() {
@@ -59,11 +59,32 @@ export class HeaderActionsController {
       const invitations = this.#invitationsController.generateView();
       const settingsToggle = this.#settingsController.generateView();
 
+      // setTimeout(() => {
+      //   this.hideGameSettings();
+      // }, 1000);
+      // setTimeout(() => {
+      //   this.displayGameSettings();
+      // }, 2000);
+
       navigation.append(home, connect, invitations, settingsToggle, loggout);
 
      // console.log(navigation);
     });
   }
+
+
+  hideGameSettings() {
+    console.log("#hideGameSettings");
+    console.log("animate toggle");
+    this.#settingsController.toggleGameSettingsDisplay(false);
+  }
+
+  displayGameSettings() {
+    console.log("#displayGameSettings");
+    console.log("animate toggle");
+    this.#settingsController.toggleGameSettingsDisplay(true);
+  }
+
 
 
 

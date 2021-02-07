@@ -68,12 +68,8 @@ export class Toggle {
 
   #generatePanel(content) {
     const panel = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.togglePanel], this.#panelId);
-
-    this.#expanded = true;
-
     this.#setPanelHeight(panel);
     this.#setPanelOverflow(panel);
-
     const contentContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.toggleContent], this.#contentId);
     if (content) {
       contentContainer.append(content);
@@ -85,7 +81,7 @@ export class Toggle {
   get #generatedButton() {
     const button = ElementGenerator.generateButton(this.#toggleButtonParams, this.#onToggleButtonChange.bind(this));
     ElementHandler.setID(button, this.#buttonId);
-    //ß ElementHandler.setDisabled(button, !this.#hasContent);
+    ElementHandler.setDisabled(button, !this.#hasContent);
     return button;
   }
 

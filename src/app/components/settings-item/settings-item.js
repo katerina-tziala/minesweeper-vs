@@ -8,7 +8,6 @@ export class SettingsItem {
   static generateItem(inputController) {
     const settingsItem = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.settingsItem]);
     const settingTag = this.generateSettingTag(inputController.name);
-    
     settingsItem.append(settingTag, inputController.generateInputField());
     return settingsItem;
   }
