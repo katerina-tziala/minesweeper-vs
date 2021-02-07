@@ -23,20 +23,27 @@
   }
 }
 
-.toggle-content {
+.toggle-panel {
   position: absolute;
   top: 35px;
   right: 2px;
-
   z-index: getIndex("settings-panel");
+
   // height: 0;
-
-  width: 20px;
-  height: 20px;
-
-  // transition: height 0.5s;
+  // width: 20px;
+  // height: 20px;
+  // border: 1px solid red;
+  //overflow: hidden;
+  transition: height 0.5s;
 }
 
+
+.toggle-content {
+ 
+  // border: 1px solid blue;
+  //padding-bottom: 10px;
+  // transition: height 0.5s;
+}
 
 
 

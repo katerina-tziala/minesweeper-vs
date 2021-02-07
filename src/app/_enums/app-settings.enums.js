@@ -13,6 +13,7 @@ const MineType = {
 };
 Object.freeze(MineType);
 
+//
 const SettingType = {
   Theme: "theme",
   MineType: "mineType",

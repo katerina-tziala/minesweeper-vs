@@ -1,20 +1,18 @@
 "use strict";
 
-
 export const DOM_ELEMENT_ID = {
   container: "toggle__",
   toggleButton: "toggle-btn__",
-  toggleContent: "toggle-content__",
-
-  
+  togglePanel: "toggle-panel__",
+  toggleContent: "toggle-content__"
 };
 
 export const DOM_ELEMENT_CLASS = {
   container: "toggle",
+  toggleButton: "toggle-btn",
   toggleButtonExpanded: "toggle-btn--expanded",
-  toggleContent: "toggle-content",
-
-  
+  togglePanel: "toggle-panel",
+  toggleContent: "toggle-content"
 };
 
 export const BUTTON = {

@@ -45,8 +45,8 @@
   }
 }
 
-@mixin setContentThemeStyles($theme) {
-  .toggle-content {
+@mixin setPanelThemeStyles($theme) {
+  .toggle-panel {
     @include theming.setThemeCard($theme);
     @include theming.setThemeBoxShadow($theme);
   }
@@ -58,8 +58,7 @@
   @each $theme in $themes {
     .theme-#{$theme} {
       @include setButtonThemeStyles(theming.getThemeColor($theme, "theme-primary-intense"));
-      @include setContentThemeStyles($theme);
-
+      @include setPanelThemeStyles($theme);
     }
   }
 }

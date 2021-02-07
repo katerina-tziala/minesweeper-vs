@@ -39,7 +39,7 @@ export class SettingsController {
 
   constructor() {
     this.#inputsGroup = new UserInputsGroupController();
-    this.gameSettingsHidden = true;
+    this.gameSettingsHidden = false;
     this.expanded = false;
     this.init();
   }

@@ -11,6 +11,9 @@
 
 @import "../toggle/toggle";
 
+
+@import "../../components/settings/settings";
+
 .header {
   @extend %start-center;
   height: 46px;
@@ -73,6 +76,13 @@
     margin-left: 15px;
   }
 }
+
+
+
+
+
+
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

@@ -16,20 +16,25 @@ import { PageType } from "./_enums/page-type.enum";
 import { GameType } from "GameEnums";
 import { CONFIRMATION } from "./components/modal/modal.constants";
 import { Page } from "./pages/page";
-
+import { setAppTheme } from "~/_utils/theming";
+import { AppSettingsModel } from "~/_models/app-settings";
 
 export class App {
 
   constructor() {
+    this.#initAppSettings();
+
     this.interfaceController = undefined;
-    self.settingsController = new SettingsController();
+   // self.settingsController = new SettingsController();
     self.modal = new Modal();
+    
+    
     
     self.onlineConnection = new OnlineConnection();
 
-    self.headerActionsController = new HeaderActionsController(this.#onLogout.bind(this));
-    self.headerActionsController.generateView();
 
+    self.headerActionsController = new HeaderActionsController();
+    self.headerActionsController.generateView();
 
     // self.onlineConnection = new OnlineConnection({
     //   onError: this.onConnectionError.bind(this),
@@ -52,6 +57,13 @@ export class App {
     
     this.#onJoinNavigation();
   }
+
+  #initAppSettings() {
+    const settings = new AppSettingsModel();
+    settings.saveLocally();
+    setAppTheme();
+  }
+
 
 
   #onLogout() {

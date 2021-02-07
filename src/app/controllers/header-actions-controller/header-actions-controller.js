@@ -18,17 +18,28 @@ import {
   Toggle
 } from "../../components/toggle/toggle";
 
+import {
+  InvitationsController
+} from "../invitations-controller/invitations-controller";
 
+import {
+  SettingsController
+} from "../settings-controller/settings-controller";
 
 export class HeaderActionsController {
-  #onLogout;
-  
-  constructor(onLogout) {
-    this.#onLogout = onLogout;
+  #invitationsController;
+  #settingsController;
+
+  constructor() {
+   // this.#onLogout = onLogout;
     console.log("HeaderActionsController");
     // console.log(self.user);
     this.invitationsToggle = new Toggle("invitations");
     this.settingsToggle = new Toggle("settings");
+
+    this.#invitationsController = new InvitationsController();
+
+    this.#settingsController = new SettingsController();
   }
 
   get #container() {
@@ -41,17 +52,13 @@ export class HeaderActionsController {
 
 
       const connect = ElementGenerator.generateButton(BUTTONS.connect, this.#onConnect.bind(this));
-      const settings = ElementGenerator.generateButton(BUTTONS.settings, this.#onToggleSettings.bind(this));
-
+   
       const home = ElementGenerator.generateButton(BUTTONS.home, this.#onNavigateToHome.bind(this));
       const loggout = ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this));
       
-      const invitations = this.invitationsToggle.generateView();
-      const settingsToggle = this.settingsToggle.generateView();
+      const invitations = this.#invitationsController.generateView();
+      const settingsToggle = this.#settingsController.generateView();
 
-      
-      
-      console.log(this.invitationsToggle);
       navigation.append(home, connect, invitations, settingsToggle, loggout);
 
      // console.log(navigation);
@@ -72,14 +79,19 @@ export class HeaderActionsController {
     
   }
 
+
   #onToggleInvitations() {
     console.log("#onToggleInvitations");
     
   }
+
   #onConnect() {
     console.log("#onConnect");
     
   }
-
+  #onLogout() {
+    console.log("#onLogout");
+    
+  }
 
 }

@@ -24,7 +24,7 @@ export class DropdownSelectList {
   #listHeight;
   #size;
 
-  constructor(onSelection, name, maxHeight = 150) {
+  constructor(onSelection, name, maxHeight = 85) {
     this.onSelection = onSelection;
     this.listboxId = name;
     this.maxHeight = maxHeight;
@@ -88,15 +88,10 @@ export class DropdownSelectList {
     this.listHeight = DropdownSelectOptionsHandler.getOptionsHeight(
       listbox.childNodes,
     );
-    this.isScrollable
-      ? ElementHandler.addStyleClass(
-        listbox,
-        DOM_ELEMENT_CLASS.listboxScrollable,
-      )
-      : ElementHandler.removeStyleClass(
-        listbox,
-        DOM_ELEMENT_CLASS.listboxScrollable,
-      );
+    ElementHandler.removeStyleClass(listbox,  DOM_ELEMENT_CLASS.listboxScrollable);
+    if (this.isScrollable) {
+      ElementHandler.addStyleClass(listbox,  DOM_ELEMENT_CLASS.listboxScrollable);
+    }
   }
 
   getListBoxAttributes(options, selectText) {
@@ -203,7 +198,10 @@ export class DropdownSelectList {
     AriaHandler.setActiveDescendant(listbox, activeDescendantID);
     ElementHandler.getByID(activeDescendantID).then((activeDescendant) => {
       DropdownSelectOption.selectOption(activeDescendant);
-      listbox.scrollTop = activeDescendant.getBoundingClientRect().top;
+      listbox.scrollTo({
+        top: activeDescendant.offsetTop,
+        behavior: 'smooth',
+      });
     });
   }
 
