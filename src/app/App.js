@@ -27,7 +27,7 @@ export class App {
     this.interfaceController = undefined;
    // self.settingsController = new SettingsController();
     self.modal = new Modal();
-    
+    //document event listeners
     
     
     self.onlineConnection = new OnlineConnection();

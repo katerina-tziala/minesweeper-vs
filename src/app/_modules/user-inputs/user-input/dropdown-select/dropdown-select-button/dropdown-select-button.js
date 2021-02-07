@@ -64,8 +64,7 @@ export class DropdownSelectButton {
     return button;
   }
 
-  onDropdownClick(event) {
-    preventInteraction(event);
+  onDropdownClick() {
     this.dropdownBtn.then((button) => {
       const nextState = !AriaHandler.getAriaExpanded(button);
       this.toggleButtonState(button, nextState);

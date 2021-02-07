@@ -179,13 +179,14 @@ export class DropdownSelectList {
   }
 
   toggleList(expanded, selectedOption) {
-    this.listbox.then((listbox) => {
+    return this.listbox.then((listbox) => {
       if (!this.listHeight) {
         this.setUpListHeight(listbox);
       }
       expanded
         ? this.expandList(listbox, selectedOption)
         : this.collapseList(listbox);
+        return;
     });
   }
 

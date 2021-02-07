@@ -1,15 +1,15 @@
-@use "sass:list";
-@use "../../theming/theming";
+// @use "sass:list";
+// @use "../../theming/theming";
+// @use "./settings-theming";
 
-@use "./settings-theming";
+@import "../toggle/toggle";
 @import "../switcher/switcher";
-@import "../dropdown-select/dropdown-select";
-
+@import "../game-settings/game-settings";
 
 .settings-item {
   @extend %between-center;
-  min-width: 200px;
-  padding: 10px;
+  min-width: 220px;
+  padding: 15px;
 }
 
 .settings-tag {
@@ -19,4 +19,5 @@
 }
 
 
-@include settings-theming.setTheming();
+
+// @include settings-theming.setTheming();

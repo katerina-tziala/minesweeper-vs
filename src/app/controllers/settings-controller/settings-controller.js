@@ -8,7 +8,7 @@ import {
 
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
-import { SettingsItem } from "./settings-item";
+import { SettingsItem } from "../../components/settings-item/settings-item";
 
 import { setAppTheme } from "../../_utils/theming";
 
@@ -33,28 +33,29 @@ import {
   Switcher,
 } from "UserInputs";
 import { Theme } from "~/_enums/app-settings.enums";
+import { GameSettings } from "../../components/game-settings/game-settings";
 
 export class SettingsController {
 
   #settings;
-  #toggle;
+  #Toggle;
   #inputsGroup;
   #themeSwitcher;
-
+  #GameSettings;
   constructor() {
     console.log("SettingsController");
     this.#settings = new AppSettingsModel();
-    this.#toggle = new Toggle("settings");
-    this.#inputsGroup = new UserInputsGroupController();
+    this.#Toggle = new Toggle("settings");
+   // this.#inputsGroup = new UserInputsGroupController();
  
-
-
+    this.#GameSettings = new GameSettings(this.#settings);
+    
     this.#initThemeController();
   }
 
   #initThemeController() {
     const params = {
-      name: SETTINGS_KEYS.theme,
+      name: "theme",
       value: this.#settings.theme === Theme.Dark,
     };
     this.#themeSwitcher = new Switcher(params, this.#onDarkThemeChange.bind(this));
@@ -71,13 +72,15 @@ export class SettingsController {
 
     //console.log(this.#settings);
     
-    return this.#toggle.generateView(this.#generateToggleContent());
+    return this.#Toggle.generateView(this.#generateToggleContent());
   }
 
 
   #generateToggleContent() {
     const fragment = document.createDocumentFragment();
     fragment.append(this.#generatedThemeSection);
+
+    fragment.append(this.#GameSettings.generateView());
 
     return fragment;
   }

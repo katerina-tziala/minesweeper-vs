@@ -34,7 +34,7 @@
 @mixin setThemeStyles($theme) {
   .dropdown-btn {
     border-bottom-color: theming.getThemeColor($theme, "theme-primary-subtle");
-
+    border-bottom: 1px solid;
     &:hover,
     &:focus {
       border-bottom-color: theming.getThemeColor(

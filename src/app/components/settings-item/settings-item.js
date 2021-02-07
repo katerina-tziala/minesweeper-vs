@@ -1,7 +1,7 @@
 "use strict";
 
 import { ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS, CONTENT } from "./settings-controller.constants";
+import { DOM_ELEMENT_CLASS, CONTENT } from "./settings-item.constants";
 
 export class SettingsItem {
 

@@ -21,6 +21,7 @@ export class DropdownSelect extends UserInput {
   #selectLabel;
   #dropdownBtn;
   #dropdownList;
+  #documentListeners = {};
 
   constructor(params, onValueChange, onExpand) {
     super(params.name, params.value, onValueChange);
@@ -67,7 +68,7 @@ export class DropdownSelect extends UserInput {
     return this.#selectLabel;
   }
 
-  get containerID() {
+  get #containerID() {
     return DOM_ELEMENT_ID.dropdownContainer + this.name;
   }
 
@@ -105,7 +106,7 @@ export class DropdownSelect extends UserInput {
     const dorpdownFragment = document.createDocumentFragment();
     const dropdownContainer = ElementGenerator.generateContainer(
       [DOM_ELEMENT_CLASS.container],
-      this.containerID,
+      this.#containerID,
     );
     const button = this.generateDropdownButton();
     const listbox = this.#dropdownList.generateDropdownListbox(
@@ -128,16 +129,24 @@ export class DropdownSelect extends UserInput {
   }
 
   onDropdownBtnClick(expand) {
-    if (expand && this.onExpand) {
-      this.onExpand(this.name);
-    }
     this.expanded = expand;
-    if (this.expanded) {
-      document.addEventListener("click", this.collapseDropdown.bind(this));
-    } else {
-      this.removeCollapseDropdownListener();
-    }
-    this.#dropdownList.toggleList(this.expanded, this.selectedOption);
+    this.#dropdownList.toggleList(this.expanded, this.selectedOption).then(() => {
+      if (this.expanded) {
+        this.#detectOutsideClick();
+        return;
+      } 
+      this.#removeOutsideClick();
+    });
+  }
+
+  #detectOutsideClick() {
+    this.#documentListeners[this.name] = this.#collapseOnOutsideClick.bind(this);
+    document.addEventListener("click", this.#documentListeners[this.name]);
+  }
+
+  #removeOutsideClick() {
+    document.removeEventListener("click", this.#documentListeners[this.name]);
+    this.#documentListeners = {};
   }
 
   onOptionSelected(selectedValue) {
@@ -150,20 +159,24 @@ export class DropdownSelect extends UserInput {
     this.#dropdownBtn.toggleButtonExpandState(this.expanded);
   }
 
+  #collapseOnOutsideClick(event) {
+    const container = event.target.closest(`#${this.#containerID}`);
+    if (!container && this.expanded) {
+      this.collapseDropdown();
+    }
+  }
+
   collapseDropdown() {
-    ElementHandler.getByID(this.containerID)
-      .then(() => {
+    ElementHandler.getByID(this.#containerID).then(() => {
         if (this.expanded) {
           this.#dropdownList.collapseListOnOutsideClick();
+          this.#removeOutsideClick();
         }
         this.#dropdownBtn.blur();
       })
       .catch(() => {
-        this.removeCollapseDropdownListener();
+        this.#removeOutsideClick();
       });
   }
 
-  removeCollapseDropdownListener() {
-    document.removeEventListener("click", this.collapseDropdown.bind(this));
-  }
 }
