@@ -15,7 +15,7 @@ export class GameSetupPage extends Page {
     this.#gameType = gameType;
     this.navigateToHome = navigateToHome;
     this.onPlayGame = onPlayGame;
-    self.settingsController.gameSettingsHidden = false;
+   // self.settingsController.gameSettingsHidden = false;
     this.init();
   }
 

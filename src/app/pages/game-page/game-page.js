@@ -11,7 +11,7 @@ export class GamePage extends Page {
 
   constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
     super();
-    self.settingsController.gameSettingsHidden = true;
+    //self.settingsController.gameSettingsHidden = true;
     this.gameParams = gameParams;
     this.navigateToHome = navigateToHome;
     this.onGameSetUpNavigation = onGameSetUpNavigation;

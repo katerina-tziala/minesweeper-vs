@@ -25,7 +25,7 @@ export class LobbyPage extends Page {
   constructor(onPlayGame) {
     super();
     this.onPlayGame = onPlayGame;
-    self.settingsController.gameSettingsHidden = false;
+    //self.settingsController.gameSettingsHidden = false;
 
     this.#OnlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
     this.init();

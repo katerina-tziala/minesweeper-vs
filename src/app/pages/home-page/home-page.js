@@ -16,7 +16,7 @@ import { GameType } from "GameEnums";
 export class HomePage extends Page {
   constructor(selectGameType) {
     super();
-    self.settingsController.gameSettingsHidden = false;
+    //self.settingsController.gameSettingsHidden = false;
     this.init();
     this.selectGameType = selectGameType;
   }

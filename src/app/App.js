@@ -3,8 +3,6 @@ import { OnlineConnection } from "./online-connection/online-connection";
 
 import { NOTIFICATION_MESSAGE } from "./components/toast-notification/toast-notification.constants";
 
-import { SettingsController } from "./components/settings-controller/settings-controller";
-
 
 import { HeaderActionsController } from "./controllers/header-actions-controller/header-actions-controller";
 import { Modal } from "./components/modal/modal";
@@ -25,7 +23,7 @@ export class App {
     this.#initAppSettings();
 
     this.interfaceController = undefined;
-   // self.settingsController = new SettingsController();
+    
     self.modal = new Modal();
     //document event listeners
     
