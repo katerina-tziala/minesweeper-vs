@@ -46,9 +46,14 @@ export class HeaderActionsController {
     });
   }
 
+  get settingsElement() {
+    return this.settingsController.generateView();
+  }
+
+
   get actions() {
     const fragment = document.createDocumentFragment();
-    fragment.append(this.settingsController.generateView());
+    fragment.append(this.settingsElement);
     return fragment;
   }
 

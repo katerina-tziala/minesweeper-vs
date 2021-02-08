@@ -1,6 +1,4 @@
-
 @use "./online-indicator-theming";
-
 @import "../button/button";
 
 .online-indicator-container {
@@ -20,8 +18,5 @@
   background-color: transparent;
   @include afterIcon("online");
 }
-
-
-
 
 @include online-indicator-theming.setTheming();

@@ -4,7 +4,6 @@ export const DOM_ELEMENT_ID = {
   container: "online-indicator-container",
 };
 
-
 export const DOM_ELEMENT_CLASS = {
   container: "online-indicator-container",
   icon: "online-indicator-icon"

@@ -68,6 +68,20 @@ export class OnlineConnection {
     });
   }
 
+  establishUserConnection() {
+    this.#webSocket = new WebSocket(
+      CONNECTION_CONFIG.url,
+      CONNECTION_CONFIG.protocols,
+    );
+    this.#webSocket.addEventListener("error", (event) => this.#onError(event));
+
+    this.#webSocket.addEventListener("open", () => {
+      this.#webSocket.addEventListener("message", (event) => this.#onMessage(JSON.parse(event.data)));
+      this.#webSocket.addEventListener("close", (event) => this.#onClose(event));
+      this.sendData("join", {username: self.user.username});
+    });
+  }
+
 
   #onError(event) {
     this.#webSocket = undefined;
@@ -75,6 +89,17 @@ export class OnlineConnection {
     self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
     this.#submitError();
   }
+
+
+  connectionError() {
+    this.#webSocket = undefined;
+    console.log("#connectionError");
+    self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
+    this.#submitError();
+  }
+
+
+
 
   #submitError(errorType = "connection-error") {
     if (this.onError) {

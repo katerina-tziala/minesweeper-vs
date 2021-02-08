@@ -12,40 +12,37 @@ import {
   DOM_ELEMENT_CLASS,
   BUTTONS
 } from "./header-actions-controller.constants";
-import { OnlineIndicator } from "../online-indicator-controller/online-indicator-controller";
+import { OnlineIndicatorController } from "../online-indicator-controller/online-indicator-controller";
 
 export class HeaderActionsControllerUser extends HeaderActionsController {
   #actionsListeners = {};
+  #OnlineIndicator;
 
   constructor(gameSettings = true, actionsListeners = {}) {
     super(gameSettings);
     this.#actionsListeners = actionsListeners;
 
-   this.onlineIndicator = new OnlineIndicator();
+    this.#OnlineIndicator = new OnlineIndicatorController();
 
 
     console.log(self.onlineConnection.live);
 
-
   }
 
+  get #onlineIndicatorElement() {
+    return this.#OnlineIndicator.generateView();
+  }
+
+  setOnlineIndicatorState() {
+    return this.#OnlineIndicator.updateState();
+  }
 
 
   get actions() {
     const fragment = document.createDocumentFragment();
-    
-    const onlineIndicator = this.onlineIndicator.generateView();
+    fragment.append(this.#onlineIndicatorElement);
 
-    fragment.append(onlineIndicator);
-
-    fragment.append(this.settingsController.generateView());
-
-
-    const connect = ElementGenerator.generateButton(BUTTONS.connect, this.#onConnect.bind(this));
-    // ElementHandler.setDisabled(connect, true);
-    fragment.append(connect);
-
-
+    fragment.append(this.settingsElement);
 
     if (self.user) {
       fragment.append(ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this)));
@@ -61,9 +58,12 @@ export class HeaderActionsControllerUser extends HeaderActionsController {
     }
   }
 
-  #onConnect() {
-    console.log("#onConnect");
+  
 
-  }
+
+
+
+
+
 
 }
