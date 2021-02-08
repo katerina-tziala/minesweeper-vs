@@ -89,7 +89,7 @@ export class MenuItem {
   }
 
   toggleState(disabled) {
-    if (this.#disabled !== disabled) {
+    if (this.#disabled === disabled) {
       return Promise.resolve();
     }
     this.#disabled = disabled;
