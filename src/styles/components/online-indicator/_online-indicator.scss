@@ -1,0 +1,27 @@
+
+@use "./online-indicator-theming";
+
+@import "../button/button";
+
+.online-indicator-container {
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  background-color: transparent;
+  cursor: default!important;
+}
+
+.online-indicator-icon {
+  @include afterIcon("online");
+}
+
+.online-indicator-button {
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  background-color: transparent;
+  @include afterIcon("online");
+}
+
+
+
+
+@include online-indicator-theming.setTheming();

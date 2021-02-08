@@ -26,7 +26,6 @@ export class JoinPage extends Page {
 
 
     this.actionControlller = new HeaderActionsController();
-    this.actionControlller.init();
 
 
     this.onPageChange = onPageChange;

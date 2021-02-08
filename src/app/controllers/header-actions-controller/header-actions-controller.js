@@ -36,7 +36,7 @@ export class HeaderActionsController {
     console.log("HeaderActionsController build for only settings");
     // console.log(self.user);
     this.settingsController = new SettingsController(gameSettings);
-
+    this.init();
   }
 
   get #clearedContainer() {
@@ -49,20 +49,13 @@ export class HeaderActionsController {
   get actions() {
     const fragment = document.createDocumentFragment();
     fragment.append(this.settingsController.generateView());
-
-    if (self.user) {
-      fragment.append(ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this)));
-    }
-    
     return fragment;
   }
 
   init() {
     this.#clearedContainer.then(container => {
-      console.log(container);
+     // console.log(container);
       container.append(this.actions);
-
-      //console.log(self.user);
     });
   }
 

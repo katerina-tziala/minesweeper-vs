@@ -12,15 +12,17 @@ import {
 import { Page } from "../page";
 import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./home-page.constants";
 import { GameType } from "GameEnums";
-import { HeaderActionsController } from "../../controllers/header-actions-controller/header-actions-controller";
+import { HeaderActionsControllerUser } from "../../controllers/header-actions-controller/header-actions-controller-user";
 
 export class HomePage extends Page {
   constructor(selectGameType) {
     super();
     //self.settingsController.gameSettingsHidden = false;
-    this.actionControlller = new HeaderActionsController(true);
-    this.actionControlller.init();
-
+    this.actionControlller = new HeaderActionsControllerUser(true, {
+      "onLogout": this.onLogout.bind(this)
+    });
+   
+    
     this.init();
     this.selectGameType = selectGameType;
   }

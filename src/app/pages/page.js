@@ -4,7 +4,7 @@ import { DOM_ELEMENT_ID } from "~/_constants/ui.constants";
 import { ElementHandler } from "HTML_DOM_Manager";
 
 export class Page {
-  constructor() {}
+  constructor() { }
 
   get mainContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.main);
@@ -39,5 +39,14 @@ export class Page {
   renderPage(mainContainer) {
     const fragment = document.createDocumentFragment();
     mainContainer.append(fragment);
+  }
+
+  onLogout() {
+    console.log("on loggout from page");
+    console.log(self.user);
+    console.log(self.onlineConnection.live);
+
+
+
   }
 }

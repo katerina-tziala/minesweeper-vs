@@ -118,7 +118,7 @@ export class OnlineConnection {
   #handleUserUpdate(data) {
     console.log("onUserUpdate");
     this.peers = data.peers;
-    
+
     console.log(data);
 
     if (self.user) {
@@ -144,5 +144,13 @@ export class OnlineConnection {
       console.log("no this.webSocket");
     }
   }
+
+  disconnect(user) {
+    console.log("disconnect");
+    console.log(user);
+
+
+  }
+
 
 }

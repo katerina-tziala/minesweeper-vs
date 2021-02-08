@@ -10,8 +10,8 @@ export class User extends AppModel {
     this.gameRoomId = gameRoomId;
   }
 
-  conected() {
-    return this.id !== this.username;
-  }
+  // conected() {
+  //   return this.id !== this.username;
+  // }
 
 }
