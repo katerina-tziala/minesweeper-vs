@@ -21,18 +21,23 @@ import {
   InvitationsController
 } from "../invitations-controller/invitations-controller";
 
+
+
+
+
 export class HeaderActionsControllerUser extends HeaderActionsController {
   #actionsListeners = {};
   #OnlineIndicator;
   #InvitationsController;
-
+  
   constructor(gameSettings = true, actionsListeners = {}) {
     super(gameSettings);
     this.#actionsListeners = actionsListeners;
 
     this.#OnlineIndicator = new OnlineIndicatorController();
     this.#InvitationsController = new InvitationsController();
-    console.log(self.onlineConnection.live);
+    
+    // console.log(self.onlineConnection.live);
   }
 
   get #onlineIndicatorElement() {

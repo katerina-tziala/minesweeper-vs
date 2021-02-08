@@ -14,6 +14,10 @@ $menu-content-height: 65px;
   &:last-of-type {
     margin-bottom: 0;
   }
+
+  &.menu-item--disabled {
+    @extend .disabled;
+  }
 }
 
 .menu-item-icon {

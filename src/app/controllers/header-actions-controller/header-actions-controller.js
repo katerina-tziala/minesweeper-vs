@@ -22,7 +22,6 @@ export class HeaderActionsController {
     return this.#SettingsController.generateView();
   }
 
-
   get actions() {
     const fragment = document.createDocumentFragment();
     fragment.append(this.settingsElement);
