@@ -7,24 +7,23 @@ import {
 import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./menu-item.constants";
 
 export class MenuItem {
-  #type;
   #disabled;
   #content;
   #onSelected;
 
-  constructor(id, onSelected, disabled = false) {
-    this.#type = id;
+  constructor(name, onSelected, disabled = false) {
+    this.name = name;
     this.#disabled = disabled;
     this.#onSelected = onSelected;
-    this.#content = MENU_CONTENT[this.#type];
+    this.#content = MENU_CONTENT[this.name];
   }
 
   get #element() {
-    return ElementHandler.getByID(this.#type);
+    return ElementHandler.getByID(this.name);
   }
 
   #generateMenuItemIcon() {
-    const styles = [DOM_ELEMENT_CLASS.icon, DOM_ELEMENT_CLASS.iconIdentifier + this.#type];
+    const styles = [DOM_ELEMENT_CLASS.icon, DOM_ELEMENT_CLASS.iconIdentifier + this.name];
     return ElementGenerator.generateContainer(styles);
   }
 
@@ -72,14 +71,14 @@ export class MenuItem {
 
   #onSelect() {
     if (!this.#disabled && this.#onSelected) {
-      this.#onSelected(this.#type);
+      this.#onSelected(this.name);
     }
   }
 
   generateView() {
     const menuItem = document.createElement("menuitem");
     ElementHandler.addStyleClass(menuItem, DOM_ELEMENT_CLASS.menuItem);
-    ElementHandler.setID(menuItem, this.#type);
+    ElementHandler.setID(menuItem, this.name);
     this.#setItemState(menuItem);
     const icon = this.#generateMenuItemIcon();
     const content = this.#generateMenuItemContent();
@@ -90,7 +89,13 @@ export class MenuItem {
   }
 
   toggleState(disabled) {
+    if (this.#disabled !== disabled) {
+      return Promise.resolve();
+    }
     this.#disabled = disabled;
-    this.#element.then(element => this.#setItemState(element));
+    return this.#element.then(element => {
+      this.#setItemState(element);
+      return;
+    });
   }
 }

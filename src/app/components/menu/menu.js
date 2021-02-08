@@ -1,53 +1,37 @@
 "use strict";
-
-
-
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-
-import { DOM_ELEMENT_CLASS } from "./menu.constants";
-import { GameType } from "GameEnums";
-
+import { GroupController } from "../../_utils/group-controller";
 import { MenuItem } from "./menu-item/menu-item";
 
-
 export class Menu {
-  #OfflineGameOptions;
-  #OnlineOption;
+  #MenuOptions;
+  #onSelect;
 
-  constructor() {
-    this.#OnlineOption = new MenuItem(GameType.Online, this.#onOptionSelect.bind(this));
-    this.#initBaseOptions();
+  constructor(options, onSelect) {
+    this.#onSelect = onSelect;
+    this.#setMenuOptions(options);
   }
 
-  #initBaseOptions(types = [GameType.Bot, GameType.Friend, GameType.Original]) {
-    this.#OfflineGameOptions = types.map(type => new MenuItem(type, this.#onOptionSelect.bind(this)));
+  #setMenuOptions(options) {
+    this.#MenuOptions = new GroupController();
+    options.forEach(option => {
+      this.#MenuOptions.controllers = new MenuItem(option.name, this.#onSelectedOption.bind(this), option.disabled);
+    });
   }
 
-  generateMenu() {
-    console.log(self.onlineConnection.live);
-
+  generateView() {
     const menu = document.createElement("menu");
-    menu.append(this.#OnlineOption.generateView());
-    menu.append(this.#generateOfflineOptions());
+    this.#MenuOptions.controllers.forEach(option => menu.append(option.generateView()));
     return menu;
   }
 
-  #generateOfflineOptions() {
-    const fragment = document.createDocumentFragment();
-    this.#OfflineGameOptions.forEach(option => fragment.append(option.generateView()));
-    return fragment;
+  #onSelectedOption(option) {
+    if (this.#onSelect) {
+      this.#onSelect(option);
+    }
   }
 
-
-
-  #onOptionSelect(gameType) {
-    console.log(gameType);
-
-
-
+  toggleOptionState(option, state) {
+    return this.#MenuOptions.getController(option).toggleState(state);
   }
+
 }

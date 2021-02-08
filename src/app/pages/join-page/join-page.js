@@ -32,13 +32,13 @@ export class JoinPage extends Page {
     
     const username = LocalStorageHelper.retrieve("username");
 
-    if (self.onlineConnection) {
+   // if (self.onlineConnection) {
       self.onlineConnection.onUserUpdate = this.#onUserUpdate.bind(this);
       self.onlineConnection.onError = this.#onConnectionError.bind(this);
       if (username) {
         self.onlineConnection.establishConnection({ username });
       }
-    }
+   // }
     this.#loginForm = new FormUsername(this.login.bind(this),  username);
 
     this.init();

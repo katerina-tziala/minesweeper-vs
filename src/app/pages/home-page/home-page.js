@@ -23,27 +23,46 @@ export class HomePage extends Page {
   constructor(selectGameType) {
     super();
     this.selectGameType = selectGameType;
-    this.#Menu = new Menu();
+
+
+
+    this.#Menu = new Menu(this.#gameMenuOptions, this.#onMenuOptionSelected.bind(this));
+
     this.actionControlller = new HeaderActionsControllerUser(true, {
       "onLogout": this.onLogout.bind(this)
     });
     this.init();
- 
   }
 
+  get #gameMenuOptions() {
+    return Object.values(GameType).map(type => {
+      return {
+        name: type,
+        disabled: false
+      };
+    });
+  }
+
+  #onMenuOptionSelected(type) {
+    console.log("#onMenuOptionSelected");
+    console.log(type);
+  }
+
+  #updateOnlineOptionState() {
+    console.log("#updateOnlineOptionState");
+    console.log(self.onlineConnection.live);
+    this.#Menu.toggleOptionState(GameType.Online, true);
+  }
+
+
+
   renderPage(mainContainer) {
-    mainContainer.append(this.#Menu.generateMenu());
-
-
-    setTimeout(() => {
-
-    }, 2000);
-
-
+    mainContainer.append(this.#Menu.generateView());
+    this.#updateOnlineOptionState();
     this.hideLoader();
   }
 
-  
+
   // Overridden functions
   onConnectionError(errorMessage) {
     console.log(errorMessage);
