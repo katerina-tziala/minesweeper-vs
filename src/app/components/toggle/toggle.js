@@ -81,6 +81,7 @@ export class Toggle {
   get #generatedButton() {
     const button = ElementGenerator.generateButton(this.#toggleButtonParams, this.#onToggleButtonChange.bind(this));
     ElementHandler.setID(button, this.#buttonId);
+    ElementHandler.setDisabled(button, !this.#hasContent);
     return button;
   }
 
@@ -91,13 +92,16 @@ export class Toggle {
     return container;
   }
 
+  updateView(content) {
+    console.log("updateView");
+    console.log(content);
+    
+  }
 
   #onToggleButtonChange() {
     this.#expanded = !this.#expanded;
     console.log("onToggleButtonChange");
     console.log(this.#name);
-
-    
     this.togglePanel();
   }
 

@@ -1,41 +1,13 @@
 "use strict";
-
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-
-
-import {
-  DOM_ELEMENT_ID,
-  DOM_ELEMENT_CLASS,
-  BUTTONS
-} from "./header-actions-controller.constants";
-import {
-  Toggle
-} from "../../components/toggle/toggle";
-
-import {
-  InvitationsController
-} from "../invitations-controller/invitations-controller";
-
-import {
-  SettingsController
-} from "../settings-controller/settings-controller";
+import { ElementHandler } from "HTML_DOM_Manager";
+import { DOM_ELEMENT_ID } from "./header-actions-controller.constants";
+import { SettingsController } from "../settings-controller/settings-controller";
 
 export class HeaderActionsController {
-  #invitationsController;
-  #settingsController;
   #SettingsController;
 
   constructor(gameSettings = true) {
-    // this.#onLogout = onLogout;
-    console.log("HeaderActionsController build for only settings");
-    // console.log(self.user);
-    this.settingsController = new SettingsController(gameSettings);
+    this.#SettingsController = new SettingsController(gameSettings);
     this.init();
   }
 
@@ -47,7 +19,7 @@ export class HeaderActionsController {
   }
 
   get settingsElement() {
-    return this.settingsController.generateView();
+    return this.#SettingsController.generateView();
   }
 
 
@@ -59,101 +31,22 @@ export class HeaderActionsController {
 
   init() {
     this.#clearedContainer.then(container => {
-     // console.log(container);
+      // console.log(container);
       container.append(this.actions);
     });
   }
 
 
-
-  // get #container() {
-  //   return ElementHandler.getByID(DOM_ELEMENT_ID.navigation);
-  // }
-
-  // generateView() {
-
-  //   this.#invitationsController = new InvitationsController();
-
-  //   this.#settingsController = new SettingsController(true);
-  //   this.invitationsToggle = new Toggle("invitations");
-  //   this.settingsToggle = new Toggle("settings");
-
-  //   this.#container.then(navigation => {
-  //     ElementHandler.clearContent(navigation);
-
-
-  //     const connect = ElementGenerator.generateButton(BUTTONS.connect, this.#onConnect.bind(this));
-
-  //     const home = ElementGenerator.generateButton(BUTTONS.home, this.#onNavigateToHome.bind(this));
-  //     const loggout = ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this));
-
-  //     const invitations = this.#invitationsController.generateView();
-  //     const settingsToggle = this.#settingsController.generateView();
-
-  //     // setTimeout(() => {
-  //     //   this.hideGameSettings();
-  //     // }, 1000);
-  //     // setTimeout(() => {
-  //     //   this.displayGameSettings();
-  //     // }, 2000);
-
-  //     navigation.append(home, connect, invitations, settingsToggle, loggout);
-
-  //    // console.log(navigation);
-  //   });
-  // }
-
-
-
-
-
-
   hideGameSettings() {
     console.log("#hideGameSettings");
     console.log("animate toggle");
-    this.#settingsController.toggleGameSettingsDisplay(false);
+    this.#SettingsController.toggleGameSettingsDisplay(false);
   }
 
   displayGameSettings() {
     console.log("#displayGameSettings");
     console.log("animate toggle");
-    this.#settingsController.toggleGameSettingsDisplay(true);
-  }
-
-
-
-
-  #onNavigateToHome() {
-    console.log("#onNavigateToHome");
-    // LocalStorageHelper.remove("username");
-    // self.user = undefined;
-    //this.#onJoinNavigation();
-  }
-
-  #onToggleSettings() {
-    console.log("#onToggleSettings");
-
-  }
-
-
-  #onToggleInvitations() {
-    console.log("#onToggleInvitations");
-
-  }
-
-  #onConnect() {
-    console.log("#onConnect");
-
-  }
-
-  #onLogout() {
-    console.log("#onLogout");
-    // if (self.onlineConnection && self.onlineConnection.live) {
-    //   console.log("onLogout of user");
-    //   console.log(self.user);
-    //   console.log(self.user.connected());
-    // }
-
+    this.#SettingsController.toggleGameSettingsDisplay(true);
   }
 
 }
