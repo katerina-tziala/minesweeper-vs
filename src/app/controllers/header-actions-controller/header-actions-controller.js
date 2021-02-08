@@ -49,9 +49,11 @@ export class HeaderActionsController {
   get actions() {
     const fragment = document.createDocumentFragment();
     fragment.append(this.settingsController.generateView());
+
     if (self.user) {
       fragment.append(ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this)));
     }
+    
     return fragment;
   }
 
