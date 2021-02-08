@@ -97,7 +97,7 @@ export class JoinPage extends Page {
   }
 
   #onUserUpdate() {
-    if (self.user.conected) {
+    if (self.onlineConnection.live) {
       this.#saveUsernameLocallyAndNavigate();
     }
   }

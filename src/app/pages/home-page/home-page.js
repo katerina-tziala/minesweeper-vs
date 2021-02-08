@@ -22,15 +22,14 @@ export class HomePage extends Page {
 
   constructor(selectGameType) {
     super();
-    this.selectGameType = selectGameType;
-
-
-
-    this.#Menu = new Menu(this.#gameMenuOptions, this.#onMenuOptionSelected.bind(this));
-
+    self.onlineConnection.onUserUpdate = this.#onUserUpdate.bind(this);
+    self.onlineConnection.onError = this.#onConnectionError.bind(this);
     this.actionControlller = new HeaderActionsControllerUser(true, {
       "onLogout": this.onLogout.bind(this)
     });
+    this.#Menu = new Menu(this.#gameMenuOptions, this.#onMenuOptionSelected.bind(this));
+
+    this.selectGameType = selectGameType;
     this.init();
   }
 
@@ -49,9 +48,7 @@ export class HomePage extends Page {
   }
 
   #updateOnlineOptionState() {
-    console.log("#updateOnlineOptionState");
-    console.log(self.onlineConnection.live);
-    this.#Menu.toggleOptionState(GameType.Online, true);
+    this.#Menu.toggleOptionState(GameType.Online, !self.onlineConnection.live);
   }
 
 
@@ -63,9 +60,13 @@ export class HomePage extends Page {
   }
 
 
-  // Overridden functions
-  onConnectionError(errorMessage) {
-    console.log(errorMessage);
-    // super.onConnectionError(errorMessage);
+  #onConnectionError(errorType) {
+    console.log(errorType);
+    this.#updateOnlineOptionState();
+  }
+
+  #onUserUpdate() {
+
+    console.log("#onUserUpdate");
   }
 }
