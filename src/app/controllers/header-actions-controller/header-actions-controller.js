@@ -29,48 +29,83 @@ import {
 export class HeaderActionsController {
   #invitationsController;
   #settingsController;
+  #SettingsController;
 
-  constructor() {
-   // this.#onLogout = onLogout;
-    console.log("HeaderActionsController");
+  constructor(gameSettings = true) {
+    // this.#onLogout = onLogout;
+    console.log("HeaderActionsController build for only settings");
     // console.log(self.user);
-    this.invitationsToggle = new Toggle("invitations");
-    this.settingsToggle = new Toggle("settings");
+    this.settingsController = new SettingsController(gameSettings);
 
-    this.#invitationsController = new InvitationsController();
-
-    this.#settingsController = new SettingsController(true);
   }
 
-  get #container() {
-    return ElementHandler.getByID(DOM_ELEMENT_ID.navigation);
-  }
-
-  generateView() {
-    this.#container.then(navigation => {
-      ElementHandler.clearContent(navigation);
-
-
-      const connect = ElementGenerator.generateButton(BUTTONS.connect, this.#onConnect.bind(this));
-   
-      const home = ElementGenerator.generateButton(BUTTONS.home, this.#onNavigateToHome.bind(this));
-      const loggout = ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this));
-      
-      const invitations = this.#invitationsController.generateView();
-      const settingsToggle = this.#settingsController.generateView();
-
-      // setTimeout(() => {
-      //   this.hideGameSettings();
-      // }, 1000);
-      // setTimeout(() => {
-      //   this.displayGameSettings();
-      // }, 2000);
-
-      navigation.append(home, connect, invitations, settingsToggle, loggout);
-
-     // console.log(navigation);
+  get #clearedContainer() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.container).then(container => {
+      ElementHandler.clearContent(container);
+      return container;
     });
   }
+
+  get actions() {
+    const fragment = document.createDocumentFragment();
+    fragment.append(this.settingsController.generateView());
+    if (self.user) {
+      fragment.append(ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this)));
+    }
+    return fragment;
+  }
+
+  init() {
+    this.#clearedContainer.then(container => {
+      console.log(container);
+      container.append(this.actions);
+
+      //console.log(self.user);
+    });
+  }
+
+
+
+  // get #container() {
+  //   return ElementHandler.getByID(DOM_ELEMENT_ID.navigation);
+  // }
+
+  // generateView() {
+
+  //   this.#invitationsController = new InvitationsController();
+
+  //   this.#settingsController = new SettingsController(true);
+  //   this.invitationsToggle = new Toggle("invitations");
+  //   this.settingsToggle = new Toggle("settings");
+
+  //   this.#container.then(navigation => {
+  //     ElementHandler.clearContent(navigation);
+
+
+  //     const connect = ElementGenerator.generateButton(BUTTONS.connect, this.#onConnect.bind(this));
+
+  //     const home = ElementGenerator.generateButton(BUTTONS.home, this.#onNavigateToHome.bind(this));
+  //     const loggout = ElementGenerator.generateButton(BUTTONS.loggout, this.#onLogout.bind(this));
+
+  //     const invitations = this.#invitationsController.generateView();
+  //     const settingsToggle = this.#settingsController.generateView();
+
+  //     // setTimeout(() => {
+  //     //   this.hideGameSettings();
+  //     // }, 1000);
+  //     // setTimeout(() => {
+  //     //   this.displayGameSettings();
+  //     // }, 2000);
+
+  //     navigation.append(home, connect, invitations, settingsToggle, loggout);
+
+  //    // console.log(navigation);
+  //   });
+  // }
+
+
+
+
 
 
   hideGameSettings() {
@@ -97,22 +132,28 @@ export class HeaderActionsController {
 
   #onToggleSettings() {
     console.log("#onToggleSettings");
-    
+
   }
 
 
   #onToggleInvitations() {
     console.log("#onToggleInvitations");
-    
+
   }
 
   #onConnect() {
     console.log("#onConnect");
-    
+
   }
+
   #onLogout() {
     console.log("#onLogout");
-    
+    // if (self.onlineConnection && self.onlineConnection.live) {
+    //   console.log("onLogout of user");
+    //   console.log(self.user);
+    //   console.log(self.user.connected());
+    // }
+
   }
 
 }

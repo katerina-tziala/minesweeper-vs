@@ -2,6 +2,7 @@
 
 export const DOM_ELEMENT_ID = {
   navigation: "header-actions-container",
+  container: "header-actions-container",
 };
 
 export const DOM_ELEMENT_CLASS = {

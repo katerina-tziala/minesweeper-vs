@@ -26,13 +26,13 @@ export class App {
     
     self.modal = new Modal();
     //document event listeners
-    
+    self.user = new User("kateID", "kate", null);
     
     self.onlineConnection = new OnlineConnection();
 
 
-    self.headerActionsController = new HeaderActionsController();
-    self.headerActionsController.generateView();
+    // self.headerActionsController = new HeaderActionsController();
+    // self.headerActionsController.generateView();
 
     // self.onlineConnection = new OnlineConnection({
     //   onError: this.onConnectionError.bind(this),
@@ -52,8 +52,8 @@ export class App {
     // this.onGameSetUpNavigation(GameType.Bot);
     //this.onPlayGame(undefined);
  
-    
-    this.#onJoinNavigation();
+    this.#onHomeNavigation();
+   // this.#onJoinNavigation();
   }
 
   #initAppSettings() {

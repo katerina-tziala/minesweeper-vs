@@ -8,6 +8,9 @@ import { FormUsername } from "~/components/form/form-username/form-username";
 import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
 import { CONFIRMATION } from "~/components/modal/modal.constants";
 import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
+
+import { HeaderActionsController } from "../../controllers/header-actions-controller/header-actions-controller";
+
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
@@ -18,6 +21,14 @@ export class JoinPage extends Page {
 
   constructor(onPageChange) {
     super();
+
+
+
+
+    this.actionControlller = new HeaderActionsController();
+    this.actionControlller.init();
+
+
     this.onPageChange = onPageChange;
     
     const username = LocalStorageHelper.retrieve("username");
