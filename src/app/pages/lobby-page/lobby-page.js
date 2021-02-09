@@ -14,23 +14,21 @@ import {
   DOM_ELEMENT_CLASS
 } from "./lobby-page.constants";
 
-import { OnlineUsers } from "../../components/online-users/online-users";
 
 import { User } from "../../_models/user";
-import { LinkInvitationButton } from "./link-invitation-button/link-invitation-button";
 
-// import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
+import { LinkInvitationButton } from "./link-invitation-button/link-invitation-button";
+import { OnlineUsersController } from "../../online-connection/online-users-controller/online-users-controller";
+
 
 export class LobbyPage extends Page {
   #GameWizard;
-  #OnlineUsers;
+  #OnlineUsersController;
 
   constructor(onPageChange) {
     super(onPageChange);
-    // this.onPlayGame = onPlayGame;
-    //self.settingsController.gameSettingsHidden = false;
-
-    // this.#OnlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
+    //this.#OnlineUsersController = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
+    this.#OnlineUsersController = new OnlineUsersController();
     this.ActionsControlller = new HeaderActionsControllerUser(true, {
       "onLogout": this.onLogout.bind(this)
     });
@@ -41,7 +39,8 @@ export class LobbyPage extends Page {
   get #pageContent() {
     const fragment = document.createDocumentFragment();
     fragment.append(this.#renderLinkInvitationSection());
-        // const fragment = document.createDocumentFragment();
+    fragment.append(this.#OnlineUsersController.generateView());
+    // const fragment = document.createDocumentFragment();
     // fragment.append(this.#renderLinkInvitationSection(), this.#OnlineUsers.generateView());
     return fragment;
   }

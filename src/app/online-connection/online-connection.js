@@ -14,27 +14,24 @@ export class OnlineConnection {
 
     console.log(TESTGAME);
 
-    // const peers = [];
-    // peers.push(new User("kate1", "kate", "asdf"));
-    // for (let index = 0; index < 10; index++) {
-    //   const stringNumber = index.toString();
-    //   const roomId = index % 2 === 0 ? "room" + stringNumber : undefined;
-    //   let name = "kate" + stringNumber;
-    //   for (let i = 0; i < index; i++) {
-    //     name += "kate";
-    //   }
-    //   peers.push(new User(stringNumber, name, roomId));
-    // }
-
-    // this.peers = peers;
+    this.setTestPeers();
   }
 
-  set actions(actions) {
-    this.#actions = actions;
-  }
 
-  get actions() {
-    return this.#actions;
+  setTestPeers() {
+    const peers = [];
+    peers.push(new User("kate1", "kate", "asdf"));
+    for (let index = 0; index < 10; index++) {
+      const stringNumber = index.toString();
+      const roomId = index % 2 === 0 ? "room" + stringNumber : undefined;
+      let name = "kate" + stringNumber;
+      for (let i = 0; i < index; i++) {
+        name += "kate";
+      }
+      peers.push(new User(stringNumber, name, roomId));
+    }
+
+    this.peers = peers;
   }
 
   set peers(peers) {
@@ -44,6 +41,18 @@ export class OnlineConnection {
   get peers() {
     return this.#peers;
   }
+
+
+
+  set actions(actions) {
+    this.#actions = actions;
+  }
+
+  get actions() {
+    return this.#actions;
+  }
+
+
 
   get live() {
     return true;
