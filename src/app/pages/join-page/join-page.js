@@ -64,6 +64,21 @@ export class JoinPage extends Page {
     return this.#loginContainer.then((container) => IconLoader.remove(container));
   }
 
+  #checkForOfflineJoining() {
+    self.modal.displayConfirmation(CONFIRMATION.offline, (confirmed) => {
+      if (confirmed) {
+        const username = this.#loginForm.formValues.username;
+        self.user = new User(username, username);
+        this.#saveUsernameLocallyAndNavigate();
+      }
+    });
+  }
+
+  #saveUsernameLocallyAndNavigate() {
+    LocalStorageHelper.save("username", self.user.username);
+    this.onPageChange();
+  }
+
   renderPage(mainContainer) {
     mainContainer.append(this.#renderLoginForm());
     this.hideLoader();
@@ -76,25 +91,10 @@ export class JoinPage extends Page {
     }
   }
 
-  #checkForOfflineJoining() {
-    self.modal.displayConfirmation(CONFIRMATION.offline, (confirmed) => {
-      if (confirmed) {
-        const username = this.#loginForm.formValues.username;
-        self.user = new User(username, username);
-        this.#saveUsernameLocallyAndNavigate();
-      }
-    });
-  }
-
   onUserUpdate() {
     if (self.onlineConnection.live) {
       this.#saveUsernameLocallyAndNavigate();
     }
-  }
-
-  #saveUsernameLocallyAndNavigate() {
-    LocalStorageHelper.save("username", self.user.username);
-    this.onPageChange();
   }
 
 }

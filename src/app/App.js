@@ -22,38 +22,17 @@ export class App {
   constructor() {
     this.interfaceController = undefined;
     this.#initAppSettings();
-
-    
-    
-    
     //document event listeners
     self.user = new User("kateID", "kate", null);
     self.modal = new Modal();
     self.onlineConnection = new OnlineConnection();
 
-
-    // self.headerActionsController = new HeaderActionsController();
-    // self.headerActionsController.generateView();
-
-    // self.onlineConnection = new OnlineConnection({
-    //   onError: this.onConnectionError.bind(this),
-    //   onClose: this.onConnectionClose.bind(this),
-    //   onMessage: this.onConnectionMessage.bind(this),
-    // });
-    // self.user = undefined;
-    // self.peers = [];
-    // self.user = new User("kateID", "kate", null);
-    // // this.setInterface(PageType.Home);
-    //  //this.setInterface();
-    // this.onHomeNavigation();
-    //this.onLobbyNavigation();
-    //
     //this.onGameSetUpNavigation(GameType.Original);
     // this.onGameSetUpNavigation(GameType.Friend);
     // this.onGameSetUpNavigation(GameType.Bot);
     //this.onPlayGame(undefined);
- 
-   // this.#onHomeNavigation();
+
+    // this.#onHomeNavigation();
     this.#onJoinNavigation();
   }
 
@@ -62,15 +41,6 @@ export class App {
     settings.saveLocally();
     setAppTheme();
   }
-
-
-
-
-
-
-
-
-
 
   #onPageChange(interfaceName) {
     if (!self.user) {
@@ -89,29 +59,24 @@ export class App {
 
 
 
-
-
-
-
-
   #loadPage(interfaceName) {
     return import(`./pages/${interfaceName}-page/${interfaceName}-page`);
   }
 
   #onJoinNavigation() {
-    this.#page = PageType.Join;
     this.#loadPage(PageType.Join).then(({ JoinPage }) => {
       this.interfaceController = new JoinPage(this.#onPageChange.bind(this));
+      this.#page = PageType.Join;
     });
   }
 
   #onHomeNavigation() {
-    this.#page = PageType.Home;
     this.#loadPage(PageType.Home).then(({ HomePage }) => {
       this.interfaceController = new HomePage(
         this.#onPageChange.bind(this),
         this.#onGameTypeSelected.bind(this),
       );
+      this.#page = PageType.Home;
     });
   }
 
@@ -121,17 +86,32 @@ export class App {
       // this.onLobbyNavigation();
       return;
     }
-    console.log("onGameSetUpNavigation");
-    console.log(this.#page);
-    console.log(gameType);
-    // this.onGameSetUpNavigation(gameType);
+    // console.log("onGameSetUpNavigation");
+    // console.log(this.#page);
+    // console.log(gameType);
+    this.onGameSetUpNavigation(gameType);
   }
 
+  onGameSetUpNavigation(gameType) {
+    this.#loadPage(PageType.GameSetup).then(({ GameSetupPage }) => {
+      this.interfaceController = new GameSetupPage(
+        this.#onPageChange.bind(this),
+        this.#onPlayGame.bind(this),
+        this.#page,
+        gameType);
+        this.#page = PageType.GameSetup;
+    });
+  }
 
+  #onPlayGame(gameParams) {
+    this.#loadPage(PageType.Game).then(({ GamePage }) => {
+      this.interfaceController = new GamePage(this.#onPageChange.bind(this), gameParams);
+      this.#page = PageType.Game;
+    });
+  }
 
-
+  
   /////////////////////////////////////////
-
   // onConnectionError(event) {
   //   console.log("onConnectionError from app");
   //   console.log(event);
@@ -147,15 +127,6 @@ export class App {
   //   // 	self.appLoader.hide();
   //   // }
   // }
-
-
-
-
-
-
-
-
-
 
 
   // setInterface(interfaceName) {
@@ -226,29 +197,11 @@ export class App {
   //   });
   // }
 
-  // onGameSetUpNavigation(gameType) {
-  //   this.loadInterfaceController(PageType.GameSetup).then(
-  //     ({ GameSetupPage }) => {
-  //       this.interfaceController = new GameSetupPage(
-  //         gameType,
-  //         this.onHomeNavigation.bind(this),
-  //         this.onPlayGame.bind(this),
-  //       );
-  //     },
-  //   );
-  // }
 
 
 
-  // onPlayGame(game) {
-  //   this.loadInterfaceController(PageType.Game).then(({ GamePage }) => {
-  //     this.interfaceController = new GamePage(
-  //       game,
-  //       this.onHomeNavigation.bind(this),
-  //       this.onGameSetUpNavigation.bind(this),
-  //     );
-  //   });
-  // }
+
+
 
   // onLobbyNavigation() {
   //   // console.log("onLobbyNavigation");

@@ -1,52 +1,53 @@
 "use strict";
-
 import "../../../styles/pages/_game-setup.scss";
 import { enumKey } from "~/_utils/utils";
 import { Page } from "../page";
-// import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
 import { GameType } from "GameEnums";
-
+import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
 
 export class GameSetupPage extends Page {
-  #_gameType;
+  #originPage;
+  #gameType;
+  #GameWizard;
 
-  constructor(gameType, navigateToHome, onPlayGame) {
-    super();
+  constructor(onPageChange, onPlayGame, originPage, gameType) {
+    super(onPageChange);
+    this.#originPage = originPage;
     this.#gameType = gameType;
-    this.navigateToHome = navigateToHome;
     this.onPlayGame = onPlayGame;
-   // self.settingsController.gameSettingsHidden = false;
+    this.ActionsControlller = new HeaderActionsControllerUser(true, {
+      "onLogout": this.onLogout.bind(this)
+    });
     this.init();
   }
 
-  set #gameType(type) {
-    this.#_gameType = type;
-  }
-
-  get #gameType() {
-    return this.#_gameType;
+  get #wizardName() {
+    return `GameWizard${enumKey(GameType, this.#gameType)}`;
   }
 
   #loadWizard() {
-    const wizardName = `GameWizard${enumKey(GameType, this.#_gameType)}`;
+    const wizardName = this.#wizardName;
     return import("GameWizard").then((module) => {
-      return new module[wizardName](this.navigateToHome, this.onPlayGame.bind(this));
+      return new module[wizardName](this.#onCloseWizard.bind(this), this.onPlayGame.bind(this));
     });
+  }
+
+  #onCloseWizard() {
+    this.onPageChange(this.#originPage);
   }
 
   renderPage(mainContainer) {
     this.#loadWizard().then((gameWizard) => {
-      this.gameWizard = gameWizard;
-      this.gameWizard.generateView().then(wizard => {
-        this.hideLoader();
-        mainContainer.append(wizard);
-        this.gameWizard.expandWizard();
-      });
+      this.#GameWizard = gameWizard;
+      return this.#GameWizard.generateView();
+    }).then(wizard => {
+      mainContainer.append(wizard);
+      this.hideLoader();
+      this.#GameWizard.expandWizard();
+      console.log(this.#originPage);
+    }).catch(() => {
+      console.log("error on loading");
     });
   }
 
-  onConnectionError(errorMessage) {
-    //super.onConnectionError(errorMessage);
-    console.log("onConnectionError");
-  }
 }

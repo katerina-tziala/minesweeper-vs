@@ -1,8 +1,8 @@
 "use strict";
-
 import { DOM_ELEMENT_ID } from "~/_constants/ui.constants";
 import { ElementHandler } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
+
 export class Page {
   #onPageChange;
 
@@ -18,7 +18,6 @@ export class Page {
   }
 
   init() {
-    
     this.getClearedMainContainer().then((mainContainer) => {
       this.renderPage(mainContainer);
     });

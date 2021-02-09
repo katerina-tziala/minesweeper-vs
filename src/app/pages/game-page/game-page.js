@@ -3,92 +3,91 @@ import "../../../styles/pages/_game.scss";
 import { Page } from "../page";
 
 // import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
-
+import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
 import { GameFactory } from "../../game/game-factory";
 export class GamePage extends Page {
-  #_gameParams;
-  #_game;
+  #gameParams;
+  #Game;
 
-  constructor(gameParams, navigateToHome, onGameSetUpNavigation) {
-    super();
-    //self.settingsController.gameSettingsHidden = true;
-    this.gameParams = gameParams;
-    this.navigateToHome = navigateToHome;
-    this.onGameSetUpNavigation = onGameSetUpNavigation;
+  constructor(onPageChange, gameParams) {
+    super(onPageChange);
+    this.#gameParams = gameParams;
+
+    // this.gameParams = gameParams;
+    // this.navigateToHome = navigateToHome;
+    // this.onGameSetUpNavigation = onGameSetUpNavigation;
+    this.ActionsControlller = new HeaderActionsControllerUser(false, {
+      "onLogout": this.onLogout.bind(this)
+    });
     this.init();
+
   }
 
-  set gameParams(gameParams) {
-    this.#_gameParams = gameParams;
-  }
-
-  get gameParams() {
-    return this.#_gameParams;
-  }
-
-  set game(game) {
-    this.#_game = game;
-  }
-
-  get game() {
-    return this.#_game;
-  }
-
-
-  #onGameLoaded(game) {
-    this.game = game;
-    this.game.externalActions = {
-      quit: this.onGameExit.bind(this),
-      reset: this.onGameReset.bind(this),
-    };
-  }
-
-  renderPage(mainContainer) {
-
-   
-
-
-
-    GameFactory.loadGame(this.gameParams).then((game) => {
-
-      this.#onGameLoaded(game);
-      if (this.game) {
-        mainContainer.append(this.game.generateView());
-        this.hideLoader();
-        this.game.start();
-      } else {
-        console.log("no game");
-      }
-
-
+  #onGameLoaded() {
+    return GameFactory.loadGame(this.#gameParams).then((game) => {
+      this.#Game = game;
+      this.#Game.externalActions = {
+        quit: this.#onGameExit.bind(this),
+        reset: this.#onGameReset.bind(this),
+      };
+      return;
     });
   }
 
-  // Overridden functions
-  onConnectionError(errorMessage) {
-    //super.onConnectionError(errorMessage);
+  renderPage(mainContainer) {
+    this.#onGameLoaded().then(() => {
+      return this.#Game.generateView();
+    }).then(gameView => {
+      mainContainer.append(gameView);
+      this.hideLoader();
+      this.#Game.start();
+    }).catch(() => {
+      console.log("error on loading");
+    });
   }
 
-  onGameExit() {
-    console.log("onGameExit");
+  onLogout() {
+    console.log("onLogout from game");
+    console.log(self.user);
+    // console.log(self.onlineConnection.live);
+    // console.log("on connection loggout");
+    // //   if (this.page === PageType.Game) {
+    // //     console.log("loggout in game?");
+    // //     return;
+    // //   }
+    // LocalStorageHelper.remove("username");
+    // self.user = undefined;
+    // this.onPageChange();
+  }
+
+  onConnectionError(errorType) {
+    console.log("onConnectionError from page");
+    console.log(errorType);
+  }
+
+  onUserUpdate() {
+    console.log("onUserUpdate from page");
+  }
+
+  #onGameExit() {
+    console.log("#onGameExit");
     console.log("notify connection");
-    this.navigateToHome();
+    // this.navigateToHome();
   }
 
-  onGameReset() {
+  #onGameReset() {
     console.log("onGameReset");
     console.log("notify connection");
-
     //this.#saveCurrentGameSetUp();
-    this.onGameSetUpNavigation(this.game.type);
+    // this.onGameSetUpNavigation(this.game.type);
   }
 
-  #saveCurrentGameSetUp() {
-    const gameSetUp = { ...this.game };
-    delete gameSetUp.id;
-    delete gameSetUp.player;
-    delete gameSetUp.opponent;
+  // #saveCurrentGameSetUp() {
+  //   const gameSetUp = { ...this.game };
+  //   delete gameSetUp.id;
+  //   delete gameSetUp.player;
+  //   delete gameSetUp.opponent;
 
-    //   LocalStorageHelper.save("gameSetup", gameSetUp);
-  }
+  //   //   LocalStorageHelper.save("gameSetup", gameSetUp);
+  // }
 }
