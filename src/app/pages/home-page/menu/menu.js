@@ -1,5 +1,5 @@
 "use strict";
-import { GroupController } from "../../_utils/group-controller";
+import { GroupController } from "~/_utils/group-controller";
 import { MenuItem } from "./menu-item/menu-item";
 
 export class Menu {

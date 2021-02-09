@@ -3,7 +3,7 @@ import "../../../styles/pages/_home.scss";
 import { Page } from "../page";
 import { GameType } from "GameEnums";
 import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
-import { Menu } from "~/components/menu/menu";
+import { Menu } from "./menu/menu";
 
 export class HomePage extends Page {
   #Menu;
