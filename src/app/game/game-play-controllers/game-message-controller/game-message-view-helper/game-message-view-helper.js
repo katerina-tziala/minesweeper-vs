@@ -76,22 +76,35 @@ export class GameMessageViewHelper {
     return playerColors;
   }
 
+  static dropConfetti(gameResults) {
+    let confetti;
+    if (!(gameResults.playersResults.length === 1 && gameResults.playersResults[0].lostGame)) {
+      confetti = new Confetti();
+      confetti.drop(GameMessageViewHelper.confettiColors(gameResults));
+    }
+    return confetti;
+  }
+
+  static displayMessageAndResults(message, gameResults) {
+    return GameMessageViewHelper.displayMessage(message).then(messageBox => {
+      messageBox.append(GameResults.generateView(gameResults));
+      return messageBox;
+    });
+  }
+
   static displayGameOverMessage(message, gameResults) {
     return new Promise((resolve, reject) => {
-      GameMessageViewHelper.displayMessage(message).then(messageBox => {
-
-        const confetti = new Confetti();
-        confetti.drop(GameMessageViewHelper.confettiColors(gameResults));
-
-        const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
-          confetti.clear();
-          GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
-        });
-
-        messageBox.append(closeBnt);
-        messageBox.append(GameResults.generateView(gameResults));
-
-      }).catch(() => reject());
+      GameMessageViewHelper.displayMessageAndResults(message, gameResults)
+        .then(messageBox => {
+          const confettiDrop = GameMessageViewHelper.dropConfetti(gameResults);
+          const closeBnt = ElementGenerator.generateButton(CLOSE_BTN, () => {
+            if (confettiDrop) {
+              confettiDrop.clear();
+            };
+            GameMessageViewHelper.removeMessageBoxAndClose().then(() => resolve()).catch(() => reject());
+          });
+          messageBox.append(closeBnt);
+        }).catch(() => reject());
     });
   }
 

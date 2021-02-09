@@ -6,7 +6,7 @@ export const DOM_ELEMENT_ID = {
 
 export const CONFIG = {
   duration: 10000,
-  numberOfFlakes: 200,
+  numberOfFlakes: 100,
   verticalStep: 100,
   degreesExtractor: 100,
   drawFrame: 1000 / 60

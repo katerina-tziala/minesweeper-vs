@@ -210,24 +210,8 @@ export class Game extends AppModel {
 
   #onBoardButtonAction(actionType) {
     this.pause();
-    console.log(this.isIdle);
-    if (!this.isIdle) {
-      self.modal.displayConfirmation(CONFIRMATION[actionType], (confirmed) => {
-        confirmed ? this.#executeBoardAction(actionType) : this.continue();
-      });
-      return;
-    }
-    this.#executeBoardAction(actionType);
-  }
-
-  #executeBoardAction(actionType) {
-    switch (actionType) {
-      case GameAction.Restart:
-        this.restart();
-        break;
-      default:
-        this.externalActions[actionType]();
-        break;
+    if (this.externalActions && this.externalActions.onBoardMenuAction) {
+      this.externalActions.onBoardMenuAction(actionType)
     }
   }
 
