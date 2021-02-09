@@ -5,11 +5,15 @@
   @extend .btn-icon;
   @extend .btn-icon--normal;
   background-color: transparent;
-  cursor: default!important;
+  overflow: visible !important;
+  cursor: default !important;
+  position: relative;
+  background-color: inherit;
 }
 
 .online-indicator-icon {
   @include afterIcon("online");
+  background-color: inherit;
 }
 
 .online-indicator-button {
@@ -17,6 +21,23 @@
   @extend .btn-icon--normal;
   background-color: transparent;
   @include afterIcon("online");
+}
+
+.online-indicator-peers {
+  @extend %ellipsis-text;
+  display: block;
+  margin: auto;
+  width: 28px;
+  padding: 0 2px;
+  position: absolute;
+  top: 23px;
+  left: 0px;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 12px;
+  border-radius: 20px;
+  background-color: inherit;
+  text-align: center;
 }
 
 @include online-indicator-theming.setTheming();

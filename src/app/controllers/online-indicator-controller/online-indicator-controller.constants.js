@@ -6,7 +6,8 @@ export const DOM_ELEMENT_ID = {
 
 export const DOM_ELEMENT_CLASS = {
   container: "online-indicator-container",
-  icon: "online-indicator-icon"
+  icon: "online-indicator-icon",
+  peers: "online-indicator-peers"
 };
 
 export const BUTTON = {

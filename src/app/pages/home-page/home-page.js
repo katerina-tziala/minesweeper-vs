@@ -8,6 +8,7 @@ import {
   ElementGenerator,
   AriaHandler,
 } from "HTML_DOM_Manager";
+import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 
 import { Page } from "../page";
 import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./home-page.constants";
@@ -45,6 +46,7 @@ export class HomePage extends Page {
   #onMenuOptionSelected(type) {
     console.log("#onMenuOptionSelected");
     console.log(type);
+
   }
 
   #updateOnlineOptionState() {
@@ -60,13 +62,19 @@ export class HomePage extends Page {
   }
 
 
+
+
+  
   #onConnectionError(errorType) {
-    console.log(errorType);
+    if (errorType === "username-in-use") {
+      self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUseReconnect);
+    }
     this.#updateOnlineOptionState();
   }
 
   #onUserUpdate() {
 
     console.log("#onUserUpdate");
+
   }
 }

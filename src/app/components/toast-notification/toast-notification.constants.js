@@ -31,7 +31,16 @@ export const NOTIFICATION_MESSAGE = {
     title: "Oups!",
     content: [
       "Username is not available!",
+      "Please join with a different username."
+    ],
+  },
+  usernameInUseReconnect: {
+    type: "error",
+    title: "Oups!",
+    content: [
+      "Username is not available!",
       "Please join with a different username.",
+      "<i>(To change your username you have to logout first!).</i>"
     ],
   },
   opponentPlayerSameName: {

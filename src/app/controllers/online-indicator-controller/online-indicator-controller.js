@@ -4,6 +4,7 @@ import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTON } from "./online-indicator-co
 
 export class OnlineIndicatorController {
   #live = false
+  #numberOfPeers = 0;
 
   constructor() {
     this.#init();
@@ -11,10 +12,15 @@ export class OnlineIndicatorController {
 
   #init() {
     this.#live = self.onlineConnection ? self.onlineConnection.live : false;
+    this.#numberOfPeers = self.onlineConnection ? self.onlineConnection.peers.length : 0;
   }
 
   get #generatedIcon() {
-    return ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.icon]);
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.icon]);
+    if (this.#numberOfPeers) {
+      container.innerHTML = `<span class="${DOM_ELEMENT_CLASS.peers}">${this.#numberOfPeers}</span>`;
+    }
+    return container;
   }
 
   get #generatedButton() {

@@ -85,6 +85,9 @@ export class JoinPage extends Page {
 
   #onConnectionError(errorType) {
     this.#hideLoader();
+    if (errorType === "username-in-use") {
+      self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUse);
+    }
     if (errorType && self.modal) {
       // self.modal.displayConfirmation(CONFIRMATION.offline, (confirmed) => {
       //   if (confirmed) {

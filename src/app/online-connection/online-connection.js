@@ -94,7 +94,7 @@ export class OnlineConnection {
   connectionError() {
     this.#webSocket = undefined;
     console.log("#connectionError");
-    self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
+   // self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
     this.#submitError();
   }
 
@@ -115,7 +115,6 @@ export class OnlineConnection {
   #onMessage(message) {
     switch (message.type) {
       case "username-in-use":
-        self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUse);
         this.#submitError(message.type);
         break;
       case "user-update":
