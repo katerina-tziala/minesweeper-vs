@@ -6,7 +6,7 @@ import { FormUsername } from "~/components/form/form-username/form-username";
 import { GameType } from "GameEnums";
 import { Player } from "GameModels";
 import { GameWizardVS } from "./_game-wizard-vs";
-
+import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 export class GameWizardFriend extends GameWizardVS {
   #addOpponentForm = undefined;
 
@@ -24,6 +24,10 @@ export class GameWizardFriend extends GameWizardVS {
   }
 
   #addOpponent(formValues) {
+    if (formValues.username === this.player.name) {
+      self.toastNotifications.show(NOTIFICATION_MESSAGE.opponentPlayerSameName);
+      return;
+    }
     this.opponent = new Player("localFriend", formValues.username);
     this.#addOpponentForm = undefined;
     this.updateView();

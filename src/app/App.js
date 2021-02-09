@@ -86,31 +86,31 @@ export class App {
       // this.onLobbyNavigation();
       return;
     }
-    // console.log("onGameSetUpNavigation");
-    // console.log(this.#page);
-    // console.log(gameType);
-    this.onGameSetUpNavigation(gameType);
+    this.#onGameSetUpNavigation(gameType);
   }
 
-  onGameSetUpNavigation(gameType) {
+  #onGameSetUpNavigation(gameType) {
+    console.log("to game set up from page:", this.#page);
     this.#loadPage(PageType.GameSetup).then(({ GameSetupPage }) => {
       this.interfaceController = new GameSetupPage(
         this.#onPageChange.bind(this),
         this.#onPlayGame.bind(this),
         this.#page,
         gameType);
-        this.#page = PageType.GameSetup;
+      this.#page = PageType.GameSetup;
     });
   }
 
   #onPlayGame(gameParams) {
     this.#loadPage(PageType.Game).then(({ GamePage }) => {
-      this.interfaceController = new GamePage(this.#onPageChange.bind(this), gameParams);
+      this.interfaceController = new GamePage(this.#onPageChange.bind(this),
+        gameParams,
+        this.#onGameSetUpNavigation.bind(this));
       this.#page = PageType.Game;
     });
   }
 
-  
+
   /////////////////////////////////////////
   // onConnectionError(event) {
   //   console.log("onConnectionError from app");

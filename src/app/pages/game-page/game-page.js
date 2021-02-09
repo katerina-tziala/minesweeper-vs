@@ -1,31 +1,22 @@
 "use strict";
 import "../../../styles/pages/_game.scss";
 import { Page } from "../page";
-import {
-  GameVSMode,
-  GameAction,
-  GameType,
-  GameOverType,
-} from "GameEnums";
-// import { NOTIFICATION_MESSAGE } from "../../components/toast-notification/toast-notification.constants";
+import { GameAction } from "GameEnums";
 import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
 import { GameFactory } from "../../game/game-factory";
 export class GamePage extends Page {
   #gameParams;
   #Game;
+  #onGameSetUpNavigation;
 
-  constructor(onPageChange, gameParams) {
+  constructor(onPageChange, gameParams, onGameSetUpNavigation) {
     super(onPageChange);
     this.#gameParams = gameParams;
-
-    // this.gameParams = gameParams;
-    // this.navigateToHome = navigateToHome;
-    // this.onGameSetUpNavigation = onGameSetUpNavigation;
+    this.#onGameSetUpNavigation = onGameSetUpNavigation;
     this.ActionsControlller = new HeaderActionsControllerUser(false, {
       "onLogout": this.onLogout.bind(this)
     });
     this.init();
-
   }
 
   #onGameLoaded() {
@@ -50,42 +41,18 @@ export class GamePage extends Page {
     });
   }
 
-  onLogout() {
-    console.log("onLogout from game");
-    console.log(self.user);
-    // console.log(self.onlineConnection.live);
-    // console.log("on connection loggout");
-    // //   if (this.page === PageType.Game) {
-    // //     console.log("loggout in game?");
-    // //     return;
-    // //   }
-    // LocalStorageHelper.remove("username");
-    // self.user = undefined;
-    // this.onPageChange();
-  }
-
-  onConnectionError(errorType) {
-    console.log("onConnectionError from page");
-    console.log(errorType);
-
-    this.#Game.start();
-  }
-
-  onUserUpdate() {
-    console.log("onUserUpdate from page");
-  }
-
-  #onGameExit() {
-    console.log("#onGameExit");
-    console.log("notify connection");
-    // this.navigateToHome();
-  }
-
-  #onGameReset() {
-    console.log("onGameReset");
-    console.log("notify connection");
-    //this.#saveCurrentGameSetUp();
-    // this.onGameSetUpNavigation(this.game.type);
+  #onOfflineBoardMenuAction(actionType) {
+    switch (actionType) {
+      case GameAction.Quit:
+        this.onPageChange();
+        break;
+      case GameAction.Reset:
+        this.#onGameSetUpNavigation(this.#Game.type);
+        break;
+      case GameAction.Restart:
+        this.#Game.restart();
+        break;
+    }
   }
 
   #onBoardMenuAction(actionType) {
@@ -94,32 +61,28 @@ export class GamePage extends Page {
       console.log(actionType);
       return;
     }
-
-    // Quit: "quit",
-    // Restart: "restart",
-    // Reset: "reset",
-
-    switch (actionType) {
-      case GameAction.Quit:
-        //this.#Game.restart();
-        break;
-      case GameAction.Reset:
-       // this.#Game.restart();
-        break;
-      case GameAction.Restart:
-        this.#Game.restart();
-        break;
-    }
+    this.#onOfflineBoardMenuAction(actionType);
   }
 
+  onLogout() {
+    this.#Game.pause();
+    if (this.#Game.isOnline && self.onlineConnection.live) {
+      console.log("onLogout from  online game");
+      console.log(self.user);
+      console.log(actionType);
+      return;
+    }
+    super.onLogout();
+  }
 
+  onConnectionError(errorType) {
+    console.log("onConnectionError from page");
+    console.log(errorType);
+    this.#Game.pause();
+  }
 
-  // #saveCurrentGameSetUp() {
-  //   const gameSetUp = { ...this.game };
-  //   delete gameSetUp.id;
-  //   delete gameSetUp.player;
-  //   delete gameSetUp.opponent;
+  onUserUpdate() {
+    console.log("onUserUpdate from page");
+  }
 
-  //   //   LocalStorageHelper.save("gameSetup", gameSetUp);
-  // }
 }
