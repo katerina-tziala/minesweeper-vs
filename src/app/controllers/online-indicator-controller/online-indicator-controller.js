@@ -42,7 +42,7 @@ export class OnlineIndicatorController {
   }
 
   #onConnect() {
-    self.onlineConnection.establishUserConnection();
+    self.onlineConnection.establishConnection(self.user.username);
   }
 
   updateState() {

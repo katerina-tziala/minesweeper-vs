@@ -2,16 +2,23 @@
 
 import { DOM_ELEMENT_ID } from "~/_constants/ui.constants";
 import { ElementHandler } from "HTML_DOM_Manager";
-
+import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 export class Page {
-  constructor() { }
+  #onPageChange;
+
+  constructor(onPageChange) {
+    self.onlineConnection.onUserUpdate = this.onUserUpdate.bind(this);
+    self.onlineConnection.onError = this.onConnectionError.bind(this);
+    this.#onPageChange = onPageChange;
+    this.displayLoader();
+  }
 
   get mainContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.main);
   }
 
   init() {
-    this.displayLoader();
+    
     this.getClearedMainContainer().then((mainContainer) => {
       this.renderPage(mainContainer);
     });
@@ -32,21 +39,41 @@ export class Page {
     self.appLoader.hide();
   }
 
-  onConnectionError(errorMessage) {
-    self.toastNotifications.show(errorMessage);
-  }
-
   renderPage(mainContainer) {
     const fragment = document.createDocumentFragment();
     mainContainer.append(fragment);
   }
 
   onLogout() {
-    console.log("on loggout from page");
+    console.log("onLogout from page");
     console.log(self.user);
     console.log(self.onlineConnection.live);
+    console.log("on connection loggout");
+    //   if (this.page === PageType.Game) {
+    //     console.log("loggout in game?");
+    //     return;
+    //   }
+    LocalStorageHelper.remove("username");
+    self.user = undefined;
+    this.onPageChange();
+  }
 
-
+  onConnectionError(errorType) {
+    console.log("onConnectionError from page");
+    console.log(errorType);
 
   }
+
+  onUserUpdate() {
+    console.log("onUserUpdate from page");
+  }
+
+  onPageChange() {
+    if (this.#onPageChange) {
+      this.#onPageChange();
+    }
+  }
+
+
+
 }

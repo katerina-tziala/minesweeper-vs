@@ -18,16 +18,17 @@ import { setAppTheme } from "~/_utils/theming";
 import { AppSettingsModel } from "~/_models/app-settings";
 
 export class App {
-
+  #page;
   constructor() {
+    this.interfaceController = undefined;
     this.#initAppSettings();
 
-    this.interfaceController = undefined;
     
-    self.modal = new Modal();
+    
+    
     //document event listeners
     self.user = new User("kateID", "kate", null);
-    
+    self.modal = new Modal();
     self.onlineConnection = new OnlineConnection();
 
 
@@ -52,8 +53,8 @@ export class App {
     // this.onGameSetUpNavigation(GameType.Bot);
     //this.onPlayGame(undefined);
  
-    this.#onHomeNavigation();
-   // this.#onJoinNavigation();
+   // this.#onHomeNavigation();
+    this.#onJoinNavigation();
   }
 
   #initAppSettings() {
@@ -64,41 +65,18 @@ export class App {
 
 
 
-  #onLogout() {
-
-    if (this.page === PageType.Game) {
-      console.log("loggout in game?");
-      return;
-    }
-
-    console.log(this.page);
-    console.log("om connection loggout");
-    console.log("#onLogout");
-
-    LocalStorageHelper.remove("username");
-    self.user = undefined;
-
-
-    this.#onJoinNavigation();
-  }
 
 
 
 
 
-  #loadPage(interfaceName) {
-    this.page = interfaceName;
-    return import(`./pages/${interfaceName}-page/${interfaceName}-page`);
-  }
+
 
   #onPageChange(interfaceName) {
-
     if (!self.user) {
       this.#onJoinNavigation();
       return;
     }
-
-
     switch (interfaceName) {
       case PageType.Home:
         this.#onHomeNavigation();
@@ -110,15 +88,28 @@ export class App {
   }
 
 
+
+
+
+
+
+
+  #loadPage(interfaceName) {
+    return import(`./pages/${interfaceName}-page/${interfaceName}-page`);
+  }
+
   #onJoinNavigation() {
+    this.#page = PageType.Join;
     this.#loadPage(PageType.Join).then(({ JoinPage }) => {
       this.interfaceController = new JoinPage(this.#onPageChange.bind(this));
     });
   }
 
   #onHomeNavigation() {
+    this.#page = PageType.Home;
     this.#loadPage(PageType.Home).then(({ HomePage }) => {
       this.interfaceController = new HomePage(
+        this.#onPageChange.bind(this),
         this.#onGameTypeSelected.bind(this),
       );
     });
@@ -131,9 +122,15 @@ export class App {
       return;
     }
     console.log("onGameSetUpNavigation");
+    console.log(this.#page);
+    console.log(gameType);
     // this.onGameSetUpNavigation(gameType);
   }
 
+
+
+
+  /////////////////////////////////////////
 
   // onConnectionError(event) {
   //   console.log("onConnectionError from app");

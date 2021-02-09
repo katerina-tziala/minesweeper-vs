@@ -1,36 +1,18 @@
 "use strict";
-
 import "../../../styles/pages/_home.scss";
-
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
-
 import { Page } from "../page";
-import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./home-page.constants";
 import { GameType } from "GameEnums";
 import { HeaderActionsControllerUser } from "../../controllers/header-actions-controller/header-actions-controller-user";
-import {
-  Menu
-} from "../../components/menu/menu";
+import { Menu } from "~/components/menu/menu";
 
 export class HomePage extends Page {
   #Menu;
-
-  constructor(selectGameType) {
-    super();
-    self.onlineConnection.onUserUpdate = this.#onUserUpdate.bind(this);
-    self.onlineConnection.onError = this.#onConnectionError.bind(this);
-    this.actionControlller = new HeaderActionsControllerUser(true, {
+  constructor(onPageChange, onMenuOptionSelected) {
+    super(onPageChange);
+    this.#Menu = new Menu(this.#gameMenuOptions, onMenuOptionSelected);
+    this.ActionsControlller = new HeaderActionsControllerUser(true, {
       "onLogout": this.onLogout.bind(this)
     });
-    this.#Menu = new Menu(this.#gameMenuOptions, this.#onMenuOptionSelected.bind(this));
-
-    this.selectGameType = selectGameType;
     this.init();
   }
 
@@ -43,17 +25,9 @@ export class HomePage extends Page {
     });
   }
 
-  #onMenuOptionSelected(type) {
-    console.log("#onMenuOptionSelected");
-    console.log(type);
-
-  }
-
   #updateOnlineOptionState() {
     this.#Menu.toggleOptionState(GameType.Online, !self.onlineConnection.live);
   }
-
-
 
   renderPage(mainContainer) {
     mainContainer.append(this.#Menu.generateView());
@@ -61,20 +35,14 @@ export class HomePage extends Page {
     this.hideLoader();
   }
 
-
-
-
-  
-  #onConnectionError(errorType) {
-    if (errorType === "username-in-use") {
-      self.toastNotifications.show(NOTIFICATION_MESSAGE.usernameInUseReconnect);
-    }
+  onConnectionError(errorType) {
+    super.onConnectionError(errorType);
     this.#updateOnlineOptionState();
   }
 
-  #onUserUpdate() {
-
-    console.log("#onUserUpdate");
-
+  onUserUpdate() {
+    console.log("onUserUpdate in home page");
+    this.#updateOnlineOptionState();
+    this.ActionsControlller.setOnlineIndicatorState();
   }
 }

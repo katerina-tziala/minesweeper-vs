@@ -6,7 +6,7 @@ import { SettingsController } from "../settings-controller/settings-controller";
 export class HeaderActionsController {
   #SettingsController;
 
-  constructor(gameSettings = true) {
+  constructor(gameSettings = false) {
     this.#SettingsController = new SettingsController(gameSettings);
     this.init();
   }

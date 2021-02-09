@@ -40,10 +40,6 @@ export class OnlineConnection {
     return this.#peers = peers.map((peerData) => this.#generateUser(peerData));
   }
 
-  #generateUser(userData) {
-    return new User(userData.id, userData.username, userData.gameRoomId);
-  }
-
   get peers() {
     return this.#peers;
   }
@@ -52,33 +48,23 @@ export class OnlineConnection {
     return valueDefined(this.#webSocket);
   }
 
-
-
-  establishConnection(userParams) {
-    this.#webSocket = new WebSocket(
-      CONNECTION_CONFIG.url,
-      CONNECTION_CONFIG.protocols,
-    );
-    this.#webSocket.addEventListener("error", (event) => this.#onError(event));
-
-    this.#webSocket.addEventListener("open", () => {
-      this.#webSocket.addEventListener("message", (event) => this.#onMessage(JSON.parse(event.data)));
-      this.#webSocket.addEventListener("close", (event) => this.#onClose(event));
-      this.sendData("join", userParams);
-    });
+  #generateUser(userData) {
+    return new User(userData.id, userData.username, userData.gameRoomId);
   }
 
-  establishUserConnection() {
+
+
+
+  establishConnection(username) {
     this.#webSocket = new WebSocket(
       CONNECTION_CONFIG.url,
       CONNECTION_CONFIG.protocols,
     );
     this.#webSocket.addEventListener("error", (event) => this.#onError(event));
-
     this.#webSocket.addEventListener("open", () => {
       this.#webSocket.addEventListener("message", (event) => this.#onMessage(JSON.parse(event.data)));
       this.#webSocket.addEventListener("close", (event) => this.#onClose(event));
-      this.sendData("join", {username: self.user.username});
+      this.sendData("join", { username });
     });
   }
 
@@ -91,21 +77,21 @@ export class OnlineConnection {
   }
 
 
-  connectionError() {
-    this.#webSocket = undefined;
-    console.log("#connectionError");
-   // self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
-    this.#submitError();
-  }
-
-
-
+  // connectionError() {
+  //   this.#webSocket = undefined;
+  //   this.#submitError();
+  // }
 
   #submitError(errorType = "connection-error") {
     if (this.onError) {
       this.onError(errorType);
     }
+    if (errorType === "username-in-use") {
+      const message = self.user ? NOTIFICATION_MESSAGE.usernameInUseReconnect : NOTIFICATION_MESSAGE.usernameInUse;
+      self.toastNotifications.show(message);
+    }
   }
+
 
   #onClose(event) {
     console.log("#onClose");
