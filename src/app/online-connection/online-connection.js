@@ -1,6 +1,6 @@
 "use strict";
 import { User } from "~/_models/user";
-import { CONNECTION_CONFIG } from "./connection-config.constants";
+import { CONNECTION_CONFIG, TESTGAME } from "./connection-config.constants";
 import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 import { valueDefined } from "~/_utils/validator";
 
@@ -12,6 +12,7 @@ export class OnlineConnection {
   constructor() {
     // this.actions = actions;
 
+    console.log(TESTGAME);
 
     // const peers = [];
     // peers.push(new User("kate1", "kate", "asdf"));
@@ -45,6 +46,7 @@ export class OnlineConnection {
   }
 
   get live() {
+    return true;
     return valueDefined(this.#webSocket);
   }
 

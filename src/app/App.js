@@ -102,6 +102,10 @@ export class App {
   }
 
   #onPlayGame(gameParams) {
+
+
+    console.log(JSON.stringify(gameParams));
+
     this.#loadPage(PageType.Game).then(({ GamePage }) => {
       this.interfaceController = new GamePage(this.#onPageChange.bind(this),
         gameParams,
