@@ -28,7 +28,8 @@ export class GameSetupPage extends Page {
   #loadWizard() {
     const wizardName = this.#wizardName;
     return import("GameWizard").then((module) => {
-      return new module[wizardName](this.#onCloseWizard.bind(this), this.onPlayGame.bind(this));
+      this.#GameWizard = new module[wizardName](this.#onCloseWizard.bind(this), this.onPlayGame.bind(this));
+      return this.#GameWizard.generateView();
     });
   }
 
@@ -37,10 +38,7 @@ export class GameSetupPage extends Page {
   }
 
   renderPage(mainContainer) {
-    this.#loadWizard().then((gameWizard) => {
-      this.#GameWizard = gameWizard;
-      return this.#GameWizard.generateView();
-    }).then(wizard => {
+    this.#loadWizard().then(wizard => {
       mainContainer.append(wizard);
       this.hideLoader();
       this.#GameWizard.expandWizard();

@@ -1,5 +1,5 @@
 @use "./online-users-theming";
-@import "../user-avatar/user-avatar";
+@import "./online-user-card/online-user-card";
 @import "../scrollbar/scrollbar";
 
 .online-users-container {
@@ -7,7 +7,12 @@
   overflow-y: auto;
   overflow-x: hidden;
   @extend ._scrollbar;
-  padding: 20px;
+}
+
+.online-users-header {
+  text-align: center;
+  text-transform: uppercase;
+  padding: 5px;
 }
 
 .online-users-wrapper {
@@ -16,39 +21,6 @@
   flex-wrap: wrap;
   width: 100%;
   min-height: 500px;
-}
-
-.online-user-card {
-  min-width: 140px;
-  min-height: 140px;
-  max-width: 140px;
-  max-height: 140px;
-  position: relative;
-  @extend %start-center;
-  flex-direction: column;
-  padding: 10px;
-  margin: 20px;
-
-  > .name {
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-    font-weight: 600;
-    @extend %ellipsis-text;
-  }
-
-  @include setAvatarSize(50px, 28px, 48px);
-}
-
-.online-user-card--in-game {
-  &::after {
-    @extend .icon-gamepad;
-    position: absolute;
-    font-size: 22px;
-    width: 26px;
-    top: 44px;
-    right: 22px;
-  }
 }
 
 .online-users-message {

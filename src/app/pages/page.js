@@ -18,6 +18,7 @@ export class Page {
   }
 
   init() {
+    this.displayLoader();
     this.getClearedMainContainer().then((mainContainer) => {
       this.renderPage(mainContainer);
     });

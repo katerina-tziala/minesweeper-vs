@@ -2,15 +2,9 @@
 @use "../../theming/theming";
 
 @mixin setThemeStyles($theme) {
-  .online-user-card {
-    @include theming.setThemeCard($theme);
-    @include theming.setThemeBoxShadow($theme);
-  }
-
-  .online-user-card--in-game {
-    &::after {
-      color: theming.getThemeColor($theme, "success-primary");
-    }
+  .online-users-header {
+    color: theming.getThemeColor($theme, "header-color");
+    background-color: theming.getThemeColor($theme, "app-primary");
   }
 }
 

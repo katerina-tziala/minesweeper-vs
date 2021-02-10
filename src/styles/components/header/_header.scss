@@ -90,10 +90,10 @@
 .theme-light {
   .header {
     background: theming.getThemeColor("light", "app-primary");
-    color: theming.getThemeColor("light", "theme-secondary");
+    color: theming.getThemeColor("light", "header-color");
     @include theming.setThemeBoxShadow("light");
 
-    $button-color: theming.getThemeColor("light", "theme-secondary-intense");
+    $button-color: theming.getThemeColor("light", "header-color-intense");
     $button-color-darker: color.adjust($button-color, $lightness: -20%);
 
     
@@ -114,10 +114,10 @@
 .theme-dark {
   .header {
     background: theming.getThemeColor("dark", "app-primary");
-    color: theming.getThemeColor("dark", "theme-primary");
+    color: theming.getThemeColor("dark", "header-color");
     @include theming.setThemeBoxShadow("dark");
 
-    $button-color: theming.getThemeColor("dark", "theme-primary-intense");
+    $button-color: theming.getThemeColor("dark", "header-color-intense");
     $button-color-darker: color.adjust($button-color, $lightness: -20%);
 
     

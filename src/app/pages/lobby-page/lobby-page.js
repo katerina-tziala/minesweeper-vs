@@ -1,5 +1,4 @@
 "use strict";
-
 import "../../../styles/pages/_lobby.scss";
 import { valueDefined } from "~/_utils/validator";
 import { TYPOGRAPHY } from "~/_constants/typography.constants";
@@ -18,7 +17,7 @@ import {
 import { User } from "../../_models/user";
 
 import { LinkInvitationButton } from "./link-invitation-button/link-invitation-button";
-import { OnlineUsersController } from "../../online-connection/online-users-controller/online-users-controller";
+import { OnlineUsersController } from "./online-users-controller/online-users-controller";
 
 
 export class LobbyPage extends Page {
@@ -27,27 +26,29 @@ export class LobbyPage extends Page {
 
   constructor(onPageChange) {
     super(onPageChange);
-    //this.#OnlineUsersController = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
-    this.#OnlineUsersController = new OnlineUsersController();
     this.ActionsControlller = new HeaderActionsControllerUser(true, {
       "onLogout": this.onLogout.bind(this)
     });
-
     this.init();
+  }
+
+  init() {
+    this.#GameWizard = undefined;
+    this.#OnlineUsersController = new OnlineUsersController(this.#renderWizard.bind(this));
+    this.#OnlineUsersController.users = self.onlineConnection.peers;
+    super.init();
   }
 
   get #pageContent() {
     const fragment = document.createDocumentFragment();
     fragment.append(this.#renderLinkInvitationSection());
     fragment.append(this.#OnlineUsersController.generateView());
-    // const fragment = document.createDocumentFragment();
-    // fragment.append(this.#renderLinkInvitationSection(), this.#OnlineUsers.generateView());
     return fragment;
   }
 
   #renderLinkInvitationSection() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.linkInvitationContainer]);
-    const button = LinkInvitationButton.generate(this.#onGenerateLink.bind(this));
+    const button = LinkInvitationButton.generate(this.#renderWizard.bind(this));
     container.append(button);
     return container;
   }
@@ -57,87 +58,54 @@ export class LobbyPage extends Page {
     this.hideLoader();
   }
 
-  #onGenerateLink() {
-    console.log("#onGenerateLink");
-    //this.#displayWizard();
+  #renderWizard(user) {
+    this.#OnlineUsersController = undefined;
+    this.displayLoader();
+    return Promise.all([
+      this.getClearedMainContainer(),
+      this.#loadWizard(user)
+    ]).then(([mainContainer, wizard]) => {
+      mainContainer.append(wizard);
+      this.hideLoader();
+      this.#GameWizard.expandWizard();
+    }).catch(() => {
+      console.log("error on loading wizard");
+    });
   }
 
+  #loadWizard(user) {
+    return import("GameWizard").then((module) => {
+      this.#GameWizard = new module.GameWizardOnline(this.init.bind(this), this.#onGameConfiguration.bind(this), user);
+      return this.#GameWizard.generateView();
+    });
+  }
 
+  #onGameConfiguration(gameParams) {
+    if (gameParams.players.length === 2) {
+      this.#sendInvitation(gameParams);
+      return;
+    }
+    this.#generateGameLink(gameParams);
+  }
 
+  #sendInvitation(gameParams) {
+    console.log("#sendInvitation");
+    console.log(gameParams);
+  }
 
-
-
+  #generateGameLink(gameParams) {
+    console.log("#generateGameLink");
+    console.log(gameParams);
+  }
 
   onConnectionError(errorType) {
-    console.log("onUserUpdate in lobby page");
+    console.log("onConnectionError in lobby page");
     super.onConnectionError(errorType);
-   
+
   }
 
   onUserUpdate() {
     console.log("onUserUpdate in lobby page");
-
   }
-
-  // #onSendInvitation(game) {
-  //   console.log("#onSendInvitation");
-  //   console.log(game);
-    
-  //   if (game.players.length === 2) {
-  //     console.log("online user");
-  //     console.log("send invitation");
-  //     //this.onPlayGame(game);
-  //     //close wizard join game
-  //   } else {
-  //     console.log("generate link");
-  //     //do not close modal
-  //   }
-
-  //   this.#wizardClosed();
-  // }
-
-
-  // onConnectionError(errorMessage) {
-  //   //super.onConnectionError(errorMessage);
-  //   console.log("onConnectionError");
-  // }
-
-
-
-  // #wizardClosed() {
-  //   this.#GameWizard = undefined;
-  //   self.modal.close();
-  // }
-
-
-
-  // #loadWizard(user) {
-  //   return import("GameWizard").then((module) => {
-  //     this.#GameWizard = new module.GameWizardOnline(this.#wizardClosed.bind(this), this.#onSendInvitation.bind(this), user);
-  //     return this.#GameWizard.generateView();
-  //   });
-  // }
-
-
-
-  // #onUserSelected(user) {
-  //   this.#displayWizard(user);
-  // }
-
-  // #displayWizard(user) {
-  //   Promise.all([self.modal.displayModal(), this.#loadWizard(user)])
-  //     .then(([modalBox, wizard]) => {
-  //       modalBox.append(wizard);
-  //       return;
-  //     })
-  //     .then(() => {
-  //       this.#GameWizard.expandWizard();
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log("modal err");
-  //       this.#wizardClosed();
-  //     });
-  // }
 
 }
