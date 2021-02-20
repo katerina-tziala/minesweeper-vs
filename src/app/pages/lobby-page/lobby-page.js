@@ -24,8 +24,11 @@ export class LobbyPage extends Page {
   #GameWizard;
   #OnlineUsersController;
 
-  constructor(onPageChange) {
+  constructor(onPageChange, onPlayGame) {
     super(onPageChange);
+    self.onlineConnection.onRoomOpened = onPlayGame;
+
+    
     this.ActionsControlller = new HeaderActionsControllerUser(true, {
       "onLogout": this.onLogout.bind(this)
     });
@@ -89,8 +92,9 @@ export class LobbyPage extends Page {
   }
 
   #sendInvitation(gameParams) {
-    console.log("#sendInvitation");
-    console.log(gameParams);
+    const recipientId = gameParams.players[1].id;
+    const gameProperties = gameParams;
+    self.onlineConnection.sendInvitation({ recipientId, gameProperties });
   }
 
   #generateGameLink(gameParams) {

@@ -32,7 +32,7 @@ export class OnlineUserCard {
     const params = clone(INVITE_BTN);
     params.attributes["aria-label"] = params.attributes["aria-label"] + user.username;
     const button = ElementGenerator.generateButton(params, () => onSelected(user));
-    ElementHandler.setDisabled(button, user.inGame);
+    //ElementHandler.setDisabled(button, user.inGame);
     return button;
   }
 

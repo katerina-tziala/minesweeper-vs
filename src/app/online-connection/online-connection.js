@@ -8,13 +8,16 @@ export class OnlineConnection {
   #actions;
   #webSocket;
   #peers = [];
+  #invitations = [];
 
   constructor() {
     // this.actions = actions;
 
-    console.log(TESTGAME);
+    // console.log(TESTGAME);
 
-    this.setTestPeers();
+    // this.setTestPeers();
+
+
   }
 
 
@@ -40,6 +43,14 @@ export class OnlineConnection {
 
   get peers() {
     return this.#peers;
+  }
+
+  set invitations(invitations) {
+    return this.#invitations = invitations;
+  }
+
+  get invitations() {
+    return this.#invitations;
   }
 
 
@@ -83,8 +94,8 @@ export class OnlineConnection {
   #onError(event) {
     this.#webSocket = undefined;
     console.log("#onError", event);
-    self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
-    this.#submitError();
+    // self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionError);
+    // this.#submitError();
   }
 
 
@@ -111,14 +122,28 @@ export class OnlineConnection {
 
   #onMessage(message) {
     switch (message.type) {
-      case "username-in-use":
-        this.#submitError(message.type);
+      case "error":
+        this.#submitError(message.data.errorType);
         break;
       case "user-update":
         this.#handleUserUpdate(message.data);
         break;
       case "peers-update":
         this.#handlePeersUpdate(message.data);
+        break;
+
+      case "game-invitation":
+        console.log(message.data);
+        console.log(JSON.stringify(message.data.invitations));
+        break;
+
+      case "game-room-opened":
+        this.#handlePeersUpdate(message.data);
+        if (this.onRoomOpened) {
+          const gameParams = message.data.game;
+          //gameParams.players = message.data.potentialPlayers;
+          this.onRoomOpened(gameParams);
+        }
         break;
 
 
@@ -164,6 +189,10 @@ export class OnlineConnection {
     } else {
       console.log("no this.webSocket");
     }
+  }
+
+  sendInvitation(data) {
+    this.sendData("invite-and-open-room", data);
   }
 
   disconnect(user) {

@@ -98,7 +98,8 @@ export class App {
   #onLobbyNavigation() {
     this.#loadPage(PageType.Lobby).then(({ LobbyPage }) => {
       this.interfaceController = new LobbyPage(
-        this.#onPageInit.bind(this)
+        this.#onPageInit.bind(this),
+        this.#onPlayGame.bind(this),
       );
       this.#page = PageType.Lobby;
     });
