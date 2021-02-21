@@ -1,0 +1,15 @@
+// @use "sass:list";
+// @use "../../theming/theming";
+// @use "./settings-theming";
+
+@import "../toggle/toggle";
+@import "../switcher/switcher";
+@import "./invitations-list-theming";
+
+.invitations-list {
+  border: 2px solid red;
+  padding: 20px;
+  //height: 340px;
+}
+
+// @include settings-theming.setTheming();

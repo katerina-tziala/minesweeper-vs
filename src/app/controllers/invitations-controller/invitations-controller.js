@@ -25,42 +25,47 @@ import {
 
 
 export class InvitationsController {
-  #toggle;
+  #Toggle;
+  #invitations = [];
+
+
 
   constructor() {
     console.log("InvitationsController");
-    this.#toggle = new Toggle("invitations");
- 
-    this.invitations = [
-      {
-        id: "inv1",
-        from: new User("testid", "katerina"),
-        to: new User("kate", "kate"),
-        gameData: {}
-      },
-      {
-        id: "inv2",
-        from: new User("testid2", "katerina2"),
-        to: new User("kate2", "kate2"),
-        gameData: {}
-      }
-    ]
-    
+    this.#Toggle = new Toggle("invitations");
+    this.#invitations = self.onlineConnection.invitations;
   }
 
   
+
+
   generateView() {
-    return this.#toggle.generateView();
+    return this.#Toggle.generateView(this.#generateInvitationsList());
   }
 
 
-  invitationsList() {
+  #generateInvitationsList() {
     const fragment = document.createDocumentFragment();
 
+    const ul = document.createElement("ul");
+    ElementHandler.setID(ul, "invitations-list")
+    ElementHandler.addStyleClass(ul, "invitations-list")
+
+    this.#invitations.forEach(invitation => {
 
 
+      console.log(invitation);
+
+
+      
+    });
+
+
+    fragment.append(ul);
     return fragment;
   }
+
+
 
 
 

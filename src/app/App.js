@@ -26,7 +26,9 @@ export class App {
     self.user = undefined;
     self.modal = new Modal();
     self.onlineConnection = new OnlineConnection();
-    this.#onPageInit();
+    //this.#onPageInit();
+    self.user = new User("kate", "katerina");
+    this.#onHomeNavigation();
   }
 
   #initAppSettings() {
@@ -94,7 +96,7 @@ export class App {
     });
   }
 
-  
+
   #onLobbyNavigation() {
     this.#loadPage(PageType.Lobby).then(({ LobbyPage }) => {
       this.interfaceController = new LobbyPage(

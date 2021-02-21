@@ -1,0 +1,18 @@
+@use "../../theming/theming";
+
+@mixin setGameColorOptionsThemeStyles($theme) {
+  .game-color-option {
+    @include theming.applyGameColorsStyle($theme, "&.color-type");
+    border: 1px solid theming.getThemeColor($theme, "theme-secondary");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setGameColorOptionsThemeStyles($theme);
+    }
+  }
+}
