@@ -8,9 +8,7 @@
     border: 2px solid theming.getThemeColor($theme, "theme-secondary-intense");
     $shadow-color: theming.getThemeColor($theme, "wizard-step-selected-color");
     box-shadow: 0px 0px 5px 0px $shadow-color inset;
-    &::before {
-      background-color: theming.getThemeColor($theme, "wizard-step-background");
-    }
+
   }
 }
 
@@ -18,9 +16,6 @@
   .game-wizard-navigation-step-button {
     background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
     color: theming.getThemeColor($theme, "wizard-step-completed-color");
-    &::before {
-      background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
-    }
   }
 }
 
@@ -61,10 +56,17 @@
   .game-wizard-navigation-step {
     height: 100%;
     width: 50px;
-
+ 
+    // &::before {
+    //   background-color: theming.getThemeColor($theme, "wizard-step-background");
+    // }
+  
     &.completed {
       @include setCompletedButtonThemeStyles($theme);
       @include setCompletedLabelThemeStyles($theme);
+      // &::before {
+      //   background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
+      // }
     }
   
     &.selected {

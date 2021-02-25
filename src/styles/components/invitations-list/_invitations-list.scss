@@ -46,8 +46,9 @@
 .invitation__icon {
   // border: 1px solid blue;
   background-color: lightblue;
-  @include circle(56px);
+   @include circle(56px);
   margin-right: 5px;
+ // width: 24px;
   &::after {
     @extend .icon-gamepad;
   }

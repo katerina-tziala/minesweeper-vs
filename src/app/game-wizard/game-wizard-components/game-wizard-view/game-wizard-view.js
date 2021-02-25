@@ -100,7 +100,7 @@ export class GameWizardView {
   }
 
   static updateMainView(content) {
-    return GameWizardView.resetWizardHeight(160)
+    return GameWizardView.resetWizardHeight(156)
       .then(() => {
         return GameWizardView.updateMainSection(content);
       })

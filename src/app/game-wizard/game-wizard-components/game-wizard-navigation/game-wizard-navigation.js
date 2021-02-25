@@ -111,7 +111,11 @@ export class GameWizardNavigation {
         step.disabled = !previousSteps.every(step => step.completed);
       }
 
+
+  
       if (updateView) {
+        console.log("here update navigation timeline bar");
+
         step.updateDisabled();
       }
     });
@@ -122,6 +126,8 @@ export class GameWizardNavigation {
     const stepsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stepsContainer]);
     this.#displayedSteps.forEach(step => {
       stepsContainer.append(step.generateView(step));
+      console.log("here create navigation timeline bar");
+
     });
     fragment.append(stepsContainer);
     return fragment;

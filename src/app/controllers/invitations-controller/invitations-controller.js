@@ -16,7 +16,7 @@ import {
 } from "./invitations-controller.constants";
 import {
   Toggle
-} from "../../components/toggle/toggle";
+} from "~/components/toggle/toggle";
 
 import {
   User
