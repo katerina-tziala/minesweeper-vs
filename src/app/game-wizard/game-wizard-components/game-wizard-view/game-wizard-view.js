@@ -9,9 +9,7 @@ import { DOM_ELEMENT_CLASS, CLOSE_BTN } from "./game-wizard-view.constants";
 export class GameWizardView {
 
   static generateTitle(titleText) {
-    const title = document.createElement("h2");
-    title.innerHTML = titleText;
-    return title;
+    return ElementGenerator.generateSecondLevelHeader(titleText);
   }
 
   static generateHeader(title, action) {

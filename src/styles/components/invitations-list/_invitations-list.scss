@@ -2,14 +2,69 @@
 // @use "../../theming/theming";
 // @use "./settings-theming";
 
-@import "../toggle/toggle";
-@import "../switcher/switcher";
+// @import "../toggle/toggle";
+// @import "../switcher/switcher";
+
 @import "./invitations-list-theming";
+@import "../invitation-content/invitation-content";
+
+
+
 
 .invitations-list {
-  border: 2px solid red;
-  padding: 20px;
+  //border: 2px solid red;
+  // padding: 20px 5px;
+  list-style-type: none;
   //height: 340px;
 }
 
 // @include settings-theming.setTheming();
+
+
+
+
+
+.invitation-list-item {
+  // border: 1px solid red;
+
+  width: 300px;
+  padding: 5px;
+
+  .invitation__header {
+    font-size: 1rem;
+  }
+  // &::after {
+  //   @extend .icon-gamepad;
+  // }
+}
+
+.invitation__content-container {
+  border: 1px solid green;
+  @extend %start-start;
+}
+
+.invitation__icon {
+  // border: 1px solid blue;
+  background-color: lightblue;
+  @include circle(56px);
+  margin-right: 5px;
+  &::after {
+    @extend .icon-gamepad;
+  }
+}
+
+.invitation__details {
+  flex-grow: 1;
+  width: 230px;
+}
+
+
+
+
+
+
+
+
+.invitation__created-at {
+  font-style: italic;
+}

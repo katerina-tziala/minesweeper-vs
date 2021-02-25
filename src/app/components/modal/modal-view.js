@@ -56,10 +56,9 @@ export class ModalView {
   }
 
   static generateTitle(title) {
-    const titleContainer = document.createElement("h2");
-    ElementHandler.addStyleClass(titleContainer, DOM_ELEMENT_CLASS.title);
-    ElementHandler.setID(titleContainer, DOM_ELEMENT_ID.modalDialogTitle);
-    titleContainer.innerHTML = title;
+    const styles = [DOM_ELEMENT_CLASS.title];
+    const id = DOM_ELEMENT_ID.modalDialogTitle;
+    const titleContainer = ElementGenerator.generateSecondLevelHeader(title, styles, id);
     return titleContainer;
   }
 

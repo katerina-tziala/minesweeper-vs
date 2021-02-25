@@ -22,6 +22,7 @@ import {
   User
 } from "../../_models/user";
 
+import { InvitationListItem } from "./invitation-list-item/invitation-list-item";
 
 
 export class InvitationsController {
@@ -36,7 +37,7 @@ export class InvitationsController {
     this.#invitations = self.onlineConnection.invitations;
   }
 
-  
+
 
 
   generateView() {
@@ -53,11 +54,10 @@ export class InvitationsController {
 
     this.#invitations.forEach(invitation => {
 
+      const invitationItem = InvitationListItem.generateView(invitation);
 
-      console.log(invitation);
 
-
-      
+      ul.append(invitationItem);
     });
 
 

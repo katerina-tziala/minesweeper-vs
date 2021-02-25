@@ -32,10 +32,7 @@ export class OnlineUsersController {
     return container;
   }
   get #header() {
-    const container = document.createElement("h2");
-    ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.header)
-    container.innerHTML = CONTENT.header;
-    return container;
+    return ElementGenerator.generateSecondLevelHeader(CONTENT.header, [DOM_ELEMENT_CLASS.header]);
   }
 
   get #renderedContent() {

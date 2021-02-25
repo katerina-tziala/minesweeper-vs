@@ -87,4 +87,16 @@ export class ElementHandler {
   static addInChildNodes(parent, element, position = 1) {
     parent.insertBefore(element, parent.childNodes[position]);
   }
+
+  static addStylesAndId(element, styleClasses = [], elementId) {
+    if (!element) {
+      return;
+    }
+    if (styleClasses && styleClasses.length) {
+      ElementHandler.setStyleClass(element, styleClasses);
+    }
+    if (elementId) {
+      ElementHandler.setID(element, elementId);
+    }
+  }
 }

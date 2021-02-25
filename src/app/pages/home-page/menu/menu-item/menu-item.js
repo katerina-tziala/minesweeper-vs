@@ -38,9 +38,7 @@ export class MenuItem {
   }
 
   #generateHeader() {
-    const header = document.createElement("h2");
-    header.innerHTML = this.#content.title;
-    return header;
+    return ElementGenerator.generateSecondLevelHeader(this.#content.title);
   }
 
   #generateDetails() {

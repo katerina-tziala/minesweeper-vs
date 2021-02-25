@@ -48,6 +48,12 @@
   @extend %second-axis-centered;
 }
 
+%start-start {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-start;
+}
+
 %start-center {
   @extend %flexbox;
   @extend %first-axis-start;

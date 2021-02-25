@@ -3,14 +3,9 @@ import { valueDefined } from "~/_utils/validator";
 import { ElementHandler } from "./element-handler";
 
 export class ElementGenerator {
-  static generateContainer(styleClasses, elementId) {
+  static generateContainer(styleClasses = [], elementId) {
     const container = document.createElement("div");
-    if (styleClasses && styleClasses.length) {
-      ElementHandler.setStyleClass(container, styleClasses);
-    }
-    if (elementId) {
-      ElementHandler.setID(container, elementId);
-    }
+    ElementHandler.addStylesAndId(container, styleClasses, elementId);
     return container;
   }
 
@@ -58,4 +53,15 @@ export class ElementGenerator {
     }
     return tableCell;
   }
+
+  static generateSecondLevelHeader(content, styleClasses = [], elementId) {
+    const header = document.createElement("h2");
+    ElementHandler.addStylesAndId(header, styleClasses, elementId);
+    if (valueDefined(content)) {
+      header.innerHTML = content;
+    }
+    return header;
+  }
+
+
 }
