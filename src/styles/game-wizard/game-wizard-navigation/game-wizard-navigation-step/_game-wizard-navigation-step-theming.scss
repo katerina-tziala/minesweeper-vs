@@ -56,17 +56,10 @@
   .game-wizard-navigation-step {
     height: 100%;
     width: 50px;
- 
-    // &::before {
-    //   background-color: theming.getThemeColor($theme, "wizard-step-background");
-    // }
   
     &.completed {
       @include setCompletedButtonThemeStyles($theme);
       @include setCompletedLabelThemeStyles($theme);
-      // &::before {
-      //   background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
-      // }
     }
   
     &.selected {

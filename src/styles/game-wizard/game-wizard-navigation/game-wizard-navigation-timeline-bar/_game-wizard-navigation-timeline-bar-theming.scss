@@ -1,0 +1,22 @@
+@use "sass:color";
+@use "../../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .game-wizard-navigation__timeline-bar {
+    background-color: theming.getThemeColor($theme, "wizard-step-background");
+  
+    &.completed {
+      background-color: theming.getThemeColor($theme, "wizard-step-completed-background");
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

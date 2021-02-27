@@ -36,15 +36,15 @@ export class InvitationListItem {
     const levelSettings = invitationGame.levelSettings;
     const test = `level: ${levelSettings.level} (${levelSettings.rows}x${levelSettings.columns}), ${levelSettings.numberOfMines} mines`;
     
-    console.log(test);
+    //console.log(test);
 
     const turnSettings = invitationGame.turnSettings;
 
-    console.log(turnSettings);
+    //console.log(turnSettings);
 
     const optionsSettings = invitationGame.optionsSettings;
 
-    console.log(optionsSettings);
+    //console.log(optionsSettings);
 
     container.append(icon, details);
 

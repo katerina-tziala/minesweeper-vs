@@ -111,23 +111,50 @@ export class GameWizardNavigation {
         step.disabled = !previousSteps.every(step => step.completed);
       }
 
-
-  
       if (updateView) {
-        console.log("here update navigation timeline bar");
-
         step.updateDisabled();
+        if (index > 0) {
+          this.#updateTimelineBar(index, step.completed);
+        }
       }
     });
+  }
+
+  #updateTimelineBar(index, completed) {
+    const styles = this.#getTimelineBarStyles(completed)
+    return ElementHandler.getByID(this.#timelineBarID(index))
+    .then(timelineBar => {
+      ElementHandler.setStyleClass(timelineBar, styles);
+      return;
+    });
+  }
+
+  #timelineBarID(index) {
+    return DOM_ELEMENT_ID.timelineBar + index;
+  }
+
+  #getTimelineBarStyles(completed) {
+    const styles = [DOM_ELEMENT_CLASS.timelineBar];
+    if (completed) {
+      styles.push(DOM_ELEMENT_CLASS.timelineBarCompleted);
+    }
+    return styles;
+  }
+
+  #generateTimelineBar(index, completed) {
+    const styles = this.#getTimelineBarStyles(completed);
+    return ElementGenerator.generateContainer(styles, this.#timelineBarID(index));
   }
 
   #generateStepsView() {
     const fragment = document.createDocumentFragment();
     const stepsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.stepsContainer]);
-    this.#displayedSteps.forEach(step => {
+    const displayedSteps = this.#displayedSteps;
+    displayedSteps.forEach((step, index) => {
+      if (index > 0) {
+        stepsContainer.append(this.#generateTimelineBar(index, step.completed));
+      }
       stepsContainer.append(step.generateView(step));
-      console.log("here create navigation timeline bar");
-
     });
     fragment.append(stepsContainer);
     return fragment;

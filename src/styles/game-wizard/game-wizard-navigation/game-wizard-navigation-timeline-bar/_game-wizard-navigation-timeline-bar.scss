@@ -1,0 +1,15 @@
+
+@use "./game-wizard-navigation-timeline-bar-theming";
+
+
+
+.game-wizard-navigation__timeline-bar {
+  flex-grow: 1;
+  position: relative;
+  top: -7px;
+  height: 4px;
+  border-radius: 4px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-wizard-navigation-timeline-bar-theming.setTheming();
