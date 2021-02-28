@@ -19,7 +19,7 @@ import {
 
 export class Toggle {
   #animationDuration = 500;
-  #expanded = false;
+
   #hasContent = false;
   #outsideClickDetection = false;
   #overflowContent = true;
@@ -30,7 +30,7 @@ export class Toggle {
 
   constructor(name, expanded = false, detectOutsideClick = false, overflowContent = true, animationDuration = 500) {
     this.#name = name;
-    this.#expanded = expanded;
+    this.expanded = expanded;
     this.#outsideClickDetection = detectOutsideClick;
     this.#overflowContent = overflowContent;
     this.#animationDuration = animationDuration;
@@ -110,23 +110,27 @@ export class Toggle {
   }
 
   #onToggleButtonChange() {
-    this.#expanded = !this.#expanded;
-
-    if (this.onStateChange) {
-      this.onStateChange(this.#expanded);
-    }
-
-    // console.log("onToggleButtonChange");
+    this.expanded = !this.expanded;
+    this.#submitToggleChange();
+    console.log("onToggleButtonChange");
     // console.log(this.#name);
-
     this.togglePanel();
   }
+
+  #submitToggleChange() {
+    if (this.onStateChange) {
+      this.onStateChange(this.expanded);
+    }
+  }
+
+ 
+  
 
   #setToggleButtonState() {
     return this.toggleButton.then((button) => {
       ElementHandler.removeStyleClass(button, DOM_ELEMENT_CLASS.toggleButtonExpanded);
-      AriaHandler.setAriaExpanded(button, this.#expanded);
-      if (this.#expanded) {
+      AriaHandler.setAriaExpanded(button, this.expanded);
+      if (this.expanded) {
         ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.toggleButtonExpanded);
       }
       return;
@@ -134,15 +138,16 @@ export class Toggle {
   }
 
   togglePanel() {
-    this.#expanded ? this.#expandPanel() : this.#collapsePanel();
+    this.expanded ? this.#expandPanel() : this.#collapsePanel();
   }
 
-  updatePanelHeight() {
+  updatePanelHeight(addition = 0) {
     return Promise.all([
       this.#panel,
       this.contentHeight
     ]).then(([panel, contentHeight]) => {
-      this.#setPanelHeight(panel, contentHeight);
+      const newHeight = contentHeight + addition;
+      this.#setPanelHeight(panel, newHeight);
       return panel;
     });
   }
@@ -161,12 +166,14 @@ export class Toggle {
 
   #collapsePanel() {
     clearTimeout(this.#transitionTimeout);
-    this.#expanded = false;
+    this.expanded = false;
     this.#setToggleButtonState();
     this.#removeOutsideClick();
     this.#panel.then(panel => {
       this.#setPanelHeight(panel);
       this.#setPanelOverflow(panel);
+
+
     });
   }
 
@@ -175,7 +182,7 @@ export class Toggle {
   }
 
   #setPanelOverflow(panel) {
-    panel.style.overflow = (this.#expanded && this.#overflowContent) ? "visible" : "hidden";
+    panel.style.overflow = (this.expanded && this.#overflowContent) ? "visible" : "hidden";
   }
 
   #detectOutsideClick() {
@@ -194,7 +201,7 @@ export class Toggle {
 
   #collapseOnOutsideClick(event) {
     const settingsPanel = event.target.closest(`#${this.#panelId}`);
-    if (!settingsPanel && this.#expanded) {
+    if (!settingsPanel && this.expanded) {
       this.#collapsePanel();
     }
   }

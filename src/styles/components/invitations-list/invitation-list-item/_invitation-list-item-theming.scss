@@ -18,8 +18,8 @@
 
   .invitation__content-container {
     > .toggle {
-      @include toggle-theming.setButtonCollapsedStyles($color, $color-darker, -4px);
-      @include toggle-theming.setButtonExpandedStyles($color, $color-darker, -8px);
+      @include toggle-theming.setButtonCollapsedStyles($color, $color-darker, -6px);
+      @include toggle-theming.setButtonExpandedStyles($color, $color-darker, -10px);
     }
   }
 }
@@ -31,6 +31,10 @@
 
   @include setActionButtonStyles($theme);
   @include setToggleStyles($theme);
+
+  .invitation__game-info-container {
+    border: 1px dashed theming.getThemeColor($theme, "board-grid");
+  }
 }
 
 @mixin setTheming() {

@@ -36,6 +36,8 @@ export class InvitationsController {
     console.log("InvitationsController");
     this.#Toggle = new Toggle("invitations", false, true, false);
     this.#invitations = self.onlineConnection.invitations;
+
+    console.log(document.documentElement.clientHeight * 0.85);
   }
 
 
@@ -68,14 +70,8 @@ export class InvitationsController {
   }
 
 
-  #onListItemHeightChange() {
-   
-    this.#Toggle.updatePanelHeight();
-    // console.log("onListItemHeightChange");
-    // console.log(height);
-    
-
-
+  #onListItemHeightChange(heightUpdate) {
+    this.#Toggle.updatePanelHeight(heightUpdate);
   }
 
 

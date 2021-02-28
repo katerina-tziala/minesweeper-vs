@@ -22,6 +22,8 @@
     font-size: 1rem;
   }
   border-top: 1px solid;
+
+  transition: all 0.5s ease-in-out;
 }
 
 .invitation__content-container {
@@ -44,7 +46,7 @@
     > .toggle-panel {
       right: auto;
       left: 0;
-      top: 64px;
+      top: 66px;
       box-shadow: none !important;
     }
   }
@@ -97,8 +99,10 @@
 
 .invitation__game-info-container {
   width: 320px;
-  padding-top: 5px;
-  padding-bottom: 10px;
+  padding: 5px 15px;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  margin: 5px 0px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

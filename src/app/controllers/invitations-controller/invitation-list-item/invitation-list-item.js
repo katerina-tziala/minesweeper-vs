@@ -5,7 +5,7 @@ import { Toggle } from "~/components/toggle/toggle";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, ACTION_BUTTONS } from "./invitation-list-item.constants";
 
 import { InvitationContent } from "./invitation-content/invitation-content";
-
+import { timeoutPromise } from "~/_utils/utils";
 export class InvitationListItem {
   #invitation;
   #id;
@@ -15,18 +15,10 @@ export class InvitationListItem {
   constructor(invitation, onHeightChange) {
     this.#invitation = invitation;
     this.#id = DOM_ELEMENT_ID.item + this.#invitation.id;
-
     this.#onHeightChange = onHeightChange;
-
-
     this.#Toggle = new Toggle(this.#id, false, false);
     this.#Toggle.onStateChange = this.#onToggleDetails.bind(this);
-    // console.log("InvitationListItem");
-    // console.log(invitation);
-    // this.#Toggle = new Toggle("invitations", false, true);
-    // this.#invitations = self.onlineConnection.invitations;
   }
-
 
   get #sender() {
     return this.#invitation.sender;
@@ -68,17 +60,13 @@ export class InvitationListItem {
   }
 
   #onToggleDetails(expanded) {
-
-
-    console.log("onToggleDetails");
-
     this.#Toggle.contentHeight.then(height => {
+      height = height + 10;
       const heightUpdate = expanded ? height : -height;
-      return this.#updateItemHeight(heightUpdate);
-    }).then(() => {
       if (this.#onHeightChange) {
-        this.#onHeightChange();
+        this.#onHeightChange(heightUpdate);
       }
+      return this.#updateItemHeight(heightUpdate);
     });
   }
 
@@ -90,8 +78,6 @@ export class InvitationListItem {
       return;
     });
   }
-
-
 
   #onInvitationAction(actionType) {
     console.log("onInvitationAction");

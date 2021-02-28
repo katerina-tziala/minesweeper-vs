@@ -11,11 +11,13 @@
   }
 
   .game-option-explanation-table {
-    tbody > tr:nth-child(even) {
-      background-color: theming.getThemeColor(
-        $theme,
-        "table-background-highlight"
-      );
+    $color: theming.getThemeColor($theme, "board-grid");
+    
+    tbody > tr:not(:last-of-type) > td {
+      border-bottom: 1px solid $color;
+    }
+    tbody > tr:not(:last-of-type) > th {
+      border-bottom: 1px solid $color;
     }
   }
 }

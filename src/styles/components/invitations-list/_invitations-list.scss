@@ -1,21 +1,18 @@
-// @use "sass:list";
-// @use "../../theming/theming";
-// @use "./settings-theming";
-
-// @import "../toggle/toggle";
-// @import "../switcher/switcher";
-
 @import "./invitations-list-theming";
 @import "./invitation-list-item/invitation-list-item";
-
+@import "../scrollbar/scrollbar";
 
 
 
 .invitations-list {
-  //border: 2px solid red;
+  border: 1px solid red;
   // padding: 20px 5px;
   list-style-type: none;
   //height: 340px;
+
+  max-height: 85vh;
+  overflow: auto;
+  @extend ._scrollbar;
 }
 
 // @include settings-theming.setTheming();

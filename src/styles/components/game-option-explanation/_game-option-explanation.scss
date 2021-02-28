@@ -15,20 +15,18 @@
 }
 
 .game-option-explanation-table {
-
+  width: 100%;
   tbody > tr > th {
     text-transform: capitalize;
     @extend .__game-option-table-cell;
     padding-left: 0px;
     padding-right: 10px;
-    max-width: 130px;
   }
 
   tbody > tr > td {
     @extend .__game-option-table-cell;
     padding-left: 10px;
     padding-right: 0px;
-    max-width: 120px;
   }
   
 }
