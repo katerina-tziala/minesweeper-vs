@@ -1,9 +1,36 @@
 @use "./game-option-explanation-theming";
 @import "../../global/typography/typography";
+@import "../table/table";
 
 .__game-option-explanation_icon {
   height: 15px;
   display: inline-block;
+}
+
+.__game-option-table-cell {
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.game-option-explanation-table {
+
+  tbody > tr > th {
+    text-transform: capitalize;
+    @extend .__game-option-table-cell;
+    padding-left: 0px;
+    padding-right: 10px;
+    max-width: 130px;
+  }
+
+  tbody > tr > td {
+    @extend .__game-option-table-cell;
+    padding-left: 10px;
+    padding-right: 0px;
+    max-width: 120px;
+  }
+  
 }
 
 .game-option-explanation--unchecked {

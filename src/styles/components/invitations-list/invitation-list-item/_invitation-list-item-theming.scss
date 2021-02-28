@@ -25,6 +25,10 @@
 }
 
 @mixin setThemeStyles($theme) {
+  .invitation-list-item {
+    border-top: 1px solid theming.getThemeColor($theme, "board-grid-light");
+  }
+
   @include setActionButtonStyles($theme);
   @include setToggleStyles($theme);
 }

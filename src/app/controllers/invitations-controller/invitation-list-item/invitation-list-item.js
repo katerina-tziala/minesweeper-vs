@@ -68,6 +68,10 @@ export class InvitationListItem {
   }
 
   #onToggleDetails(expanded) {
+
+
+    console.log("onToggleDetails");
+
     this.#Toggle.contentHeight.then(height => {
       const heightUpdate = expanded ? height : -height;
       return this.#updateItemHeight(heightUpdate);

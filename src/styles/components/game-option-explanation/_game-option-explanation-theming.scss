@@ -5,11 +5,19 @@
   .game-option-explanation--unchecked {
     color: theming.getThemeColor($theme, "error-primary");
   }
-  
+
   .game-option-explanation--checked {
     color: theming.getThemeColor($theme, "success-primary");
   }
-  
+
+  .game-option-explanation-table {
+    tbody > tr:nth-child(even) {
+      background-color: theming.getThemeColor(
+        $theme,
+        "table-background-highlight"
+      );
+    }
+  }
 }
 
 @mixin setTheming() {

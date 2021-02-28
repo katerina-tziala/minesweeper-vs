@@ -5,7 +5,8 @@ import { GAME_OPTIONS_CONTENT } from "~/_constants/content.constants";
 
 export const DOM_ELEMENT_CLASS = {
   vsMode: "game-option-explanation-vs-mode",
-  level: "game-option-explanation-level"
+  level: "game-option-explanation-level",
+  table: "game-option-explanation-table"
 };
 
 export const CONTENT = {

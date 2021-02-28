@@ -154,6 +154,7 @@ export class Toggle {
       this.#transitionTimeout = setTimeout(() => {
         this.#detectOutsideClick();
         this.#setPanelOverflow(panel);
+      
       }, this.#animationDuration);
     });
   }

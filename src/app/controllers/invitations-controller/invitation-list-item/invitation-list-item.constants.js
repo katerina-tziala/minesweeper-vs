@@ -19,13 +19,6 @@ export const ACTION_BUTTONS = {
     },
     actionType: "click",
   },
-  // details: {
-  //   className: "invitation__btn invitation__btn--details",
-  //   attributes: {
-  //     "aria-label": "see details",
-  //   },
-  //   actionType: "click",
-  // },
   reject: {
     className: "invitation__btn invitation__btn--reject",
     attributes: {

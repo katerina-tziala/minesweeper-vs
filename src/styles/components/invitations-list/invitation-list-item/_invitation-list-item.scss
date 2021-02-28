@@ -2,7 +2,6 @@
 @import "../../button/button";
 @import "../../toggle/toggle";
 @import "../../game-option-explanation/game-option-explanation";
-@import "../../table/table";
 
 .__invitation-toggle-button {
   @extend ._btn;
@@ -16,11 +15,13 @@
 }
 
 .invitation-list-item {
-  width: 330px;
-  padding: 5px;
+  width: 340px;
+  padding: 10px;
+  padding-bottom: 14px;
   .invitation__header {
     font-size: 1rem;
   }
+  border-top: 1px solid;
 }
 
 .invitation__content-container {
@@ -95,29 +96,9 @@
 }
 
 .invitation__game-info-container {
-  border: 2px solid red;
   width: 320px;
-  height: 300px;
-
-  tbody > tr > th {
-    text-transform: capitalize;
-    padding: 5px 2px 0px 2px;
-    
-    text-align: center;
-    // min-width: 26px;
-    // max-width: 80px;
-  }
-
-  tbody > tr > td {
-    // text-transform: capitalize;
-    padding: 5px 2px 0px 2px;
-    
-    text-align: center;
-    vertical-align: middle;
-    // min-width: 26px;
-    // max-width: 80px;
-  }
-
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

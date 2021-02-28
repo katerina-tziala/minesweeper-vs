@@ -1,5 +1,5 @@
 "use strict";
-import { ElementGenerator } from "HTML_DOM_Manager";
+import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS, CONTENT } from "./game-options-explanation-table.constants";
 import { GameVSMode } from "GameEnums";
 import { GameOptionsExplanationHelper as ExplanationHelper } from "./game-options-explanation-helper/game-options-explanation-helper";
@@ -8,6 +8,7 @@ export class GameOptionsExplanationTable {
 
   static generateFullGameInfoTable(invitationGame) {
     const table = ElementGenerator.generateTable();
+    ElementHandler.addStyleClass(table, DOM_ELEMENT_CLASS.table);
     const tableBody = GameOptionsExplanationTable.generateFullGameInfoTableBody(invitationGame);
     table.append(tableBody);
     return table;
