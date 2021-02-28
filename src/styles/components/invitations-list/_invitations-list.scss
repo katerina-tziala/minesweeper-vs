@@ -6,7 +6,7 @@
 // @import "../switcher/switcher";
 
 @import "./invitations-list-theming";
-@import "../invitation-content/invitation-content";
+@import "./invitation-list-item/invitation-list-item";
 
 
 
@@ -19,53 +19,3 @@
 }
 
 // @include settings-theming.setTheming();
-
-
-
-
-
-.invitation-list-item {
-  // border: 1px solid red;
-
-  width: 300px;
-  padding: 5px;
-
-  .invitation__header {
-    font-size: 1rem;
-  }
-  // &::after {
-  //   @extend .icon-gamepad;
-  // }
-}
-
-.invitation__content-container {
-  border: 1px solid green;
-  @extend %start-start;
-}
-
-.invitation__icon {
-  // border: 1px solid blue;
-  background-color: lightblue;
-   @include circle(56px);
-  margin-right: 5px;
- // width: 24px;
-  &::after {
-    @extend .icon-gamepad;
-  }
-}
-
-.invitation__details {
-  flex-grow: 1;
-  width: 230px;
-}
-
-
-
-
-
-
-
-
-.invitation__created-at {
-  font-style: italic;
-}

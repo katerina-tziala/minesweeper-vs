@@ -99,4 +99,9 @@ export class ElementHandler {
       ElementHandler.setID(element, elementId);
     }
   }
+
+  static setElementHeight(element, height = 0) {
+    element.style.height = `${height}px`;
+  }
+
 }

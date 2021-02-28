@@ -29,11 +29,12 @@ export class InvitationsController {
   #Toggle;
   #invitations = [];
 
+  #InvitationsList = [];
 
 
   constructor() {
     console.log("InvitationsController");
-    this.#Toggle = new Toggle("invitations");
+    this.#Toggle = new Toggle("invitations", false, true, false);
     this.#invitations = self.onlineConnection.invitations;
   }
 
@@ -53,11 +54,12 @@ export class InvitationsController {
     ElementHandler.addStyleClass(ul, "invitations-list")
 
     this.#invitations.forEach(invitation => {
+      const invitationItem = new InvitationListItem(invitation, this.#onListItemHeightChange.bind(this));
+      this.#InvitationsList.push(invitationItem)
+      // const invitationItem = invitationItem.generateView();
 
-      const invitationItem = InvitationListItem.generateView(invitation);
 
-
-      ul.append(invitationItem);
+      ul.append(invitationItem.generateView());
     });
 
 
@@ -66,6 +68,15 @@ export class InvitationsController {
   }
 
 
+  #onListItemHeightChange() {
+   
+    this.#Toggle.updatePanelHeight();
+    // console.log("onListItemHeightChange");
+    // console.log(height);
+    
+
+
+  }
 
 
 

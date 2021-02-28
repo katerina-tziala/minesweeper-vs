@@ -2,9 +2,9 @@
 @use "sass:color";
 @use "../../theming/theming";
 
-@mixin indicator-collapsed($color) {
+@mixin indicatorCollapsed($color, $bottom) {
   &::before {
-    bottom: -2px;
+    bottom: $bottom;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-top: 1px solid transparent;
@@ -13,9 +13,9 @@
   }
 }
 
-@mixin indicator-expanded($color) {
+@mixin indicatorExpanded($color, $bottom) {
   &::before {
-    bottom: -5px;
+    bottom: $bottom;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 0px solid transparent;
@@ -25,24 +25,33 @@
   }
 }
 
-@mixin setButtonThemeStyles($color) {
+@mixin setButtonCollapsedStyles($color, $color-focused, $bottom: -2px) {
   .toggle-btn {
-    $color-darker: color.adjust($color, $lightness: -20%);
-    @include indicator-collapsed($color-darker);
+    @include indicatorCollapsed($color, $bottom);
+
     &:hover,
     &:focus {
-      @include indicator-collapsed($color);
+      @include indicatorCollapsed($color-focused, $bottom);
     }
+  }
+}
 
-    &.toggle-btn--expanded {
-      @include indicator-expanded($color-darker);
+@mixin setButtonExpandedStyles($color, $color-focused, $bottom: -5px) {
+  .toggle-btn.toggle-btn--expanded {
+      @include indicatorExpanded($color, $bottom);
 
       &:hover,
       &:focus {
-        @include indicator-expanded($color);
+        @include indicatorExpanded($color-focused, $bottom);
       }
     }
-  }
+  
+}
+
+@mixin setButtonThemeStyles($color) {
+  $color-darker: color.adjust($color, $lightness: -20%);
+  @include setButtonCollapsedStyles($color-darker, $color);
+  @include setButtonExpandedStyles($color-darker, $color);
 }
 
 @mixin setPanelThemeStyles($theme) {

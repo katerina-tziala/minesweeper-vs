@@ -22,7 +22,7 @@ export class SettingsController {
   constructor(gameSettingsAllowed = false) {
     this.#gameSettingsAllowed = gameSettingsAllowed;
     this.#settings = new AppSettingsModel();
-    this.#Toggle = new Toggle("settings");
+    this.#Toggle = new Toggle("settings", false, true);
     this.#initThemeController();
     this.#initGameSettings();
   }

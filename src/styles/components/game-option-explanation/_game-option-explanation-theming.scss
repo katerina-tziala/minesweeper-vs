@@ -1,0 +1,23 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .game-option-explanation--unchecked {
+    color: theming.getThemeColor($theme, "error-primary");
+  }
+  
+  .game-option-explanation--checked {
+    color: theming.getThemeColor($theme, "success-primary");
+  }
+  
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

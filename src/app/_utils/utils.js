@@ -48,6 +48,10 @@ export const arrayDifference = (arrayToFilter, arrayReference) => {
   return arrayToFilter.filter((item) => !arrayReference.includes(item));
 };
 
+export const arrayIntersection = (arrayToFilter, arrayReference) => {
+  return arrayToFilter.filter((item) => arrayReference.includes(item));
+};
+
 export const enumKey = (enumObject, value) => {
   return Object.keys(enumObject).find((key) => enumObject[key] === value);
 };

@@ -166,3 +166,8 @@
   @extend %icon-regular;
   content: fa-content($fa-var-envelope);
 }
+
+.icon-trash {
+  @extend %icon-regular;
+  content: fa-content($fa-var-trash-alt);
+}

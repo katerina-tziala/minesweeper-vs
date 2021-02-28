@@ -1,6 +1,7 @@
 "use strict";
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
+import { ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_CLASS, CONTENT } from "./invitation-content.constants";
+import { GameOptionsExplanationTable } from "~/components/game-options-explanation-table/game-options-explanation-table";
 
 export class InvitationContent {
 
@@ -14,7 +15,7 @@ export class InvitationContent {
 
   static generateInvitationHeader(sender) {
     let headerContent = InvitationContent.generateInvitationSender(sender);
-    headerContent +=  InvitationContent.generateInvitationText();
+    headerContent += InvitationContent.generateInvitationText();
     return ElementGenerator.generateSecondLevelHeader(headerContent, [DOM_ELEMENT_CLASS.header]);
   }
 
@@ -31,6 +32,13 @@ export class InvitationContent {
     });
     receivedAt.innerHTML = `${CONTENT.receivedAt}${dateString}`;
     return receivedAt;
+  }
+
+  static generateGameInfo(invitationGame) {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.gameInfoContainer]);
+    const table = GameOptionsExplanationTable.generateFullGameInfoTable(invitationGame);
+    container.append(table);
+    return container;
   }
 
 }

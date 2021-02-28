@@ -54,6 +54,14 @@ export class ElementGenerator {
     return tableCell;
   }
 
+  static generateTableHeaderCellRow(headerContent, cellContent) {
+    const row = ElementGenerator.generateTableRow();
+    const header = ElementGenerator.generateTableHeaderCell(headerContent);
+    const dataCell = ElementGenerator.generateTableDataCell(cellContent);
+    row.append(header, dataCell);
+    return row;
+  }
+
   static generateSecondLevelHeader(content, styleClasses = [], elementId) {
     const header = document.createElement("h2");
     ElementHandler.addStylesAndId(header, styleClasses, elementId);

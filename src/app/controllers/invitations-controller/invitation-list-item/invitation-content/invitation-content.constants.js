@@ -5,11 +5,10 @@ export const DOM_ELEMENT_CLASS = {
   sender: "invitation__sender",
   text: "invitation__text",
   receivedAt: "invitation__created-at",
+  gameInfoContainer: "invitation__game-info-container",
 };
 
 export const CONTENT = {
   text: "invited you in a Minesweeper game",
-  receivedAt: "received at: ",
-  
+  receivedAt: "received at: "
 };
-

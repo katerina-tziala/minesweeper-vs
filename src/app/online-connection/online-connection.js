@@ -1,6 +1,6 @@
 "use strict";
 import { User } from "~/_models/user";
-import { CONNECTION_CONFIG, TESTGAME, TESTINVITATION } from "./connection-config.constants";
+import { CONNECTION_CONFIG, TESTGAME, INVITATIONSTEST } from "./connection-config.constants";
 import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
 import { valueDefined } from "~/_utils/validator";
 
@@ -16,7 +16,7 @@ export class OnlineConnection {
     // console.log(TESTGAME);
 
     // this.setTestPeers();
-    this.#invitations = [TESTINVITATION];
+    this.#invitations = INVITATIONSTEST;
 
   }
 

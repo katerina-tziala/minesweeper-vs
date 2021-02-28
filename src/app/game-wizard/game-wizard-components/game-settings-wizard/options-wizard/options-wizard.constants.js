@@ -1,24 +1,12 @@
 "use strict";
+import { GAME_OPTIONS_CONTENT } from "~/_constants/content.constants";
+import { VS_SETTINGS_PROPERTIES } from "~/game/_models/options-settings/options-setting.constants";
+export { FIELDS_BASED_ON_STRATEGY, ALLOW_SNEAK_PEEK_SETTINGS } from "~/game/_models/options-settings/options-setting.constants";
 
 export const SETTINGS_PROPERTIES = {
-  default: ["marks", "wrongFlagHint"],
-  clear: [
-    "tileFlagging",
-    "unlimitedFlags",
-    "wrongFlagHint",
-    "marks",
-    "openStrategy",
-  ],
-  detect: ["unlimitedFlags", "wrongFlagHint", "tileRevealing", "marks"],
-  parallel: [
-    "identicalMines",
-    "marks",
-    "wrongFlagHint",
-    "openCompetition",
-  ],
+  ...VS_SETTINGS_PROPERTIES,
+  default: ["marks", "wrongFlagHint"]
 };
-
-export const ALLOW_SNEAK_PEEK_SETTINGS = ["clear", "parallel"];
 
 export const FIELD_NAME = {
   tileFlagging: "tileFlagging",
@@ -26,27 +14,7 @@ export const FIELD_NAME = {
   openCompetition: "openCompetition"
 };
 
-export const FIELDS_BASED_ON_STRATEGY = [
-  "unlimitedFlags",
-  "wrongFlagHint",
-  "marks",
-  "openStrategy",
-  "openCompetition"
-];
-
 export const CONTENT = {
   title: "game options",
-  labels: {
-    marks: "marks",
-    tileRevealing: "reveal tiles",
-    identicalMines: "identical minefield",
-    tileFlagging: "strategy",
-    wrongFlagHint: "wrong flag hint",
-    unlimitedFlags: "unlimited flags",
-    openCompetition: "open competition",
-    openStrategy: "open strategy",
-    sneakPeek: "sneak peek",
-    sneakPeekDuration: "sneak peek duration",
-    sneakPeeksLimit: "sneak peeks limit"
-  }
+  labels: GAME_OPTIONS_CONTENT
 };

@@ -1,71 +1,109 @@
 "use strict";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { DOM_ELEMENT_CLASS, CONTENT } from "./invitation-list-item.constants";
+import { InvitationAction } from "~/_enums/invitation-action.enum";
+import { Toggle } from "~/components/toggle/toggle";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, ACTION_BUTTONS } from "./invitation-list-item.constants";
 
-import { InvitationContent } from "~/components/invitation-content/invitation-content";
-
-
-
+import { InvitationContent } from "./invitation-content/invitation-content";
 
 export class InvitationListItem {
+  #invitation;
+  #id;
+  #Toggle;
+  #onHeightChange;
 
-  static generateView(invitation) {
-    const invitationItem = document.createElement("li");
-    ElementHandler.addStyleClass(invitationItem, "invitation-list-item");
+  constructor(invitation, onHeightChange) {
+    this.#invitation = invitation;
+    this.#id = DOM_ELEMENT_ID.item + this.#invitation.id;
 
- 
-    
-    const content = InvitationListItem.generateContent(invitation);
-    //console.log(invitation);
-    invitationItem.append(content);
-    return invitationItem;
+    this.#onHeightChange = onHeightChange;
+
+
+    this.#Toggle = new Toggle(this.#id, false, false);
+    this.#Toggle.onStateChange = this.#onToggleDetails.bind(this);
+    // console.log("InvitationListItem");
+    // console.log(invitation);
+    // this.#Toggle = new Toggle("invitations", false, true);
+    // this.#invitations = self.onlineConnection.invitations;
   }
 
 
-  static generateContent(invitation) {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.contentContainer]);
-    const icon = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.icon]);
-    const details = InvitationListItem.generateInvitationDetails(invitation);
-
-    //console.log(invitation);
-   //console.log(invitation.game);
-    const invitationGame = invitation.game;
-    //console.log(invitationGame);
-
-
-    const levelSettings = invitationGame.levelSettings;
-    const test = `level: ${levelSettings.level} (${levelSettings.rows}x${levelSettings.columns}), ${levelSettings.numberOfMines} mines`;
-    
-    //console.log(test);
-
-    const turnSettings = invitationGame.turnSettings;
-
-    //console.log(turnSettings);
-
-    const optionsSettings = invitationGame.optionsSettings;
-
-    //console.log(optionsSettings);
-
-    container.append(icon, details);
-
-
-    return container;
+  get #sender() {
+    return this.#invitation.sender;
   }
 
+  get #listItem() {
+    return ElementHandler.getByID(this.#id);
+  }
 
-  static generateInvitationDetails(invitation) {
+  #generateInvitationDetails() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.details]);
-    const header = InvitationContent.generateInvitationHeader(invitation.sender);
-    const createdAt = InvitationContent.generateReceivedInfo(invitation.createdAt);
-
-
+    const header = InvitationContent.generateInvitationHeader(this.#sender);
+    const createdAt = InvitationContent.generateReceivedInfo(this.#invitation.createdAt);
     container.append(header, createdAt);
     return container;
   }
 
+  #generateMainContent() {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.contentContainer]);
+    const iconToggle = this.#generateToggleView();
+    const details = this.#generateInvitationDetails();
+    const actions = this.#generateInvitationActions();
+    container.append(iconToggle, details, actions);
+    return container;
+  }
 
-  
+  #generateInvitationActions() {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actions]);
+    Object.values(InvitationAction).forEach(actionType => {
+      const button = ElementGenerator.generateButton(ACTION_BUTTONS[actionType], () => this.#onInvitationAction(actionType));
+      container.append(button);
+    });
+    return container;
+  }
+
+  #generateToggleView() {
+    const gameDetails = InvitationContent.generateGameInfo(this.#invitation.game);
+    return this.#Toggle.generateView(gameDetails);
+  }
+
+  #onToggleDetails(expanded) {
+    this.#Toggle.contentHeight.then(height => {
+      const heightUpdate = expanded ? height : -height;
+      return this.#updateItemHeight(heightUpdate);
+    }).then(() => {
+      if (this.#onHeightChange) {
+        this.#onHeightChange();
+      }
+    });
+  }
+
+  #updateItemHeight(heightAddition) {
+    return this.#listItem.then(listItem => {
+      const currentHeight = listItem.getBoundingClientRect().height;
+      const newHeight = currentHeight + heightAddition;
+      ElementHandler.setElementHeight(listItem, newHeight);
+      return;
+    });
+  }
 
 
+
+  #onInvitationAction(actionType) {
+    console.log("onInvitationAction");
+    console.log(actionType);
+    // console.log(this.#invitation);
+  }
+
+
+
+
+  generateView() {
+    const invitationItem = document.createElement("li");
+    ElementHandler.addStyleClass(invitationItem, DOM_ELEMENT_CLASS.item);
+    ElementHandler.setID(invitationItem, this.#id);
+    invitationItem.append(this.#generateMainContent());
+    return invitationItem;
+  }
 
 }
