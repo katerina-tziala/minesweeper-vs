@@ -1,9 +1,9 @@
 "use strict";
 
 export const DOM_ELEMENT_ID = {
-  container: "toggle__"
+  panel: "toggle-panel__"
 };
 
 export const DOM_ELEMENT_CLASS = {
-  container: "toggle"
+  panel: "toggle-panel"
 };

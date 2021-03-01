@@ -53,6 +53,9 @@ export class ElementHandler {
   }
 
   static setParams(element, params) {
+    if (!params) {
+      return;
+    }
     params = clone(params);
     const attributes = params.attributes;
     delete params.attributes;
@@ -101,7 +104,14 @@ export class ElementHandler {
   }
 
   static setElementHeight(element, height = 0) {
-    element.style.height = `${height}px`;
+    if (element) {
+      element.style.height = `${height}px`;
+    }
   }
 
+  static setElementOverflow(element, overflow) {
+    if (element) {
+      element.style.overflow = overflow ? "visible" : "hidden";
+    }
+  }
 }

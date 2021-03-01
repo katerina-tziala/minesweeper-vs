@@ -17,6 +17,7 @@ export class OnlineConnection {
 
     // this.setTestPeers();
     this.#invitations = INVITATIONSTEST;
+    //this.#invitations = [];
 
   }
 

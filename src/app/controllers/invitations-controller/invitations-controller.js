@@ -31,13 +31,14 @@ export class InvitationsController {
 
   #InvitationsList = [];
 
+  #maxAllowedHeight;
 
   constructor() {
     console.log("InvitationsController");
     this.#Toggle = new Toggle("invitations", false, true, false);
     this.#invitations = self.onlineConnection.invitations;
+    this.#maxAllowedHeight = document.documentElement.clientHeight * 0.85;
 
-    console.log(document.documentElement.clientHeight * 0.85);
   }
 
 
@@ -71,6 +72,23 @@ export class InvitationsController {
 
 
   #onListItemHeightChange(heightUpdate) {
+
+    // console.log(this.#maxAllowedHeight);
+
+    // this.#Toggle.contentHeight.then(currentHeight => {
+    //   console.log(currentHeight);
+    //   const newHeight = currentHeight + heightUpdate;
+      
+    //   if (newHeight > this.#maxAllowedHeight) {
+    //     console.log("re megaluteroooo");
+    //   } else {
+        
+    //   }
+
+    // });
+
+
+
     this.#Toggle.updatePanelHeight(heightUpdate);
   }
 

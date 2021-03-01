@@ -8,181 +8,132 @@ import {
 import {
   ElementHandler,
   ElementGenerator,
-  AriaHandler,
 } from "HTML_DOM_Manager";
 
 import {
   DOM_ELEMENT_ID,
-  DOM_ELEMENT_CLASS,
-  BUTTON
+  DOM_ELEMENT_CLASS
 } from "./toggle.constants";
 
-export class Toggle {
-  #animationDuration = 500;
+import {
+  ToggleButton
+} from "./toggle-button/toggle-button";
 
+import {
+  ToggleContent
+} from "./toggle-content/toggle-content";
+
+
+import {
+  TogglePanel
+} from "./toggle-panel/toggle-panel";
+
+
+export class Toggle {
   #hasContent = false;
   #outsideClickDetection = false;
-  #overflowContent = true;
+  #overflowAllowed = true;
   #name;
-  #transitionTimeout;
   #documentListeners = {};
 
-
-  constructor(name, expanded = false, detectOutsideClick = false, overflowContent = true, animationDuration = 500) {
+  constructor(name, expanded = false, detectOutsideClick = false, overflowAllowed = true) {
     this.#name = name;
     this.expanded = expanded;
     this.#outsideClickDetection = detectOutsideClick;
-    this.#overflowContent = overflowContent;
-    this.#animationDuration = animationDuration;
+    this.#overflowAllowed = overflowAllowed;
+    this.#setControllers();
   }
 
-  get #containerId() {
+  #setControllers() {
+    this.button = new ToggleButton(this.#name, this.expanded);
+    this.button.onStateChange = this.#onToggleButtonChange.bind(this);
+    this.content = new ToggleContent(this.#name);
+    this.panel = new TogglePanel(this.#name, this.#overflowContent);
+    this.panel.onAnimationEnd = this.#onPanelAnimationEnd.bind(this);
+  }
+
+  get #id() {
     return DOM_ELEMENT_ID.container + this.#name;
   }
 
-  get #buttonId() {
-    return DOM_ELEMENT_ID.toggleButton + this.#name;
-  }
-
-  get #panelId() {
-    return DOM_ELEMENT_ID.togglePanel + this.#name;
-  }
-
-  get #contentId() {
-    return DOM_ELEMENT_ID.toggleContent + this.#name;
-  }
-
-  get toggleButton() {
-    return ElementHandler.getByID(this.#buttonId);
-  }
-
-  get contentContainer() {
-    return ElementHandler.getByID(this.#contentId);
-  }
-
   get contentHeight() {
-    return this.contentContainer.then(contentContainer => {
-      return contentContainer.getBoundingClientRect().height;
-    });
+    return this.content ? this.content.elementHeight : 0;
   }
 
-  get #panel() {
-    return ElementHandler.getByID(this.#panelId);
-  }
-
-  get #toggleButtonParams() {
-    const params = clone(BUTTON);
-    params.className = params.className + this.#name;
-    params.attributes["aria-label"] = replaceStringParameter(params.attributes["aria-label"], this.#name);
-    return params;
+  get #overflowContent() {
+    return this.expanded && this.#overflowAllowed;
   }
 
   #generatePanel(content) {
-    const panel = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.togglePanel], this.#panelId);
-    this.#setPanelHeight(panel);
-    this.#setPanelOverflow(panel);
-    const contentContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.toggleContent], this.#contentId);
-    if (content) {
-      contentContainer.append(content);
-    }
+    const panel = this.panel.generateView();
+    const contentContainer = this.content.generateView(content);
     panel.append(contentContainer);
     return panel;
   }
 
-  get #generatedButton() {
-    const button = ElementGenerator.generateButton(this.#toggleButtonParams, this.#onToggleButtonChange.bind(this));
-    ElementHandler.setID(button, this.#buttonId);
-    ElementHandler.setDisabled(button, !this.#hasContent);
-    return button;
-  }
-
   generateView(content) {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#containerId);
     this.#hasContent = content ? true : false;
-    container.append(this.#generatedButton, this.#generatePanel(content));
+    this.button.disabled = !this.#hasContent;
+
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#id);
+    const button = this.button.generateView();
+    const panel = this.#generatePanel(content);
+    container.append(button, panel);
     return container;
   }
 
-  updateView(content) {
+
+  updateView(contentView) {
     console.log("updateView");
-    console.log(content);
+    console.log(contentView);
+
+    if (this.content) {
+      this.content.updateView(contentView);
+    }
 
   }
+
 
   #onToggleButtonChange() {
     this.expanded = !this.expanded;
-    this.#submitToggleChange();
-    console.log("onToggleButtonChange");
-    // console.log(this.#name);
-    this.togglePanel();
-  }
-
-  #submitToggleChange() {
+    this.expanded ? this.#expand() : this.#collapse();
     if (this.onStateChange) {
       this.onStateChange(this.expanded);
     }
   }
 
- 
-  
-
-  #setToggleButtonState() {
-    return this.toggleButton.then((button) => {
-      ElementHandler.removeStyleClass(button, DOM_ELEMENT_CLASS.toggleButtonExpanded);
-      AriaHandler.setAriaExpanded(button, this.expanded);
-      if (this.expanded) {
-        ElementHandler.addStyleClass(button, DOM_ELEMENT_CLASS.toggleButtonExpanded);
-      }
-      return;
-    });
-  }
-
-  togglePanel() {
-    this.expanded ? this.#expandPanel() : this.#collapsePanel();
-  }
-
   updatePanelHeight(addition = 0) {
-    return Promise.all([
-      this.#panel,
-      this.contentHeight
-    ]).then(([panel, contentHeight]) => {
+    return this.contentHeight.then(contentHeight => {
       const newHeight = contentHeight + addition;
-      this.#setPanelHeight(panel, newHeight);
-      return panel;
+      return this.panel.updateHeight(newHeight);
     });
   }
 
-  #expandPanel() {
-    clearTimeout(this.#transitionTimeout);
-    this.#setToggleButtonState();
-    this.updatePanelHeight().then(panel => {
-      this.#transitionTimeout = setTimeout(() => {
-        this.#detectOutsideClick();
-        this.#setPanelOverflow(panel);
-      
-      }, this.#animationDuration);
-    });
+  #onPanelAnimationEnd() {
+    if (this.expanded) {
+      this.#onExpanded();
+    }
+
+    if (this.onAnimationEnd) {
+      this.onAnimationEnd();
+    }
   }
 
-  #collapsePanel() {
-    clearTimeout(this.#transitionTimeout);
+  #onExpanded() {
+    this.panel.updateOverlflow(this.#overflowContent);
+    this.#detectOutsideClick();
+  }
+
+  #expand() {
+    this.button.updateToggleState(this.expanded);
+    return this.updatePanelHeight();
+  }
+
+  #collapse() {
     this.expanded = false;
-    this.#setToggleButtonState();
     this.#removeOutsideClick();
-    this.#panel.then(panel => {
-      this.#setPanelHeight(panel);
-      this.#setPanelOverflow(panel);
-
-
-    });
-  }
-
-  #setPanelHeight(panel, height = 0) {
-    panel.style.height = `${height}px`;
-  }
-
-  #setPanelOverflow(panel) {
-    panel.style.overflow = (this.expanded && this.#overflowContent) ? "visible" : "hidden";
+    this.button.updateToggleState(this.expanded);
+    this.panel.updateHeight(0);
   }
 
   #detectOutsideClick() {
@@ -200,10 +151,15 @@ export class Toggle {
   }
 
   #collapseOnOutsideClick(event) {
-    const settingsPanel = event.target.closest(`#${this.#panelId}`);
-    if (!settingsPanel && this.expanded) {
-      this.#collapsePanel();
+    if (this.expanded && this.panel && !this.panel.clickedInside(event)) {
+      this.#collapse();
     }
   }
+
+
+
+
+
+
 
 }
