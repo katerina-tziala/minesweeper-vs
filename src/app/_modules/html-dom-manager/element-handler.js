@@ -114,4 +114,11 @@ export class ElementHandler {
       element.style.overflow = overflow ? "visible" : "hidden";
     }
   }
+
+  static getElementHeight(element) {
+    if (!element) {
+      return 0;
+    }
+    return element.getBoundingClientRect().height;
+  }
 }

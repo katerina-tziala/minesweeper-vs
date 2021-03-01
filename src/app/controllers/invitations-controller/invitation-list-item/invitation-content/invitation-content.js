@@ -41,4 +41,11 @@ export class InvitationContent {
     return container;
   }
 
+  static generateInvitationDetails(sender, createdAt) {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.details]);
+    const header = InvitationContent.generateInvitationHeader(sender);
+    const receivedAt = InvitationContent.generateReceivedInfo(createdAt);
+    container.append(header, receivedAt);
+    return container;
+  }
 }

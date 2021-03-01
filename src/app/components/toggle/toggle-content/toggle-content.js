@@ -29,7 +29,7 @@ export class ToggleContent {
 
   get elementHeight() {
     return this.documentElement.then(container => {
-      return container.getBoundingClientRect().height;
+      return ElementHandler.getElementHeight(container);
     }).catch(() => {
       return Promise.resolve(0);
     });

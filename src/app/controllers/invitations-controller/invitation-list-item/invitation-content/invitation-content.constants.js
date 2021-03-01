@@ -6,6 +6,7 @@ export const DOM_ELEMENT_CLASS = {
   text: "invitation__text",
   receivedAt: "invitation__created-at",
   gameInfoContainer: "invitation__game-info-container",
+  details: "invitation__details"
 };
 
 export const CONTENT = {

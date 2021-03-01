@@ -18,6 +18,7 @@ export class InvitationListItem {
     this.#onHeightChange = onHeightChange;
     this.#Toggle = new Toggle(this.#id, false, false);
     this.#Toggle.onStateChange = this.#onToggleDetails.bind(this);
+    this.#Toggle.onAnimationEnd = this.#onToggleAnimationEnd.bind(this);
   }
 
   get #sender() {
@@ -28,18 +29,10 @@ export class InvitationListItem {
     return ElementHandler.getByID(this.#id);
   }
 
-  #generateInvitationDetails() {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.details]);
-    const header = InvitationContent.generateInvitationHeader(this.#sender);
-    const createdAt = InvitationContent.generateReceivedInfo(this.#invitation.createdAt);
-    container.append(header, createdAt);
-    return container;
-  }
-
-  #generateMainContent() {
+  #generateContent() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.contentContainer]);
     const iconToggle = this.#generateToggleView();
-    const details = this.#generateInvitationDetails();
+    const details = InvitationContent.generateInvitationDetails(this.#sender, this.#invitation.createdAt);
     const actions = this.#generateInvitationActions();
     container.append(iconToggle, details, actions);
     return container;
@@ -60,6 +53,7 @@ export class InvitationListItem {
   }
 
   #onToggleDetails(expanded) {
+    console.log("onToggleDetails");
     this.#Toggle.contentHeight.then(height => {
       height = height + 10;
       const heightUpdate = expanded ? height : -height;
@@ -70,9 +64,15 @@ export class InvitationListItem {
     });
   }
 
+  #onToggleAnimationEnd() {
+    console.log("onToggleAnimationEnd");
+  }
+
+
+
   #updateItemHeight(heightAddition) {
     return this.#listItem.then(listItem => {
-      const currentHeight = listItem.getBoundingClientRect().height;
+      const currentHeight = ElementHandler.getElementHeight(listItem);
       const newHeight = currentHeight + heightAddition;
       ElementHandler.setElementHeight(listItem, newHeight);
       return;
@@ -92,7 +92,7 @@ export class InvitationListItem {
     const invitationItem = document.createElement("li");
     ElementHandler.addStyleClass(invitationItem, DOM_ELEMENT_CLASS.item);
     ElementHandler.setID(invitationItem, this.#id);
-    invitationItem.append(this.#generateMainContent());
+    invitationItem.append(this.#generateContent());
     return invitationItem;
   }
 
