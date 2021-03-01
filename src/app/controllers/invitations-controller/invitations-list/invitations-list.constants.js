@@ -8,5 +8,3 @@ export const DOM_ELEMENT_CLASS = {
   list: "invitations-list",
   listScrollable: "invitations-list--scrollable",
 };
-
-

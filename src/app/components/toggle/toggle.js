@@ -102,18 +102,14 @@ export class Toggle {
     }
   }
 
-  updatePanelHeight(addition = 0) {
-    return this.contentHeight.then(contentHeight => {
-      const newHeight = contentHeight + addition;
-      return this.panel.updateHeight(newHeight);
-    });
+  updatePanelHeight(height) {
+    return this.panel.updateHeight(height);
   }
 
   #onPanelAnimationEnd() {
     if (this.expanded) {
       this.#onExpanded();
     }
-
     if (this.onAnimationEnd) {
       this.onAnimationEnd();
     }
@@ -126,7 +122,9 @@ export class Toggle {
 
   #expand() {
     this.button.updateToggleState(this.expanded);
-    return this.updatePanelHeight();
+    return this.contentHeight.then(contentHeight => {
+      return this.updatePanelHeight(contentHeight);
+    });
   }
 
   #collapse() {
@@ -137,14 +135,14 @@ export class Toggle {
   }
 
   #detectOutsideClick() {
-    if (this.#outsideClickDetection) {
+    if (this.#outsideClickDetection && !this.#documentListeners[this.#name]) {
       this.#documentListeners[this.#name] = this.#collapseOnOutsideClick.bind(this);
       document.addEventListener("click", this.#documentListeners[this.#name]);
     }
   }
 
   #removeOutsideClick() {
-    if (this.#outsideClickDetection) {
+    if (this.#documentListeners[this.#name]) {
       document.removeEventListener("click", this.#documentListeners[this.#name]);
       this.#documentListeners = {};
     }

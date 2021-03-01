@@ -1,7 +1,7 @@
 "use strict";
 
 const InvitationAction = {
-  Play: "play",
+  Accept: "accept",
   Reject: "reject"
 };
 Object.freeze(InvitationAction);

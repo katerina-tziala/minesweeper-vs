@@ -9,6 +9,7 @@ import {
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 
+import { InvitationAction } from "~/_enums/invitation-action.enum";
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
@@ -22,79 +23,57 @@ import {
   User
 } from "../../_models/user";
 
-import { InvitationListItem } from "./invitation-list-item/invitation-list-item";
+// import { InvitationListItem } from "./invitation-list-item/invitation-list-item";
+import { InvitationsList } from "./invitations-list/invitations-list";
 
 
 export class InvitationsController {
   #Toggle;
+  #InvitationsList;
   #invitations = [];
 
-  #InvitationsList = [];
 
-  #maxAllowedHeight;
+ 
 
   constructor() {
     console.log("InvitationsController");
     this.#Toggle = new Toggle("invitations", false, true, false);
-    this.#invitations = self.onlineConnection.invitations;
-    this.#maxAllowedHeight = document.documentElement.clientHeight * 0.85;
 
-  }
-
-
-
-
-  generateView() {
-    return this.#Toggle.generateView(this.#generateInvitationsList());
-  }
-
-
-  #generateInvitationsList() {
-    const fragment = document.createDocumentFragment();
-
-    const ul = document.createElement("ul");
-    ElementHandler.setID(ul, "invitations-list")
-    ElementHandler.addStyleClass(ul, "invitations-list")
-
-    this.#invitations.forEach(invitation => {
-      const invitationItem = new InvitationListItem(invitation, this.#onListItemHeightChange.bind(this));
-      this.#InvitationsList.push(invitationItem)
-      // const invitationItem = invitationItem.generateView();
-
-
-      ul.append(invitationItem.generateView());
+    this.#invitations = [...self.onlineConnection.invitations];
+    
+    this.#InvitationsList = new InvitationsList([...self.onlineConnection.invitations], {
+      onBeforeHeightChange: this.#onHeightChange.bind(this),
+      onInvitationAction: this.#onInvitationAction.bind(this)
     });
-
-
-    fragment.append(ul);
-    return fragment;
   }
 
-
-  #onListItemHeightChange(heightUpdate) {
-
-    // console.log(this.#maxAllowedHeight);
-
-    // this.#Toggle.contentHeight.then(currentHeight => {
-    //   console.log(currentHeight);
-    //   const newHeight = currentHeight + heightUpdate;
-      
-    //   if (newHeight > this.#maxAllowedHeight) {
-    //     console.log("re megaluteroooo");
-    //   } else {
-        
-    //   }
-
-    // });
-
-
-
-    this.#Toggle.updatePanelHeight(heightUpdate);
+  
+  generateView() {
+    const list = this.#InvitationsList.generateView();
+    return this.#Toggle.generateView(list);
   }
 
+  #onHeightChange() {
+    return this.#Toggle.updatePanelHeight(this.#InvitationsList.listHeight).then(() => {
+      return this.#InvitationsList.updateListHeight();
+    });
+  }
 
+  #onInvitationAction(actionType, invitation) {
+    this.#onHeightChange();
+    console.log("onInvitationAction");
+    console.log(actionType);
+    console.log(invitation);
+    console.log(this.#invitations);
+    console.log(self.onlineConnection.invitations);
+    
+    const testinv = JSON.parse(JSON.stringify(this.#invitations[1]));
+    testinv.id = "testId";
+    
+    console.log(testinv);
 
+  }
 
-
+  
 
 }

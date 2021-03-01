@@ -1,9 +1,5 @@
 "use strict";
 
-export const DOM_ELEMENT_ID = {
-  item: "invitation-list-item__"
-};
-
 export const DOM_ELEMENT_CLASS = {
   item: "invitation-list-item",
   contentContainer: "invitation__content-container",
@@ -12,7 +8,7 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const ACTION_BUTTONS = {
-  play: {
+  accept: {
     className: "invitation__btn invitation__btn--play",
     attributes: {
       "aria-label": "play",
@@ -28,4 +24,8 @@ export const ACTION_BUTTONS = {
   }
 };
 
+export const HEIGHT_CONFIG = {
+  initial: 86,
+  addition: 10
+};
 

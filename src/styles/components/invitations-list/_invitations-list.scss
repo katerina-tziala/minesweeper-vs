@@ -5,18 +5,25 @@
 
 
 .invitations-list {
-  border: 1px solid red;
+  //border: 1px solid red;
   // padding: 20px 5px;
   list-style-type: none;
   //height: 340px;
 
   max-height: 85vh;
-  overflow: auto;
-  @extend ._scrollbar;
+  overflow: hidden;
+  // @extend ._scrollbar;
 
 
-
+  padding: 0 8px;
+  width: 358px;
+ // height: 700px;
   
 }
 
+.invitations-list--scrollable {
+  overflow: auto;
+  @extend ._scrollbar;
+  padding-right: 0px;
+}
 // @include settings-theming.setTheming();

@@ -39,8 +39,8 @@ export class TogglePanel {
     ElementHandler.setElementOverflow(panel, this.#overflow);
   }
 
-  #onTransitionEnd() {
-    if (this.onAnimationEnd) {
+  #onTransitionEnd(event) {
+    if (ElementHandler.getID(event.target) === this.#id && this.onAnimationEnd) {
       this.onAnimationEnd();
     }
   }

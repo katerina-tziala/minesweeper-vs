@@ -201,7 +201,7 @@ export class DropdownSelectList {
       DropdownSelectOption.selectOption(activeDescendant);
       listbox.scrollTo({
         top: activeDescendant.offsetTop,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     });
   }
