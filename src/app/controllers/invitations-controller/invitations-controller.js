@@ -26,7 +26,7 @@ import {
 
 import { InvitationsList } from "./invitations-list/invitations-list";
 
-
+import { InvitationsControllerViewHelper as ViewHelper } from "./invitations-controller-view-helper";
 
 export class InvitationsController {
   #Toggle;
@@ -46,24 +46,9 @@ export class InvitationsController {
     });
   }
 
-
-  #generateHeader() {
-    const header = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.header]);
-    header.innerHTML = CONTENT.header;
-
-    const invitationsIndicator = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.headerIndicator],DOM_ELEMENT_ID.headerIndicator);
-    if (this.#invitations.length) {
-      invitationsIndicator.innerHTML = `(${this.#invitations.length.toString()})`;
-    }
-    header.append(invitationsIndicator);
-
-    return header;
-  }
-
-
   generateView() {
     const fragment = document.createDocumentFragment();
-    const header = this.#generateHeader();
+    const header = ViewHelper.generateHeader(this.#invitations.length);
     const list = this.#InvitationsList.generateView();
     fragment.append(header, list);
     return this.#Toggle.generateView(fragment);
@@ -77,16 +62,24 @@ export class InvitationsController {
 
   #onInvitationAction(actionType, invitation) {
     this.#onHeightChange();
+    this.#invitations = this.#invitations.filter(currentInvitation => currentInvitation.id !== invitation.id);
+    ViewHelper.updateHeaderIndicator(this.#invitations.length);
+
     console.log("onInvitationAction");
     console.log(actionType);
     console.log(invitation);
-    console.log(this.#invitations);
+
     console.log(self.onlineConnection.invitations);
 
-    //this.testNewInvitationArrival();
+    
+    console.log(this.#invitations);
+    this.testNewInvitationArrival();
   }
 
 
+
+
+  // 
   testNewInvitationArrival() {
     const testinv = JSON.parse(JSON.stringify(this.#invitations[1]));
     testinv.id = "testId";
@@ -101,6 +94,10 @@ export class InvitationsController {
 
 
   #onInvitationReceived(invitation) {
+    this.#invitations.push(invitation);
+    ViewHelper.updateHeaderIndicator(this.#invitations.length);
+
+
     this.#InvitationsList.addInList(invitation).then(() => {
       if (this.#Toggle.expanded) {
         this.#onHeightChange();
