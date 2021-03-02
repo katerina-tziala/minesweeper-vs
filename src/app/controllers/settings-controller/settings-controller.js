@@ -7,7 +7,7 @@ import {
 import { Switcher } from "UserInputs";
 import { AppSettingsModel } from "~/_models/app-settings";
 import { Theme } from "~/_enums/app-settings.enums";
-import { DOM_ELEMENT_ID } from "./settings-controller.constants";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, CONTENT } from "./settings-controller.constants";
 import { SettingsItem } from "../../components/settings-item/settings-item";
 import { Toggle } from "../../components/toggle/toggle";
 import { GameSettings } from "../../components/game-settings/game-settings";
@@ -64,7 +64,12 @@ export class SettingsController {
   }
 
   generateView() {
-    return this.#Toggle.generateView(this.#generateToggleContent());
+    const fragment = document.createDocumentFragment();
+    const header = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.header]);
+    header.innerHTML = CONTENT.header;
+    const content = this.#generateToggleContent();
+    fragment.append(header, content);
+    return this.#Toggle.generateView(fragment);
   }
 
   #removeGameSettings() {

@@ -1,36 +1,11 @@
 "use strict";
-
-import {
-  clone,
-  replaceStringParameter
-} from "~/_utils/utils";
-
-import {
-  ElementHandler,
-  ElementGenerator,
-} from "HTML_DOM_Manager";
-
-import {
-  DOM_ELEMENT_ID,
-  DOM_ELEMENT_CLASS
-} from "./toggle.constants";
-
-import {
-  ToggleButton
-} from "./toggle-button/toggle-button";
-
-import {
-  ToggleContent
-} from "./toggle-content/toggle-content";
-
-
-import {
-  TogglePanel
-} from "./toggle-panel/toggle-panel";
-
+import { ElementGenerator } from "HTML_DOM_Manager";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./toggle.constants";
+import { ToggleButton } from "./toggle-button/toggle-button";
+import { ToggleContent } from "./toggle-content/toggle-content";
+import { TogglePanel } from "./toggle-panel/toggle-panel";
 
 export class Toggle {
-  #hasContent = false;
   #outsideClickDetection = false;
   #overflowAllowed = true;
   #name;
@@ -56,6 +31,10 @@ export class Toggle {
     return DOM_ELEMENT_ID.container + this.#name;
   }
 
+  get documentElement() {
+    return ElementHandler.getByID(this.#id);
+  }
+
   get contentHeight() {
     return this.content ? this.content.elementHeight : 0;
   }
@@ -72,27 +51,12 @@ export class Toggle {
   }
 
   generateView(content) {
-    this.#hasContent = content ? true : false;
-    this.button.disabled = !this.#hasContent;
-
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#id);
     const button = this.button.generateView();
     const panel = this.#generatePanel(content);
     container.append(button, panel);
     return container;
   }
-
-
-  updateView(contentView) {
-    console.log("updateView");
-    console.log(contentView);
-
-    if (this.content) {
-      this.content.updateView(contentView);
-    }
-
-  }
-
 
   #onToggleButtonChange() {
     this.expanded = !this.expanded;
@@ -153,11 +117,5 @@ export class Toggle {
       this.#collapse();
     }
   }
-
-
-
-
-
-
 
 }

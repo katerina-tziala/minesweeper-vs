@@ -25,8 +25,11 @@
 }
 
 @mixin setThemeStyles($theme) {
-  .invitation-list-item {
+  .invitation-list-item:not(:first-of-type) {
     border-top: 1px solid theming.getThemeColor($theme, "board-grid-light");
+  }
+  .invitation-list-item:first-of-type {
+    border-top: 1px solid transparent;
   }
 
   @include setActionButtonStyles($theme);

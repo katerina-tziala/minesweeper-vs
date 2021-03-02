@@ -2,23 +2,11 @@
 @import "./invitation-list-item/invitation-list-item";
 @import "../scrollbar/scrollbar";
 
-
-
 .invitations-list {
-  //border: 1px solid red;
-  // padding: 20px 5px;
   list-style-type: none;
-  //height: 340px;
-
-  max-height: 85vh;
   overflow: hidden;
-  // @extend ._scrollbar;
-
-
   padding: 0 8px;
   width: 358px;
- // height: 700px;
-  
 }
 
 .invitations-list--scrollable {
@@ -26,4 +14,3 @@
   @extend ._scrollbar;
   padding-right: 0px;
 }
-// @include settings-theming.setTheming();

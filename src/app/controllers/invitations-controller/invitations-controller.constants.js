@@ -2,11 +2,16 @@
 
 export const DOM_ELEMENT_ID = {
   list: "invitations-list",
+  headerIndicator: "invitations-header-indicator",
 };
 
 export const DOM_ELEMENT_CLASS = {
   list: "invitations-list",
-  listScrollable: "invitations-list--scrollable",
+  header: "header-toggle-title-container",
+  headerIndicator: "invitations-header-indicator",
 };
 
 
+export const CONTENT = {
+  header: "invitations",
+};

@@ -1,14 +1,7 @@
 "use strict";
-
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-
-import { DOM_ELEMENT_ID,  DOM_ELEMENT_CLASS } from "./invitations-list.constants";
+import { ElementHandler } from "HTML_DOM_Manager";
+import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./invitations-list.constants";
 import { InvitationListItem } from "./invitation-list-item/invitation-list-item";
-
 
 export class InvitationsList {
   #eventListeners = {};
@@ -94,6 +87,16 @@ export class InvitationsList {
     const listItem = this.#InvitationsList.find(item => item.id === invitationId);
     return listItem.remove().then(() => {
       this.#InvitationsList = this.#InvitationsList.filter(item => item.id !== invitationId);
+      this.#setlistContentHeight();
+      return;
+    });
+  }
+
+  addInList(data) {
+    const newInvitation = this.#generateListItem(data);
+    this.#InvitationsList.push(newInvitation);
+    return this.#listElement.then(list => {
+      list.append(newInvitation.generateView());
       this.#setlistContentHeight();
       return;
     });

@@ -28,4 +28,3 @@ export const HEIGHT_CONFIG = {
   initial: 86,
   addition: 10
 };
-
