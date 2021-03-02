@@ -11,8 +11,6 @@ import {
   CONTENT
 } from "./invitations-controller.constants";
 
-
-
 export class InvitationsControllerViewHelper {
 
   static generateHeader(invitationsNumber = 0) {
@@ -44,4 +42,8 @@ export class InvitationsControllerViewHelper {
       container.innerHTML = `(${invitationsNumber.toString()})`;
     }
   }
+
+
+
+
 }
