@@ -1,5 +1,7 @@
 "use strict";
 import { ElementHandler } from "HTML_DOM_Manager";
+import { InvitationAction } from "~/_enums/invitation-action.enum";
+
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS } from "./invitations-list.constants";
 import { InvitationListItem } from "./invitation-list-item/invitation-list-item";
 
@@ -74,10 +76,10 @@ export class InvitationsList {
     this.updateListHeight();
   }
 
-  #onListItemAction(actionType, invitation) {
-    this.#removeFromInvitations(invitation.id).then(() => {
+  #onListItemAction(actionType, id) {
+    this.#removeFromInvitations(id).then(() => {
       if (this.#eventListeners.onInvitationAction) {
-        this.#eventListeners.onInvitationAction(actionType, invitation);
+        this.#eventListeners.onInvitationAction(InvitationAction[actionType], id);
         return;
       }
     });

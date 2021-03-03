@@ -1,6 +1,5 @@
 "use strict";
 import { ElementHandler } from "HTML_DOM_Manager";
-import { InvitationAction } from "~/_enums/invitation-action.enum";
 
 import { Toggle } from "~/components/toggle/toggle";
 import { InvitationsList } from "./invitations-list/invitations-list";
@@ -19,6 +18,12 @@ export class InvitationsController {
     this.#invitations = [...self.onlineConnection.invitations];
 
     //get data from online connection from the app
+  }
+
+  get #contentHeight() {
+    let height = HEIGHT_CONFIG.header;
+    height += this.#ListHandler ? this.#ListHandler.listHeight : HEIGHT_CONFIG.noInvitationMessage;
+    return height;
   }
 
   #setInvitationsList() {
@@ -52,21 +57,6 @@ export class InvitationsController {
     const contentContainer = this.#generateContentContainer();
     fragment.append(header, contentContainer);
     return fragment;
-  }
-
-  generateView() {
-    const toggleContent = this.#generateToggleContent();
-    const toggle = this.#Toggle.generateView(toggleContent);
-    const buttonIndicator = this.#generateButtonIndicator();
-    console.log(toggle);
-    toggle.append(buttonIndicator);
-    return toggle;
-  }
-
-  get #contentHeight() {
-    let height = HEIGHT_CONFIG.header;
-    height += this.#ListHandler ? this.#ListHandler.listHeight : HEIGHT_CONFIG.noInvitationMessage;
-    return height;
   }
 
   #updateToggleHeight() {
@@ -113,23 +103,6 @@ export class InvitationsController {
     this.#onListHeightChange();
   }
 
-  #onToggleChange() {
-    this.#updateButtonIndicator();
-  }
-
-  #onInvitationAction(actionType, id) {
-    this.#removeInvitation(id);
-    console.log("handle invitation online");
-    console.log(actionType);
-    console.log(InvitationAction[actionType]);
-    console.log(id);
-    // console.log(invitation);
-    // console.log(self.onlineConnection.invitations);
-    // console.log(this.#invitations);
-    
-    //this.testupdate();
-  }
-
   #addInvitationInList(invitation) {
     this.#ListHandler.addInList(invitation).then(() => {
       if (this.#Toggle.expanded) {
@@ -140,7 +113,18 @@ export class InvitationsController {
     });
   }
 
-  #onInvitationReceived(invitation) {
+  #onToggleChange() {
+    this.#updateButtonIndicator();
+  }
+
+  #onInvitationAction(actionType, id) {
+    this.#removeInvitation(id);
+    console.log("handle invitation online");
+    console.log(actionType);
+    console.log(id);
+  }
+
+  onInvitationReceived(invitation) {
     this.#invitations.push(invitation);
     this.#updateInvitationIndicators();
 
@@ -156,4 +140,11 @@ export class InvitationsController {
     });
   }
 
+  generateView() {
+    const toggleContent = this.#generateToggleContent();
+    const toggle = this.#Toggle.generateView(toggleContent);
+    const buttonIndicator = this.#generateButtonIndicator();
+    toggle.append(buttonIndicator);
+    return toggle;
+  }
 }
