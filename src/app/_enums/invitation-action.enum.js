@@ -1,8 +1,8 @@
 "use strict";
 
 const InvitationAction = {
-  Accept: "accept",
-  Reject: "reject"
+  Accept: "accept-invitation",
+  Reject: "reject-invitation"
 };
 Object.freeze(InvitationAction);
 

@@ -1,109 +1,158 @@
 "use strict";
-
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-
-
+import { ElementHandler } from "HTML_DOM_Manager";
 import { InvitationAction } from "~/_enums/invitation-action.enum";
-import {
-  DOM_ELEMENT_ID,
-  DOM_ELEMENT_CLASS,
-  CONTENT
-} from "./invitations-controller.constants";
-import {
-  Toggle
-} from "~/components/toggle/toggle";
 
-import {
-  User
-} from "../../_models/user";
-
-
+import { Toggle } from "~/components/toggle/toggle";
 import { InvitationsList } from "./invitations-list/invitations-list";
 
-import { InvitationsControllerViewHelper as ViewHelper } from "./invitations-controller-view-helper";
+import { HEIGHT_CONFIG } from "./invitations-controller.constants";
+import { InvitationsControllerViewHelper as ViewHelper } from "./invitations-controller-view-helper/invitations-controller-view-helper";
 
 export class InvitationsController {
   #Toggle;
-  #InvitationsList;
-
+  #ListHandler;
   #invitations = [];
 
   constructor() {
-    console.log("InvitationsController");
     this.#Toggle = new Toggle("invitations", false, true, false);
-
+    this.#Toggle.onStateChange = this.#onToggleChange.bind(this);
     this.#invitations = [...self.onlineConnection.invitations];
 
-    this.#InvitationsList = new InvitationsList([...self.onlineConnection.invitations], {
-      onBeforeHeightChange: this.#onHeightChange.bind(this),
+    //get data from online connection from the app
+  }
+
+  #setInvitationsList() {
+    this.#ListHandler = new InvitationsList([...this.#invitations], {
+      onBeforeHeightChange: this.#onListHeightChange.bind(this),
       onInvitationAction: this.#onInvitationAction.bind(this)
     });
   }
 
-  generateView() {
-    const fragment = document.createDocumentFragment();
-    const header = ViewHelper.generateHeader(this.#invitations.length);
-    const list = this.#InvitationsList.generateView();
-    fragment.append(header, list);
-    return this.#Toggle.generateView(fragment);
+  #generateContentContainer() {
+    const contentContainer = ViewHelper.generateContainer();
+    if (this.#invitations.length) {
+      this.#setInvitationsList();
+      contentContainer.append(this.#ListHandler.generateView());
+    } else {
+      const noInvitationsMessage = ViewHelper.generateNoInvitationMessage();
+      contentContainer.append(noInvitationsMessage);
+    }
+    return contentContainer;
   }
 
-  #onHeightChange() {
-    return this.#Toggle.updatePanelHeight(this.#InvitationsList.listHeight + 30).then(() => {
-      return this.#InvitationsList.updateListHeight();
+  #generateButtonIndicator() {
+    const buttonIndicator = ViewHelper.generateButtonIndicator(this.#invitations.length);
+    this.#setButtonIndicatorDisplay(buttonIndicator);
+    return buttonIndicator;
+  }
+
+  #generateToggleContent() {
+    const fragment = document.createDocumentFragment();
+    const header = ViewHelper.generateHeader(this.#invitations.length);
+    const contentContainer = this.#generateContentContainer();
+    fragment.append(header, contentContainer);
+    return fragment;
+  }
+
+  generateView() {
+    const toggleContent = this.#generateToggleContent();
+    const toggle = this.#Toggle.generateView(toggleContent);
+    const buttonIndicator = this.#generateButtonIndicator();
+    console.log(toggle);
+    toggle.append(buttonIndicator);
+    return toggle;
+  }
+
+  get #contentHeight() {
+    let height = HEIGHT_CONFIG.header;
+    height += this.#ListHandler ? this.#ListHandler.listHeight : HEIGHT_CONFIG.noInvitationMessage;
+    return height;
+  }
+
+  #updateToggleHeight() {
+    if (this.#Toggle.expanded) {
+      return this.#Toggle.updatePanelHeight(this.#contentHeight);
+    }
+    return Promise.resolve();
+  }
+
+  #onListHeightChange() {
+    return this.#updateToggleHeight().then(() => {
+      return this.#ListHandler.updateListHeight();
     });
   }
 
-  #onInvitationAction(actionType, invitation) {
-    this.#onHeightChange();
-    this.#invitations = this.#invitations.filter(currentInvitation => currentInvitation.id !== invitation.id);
+  #setButtonIndicatorDisplay(buttonIndicator) {
+    this.#Toggle.expanded || !this.#invitations.length
+    ? ElementHandler.hide(buttonIndicator)
+    : ElementHandler.display(buttonIndicator);
+  }
+
+  #updateButtonIndicator() {
+    ViewHelper.updateButtonIndicator(this.#invitations.length).then(buttonIndicator => {
+      this.#setButtonIndicatorDisplay(buttonIndicator);
+    });
+  }
+
+  #updateInvitationIndicators() {
     ViewHelper.updateHeaderIndicator(this.#invitations.length);
+    this.#updateButtonIndicator();
+  }
 
-    console.log("onInvitationAction");
+  #removeInvitation(id) {
+    this.#invitations = this.#invitations.filter(invitation => invitation.id !== id);
+    this.#updateInvitationIndicators();
+
+    if (!this.#invitations.length) {
+      this.#ListHandler = undefined;
+      return ViewHelper.setNoInvitationsContent().then(() => {
+        return this.#updateToggleHeight();
+      });
+    }
+
+    this.#onListHeightChange();
+  }
+
+  #onToggleChange() {
+    this.#updateButtonIndicator();
+  }
+
+  #onInvitationAction(actionType, id) {
+    this.#removeInvitation(id);
+    console.log("handle invitation online");
     console.log(actionType);
-    console.log(invitation);
-
-    console.log(self.onlineConnection.invitations);
-
+    console.log(InvitationAction[actionType]);
+    console.log(id);
+    // console.log(invitation);
+    // console.log(self.onlineConnection.invitations);
+    // console.log(this.#invitations);
     
-    console.log(this.#invitations);
-    this.testNewInvitationArrival();
+    //this.testupdate();
   }
 
-
-
-
-  // 
-  testNewInvitationArrival() {
-    const testinv = JSON.parse(JSON.stringify(this.#invitations[1]));
-    testinv.id = "testId";
-
-    console.log(testinv);
-    setTimeout(() => {
-
-      this.#onInvitationReceived(testinv);
-    }, 1000);
-
+  #addInvitationInList(invitation) {
+    this.#ListHandler.addInList(invitation).then(() => {
+      if (this.#Toggle.expanded) {
+        this.#onListHeightChange();
+      } else {
+        this.#ListHandler.updateListHeight();
+      }
+    });
   }
-
 
   #onInvitationReceived(invitation) {
     this.#invitations.push(invitation);
-    ViewHelper.updateHeaderIndicator(this.#invitations.length);
+    this.#updateInvitationIndicators();
 
+    if (this.#ListHandler) {
+      this.#addInvitationInList(invitation);
+      return;
+    }
 
-    this.#InvitationsList.addInList(invitation).then(() => {
-      if (this.#Toggle.expanded) {
-        this.#onHeightChange();
-      } else {
-        this.#InvitationsList.updateListHeight();
-      }
+    this.#setInvitationsList();
+    return ViewHelper.getClearedContainer().then(container => {
+      container.append(this.#ListHandler.generateView());
+      return this.#updateToggleHeight();
     });
   }
 

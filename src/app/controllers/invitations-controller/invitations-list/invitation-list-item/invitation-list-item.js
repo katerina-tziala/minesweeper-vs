@@ -41,8 +41,9 @@ export class InvitationListItem {
 
   #generateInvitationActions() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.actions]);
-    Object.values(InvitationAction).forEach(actionType => {
-      const button = ElementGenerator.generateButton(ACTION_BUTTONS[actionType], (event) => {
+    Object.keys(InvitationAction).forEach(actionType => {
+      const buttonParams = ACTION_BUTTONS[actionType.toLowerCase()];
+      const button = ElementGenerator.generateButton(buttonParams, (event) => {
         preventInteraction(event);
         this.#onInvitationAction(actionType);
       });
@@ -84,7 +85,7 @@ export class InvitationListItem {
 
   #onInvitationAction(actionType) {
     if (this.#eventListeners.onAction) {
-      this.#eventListeners.onAction(actionType, this.#invitation);
+      this.#eventListeners.onAction(actionType, this.id);
     }
   }
 

@@ -25,6 +25,6 @@ export const ACTION_BUTTONS = {
 };
 
 export const HEIGHT_CONFIG = {
-  initial: 86,
+  initial: 83,
   addition: 10
 };

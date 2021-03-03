@@ -13,4 +13,5 @@ export const TYPOGRAPHY = {
   commaAndSpace: ", ",
   tripleHashtag: "###",
   fullstop: ".",
+  ellipsis: "...",
 };

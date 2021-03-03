@@ -196,6 +196,14 @@ export class OnlineConnection {
     this.sendData("invite-and-open-room", data);
   }
 
+  sendInvitationResponse(type, id) {
+    this.#invitations = this.#invitations.filter(invitation => invitation.id !== id);
+    console.log("sendInvitationResponse");
+    console.log(type, id);
+    
+    this.sendData(type, { id });
+  }
+
   disconnect(user) {
     console.log("disconnect");
     console.log(user);

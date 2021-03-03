@@ -14,7 +14,8 @@
 
 @import "../../components/settings/settings";
 @import "../../components/online-indicator/online-indicator";
-@import "../../components/invitations-list/invitations-list";
+
+@import "../../components/invitations-controller/invitations-controller";
 
 .header {
   @extend %start-center;
@@ -88,10 +89,7 @@
   height: 30px;
 }
 
-.invitations-header-indicator {
-  display: inline-block;
-  padding: 0 5px;
-}
+
 
 
 
