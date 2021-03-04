@@ -17,7 +17,7 @@ import { LEVEL_ACTIONS, MISS_TURNS, MOVE_DURATIONS, BOT_NAME } from "./bot-playe
 export class BotPlayer extends Player {
 
   constructor() {
-    super("minesweeper-bot", "minesweeper-bot");
+    super("minesweeper-bot", "minesweeper-bot", true);
     this.mode = BotMode.Easy;
     this.isBot = true;
     this.setBotName();

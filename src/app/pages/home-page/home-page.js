@@ -2,18 +2,15 @@
 import "../../../styles/pages/_home.scss";
 import { Page } from "../page";
 import { GameType } from "GameEnums";
-import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
 import { Menu } from "./menu/menu";
 
 export class HomePage extends Page {
   #Menu;
-  constructor(onPageChange, onMenuOptionSelected) {
+  #onSelectOption;
+  
+  constructor(onPageChange) {
     super(onPageChange);
-    this.#Menu = new Menu(this.#gameMenuOptions, onMenuOptionSelected);
-    this.ActionsControlller = new HeaderActionsControllerUser(true, {
-      "onLogout": this.onLogout.bind(this)
-    });
-    this.init();
+    this.#Menu = new Menu(this.#gameMenuOptions, this.#onMenuOptionSelection.bind(this));
   }
 
   get #gameMenuOptions() {
@@ -27,6 +24,17 @@ export class HomePage extends Page {
 
   #updateOnlineOptionState() {
     this.#Menu.toggleOptionState(GameType.Online, !self.onlineConnection.live);
+  }
+
+  #onMenuOptionSelection(selectedOption) {
+    if (this.#onSelectOption) {
+      this.#onSelectOption(selectedOption);
+    }
+  }
+
+  init(onSelectOption) {
+    this.#onSelectOption = onSelectOption;
+    super.init();
   }
 
   renderPage(mainContainer) {
@@ -43,6 +51,6 @@ export class HomePage extends Page {
   onUserUpdate() {
     console.log("onUserUpdate in home page");
     this.#updateOnlineOptionState();
-    this.ActionsControlller.setOnlineIndicatorState();
+    //this.ActionsControlller.setOnlineIndicatorState();
   }
 }

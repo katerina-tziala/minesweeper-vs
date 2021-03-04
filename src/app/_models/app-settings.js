@@ -29,4 +29,5 @@ export class AppSettingsModel extends AppModel {
   saveLocally() {
     LocalStorageHelper.appSettings = this;
   }
+
 }

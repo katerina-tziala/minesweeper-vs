@@ -24,15 +24,8 @@ export class LobbyPage extends Page {
   #GameWizard;
   #OnlineUsersController;
 
-  constructor(onPageChange, onPlayGame) {
+  constructor(onPageChange) {
     super(onPageChange);
-    self.onlineConnection.onRoomOpened = onPlayGame;
-
-    
-    this.ActionsControlller = new HeaderActionsControllerUser(true, {
-      "onLogout": this.onLogout.bind(this)
-    });
-    this.init();
   }
 
   init() {
@@ -54,11 +47,6 @@ export class LobbyPage extends Page {
     const button = LinkInvitationButton.generate(this.#renderWizard.bind(this));
     container.append(button);
     return container;
-  }
-
-  renderPage(mainContainer) {
-    mainContainer.append(this.#pageContent);
-    this.hideLoader();
   }
 
   #renderWizard(user) {
@@ -94,12 +82,19 @@ export class LobbyPage extends Page {
   #sendInvitation(gameParams) {
     const recipientId = gameParams.players[1].id;
     const gameProperties = gameParams;
-    self.onlineConnection.sendInvitation({ recipientId, gameProperties });
+    if (self.onlineConnection) {
+      self.onlineConnection.sendInvitation({ recipientId, gameProperties });
+    }
   }
 
   #generateGameLink(gameParams) {
     console.log("#generateGameLink");
     console.log(gameParams);
+  }
+
+  renderPage(mainContainer) {
+    mainContainer.append(this.#pageContent);
+    this.hideLoader();
   }
 
   onConnectionError(errorType) {

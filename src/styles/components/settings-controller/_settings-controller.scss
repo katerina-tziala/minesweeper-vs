@@ -1,11 +1,14 @@
-@use "sass:list";
+
 @use "../../theming/theming";
 @use "./settings-controller-theming";
+@import "../toggle/toggle";
 @import "../switcher/switcher";
 @import "../dropdown-select/dropdown-select";
 
 .settings {
   position: relative;
+  border: 1px solid red!important;
+  margin-left: 15px;
 }
 
 .settings-panel {
@@ -48,23 +51,6 @@
   @include circle(22px);
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  @include settings-controller-theming.applySettingsControllerThemeStyle(
-    "light"
-  );
-  .game-color-option {
-    border: 1px solid theming.getThemeColor("light", "theme-secondary-intense");
-  }
-  
-}
 
-.theme-dark {
-  @include settings-controller-theming.applySettingsControllerThemeStyle(
-    "dark"
-  );
-  .game-color-option {
-    border: 1px solid theming.getThemeColor("dark", "theme-secondary-intense");
-    
-  }
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include settings-controller-theming.setTheming();

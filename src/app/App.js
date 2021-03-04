@@ -14,27 +14,61 @@ import { PageType } from "./_enums/page-type.enum";
 import { GameType } from "GameEnums";
 import { CONFIRMATION } from "./components/modal/modal.constants";
 import { Page } from "./pages/page";
-import { setAppTheme } from "~/_utils/theming";
+// import { setAppTheme } from "~/_utils/theming";
+import { PageLoader } from "./pages/page-loader"; ''
 import { AppSettingsModel } from "~/_models/app-settings";
+import { SettingsController } from "./controllers/settings-controller/settings-controller";
 
 export class App {
   #page;
+  #pageController;
+  #settingsController;
+
   constructor() {
-    this.interfaceController = undefined;
-    this.#initAppSettings();
+
+    this.#settingsController = new SettingsController();
+    this.#pageController = undefined;
+    // this.#initAppSettings();
     //document event listeners
     self.user = undefined;
     self.modal = new Modal();
     self.onlineConnection = new OnlineConnection();
-    //this.#onPageInit();
+    self.onlineConnection.onUserUpdate = this.#onUserUpdate.bind(this);
+    self.onlineConnection.onError = this.#onConnectionError.bind(this);
+    self.onlineConnection.onRoomOpened = this.#onPlayGame.bind(this);
     self.user = new User("kate", "katerina");
-    this.#onHomeNavigation();
+    this.#onPageInit();
+    // 
+    // this.#onJoinNavigation();
   }
 
-  #initAppSettings() {
-    const settings = new AppSettingsModel();
-    settings.saveLocally();
-    setAppTheme();
+
+  #onUserUpdate() {
+    console.log("onUserUpdate");
+  }
+
+  #onConnectionError(errorType) {
+    console.log("onConnectionError from app");
+    if (this.#pageController) {
+      this.#pageController.onConnectionError(errorType);
+    }
+  }
+
+  #previouslyUsedUsername() {
+    const username = LocalStorageHelper.retrieve("username");
+    if (username) {
+      self.onlineConnection.establishConnection(username);
+    }
+    return Promise.resolve(username);
+  }
+
+  #loadInterfaceController(pageType) {
+    this.#page = pageType;
+    return PageLoader.load(this.#page, this.#onPageInit.bind(this)).then(pageController => {
+      this.#pageController = pageController;
+      this.#settingsController.setGameSettingsDisplay(this.#pageController.gameSettingsAllowed);
+      return;
+    });
   }
 
   #onPageInit() {
@@ -45,24 +79,15 @@ export class App {
     this.#onHomeNavigation();
   }
 
-  #loadPage(interfaceName) {
-    return import(`./pages/${interfaceName}-page/${interfaceName}-page`);
-  }
-
   #onJoinNavigation() {
-    this.#loadPage(PageType.Join).then(({ JoinPage }) => {
-      this.interfaceController = new JoinPage(this.#onPageInit.bind(this));
-      this.#page = PageType.Join;
-    });
+    this.#loadInterfaceController(PageType.JoinPage, this.#onPageInit.bind(this)).then(() => {
+      return this.#previouslyUsedUsername();
+    }).then(username => this.interfaceController.init(username));
   }
 
   #onHomeNavigation() {
-    this.#loadPage(PageType.Home).then(({ HomePage }) => {
-      this.interfaceController = new HomePage(
-        this.#onPageInit.bind(this),
-        this.#onGameTypeSelected.bind(this),
-      );
-      this.#page = PageType.Home;
+    this.#loadInterfaceController(PageType.HomePage).then(() => {
+      this.#pageController.init(this.#onGameTypeSelected.bind(this));
     });
   }
 
@@ -74,36 +99,23 @@ export class App {
     this.#onGameSetUpNavigation(gameType);
   }
 
+  #onLobbyNavigation() {
+    this.#loadInterfaceController(PageType.LobbyPage).then(() => {
+      this.#pageController.init();
+    });
+  }
+
   #onGameSetUpNavigation(gameType) {
-    console.log("to game set up from page:", this.#page);
-    this.#loadPage(PageType.GameSetup).then(({ GameSetupPage }) => {
-      this.interfaceController = new GameSetupPage(
-        this.#onPageInit.bind(this),
-        this.#onPlayGame.bind(this),
-        this.#page,
-        gameType);
-      this.#page = PageType.GameSetup;
+    this.#loadInterfaceController(PageType.GameSetupPage).then(() => {
+      this.#pageController.init(gameType, this.#onPlayGame.bind(this));
     });
   }
 
   #onPlayGame(gameParams) {
     console.log(JSON.stringify(gameParams));
-    this.#loadPage(PageType.Game).then(({ GamePage }) => {
-      this.interfaceController = new GamePage(this.#onPageInit.bind(this),
-        gameParams,
-        this.#onGameSetUpNavigation.bind(this));
-      this.#page = PageType.Game;
+    this.#loadInterfaceController(PageType.GamePage).then(() => {
+      this.#pageController.init(gameParams, this.#onGameSetUpNavigation.bind(this));
     });
   }
 
-
-  #onLobbyNavigation() {
-    this.#loadPage(PageType.Lobby).then(({ LobbyPage }) => {
-      this.interfaceController = new LobbyPage(
-        this.#onPageInit.bind(this),
-        this.#onPlayGame.bind(this),
-      );
-      this.#page = PageType.Lobby;
-    });
-  }
 }

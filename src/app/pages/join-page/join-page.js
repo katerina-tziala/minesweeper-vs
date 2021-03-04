@@ -7,7 +7,7 @@ import { User } from "~/_models/user";
 import { FormUsername } from "~/components/form/form-username/form-username";
 import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
 import { CONFIRMATION } from "~/components/modal/modal.constants";
-import { HeaderActionsController } from "~/controllers/header-actions-controller/header-actions-controller";
+
 import {
   DOM_ELEMENT_ID,
   DOM_ELEMENT_CLASS,
@@ -19,23 +19,19 @@ export class JoinPage extends Page {
 
   constructor(onPageChange) {
     super(onPageChange);
-    this.ActionsControlller = new HeaderActionsController();
-    this.#previouslyUsedUsername().then(username => {
-      this.#loginForm = new FormUsername(this.#login.bind(this), username);
-      this.init();
-    });
   }
 
-  #previouslyUsedUsername() {
-    const username = LocalStorageHelper.retrieve("username");
-    if (username) {
-      self.onlineConnection.establishConnection(username);
-    }
-    return Promise.resolve(username);
+  get gameSettingsAllowed() {
+    return false;
   }
 
   get #loginContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.loginContainer);
+  }
+
+  init(username) {
+    this.#loginForm = new FormUsername(this.#login.bind(this), username);
+    super.init();
   }
 
   #renderLoginForm() {
@@ -61,7 +57,8 @@ export class JoinPage extends Page {
   }
 
   #hideFormLoader() {
-    return this.#loginContainer.then((container) => IconLoader.remove(container));
+    return this.#loginContainer.then((container) => IconLoader.remove(container))
+    .catch(() => Promise.resolve());
   }
 
   #checkForOfflineJoining() {
@@ -75,7 +72,7 @@ export class JoinPage extends Page {
   }
 
   #saveUsernameLocallyAndNavigate() {
-  //  LocalStorageHelper.save("username", self.user.username);
+    LocalStorageHelper.save("username", self.user.username);
     this.onPageChange();
   }
 
@@ -87,7 +84,7 @@ export class JoinPage extends Page {
   onConnectionError(errorType) {
     this.#hideFormLoader();
     if (errorType && self.modal) {
-     this.#checkForOfflineJoining();
+      this.#checkForOfflineJoining();
     }
   }
 

@@ -3,22 +3,12 @@ import "../../../styles/pages/_game-setup.scss";
 import { enumKey } from "~/_utils/utils";
 import { Page } from "../page";
 import { GameType } from "GameEnums";
-import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
-
 export class GameSetupPage extends Page {
-  #originPage;
-  #gameType;
   #GameWizard;
-
-  constructor(onPageChange, onPlayGame, originPage, gameType) {
+  #gameType;
+  #onPlayGame;
+  constructor(onPageChange) {
     super(onPageChange);
-    this.#originPage = originPage;
-    this.#gameType = gameType;
-    this.onPlayGame = onPlayGame;
-    this.ActionsControlller = new HeaderActionsControllerUser(true, {
-      "onLogout": this.onLogout.bind(this)
-    });
-    this.init();
   }
 
   get #wizardName() {
@@ -28,13 +18,19 @@ export class GameSetupPage extends Page {
   #loadWizard() {
     const wizardName = this.#wizardName;
     return import("GameWizard").then((module) => {
-      this.#GameWizard = new module[wizardName](this.#onCloseWizard.bind(this), this.onPlayGame.bind(this));
+      this.#GameWizard = new module[wizardName](this.#onCloseWizard.bind(this), this.#onGeneratedGameSetUp.bind(this));
       return this.#GameWizard.generateView();
     });
   }
 
   #onCloseWizard() {
-    this.onPageChange(this.#originPage);
+    this.onPageChange();
+  }
+
+  #onGeneratedGameSetUp(gameParams) {
+    if (this.#onPlayGame) {
+      this.#onPlayGame(gameParams)
+    }
   }
 
   renderPage(mainContainer) {
@@ -42,10 +38,14 @@ export class GameSetupPage extends Page {
       mainContainer.append(wizard);
       this.hideLoader();
       this.#GameWizard.expandWizard();
-      console.log(this.#originPage);
     }).catch(() => {
       console.log("error on loading");
     });
   }
 
+  init(gameType, onPlayGame) {
+    this.#gameType = gameType;
+    this.#onPlayGame = onPlayGame;
+    super.init();
+  }
 }

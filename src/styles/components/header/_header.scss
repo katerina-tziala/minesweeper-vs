@@ -9,12 +9,10 @@
 
 @import "../button/button";
 
-@import "../toggle/toggle";
-
+// @import "../toggle/toggle";
 
 @import "../../components/settings/settings";
 @import "../../components/online-indicator/online-indicator";
-
 @import "../../components/invitations-controller/invitations-controller";
 
 .header {
@@ -22,11 +20,20 @@
   height: 46px;
   width: 100%;
   padding: 0 15px;
+}
 
-  .toggle {
-    margin-left: 15px;
-  }
+.header-title {
+  font-weight: 500;
+  flex-grow: 1;
+}
 
+
+
+
+
+.header-content {
+  // border: 2px solid red;
+  // min-width: 300px;
   .toggle-btn--invitations {
     @extend .header-btn;
     @include afterIcon("envelope");
@@ -36,11 +43,6 @@
     @extend .header-btn;
     @include afterIcon("settings");
   }
-}
-
-.header-title {
-  font-weight: 500;
-  flex-grow: 1;
 }
 
 .header-btn {
@@ -89,11 +91,6 @@
   height: 30px;
 }
 
-
-
-
-
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .theme-light {
@@ -105,7 +102,6 @@
     $button-color: theming.getThemeColor("light", "header-color-intense");
     $button-color-darker: color.adjust($button-color, $lightness: -20%);
 
-    
     .header-btn {
       $base: (
         color: color.adjust($button-color, $lightness: -20%),
@@ -129,7 +125,6 @@
     $button-color: theming.getThemeColor("dark", "header-color-intense");
     $button-color-darker: color.adjust($button-color, $lightness: -20%);
 
-    
     .header-btn {
       $base: (
         color: color.adjust($button-color, $lightness: -20%),
@@ -142,6 +137,4 @@
 
     @include toggle-theming.setButtonThemeStyles($button-color);
   }
-
-  
 }

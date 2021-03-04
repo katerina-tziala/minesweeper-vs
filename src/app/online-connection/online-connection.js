@@ -75,9 +75,6 @@ export class OnlineConnection {
     return new User(userData.id, userData.username, userData.gameRoomId);
   }
 
-
-
-
   establishConnection(username) {
     this.#webSocket = new WebSocket(
       CONNECTION_CONFIG.url,

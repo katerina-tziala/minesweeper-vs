@@ -50,17 +50,9 @@ export class Toggle {
     return panel;
   }
 
-  generateView(content) {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#id);
-    const button = this.button.generateView();
-    const panel = this.#generatePanel(content);
-    container.append(button, panel);
-    return container;
-  }
-
   #onToggleButtonChange() {
     this.expanded = !this.expanded;
-    this.expanded ? this.#expand() : this.#collapse();
+    this.expanded ? this.#expand() : this.collapse();
     if (this.onStateChange) {
       this.onStateChange(this.expanded);
     }
@@ -91,11 +83,11 @@ export class Toggle {
     });
   }
 
-  #collapse() {
+  collapse() {
     this.expanded = false;
     this.#removeOutsideClick();
     this.button.updateToggleState(this.expanded);
-    this.panel.updateHeight(0);
+    return this.panel.updateHeight(0);
   }
 
   #detectOutsideClick() {
@@ -114,8 +106,16 @@ export class Toggle {
 
   #collapseOnOutsideClick(event) {
     if (this.expanded && this.panel && !this.panel.clickedInside(event)) {
-      this.#collapse();
+      this.collapse();
     }
   }
 
+
+  generateView(content) {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], this.#id);
+    const button = this.button.generateView();
+    const panel = this.#generatePanel(content);
+    container.append(button, panel);
+    return container;
+  }
 }

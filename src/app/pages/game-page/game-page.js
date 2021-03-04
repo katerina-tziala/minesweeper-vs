@@ -2,7 +2,6 @@
 import "../../../styles/pages/_game.scss";
 import { Page } from "../page";
 import { GameAction } from "GameEnums";
-import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
 import { GameFactory } from "../../game/game-factory";
 
 export class GamePage extends Page {
@@ -10,14 +9,12 @@ export class GamePage extends Page {
   #Game;
   #onGameSetUpNavigation;
 
-  constructor(onPageChange, gameParams, onGameSetUpNavigation) {
+  constructor(onPageChange) {
     super(onPageChange);
-    this.#gameParams = gameParams;
-    this.#onGameSetUpNavigation = onGameSetUpNavigation;
-    this.ActionsControlller = new HeaderActionsControllerUser(false, {
-      "onLogout": this.onLogout.bind(this)
-    });
-    this.init();
+  }
+
+  get gameSettingsAllowed() {
+    return false;
   }
 
   #onGameLoaded() {
@@ -27,18 +24,6 @@ export class GamePage extends Page {
         onBoardMenuAction: this.#onBoardMenuAction.bind(this),
       };
       return;
-    });
-  }
-
-  renderPage(mainContainer) {
-    this.#onGameLoaded().then(() => {
-      return this.#Game.generateView();
-    }).then(gameView => {
-      mainContainer.append(gameView);
-      this.hideLoader();
-      this.#Game.start();
-    }).catch(() => {
-      console.log("error on loading");
     });
   }
 
@@ -65,15 +50,32 @@ export class GamePage extends Page {
     this.#onOfflineBoardMenuAction(actionType);
   }
 
-  onLogout() {
-    this.#Game.pause();
-    if (this.#Game.isOnline && self.onlineConnection.live) {
-      console.log("onLogout from  online game");
-      console.log(self.user);
-      console.log(actionType);
-      return;
-    }
-    super.onLogout();
+  // onLogout() {
+  //   this.#Game.pause();
+  //   if (this.#Game.isOnline && self.onlineConnection.live) {
+  //     console.log("onLogout from  online game");
+  //     console.log(self.user);
+  //     console.log(actionType);
+  //     return;
+  //   }
+  //   super.onLogout();
+  // }
+  init(gameParams, onGameSetUpNavigation) {
+    this.#gameParams = gameParams;
+    this.#onGameSetUpNavigation = onGameSetUpNavigation;
+    super.init();
+  }
+
+  renderPage(mainContainer) {
+    this.#onGameLoaded().then(() => {
+      return this.#Game.generateView();
+    }).then(gameView => {
+      mainContainer.append(gameView);
+      this.hideLoader();
+      this.#Game.start();
+    }).catch(() => {
+      console.log("error on loading");
+    });
   }
 
   onConnectionError(errorType) {

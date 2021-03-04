@@ -1,4 +1,5 @@
 @use "./invitations-controller-theming";
+@import "../toggle/toggle";
 @import "../invitations-list/invitations-list";
 
 .invitations__header-indicator {
