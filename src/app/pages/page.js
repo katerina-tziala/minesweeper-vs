@@ -7,9 +7,6 @@ export class Page {
   #onPageChange;
 
   constructor(onPageChange) {
-    // self.onlineConnection.onUserUpdate = this.onUserUpdate.bind(this);
-    // self.onlineConnection.onError = this.onConnectionError.bind(this);
-
     this.#onPageChange = onPageChange;
     this.displayLoader();
   }
@@ -49,20 +46,6 @@ export class Page {
     mainContainer.append(fragment);
   }
 
-  // onLogout() {
-  //   console.log("onLogout from page");
-  //   console.log(self.user);
-  //   console.log(self.onlineConnection.live);
-  //   console.log("on connection loggout");
-  //   //   if (this.page === PageType.Game) {
-  //   //     console.log("loggout in game?");
-  //   //     return;
-  //   //   }
-  //   LocalStorageHelper.remove("username");
-  //   self.user = undefined;
-  //   this.onPageChange();
-  // }
-
   onConnectionError(errorType) {
     console.log("onConnectionError from page");
     console.log(errorType);
@@ -79,6 +62,9 @@ export class Page {
     }
   }
 
+  onDestroy() {
+    //this.#onPageChange = undefined;
+  }
 
 
 }

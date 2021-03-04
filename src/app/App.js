@@ -19,16 +19,20 @@ import { PageLoader } from "./pages/page-loader"; ''
 import { AppSettingsModel } from "~/_models/app-settings";
 import { SettingsController } from "./controllers/settings-controller/settings-controller";
 
+import { LoggoutButton } from "./components/loggout-button/loggout-button";
+
 export class App {
   #page;
   #pageController;
   #settingsController;
 
   constructor() {
-
     this.#settingsController = new SettingsController();
+
     this.#pageController = undefined;
-    // this.#initAppSettings();
+
+
+
     //document event listeners
     self.user = undefined;
     self.modal = new Modal();
@@ -36,6 +40,7 @@ export class App {
     self.onlineConnection.onUserUpdate = this.#onUserUpdate.bind(this);
     self.onlineConnection.onError = this.#onConnectionError.bind(this);
     self.onlineConnection.onRoomOpened = this.#onPlayGame.bind(this);
+
     self.user = new User("kate", "katerina");
     this.#onPageInit();
     // 
@@ -53,6 +58,23 @@ export class App {
       this.#pageController.onConnectionError(errorType);
     }
   }
+
+  #onLoggout() {
+    console.log("onLoggout");
+    if (this.#pageController) {
+      this.#pageController.onDestroy();
+    }
+
+    if (self.onlineConnection.live) {
+      console.log("on connection loggout");
+      return;
+    }
+    LocalStorageHelper.remove("username");
+    self.user = undefined;
+    this.#pageController = undefined;
+    this.#onPageInit();
+  }
+
 
   #previouslyUsedUsername() {
     const username = LocalStorageHelper.retrieve("username");
@@ -73,16 +95,19 @@ export class App {
 
   #onPageInit() {
     if (!self.user) {
+      LoggoutButton.remove();
       this.#onJoinNavigation();
       return;
     }
+
+    LoggoutButton.generate(this.#onLoggout.bind(this));
     this.#onHomeNavigation();
   }
 
   #onJoinNavigation() {
     this.#loadInterfaceController(PageType.JoinPage, this.#onPageInit.bind(this)).then(() => {
       return this.#previouslyUsedUsername();
-    }).then(username => this.interfaceController.init(username));
+    }).then(username => this.#pageController.init(username));
   }
 
   #onHomeNavigation() {

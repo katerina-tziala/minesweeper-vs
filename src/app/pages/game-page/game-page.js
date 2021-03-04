@@ -50,16 +50,6 @@ export class GamePage extends Page {
     this.#onOfflineBoardMenuAction(actionType);
   }
 
-  // onLogout() {
-  //   this.#Game.pause();
-  //   if (this.#Game.isOnline && self.onlineConnection.live) {
-  //     console.log("onLogout from  online game");
-  //     console.log(self.user);
-  //     console.log(actionType);
-  //     return;
-  //   }
-  //   super.onLogout();
-  // }
   init(gameParams, onGameSetUpNavigation) {
     this.#gameParams = gameParams;
     this.#onGameSetUpNavigation = onGameSetUpNavigation;
@@ -86,6 +76,14 @@ export class GamePage extends Page {
 
   onUserUpdate() {
     console.log("onUserUpdate from page");
+  }
+
+  onDestroy() {
+    this.#Game.pause();
+    this.#gameParams = undefined;
+    this.#Game = undefined;
+    this.#onGameSetUpNavigation = undefined;
+    super.onDestroy();
   }
 
 }

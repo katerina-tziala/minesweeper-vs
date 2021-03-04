@@ -51,6 +51,11 @@ export class HomePage extends Page {
   onUserUpdate() {
     console.log("onUserUpdate in home page");
     this.#updateOnlineOptionState();
-    //this.ActionsControlller.setOnlineIndicatorState();
+  }
+
+  onDestroy() {
+    this.#Menu = undefined;
+    this.#onSelectOption = undefined;
+    super.onDestroy();
   }
 }

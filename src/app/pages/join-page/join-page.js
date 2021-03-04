@@ -94,4 +94,8 @@ export class JoinPage extends Page {
     }
   }
 
+  onDestroy() {
+    this.#loginForm = undefined;
+    super.onDestroy();
+  }
 }

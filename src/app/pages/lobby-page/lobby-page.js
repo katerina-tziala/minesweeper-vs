@@ -6,8 +6,6 @@ import { ElementGenerator } from "HTML_DOM_Manager";
 import { LocalStorageHelper } from "~/_utils/local-storage-helper";
 
 import { Page } from "../page";
-import { HeaderActionsControllerUser } from "~/controllers/header-actions-controller/header-actions-controller-user";
-
 
 import {
   DOM_ELEMENT_CLASS
@@ -107,4 +105,9 @@ export class LobbyPage extends Page {
     console.log("onUserUpdate in lobby page");
   }
 
+  onDestroy() {
+    this.#GameWizard = undefined;
+    this.#OnlineUsersController = undefined;
+    super.onDestroy();
+  }
 }

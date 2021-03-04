@@ -27,13 +27,10 @@
   flex-grow: 1;
 }
 
-
-
-
-
 .header-content {
-  // border: 2px solid red;
-  // min-width: 300px;
+  @extend %center-center;
+
+
   .toggle-btn--invitations {
     @extend .header-btn;
     @include afterIcon("envelope");
@@ -56,6 +53,7 @@
 
   &.header-btn--logout {
     @include afterIcon("loggout");
+    margin-left: 15px;
   }
 
   &.header-btn--home {

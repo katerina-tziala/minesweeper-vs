@@ -7,6 +7,7 @@ export class GameSetupPage extends Page {
   #GameWizard;
   #gameType;
   #onPlayGame;
+
   constructor(onPageChange) {
     super(onPageChange);
   }
@@ -47,5 +48,12 @@ export class GameSetupPage extends Page {
     this.#gameType = gameType;
     this.#onPlayGame = onPlayGame;
     super.init();
+  }
+
+  onDestroy() {
+    this.#GameWizard = undefined;
+    this.#gameType = undefined;
+    this.#onPlayGame = undefined;
+    super.onDestroy();
   }
 }
