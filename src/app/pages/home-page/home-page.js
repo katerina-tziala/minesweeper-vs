@@ -6,8 +6,7 @@ import { Menu } from "./menu/menu";
 
 export class HomePage extends Page {
   #Menu;
-  #onSelectOption;
-  
+
   constructor(onPageChange) {
     super(onPageChange);
     this.#Menu = new Menu(this.#gameMenuOptions, this.#onMenuOptionSelection.bind(this));
@@ -27,14 +26,7 @@ export class HomePage extends Page {
   }
 
   #onMenuOptionSelection(selectedOption) {
-    if (this.#onSelectOption) {
-      this.#onSelectOption(selectedOption);
-    }
-  }
-
-  init(onSelectOption) {
-    this.#onSelectOption = onSelectOption;
-    super.init();
+    this.onPageChange(selectedOption);
   }
 
   renderPage(mainContainer) {
@@ -55,7 +47,6 @@ export class HomePage extends Page {
 
   onDestroy() {
     this.#Menu = undefined;
-    this.#onSelectOption = undefined;
     super.onDestroy();
   }
 }

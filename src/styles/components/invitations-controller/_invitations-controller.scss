@@ -2,6 +2,10 @@
 @import "../toggle/toggle";
 @import "../invitations-list/invitations-list";
 
+// .invitations {
+//   height: 28px;
+// }
+
 .invitations__header-indicator {
   display: inline-block;
   padding: 0 5px;
@@ -29,7 +33,6 @@
   line-height: 16px;
   font-size: 10px;
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @include invitations-controller-theming.setTheming();

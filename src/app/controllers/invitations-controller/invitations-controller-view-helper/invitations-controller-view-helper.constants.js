@@ -1,6 +1,7 @@
 "use strict";
 
 export const DOM_ELEMENT_ID = {
+  invitations: "invitations",
   container: "invitations-controller__container",
   headerIndicator: "invitations__header-indicator",
   buttonIndicator: "invitations__button-indicator"

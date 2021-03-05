@@ -7,10 +7,10 @@ export class OnlineIndicatorController {
   #numberOfPeers = 0;
 
   constructor() {
-    this.#init();
+    this.init();
   }
 
-  #init() {
+  #initState() {
     this.#live = self.onlineConnection ? self.onlineConnection.live : false;
     this.#numberOfPeers = self.onlineConnection ? self.onlineConnection.peers.length : 0;
   }
@@ -31,27 +31,37 @@ export class OnlineIndicatorController {
     return this.#live ? this.#generatedIcon : this.#generatedButton;
   }
 
-  get #container() {
-    return ElementHandler.getByID(DOM_ELEMENT_ID.container);
-  }
-
-  generateView() {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_ID.container);
-    container.append(this.#connectedState);
-    return container;
+  get #initializedContainer() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.container).then(container => {
+      ElementHandler.clearContent(container);
+      return container;
+    });
   }
 
   #onConnect() {
     self.onlineConnection.establishConnection(self.user.username);
   }
 
+  init() {
+    this.#initState();
+    return this.#initializedContainer.then(container => {
+      container.append(this.#connectedState);
+    });
+  }
+
   updateState() {
-    this.#init();
-    return this.#container.then(container => {
-      ElementHandler.clearContent(container);
+    this.#initState();
+    return this.#initializedContainer.then(container => {
       container.append(this.#connectedState);
       return;
     });
   }
 
+  onDestroy() {
+    return this.#initializedContainer.then(() => {
+      this.#live = false
+      this.#numberOfPeers = 0;
+      return;
+    });
+  }
 }

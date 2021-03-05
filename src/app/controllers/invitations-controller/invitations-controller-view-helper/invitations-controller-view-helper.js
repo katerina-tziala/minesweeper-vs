@@ -77,7 +77,7 @@ export class InvitationsControllerViewHelper {
     return container;
   }
 
-  static getClearedContainer() {
+  static get clearedContainer() {
     return ElementHandler.getByID(DOM_ELEMENT_ID.container).then(container => {
       ElementHandler.clearContent(container);
       return container;
@@ -85,8 +85,7 @@ export class InvitationsControllerViewHelper {
   }
 
   static setNoInvitationsContent() {
-    return InvitationsControllerViewHelper.getClearedContainer()
-    .then(container => {
+    return InvitationsControllerViewHelper.clearedContainer.then(container => {
       container.append(InvitationsControllerViewHelper.generateNoInvitationMessage());
       return;
     });
@@ -96,6 +95,13 @@ export class InvitationsControllerViewHelper {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.noInvitations]);
     container.innerHTML = CONTENT.noInvitations;
     return container;
+  }
+
+  static initParentContainer() {
+    return ElementHandler.getByID(DOM_ELEMENT_ID.invitations).then(container => {
+      ElementHandler.clearContent(container);
+      return container;
+    });
   }
 
 }

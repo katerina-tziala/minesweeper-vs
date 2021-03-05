@@ -30,6 +30,9 @@
 .header-content {
   @extend %center-center;
 
+  >div {
+    height: 30px;
+  }
 
   .toggle-btn--invitations {
     @extend .header-btn;
@@ -42,18 +45,21 @@
   }
 }
 
+#loggout_btn_container {
+  height: 25px;
+}
+
 .header-btn {
   @extend .btn-icon;
   @extend .btn-icon--normal;
   background-color: transparent;
-
+  margin-left: 15px;
   &.header-btn--settings {
     @include afterIcon("settings");
   }
 
   &.header-btn--logout {
     @include afterIcon("loggout");
-    margin-left: 15px;
   }
 
   &.header-btn--home {

@@ -16,8 +16,7 @@ export class InvitationsController {
     this.#Toggle = new Toggle("invitations", false, true, false);
     this.#Toggle.onStateChange = this.#onToggleChange.bind(this);
     this.#invitations = [...self.onlineConnection.invitations];
-
-    //get data from online connection from the app
+    this.init();
   }
 
   get #contentHeight() {
@@ -74,8 +73,8 @@ export class InvitationsController {
 
   #setButtonIndicatorDisplay(buttonIndicator) {
     this.#Toggle.expanded || !this.#invitations.length
-    ? ElementHandler.hide(buttonIndicator)
-    : ElementHandler.display(buttonIndicator);
+      ? ElementHandler.hide(buttonIndicator)
+      : ElementHandler.display(buttonIndicator);
   }
 
   #updateButtonIndicator() {
@@ -117,11 +116,26 @@ export class InvitationsController {
     this.#updateButtonIndicator();
   }
 
+  #generateToggle() {
+    const toggleContent = this.#generateToggleContent();
+    const toggle = this.#Toggle.generateView(toggleContent);
+    const buttonIndicator = this.#generateButtonIndicator();
+    toggle.append(buttonIndicator);
+    return toggle;
+  }
+
   #onInvitationAction(actionType, id) {
     this.#removeInvitation(id);
     console.log("handle invitation online");
     console.log(actionType);
     console.log(id);
+  }
+
+  init() {
+    return ViewHelper.initParentContainer().then(container => {
+      container.append(this.#generateToggle());
+      return;
+    });
   }
 
   onInvitationReceived(invitation) {
@@ -134,17 +148,18 @@ export class InvitationsController {
     }
 
     this.#setInvitationsList();
-    return ViewHelper.getClearedContainer().then(container => {
+    return ViewHelper.clearedContainer.then(container => {
       container.append(this.#ListHandler.generateView());
       return this.#updateToggleHeight();
     });
   }
 
-  generateView() {
-    const toggleContent = this.#generateToggleContent();
-    const toggle = this.#Toggle.generateView(toggleContent);
-    const buttonIndicator = this.#generateButtonIndicator();
-    toggle.append(buttonIndicator);
-    return toggle;
+
+  onDestroy() {
+    return ViewHelper.initParentContainer().then(() => {
+      this.#Toggle = undefined;
+      this.#invitations = undefined;
+      return;
+    });
   }
 }
