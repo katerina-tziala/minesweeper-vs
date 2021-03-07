@@ -29,7 +29,7 @@ export class LobbyPage extends Page {
   init() {
     this.#GameWizard = undefined;
     this.#OnlineUsersController = new OnlineUsersController(this.#renderWizard.bind(this));
-    this.#OnlineUsersController.users = self.onlineConnection.peers;
+    this.#OnlineUsersController.users = self.user.peers;
     super.init();
   }
 

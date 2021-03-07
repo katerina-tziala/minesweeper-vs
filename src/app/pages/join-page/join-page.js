@@ -72,7 +72,7 @@ export class JoinPage extends Page {
   }
 
   #saveUsernameLocallyAndNavigate() {
-    LocalStorageHelper.save("username", self.user.username);
+   // LocalStorageHelper.save("username", self.user.username);
     this.onPageChange();
   }
 

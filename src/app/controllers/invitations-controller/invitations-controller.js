@@ -15,7 +15,7 @@ export class InvitationsController {
   constructor() {
     this.#Toggle = new Toggle("invitations", false, true, false);
     this.#Toggle.onStateChange = this.#onToggleChange.bind(this);
-    this.#invitations = [...self.onlineConnection.invitations];
+    this.#invitations = [...self.user.invitations];
     this.init();
   }
 

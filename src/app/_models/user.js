@@ -8,6 +8,8 @@ export class User extends AppModel {
     this.id = id;
     this.username = username;
     this.gameRoomId = gameRoomId;
+    this.peers = [];
+    this.invitations = [];
   }
 
   // conected() {
@@ -16,6 +18,15 @@ export class User extends AppModel {
 
   get inGame() {
     return valueDefined(this.gameRoomId);
+  }
+
+  removeInvitation(invitationId) {
+    this.invitations = this.invitations.filter(invitation => invitation.id !== invitationId);
+  }
+
+  addInvitation(newInvitation) {
+    this.invitations = this.invitations.filter(invitation => invitation.id !== newInvitation.id);
+    this.invitations.push(newInvitation);
   }
 
 }

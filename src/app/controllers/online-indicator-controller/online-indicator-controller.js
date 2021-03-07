@@ -36,7 +36,7 @@ export class OnlineIndicatorController {
 
   #initState() {
     this.#live = self.onlineConnection ? self.onlineConnection.live : false;
-    this.#numberOfPeers = self.onlineConnection ? self.onlineConnection.peers.length : 0;
+    this.#numberOfPeers = self.user ? self.user.peers.length : 0;
   }
 
   #onConnect() {
