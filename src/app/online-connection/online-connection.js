@@ -15,7 +15,7 @@ export class OnlineConnection {
 
     // console.log(TESTGAME);
 
-    // this.setTestPeers();
+     this.setTestPeers();
     this.#invitations = INVITATIONSTEST;
     //this.#invitations = [];
 

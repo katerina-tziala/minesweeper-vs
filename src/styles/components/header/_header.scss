@@ -32,6 +32,7 @@
 
   >div {
     height: 30px;
+    @extend %center-center;
   }
 
   .toggle-btn--invitations {
@@ -64,6 +65,7 @@
 
   &.header-btn--home {
     @include afterIcon("home");
+    //margin-right: 15px;
   }
 
   &.header-btn--connect {

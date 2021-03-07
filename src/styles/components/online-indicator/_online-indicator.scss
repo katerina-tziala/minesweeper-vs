@@ -2,16 +2,16 @@
 @import "../button/button";
 
 .online-indicator-container {
-  @extend .btn-icon;
-  @extend .btn-icon--normal;
   background-color: transparent;
   overflow: visible !important;
-  cursor: default !important;
   position: relative;
-  background-color: inherit;
+  margin-left: 15px;
 }
 
 .online-indicator-icon {
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  cursor: default !important;
   @include afterIcon("online");
   background-color: inherit;
 }
@@ -30,11 +30,11 @@
   width: 28px;
   padding: 0 2px;
   position: absolute;
-  top: 22px;
+  top: 25px;
   left: -1px;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 900;
-  line-height: 12px;
+  line-height: 11px;
   border-radius: 20px;
   background-color: inherit;
   text-align: center;

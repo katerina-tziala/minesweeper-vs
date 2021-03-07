@@ -21,6 +21,7 @@ import {
   InvitationsController
 } from "./controllers/invitations-controller/invitations-controller";
 import { OnlineIndicatorController } from "./controllers/online-indicator-controller/online-indicator-controller";
+import { NavigationController } from "./controllers/navigation-controller/navigation-controller";
 
 export class App {
   #page;
@@ -45,7 +46,7 @@ export class App {
 
     this.#InvitationsController = undefined;
     this.#OnlineIndicator = undefined;
-
+    
     //document event listeners
     self.user = new User("kate", "katerina");
     this.#onPageInit();
@@ -65,12 +66,17 @@ export class App {
     }
   }
 
-  #onLoggout() {
-    console.log("onLoggout");
+  #destroyPageController() {
     if (this.#PageController) {
       this.#PageController.onDestroy();
       this.#PageController = undefined;
     }
+  }
+
+
+  #onLoggout() {
+    console.log("onLoggout");
+    this.#destroyPageController();
 
     if (self.onlineConnection.live) {
       console.log("on connection loggout");
@@ -93,6 +99,8 @@ export class App {
   }
 
   #loadInterfaceController(pageType, onPageChange = this.#onHomeNavigation.bind(this)) {
+    this.#destroyPageController();
+    NavigationController.setNavigation();
     this.#page = pageType;
     return PageLoader.load(this.#page, onPageChange).then(pageController => {
       this.#PageController = pageController;
@@ -151,7 +159,15 @@ export class App {
     this.#onGameSetUpNavigation(gameType);
   }
 
+  #setHomeNavigation() {
+    NavigationController.setNavigation([{
+      page: PageType.HomePage,
+      action: this.#onHomeNavigation.bind(this)
+    }]);
+  }
+
   #onLobbyNavigation() {
+    this.#setHomeNavigation();
     this.#loadInterfaceController(PageType.LobbyPage).then(() => {
       this.#PageController.init();
     });
@@ -164,6 +180,7 @@ export class App {
   }
 
   #onPlayGame(gameParams) {
+    this.#setHomeNavigation();
     console.log(JSON.stringify(gameParams));
     this.#loadInterfaceController(PageType.GamePage).then(() => {
       this.#PageController.init(gameParams, this.#onGameSetUpNavigation.bind(this));

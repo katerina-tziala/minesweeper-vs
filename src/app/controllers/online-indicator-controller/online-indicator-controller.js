@@ -1,4 +1,5 @@
 "use strict";
+import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
 import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
 import { DOM_ELEMENT_ID, DOM_ELEMENT_CLASS, BUTTON } from "./online-indicator-controller.constants";
 
@@ -10,16 +11,11 @@ export class OnlineIndicatorController {
     this.init();
   }
 
-  #initState() {
-    this.#live = self.onlineConnection ? self.onlineConnection.live : false;
-    this.#numberOfPeers = self.onlineConnection ? self.onlineConnection.peers.length : 0;
-  }
-
   get #generatedIcon() {
     const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.icon]);
-    if (this.#numberOfPeers) {
-      container.innerHTML = `<span class="${DOM_ELEMENT_CLASS.peers}">${this.#numberOfPeers}</span>`;
-    }
+    let numberOfPeers = this.#numberOfPeers ? this.#numberOfPeers.toString() : TYPOGRAPHY.emptyString;
+    numberOfPeers = numberOfPeers.length > 4 ? TYPOGRAPHY.ellipsis : numberOfPeers;
+    container.innerHTML = `<span class="${DOM_ELEMENT_CLASS.peers}">${numberOfPeers}</span>`;
     return container;
   }
 
@@ -36,6 +32,11 @@ export class OnlineIndicatorController {
       ElementHandler.clearContent(container);
       return container;
     });
+  }
+
+  #initState() {
+    this.#live = self.onlineConnection ? self.onlineConnection.live : false;
+    this.#numberOfPeers = self.onlineConnection ? self.onlineConnection.peers.length : 0;
   }
 
   #onConnect() {
