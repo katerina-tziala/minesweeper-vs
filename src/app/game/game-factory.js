@@ -34,7 +34,8 @@ export class GameFactory {
     return settings;
   }
 
-  static loadGame(gameParams, gameId) {
+  static loadGame(gameParams) {
+    const gameId = gameParams.id;
     const playersData = gameParams.players;
     delete gameParams.players;
 

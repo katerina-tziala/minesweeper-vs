@@ -47,22 +47,4 @@
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  .toast-notification {
-    @include toast-notification-theming.setNotificationStyles("light");
-  }
-
-  .toast-notification--error {
-    @include toast-notification-theming.setErrorNotificationStyles("light");
-  }
-}
-
-.theme-dark {
-  .toast-notification {
-    @include toast-notification-theming.setNotificationStyles("dark");
-  }
-
-  .toast-notification--error {
-    @include toast-notification-theming.setErrorNotificationStyles("dark");
-  }
-}
+@include toast-notification-theming.setTheming();

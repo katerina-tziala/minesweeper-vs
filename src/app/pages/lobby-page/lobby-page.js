@@ -29,7 +29,7 @@ export class LobbyPage extends Page {
   init() {
     this.#GameWizard = undefined;
     this.#OnlineUsersController = new OnlineUsersController(this.#renderWizard.bind(this));
-    this.#OnlineUsersController.users = self.user.peers;
+    this.#OnlineUsersController.users = [...self.user.peers];
     super.init();
   }
 
@@ -101,8 +101,10 @@ export class LobbyPage extends Page {
 
   }
 
-  onUserUpdate() {
-    console.log("onUserUpdate in lobby page");
+  onPeersUpdate() {
+    if (this.#OnlineUsersController) {
+      this.#OnlineUsersController.updateOnlineUsers([...self.user.peers]);
+    }
   }
 
   onDestroy() {

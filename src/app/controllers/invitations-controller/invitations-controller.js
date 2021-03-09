@@ -126,9 +126,9 @@ export class InvitationsController {
 
   #onInvitationAction(actionType, id) {
     this.#removeInvitation(id);
-    console.log("handle invitation online");
-    console.log(actionType);
-    console.log(id);
+    if (self.onlineConnection) {
+      self.onlineConnection.sendInvitationResponse(actionType, id);
+    }
   }
 
   init() {

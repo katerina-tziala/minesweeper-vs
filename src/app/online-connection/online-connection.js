@@ -14,7 +14,7 @@ export class OnlineConnection {
 
   constructor(messageReceivedHandler) {
     this.#messageReceivedHandler = messageReceivedHandler;
-    
+
     // this.#messageReceivedHandler = {
     //   "user-joined": this.#onUserJoined.bind(this),
     //   "user-update": this.#onUserUpdate.bind(this),
@@ -22,7 +22,7 @@ export class OnlineConnection {
     //   "game-room-opened": this.#onRoomOpened.bind(this),
     //   "game-invitation": this.#onInvitationReceived.bind(this),
     // };
- 
+
     // this.actions = actions;
 
     // console.log(TESTGAME);
@@ -30,6 +30,7 @@ export class OnlineConnection {
     //  this.setTestPeers();
     // this.#invitations = INVITATIONSTEST;
     //this.#invitations = [];
+   
 
   }
 
@@ -171,15 +172,12 @@ export class OnlineConnection {
 
 
   sendData(type, data) {
-    if (this.live) {
-      const message = {
-        type: type,
-        data: data,
-      };
-      this.#webSocket.send(JSON.stringify(message));
-    } else {
+    if (!this.live) {
       console.log("no this.webSocket");
+      return;
     }
+    const message = { type, data };
+    this.#webSocket.send(JSON.stringify(message));
   }
 
   sendInvitation(data) {

@@ -37,7 +37,7 @@ export class GameMessageBox {
     return GameMessageBox.messageBox.then(messageBox => {
       GameMessageBox.setSlideOutStyles(messageBox);
       return timeoutPromise(MOVE_OUT_DURATION);
-    });
+    }).catch(() => Promise.resolve());
   }
 
   static setSlideOutStyles(messageBox) {

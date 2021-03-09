@@ -51,4 +51,11 @@ export const NOTIFICATION_MESSAGE = {
       "Please add a different name for the opponent.",
     ],
   },
+  invitationDenied: {
+    type: "warning",
+    title: "Your invitation was denied!",
+    content: [
+      "### denied your invitation to play!"
+    ],
+  },
 };

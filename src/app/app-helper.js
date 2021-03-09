@@ -2,7 +2,7 @@
 import { User } from "~/_models/user";
 import { valueDefined } from "~/_utils/validator";
 
-export class AppUserHandler {
+export class AppHelper {
 
   static #generateUser(userData) {
     return new User(userData.id, userData.username, userData.gameRoomId);
@@ -16,7 +16,7 @@ export class AppUserHandler {
     if (self.user) {
       self.user.update(data.user);
     } else {
-      self.user = AppUserHandler.#generateUser(data.user);
+      self.user = AppHelper.#generateUser(data.user);
     }
   }
 
@@ -24,12 +24,7 @@ export class AppUserHandler {
     if (!self.user) {
       return;
     }
-    self.user.peers =  peers.map((peerData) => AppUserHandler.#generateUser(peerData));
+    self.user.peers =  peers.map((peerData) => AppHelper.#generateUser(peerData));
   }
-
-
-
-
-
 
 }

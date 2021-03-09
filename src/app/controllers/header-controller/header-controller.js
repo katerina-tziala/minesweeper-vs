@@ -58,4 +58,15 @@ export class HeaderController {
     }]);
   }
 
+  onPeersUpdate() {
+    if (this.#OnlineIndicator) {
+      this.#OnlineIndicator.updateState();
+    }
+  }
+
+ onInvitationReceived(invitation) {
+    if (this.#InvitationsController) {
+      this.#InvitationsController.onInvitationReceived(invitation);
+    }
+  }
 }

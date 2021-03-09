@@ -80,10 +80,15 @@ export class GamePage extends Page {
 
   onDestroy() {
     this.#Game.pause();
-    this.#gameParams = undefined;
-    this.#Game = undefined;
-    this.#onGameSetUpNavigation = undefined;
     super.onDestroy();
   }
 
+  exitGame(id) {
+    if (this.#Game && this.#Game.id === id) {
+      const online = this.#Game.isOnline;
+      this.onDestroy();
+      return online;
+    }
+    return false;
+  }
 }
