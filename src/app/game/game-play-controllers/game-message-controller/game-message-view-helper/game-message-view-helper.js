@@ -20,7 +20,7 @@ export class GameMessageViewHelper {
       ElementHandler.clearContent(container);
       ElementHandler.display(container);
       return container;
-    });
+    }).catch(() => Promise.resolve());
   }
 
   static hideContainer() {
@@ -28,7 +28,7 @@ export class GameMessageViewHelper {
       ElementHandler.hide(container);
       ElementHandler.clearContent(container);
       return;
-    });
+    }).catch(() => Promise.resolve());
   }
 
   static generateMessageBox(message) {

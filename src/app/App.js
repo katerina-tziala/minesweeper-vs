@@ -101,7 +101,7 @@ export class App {
   #onInvitationDenied(data) {
     const invitation = data.invitation;
     const notificationMessage = NOTIFICATION_MESSAGE.invitationDenied;
-    notificationMessage.content = [replaceStringParameter(notificationMessage.content[0], invitation.sender.username)]
+    notificationMessage.content = [replaceStringParameter(notificationMessage.content[0], invitation.recipient.username)]
     self.toastNotifications.show(NOTIFICATION_MESSAGE.invitationDenied);
     this.#destroyGame(invitation.game.id);
   }

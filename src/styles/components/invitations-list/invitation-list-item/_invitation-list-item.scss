@@ -59,6 +59,7 @@
   .invitation__sender {
     font-weight: 600;
     @extend %ellipsis-text;
+    text-transform: initial;
     width: 100%;
   }
 
