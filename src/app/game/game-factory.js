@@ -43,7 +43,9 @@ export class GameFactory {
       case GameType.Original:
         return GameFactory.loadPlayerGame(gameId, gameParams);
       case GameType.Friend:
-        return GameFactory.loadGameVs(gameId, gameParams, GameFactory.getOpponent(playersData));
+        const opponent = GameFactory.getOpponent(playersData);
+        opponent.entered = true;
+        return GameFactory.loadGameVs(gameId, gameParams, opponent);
       case GameType.Bot:
         return GameFactory.loadGameVSBot(gameId, gameParams, playersData);
       case GameType.Online:
@@ -65,7 +67,7 @@ export class GameFactory {
 
   static getOpponent(players) {
     const opponentData = this.getOpponentData(players);
-    const opponent = new Player(opponentData.id, opponentData.name);
+    const opponent = new Player(opponentData.id, opponentData.name || opponentData.username, opponentData.entered);
     opponent.colorType = LocalStorageHelper.appSettings.opponentColorType;
     return opponent;
   }
@@ -103,7 +105,7 @@ export class GameFactory {
 
   static loadPlayerGame(gameId, gameParams, player = GameFactory.getPlayer()) {
     gameParams = GameFactory.getGameModelParams(gameParams);
- 
+
     return import("GamePlayType").then((module) => {
       return new module.GameSinglePlayer(gameId, gameParams, player);
     });
@@ -111,7 +113,7 @@ export class GameFactory {
 
   static loadGameVs(gameId, gameParams, opponent) {
     gameParams = GameFactory.getGameModelParams(gameParams);
- 
+
     return import("GamePlayType").then((module) => {
       if (GameFactory.isVSModeDetect(gameParams)) {
         return new module.GameVSDetect(
@@ -149,7 +151,7 @@ export class GameFactory {
       wrongFlagHint: gameParams.optionsSettings.wrongFlagHint,
       vsMode: gameParams.optionsSettings.vsMode
     };
-    return {parallelGame, playerGame};
+    return { parallelGame, playerGame };
   }
 
   static loadParrallelGame(gameId, gameParams, opponent) {

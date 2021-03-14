@@ -8,6 +8,7 @@ import {
   GameAction,
   GameType,
   GameOverType,
+  GameSubmission
 } from "GameEnums";
 
 import { RoundStatistics } from "GameModels";
@@ -257,15 +258,22 @@ export class Game extends AppModel {
 
   ////////////////////////////////
   submitResult(type) {
-    //TODO:
     console.log("--  submit game state -- ");
     console.log("----------------------------");
-    console.log("update state: ", type);
-    // console.log(this.externalActions);
-    if (this.externalActions.onMoveSubmission) {
-      console.log(this.gameState);
+
+    if (self.onlineConnection) {
+
+      if (type === GameSubmission.GameOver) {
+        self.onlineConnection.sendData(type, this.gameState);
+      } else {
+        const data = {
+          updateType: type,
+          gameUpdate: this.gameState
+        };
+        console.log(data);
+        self.onlineConnection.sendData("game-update", data);
+      }
     }
-    //console.log(this);
   }
 
 

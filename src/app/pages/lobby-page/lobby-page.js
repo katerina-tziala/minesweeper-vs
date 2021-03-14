@@ -78,10 +78,8 @@ export class LobbyPage extends Page {
   }
 
   #sendInvitation(gameParams) {
-    const recipientId = gameParams.players[1].id;
-    const gameProperties = gameParams;
     if (self.onlineConnection) {
-      self.onlineConnection.sendInvitation({ recipientId, gameProperties });
+      self.onlineConnection.sendInvitation(gameParams);
     }
   }
 

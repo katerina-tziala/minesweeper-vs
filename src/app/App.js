@@ -32,11 +32,14 @@ export class App {
       "user-update": this.#onUserUpdate.bind(this),
       "peers-update": this.#onPeersUpdate.bind(this),
       "game-room-opened": this.#onRoomOpened.bind(this),
-      "game-invitation": this.#onInvitationReceived.bind(this),
+      "invitation-received": this.#onInvitationReceived.bind(this),
       "invitation-denied": this.#onInvitationDenied.bind(this),
+      "game-start": this.#onGameStart.bind(this),
+      "game-room-created": this.#onRoomCreated.bind(this),
     }
 
     self.user = undefined;
+    //remove promise timeouts
 
     // self.user = new User("kate", "katerina");
     // self.user.invitations = [INVITATIONSTEST[0]];
@@ -64,6 +67,8 @@ export class App {
     }
 
     console.log("onUserJoined from page:");
+    console.log("#page", this.#page);
+    this.#onPageInit();
     // console.log(self.user);
     // console.log(this.#page);
   }
@@ -87,30 +92,62 @@ export class App {
     }
   }
 
+  #onRoomCreated(data) {
+    console.log(data);
+    const { clientsInvited, game, sender } = data;
+
+    const { settings, ...gameParams } = game;
+    gameParams.players = [self.user, ...clientsInvited];
+
+    self.user.update(sender);
+    this.#HeaderController.collapseInvitations();
+    this.#onPlayGame(Object.assign(gameParams, settings));
+  }
+
+
   #onRoomOpened(data) {
+    console.log(data);
+    const { settings, ...game } = data.game;
     AppHelper.updateUser(data);
-    this.#onPlayGame(data.game);
+    this.#HeaderController.collapseInvitations();
+    this.#onPlayGame(Object.assign(game, settings));
   }
 
   #onInvitationReceived(data) {
-    const invitation = data.invitation;
+    console.log(data);
+    const { game, ...invitation } = data;
+    const { settings, ...gmeParams } = game;
+    invitation.game = Object.assign(game, settings);
+
+    // const invitation = data.invitation;
     self.user.addInvitation(invitation);
     this.#HeaderController.onInvitationReceived(invitation);
   }
 
   #onInvitationDenied(data) {
-    const invitation = data.invitation;
+    const { invitation, sender } = data;
     const notificationMessage = NOTIFICATION_MESSAGE.invitationDenied;
-    notificationMessage.content = [replaceStringParameter(notificationMessage.content[0], invitation.recipient.username)]
+    notificationMessage.content = [replaceStringParameter(notificationMessage.content[0], sender.username)];
     self.toastNotifications.show(NOTIFICATION_MESSAGE.invitationDenied);
     this.#destroyGame(invitation.game.id);
   }
 
+  #onGameStart(data) {
+ 
+    console.log("onGameStart");
+    console.log(data);
+
+
+    // this.#HeaderController.collapseInvitations();
+    // if (this.#PageController && this.#page === PageType.GamePage) {
+    //   this.#PageController.startGame(data);
+    // }
+  }
 
   #onConnectionError(errorType) {
     console.log("onConnectionError from app");
     if (this.#PageController) {
-      this.#PageController.onConnectionError();
+      this.#PageController.onConnectionError(errorType);
 
     }
   }
@@ -197,8 +234,9 @@ export class App {
   }
 
   #onPlayGame(gameParams) {
+
     this.#HeaderController.setHomeNavigation();
-   // console.log(JSON.stringify(gameParams));
+    // console.log(JSON.stringify(gameParams));
     this.#loadPageController(PageType.GamePage).then(() => {
       this.#PageController.init(gameParams, this.#onGameSetUpNavigation.bind(this));
     });

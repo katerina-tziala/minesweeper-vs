@@ -30,7 +30,7 @@ export class OnlineConnection {
     //  this.setTestPeers();
     // this.#invitations = INVITATIONSTEST;
     //this.#invitations = [];
-   
+
 
   }
 
@@ -180,16 +180,27 @@ export class OnlineConnection {
     this.#webSocket.send(JSON.stringify(message));
   }
 
-  sendInvitation(data) {
-    this.sendData("invite-and-open-room", data);
+  sendInvitation(gameParams) {
+    const recipients = [gameParams.players[1].id];
+    const gameProperties = gameParams;
+    const { players,  ...settings} = gameParams;
+ 
+    const invitation = {
+      recipients,
+      settings: settings,
+      config: {
+        allowedPlayers: 2,
+        startWaitingTime: 8000
+      }
+    };
+
+    console.log(invitation);
+  
+    this.sendData("invite-and-open-room", invitation);
   }
 
   sendInvitationResponse(type, id) {
     self.user.removeInvitation(id);
-
-    console.log("sendInvitationResponse");
-    console.log(type, id);
-
     this.sendData(type, { id });
   }
 
@@ -199,5 +210,10 @@ export class OnlineConnection {
     }
   }
 
+  quitGame(gameId) {
+    if (self.user) {
+      this.sendData("quit-game", {"id": gameId});
+    }
+  }
 
 }

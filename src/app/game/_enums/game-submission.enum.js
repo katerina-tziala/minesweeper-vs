@@ -1,8 +1,8 @@
 "use strict";
 const GameSubmission = {
-  GameOver: "GameOver",
-  RoundEnd: "RoundEnd",
-  MoveEnd: "MoveEnd",
+  GameOver: "game-over",
+  RoundEnd: "round-end",
+  MoveEnd: "move-end",
 };
 
 Object.freeze(GameSubmission);

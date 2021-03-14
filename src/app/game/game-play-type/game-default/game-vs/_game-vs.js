@@ -134,6 +134,10 @@ export class GameVS extends GameDefault {
     this.players.forEach((player) => player.toggleTurn());
   }
 
+  setPlayersEntered() {
+    this.players.forEach((player) => player.entered = true);
+  }
+
   playerMissedTurnsReseted(player = this.playerOnTurn) {
     if (
       this.turnSettings &&
@@ -220,17 +224,14 @@ export class GameVS extends GameDefault {
 
   onRoundPlayStart() {
     this.gameBoard.startRoundTimer();
-    if (this.isOnline) {
-      console.log("onlineeeeeeeeeeeeeee");
-    }
     if (this.playerOnTurn.isBot) {
       this.submitBotMove();
       return;
     }
-    // if (!this.isSharedDevice && this.playerOnTurn.id !== this.player.id) {
-    //   this.disableMinefield();
-    //   return;
-    // }
+    if (!this.isSharedDevice && this.playerOnTurn.id !== this.player.id) {
+      this.disableMinefield();
+      return;
+    }
     this.enableMinefield();
   }
 
@@ -243,8 +244,9 @@ export class GameVS extends GameDefault {
       console.log("--  submit online move --");
       console.log("GameVSDetect");
       console.log("----------------------------");
-      this.submitResult(GameSubmission.MoveEnd);
+      
       console.log("decide how game is continued for this player");
+      this.submitResult(GameSubmission.MoveEnd);
       this.pause();
       return;
     }
@@ -260,19 +262,11 @@ export class GameVS extends GameDefault {
   onRoundEnd(boardTiles = []) {
     this.gameBoard.setBoardOnRoundEnd();
     this.setStatisticsOnRoundEnd(boardTiles);
-
-
-
     if (this.isOnline) {
-      //TODO:
-      console.log("--  submit online round -- ");
-      console.log("GameVS");
-      console.log("----------------------------");
       this.submitResult(GameSubmission.RoundEnd);
       this.pause();
       return;
     }
-
     this.switchTurns();
     this.startGameRound();
   }

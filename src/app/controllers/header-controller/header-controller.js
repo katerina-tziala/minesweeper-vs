@@ -69,4 +69,11 @@ export class HeaderController {
       this.#InvitationsController.onInvitationReceived(invitation);
     }
   }
+
+  collapseInvitations() {
+    if (this.#InvitationsController) {
+      this.#InvitationsController.collapseInvitations();
+    }
+  }
+  
 }

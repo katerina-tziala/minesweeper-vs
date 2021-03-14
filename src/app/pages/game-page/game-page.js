@@ -43,8 +43,16 @@ export class GamePage extends Page {
 
   #onBoardMenuAction(actionType) {
     if (this.#Game.isOnline && self.onlineConnection.live) {
-      console.log("action on online gaming");
-      console.log(actionType);
+
+      if (actionType === GameAction.Restart) {
+        console.log("action on online gaming");
+        console.log(actionType);
+      } else {
+        self.onlineConnection.quitGame(this.#Game.id);
+      }
+
+
+
       return;
     }
     this.#onOfflineBoardMenuAction(actionType);
@@ -91,4 +99,13 @@ export class GamePage extends Page {
     }
     return false;
   }
+
+  startGame(data) {
+    this.#Game.playerStartID = data.playerStartId;
+    this.#Game.init();
+    this.#Game.setPlayersEntered();
+    this.#Game.start();
+  }
+
+
 }

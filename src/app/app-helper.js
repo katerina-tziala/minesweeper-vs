@@ -12,7 +12,6 @@ export class AppHelper {
     if (!data.user) {
       return;
     }
-    delete data.properties;
     if (self.user) {
       self.user.update(data.user);
     } else {

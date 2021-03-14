@@ -154,12 +154,17 @@ export class InvitationsController {
     });
   }
 
-
   onDestroy() {
     return ViewHelper.initParentContainer().then(() => {
       this.#Toggle = undefined;
       this.#invitations = undefined;
       return;
     });
+  }
+
+  collapseInvitations() {
+    if (this.#Toggle) {
+      this.#Toggle.collapse();
+    }
   }
 }
