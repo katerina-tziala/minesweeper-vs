@@ -181,22 +181,22 @@ export class OnlineConnection {
   }
 
   sendInvitation(gameParams) {
-    const recipients = [gameParams.players[1].id];
-    const gameProperties = gameParams;
+    //console.log(gameParams);
+    const playersExpected = [gameParams.players[1].id];
+    // const gameProperties = gameParams;
     const { players,  ...settings} = gameParams;
  
-    const invitation = {
-      recipients,
+    const data = {
+      settings,
+      playersExpected,
       settings: settings,
-      config: {
-        allowedPlayers: 2,
-        startWaitingTime: 8000
-      }
+      //allowedPlayers: 2,
+      startWaitingTime: 8000
     };
 
-    console.log(invitation);
+    console.log(data);
   
-    this.sendData("invite-and-open-room", invitation);
+    this.sendData("open-private-game-room", data);
   }
 
   sendInvitationResponse(type, id) {
