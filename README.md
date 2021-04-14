@@ -1,2 +1,2 @@
-# minesweeper-vs
+# readme
  
