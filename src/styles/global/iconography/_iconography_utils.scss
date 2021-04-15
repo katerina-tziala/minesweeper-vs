@@ -45,11 +45,3 @@
     @extend .icon-#{$key};
   }
 }
-
-@mixin setIdentifierIcons($base-selector, $icons-list) {
-  @each $icon in $icons-list {
-    #{$base-selector}--#{$icon} {
-      @include afterIcon($icon);
-    }
-  }
-}

@@ -8,6 +8,16 @@
   content: fa-content($fa-var-user);
 }
 
+.icon-bot {
+  @extend %icon-regular;
+  content: fa-content($fa-var-robot);
+}
+
+
+
+
+
+
 .icon-exclamation {
   @extend %icon-regular;
   content: fa-content($fa-var-exclamation);
@@ -78,10 +88,7 @@
   content: fa-content($fa-var-globe);
 }
 
-.icon-bot {
-  @extend %icon-regular;
-  content: fa-content($fa-var-robot);
-}
+
 
 .icon-friend {
   @extend %icon-regular;
@@ -170,4 +177,17 @@
 .icon-trash {
   @extend %icon-regular;
   content: fa-content($fa-var-trash-alt);
+}
+
+
+
+
+
+
+@mixin setIdentifierIcons($base-selector, $icons-list) {
+  @each $icon in $icons-list {
+    #{$base-selector}--#{$icon} {
+      @include afterIcon($icon);
+    }
+  }
 }
