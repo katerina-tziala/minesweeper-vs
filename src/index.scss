@@ -34,8 +34,9 @@ body,
 .main {
   // @extend %flex-center-center;
   // flex-direction: column;
+  position: relative;
   flex-grow: 1;
-  border: 2px solid blue;
+  // border: 2px solid blue;
 }
 
 .main-content {

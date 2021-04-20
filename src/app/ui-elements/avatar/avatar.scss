@@ -1,7 +1,7 @@
 
-@use "../../styles/utils/flexbox/flexbox";
-@use "../../styles/utils/shapes";
-@import "../../styles/iconography/iconography";
+@use "../../../styles/utils/flexbox/flexbox";
+@use "../../../styles/utils/shapes";
+@import "../../../styles/iconography/iconography";
 
 %user-avatar {
   @include afterIcon("user");
