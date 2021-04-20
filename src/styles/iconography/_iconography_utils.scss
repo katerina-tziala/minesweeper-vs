@@ -1,0 +1,48 @@
+@import "./fontawesome/variables";
+@import "./fontawesome/mixins";
+// @import "./fontawesome/core";
+// @import "./fontawesome/larger";
+// @import "fixed-width";
+// @import "list";
+// @import "bordered-pulled";
+// @import "animated";
+// @import "rotated-flipped";
+// @import "stacked";
+@import "./fontawesome/icons";
+
+@import "./fontawesome/screen-reader";
+@import "./fontawesome/regular.scss";
+@import "./fontawesome/solid.scss";
+@import "./fontawesome/brands.scss";
+
+%icon {
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+  font-style: normal;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+%icon-regular {
+  @extend %icon;
+  font-weight: 900;
+  font-family: "Font Awesome 5 Free";
+}
+
+// %icon-regular-outline {
+//   @extend %icon;
+//   font-family: "Font Awesome 5 Free";
+// }
+
+// %icon-brand {
+//   @extend %icon;
+//   font-weight: 900;
+//   font-family: "Font Awesome 5 Brands";
+// }
+
+// %icon-brand-lite {
+//   @extend %icon;
+//   font-weight: 600;
+//   font-family: "Font Awesome 5 Brands";
+// }

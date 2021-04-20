@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import "./elements/avatar/Avatar";
+import "./ui-elements/avatar/Avatar";
 // import { AppLoader } from "./app/components/loaders/app-loader/app-loader";
 
 // const loadApp = () => import("./app/app");

@@ -1,0 +1,18 @@
+@import "./flexbox-first-axis";
+@import "./flexbox-second-axis";
+
+%flexbox {
+  display: flex;
+}
+
+%flex-center-center {
+  @extend %flexbox;
+  @extend %first-axis-center;
+  @extend %second-axis-center;
+}
+
+%flex-start-center {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-center;
+}

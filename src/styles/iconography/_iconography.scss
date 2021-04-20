@@ -1,0 +1,24 @@
+@import "./iconography_utils";
+
+.icon-user {
+  @extend %icon-regular;
+  content: fa-content($fa-var-user);
+}
+
+.icon-bot {
+  @extend %icon-regular;
+  content: fa-content($fa-var-robot);
+}
+
+
+@mixin beforeIcon($key) {
+  &::before {
+    @extend .icon-#{$key};
+  }
+}
+
+@mixin afterIcon($key) {
+  &::after {
+    @extend .icon-#{$key};
+  }
+}

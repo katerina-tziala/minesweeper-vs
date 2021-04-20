@@ -1,0 +1,146 @@
+@use "sass:map";
+@use "sass:color";
+
+@use "../../theming/theming";
+@use "../button/button-theming";
+@use "../../utils/shapes";
+
+@use "../toggle/toggle-theming";
+
+@import "../button/button";
+
+// @import "../toggle/toggle";
+
+@import "../../components/settings/settings";
+@import "../../components/online-indicator/online-indicator";
+@import "../../components/invitations-controller/invitations-controller";
+
+.header {
+  @extend %start-center;
+  height: 46px;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.header-title {
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.header-content {
+  @extend %center-center;
+
+  >div {
+    height: 30px;
+    @extend %center-center;
+  }
+
+  .toggle-btn--invitations {
+    @extend .header-btn;
+    @include afterIcon("envelope");
+  }
+
+  .toggle-btn--settings {
+    @extend .header-btn;
+    @include afterIcon("settings");
+  }
+}
+
+#loggout_btn_container {
+  height: 25px;
+}
+
+.header-btn {
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  background-color: transparent;
+  margin-left: 15px;
+  &.header-btn--settings {
+    @include afterIcon("settings");
+  }
+
+  &.header-btn--logout {
+    @include afterIcon("loggout");
+  }
+
+  &.header-btn--home {
+    @include afterIcon("home");
+    //margin-right: 15px;
+  }
+
+  &.header-btn--connect {
+    @include afterIcon("wifi");
+  }
+
+  &.header-btn--invitations {
+    @include afterIcon("envelope");
+  }
+}
+
+.header-actions-container {
+  position: relative;
+  // border: 1px solid red;
+  //margin-left: 10px;
+  @extend %center-center;
+
+  > .header-btn {
+    margin-left: 15px;
+  }
+}
+
+.header-toggle-title-container {
+  font-weight: 900;
+  text-transform: uppercase;
+  font-style: italic;
+  padding: 5px 18px;
+  border-bottom: 1px solid;
+  height: 30px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.theme-light {
+  .header {
+    background: theming.getThemeColor("light", "app-primary");
+    color: theming.getThemeColor("light", "header-color");
+    @include theming.setThemeBoxShadow("light");
+
+    $button-color: theming.getThemeColor("light", "header-color-intense");
+    $button-color-darker: color.adjust($button-color, $lightness: -20%);
+
+    .header-btn {
+      $base: (
+        color: color.adjust($button-color, $lightness: -20%),
+      );
+      $hovered: (
+        color: $button-color,
+      );
+      @include button-theming.setButtonStyles($base, $hovered);
+    }
+
+    @include toggle-theming.setButtonThemeStyles($button-color);
+  }
+}
+
+.theme-dark {
+  .header {
+    background: theming.getThemeColor("dark", "app-primary");
+    color: theming.getThemeColor("dark", "header-color");
+    @include theming.setThemeBoxShadow("dark");
+
+    $button-color: theming.getThemeColor("dark", "header-color-intense");
+    $button-color-darker: color.adjust($button-color, $lightness: -20%);
+
+    .header-btn {
+      $base: (
+        color: color.adjust($button-color, $lightness: -20%),
+      );
+      $hovered: (
+        color: $button-color,
+      );
+      @include button-theming.setButtonStyles($base, $hovered);
+    }
+
+    @include toggle-theming.setButtonThemeStyles($button-color);
+  }
+}

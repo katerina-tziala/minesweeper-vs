@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+// @use "./styles/theming/theming";
+
+// @import "./styles/global/_module-global";
+// @import "./styles/utils/_module-utils";
+
+// @import "./styles/components/header/header";
+// @import "./styles/components/main/main";
+// // @import "./styles/components/loaders/app-loader";
+// // @import "./styles/components/toast-notification/toast-notification";
+// // @import "./styles/components/modal-window/modal-window";
+
+// // @import "./avatar.scss";
+
+
+// * {
+//   box-sizing: border-box;
+//   margin: 0;
+//   padding: 0;
+//   user-select: none;
+// }
+
+// html,
+// body,
+// .app {
+//   width: 100vw;
+//   height: 100vh;
+//   overflow: hidden;
+//   position: relative;
+//   @extend %start-center;
+//   flex-direction: column;
+// }
+
+// /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+// @mixin setThemeStyles($theme) {
+//   $background: theming.getThemeColor($theme, "theme-base");
+//   $color: theming.getThemeColor($theme, "theme-primary");
+//   @include theming.setBoxTheming($background, $color);
+// }
+
+// .theme-light {
+//   @include setThemeStyles("light");
+// }
+
+// .theme-dark {
+//   @include setThemeStyles("dark");
+// }
+
+
+
+// .test {
+//   border: 1px solid #333;
+//   background-color: blue;
+//   color: white;
+// }
+
