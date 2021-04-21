@@ -1,57 +1,35 @@
 @use "../../../styles/utils/flexbox/flexbox";
 
 app-text-input {
-  border: 2px solid red;
   position: relative;
   width: 100%;
   display: block;
   min-width: 200px;
-
   height: 46px;
   line-height: 46px;
-
   padding: 8px;
   border-radius: 6px;
-  // @extend %flex-center-center;
-  // width: 100%;
-  // height: 100%;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
 }
 
 .text-input__input {
-  // border: 1px solid blue;
   display: block;
   width: 100%;
-}
-
-.text-input__input {
-  padding: 5px;
   height: 100%;
+  padding: 5px;
   outline: none;
   border: none;
-  // position: absolute;
-  // top: -4px;
 }
 
 .text-input__label {
   cursor: text;
   position: absolute;
-
+  height: 21px;
+  top: 11px;
+  line-height: 11px;
   padding: 5px;
   border-radius: 6px;
-  // position: absolute;
-  // top: -4px;
   transition: all 0.2s ease-out;
-
-  height: 21px;
-  line-height: 11px;
-  background-color: white;
-  position: absolute;
-  top: 11px;
-  //width: 100%;
-  // background-color: transparent;
+  background-color: inherit;
 }
 
 .text-input__label.text-input__label--input-focused{
@@ -65,4 +43,14 @@ app-text-input {
     height: 16px;
     line-height: 16px;
     top: -9px;
+}
+
+// TODO THEMING
+app-text-input {
+  border: 2px solid #808080;
+  background-color: white;
+
+  &:hover {
+    border: 2px solid #000;
+  }
 }
