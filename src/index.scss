@@ -1,13 +1,13 @@
-@charset "utf-8";
+@charset 'utf-8';
 
 // global
-@use "./styles/typography/typography";
+@use './styles/typography/typography';
 
 // utilities
-@use "./styles/utils/flexbox/flexbox";
+@use './styles/utils/flexbox/flexbox';
 
 // components
-@import "./styles/components/header/header";
+@import './styles/components/header/header';
 
 * {
   box-sizing: border-box;

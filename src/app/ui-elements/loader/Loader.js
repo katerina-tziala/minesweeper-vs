@@ -1,5 +1,5 @@
 import './loader.scss';
-import { ElementHandler } from '../../element.handler';
+import { ElementHandler } from '../../element-handler';
 
 const template = `<svg width='32' height='32'>
                     <circle class='loader-spinner spin' cx='16' cy='16' r='14' fill='none'></circle>

@@ -1,5 +1,5 @@
 'use strict';
-import { AppLoaderHandler } from './app-loader.handler';
+import { AppLoaderHandler } from './app-loader-handler';
 import { JoinPage } from './pages/join-page/join-page';
 export class App {
 

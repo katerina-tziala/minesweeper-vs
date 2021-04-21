@@ -1,6 +1,6 @@
 'use strict';
-import { AppLoaderHandler } from '../app-loader.handler';
-import { ElementHandler } from '../element.handler';
+import { AppLoaderHandler } from '../app-loader-handler';
+import { ElementHandler } from '../element-handler';
 
 
 
