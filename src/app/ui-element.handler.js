@@ -1,9 +1,9 @@
 'use strict"';
 
-export class ElementHandler {
+export class UIElementHandler {
  
   static clearContent(element) {
-    ElementHandler.setContent(element, '');
+    UIElementHandler.setContent(element, '');
   }
 
   static setContent(element, content) {
@@ -11,11 +11,11 @@ export class ElementHandler {
   }
 
   static hide(element) {
-    ElementHandler.addStyleClass(element, 'hidden');
+    UIElementHandler.addStyleClass(element, 'hidden');
   }
 
   static display(element) {
-    ElementHandler.removeStyleClass(element, 'hidden');
+    UIElementHandler.removeStyleClass(element, 'hidden');
   }
 
   static addStyleClass(element, className) {

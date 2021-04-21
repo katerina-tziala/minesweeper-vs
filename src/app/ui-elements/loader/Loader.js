@@ -1,5 +1,5 @@
-import "./loader.scss";
-import { ElementHandler } from "../../element-handler";
+import './loader.scss';
+import { UIElementHandler } from '../../ui-element.handler';
 
 const template = `<svg width='32' height='32'>
                     <circle class='loader-spinner spin' cx='16' cy='16' r='14' fill='none'></circle>
@@ -11,13 +11,8 @@ class Loader extends HTMLElement {
     super();
   }
 
-  get spinner() {
-    return new Promise((resolve, reject) => {
-      const spinner = this.querySelector(".loader-spinner");
-      spinner
-        ? resolve(spinner)
-        : reject(`spinner does not exist`);
-    });
+  get #spinner() {
+    return this.querySelector('.loader-spinner');
   }
 
   connectedCallback() {
@@ -25,15 +20,29 @@ class Loader extends HTMLElement {
   }
 
   display() {
-    ElementHandler.display(this);
-    this.spinner.then(spinner => ElementHandler.addStyleClass(spinner));
+    UIElementHandler.display(this);
+    this.#startSpinner();
   }
 
   hide() {
-    ElementHandler.hide(this);
-    this.spinner.then(spinner => ElementHandler.removeStyleClass(spinner));
+    UIElementHandler.hide(this);
+    this.#stopSpinner();
+  }
+
+  #startSpinner() {
+    const spinner = this.#spinner;
+    if (spinner) {
+      UIElementHandler.addStyleClass(spinner);
+    }
+  }
+
+  #stopSpinner() {
+    const spinner = this.#spinner;
+    if (spinner) {
+      UIElementHandler.removeStyleClass(spinner);
+    }
   }
 
 }
 
-customElements.define("app-loader", Loader);
+customElements.define('app-loader', Loader);

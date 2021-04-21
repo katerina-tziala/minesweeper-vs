@@ -1,4 +1,4 @@
-import "./avatar.scss";
+import './avatar.scss';
 
 class Avatar extends HTMLElement {
 
@@ -8,4 +8,4 @@ class Avatar extends HTMLElement {
 
 }
 
-customElements.define("app-avatar", Avatar);
+customElements.define('app-avatar', Avatar);
