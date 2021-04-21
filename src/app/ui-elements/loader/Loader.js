@@ -1,5 +1,5 @@
 import './loader.scss';
-import { UIElementHandler } from '../../ui-element.handler';
+import { ElementHandler } from '../../element.handler';
 
 const template = `<svg width='32' height='32'>
                     <circle class='loader-spinner spin' cx='16' cy='16' r='14' fill='none'></circle>
@@ -20,26 +20,26 @@ class Loader extends HTMLElement {
   }
 
   display() {
-    UIElementHandler.display(this);
+    ElementHandler.display(this);
     this.#startSpinner();
   }
 
   hide() {
-    UIElementHandler.hide(this);
+    ElementHandler.hide(this);
     this.#stopSpinner();
   }
 
   #startSpinner() {
     const spinner = this.#spinner;
     if (spinner) {
-      UIElementHandler.addStyleClass(spinner);
+      ElementHandler.addStyleClass(spinner);
     }
   }
 
   #stopSpinner() {
     const spinner = this.#spinner;
     if (spinner) {
-      UIElementHandler.removeStyleClass(spinner);
+      ElementHandler.removeStyleClass(spinner);
     }
   }
 
