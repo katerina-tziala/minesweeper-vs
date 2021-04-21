@@ -17,6 +17,8 @@ class TextInput extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = template;
+    this.setAttribute("focused", false);
+    
     this.#label = this.querySelector(`.${DOM_ELEMENT_CLASS.label}`);
     this.#input = this.querySelector(`.${DOM_ELEMENT_CLASS.input}`);
 
@@ -35,11 +37,13 @@ class TextInput extends HTMLElement {
   #focus() {
     this.#label.classList.add(DOM_ELEMENT_CLASS.focusedLabel);
     this.#removeLabelListener();
+    this.setAttribute("focused", true);
   }
 
   #focusout() {
     this.#label.classList.remove(DOM_ELEMENT_CLASS.focusedLabel);
     this.#addLabelListener();
+    this.setAttribute("focused", false);
   }
 
   #addLabelListener() {
