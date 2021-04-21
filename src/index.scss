@@ -8,6 +8,7 @@
 
 // components
 @import './styles/components/header/header';
+@import './styles/components/card/card';
 
 * {
   box-sizing: border-box;
@@ -29,6 +30,7 @@ body,
 #app {
   @extend %flex-start-center;
   flex-direction: column;
+  background-color: #f2f2f2;
 }
 
 .main {

@@ -1,12 +1,10 @@
-'use strict';
-// import { valueDefined } from '~/_utils/validator';
-import { ElementHandler } from './element-handler';
+"use strict";
+import { ElementHandler } from "./element-handler";
 
 export class ElementGenerator {
  
- 
   // static generateContainer(styleClasses = [], elementId) {
-  //   const container = document.createElement('div');
+  //   const container = document.createElement("div");
   //   ElementHandler.addStylesAndId(container, styleClasses, elementId);
   //   return container;
   // }
@@ -14,8 +12,8 @@ export class ElementGenerator {
   // static generateButton(params, action) {
   //   params = { ...params };
 
-  //   const button = document.createElement('button');
-  //   button.type = 'button';
+  //   const button = document.createElement("button");
+  //   button.type = "button";
 
   //   button.addEventListener(params.actionType, action);
   //   delete params.actionType;
@@ -25,23 +23,23 @@ export class ElementGenerator {
   // }
 
   // static generateTable() {
-  //   return document.createElement('table');
+  //   return document.createElement("table");
   // }
 
   // static generateTableHead() {
-  //   return document.createElement('thead');
+  //   return document.createElement("thead");
   // }
 
   // static generateTableBody() {
-  //   return document.createElement('tbody');
+  //   return document.createElement("tbody");
   // }
 
   // static generateTableRow() {
-  //   return document.createElement('tr');
+  //   return document.createElement("tr");
   // }
 
   // static generateTableHeaderCell(content) {
-  //   const tableHeader = document.createElement('th');
+  //   const tableHeader = document.createElement("th");
   //   if (valueDefined(content)) {
   //     tableHeader.append(content);
   //   }
@@ -49,7 +47,7 @@ export class ElementGenerator {
   // }
 
   // static generateTableDataCell(content) {
-  //   const tableCell = document.createElement('td');
+  //   const tableCell = document.createElement("td");
   //   if (valueDefined(content)) {
   //     tableCell.innerHTML = content;
   //   }
@@ -65,7 +63,7 @@ export class ElementGenerator {
   // }
 
   // static generateSecondLevelHeader(content, styleClasses = [], elementId) {
-  //   const header = document.createElement('h2');
+  //   const header = document.createElement("h2");
   //   ElementHandler.addStylesAndId(header, styleClasses, elementId);
   //   if (valueDefined(content)) {
   //     header.innerHTML = content;
