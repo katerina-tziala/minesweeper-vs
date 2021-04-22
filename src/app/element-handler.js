@@ -1,7 +1,7 @@
 'use strict"';
 
 export class ElementHandler {
- 
+
   static clearContent(element) {
     this.setContent(element, '');
   }
@@ -19,11 +19,15 @@ export class ElementHandler {
   }
 
   static addStyleClass(element, className) {
-    element.classList.add(className);
+    if (element && className) {
+      element.classList.add(className);
+    }
   }
 
   static removeStyleClass(element, className) {
-    element.classList.remove(className);
+    if (element && className) {
+      element.classList.remove(className);
+    }
   }
-  
+
 }

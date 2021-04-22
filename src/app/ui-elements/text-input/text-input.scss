@@ -1,62 +1,97 @@
-@use "../../../styles/utils/flexbox/flexbox";
+@use '../../../styles/utils/flexbox/flexbox';
+@use '../../../styles/utils/animations/animations';
+
+%label-focused {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 5px;
+  width: fit-content;
+  cursor: default;
+  height: 16px;
+  line-height: 16px;
+  top: -9px;
+}
 
 app-text-input {
   position: relative;
   width: 100%;
   display: block;
   min-width: 200px;
-  height: 46px;
-  line-height: 46px;
-  padding: 8px;
+  height: 36px;
+  line-height: 36px;
   border-radius: 6px;
+  border-width: 1px;
+  border-style: solid;
+
+  > .text-input__input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    outline: none;
+    border: none;
+    background-color: inherit;
+    border-radius: 8px;
+    caret-color: auto;
+  }
+  > .text-input__label {
+    cursor: text;
+    position: absolute;
+    height: 21px;
+    top: 6px;
+    line-height: 11px;
+    padding: 5px;
+    left: 6px;
+    border-radius: 6px;
+    transition: all 0.2s ease-out, background-color 1ms;
+    background-color: inherit;
+  }
 }
 
-.text-input__input {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 5px;
-  outline: none;
-  border: none;
-  background-color: inherit;
-}
-
-.text-input__label {
-  cursor: text;
-  position: absolute;
-  height: 21px;
-  top: 11px;
-  line-height: 11px;
-  padding: 5px;
-  border-radius: 6px;
-  transition: all 0.2s ease-out, background-color 1ms;
-  background-color: inherit;
-}
-
-.text-input__label.text-input__label--input-focused {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 0 5px;
-  width: fit-content;
-  cursor: default;
-  background-color: white;
-  height: 16px;
-  line-height: 16px;
-  top: -9px;
+.text-input__label--shake {
+  animation: shake-linear 0.5s linear;
 }
 
 // TODO THEMING
 app-text-input {
-  border: 2px solid #808080;
-  background-color: white;
+  border-color: #808080;
+  background-color: #fff;
 
   &:hover {
-    border: 2px solid #000;
+    border: 1px solid #000;
     background-color: #f5f5f5;
   }
 }
 
-app-text-input[focused="true"] {
-  background-color: white;
-  border: 2px solid #000;
+app-text-input[focused='true'] {
+  border-width: 2px;
+  border-style: solid;
+
+  border-color: #000;
+  background-color: #fff;
+
+  > .text-input__label {
+    @extend %label-focused;
+    background-color: #fff;
+    color: #808080;
+  }
 }
+
+app-text-input[error='true'] {
+  border-color: #b30000;
+
+  > .text-input__label {
+    color: #b30000;
+  }
+
+  > .text-input__input {
+    caret-color: #b30000;
+  }
+}
+
+app-text-input[focused='true'][error='true'] {
+  border-color: #b30000;
+}
+
+
+

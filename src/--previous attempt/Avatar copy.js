@@ -62,7 +62,6 @@ class Avatar extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     console.log("attributeChangedCallback");
     console.log(attrName, oldVal, newVal);
-    this.classList.add(`avatar-${newVal}`)
   }
 
   adoptedCallback(attrName, oldVal, newVal) {
