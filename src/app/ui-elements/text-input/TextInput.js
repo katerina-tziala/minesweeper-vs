@@ -5,36 +5,36 @@ import { DOM_ELEMENT_CLASS, TEMPLATE } from './text-input.constants';
 class TextInput extends HTMLElement {
   #label;
   #input;
-  #error;
   #attributeUpdateHandler;
-  #labelListener;
   #inputListeners;
+  #clickListener;
+  #value;
 
   constructor() {
     super();
-    this.value = undefined;
+    this.#value = undefined;
     this.name = undefined;
     this.#attributeUpdateHandler = new Map();
     this.#inputListeners = new Map();
     this.#attributeUpdateHandler.set('name', this.#onNameChange.bind(this));
     this.#attributeUpdateHandler.set('value', this.#onValueChange.bind(this));
-    this.#attributeUpdateHandler.set('error', this.#onError.bind(this));
   }
 
   static get observedAttributes() {
-    return ['name', 'value', 'error'];
+    return ['name', 'value'];
   }
-
-  set #value(value) {
-    return this.value = value && value.length ? value : undefined;
+  get value() {
+    if (this.#input) {
+      const inputValue = this.#input.value.trim();
+      return inputValue.length > 0 ? inputValue : undefined;
+    }
+    return undefined;
   }
 
   #setInputListeners() {
     if (this.#input) {
       this.#inputListeners.set('focus', this.#focus.bind(this));
       this.#inputListeners.set('focusout', this.#focusout.bind(this));
-      this.#inputListeners.set('keyup', this.#onKeyUp.bind(this));
-
       Array.from(this.#inputListeners.keys()).forEach(listenerName => {
         this.#input.addEventListener(listenerName, this.#inputListeners.get(listenerName));
       });
@@ -45,6 +45,7 @@ class TextInput extends HTMLElement {
     if (this.#input) {
       Array.from(this.#inputListeners.keys()).forEach(listenerName => {
         this.#input.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
+        this.#inputListeners.delete(listenerName);
       });
     }
   }
@@ -59,18 +60,15 @@ class TextInput extends HTMLElement {
     this.innerHTML = TEMPLATE;
     this.#label = this.querySelector(`.${DOM_ELEMENT_CLASS.label}`);
     this.#input = this.querySelector(`.${DOM_ELEMENT_CLASS.input}`);
-
     this.#setElementName();
     this.#setElementValue();
-    //this.#removeElementError();
-
-    this.value ? this.#focus() : this.#focusout();
+   // this.setAttribute('valid', false);
+    this.#value ? this.#focus() : this.#focusout();
     this.#setInputListeners();
   }
 
   disconnectedCallback() {
-    console.log('disconnectedCallback');
-    this.#removeLabelListener();
+    this.#removeClickListener();
     this.#removeInputListeners();
   }
 
@@ -78,13 +76,6 @@ class TextInput extends HTMLElement {
     this.name = name;
     this.#setElementName();
   }
-
-  #onError(value) {
-    this.error = JSON.parse(value);
-    console.log("onError");
-    console.log(this.error);
-  }
-
 
   #setElementName() {
     if (this.#input && this.#label && this.name) {
@@ -100,40 +91,36 @@ class TextInput extends HTMLElement {
 
   #setElementValue() {
     if (this.#input) {
-      this.#input.value = this.value ? this.value : '';
+      this.#input.value = this.#value ? this.#value : '';
     }
   }
 
-  #onLabelClick(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.#input.focus();
-  }
-
-  #onKeyUp(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.#value = this.#input.value;
-  }
-
   #focus() {
-    this.#removeLabelListener();
+    this.#removeClickListener();
     this.setAttribute('focused', true);
     this.#clearLabelShake();
   }
 
   #focusout() {
     if (!this.value) {
-      this.#addLabelListener();
+      this.#clickListener = this.#onClick.bind(this);
+      this.addEventListener('click', this.#clickListener);
       this.setAttribute('focused', false);
+      this.#input.value = '';
     } else {
       this.#shakeLabel();
     }
   }
 
+  #onClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.#input.focus();
+  }
+
   #shakeLabel() {
-    const error = JSON.parse(this.getAttribute('error'));
-    if (error) {
+    const valid = JSON.parse(this.getAttribute('valid'));
+    if (!valid) {
       ElementHandler.addStyleClass(this.#label, DOM_ELEMENT_CLASS.labelShake)
     }
   }
@@ -142,22 +129,10 @@ class TextInput extends HTMLElement {
     ElementHandler.removeStyleClass(this.#label, DOM_ELEMENT_CLASS.labelShake);
   }
 
-  #addLabelListener() {
-    this.#labelListener = this.#onLabelClick.bind(this);
-    this.#label.addEventListener('click', this.#labelListener);
+  #removeClickListener() {
+    this.removeEventListener('click', this.#clickListener);
   }
 
-  #removeLabelListener() {
-    this.#label.removeEventListener('click', this.#labelListener);
-  }
-
-  #setElementError() {
-    this.setAttribute('error', true);
-  }
-
-  #removeElementError() {
-    this.setAttribute('error', false);
-  }
 }
 
 customElements.define('app-text-input', TextInput);

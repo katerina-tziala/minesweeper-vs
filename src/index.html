@@ -9,7 +9,7 @@
 </head>
  
 <body>
-  <div id='app' class='theme-light'>
+  <div id='app' class='theme-dark'>
     <!-- HEADER -->
     <header class='header'>
       <h1 class='header-title'>MinesweeperVS</h1>
@@ -20,10 +20,14 @@
 
         <div class='card'>
           <h2 class='title'>Join MinesweeperVS</h2>
-
           <form>
             <!-- value='katerina' -->
-            <app-text-input name='username' error='true'></app-text-input>
+            <!--  valid='false'  -->
+            <app-text-input name='username' leadingIcon='true' valid='false'></app-text-input>
+            <!-- <div class='form-buttons'>
+              <button class='button-text'>clear</button>
+              <button class='button-text'>join</button>
+            </div> -->
           </form>
         </div>
 

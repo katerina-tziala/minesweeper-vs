@@ -1,97 +1,174 @@
 @use '../../../styles/utils/flexbox/flexbox';
+@use '../../../styles/utils/shapes';
 @use '../../../styles/utils/animations/animations';
+@use '../../../styles/iconography/iconography';
+
+$input-size: 40px;
+$border-radius: 4px;
+$icon-width: 28px;
 
 %label-focused {
   font-size: 14px;
-  font-weight: 600;
   padding: 0 5px;
   width: fit-content;
   cursor: default;
-  height: 16px;
+  height: 13px;
   line-height: 16px;
   top: -9px;
+}
+
+._input-leading-icon {
+  width: $icon-width;
+  height: $input-size - 2px;
+  box-sizing: border-box;
+  border-top-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+  font-size: 20px;
+  text-align: right;
+  border: none;
+  @extend .icon-user;
 }
 
 app-text-input {
   position: relative;
   width: 100%;
-  display: block;
-  min-width: 200px;
-  height: 36px;
-  line-height: 36px;
-  border-radius: 6px;
+  height: $input-size;
+  line-height: $input-size;
+  border-radius: $border-radius;
   border-width: 1px;
   border-style: solid;
+  @extend %flex-start-center;
+  @extend ._text-input__theme;
 
-  > .text-input__input {
+  .text-input-container {
+    position: relative;
+    height: 100%;
+    flex-grow: 1;
+    background-color: inherit;
+    border-radius: $border-radius;
+  }
+
+  .text-input__input {
     display: block;
     width: 100%;
     height: 100%;
-    padding: 12px;
+    padding: 14px 12px 12px;
     outline: none;
     border: none;
     background-color: inherit;
-    border-radius: 8px;
+    border-radius: $border-radius;
     caret-color: auto;
   }
-  > .text-input__label {
+
+  .text-input__label {
     cursor: text;
     position: absolute;
     height: 21px;
-    top: 6px;
+    top: 10px;
     line-height: 11px;
     padding: 5px;
     left: 6px;
-    border-radius: 6px;
-    transition: all 0.2s ease-out, background-color 1ms;
+    border-radius: $border-radius;
+    transition: all 0.1s ease-out, background-color 1ms;
     background-color: inherit;
+    font-weight: 600;
+    z-index: 2;
+  }
+
+  &:hover {
+    @extend ._text-input__theme--hovered;
   }
 }
 
 .text-input__label--shake {
-  animation: shake-linear 0.5s linear;
+  animation: shake-linear 0.4s linear;
+}
+
+app-text-input[leadingIcon="true"] {
+  &::before {
+    @extend ._input-leading-icon;
+  }
+}
+
+app-text-input[focused="true"] {
+  @extend ._text-input__theme--focused;
+
+  .text-input__label {
+    @extend %label-focused;
+    @extend ._text-input__theme-label--focused;
+  }
+
+  &:hover {
+    @extend ._text-input__theme--focused;
+    &::before {
+      @extend ._text-input__theme--focused;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 40px;
+    left: -2px;
+    right: -2px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    @extend ._text-input__theme--focused-outline;
+  }
 }
 
 // TODO THEMING
-app-text-input {
-  border-color: #808080;
+._text-input__theme {
+  border-color: #737373;
   background-color: #fff;
-
-  &:hover {
-    border: 1px solid #000;
-    background-color: #f5f5f5;
-  }
+  color: #737373;
 }
 
-app-text-input[focused='true'] {
-  border-width: 2px;
-  border-style: solid;
+._text-input__theme--hovered {
+  border-color: #000;
+  background-color: #f5f5f5;
+  color: #000;
+}
 
+._text-input__theme--focused {
   border-color: #000;
   background-color: #fff;
+  color: #000;
+}
 
-  > .text-input__label {
-    @extend %label-focused;
-    background-color: #fff;
-    color: #808080;
+._text-input__theme--focused-outline {
+  border-color: #000;
+}
+
+._text-input__theme-label--focused {
+  background-color: #fff;
+  color: #808080;
+}
+
+app-text-input[valid="false"] {
+  border-color: #cc0000;
+  color: #cc0000;
+
+  .text-input__label {
+    color: #cc0000;
+  }
+
+  .text-input__input {
+    caret-color: #cc0000;
+  }
+  &:hover {
+    color: #cc0000;
+
+    &::before {
+      color: #cc0000;
+    }
+  }
+  &::after {
+    border-color: #cc0000;
   }
 }
 
-app-text-input[error='true'] {
+app-text-input[focused="true"][valid="false"] {
   border-color: #b30000;
-
-  > .text-input__label {
-    color: #b30000;
-  }
-
-  > .text-input__input {
-    caret-color: #b30000;
-  }
 }
-
-app-text-input[focused='true'][error='true'] {
-  border-color: #b30000;
-}
-
-
-

@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // AppLoaderHandler.display();
   // new App();
   AppLoaderHandler.hide();
+  // const test = document.getElementsByTagName("app-text-input")[0];
 
-
+  // console.log(test);
+  // setTimeout(() => {
+  //   test.remove();
+  // }, 2000)
   // const test = document.createElement("app-text-input");
 
   // console.log(test);
