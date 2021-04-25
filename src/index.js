@@ -1,10 +1,10 @@
 import './index.scss';
-import './app/ui-elements/loader/Loader';
+import './app/ui-elements/custom-elements/loader/Loader';
 import { AppLoaderHandler } from './app/app-loader-handler';
 import { App } from './app/App';
 
 
-import { TextInput } from './app/ui-elements/text-input/TextInput';
+import { TextInput } from './app/ui-elements/custom-elements/text-input/TextInput';
 
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,0 +1,18 @@
+
+
+@mixin slideIn($duration: 1) {
+  animation: slide-in #{$duration}s ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    margin-left: -150vw;
+  }
+
+  to {
+    opacity: 1;
+    margin-left: 0px;
+  }
+}
