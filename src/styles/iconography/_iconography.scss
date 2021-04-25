@@ -10,6 +10,17 @@
   content: fa-content($fa-var-robot);
 }
 
+.icon-exclamation {
+  @extend %icon-regular;
+  content: fa-content($fa-var-exclamation);
+}
+
+.icon-info-circle {
+  @extend %icon-regular;
+  content: fa-content($fa-var-info-circle);
+}
+
+
 
 @mixin beforeIcon($key) {
   &::before {

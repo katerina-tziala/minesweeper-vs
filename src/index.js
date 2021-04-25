@@ -11,12 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // AppLoaderHandler.display();
   // new App();
   AppLoaderHandler.hide();
-  // const test = document.getElementsByTagName("app-text-input")[0];
+   const test = document.getElementsByTagName("app-text-input")[0];
 
+   test.addEventListener('onValueChange', (event) => {
+     console.log('onValueChange');
+     console.log(event.detail);
+   })
   // console.log(test);
   // setTimeout(() => {
-  //   test.remove();
-  // }, 2000)
+  //   test.removeAttribute('error-message');
+  // }, 4000)
   // const test = document.createElement("app-text-input");
 
   // console.log(test);

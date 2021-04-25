@@ -1,10 +1,23 @@
 export const DOM_ELEMENT_CLASS = {
-  input: 'text-input__input',
-  label: 'text-input__label',
-  labelShake: 'text-input__label--shake'
+  input: 'app-text-input__input',
+  inputField: 'app-text-input__input-field',
+  label: 'app-text-input__label',
+  labelShake: 'app-text-input__label--shake',
+  inputError: 'app-text-input__error-message'
 };
 
-export const TEMPLATE = `<div class='text-input-container'>
-<label class='text-input__label'></label>
-<input class='text-input__input' type='text' value='' autocomplete='off'/>
-<div>`;
+export const TEMPLATE = `
+<div class='app-text-input__input'>
+  <div class='app-text-input__input-container'>
+  <label class='${DOM_ELEMENT_CLASS.label}'></label>
+  <input class='${DOM_ELEMENT_CLASS.inputField}' type='text' value='' autocomplete='off'/>
+  </div>
+</div>
+<div class='${DOM_ELEMENT_CLASS.inputError}'></div>
+`;
+
+export const ATTRIBUTES = {
+  name: 'name',
+  value: 'value',
+  errorMessage: 'error-message'
+};

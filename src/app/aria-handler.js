@@ -5,28 +5,23 @@ export class AriaHandler {
     element.setAttribute('role', role);
   }
 
-  static setAlertRole(element) {
-    AriaHandler.setRole(element, 'alert');
-    console.log("hhhhhh");
-    AriaHandler.setAriaAssertive(element);
-  }
-
   static setAriaAssertive(element) {
-    console.log('setAriaAssertive');
     element.setAttribute('aria-live', 'assertive');
-  }
-
-
-  static removeRole(element) {
-    element.removeAttribute('role');
-    AriaHandler.removeAriaLive(element);
   }
 
   static removeAriaLive(element) {
     element.removeAttribute('aria-live');
   }
 
-
+  static setAlertRole(element) {
+    AriaHandler.setRole(element, 'alert');
+    AriaHandler.setAriaAssertive(element);
+  }
+  
+  static removeRole(element) {
+    element.removeAttribute('role');
+    AriaHandler.removeAriaLive(element);
+  }
 
   // static setAriaLabel(element, ariaLabel) {
   //   element.setAttribute('aria-label', ariaLabel);

@@ -5,7 +5,7 @@
 
 $input-size: 40px;
 $border-radius: 4px;
-$icon-width: 28px;
+$icon-size: 38px;
 
 %label-focused {
   font-size: 14px;
@@ -17,19 +17,20 @@ $icon-width: 28px;
   top: -9px;
 }
 
-._input-leading-icon {
-  width: $icon-width;
-  height: $input-size - 2px;
+%leading-icon {
+  @include shapes.rectangle($icon-size);
   box-sizing: border-box;
   border-top-left-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
   font-size: 20px;
-  text-align: right;
+  text-align: center;
   border: none;
-  @extend .icon-user;
+  z-index: 2;
+  border-right-width: 1px;
+  border-right-style: solid;
 }
 
-app-text-input {
+.app-text-input__input {
   position: relative;
   width: 100%;
   height: $input-size;
@@ -38,17 +39,18 @@ app-text-input {
   border-width: 1px;
   border-style: solid;
   @extend %flex-start-center;
-  @extend ._text-input__theme;
+}
 
-  .text-input-container {
-    position: relative;
-    height: 100%;
-    flex-grow: 1;
-    background-color: inherit;
-    border-radius: $border-radius;
-  }
+.app-text-input__input-container {
+  position: relative;
+  height: 100%;
+  flex-grow: 1;
+  background-color: inherit;
+  border-radius: $border-radius;
+  cursor: text;
+  z-index: 2;
 
-  .text-input__input {
+  .app-text-input__input-field {
     display: block;
     width: 100%;
     height: 100%;
@@ -58,9 +60,10 @@ app-text-input {
     background-color: inherit;
     border-radius: $border-radius;
     caret-color: auto;
+    cursor: text;
   }
 
-  .text-input__label {
+  .app-text-input__label {
     cursor: text;
     position: absolute;
     height: 21px;
@@ -72,103 +75,114 @@ app-text-input {
     transition: all 0.1s ease-out, background-color 1ms;
     background-color: inherit;
     font-weight: 600;
-    z-index: 2;
-  }
-
-  &:hover {
-    @extend ._text-input__theme--hovered;
+    &.app-text-input__label--shake {
+      animation: shake-linear 0.4s linear;
+    }
   }
 }
 
-.text-input__label--shake {
-  animation: shake-linear 0.4s linear;
+%app-text-input--focused {
+  .app-text-input__input {
+    &::after {
+      content: "";
+      position: absolute;
+      height: 40px;
+      left: -2px;
+      right: -2px;
+      border-radius: 5px;
+      border-width: 1px;
+      border-style: solid;
+      background-clip: content-box;
+      background-color: transparent;
+    }
+  }
+
+  .app-text-input__label {
+    @extend %label-focused;
+  }
 }
 
 app-text-input[leadingIcon="true"] {
-  &::before {
-    @extend ._input-leading-icon;
+  .app-text-input__input {
+    &::before {
+      @extend %leading-icon;
+      // IN FORM
+      @extend .icon-user;
+    }
   }
 }
 
 app-text-input[focused="true"] {
-  @extend ._text-input__theme--focused;
+  @extend %app-text-input--focused;
+}
 
-  .text-input__label {
-    @extend %label-focused;
-    @extend ._text-input__theme-label--focused;
-  }
+app-text-input[error="true"] {
+  @extend %app-text-input--error;
+}
 
-  &:hover {
-    @extend ._text-input__theme--focused;
-    &::before {
-      @extend ._text-input__theme--focused;
-    }
-  }
+.app-text-input__error-message {
+  font-size: 0.9rem;
+  padding: 5px;
+  max-width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
+  font-weight: 600;
+  position: relative;
 
   &::after {
-    content: "";
+    width: 38px;
+    height: 36px;
+    font-size: 20px;
+    line-height: 38px;
     position: absolute;
-    height: 40px;
-    left: -2px;
-    right: -2px;
-    border-radius: 5px;
-    border-width: 1px;
-    border-style: solid;
-    @extend ._text-input__theme--focused-outline;
+    top: -38px;
+    right: 1px;
+    z-index: 4;
+    @extend .icon-info-circle;
   }
 }
+
 
 // TODO THEMING
-._text-input__theme {
-  border-color: #737373;
+.app-text-input__input {
   background-color: #fff;
   color: #737373;
-}
 
-._text-input__theme--hovered {
-  border-color: #000;
-  background-color: #f5f5f5;
-  color: #000;
-}
-
-._text-input__theme--focused {
-  border-color: #000;
-  background-color: #fff;
-  color: #000;
-}
-
-._text-input__theme--focused-outline {
-  border-color: #000;
-}
-
-._text-input__theme-label--focused {
-  background-color: #fff;
-  color: #808080;
-}
-
-app-text-input[valid="false"] {
-  border-color: #cc0000;
-  color: #cc0000;
-
-  .text-input__label {
-    color: #cc0000;
-  }
-
-  .text-input__input {
-    caret-color: #cc0000;
-  }
   &:hover {
-    color: #cc0000;
+    background-color: #f5f5f5;
+    color: #000;
+  }
+}
 
-    &::before {
+%app-text-input--focused {
+  .app-text-input__input {
+    background-color: #fff;
+    color: #000;
+
+    &:hover {
+      background-color: #fff;
+      color: #000;
+    }
+  }
+}
+
+%app-text-input--error {
+  .app-text-input__input {
+    background-color: #fff;
+    color: #cc0000;
+    .app-text-input__input-field {
+      caret-color: #cc0000;
+    }
+    &:hover {
+      background-color: #fff;
       color: #cc0000;
     }
   }
-  &::after {
-    border-color: #cc0000;
-  }
 }
 
-app-text-input[focused="true"][valid="false"] {
-  border-color: #b30000;
+.app-text-input__error-message {
+  color: #cc0000;
+  &::after {
+    background-color: #fff;
+  }
 }
