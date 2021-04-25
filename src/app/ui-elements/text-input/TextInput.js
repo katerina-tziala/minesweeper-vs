@@ -113,6 +113,7 @@ class TextInput extends HTMLElement {
     if (this.#inputField && this.#label && this.name) {
       this.#label.innerHTML = this.name;
       this.#inputField.name = this.name;
+      AriaHandler.setAriaLabel(this.#inputField, `enter ${this.name}`);
     }
   }
 

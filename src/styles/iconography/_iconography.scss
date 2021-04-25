@@ -20,6 +20,10 @@
   content: fa-content($fa-var-info-circle);
 }
 
+.icon-eraser {
+  @extend %icon-regular;
+  content: fa-content($fa-var-eraser);
+}
 
 
 @mixin beforeIcon($key) {

@@ -32,7 +32,7 @@ body,
 #app {
   @extend %flex-start-center;
   flex-direction: column;
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
 }
 
 .main {
@@ -69,7 +69,7 @@ body,
 .form-buttons {
   // border: 1px solid red;
   margin-top: 30px;
-  @extend %flex-center-center;
+  @extend %flex-between-center;
 }
 
 form {

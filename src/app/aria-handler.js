@@ -23,9 +23,9 @@ export class AriaHandler {
     AriaHandler.removeAriaLive(element);
   }
 
-  // static setAriaLabel(element, ariaLabel) {
-  //   element.setAttribute('aria-label', ariaLabel);
-  // }
+  static setAriaLabel(element, ariaLabel) {
+    element.setAttribute('aria-label', ariaLabel);
+  }
 
   // static setTabindex(element, value) {
   //   element.setAttribute('tabindex', value);
