@@ -1,0 +1,28 @@
+
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+
+
+@use 'styles/iconography/iconography';
+@import 'styles/components/button/button';
+
+// app-icon-button {
+//   // overflow: hidden;
+
+// }
+
+
+.app-icon-button {
+  @extend %button;
+  // border: 1px solid red;
+  @include shapes.circle(34px);
+  
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 16%), 0px 1px 2px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+
+
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: inherit;
+  border: 2px solid #404040;
+}

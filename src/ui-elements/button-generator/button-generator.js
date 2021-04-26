@@ -29,6 +29,9 @@ export class ButtonGenerator {
     return button;
   }
 
+
+  ///
+
   static generateIconButton(type, action) {
     const button = this.generateButton(action);
     const params = ICON_BUTTON[type];

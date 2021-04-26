@@ -1,33 +1,60 @@
 'use strict';
 import './add-username.scss';
-import { ElementHandler, ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
-import { DOM_ELEMENT_CLASS } from './add-username.constants';
+import { ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
+import { DOM_ELEMENT_CLASS, CONTENT } from './add-username.constants';
 import { UsernameForm } from './username-form/username-form';
 
 export class AddUsername {
     #form;
+    #type;
+    #onSubmit;
+    #onClose;
 
-    constructor() {
-        console.log('AddUsername');
-        this.#form = new UsernameForm(this.onFormSubmit.bind(this));
-        this.#form.init('add player', 'kate')
+    constructor(type = 'join', onSubmit, onClose) {
+        this.#type = type;
+        this.#onSubmit = onSubmit;
+        this.#onClose = onClose;
+    }
+
+    get #submitText() {
+        const content = CONTENT[this.#type];
+        return content ? content.submitText : '';
+    }
+
+    get #titleText() {
+        const content = CONTENT[this.#type];
+        return content ? content.title : '';
+    }
+
+    #initForm() {
+        this.#form = new UsernameForm(this.#onFormSubmit.bind(this));
+        this.#form.init(this.#submitText, 'kate');
     }
 
     render() {
+        this.#initForm();
+        return this.#generate();
+    }
+
+    #generate() {
         const card = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.component]);
-        const title = ElementGenerator.generateTitleH2('join MinesweeperVS');
+        if (this.#onClose) {
+            const closeButton = this.#generateCloseButton();
+            card.append(closeButton);
+        }
+        const title = ElementGenerator.generateTitleH2(this.#titleText);
         const form = this.#form.generate();
-
-        const closeButton = ButtonGenerator.generateIconButtonClose(() => {
-            console.log("on clo");
-        });
-        card.append(closeButton);
-
         card.append(title, form);
         return card;
     }
 
-    onFormSubmit(data) {
-       console.log(data);
+    #generateCloseButton() {
+        return ButtonGenerator.generateIconButtonClose(this.#onClose.bind(this));
+    }
+
+    #onFormSubmit(data) {
+        if (this.#onSubmit) {
+            this.#onSubmit(data);
+        }
     }
 }

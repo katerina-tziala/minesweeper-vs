@@ -1,45 +1,85 @@
 @use '../../utils/state';
 @use '../../utils/shapes';
+@use '../../iconography/iconography';
+@use '../../utils/flexbox/flexbox';
 
-%button {
+._button {
   cursor: pointer;
   outline: none;
   border: none;
   overflow: hidden;
   text-align: center;
-
+  display: inline-block;
   &:disabled {
     @extend .disabled;
   }
 }
 
 .button-text {
-  @extend %button;
-  display: inline-block;
+  @extend ._button;
   height: 34px;
   line-height: 36px;
   min-width: 34px;
   border-radius: 2px;
   position: relative;
   padding: 0 10px;
-  background-position: center;
   font-size: 0.9rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: background 0.5s;
 }
 
+.button-icon {
+  @extend ._button;
+  @extend ._button--primary;
+  @extend %flex-center-center;
+  @include shapes.circle(34px);
+}
+
+.button-icon--close {
+  @extend .button-icon;
+  &::after {
+    @extend .icon-x;
+    font-size: 1.4em;
+    position: relative;
+    top: 1px;
+  }
+}
+
+// .button-icon--close {
+//   @extend .button-icon;
+//   &::after {
+//     @extend .icon-x;
+//     font-size: 1.4em;
+//     position: relative;
+//     top: 1px;
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // TODO THEMING
-.button-text {
-  color: white;
+
+._button--primary {
+  background-position: center;
+  transition: background 0.5s;
+  color: #f2f2f2;
   background-color: #404040;
-  // box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
-  //   0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
-    0 1px 5px 0 rgb(0 0 0 / 12%);
+
   &:hover,
   &:focus {
+    color: #fff;
     background: #000 radial-gradient(circle, transparent 1%, #000 1%)
       center/15000%;
     box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
@@ -50,12 +90,27 @@
     background-color: #808080;
     background-size: 100%;
     transition: background 0s;
+  }
+}
+
+.button-text {
+  @extend ._button--primary;
+
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+
+  &:active {
     box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
       0 1px 5px 0 rgb(0 0 0 / 12%);
   }
 }
 
-.button-icon--close {
-  border: 2px solid red;
-  @include shapes.circle(36px);
+.button-icon {
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 16%),
+    0px 1px 2px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+
+  &:active {
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 16%),
+      0px 1px 2px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  }
 }

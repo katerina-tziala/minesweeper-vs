@@ -5,11 +5,14 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 import { App } from './app/App';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // AppLoaderHandler.display();
-  // new App();
-    AppLoaderHandler.hide();
-  //  const test = document.getElementsByTagName("app-text-input")[0];
-
+  AppLoaderHandler.display();
+  new App();
+  // AppLoaderHandler.hide();
+  // const test = document.getElementsByTagName("app-icon-button")[0];
+  //  test.addEventListener('click', (event) => {
+  //    console.log('icon button click');
+  //    //console.log(event);
+  //  })
   //  test.addEventListener('onValueChange', (event) => {
   //    console.log('onValueChange');
   //    console.log(event.detail);

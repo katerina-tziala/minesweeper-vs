@@ -1,9 +1,8 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/utils/shapes';
-@import "styles/iconography/iconography";
-
-@import "../../../styles/components/card/card";
-@import "../../../styles/utils/animations/animations";
+@import 'styles/iconography/iconography';
+@import 'styles/components/card/card';
+@import 'styles/utils/animations/animations';
 
 .add-username {
   @extend .card;
@@ -12,10 +11,14 @@
   max-width: 360px;
   @include slideIn(0.8);
 
-  >.button-icon--close {
-    position: absolute;
-    right: 10px;
+  > .title {
+    padding-right: 50px;
+  }
 
+  > .button-icon--close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
   }
 }
 

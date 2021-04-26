@@ -18,7 +18,18 @@ export class JoinPage extends Page {
 
   renderPage(mainContainer) {
     console.log("render join page");
-    this.joinUser = new AddUsername();
+    this.joinUser = new AddUsername('join', this.#onJoin.bind(this));
     mainContainer.append(this.joinUser.render());
   }
+
+
+  #onJoin(data) {
+    console.log("#onJoin");
+    console.log(data);
+  }
+
+
+
+
+
 }

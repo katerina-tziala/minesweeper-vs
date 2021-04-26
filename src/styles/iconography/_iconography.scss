@@ -25,6 +25,10 @@
   content: fa-content($fa-var-eraser);
 }
 
+.icon-x {
+  @extend %icon-regular;
+  content: fa-content($fa-var-times);
+}
 
 @mixin beforeIcon($key) {
   &::before {
