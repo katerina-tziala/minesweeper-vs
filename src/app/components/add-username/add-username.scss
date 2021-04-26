@@ -7,15 +7,15 @@
 
 .add-username {
   @extend .card;
-  min-width: 300px;
+  min-width: 340px;
   //max-width: 500px;
   @include slideIn(0.8);
 }
 
 form {
-  margin-top: 30px;
+ 
   padding: 0 5px;
-  // width: 300px;
+  padding-top: 30px;
 
   .app-text-input__input {
     &::before {
@@ -24,11 +24,11 @@ form {
   }
 
   .form-buttons {
-    margin-top: 30px;
+    margin-top: 20px;
     @extend %flex-between-center;
 
     >.button-text {
-      min-width: 80px;
+      min-width: 116px;
     }
   }
 }

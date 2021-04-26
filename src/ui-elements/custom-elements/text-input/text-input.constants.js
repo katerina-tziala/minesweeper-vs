@@ -22,4 +22,4 @@ export const ATTRIBUTES = {
   errorMessage: 'error-message'
 };
 
-export const KEY_BLACKLIST = ['Shift', 'Alt', 'Control', 'Meta', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];
+export const KEY_BLACKLIST = ['Shift', 'Alt', 'Control', 'Enter', 'Meta', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];

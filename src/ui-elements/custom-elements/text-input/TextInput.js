@@ -121,6 +121,7 @@ export class TextInput extends HTMLElement {
   #onValueChanged(value) {
     this.#value = value;
     this.#setElementValue();
+    this.#value ? this.#focus() : this.#focusout();
   }
 
   #onKeyUp(event) {
@@ -164,7 +165,7 @@ export class TextInput extends HTMLElement {
 
   #shakeLabel() {
     const error = JSON.parse(this.getAttribute('error'));
-    if (!error) {
+    if (error) {
       ElementHandler.addStyleClass(this.#label, DOM_ELEMENT_CLASS.labelShake);
     }
   }

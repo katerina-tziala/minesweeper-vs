@@ -106,8 +106,6 @@ app-text-input[leadingIcon="true"] {
   .app-text-input__input {
     &::before {
       @extend %leading-icon;
-      // IN FORM
-      // @extend .icon-user;
     }
   }
 }
@@ -149,8 +147,14 @@ app-text-input[error="true"] {
   color: #737373;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #fff;
     color: #000;
+    .app-text-input__input-field {
+      background-color: #f5f5f5;
+    }
+    .app-text-input__label {
+      background-color: #f5f5f5;
+    }
   }
 }
 
@@ -162,6 +166,12 @@ app-text-input[error="true"] {
     &:hover {
       background-color: #fff;
       color: #000;
+      .app-text-input__input-field {
+        background-color: #fff;
+      }
+      .app-text-input__label {
+        background-color: #fff;
+      }
     }
   }
 }
@@ -176,6 +186,12 @@ app-text-input[error="true"] {
     &:hover {
       background-color: #fff;
       color: #cc0000;
+      .app-text-input__input-field {
+        background-color: #fff;
+      }
+      .app-text-input__label {
+        background-color: #fff;
+      }
     }
   }
 }
