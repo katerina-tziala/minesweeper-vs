@@ -124,7 +124,7 @@ export class UsernameForm {
     }
 
     #checkSubmission() {
-        const submissionAllowed = UsernameValidation.validLength(this.#username);
+        const submissionAllowed = UsernameValidation.validMinLength(this.#username);
         this.#setSubmissionDisabled(!submissionAllowed);
     }
 
