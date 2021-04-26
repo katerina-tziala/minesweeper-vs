@@ -1,30 +1,43 @@
 'use strict';
 
 export class AriaHandler {
+  
   static setRole(element, role) {
-    element.setAttribute('role', role);
+    if (element) {
+      element.setAttribute('role', role);
+    }
   }
 
   static setAriaAssertive(element) {
-    element.setAttribute('aria-live', 'assertive');
+    if (element) {
+      element.setAttribute('aria-live', 'assertive');
+    }
   }
 
   static removeAriaLive(element) {
-    element.removeAttribute('aria-live');
+    if (element) {
+      element.removeAttribute('aria-live');
+    }
   }
 
   static setAlertRole(element) {
-    AriaHandler.setRole(element, 'alert');
-    AriaHandler.setAriaAssertive(element);
+    if (element) {
+      AriaHandler.setRole(element, 'alert');
+      AriaHandler.setAriaAssertive(element);
+    }
   }
-  
+
   static removeRole(element) {
-    element.removeAttribute('role');
-    AriaHandler.removeAriaLive(element);
+    if (element) {
+      element.removeAttribute('role');
+      AriaHandler.removeAriaLive(element);
+    }
   }
 
   static setAriaLabel(element, ariaLabel) {
-    element.setAttribute('aria-label', ariaLabel);
+    if (element) {
+      element.setAttribute('aria-label', ariaLabel);
+    }
   }
 
   // static setTabindex(element, value) {

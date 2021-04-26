@@ -1,17 +1,21 @@
+
 'use strict';
 
 export const ICON_BUTTON = {
   close: {
-    className: 'button-icon',
+    className: 'button-icon--close',
     ariaLabel: 'close'
   }
 };
 
 
-
-
-
-
+// export const CLOSE_BTN = {
+//   className: 'btn-icon btn-icon--close',
+//   attributes: {
+//     'aria-label': 'close',
+//   },
+//   actionType: 'click',
+// };
 
 // export const PLAY_BTN = {
 //   className: 'btn-gameplay btn-icon--play',

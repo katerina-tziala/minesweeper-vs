@@ -5,9 +5,9 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 import { App } from './app/App';
 
 document.addEventListener('DOMContentLoaded', () => {
-  AppLoaderHandler.display();
-  new App();
-  //  AppLoaderHandler.hide();
+  // AppLoaderHandler.display();
+  // new App();
+    AppLoaderHandler.hide();
   //  const test = document.getElementsByTagName("app-text-input")[0];
 
   //  test.addEventListener('onValueChange', (event) => {
