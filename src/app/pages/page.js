@@ -1,13 +1,13 @@
 'use strict';
 import { AppLoaderHandler } from '../app-loader-handler';
-import { ElementHandler } from '../ui-elements/element-handler';
+import { ElementHandler } from '../../ui-elements/element-handler';
 
 
 
 export class Page {
 
   constructor() {
-    console.log('Page');
+   // console.log('Page');
   }
 
   get mainContainer() {
@@ -20,11 +20,12 @@ export class Page {
 
   init() {
     AppLoaderHandler.display();
-    console.log("init page");
+    //console.log("init page");
     const mainContainer = this.mainContainer;
     if (mainContainer) {
       ElementHandler.clearContent(mainContainer);
       this.renderPage(mainContainer);
+      AppLoaderHandler.hide();
     }
   }
 

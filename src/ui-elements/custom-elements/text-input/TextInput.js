@@ -1,9 +1,9 @@
 import './text-input.scss';
 import { ElementHandler } from '../../element-handler';
 import { AriaHandler } from '../../aria-handler';
-import { DOM_ELEMENT_CLASS, TEMPLATE, ATTRIBUTES } from './text-input.constants';
+import { DOM_ELEMENT_CLASS, TEMPLATE, ATTRIBUTES, KEY_BLACKLIST } from './text-input.constants';
 
-class TextInput extends HTMLElement {
+export class TextInput extends HTMLElement {
   #input;
   #label;
   #inputField;
@@ -59,12 +59,13 @@ class TextInput extends HTMLElement {
     this.#clickListener = undefined;
   }
 
+
+
   #setInputListeners() {
     if (this.#inputField) {
       this.#inputListeners.set('focus', this.#focus.bind(this));
       this.#inputListeners.set('focusout', this.#focusout.bind(this));
-      this.#inputListeners.set('keyup', this.#submitValueChange.bind(this));
-
+      this.#inputListeners.set('keyup', this.#onKeyUp.bind(this));
       this.#inputListenersTypes.forEach(listenerName => {
         this.#inputField.addEventListener(listenerName, this.#inputListeners.get(listenerName));
       });
@@ -74,7 +75,7 @@ class TextInput extends HTMLElement {
   #removeInputListeners() {
     if (this.#inputField) {
       this.#inputListenersTypes.forEach(listenerName => {
-        this.#inputListeners.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
+        this.#inputField.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
         this.#inputListeners.delete(listenerName);
       });
     }
@@ -122,6 +123,12 @@ class TextInput extends HTMLElement {
     this.#setElementValue();
   }
 
+  #onKeyUp(event) {
+    if (KEY_BLACKLIST.indexOf(event.key) === -1) {
+      this.#submitValueChange();
+    }
+  }
+
   #submitValueChange() {
     const event = new CustomEvent('onValueChange', { detail: { value: this.value } });
     this.dispatchEvent(event);
@@ -167,7 +174,7 @@ class TextInput extends HTMLElement {
   }
 
   #onErrorMessageChange(message) {
-    this.#errorMessage = message && message.length > 0 ? message: undefined;
+    this.#errorMessage = message && message.length > 0 ? message : undefined;
     this.#handleErrorDisplay();
   }
 

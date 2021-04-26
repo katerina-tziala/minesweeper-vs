@@ -1,0 +1,21 @@
+
+@use 'styles/utils/flexbox/flexbox';
+@use 'styless/utils/shapes';
+@import 'styles/iconography/iconography';
+
+%user-avatar {
+  @include afterIcon('user');
+  padding-bottom: 4px;
+  font-size: 2em;
+}
+
+app-avatar {
+  overflow: hidden;
+  @include shapes.circle(4rem);
+  @extend %flex-center-center;
+  @extend %user-avatar;
+}
+
+app-avatar[type='bot'] {
+  @include afterIcon('bot');
+}

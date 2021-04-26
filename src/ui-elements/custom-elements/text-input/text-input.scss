@@ -107,7 +107,7 @@ app-text-input[leadingIcon="true"] {
     &::before {
       @extend %leading-icon;
       // IN FORM
-      @extend .icon-user;
+      // @extend .icon-user;
     }
   }
 }

@@ -5,7 +5,7 @@ const template = `<svg width='32' height='32'>
                     <circle class='loader-spinner spin' cx='16' cy='16' r='14' fill='none'></circle>
                   </svg>`;
 
-class Loader extends HTMLElement {
+export class Loader extends HTMLElement {
 
   constructor() {
     super();

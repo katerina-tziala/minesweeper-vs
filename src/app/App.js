@@ -4,7 +4,7 @@ import { JoinPage } from './pages/join-page/join-page';
 export class App {
 
   constructor() {
-    console.log('App');
+    //console.log('App');
   
     AppLoaderHandler.hide();
     new JoinPage();
