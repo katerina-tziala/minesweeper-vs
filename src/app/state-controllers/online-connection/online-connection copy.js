@@ -1,6 +1,6 @@
 'use strict';
 
-import { CONNECTION_CONFIG } from './connection-config.constants';
+import { CONNECTION_CONFIG } from './connection.constants';
 
 export class OnlineConnection {
   // #actions;

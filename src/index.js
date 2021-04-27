@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   AppLoaderHandler.display();
   new App();
   // AppLoaderHandler.hide();
+  //ws://localhost:9000?user=test
   // const test = document.getElementsByTagName("app-icon-button")[0];
   //  test.addEventListener('click', (event) => {
   //    console.log('icon button click');
