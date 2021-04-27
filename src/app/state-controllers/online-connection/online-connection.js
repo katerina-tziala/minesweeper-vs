@@ -13,7 +13,6 @@ export default
     this.onErrorMessage = undefined;
   }
 
-
   get live() {
     return this.#webSocket && this.#webSocket.readyState === 1;
   }
@@ -38,27 +37,33 @@ export default
     // this.#webSocket.close();
   }
 
-  #onError(event) {
-   // console.log('error', event);
+  #onError() {
+    // console.log('error', event);
     // console.log(this.#webSocket);
     if (this.#webSocket && this.#webSocket.readyState === 3) {
-      console.log('The connection is closed or couldn"t be opened');
-      if (this.onConnectionError) {
-        this.onConnectionError();
-      }
+      console.log('The connection is closed or could not be opened');
+    }
+
+    this.#webSocket = undefined;
+    if (this.onConnectionError) {
+      this.onConnectionError();
     }
   }
 
   #onClosed(event) {
-    //console.log('closed', event);
+    console.log('closed', event);
     console.log('wasClean', event.wasClean);
     console.log('wasClean property is set to false when the WebSocket connection did not close via the close handshake');
     // console.log(this.#webSocket);
   }
 
-
-
-
+  #onMessageReceived(message) {
+    const { type } = message;
+    if (!type) {
+      return;
+    }
+    type === 'error' ? this.#submitErrorMessage(message) : this.#submitMessage(message);
+  }
 
   #submitErrorMessage(message) {
     if (this.onErrorMessage) {
@@ -69,25 +74,6 @@ export default
   #submitMessage(message) {
     if (this.onMessage) {
       this.onMessage(message);
-    }
-  }
-
-
-  #onMessageReceived(message) {
-    const { type } = message;
-    if (!type) {
-      return;
-    }
-    if (type === 'error') {
-      // console.log('on Connection Error Message');
-      // console.log(message);
-      // console.log('------------------');
-      this.#submitErrorMessage(message);
-    } else {
-      // console.log('onConnectionMessage');
-      // console.log(message);
-      // console.log('------------------');
-      this.#submitMessage(message);
     }
   }
 

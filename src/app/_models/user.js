@@ -3,10 +3,10 @@ import { AppModel } from './app-model';
 
 export class User extends AppModel {
 
-  constructor(id, username) {
+  constructor(username, id) {
     super();
-    this.id = id;
     this.username = username;
+    this.id = id || username;
   }
 
 

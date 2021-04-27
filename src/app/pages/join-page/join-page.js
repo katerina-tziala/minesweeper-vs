@@ -5,73 +5,65 @@ import { Page } from '../page';
 import { AddUsername } from '~/components/@components.module';
 
 import OnlineConnection from '../../state-controllers/online-connection/online-connection';
+import { User } from '../../_models/user';
+import { MessageInType } from '../../state-controllers/online-connection/connection.message-in';
+import { LocalStorageHelper } from 'UTILS';
 
 
-//
+
 export class JoinPage extends Page {
   #onlineConnection;
+  #user;
 
   constructor() {
     super();
     this.#onlineConnection = OnlineConnection.getInstance();
-   
-    // const connection = OnlineConnection.getInstance();
-    // console.log(connection);
-    // connection.add('test');
-    // console.log(connection.get());
-    // const connection2 = OnlineConnection.getInstance();
-    // connection.add('test2');
-    // console.log(connection2.get());
 
+  
 
-    // const connection = new OnlineConnection();
-    // console.log(connection);
-    // connection.add('test');
-    // console.log(connection.get());
-    // const connection2 =  new OnlineConnection();
-    // connection.add('test2');
-    // console.log(connection2.get());
-
-    this.#onlineConnection.onConnectionError = this.#onConnectionError.bind(this);
-    this.#onlineConnection.onMessage =  this.#onMessage.bind(this);;
-    this.#onlineConnection.onErrorMessage =  this.#onErrorMessage.bind(this);
+    // this.#onlineConnection.onConnectionError = this.onConnectionError.bind(this);
+    // this.#onlineConnection.onMessage = this.onMessage.bind(this);
+    // this.#onlineConnection.onErrorMessage = this.onErrorMessage.bind(this);
 
     console.log('JoinPage');
     this.init();
   }
 
   renderPage(mainContainer) {
-    console.log("render join page");
     this.joinUser = new AddUsername('join', this.#onJoin.bind(this));
     mainContainer.append(this.joinUser.render());
+
+    //this.onConnectionError();
   }
 
-
   #onJoin(data) {
-    console.log("#onJoin");
-    // console.log(data);
-    //{type: "user-joined", data: {…}}
+    // TODO:
+    // console.log('disable from buttons show loader');
+    this.#user = new User(data.username);
     this.#onlineConnection.establishConnection(data);
   }
 
-
-  #onConnectionError() {
-    console.log("#onConnectionError");
-    // console.log(data);
-    //{type: "user-joined", data: {…}}
-    // this.#onlineConnection.establishConnection(data);
+  onConnectionError() {
+    console.log("#onConnectionError joinpage");
+    console.log("ask user for offline?");
+    console.log(this.#user);
   }
 
-  #onMessage(data) {
-    console.log("#onMessage");
-    console.log(data);
-    //{type: "user-joined", data: {…}}
-    // this.#onlineConnection.establishConnection(data);
+  onMessage(message) {
+    const { type, data } = message;
+    if (type === MessageInType.Joined) {
+      this.displayLoader();
+      LocalStorageHelper.saveUser(data.user);
+      LocalStorageHelper.savePeers(data.peers);
+      this.onChangePage();
+    }
   }
 
-  #onErrorMessage() {
-    console.log("#onErrorMessage");
+  onErrorMessage(data) {
+    console.log("#onErrorMessage joinpage");
+    this.hideLoader();
     console.log(data);
+    console.log(this.#user);
     // console.log(data);
     //{type: "user-joined", data: {…}}
     // this.#onlineConnection.establishConnection(data);

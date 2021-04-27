@@ -1,31 +1,26 @@
 'use strict';
 import { AppLoaderHandler } from '../app-loader-handler';
 import { ElementHandler } from '../../ui-elements/element-handler';
-
-
-
+import PageLoaderService from './page-loader.service';
+import { PageType } from './page-type.enum';
 export class Page {
+  #pageloaderService;
 
   constructor() {
-   // console.log('Page');
+    this.#pageloaderService = PageLoaderService.getInstance();
   }
 
   get mainContainer() {
     return document.getElementById('main-content');
   }
 
-  // get gameSettingsAllowed() {
-  //   return true;
-  // }
-
   init() {
-    AppLoaderHandler.display();
-    //console.log("init page");
+    this.displayLoader();
     const mainContainer = this.mainContainer;
     if (mainContainer) {
       ElementHandler.clearContent(mainContainer);
       this.renderPage(mainContainer);
-      AppLoaderHandler.hide();
+      this.hideLoader();
     }
   }
 
@@ -34,4 +29,32 @@ export class Page {
     mainContainer.append(fragment);
   }
 
+  displayLoader() {
+    AppLoaderHandler.display();
+  }
+
+  hideLoader() {
+    AppLoaderHandler.hide();
+  }
+
+  onConnectionError() {
+    console.log("onConnectionError page");
+    return;
+  }
+
+  onMessage(data) {
+    console.log("onMessage page");
+    console.log(data);
+    return;
+  }
+
+  onErrorMessage() {
+    console.log("onErrorMessage page");
+    console.log(data);
+    return;
+  }
+
+  onChangePage(nextPage = PageType.HomePage) {
+    this.#pageloaderService.nextPage(nextPage);
+  }
 }

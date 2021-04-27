@@ -28,7 +28,7 @@ export class AddUsername {
 
     #initForm() {
         this.#form = new UsernameForm(this.#onFormSubmit.bind(this));
-        this.#form.init(this.#submitText, 'kate');
+        this.#form.init(this.#submitText);
     }
 
     render() {
