@@ -21,7 +21,7 @@ export default class PageLoaderService {
             this.#selectedPage = page;
             this.#notifyPageChange();
         } else {
-            console.log("unjnown page, ", page);
+            console.log("unknown page, ", page);
         }
     }
 

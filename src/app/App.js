@@ -1,6 +1,6 @@
 'use strict';
-import { AppLoaderHandler } from './app-loader-handler';
 import OnlineConnection from './state-controllers/online-connection/online-connection';
+import { MessageInType } from './state-controllers/online-connection/connection.message-in';
 import PageLoaderService from './pages/page-loader.service';
 import { PageType } from './pages/page-type.enum';
 import { LocalStorageHelper } from 'UTILS';
@@ -13,8 +13,8 @@ export class App {
   constructor() {
     this.#initOnlineConnection();
     this.#initPageController();
-    this.#init();
-    //AppLoaderHandler.hide();
+    //this.#init();
+    this.#pageloaderService.nextPage(PageType.JoinPage);
   }
 
   #initPageController() {
@@ -34,26 +34,27 @@ export class App {
     if (user) {
       this.#onlineConnection.establishConnection(user);
     } else {
-      this.#pageloaderService.nextPage(PageType.JoinPage);
+      this.#navigateToJoinPage();
     }
   }
 
+  #navigateToJoinPage() {
+    this.#pageloaderService.nextPage(PageType.JoinPage);
+  }
 
   #onConnectionError() {
     if (this.#pageController) {
       this.#pageController.onConnectionError();
     } else {
-      console.log("onConnectionError not handled from page");
-      this.#pageloaderService.nextPage(PageType.JoinPage);
+      this.#navigateToJoinPage();
     }
   }
 
-  #onMessage(data) {
+  #onMessage(message) {
     if (this.#pageController) {
-      this.#pageController.onMessage(data);
+      this.#pageController.onMessage(message);
     } else {
-      console.log("onMessage not handled from page");
-      console.log(data);
+      this.#onMessageBeforePageInitialized(message);
     }
   }
 
@@ -61,10 +62,16 @@ export class App {
     if (this.#pageController) {
       this.#pageController.onErrorMessage(data);
     } else {
-      console.log("onErrorMessage not handled from page");
-      console.log(data);
-      this.#pageloaderService.nextPage(PageType.JoinPage);
+      this.#navigateToJoinPage();
     }
   }
 
+  #onMessageBeforePageInitialized(message) {
+    const { type, data } = message;
+    if (type === MessageInType.Joined) {
+      LocalStorageHelper.saveUser(data.user);
+      LocalStorageHelper.savePeers(data.peers);
+      this.#pageloaderService.nextPage(PageType.HomePage);
+    }
+  }
 }

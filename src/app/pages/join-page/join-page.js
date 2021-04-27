@@ -1,15 +1,10 @@
 'use strict';
-
 import { Page } from '../page';
-
-import { AddUsername } from '~/components/@components.module';
-
-import OnlineConnection from '../../state-controllers/online-connection/online-connection';
-import { User } from '../../_models/user';
-import { MessageInType } from '../../state-controllers/online-connection/connection.message-in';
 import { LocalStorageHelper } from 'UTILS';
-
-
+import OnlineConnection from '../../state-controllers/online-connection/online-connection';
+import { MessageInType } from '../../state-controllers/online-connection/connection.message-in';
+import { User } from '../../_models/user';
+import { AddUsername } from '~/components/@components.module';
 
 export class JoinPage extends Page {
   #onlineConnection;
@@ -18,14 +13,6 @@ export class JoinPage extends Page {
   constructor() {
     super();
     this.#onlineConnection = OnlineConnection.getInstance();
-
-  
-
-    // this.#onlineConnection.onConnectionError = this.onConnectionError.bind(this);
-    // this.#onlineConnection.onMessage = this.onMessage.bind(this);
-    // this.#onlineConnection.onErrorMessage = this.onErrorMessage.bind(this);
-
-    console.log('JoinPage');
     this.init();
   }
 
@@ -33,7 +20,7 @@ export class JoinPage extends Page {
     this.joinUser = new AddUsername('join', this.#onJoin.bind(this));
     mainContainer.append(this.joinUser.render());
 
-    //this.onConnectionError();
+    this.onErrorMessage();
   }
 
   #onJoin(data) {
@@ -61,9 +48,15 @@ export class JoinPage extends Page {
 
   onErrorMessage(data) {
     console.log("#onErrorMessage joinpage");
-    this.hideLoader();
-    console.log(data);
-    console.log(this.#user);
+    // this.hideLoader();
+    // console.log(data);
+    const errorData = {
+      type: "error",
+      errorType: "username-in-use"
+    };
+    
+    console.log(errorData);
+    //console.log(this.#user);
     // console.log(data);
     //{type: "user-joined", data: {…}}
     // this.#onlineConnection.establishConnection(data);
