@@ -25,6 +25,7 @@ export class OnlineConnection {
   }
 
   establishConnection(username) {
+    this.#webSocket = undefined;
     const connection = new Connection();
     return connection.init(username)
     .then((webSocket) => {

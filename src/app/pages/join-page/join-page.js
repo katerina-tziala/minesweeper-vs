@@ -42,6 +42,7 @@ export class JoinPage extends Page {
     this.#usernameForm.clearFormSubmittionState();
     console.log("ask user for offline?");
     console.log(this.#user);
+    console.log(this.#onlineConnection);
   }
 
   #onUsernameError() {

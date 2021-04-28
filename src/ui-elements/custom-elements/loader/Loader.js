@@ -28,7 +28,7 @@ export default class Loader extends HTMLElement {
 
   #setTemplate() {
     const type = this.getAttribute('type') || 'svg';
-    this.innerHTML = TEMPLATES[type]
+    this.innerHTML = TEMPLATES[type];
   }
 
   display() {
