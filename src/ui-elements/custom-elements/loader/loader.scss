@@ -1,5 +1,5 @@
-
 @use 'styles/utils/flexbox/flexbox';
+@use 'styles/iconography/iconography';
 
 app-loader {
   @extend %flex-center-center;
@@ -8,6 +8,7 @@ app-loader {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2000;
 }
 
 .loader-spinner {
@@ -15,7 +16,26 @@ app-loader {
   transform-origin: 50%;
   &.spin {
     animation: spin-line 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite,
-    spin-rotation 1.2s linear infinite;
+      spin-rotation 1.2s linear infinite;
+  }
+}
+
+
+.loader-icon__container {
+  min-height: 40px;
+  min-width: 40px;
+  overflow: hidden;
+
+  .loader-spinner {
+    font-size: 3em;
+    @include iconography.afterIcon("spinner");
+    
+    &.spin {
+      animation: none;
+      &::after {
+        animation: rotate 1.4s linear infinite;
+      }
+    }
   }
 }
 
@@ -44,6 +64,26 @@ app-loader {
     stroke-dasharray: 2, 85.964;
     stroke-dashoffset: -65.973;
     transform: rotate(90deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-reverse {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(-360deg);
   }
 }
 

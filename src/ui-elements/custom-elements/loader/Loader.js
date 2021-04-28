@@ -1,11 +1,8 @@
 import './loader.scss';
 import { ElementHandler } from '../../element-handler';
+import { TEMPLATES, ATTRIBUTES } from './loader.constants';
 
-const template = `<svg width='32' height='32'>
-                    <circle class='loader-spinner spin' cx='16' cy='16' r='14' fill='none'></circle>
-                  </svg>`;
-
-export class Loader extends HTMLElement {
+export default class Loader extends HTMLElement {
 
   constructor() {
     super();
@@ -15,8 +12,23 @@ export class Loader extends HTMLElement {
     return this.querySelector('.loader-spinner');
   }
 
+  static get observedAttributes() {
+    return Object.values(ATTRIBUTES);
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    this.#setTemplate();
+    this.display();
+  }
+
   connectedCallback() {
-    this.innerHTML = template;
+    this.#setTemplate();
+    this.display();
+  }
+
+  #setTemplate() {
+    const type = this.getAttribute('type') || 'svg';
+    this.innerHTML = TEMPLATES[type]
   }
 
   display() {
@@ -32,14 +44,14 @@ export class Loader extends HTMLElement {
   #startSpinner() {
     const spinner = this.#spinner;
     if (spinner) {
-      ElementHandler.addStyleClass(spinner);
+      ElementHandler.addStyleClass(spinner, 'spin');
     }
   }
 
   #stopSpinner() {
     const spinner = this.#spinner;
     if (spinner) {
-      ElementHandler.removeStyleClass(spinner);
+      ElementHandler.removeStyleClass(spinner, 'spin');
     }
   }
 

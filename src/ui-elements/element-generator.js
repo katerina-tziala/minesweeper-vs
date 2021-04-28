@@ -16,7 +16,11 @@ export class ElementGenerator {
     return title;
   }
 
-
+  static generateLoaderIcon() {
+    const loader = document.createElement('app-loader');
+    loader.setAttribute('type', 'icon');
+    return loader;
+  }
 
 //  <button class='button-text' disabled='true'>clear</button>
   // static generateButton(params, action) {

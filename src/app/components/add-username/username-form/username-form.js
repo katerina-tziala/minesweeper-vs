@@ -155,4 +155,14 @@ export class UsernameForm {
             ElementHandler.setDisabled(this.#clearButton, disabled);
         }
     }
+
+    disableFormButtons() {
+        this.#setClearDisabled();
+        this.#setSubmissionDisabled();
+    }
+
+    enableFormButtons() {
+        this.#setClearDisabled(false);
+        this.#setSubmissionDisabled(false);
+    }
 }

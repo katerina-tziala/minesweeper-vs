@@ -3,7 +3,7 @@ import { ElementHandler } from '../../element-handler';
 import { AriaHandler } from '../../aria-handler';
 import { DOM_ELEMENT_CLASS, TEMPLATE, ATTRIBUTES, KEY_BLACKLIST } from './text-input.constants';
 
-export class TextInput extends HTMLElement {
+export default class TextInput extends HTMLElement {
   #input;
   #label;
   #inputField;

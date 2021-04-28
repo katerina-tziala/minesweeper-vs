@@ -1,6 +1,6 @@
 import './avatar.scss';
 
-export class Avatar extends HTMLElement {
+export default class Avatar extends HTMLElement {
 
   constructor() {
     super();

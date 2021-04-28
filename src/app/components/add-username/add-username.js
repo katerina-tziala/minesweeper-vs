@@ -26,18 +26,26 @@ export class AddUsername {
         return content ? content.title : '';
     }
 
+    get #card() {
+        return document.getElementById(DOM_ELEMENT_CLASS.component);
+    }
+
+    get #cardLoader() {
+        const card = this.#card;
+        if (card) {
+            const children = card.children;
+            return children[children.length - 1];
+        }
+        return;
+    }
+
     #initForm() {
         this.#form = new UsernameForm(this.#onFormSubmit.bind(this));
         this.#form.init(this.#submitText, 'kate');
     }
 
-    render() {
-        this.#initForm();
-        return this.#generate();
-    }
-
     #generate() {
-        const card = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.component]);
+        const card = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.component], DOM_ELEMENT_CLASS.component);
         if (this.#onClose) {
             const closeButton = this.#generateCloseButton();
             card.append(closeButton);
@@ -55,6 +63,45 @@ export class AddUsername {
     #onFormSubmit(data) {
         if (this.#onSubmit) {
             this.#onSubmit(data);
+        }
+    }
+
+    setFormError(errorMessage) {
+        if (this.#form) {
+            this.#form.setFormError(errorMessage);
+        }
+    }
+
+    #showLoader() {
+        const card = this.#card;
+        if (card) {
+            card.append(ElementGenerator.generateLoaderIcon());
+        }
+    }
+
+    #removeLoader() {
+        const loader = this.#cardLoader;
+        if (loader) {
+            loader.remove();
+        }
+    }
+
+    render() {
+        this.#initForm();
+        return this.#generate();
+    }
+
+    setFormSubmittionState() {
+        if (this.#form) {
+            this.#showLoader();
+            this.#form.disableFormButtons();
+        }
+    }
+
+    clearFormSubmittionState() {
+        this.#removeLoader();
+        if (this.#form) {
+            this.#form.enableFormButtons();
         }
     }
 }

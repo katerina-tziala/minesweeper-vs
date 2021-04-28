@@ -1,13 +1,12 @@
 'use strict';
 import { Page } from '../page';
-import { LocalStorageHelper } from 'UTILS';
-import OnlineConnection from '../../state-controllers/online-connection/online-connection';
-import { MessageInType } from '../../state-controllers/online-connection/connection.message-in';
-import { User } from '../../_models/user';
+import { OnlineConnection, MessageErrorType } from 'ONLINE_CONNECTION';
 import { AddUsername } from '~/components/@components.module';
+import { User } from '../../_models/user';
 
 export class JoinPage extends Page {
   #onlineConnection;
+  #usernameForm;
   #user;
 
   constructor() {
@@ -17,50 +16,38 @@ export class JoinPage extends Page {
   }
 
   renderPage(mainContainer) {
-    this.joinUser = new AddUsername('join', this.#onJoin.bind(this));
-    mainContainer.append(this.joinUser.render());
-
-    this.onErrorMessage();
+    this.#usernameForm = new AddUsername('join', this.#onJoin.bind(this));
+    mainContainer.append(this.#usernameForm.render());
   }
 
   #onJoin(data) {
-    // TODO:
-    // console.log('disable from buttons show loader');
-    this.#user = new User(data.username);
-    this.#onlineConnection.establishConnection(data);
+    const { username } = data;
+    this.#user = new User(username);
+    this.#usernameForm.setFormSubmittionState();
+    this.#onlineConnection.establishConnection(username)
+      .then(() => this.onChangePage())
+      .catch(error => this.#onConnectionFailed(error));
   }
 
-  onConnectionError() {
-    console.log("#onConnectionError joinpage");
+
+  #onConnectionFailed(errorType) {
+    if (errorType && errorType === MessageErrorType.UsernameInUse) {
+      this.#onUsernameError();
+    } else {
+      this.#checkOfflineJoin();
+    }
+  }
+
+  #checkOfflineJoin() {
+    this.#usernameForm.clearFormSubmittionState();
     console.log("ask user for offline?");
     console.log(this.#user);
   }
 
-  onMessage(message) {
-    const { type, data } = message;
-    if (type === MessageInType.Joined) {
-      this.displayLoader();
-      LocalStorageHelper.saveUser(data.user);
-      LocalStorageHelper.savePeers(data.peers);
-      this.onChangePage();
-    }
+  #onUsernameError() {
+    this.#usernameForm.clearFormSubmittionState();
+    this.#user = undefined;
+    this.#usernameForm.setFormError('usernameInUse');
   }
-
-  onErrorMessage(data) {
-    console.log("#onErrorMessage joinpage");
-    // this.hideLoader();
-    // console.log(data);
-    const errorData = {
-      type: "error",
-      errorType: "username-in-use"
-    };
-    
-    console.log(errorData);
-    //console.log(this.#user);
-    // console.log(data);
-    //{type: "user-joined", data: {…}}
-    // this.#onlineConnection.establishConnection(data);
-  }
-
 
 }

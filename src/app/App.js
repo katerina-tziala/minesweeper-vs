@@ -1,6 +1,5 @@
 'use strict';
-import OnlineConnection from './state-controllers/online-connection/online-connection';
-import { MessageInType } from './state-controllers/online-connection/connection.message-in';
+import { OnlineConnection, MessageErrorType } from 'ONLINE_CONNECTION';
 import PageLoaderService from './pages/page-loader.service';
 import { PageType } from './pages/page-type.enum';
 import { LocalStorageHelper } from 'UTILS';
@@ -11,7 +10,8 @@ export class App {
   #pageController;
 
   constructor() {
-    this.#initOnlineConnection();
+    this.#onlineConnection = OnlineConnection.getInstance();
+
     this.#initPageController();
     //this.#init();
     this.#pageloaderService.nextPage(PageType.JoinPage);
@@ -22,8 +22,7 @@ export class App {
     this.#pageloaderService.onPageChanged = (Page) => this.#pageController = new Page();
   }
 
-  #initOnlineConnection() {
-    this.#onlineConnection = OnlineConnection.getInstance();
+  #setConnectionListeners() {
     this.#onlineConnection.onConnectionError = this.#onConnectionError.bind(this);
     this.#onlineConnection.onMessage = this.#onMessage.bind(this);
     this.#onlineConnection.onErrorMessage = this.#onErrorMessage.bind(this);
@@ -31,11 +30,17 @@ export class App {
 
   #init() {
     const user = LocalStorageHelper.user;
-    if (user) {
-      this.#onlineConnection.establishConnection(user);
-    } else {
-      this.#navigateToJoinPage();
-    }
+    console.log(user);
+    user ? this.#connect(user.username) : this.#navigateToJoinPage();
+  }
+
+
+
+  #connect(username) {
+    this.#onlineConnection.establishConnection(username).then(() => {
+      this.#setConnectionListeners();
+      this.#pageloaderService.nextPage(PageType.HomePage);
+    }).catch(() => this.#navigateToJoinPage());
   }
 
   #navigateToJoinPage() {
@@ -46,7 +51,7 @@ export class App {
     if (this.#pageController) {
       this.#pageController.onConnectionError();
     } else {
-      this.#navigateToJoinPage();
+      console.log("on connection error no page handler");
     }
   }
 
@@ -54,7 +59,7 @@ export class App {
     if (this.#pageController) {
       this.#pageController.onMessage(message);
     } else {
-      this.#onMessageBeforePageInitialized(message);
+      console.log("on connection message no page handler");
     }
   }
 
@@ -62,16 +67,8 @@ export class App {
     if (this.#pageController) {
       this.#pageController.onErrorMessage(data);
     } else {
-      this.#navigateToJoinPage();
+      console.log("on connection error message no page handler");
     }
   }
 
-  #onMessageBeforePageInitialized(message) {
-    const { type, data } = message;
-    if (type === MessageInType.Joined) {
-      LocalStorageHelper.saveUser(data.user);
-      LocalStorageHelper.savePeers(data.peers);
-      this.#pageloaderService.nextPage(PageType.HomePage);
-    }
-  }
 }

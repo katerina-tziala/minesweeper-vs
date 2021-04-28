@@ -30,6 +30,11 @@
   content: fa-content($fa-var-times);
 }
 
+.icon-spinner {
+  @extend %icon-regular;
+  content: fa-content($fa-var-spinner);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

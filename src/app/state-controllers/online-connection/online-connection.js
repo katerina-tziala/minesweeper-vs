@@ -1,9 +1,9 @@
 'use strict';
 
 import { URL, PROTOCOLS } from './connection.constants';
+import Connection from './connection';
 
-export default
-  class OnlineConnection {
+export class OnlineConnection {
   #webSocket;
 
   constructor() {
@@ -24,14 +24,18 @@ export default
     return OnlineConnection.instance;
   }
 
-  establishConnection(data) {
-    this.#webSocket = new WebSocket(URL, PROTOCOLS);
-    this.#webSocket.addEventListener('error', this.#onError.bind(this));
-    this.#webSocket.addEventListener('open', () => this.#onOpened(data));
+  establishConnection(username) {
+    const connection = new Connection();
+    return connection.init(username)
+    .then((webSocket) => {
+      this.#webSocket = webSocket;
+      this.#setWebsocketListeners();
+      return;
+    });
   }
 
-  #onOpened(data) {
-    this.sendMessage('join', data);
+  #setWebsocketListeners() {
+    this.#webSocket.addEventListener('error', this.#onError.bind(this));
     this.#webSocket.addEventListener('message', (event) => this.#onMessageReceived(JSON.parse(event.data)));
     this.#webSocket.addEventListener('close', this.#onClosed.bind(this));
     // this.#webSocket.close();

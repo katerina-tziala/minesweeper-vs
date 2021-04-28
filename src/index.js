@@ -1,11 +1,9 @@
 import './ui-elements/custom-elements/@custom-elements.module';
 import './index.scss';
-
-import { AppLoaderHandler } from './app/app-loader-handler';
 import { App } from './app/App';
-
+import { AppLoaderHandler } from './app/app-loader-handler';
 document.addEventListener('DOMContentLoaded', () => {
-  AppLoaderHandler.display();
+  // AppLoaderHandler.display();
   new App();
   // AppLoaderHandler.hide();
   //ws://localhost:9000?user=test
