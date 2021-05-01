@@ -1,18 +1,26 @@
 'use strict';
+import './join-page.scss';
 import { Page } from '../page';
 import { OnlineConnection, MessageErrorType } from 'ONLINE_CONNECTION';
 import { AddUsername } from '~/components/@components.module';
 import { User } from '../../_models/user';
+import { LocalStorageHelper } from 'UTILS';
 
 export class JoinPage extends Page {
   #onlineConnection;
   #usernameForm;
   #user;
+  #offlineConfirmation;
+  #offlineConfirmationActions;
 
   constructor() {
     super();
     this.#onlineConnection = OnlineConnection.getInstance();
     this.init();
+    this.#offlineConfirmationActions = new Map();
+    this.#offlineConfirmationActions.set('choiceA', this.#onRejectOfflineJoin.bind(this));
+    this.#offlineConfirmationActions.set('choiceB', this.#onJoinOffline.bind(this));
+    LocalStorageHelper.deleteUser();
   }
 
   renderPage(mainContainer) {
@@ -29,7 +37,6 @@ export class JoinPage extends Page {
       .catch(error => this.#onConnectionFailed(error));
   }
 
-
   #onConnectionFailed(errorType) {
     if (errorType && errorType === MessageErrorType.UsernameInUse) {
       this.#onUsernameError();
@@ -40,9 +47,9 @@ export class JoinPage extends Page {
 
   #checkOfflineJoin() {
     this.#usernameForm.clearFormSubmittionState();
-    console.log("ask user for offline?");
-    console.log(this.#user);
-    console.log(this.#onlineConnection);
+    this.#usernameForm.hide();
+
+    this.#displayOfflineConfirmation();
   }
 
   #onUsernameError() {
@@ -51,4 +58,25 @@ export class JoinPage extends Page {
     this.#usernameForm.setFormError('usernameInUse');
   }
 
+  #displayOfflineConfirmation() {
+    this.#offlineConfirmation = document.createElement('app-dilemma-selection');
+    this.#offlineConfirmation.setAttribute('type', 'continue-offline');
+    this.#offlineConfirmation.addEventListener('onChoiceSelected', (event) => {
+      const selectedCoice = event.detail.value;
+      this.#offlineConfirmationActions.get(selectedCoice)();
+    });
+    this.mainContainer.append(this.#offlineConfirmation);
+  }
+
+  #onRejectOfflineJoin() {
+    this.#usernameForm.display();
+    this.#offlineConfirmation.remove();
+    this.#offlineConfirmation = undefined;
+  }
+
+  #onJoinOffline() {
+    LocalStorageHelper.saveUser(this.#user);
+    this.#offlineConfirmation = undefined;
+    this.onChangePage();
+  }
 }

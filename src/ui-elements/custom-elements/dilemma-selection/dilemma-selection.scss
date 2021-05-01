@@ -1,6 +1,7 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/iconography/iconography';
 
+
 app-dilemma-selection {
   @extend %flex-center-center;
   width: 100%;
@@ -12,7 +13,7 @@ app-dilemma-selection {
   background: rgba(0, 0, 0, 0.5);
   // transition
 
-
+ 
   .card {
     min-width: 300px;
   }
@@ -28,7 +29,7 @@ app-dilemma-selection {
 
   .buttons-container {
     margin-top: 20px;
-    @extend %flex-between-center;
+    @extend %flex-around-center;
   }
 }
 

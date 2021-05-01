@@ -1,8 +1,8 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/utils/shapes';
-@import "styles/iconography/iconography";
-@import "styles/components/card/card";
-@import "styles/utils/animations/animations";
+@import 'styles/iconography/iconography';
+@import 'styles/components/card/card';
+@import 'styles/utils/animations/animations';
 
 .add-username {
   @extend .card;
@@ -20,6 +20,7 @@
     right: 15px;
     top: 10px;
   }
+
 }
 
 form {

@@ -17,6 +17,7 @@ export default class PageLoaderService {
     }
 
     nextPage(page) {
+        console.log('page changed -> nextPage : ', page);
         if (Object.values(PageType).includes(page)) {
             this.#selectedPage = page;
             this.#notifyPageChange();

@@ -19,7 +19,10 @@ export class App {
 
   #initPageController() {
     this.#pageloaderService = PageLoaderService.getInstance();
-    this.#pageloaderService.onPageChanged = (Page) => this.#pageController = new Page();
+    this.#pageloaderService.onPageChanged = (Page) => {
+      // console.log('page changed');
+      this.#pageController = new Page();
+    };
   }
 
   #setConnectionListeners() {

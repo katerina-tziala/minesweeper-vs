@@ -1,6 +1,6 @@
 'use strict';
 import './add-username.scss';
-import { ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
+import { ElementGenerator, ButtonGenerator, ElementHandler } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, CONTENT } from './add-username.constants';
 import { UsernameForm } from './username-form/username-form';
 
@@ -102,6 +102,20 @@ export class AddUsername {
         this.#removeLoader();
         if (this.#form) {
             this.#form.enableFormButtons();
+        }
+    }
+
+    hide() {
+        const card = this.#card;
+        if (card) {
+            ElementHandler.hide(card);
+        }
+    }
+
+    display() {
+        const card = this.#card;
+        if (card) {
+            ElementHandler.display(card);
         }
     }
 }

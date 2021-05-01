@@ -1,7 +1,7 @@
 'use strict';
 
 export class LocalStorageHelper {
-
+//state controoler
   static save(keyName, value) {
     localStorage.setItem(keyName, JSON.stringify(value));
   }
@@ -21,6 +21,10 @@ export class LocalStorageHelper {
 
   static saveUser(user) {
     return LocalStorageHelper.save('user', user);
+  }
+
+  static deleteUser() {
+    return LocalStorageHelper.remove('user');
   }
 
   static savePeers(peers) {
