@@ -13,8 +13,9 @@ export class App {
     this.#onlineConnection = OnlineConnection.getInstance();
 
     this.#initPageController();
-    //this.#init();
-    this.#pageloaderService.nextPage(PageType.JoinPage);
+    // this.#init();
+
+    this.#pageloaderService.nextPage(PageType.HomePage);
   }
 
   #initPageController() {
@@ -33,7 +34,6 @@ export class App {
 
   #init() {
     const user = LocalStorageHelper.user;
-    console.log(user);
     user ? this.#connect(user.username) : this.#navigateToJoinPage();
   }
 
