@@ -1,17 +1,24 @@
 import './dilemma-selection.scss';
-import { ATTRIBUTES, CONTENT } from './dilemma-selection.constants';
+import { ATTRIBUTES, CONTENT, DOM_ELEMENT_CLASS } from './dilemma-selection.constants';
 import { DilemmaSelectionType } from './dilemma-selection-type.enum';
 import { DilemmaChoiceType } from './dilemma-choice-type.enum';
 import { DilemmaSelectionTemplateHelper as TemplateHelper } from './DilemmaSelectionTemplateHelper';
 
-
 export default class DilemmaSelection extends HTMLElement {
-  #eventListeners;
   #renderedType;
+  #isShaking;
+  #buttonListeners;
+  #shakeEndListener;
+  #clickListener;
 
   constructor() {
     super();
-    this.#eventListeners = new Map();
+    this.#buttonListeners = new Map();
+    this.#isShaking = false;
+  }
+
+  get #contentContainer() {
+    return this.querySelector(`.${DOM_ELEMENT_CLASS.content}`);
   }
 
   static get observedAttributes() {
@@ -23,13 +30,52 @@ export default class DilemmaSelection extends HTMLElement {
   }
 
   connectedCallback() {
+    if (!this.#clickListener) {
+      this.#clickListener = this.#detectOutsideContentClick.bind(this);
+      this.addEventListener('click', this.#clickListener);
+    }
     this.#onInit();
   }
 
   disconnectedCallback() {
-    this.#removeEventListeners();
+    if (this.#clickListener) {
+      this.removeEventListener('click', this.#clickListener);
+      this.#clickListener = undefined;
+    }
+    this.#stopShaking();
+    this.#removebuttonListeners();
     this.#renderedType = undefined;
   }
+
+  #detectOutsideContentClick(event) {
+    const container = event.target.closest(`.${DOM_ELEMENT_CLASS.content}`);
+    if (!container && !this.#isShaking) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.#shakeContent();
+    }
+  }
+
+  #shakeContent() {
+    this.#isShaking = true;
+    const contentContainer = this.#contentContainer;
+    if (contentContainer && !this.#shakeEndListener) {
+      TemplateHelper.shakeContent(contentContainer);
+      this.#shakeEndListener = this.#stopShaking.bind(this);
+      contentContainer.addEventListener('animationend', this.#shakeEndListener);
+    }
+  }
+
+  #stopShaking() {
+    this.#isShaking = false;
+    const contentContainer = this.#contentContainer;
+    if (contentContainer && this.#shakeEndListener) {
+      TemplateHelper.stopContentShaking(contentContainer);
+      contentContainer.removeEventListener('animationend', this.#shakeEndListener);
+      this.#shakeEndListener = undefined;
+    }
+  }
+
 
   get #type() {
     const type = this.getAttribute('type');
@@ -40,6 +86,7 @@ export default class DilemmaSelection extends HTMLElement {
   }
 
   #onInit() {
+    this.#stopShaking();
     const type = this.#type;
     if (this.#renderedType !== type) {
       this.#renderedType = type;
@@ -52,11 +99,11 @@ export default class DilemmaSelection extends HTMLElement {
     if (content) {
       const template = TemplateHelper.generateTemplate(content);
       this.innerHTML = template;
-      this.#setEventListeners();
+      this.#setbuttonListeners();
     }
   }
 
-  #setEventListeners() {
+  #setbuttonListeners() {
     Object.keys(DilemmaChoiceType).forEach(type => this.#setButtonListener(type));
   }
 
@@ -64,21 +111,21 @@ export default class DilemmaSelection extends HTMLElement {
     const button = this.#getButton(type);
     if (button) {
       const action = () => this.#onChoiceSelected(type);
-      this.#eventListeners.set(type, action);
+      this.#buttonListeners.set(type, action);
       button.addEventListener('click', action);
     }
   }
 
-  #removeEventListeners() {
+  #removebuttonListeners() {
     Object.keys(DilemmaChoiceType).forEach(type => this.#removeButtonListener(type));
-    this.#eventListeners = new Map();
+    this.#buttonListeners = new Map();
   }
 
   #removeButtonListener(type) {
-    if (this.#eventListeners.size) {
-      const action = this.#eventListeners.get(type);
+    if (this.#buttonListeners.has(type)) {
+      const action = this.#buttonListeners.get(type);
       this.#removeListenerFromButton(type, action);
-      this.#eventListeners.delete(type, action);
+      this.#buttonListeners.delete(type, action);
     }
   }
 
@@ -94,6 +141,7 @@ export default class DilemmaSelection extends HTMLElement {
   }
 
   #onChoiceSelected(selectedChoice) {
+    this.#stopShaking();
     const event = new CustomEvent('onChoiceSelected', { detail: { value: selectedChoice } });
     this.dispatchEvent(event);
   }

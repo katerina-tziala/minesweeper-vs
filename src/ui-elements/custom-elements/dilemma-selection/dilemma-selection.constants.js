@@ -1,6 +1,6 @@
 export const TEMPLATE_REF_VALUE_ANGOR = `%`;
 
-export const TEMPLATE = `<div class='card'>
+export const TEMPLATE = `<div class='dilemma-selection__content-container'>
 <h2 class='dilemma-selection__title'>%title%</h2>
 <p class='dilemma-selection__text'>%text%</p>
 <div class='buttons-container'>
@@ -8,6 +8,11 @@ export const TEMPLATE = `<div class='card'>
   <button class='button-text dilemma-selection__choiceB'>%choiceB%</button>
 </div>
 </div>`;
+
+export const DOM_ELEMENT_CLASS = {
+  content: 'dilemma-selection__content-container',
+  shake: 'dilemma-selection__content-container--shake',
+};
 
 export const ATTRIBUTES = {
   type: 'type'

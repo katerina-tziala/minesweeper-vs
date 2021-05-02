@@ -1,6 +1,7 @@
 import './dilemma-selection.scss';
-import { TEMPLATE, TEMPLATE_REF_VALUE_ANGOR } from './dilemma-selection.constants';
+import { TEMPLATE, TEMPLATE_REF_VALUE_ANGOR, DOM_ELEMENT_CLASS } from './dilemma-selection.constants';
 import { replaceStringParameter } from '../../../app/utils/utils';
+import { ElementHandler } from '../../element-handler';
 
 export class DilemmaSelectionTemplateHelper {
 
@@ -17,4 +18,11 @@ export class DilemmaSelectionTemplateHelper {
     return template;
   }
 
+  static shakeContent(container) {
+    ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.shake);
+  }
+
+  static stopContentShaking(container) {
+    ElementHandler.removeStyleClass(container, DOM_ELEMENT_CLASS.shake);
+  }
 }

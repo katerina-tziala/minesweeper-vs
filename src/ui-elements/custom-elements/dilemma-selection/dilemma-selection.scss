@@ -1,6 +1,7 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/iconography/iconography';
-
+@use 'styles/components/card/card';
+@use 'styles/utils/animations/animations';
 
 app-dilemma-selection {
   @extend %flex-center-center;
@@ -10,14 +11,11 @@ app-dilemma-selection {
   top: 0;
   left: 0;
   z-index: 5000;
-  background: rgba(0, 0, 0, 0.5);
-  // transition
+}
 
- 
-  .card {
-    min-width: 300px;
-  }
-
+.dilemma-selection__content-container {
+  @extend .card;
+  min-width: 300px;
   h2 {
     margin-bottom: 15px;
     text-align: center;
@@ -31,5 +29,14 @@ app-dilemma-selection {
     margin-top: 20px;
     @extend %flex-around-center;
   }
+
+  &.dilemma-selection__content-container--shake {
+    animation: shake .6s ease-in-out;
+  }
+}
+
+// TODO THEMING
+app-dilemma-selection {
+  background: rgba(0, 0, 0, 0.5);
 }
 
