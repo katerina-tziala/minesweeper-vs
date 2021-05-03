@@ -30,19 +30,20 @@
   font-family: 'Font Awesome 5 Free';
 }
 
-// %icon-regular-outline {
-//   @extend %icon;
-//   font-family: 'Font Awesome 5 Free';
-// }
+%icon-regular-outline {
+  @extend %icon;
+  font-weight: 600;
+  font-family: 'Font Awesome 5 Free';
+}
 
-// %icon-brand {
-//   @extend %icon;
-//   font-weight: 900;
-//   font-family: 'Font Awesome 5 Brands';
-// }
+%icon-brand {
+  @extend %icon;
+  font-weight: 900;
+  font-family: 'Font Awesome 5 Brands';
+}
 
-// %icon-brand-lite {
-//   @extend %icon;
-//   font-weight: 600;
-//   font-family: 'Font Awesome 5 Brands';
-// }
+%icon-brand-outline {
+  @extend %icon;
+  font-weight: 600;
+  font-family: 'Font Awesome 5 Brands';
+}

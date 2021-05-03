@@ -1,21 +1,12 @@
 import './dilemma-selection.scss';
-import { TEMPLATE, TEMPLATE_REF_VALUE_ANGOR, DOM_ELEMENT_CLASS } from './dilemma-selection.constants';
-import { replaceStringParameter } from '../../../app/utils/utils';
+import { TEMPLATE, CONTENT, DOM_ELEMENT_CLASS } from './dilemma-selection.constants';
 import { ElementHandler } from '../../element-handler';
+import { TemplateGenerator } from '../../template-generator';
 
 export class DilemmaSelectionTemplateHelper {
 
-  static getTemplateValueReference(contentParameter) {
-    return `${TEMPLATE_REF_VALUE_ANGOR}${contentParameter}${TEMPLATE_REF_VALUE_ANGOR}`;
-  }
-
-  static generateTemplate(content) {
-    let template = TEMPLATE;
-    for (const [key, value] of Object.entries(content)) {
-      const templateReference = DilemmaSelectionTemplateHelper.getTemplateValueReference(key);
-      template = replaceStringParameter(template, value, templateReference);
-    }
-    return template;
+  static generateTemplate(content = CONTENT.default) {
+    return TemplateGenerator.generate(TEMPLATE, content);
   }
 
   static shakeContent(container) {

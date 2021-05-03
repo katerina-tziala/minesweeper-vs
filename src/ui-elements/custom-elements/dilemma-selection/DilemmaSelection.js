@@ -1,6 +1,5 @@
 import './dilemma-selection.scss';
 import { ATTRIBUTES, CONTENT, DOM_ELEMENT_CLASS } from './dilemma-selection.constants';
-import { DilemmaSelectionType } from './dilemma-selection-type.enum';
 import { DilemmaChoiceType } from './dilemma-choice-type.enum';
 import { DilemmaSelectionTemplateHelper as TemplateHelper } from './DilemmaSelectionTemplateHelper';
 
@@ -26,7 +25,9 @@ export default class DilemmaSelection extends HTMLElement {
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
-    this.#onInit();
+    if (oldVal !== newVal) {
+      this.#onInit();
+    }
   }
 
   connectedCallback() {
@@ -78,11 +79,7 @@ export default class DilemmaSelection extends HTMLElement {
 
 
   get #type() {
-    const type = this.getAttribute('type');
-    if (Object.values(DilemmaSelectionType).includes(type)) {
-      return type;
-    }
-    return DilemmaSelectionType.Default;
+    return this.getAttribute('type');
   }
 
   #onInit() {
@@ -96,11 +93,8 @@ export default class DilemmaSelection extends HTMLElement {
 
   #render() {
     const content = CONTENT[this.#renderedType];
-    if (content) {
-      const template = TemplateHelper.generateTemplate(content);
-      this.innerHTML = template;
-      this.#setbuttonListeners();
-    }
+    this.innerHTML = TemplateHelper.generateTemplate(content);
+    this.#setbuttonListeners();
   }
 
   #setbuttonListeners() {

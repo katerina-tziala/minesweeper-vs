@@ -59,8 +59,6 @@ export default class TextInput extends HTMLElement {
     this.#clickListener = undefined;
   }
 
-
-
   #setInputListeners() {
     if (this.#inputField) {
       this.#inputListeners.set('focus', this.#focus.bind(this));

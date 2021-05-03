@@ -35,6 +35,27 @@
   content: fa-content($fa-var-spinner);
 }
 
+.icon-online {
+  @extend %icon-regular;
+  content: fa-content($fa-var-globe);
+}
+
+.icon-friend {
+  @extend %icon-regular;
+  content: fa-content($fa-var-user-friends);
+}
+
+.icon-flag {
+  @extend %icon-brand;
+  content: fa-content($fa-var-font-awesome-flag);
+}
+
+.icon-bot {
+  @extend %icon-regular;
+  content: fa-content($fa-var-robot);
+}
+
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

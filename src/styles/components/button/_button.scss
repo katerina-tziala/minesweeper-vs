@@ -46,17 +46,6 @@
   }
 }
 
-// .button-icon--close {
-//   @extend .button-icon;
-//   &::after {
-//     @extend .icon-x;
-//     font-size: 1.4em;
-//     position: relative;
-//     top: 1px;
-//   }
-// }
-
-
 
 
 
@@ -80,8 +69,7 @@
   &:hover,
   &:focus {
     color: #fff;
-    background: #000 radial-gradient(circle, transparent 1%, #000 1%)
-      center/15000%;
+    background: #000 radial-gradient(circle, transparent 1%, #000 1%) center/15000%;
     box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
       0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
   }

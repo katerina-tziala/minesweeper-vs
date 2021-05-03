@@ -40,9 +40,22 @@ export class AriaHandler {
     }
   }
 
-  // static setTabindex(element, value) {
-  //   element.setAttribute('tabindex', value);
-  // }
+  static setTabindex(element, value) {
+    if (element) {
+      element.setAttribute('tabindex', value);
+    }
+  }
+
+  static setAriaDisabled(element, value = false) {
+    if (element) {
+      element.setAttribute('aria-disabled', value);
+    }
+  }
+
+
+
+
+
 
   // static setListTabindex(elements, value) {
   //   elements.forEach((element) => AriaHandler.setTabindex(element, value));

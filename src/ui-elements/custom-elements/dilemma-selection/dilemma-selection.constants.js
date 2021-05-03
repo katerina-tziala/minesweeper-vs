@@ -1,5 +1,3 @@
-export const TEMPLATE_REF_VALUE_ANGOR = `%`;
-
 export const TEMPLATE = `<div class='dilemma-selection__content-container'>
 <h2 class='dilemma-selection__title'>%title%</h2>
 <p class='dilemma-selection__text'>%text%</p>

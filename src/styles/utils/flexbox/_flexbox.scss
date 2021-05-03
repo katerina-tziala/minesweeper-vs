@@ -34,3 +34,9 @@
   @extend %first-axis-around;
   @extend %second-axis-center;
 }
+
+%flex-start-start {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-start;
+}
