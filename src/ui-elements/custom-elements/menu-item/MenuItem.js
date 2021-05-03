@@ -39,6 +39,10 @@ export default class MenuItem extends HTMLElement {
     this.#onInit();
   }
 
+  disconnectedCallback() {
+    this.#removeListeners();
+  }
+
   #onInit() {
     const type = this.#type;
     if (this.#renderedType !== type) {
