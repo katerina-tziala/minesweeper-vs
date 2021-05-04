@@ -28,10 +28,6 @@ export default class Switcher extends HTMLElement {
     return this.#getBooleanValue(checked);
   }
 
-  get #ariaLabel() {
-    return this.getAttribute(ATTRIBUTES.ariaLabel);
-  }
-
   get #name() {
     return this.getAttribute(ATTRIBUTES.name);
   }
@@ -51,7 +47,6 @@ export default class Switcher extends HTMLElement {
     this.#switchButton = this.querySelector(`.${DOM_ELEMENT_CLASS.switcher}`)
     this.#setDisabledState();
     this.#setState();
-    this.#setAriaLabel();
     this.#setName();
     this.#initUpdatesHandling();
   }
@@ -63,10 +58,8 @@ export default class Switcher extends HTMLElement {
   #initUpdatesHandling() {
     this.#attributeUpdateHandler.set(ATTRIBUTES.checked, this.#setState.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setDisabledState.bind(this));
-    this.#attributeUpdateHandler.set(ATTRIBUTES.ariaLabel, this.#setAriaLabel.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.name, this.#setName.bind(this));
   }
-
 
   #setDisabledState() {
     this.#disabled ? this.#disable() : this.#enable();
@@ -112,14 +105,13 @@ export default class Switcher extends HTMLElement {
     const name = this.#name;
     const event = new CustomEvent('onValueChange', { detail: { name, value} });
     this.dispatchEvent(event);
+    if (this.#switchButton) {
+      this.#switchButton.blur();
+    }
   }
 
   #setState() {
     AriaHandler.setAriaChecked(this.#switchButton, this.#checked);
-  }
-
-  #setAriaLabel() {
-    AriaHandler.setAriaLabel(this.#switchButton, this.#ariaLabel);
   }
 
   #setName() {

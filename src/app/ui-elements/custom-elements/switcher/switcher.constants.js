@@ -7,6 +7,5 @@ export const TEMPLATE = `<button type='button' class='${DOM_ELEMENT_CLASS.switch
 export const ATTRIBUTES = {
   disabled: 'disabled',
   checked: 'checked',
-  name: 'name',
-  ariaLabel: 'aria-label'
+  name: 'name'
 };

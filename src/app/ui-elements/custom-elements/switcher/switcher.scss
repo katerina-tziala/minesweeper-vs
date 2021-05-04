@@ -1,16 +1,16 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
-@use '../../../../styles/components/button/button';
+@use 'styles/components/button/button';
 
 // track
-$track-height: 24px;
-$track-width: 48px;
+$track-height: 20px;
+$track-width: 40px;
 // thumb
-$thumb-size: 18px;
+$thumb-size: 14px;
 $thumb-position-top: 3px;
 $thumb-position-left: 3px;
-$thumb-position-right: 27px;
+$thumb-position-right: 23px;
 
 ._thumb {
   @include shapes.pseudoCircle($thumb-size);

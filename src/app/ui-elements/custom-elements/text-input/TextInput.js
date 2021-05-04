@@ -51,7 +51,6 @@ export default class TextInput extends HTMLElement {
     return error && error.length ? JSON.parse(error) : false;
   }
 
-
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
     return disabled && disabled.length ? JSON.parse(disabled) : false;
@@ -171,7 +170,8 @@ export default class TextInput extends HTMLElement {
   #submitValueChange() {
     let value = this.value;
     value = value.length ? value : undefined;
-    const event = new CustomEvent('onValueChange', { detail: { value } });
+    const name = this.#name;
+    const event = new CustomEvent('onValueChange', { detail: { name, value } });
     this.dispatchEvent(event);
   }
 

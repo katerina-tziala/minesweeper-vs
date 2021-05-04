@@ -55,6 +55,15 @@
   content: fa-content($fa-var-robot);
 }
 
+.icon-minus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-minus);
+}
+
+.icon-plus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-plus);
+}
 
 @mixin beforeIcon($key) {
   &::before {
