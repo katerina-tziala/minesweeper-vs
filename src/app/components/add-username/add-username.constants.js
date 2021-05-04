@@ -1,5 +1,6 @@
 export const DOM_ELEMENT_CLASS = {
   component: 'add-username',
+  form: 'username-form',
 };
 
 export const CONTENT = {

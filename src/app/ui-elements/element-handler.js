@@ -1,4 +1,5 @@
 'use strict';
+import { TYPOGRAPHY } from 'UTILS';
 
 export class ElementHandler {
 
@@ -40,7 +41,7 @@ export class ElementHandler {
 
   static setStyleClass(element, styleClasses = []) {
     if (element && styleClasses.length) {
-      element.className = styleClasses.join(' ');
+      element.className = styleClasses.join(TYPOGRAPHY.space);
     }
   }
 

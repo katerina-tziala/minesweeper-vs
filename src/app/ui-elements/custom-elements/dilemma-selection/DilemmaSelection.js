@@ -79,7 +79,7 @@ export default class DilemmaSelection extends HTMLElement {
 
 
   get #type() {
-    return this.getAttribute('type');
+    return this.getAttribute(ATTRIBUTES.type);
   }
 
   #onInit() {

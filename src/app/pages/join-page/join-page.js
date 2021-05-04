@@ -26,6 +26,7 @@ export class JoinPage extends Page {
   renderPage(mainContainer) {
     this.#usernameForm = new AddUsername('join', this.#onJoin.bind(this));
     mainContainer.append(this.#usernameForm.render());
+    this.#usernameForm.init('kate')
   }
 
   #onJoin(data) {

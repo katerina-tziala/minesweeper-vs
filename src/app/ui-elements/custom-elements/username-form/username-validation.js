@@ -10,7 +10,7 @@ Object.freeze(ValidationError);
 
 const USERNAME_LENGTH_RANGE = [3, 16];
 
-export class UsernameValidation {
+export default class UsernameValidation {
 
     static #usernameIncludesSpaces(username) {
         const usernameParts = username.split(' ');
@@ -18,7 +18,7 @@ export class UsernameValidation {
     }
 
     static #usernameFormatValid(username) {
-        return new RegExp(/([0-9_-]*[a-z][0-9_-]*){3}/igm).test(username);
+        return new RegExp(/(.*[a-z]){3}/img).test(username);
     }
 
     static #validationErrorWhenDefined(username) {

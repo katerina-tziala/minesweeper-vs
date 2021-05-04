@@ -1,4 +1,5 @@
 import './text-input.scss';
+import { TYPOGRAPHY } from 'UTILS';
 import { ElementHandler } from '../../element-handler';
 import { DOM_ELEMENT_CLASS, TEMPLATE, ATTRIBUTES, KEY_BLACKLIST } from './text-input.constants';
 import { TextInputTemplateHelper as TemplateHelper } from './TextInputTemplateHelper';
@@ -41,8 +42,15 @@ export default class TextInput extends HTMLElement {
   }
 
   get value() {
-    return this.getAttribute(ATTRIBUTES.value).trim();
+    const value = this.getAttribute(ATTRIBUTES.value) || TYPOGRAPHY.emptyString;
+    return value.trim();
   }
+
+  get hasError() {
+    const error = this.getAttribute('error');
+    return error && error.length ? JSON.parse(error) : false;
+  }
+
 
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);

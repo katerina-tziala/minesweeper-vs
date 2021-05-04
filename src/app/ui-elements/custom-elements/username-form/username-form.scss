@@ -1,0 +1,10 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/iconography/iconography';
+
+.username-form__buttons {
+  @extend %flex-between-center;
+  margin-top: 20px;
+  > .button-text {
+    min-width: 116px;
+  }
+}

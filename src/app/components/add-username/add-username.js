@@ -2,10 +2,8 @@
 import './add-username.scss';
 import { ElementGenerator, ButtonGenerator, ElementHandler } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, CONTENT } from './add-username.constants';
-import { UsernameForm } from './username-form/username-form';
 
 export class AddUsername {
-    #form;
     #type;
     #onSubmit;
     #onClose;
@@ -30,6 +28,10 @@ export class AddUsername {
         return document.getElementById(DOM_ELEMENT_CLASS.component);
     }
 
+    get #form() {
+        return document.getElementById(DOM_ELEMENT_CLASS.form);
+    }
+
     get #cardLoader() {
         const card = this.#card;
         if (card) {
@@ -39,9 +41,12 @@ export class AddUsername {
         return;
     }
 
-    #initForm() {
-        this.#form = new UsernameForm(this.#onFormSubmit.bind(this));
-        this.#form.init(this.#submitText, 'kate');
+    #generateForm() {
+        const form = document.createElement('app-username-form');
+        form.setAttribute('type', this.#submitText);
+        ElementHandler.setElementId(form, DOM_ELEMENT_CLASS.form);
+        form.addEventListener('onSubmit', (event) => this.#onFormSubmit(event.detail));
+        return form;
     }
 
     #generate() {
@@ -51,8 +56,10 @@ export class AddUsername {
             card.append(closeButton);
         }
         const title = ElementGenerator.generateTitleH2(this.#titleText);
-        const form = this.#form.generate();
+     
+        const form = this.#generateForm();
         card.append(title, form);
+
         return card;
     }
 
@@ -87,8 +94,12 @@ export class AddUsername {
     }
 
     render() {
-        this.#initForm();
         return this.#generate();
+    }
+
+    init(username) {
+        const form = this.#form;
+        form.init(username);
     }
 
     setFormSubmittionState() {
