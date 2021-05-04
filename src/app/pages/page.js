@@ -1,6 +1,6 @@
 'use strict';
 import { AppLoaderHandler } from '../app-loader-handler';
-import { ElementHandler } from '../../ui-elements/element-handler';
+import { ElementHandler } from 'UI_ELEMENTS';
 import PageLoaderService from './page-loader.service';
 import { PageType } from './page-type.enum';
 export class Page {

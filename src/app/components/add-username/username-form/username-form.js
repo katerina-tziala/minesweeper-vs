@@ -89,6 +89,7 @@ export class UsernameForm {
 
     #onClearForm() {
         this.#usernameInput.setAttribute('value', '');
+        this.#usernameInput.initFocusedState();
         this.#setErrorMessage();
         this.#checkFormActions();
     }

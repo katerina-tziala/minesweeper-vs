@@ -2,6 +2,7 @@
 
 // global
 @use './styles/typography/typography';
+// @use './styles/iconography/iconography';
 
 // utilities
 @use './styles/utils/flexbox/flexbox';
@@ -68,3 +69,8 @@ body,
 //   background-color: blue;
 //   color: white;
 // }
+.app-text-input__input {
+  &::before {
+    @extend .icon-user;
+  }
+}

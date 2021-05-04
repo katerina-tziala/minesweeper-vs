@@ -1,0 +1,202 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/state';
+@use 'styles/utils/animations/animations';
+@use 'styles/iconography/iconography';
+
+$input-size: 40px;
+$border-radius: 6px;
+
+%leading-icon {
+  width: 28px;
+  height: 31px;
+  box-sizing: border-box;
+  border-top-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+  font-size: 20px;
+  text-align: right;
+  border: none;
+  z-index: 2;
+}
+
+%label-focused {
+  font-size: 14px;
+  padding: 0 5px;
+  width: fit-content;
+  cursor: default;
+  height: 13px;
+  line-height: 16px;
+  top: 0px;
+  left: 5px;
+}
+
+%app-text-input__input--focused {
+  .app-text-input__input {
+    .app-text-input__label {
+      @extend %label-focused;
+    }
+  }
+}
+
+.app-text-input__input {
+  position: relative;
+  width: 100%;
+  height: $input-size;
+  line-height: $input-size;
+  border-radius: $border-radius;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  @extend %flex-start-center;
+  cursor: text;
+}
+
+.app-text-input__input-container {
+  position: relative;
+  flex-grow: 1;
+  background-color: inherit;
+  border-radius: $border-radius;
+  cursor: text;
+  z-index: 2;
+  height: 38px;
+}
+
+.app-text-input__label {
+  cursor: text;
+  position: absolute;
+  height: 21px;
+  top: 16px;
+  line-height: 11px;
+  padding: 5px;
+  left: 6px;
+  border-radius: $border-radius;
+  transition: all 0.2s ease-out, background-color 0ms;
+  background-color: inherit;
+  font-weight: 600;
+  &.app-text-input__label--shake {
+    animation: shake-linear 0.4s linear;
+  }
+}
+
+.app-text-input__input-field {
+  display: block;
+  width: 100%;
+  height: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 18px;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  border-radius: $border-radius;
+  caret-color: auto;
+  cursor: text;
+}
+
+app-text-input[leadingIcon="true"] {
+  .app-text-input__input {
+    &::before {
+      @extend %leading-icon;
+    }
+  }
+}
+
+app-text-input[focused="true"] {
+  @extend %app-text-input__input--focused;
+}
+
+app-text-input[disabled="true"] {
+ 
+  .app-text-input__input {
+    @extend .disabled;
+    .app-text-input__input-field {
+     cursor: not-allowed;
+    }
+    .app-text-input__label {
+      cursor: not-allowed;
+    }
+  }
+}
+
+app-text-input[error="true"] {
+  @extend %app-text-input--error;
+}
+
+.app-text-input__error-message {
+  font-size: 0.9rem;
+  padding: 5px;
+  max-width: 100%;
+  word-wrap: break-word;
+  font-weight: 600;
+  position: relative;
+}
+
+// TODO THEMING
+.app-text-input__input {
+  background-color: #fff;
+  color: #737373;
+
+  &:hover {
+    background-color: #f5f5f5;
+    color: #000;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    .app-text-input__input-field {
+      background-color: #f5f5f5;
+    }
+    .app-text-input__label {
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+%app-text-input__input--focused {
+  .app-text-input__input {
+    background-color: #f5f5f5;
+    color: #000;
+    .app-text-input__input-field {
+      background-color: #f5f5f5;
+    }
+    .app-text-input__label {
+      color: #737373;
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+%app-text-input--error {
+
+  .app-text-input__input {
+    background-color: #fff;
+    color: #cc0000;
+
+    .app-text-input__input-field {
+      caret-color: #cc0000;
+    }
+    .app-text-input__input-field {
+      background-color: #fff;
+      padding-right: 32px;
+    }
+  
+    .app-text-input__label {
+      color: #cc0000;
+      background-color: #fff;
+    }
+  }
+
+  .app-text-input__error-message {
+    color: #cc0000;
+    &::after {
+      width: 30px;
+      height: 24px;
+      font-size: 20px;
+      line-height: 24px;
+      position: absolute;
+      top: -27px;
+      right: 1px;
+      z-index: 4;
+      @extend .icon-info-circle;
+      background-color: #fff;
+    }
+  }
+
+}
+
+

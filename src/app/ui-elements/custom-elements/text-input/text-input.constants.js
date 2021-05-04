@@ -7,18 +7,19 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const TEMPLATE = `
-<div class='app-text-input__input'>
+<div class='${DOM_ELEMENT_CLASS.input}'>
   <div class='app-text-input__input-container'>
-  <label class='${DOM_ELEMENT_CLASS.label}'></label>
-  <input class='${DOM_ELEMENT_CLASS.inputField}' type='text' value='' autocomplete='off'/>
+    <label class='${DOM_ELEMENT_CLASS.label}' for='input'></label>
+    <input class='${DOM_ELEMENT_CLASS.inputField}' id='input' type='text' value='' autocomplete='off'/>
   </div>
 </div>
-<div class='${DOM_ELEMENT_CLASS.inputError}'></div>
-`;
+<div class='${DOM_ELEMENT_CLASS.inputError}'></div>`;
 
 export const ATTRIBUTES = {
   name: 'name',
+  label: 'label',
   value: 'value',
+  disabled: 'disabled',
   errorMessage: 'error-message'
 };
 

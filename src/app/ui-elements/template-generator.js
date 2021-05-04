@@ -1,6 +1,6 @@
 
 
-import { replaceStringParameter } from '../app/utils/utils';
+import { replaceStringParameter } from 'UTILS';
 const TEMPLATE_REF_VALUE_ANGOR = '%';
 
 export class TemplateGenerator {
