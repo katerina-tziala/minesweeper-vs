@@ -62,15 +62,3 @@ body,
   z-index: 1000;
 }
 
-// 
-// 
-// .test {
-//   border: 1px solid #333;
-//   background-color: blue;
-//   color: white;
-// }
-.app-text-input__input {
-  &::before {
-    @extend .icon-user;
-  }
-}

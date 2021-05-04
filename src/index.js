@@ -7,14 +7,14 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 
 document.addEventListener('DOMContentLoaded', () => {
   //AppLoaderHandler.display();
-  new App();
+  // new App();
+  AppLoaderHandler.hide();
 
 
   // -- router guard
   // on reload return to your state
 
-  //AppLoaderHandler.hide();
-
+  
   // const test = document.getElementsByTagName("app-username-form")[0];
   // test.init('kate');
   // //   // // console.log(test);
