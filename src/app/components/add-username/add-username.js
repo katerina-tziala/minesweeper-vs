@@ -69,6 +69,9 @@ export class AddUsername {
 
     #onFormSubmit(data) {
         if (this.#onSubmit) {
+            if (this.type === 'addOpponent') {
+                console.log('check if opponent has same name with user');
+            }
             this.#onSubmit(data);
         }
     }

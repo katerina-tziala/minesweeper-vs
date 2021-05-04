@@ -10,7 +10,6 @@ export default class UsernameForm extends HTMLElement {
   constructor() {
     super();
     this.#eventsIndex = new Map();
-
   }
 
   get #type() {
@@ -130,11 +129,11 @@ export default class UsernameForm extends HTMLElement {
   #validateForm() {
     const validationError = this.#validationError;
     if (validationError) {
-      TemplateHelper.setInputError(this.#input, ERROR_MESSAGE[validationError]);
-      ElementHandler.setDisabled(this.#submitButton);
+      this.setFormError(ERROR_MESSAGE[validationError]);
     } else {
       TemplateHelper.setInputError(this.#input);
       ElementHandler.setDisabled(this.#submitButton, false);
+      this.#checkClear();
     }
   }
 
@@ -176,7 +175,7 @@ export default class UsernameForm extends HTMLElement {
   }
 
   #checkClear() {
-    const clearAllowed = this.#username && this.#username.length;
+    const clearAllowed = (this.#username && this.#username.length) ? true : false || this.#errorDisplayed;
     ElementHandler.setDisabled(this.#clearButton, !clearAllowed);
   }
 
@@ -194,6 +193,12 @@ export default class UsernameForm extends HTMLElement {
   enableFormButtons() {
     ElementHandler.setDisabled(this.#submitButton, false);
     ElementHandler.setDisabled(this.#clearButton, false);
+  }
+
+  setFormError(error) {
+    TemplateHelper.setInputError(this.#input, error);
+    ElementHandler.setDisabled(this.#submitButton);
+    this.#checkClear();
   }
 }
 
