@@ -7,3 +7,17 @@
   @include rectangle($size);
   border-radius: 50%;
 }
+
+@mixin fullyRoundedBar($size) {
+  width: $size;
+  border-radius: $size;
+}
+
+@mixin pseudoCircle($size, $color: "transparent") {
+  content: "";
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background-color: $color;
+  display: block;
+}

@@ -2,7 +2,7 @@ export const DOM_ELEMENT_CLASS = {
   form: 'username-form__form',
   input: 'username-form__text-input',
   clearButton: 'username-form__button-clear',
-  submitButton: 'username-form__button-submit',
+  submitButton: 'username-form__button-submit'
 };
 
 export const TEMPLATE = `<form class='username-form__form'>

@@ -56,4 +56,10 @@ export class ElementHandler {
       element.disabled = disabled;
     }
   }
+
+  static setName(element, name) {
+    if (element && name && name.length) {
+      element.setAttribute('name', name);
+    }
+  }
 }

@@ -52,6 +52,11 @@ export class AriaHandler {
     }
   }
 
+  static setAriaChecked(element, value = false) {
+    if (element) {
+      element.setAttribute('aria-checked', value);
+    }
+  }
 
 
 
@@ -59,10 +64,6 @@ export class AriaHandler {
 
   // static setListTabindex(elements, value) {
   //   elements.forEach((element) => AriaHandler.setTabindex(element, value));
-  // }
-
-  // static setAriaChecked(element, value) {
-  //   element.setAttribute('aria-checked', value);
   // }
 
   // static getAriaChecked(element) {

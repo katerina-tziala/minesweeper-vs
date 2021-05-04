@@ -1,0 +1,81 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/iconography/iconography';
+@use 'styles/utils/shapes';
+@use '../../../../styles/components/button/button';
+
+// track
+$track-height: 24px;
+$track-width: 48px;
+// thumb
+$thumb-size: 18px;
+$thumb-position-top: 3px;
+$thumb-position-left: 3px;
+$thumb-position-right: 27px;
+
+._thumb {
+  @include shapes.pseudoCircle($thumb-size);
+  position: absolute;
+  top: $thumb-position-top;
+  border: none;
+  transition: all 0.3s linear;
+}
+
+._thumb--off {
+  left: $thumb-position-left;
+}
+
+._thumb--on {
+  left: $thumb-position-right;
+}
+
+.switcher {
+  @extend ._button;
+  @include shapes.fullyRoundedBar($track-width);
+  height: $track-height;
+  position: relative;
+
+  &::after {
+    transition: all 0.3s linear;
+    @extend ._thumb;
+  }
+
+  &:hover,
+  &:focus {
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+      0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  }
+
+  &[role="switch"][aria-checked="false"] {
+    @extend ._track--off;
+
+    &::after {
+      @extend ._thumb--off;
+    }
+  }
+
+  &[role="switch"][aria-checked="true"] {
+    @extend ._track--on;
+
+    &::after {
+      @extend ._thumb--on;
+    }
+  }
+}
+
+// TODO THEMING
+
+._track--on {
+  background-color: #000;
+}
+
+._track--off {
+  background-color: #737373;
+}
+
+._thumb--off {
+  background-color: #fafafa;
+}
+
+._thumb--on {
+  background-color: #fff;
+}
