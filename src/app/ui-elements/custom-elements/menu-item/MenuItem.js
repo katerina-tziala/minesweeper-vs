@@ -101,6 +101,7 @@ export default class MenuItem extends HTMLElement {
     if (type) {
       const event = new CustomEvent('selectedMenuItem', { detail: { value: type } });
       this.dispatchEvent(event);
+      this.blur();
     }
   }
 

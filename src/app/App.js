@@ -14,9 +14,9 @@ export class App {
 
     this.#initPageController();
      //this.#init();
-this.#pageloaderService.nextPage(PageType.JoinPage);
+    // this.#pageloaderService.nextPage(PageType.JoinPage);
   
-    //this.#pageloaderService.nextPage(PageType.HomePage);
+    this.#pageloaderService.nextPage(PageType.HomePage);
   }
 
   #initPageController() {

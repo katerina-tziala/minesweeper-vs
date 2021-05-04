@@ -32,7 +32,7 @@ module.exports = {
             ONLINE_CONNECTION: path.resolve(__dirname, 'src/app/state-controllers/online-connection/@online-connection.module.js'),
             // UserInputs: path.resolve(__dirname, 'src/app/_modules/user-inputs/@user-inputs.module.js'),
             // HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/@html-dom-manager.module.js'),
-            // GameEnums: path.resolve(__dirname, 'src/app/game/_enums/@game-enums.module.js'),
+            GAME_ENUMS: path.resolve(__dirname, 'src/app/game/_enums/@game-enums.module.js'),
             // GameModels: path.resolve(__dirname, 'src/app/game/_models/@game-models.module.js'),
             // GameWizardComponents: path.resolve(__dirname, 'src/app/game-wizard/game-wizard-components/@game-wizard-components.module'),
             // GameWizard: path.resolve(__dirname, 'src/app/game-wizard/@game-wizard.module.js'),

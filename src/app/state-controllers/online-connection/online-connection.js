@@ -14,7 +14,8 @@ export class OnlineConnection {
   }
 
   get live() {
-    return this.#webSocket && this.#webSocket.readyState === 1;
+    //return true;
+    return (this.#webSocket && this.#webSocket.readyState === 1) ? true : false;
   }
 
   static getInstance() {

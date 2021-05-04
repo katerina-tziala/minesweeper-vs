@@ -1,19 +1,19 @@
 'use strict';
+import './lobby-page.scss';
 import { Page } from '../page';
 
-export class HomePage extends Page {
+export class LobbyPage extends Page {
 
 
   constructor() {
     super();
-
-    console.log('HomePage');
     this.init();
   }
 
   renderPage(mainContainer) {
-    console.log("render home page");
+    console.log('LobbyPage');
+    //mainContainer.append();
     console.log(mainContainer);
   }
-
+  
 }

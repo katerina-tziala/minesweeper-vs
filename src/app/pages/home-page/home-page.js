@@ -1,27 +1,40 @@
 'use strict';
 import { Page } from '../page';
 import { LocalStorageHelper } from 'UTILS';
-import { Menu } from './menu/menu';
+import { GameType } from 'GAME_ENUMS';
+import { HomePageMenu as Menu } from './home-page-menu';
+import { PageType } from '../page-type.enum';
 
 export class HomePage extends Page {
   #menu;
 
   constructor() {
     super();
-    this.#menu = new Menu();
-
-    //console.log('HomePage');
     this.init();
   }
 
   renderPage(mainContainer) {
-    console.log("render -> HomePage");
-    console.log(mainContainer);
     const user = LocalStorageHelper.user;
-    
-    mainContainer.append(this.#menu.generate());
-    
     console.log(user);
+    mainContainer.append(this.#generateMenu());
   }
+
+  #generateMenu() {
+    this.#menu = new Menu();
+    return this.#menu.generateMenu(this.#onMenuSelection.bind(this));
+  }
+
+  #onMenuSelection(selectedOption) {
+    if (selectedOption === GameType.Online) {
+      this.onChangePage(PageType.LobbyPage);
+    } else {
+      console.log('game set up');
+      console.log(selectedOption);
+    }
+  }
+
+  
+
+
 
 }

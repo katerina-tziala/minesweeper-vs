@@ -3,11 +3,14 @@ import { AppLoaderHandler } from '../app-loader-handler';
 import { ElementHandler } from 'UI_ELEMENTS';
 import PageLoaderService from './page-loader.service';
 import { PageType } from './page-type.enum';
+import { OnlineConnection } from 'ONLINE_CONNECTION';
+
 export class Page {
   #pageloaderService;
 
   constructor() {
     this.#pageloaderService = PageLoaderService.getInstance();
+    this.onlineConnection = OnlineConnection.getInstance();
   }
 
   get mainContainer() {

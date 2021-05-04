@@ -1,13 +1,12 @@
 'use strict';
 import './join-page.scss';
 import { Page } from '../page';
-import { OnlineConnection, MessageErrorType } from 'ONLINE_CONNECTION';
+import { MessageErrorType } from 'ONLINE_CONNECTION';
 import { AddUsername } from '~/components/@components.module';
 import { User } from '../../_models/user';
 import { LocalStorageHelper } from 'UTILS';
 
 export class JoinPage extends Page {
-  #onlineConnection;
   #usernameForm;
   #user;
   #offlineConfirmation;
@@ -15,7 +14,6 @@ export class JoinPage extends Page {
 
   constructor() {
     super();
-    this.#onlineConnection = OnlineConnection.getInstance();
     this.init();
     this.#offlineConfirmationActions = new Map();
     this.#offlineConfirmationActions.set('choiceA', this.#onRejectOfflineJoin.bind(this));
@@ -26,14 +24,15 @@ export class JoinPage extends Page {
   renderPage(mainContainer) {
     this.#usernameForm = new AddUsername('join', this.#onJoin.bind(this));
     mainContainer.append(this.#usernameForm.render());
-    this.#usernameForm.init('kate')
+    //TODO: init from local storage
+    this.#usernameForm.init('kate');
   }
 
   #onJoin(data) {
     const { username } = data;
     this.#user = new User(username);
     this.#usernameForm.setFormSubmittionState();
-    this.#onlineConnection.establishConnection(username)
+    this.onlineConnection.establishConnection(username)
       .then(() => this.onChangePage())
       .catch(error => this.#onConnectionFailed(error));
   }
