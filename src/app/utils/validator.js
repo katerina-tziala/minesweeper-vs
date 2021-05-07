@@ -14,7 +14,7 @@
 // };
 
 export const valueDefined = (value) => {
-  return (value !== undefined && value !== null) ? true : false;
+  return (value !== undefined && value !== null && !isNaN(value)) ? true : false;
 };
 
 export const valueInRange = (value, range) => {

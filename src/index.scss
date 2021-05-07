@@ -2,16 +2,16 @@
 
 // global
 @use './styles/typography/typography';
-// @use './styles/iconography/iconography';
+@use './styles/iconography/iconography';
 
 // utilities
 @use './styles/utils/flexbox/flexbox';
-@import './styles/utils/state';
+@import "./styles/utils/state";
 
 // components
-@import './styles/components/header/header';
-@import './styles/components/card/card';
-@import './styles/components/button/button';
+@import "./styles/components/header/header";
+@import "./styles/components/card/card";
+@import "./styles/components/button/button";
 
 * {
   box-sizing: border-box;
@@ -53,6 +53,7 @@ body,
   overflow-x: hidden;
   overflow-y: auto;
   padding: 15px;
+  will-change: contents;
   // border: 2px solid red;
   //background-color: lightblue;
   // scrollbar
@@ -62,3 +63,10 @@ body,
   z-index: 1000;
 }
 
+.username-input {
+  .app-text-input__input {
+    &::before {
+      @extend .icon-user;
+    }
+  }
+}

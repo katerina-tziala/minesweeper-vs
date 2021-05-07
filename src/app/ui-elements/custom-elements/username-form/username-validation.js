@@ -10,7 +10,7 @@ Object.freeze(ValidationError);
 
 const USERNAME_LENGTH_RANGE = [3, 16];
 
-export default class UsernameValidation {
+export default class NumberValidation {
 
     static #usernameIncludesSpaces(username) {
         const usernameParts = username.split(' ');

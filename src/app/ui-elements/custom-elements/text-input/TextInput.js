@@ -67,7 +67,7 @@ export default class TextInput extends HTMLElement {
     this.#setName();
     this.#setInputValue();
     this.#setState();
-    this.initFocusedState();
+    this.#setInputListeners();
     this.#handleErrorDisplay();
     this.#initUpdatesHandling();
   }
@@ -117,7 +117,6 @@ export default class TextInput extends HTMLElement {
   }
 
   #setState() {
-    this.#disabled ? this.#removeInputListeners() : this.#setInputListeners();
     this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => {
       ElementHandler.setDisabled(inputField, this.#disabled);
     });

@@ -2,15 +2,15 @@
 @use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
 @use 'styles/components/button/button';
-
+@use 'styles/utils/state';
 // track
 $track-height: 20px;
 $track-width: 40px;
 // thumb
 $thumb-size: 14px;
 $thumb-position-top: 3px;
-$thumb-position-left: 3px;
-$thumb-position-right: 23px;
+$thumb-position-left: 4px;
+$thumb-position-right: 22px;
 
 ._thumb {
   @include shapes.pseudoCircle($thumb-size);
@@ -28,7 +28,7 @@ $thumb-position-right: 23px;
   left: $thumb-position-right;
 }
 
-.switcher {
+app-switcher {
   @extend ._button;
   @include shapes.fullyRoundedBar($track-width);
   height: $track-height;
@@ -59,6 +59,14 @@ $thumb-position-right: 23px;
     &::after {
       @extend ._thumb--on;
     }
+  }
+
+  &[disabled="true"] {
+    @extend .disabled;
+  }
+
+  &:active {
+    background-color: magenta!important;
   }
 }
 

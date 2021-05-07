@@ -5,20 +5,15 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const TEMPLATE = `
-  <button type='button' class='${DOM_ELEMENT_CLASS.minus}'></button>
+  <app-number-input-button class='${DOM_ELEMENT_CLASS.minus}'></app-number-input-button>
   <input class='${DOM_ELEMENT_CLASS.input}' id='input' type='text' value='' autocomplete='off'/>
-  <button type='button' class='${DOM_ELEMENT_CLASS.plus}'></button>
+  <app-number-input-button type='button' class='${DOM_ELEMENT_CLASS.plus}'></app-number-input-button>
 `;
 
 export const ATTRIBUTES = {
   disabled: 'disabled',
   value: 'value',
   name: 'name',
+  min: 'min',
+  max: 'max'
 };
-
-export const KEYS = {
-  increaseKeys: ['ArrowUp', 'ArrowRight'],
-  decreaseKeys: ['ArrowDown', 'ArrowLeft'],
-  name: 'name',
-};
-

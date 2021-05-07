@@ -1,6 +1,7 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
+@use 'styles/utils/state';
 @use 'styles/components/button/button';
 
 $input-size: 26px;
@@ -28,11 +29,17 @@ app-number-input {
 .app-number-input__button--minus {
   @extend ._app-number-input__button;
   @include iconography.afterIcon("minus");
+  &[disabled="true"][aria-disabled="true"] {
+    @extend .disabled;
+  }
 }
 
 .app-number-input__button--plus {
   @extend ._app-number-input__button;
   @include iconography.afterIcon("plus");
+  &[disabled="true"][aria-disabled="true"] {
+    @extend .disabled;
+  }
 }
 
 .app-number-input__input-field {

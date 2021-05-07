@@ -1,5 +1,5 @@
 'use strict';
-import { TYPOGRAPHY } from 'UTILS';
+import { TYPOGRAPHY, valueDefined } from 'UTILS';
 
 export class ElementHandler {
 
@@ -60,6 +60,12 @@ export class ElementHandler {
   static setName(element, name) {
     if (element && name && name.length) {
       element.setAttribute('name', name);
+    }
+  }
+
+  static setElementValue(element, value) {
+    if (element && valueDefined(value)) {
+      element.value = value;
     }
   }
 }

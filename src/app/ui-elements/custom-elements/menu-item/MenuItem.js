@@ -40,7 +40,10 @@ export default class MenuItem extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.#removeListeners();
+    for (const [type, action] of this.#eventListeners) {
+      this.removeEventListener(type, action);
+      this.#eventListeners.delete(type, action);
+    }
   }
 
   #onInit() {
@@ -56,31 +59,15 @@ export default class MenuItem extends HTMLElement {
     const content = MENU_ITEM[this.#renderedType];
     const template = TemplateGenerator.generate(TEMPLATE, content);
     this.innerHTML = template;
+    this.#setListener('click', this.#onSelect.bind(this));
+    this.#setListener('keydown', this.#onKeyDown.bind(this));
     this.#setState();
   }
 
   #setState() {
-    this.#disabled ? this.#disable() : this.#enable();
-  }
-
-  #enable() {
-    AriaHandler.setAriaDisabled(this);
-    AriaHandler.setTabindex(this, 1);
-    this.#setListener('click', this.#onSelect.bind(this));
-    this.#setListener('keydown', this.#onKeyDown.bind(this));
-  }
-
-  #disable() {
-    AriaHandler.setAriaDisabled(this, true);
-    AriaHandler.setTabindex(this, -1);
-    this.#removeListeners();
-  }
-
-  #removeListeners() {
-    for (const [type, action] of this.#eventListeners) {
-      this.removeEventListener(type, action);
-      this.#eventListeners.delete(type, action);
-    }
+    AriaHandler.setAriaDisabled(this, this.#disabled);
+    const tablindex = this.#disabled ? -1 : 1;
+    AriaHandler.setTabindex(this, tablindex);
   }
 
   #setListener(type, action) {

@@ -15,20 +15,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // on reload return to your state
 
   
-  // const test = document.getElementsByTagName("app-username-form")[0];
-  // test.init('kate');
-  // //   // // console.log(test);
-  // //   // test.setAttribute('name', 'username');
-  // // test.addEventListener('onSubmit', (event) => {
-  // //   console.log('button click');
-  // //   console.log(event.detail);
-  // // })
+  // const test = document.getElementsByTagName("app-text-input")[0];
+  // // test.init('kate');
+  // // //   // // console.log(test);
+  // // //   // test.setAttribute('name', 'username');
+  // test.addEventListener('onValueChange', (event) => {
+  //   console.log('value');
+  //   console.log(event.detail);
+  // })
+  //   // setTimeout(() => {
+  //   //   test.setAttribute('min', 5);
+  //   //   //test.setAttribute('type', 'friend');
+  //   //  // test.remove();
+  //   // }, 3000)
   //   setTimeout(() => {
-  //     //test.setAttribute('disabled', true);
+  //     console.log('dis');
+  //     test.setAttribute('disabled', true);
+      
   //     //test.setAttribute('type', 'friend');
-  //     test.remove();
-  //   }, 3000)
-
+  //    // test.remove();
+  //   }, 5000)
   //ws://localhost:9000?user=test
   // const test = document.getElementsByTagName("app-icon-button")[0];
 
