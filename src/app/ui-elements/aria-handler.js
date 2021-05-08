@@ -40,7 +40,7 @@ export class AriaHandler {
     }
   }
 
-  static setTabindex(element, value) {
+  static setTabindex(element, value = 0) {
     if (element) {
       element.setAttribute('tabindex', value);
     }
@@ -58,9 +58,23 @@ export class AriaHandler {
     }
   }
 
+  static setAriaExpanded(element, value = false) {
+    if (element) {
+      element.setAttribute('aria-expanded', value);
+    }
+  }
 
+  static setAriaControls(element, id = '') {
+    if (element && id.length) {
+      element.setAttribute('aria-controls', id);
+    }
+  }
 
-
+  static setAriaHidden(element, value = false) {
+    if (element) {
+      element.setAttribute('aria-hidden', value);
+    }
+  }
 
   // static setListTabindex(elements, value) {
   //   elements.forEach((element) => AriaHandler.setTabindex(element, value));
@@ -78,9 +92,7 @@ export class AriaHandler {
   //   return element.setAttribute('aria-activedescendant', value);
   // }
 
-  // static setAriaExpanded(element, value) {
-  //   element.setAttribute('aria-expanded', value);
-  // }
+ 
 
   // static getAriaExpanded(element) {
   //   return JSON.parse(element.getAttribute('aria-expanded'));

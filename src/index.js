@@ -3,7 +3,7 @@ import './index.scss';
 import { App } from './app/App';
 import { AppLoaderHandler } from './app/app-loader-handler';
 
-import  './app/test/test';
+
 
 //will change to transform
 
@@ -17,7 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // on reload return to your state
 
   
-  // const test = document.getElementsByTagName("app-text-input")[0];
+  //const test = document.getElementsByTagName("app-dropdown-panel")[0];
+
+
+    // setTimeout(() => {
+    //   //test.setAttribute('min', 5);
+    //   //test.setAttribute('type', 'friend');
+    //   test.remove();
+    // }, 3000)
+
+
   // // test.init('kate');
   // // //   // // console.log(test);
   // // //   // test.setAttribute('name', 'username');

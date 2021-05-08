@@ -7,8 +7,10 @@ export class ElementHandler {
     this.setContent(element, '');
   }
 
-  static setContent(element, content) {
-    element.innerHTML = content;
+  static setContent(element, content = '') {
+    if (element) {
+      element.innerHTML = content;
+    }
   }
 
   static hide(element) {
@@ -29,6 +31,11 @@ export class ElementHandler {
     if (element && className) {
       element.classList.remove(className);
     }
+  }
+
+  static swapStyleClass(element, styleToRemove, styleToAdd) {
+    ElementHandler.removeStyleClass(element, styleToRemove);
+    ElementHandler.addStyleClass(element, styleToAdd);
   }
 
   static addStylesAndId(element, styles = [], elementId) {
@@ -68,4 +75,21 @@ export class ElementHandler {
       element.value = value;
     }
   }
+
+  static updateElementStyles(element, styles) {
+    const stylesAttributes = Object.keys(styles) || [];
+    if (element) {
+      stylesAttributes.forEach(styleProperty => {
+        element.style[styleProperty] = styles[styleProperty];
+      });
+    }
+  }
+
+  static getElementHeight(element) {
+    if (element) {
+      return element.getBoundingClientRect().height;
+    }
+    return 0;
+  }
+
 }

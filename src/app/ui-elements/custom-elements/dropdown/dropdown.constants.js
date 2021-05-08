@@ -1,7 +1,8 @@
 export const DOM_ELEMENT_CLASS = {
-  content: 'app-dropdown__content',
   button: 'app-dropdown__toggle-button',
-  panel: 'app-dropdown__panel'
+  panel: 'app-dropdown-panel',
+  panelWrapper: 'app-dropdown__panel-wrapper',
+  
 };
 
 
@@ -11,10 +12,5 @@ export const ATTRIBUTES = {
 
 export const TEMPLATE = `
 <button class='${DOM_ELEMENT_CLASS.button}'>button</button>
-<div class='${DOM_ELEMENT_CLASS.panel}'>
-    <div>
-      <div>item i</div>
-      <div>item ii</div>
-    </div>
-</div>
+<app-dropdown-panel name='%name%' expanded='%expanded%'></app-dropdown-panel>
 `;

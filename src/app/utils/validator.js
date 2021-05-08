@@ -13,9 +13,18 @@
 //   return limits.min <= value && value <= limits.max;
 // };
 
-export const valueDefined = (value) => {
-  return (value !== undefined && value !== null && !isNaN(value)) ? true : false;
+export const definedString = (value) => {
+  return valueDefined(value) && value.length;
 };
+
+export const valueDefined = (value) => {
+  return value !== undefined && value !== null;
+};
+
+export function numberDefined(value) {
+  return valueDefined(value) && !isNaN(value);
+};
+
 
 export const valueInRange = (value, range) => {
   return range[0] <= value && value < range[1];

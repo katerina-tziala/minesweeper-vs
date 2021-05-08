@@ -1,13 +1,7 @@
 'use strict';
-
-const FRAMES = 60;
-const PERCENTAGE_INCREMENT = 100 / FRAMES;
-const ANIMATION_CONFIG = {
-  expandParent: '--parent-expanded',
-  expandChild: '--content-expanded',
-  collapseParent: '--parent-collapsed',
-  collapseChild: '-content-collapsed'
-};
+import { ElementHandler } from '../element-handler';
+import { numberDefined } from 'UTILS';
+import { FRAMES, PERCENTAGE_INCREMENT, ANIMATION_CONFIG } from './height-animation.constants';
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -19,7 +13,7 @@ function easeStep(step, pow = 4) {
 }
 
 function roundAnimationValue(value) {
-  return parseFloat(value.toFixed(5));
+  return numberDefined(value) ? parseFloat(value.toFixed(5)) : 0;
 }
 
 function generateAnimationKeyframe(animationOffset, yScale) {
@@ -39,32 +33,25 @@ function calculateAnimationOffset(animationOffset, easedStep, heightStart, heigh
 }
 
 function generateAnimationFrames(heightPoint) {
-  const parentExpandAnimation = [];
-  const childExpandAnimation = [];
-
-  const parentCollapseAnimation = [];
-  const childCollapseAnimation = [];
+  let expand = '';
+  let expandContent = '';
+  let collapse = '';
+  let collapseContent = '';
 
   for (let i = 0; i <= FRAMES; i++) {
     const step = easeStep(i / FRAMES);
     const percentage = roundAnimationValue(i * PERCENTAGE_INCREMENT);
     // Expand animation
     const expandAnimation = calculateAnimationOffset(percentage, step, heightPoint, 1);
-    parentExpandAnimation.push(expandAnimation.outerAnimation);
-    childExpandAnimation.push(expandAnimation.innerAnimation);
+    expand += `${expandAnimation.outerAnimation}`;
+    expandContent += `${expandAnimation.innerAnimation}`;
     // Collapse animation
     const collapseAnimation = calculateAnimationOffset(percentage, step, 1, heightPoint);
-    parentCollapseAnimation.push(collapseAnimation.outerAnimation);
-    childCollapseAnimation.push(collapseAnimation.innerAnimation);
+    collapse += `${collapseAnimation.outerAnimation}`;
+    collapseContent += `${collapseAnimation.innerAnimation}`;
   }
 
-  return {
-    expandParent: parentExpandAnimation.join(''),
-    expandChild: childExpandAnimation.join(''),
-    collapseParent: parentCollapseAnimation.join(''),
-    collapseChild: childCollapseAnimation.join('')
-  }
-
+  return { expand, expandContent, collapse, collapseContent };
 }
 
 function generateStyles(fileName) {
@@ -74,31 +61,44 @@ function generateStyles(fileName) {
 }
 
 function getStyles(fileName) {
-  const styles = document.querySelector(`${fileName}`);
+  const styles = getAnimationStyle(fileName);
   return styles || generateStyles(fileName);
 }
 
-export function setUpElementAnimation(animationId, heightScale, element) {
-  const animationKeyFrames = generateAnimationFrames(heightScale);
+function getAnimationStyle(fileName) {
+  return document.querySelector(`.${fileName}`);
+}
 
+export function generateHeightAnimation(animationId, heightScale, duration = 0.5) {
+  const animationKeyFrames = generateAnimationFrames(heightScale);
+  const animationClasses = { ...ANIMATION_CONFIG };
   let stylesContent = '';
+  let keyframesStyles = '';
 
   Object.keys(ANIMATION_CONFIG).forEach(key => {
     const animationName = animationId + ANIMATION_CONFIG[key];
-    element.style.setProperty(`--${key}`, animationName);
-    stylesContent += `@keyframes ${animationName} { ${animationKeyFrames[key]} }`;
+    animationClasses[key] = animationName;
+    stylesContent += `.${animationName} {animation: ${animationName} ${duration}s linear}`;
+    keyframesStyles += `@keyframes ${animationName} { ${animationKeyFrames[key]} }`;
   });
 
   let styles = getStyles(animationId);
-  styles.textContent = stylesContent;
+  styles.textContent = `${stylesContent}${keyframesStyles}`;
   document.head.appendChild(styles);
-  return styles;
+  return animationClasses;
 }
 
 export function getAnimationScale(parentElement, childElement) {
-  const expanded = parentElement.getBoundingClientRect();
-  const collapsed = childElement.getBoundingClientRect();
-  const scale = roundAnimationValue(collapsed.height / expanded.height);
+  const expandedHeight = ElementHandler.getElementHeight(parentElement);
+  const collapsedHeight = ElementHandler.getElementHeight(childElement);
+  const scale = roundAnimationValue(collapsedHeight / expandedHeight);
   const inverseScale = getInverseScale(scale);
   return { scale, inverseScale };
+}
+
+export function removeAnimationStyles(animationId) {
+  const styles = getAnimationStyle(animationId);
+  if (styles) {
+    styles.remove();
+  }
 }

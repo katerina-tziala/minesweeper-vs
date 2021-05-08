@@ -1,0 +1,16 @@
+app-dropdown-panel {
+  position: absolute;
+  opacity: 1;
+  pointer-events: none;
+  transform-origin: top left;
+  overflow: hidden;
+  will-change: transform;
+  pointer-events: auto;
+  width: 100%;
+}
+
+.app-dropdown-panel-content {
+  transform-origin: top left;
+  will-change: transform;
+  width: 100%;
+}

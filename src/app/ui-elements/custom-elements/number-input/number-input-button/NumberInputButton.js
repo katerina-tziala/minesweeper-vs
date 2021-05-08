@@ -4,7 +4,7 @@ import { ATTRIBUTES } from './number-input-button.constants';
 export default class NumberInputButton extends HTMLElement {
   #eventListeners;
   #attributeUpdateHandler;
-
+// space activates bttn
   constructor() {
     super();
     this.#eventListeners = new Map();

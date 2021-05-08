@@ -5,26 +5,22 @@
 @use 'styles/components/card/card';
 @use 'styles/components/button/button';
 
-
-.app-dropdown__panel {
-  border: 2px solid red;
-  opacity: 1;
-  pointer-events: auto;
+app-dropdown {
+  position: relative;
+  display: block;
+  width: 300px;
 }
 
-/* Animations */
-// .section.is--expanded {
-//   animation-name: var(--sectionExpandAnimation);
-// }
+.app-dropdown__toggle-button {
+  height: 34px;
+}
 
-// .is--expanded .section-item {
-//   animation-name: var(--sectionExpandContentsAnimation);
-// }
+.app-dropdown-panel {
+  border-radius: 3px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
+  background: #fff;
+  left: 0;
+  top: 34px;
+  
+}
 
-// .section.is--collapsed {
-//   animation-name: var(--sectionCollapseAnimation);
-// }
-
-// .is--collapsed .section-item {
-//   animation-name: var(--sectionCollapseContentsAnimation);
-// }

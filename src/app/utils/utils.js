@@ -1,6 +1,7 @@
 "use strict";
 
 // import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
+import { definedString } from './validator';
 
 // export const clone = (itemToClone) => {
 //   return JSON.parse(JSON.stringify(itemToClone));
@@ -24,9 +25,15 @@
 //   event.stopPropagation();
 // };
 
-export const replaceStringParameter = (stringToUpdate, value, replacePart = '###') => {
+export function replaceStringParameter(stringToUpdate, value, replacePart = '###') {
   return stringToUpdate.replace(replacePart, value);
 };
+
+export function parseBoolean(stringToParse) {
+  return definedString(stringToParse) ? JSON.parse(stringToParse) : false;
+};
+
+
 
 // export const extractIdValue = (elementId) => {
 //   return elementId.split(TYPOGRAPHY.doubleUnderscore).pop();
