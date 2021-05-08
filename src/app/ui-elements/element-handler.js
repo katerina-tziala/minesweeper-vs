@@ -92,4 +92,9 @@ export class ElementHandler {
     return 0;
   }
 
+  static setForAttribute(label, name = 'name') {
+    if (label) {
+      label.setAttribute('for', name);
+    }
+  }
 }

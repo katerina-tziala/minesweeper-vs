@@ -45,7 +45,7 @@ export default class Dropdown extends HTMLElement {
       this.#setState();
       this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
     } else {
-      throw new Error('name required for dropdown');
+      throw new Error('name required for app-dropdown');
     }
   }
 

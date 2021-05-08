@@ -1,13 +1,16 @@
 import './text-input.scss';
 import { TYPOGRAPHY } from 'UTILS';
-import { ElementHandler } from '../../element-handler';
+import { ElementHandler, AriaHandler } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, TEMPLATE, ATTRIBUTES, KEY_BLACKLIST } from './text-input.constants';
-import { TextInputTemplateHelper as TemplateHelper } from './TextInputTemplateHelper';
 
 export default class TextInput extends HTMLElement {
+  #input;
+  #labelElement;
+  #inputField;
+  #errorElement;
+  #attributeUpdateHandler;
   #inputListeners;
   #clickListener;
-  #attributeUpdateHandler;
 
   constructor() {
     super();
@@ -20,10 +23,7 @@ export default class TextInput extends HTMLElement {
   }
 
   get #inputListenersTypes() {
-    if (!this.#inputListeners) {
-      return [];
-    }
-    return Array.from(this.#inputListeners.keys());
+    return this.#inputListeners ? Array.from(this.#inputListeners.keys()) : [];
   }
 
   get #name() {
@@ -63,13 +63,18 @@ export default class TextInput extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = TEMPLATE;
-    this.#setName();
-    this.#setInputValue();
-    this.#setState();
-    this.#setInputListeners();
-    this.#handleErrorDisplay();
-    this.#initUpdatesHandling();
+    const name = this.#name;
+    if (name) {
+      this.#init();
+      this.#setName();
+      this.#setInputValue();
+      this.#setState();
+      this.#setInputListeners();
+      this.#handleErrorDisplay();
+      this.#initUpdatesHandling();
+    } else {
+      throw new Error('name required for app-text-input');
+    }
   }
 
   disconnectedCallback() {
@@ -77,19 +82,19 @@ export default class TextInput extends HTMLElement {
     this.#removeInputListeners();
   }
 
+  #init() {
+    this.innerHTML = TEMPLATE;
+    this.#input = this.querySelector(`.${DOM_ELEMENT_CLASS.input}`);
+    this.#labelElement = this.querySelector(`.${DOM_ELEMENT_CLASS.label}`);
+    this.#inputField = this.querySelector(`.${DOM_ELEMENT_CLASS.inputField}`);
+    this.#errorElement = this.querySelector(`.${DOM_ELEMENT_CLASS.inputError}`);
+  }
+
   #initUpdatesHandling() {
-    this.#attributeUpdateHandler.set(ATTRIBUTES.name, this.#setName.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.value, this.#setInputValue.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.errorMessage, this.#handleErrorDisplay.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.label, this.#setLabelText.bind(this));
-  }
-
-  #updateElement(className, callBack) {
-    const element = this.querySelector(`.${className}`);
-    if (element) {
-      callBack(element);
-    }
   }
 
   #setName() {
@@ -98,28 +103,24 @@ export default class TextInput extends HTMLElement {
   }
 
   #setFieldName() {
-    this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => {
-      TemplateHelper.setFieldName(inputField, this.#name);
-      this.#pairLabelToField();
-    });
-  }
-
-  #pairLabelToField() {
-    this.#updateElement(DOM_ELEMENT_CLASS.label, (label) => TemplateHelper.setLabelForAttribute(label, this.#name));
+    if (this.inputField) {
+      this.inputField.name = this.#name;
+      ElementHandler.setForAttribute(this.#labelElement, this.#label);
+    }
   }
 
   #setLabelText() {
-    this.#updateElement(DOM_ELEMENT_CLASS.label, (label) => TemplateHelper.setLabelText(label, this.#label));
+    ElementHandler.setContent(this.#labelElement, this.#label);
   }
 
   #setInputValue() {
-    this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => inputField.value = this.value);
+    if (this.#inputField) {
+      this.#inputField.value = this.value;
+    }
   }
 
   #setState() {
-    this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => {
-      ElementHandler.setDisabled(inputField, this.#disabled);
-    });
+    ElementHandler.setDisabled(this.#inputField, this.#disabled);
     this.initFocusedState();
   }
 
@@ -128,23 +129,23 @@ export default class TextInput extends HTMLElement {
   }
 
   #setInputListeners() {
-    this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => {
+    if (this.inputField && !this.#inputListeners.size) {
       this.#inputListeners.set('focus', this.#focus.bind(this));
       this.#inputListeners.set('focusout', this.#focusout.bind(this));
       this.#inputListeners.set('keyup', this.#onKeyUp.bind(this));
       this.#inputListenersTypes.forEach(listenerName => {
         inputField.addEventListener(listenerName, this.#inputListeners.get(listenerName));
       });
-    });
+    }
   }
 
   #removeInputListeners() {
-    this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => {
+    if (this.inputField && !!this.#inputListeners.size) {
       this.#inputListenersTypes.forEach(listenerName => {
         inputField.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
       });
-    });
-    this.#inputListeners = new Map();
+      this.#inputListeners = new Map();
+    }
   }
 
   #focus(event) {
@@ -185,23 +186,21 @@ export default class TextInput extends HTMLElement {
   #onClick(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.#updateElement(DOM_ELEMENT_CLASS.inputField, (inputField) => inputField.focus());
+    if (this.#inputField) {
+      this.#inputField.focus();
+    }
   }
 
   #addClickListener() {
-    if (!this.#clickListener && !this.#disabled) {
-      this.#updateElement(DOM_ELEMENT_CLASS.input, (input) => {
-        this.#clickListener = this.#onClick.bind(this);
-        input.addEventListener('click', this.#clickListener);
-      });
+    if (this.#input && !this.#clickListener && !this.#disabled) {
+      this.#clickListener = this.#onClick.bind(this);
+      this.#input.addEventListener('click', this.#clickListener);
     }
   }
 
   #removeClickListener() {
-    if (this.#clickListener) {
-      this.#updateElement(DOM_ELEMENT_CLASS.input, (input) => {
-        input.removeEventListener('click', this.#clickListener);
-      });
+    if (this.#input && this.#clickListener) {
+      this.#input.removeEventListener('click', this.#clickListener);
       this.#clickListener = undefined;
     };
   }
@@ -209,12 +208,12 @@ export default class TextInput extends HTMLElement {
   #shakeLabel() {
     const error = JSON.parse(this.getAttribute('error'));
     if (error) {
-      this.#updateElement(DOM_ELEMENT_CLASS.label, TemplateHelper.shakeLabel);
+      ElementHandler.addStyleClass(this.#labelElement, DOM_ELEMENT_CLASS.labelShake);
     }
   }
 
   #clearLabelShake() {
-    this.#updateElement(DOM_ELEMENT_CLASS.label, TemplateHelper.clearLabelShake);
+    ElementHandler.removeStyleClass(this.#labelElement, DOM_ELEMENT_CLASS.labelShake);
   }
 
   #handleErrorDisplay() {
@@ -223,12 +222,12 @@ export default class TextInput extends HTMLElement {
 
   #showErrorMessage() {
     this.setAttribute('error', true);
-    this.#updateElement(DOM_ELEMENT_CLASS.inputError, (inputError) => TemplateHelper.setErrorMessage(inputError, this.#errorMessage));
+    AriaHandler.setAriaLabel(this.#errorElement, this.#errorMessage);
   }
 
   #removeErrorMessage() {
     this.setAttribute('error', false);
-    this.#updateElement(DOM_ELEMENT_CLASS.inputError, TemplateHelper.clearErrorMessage);
+    AriaHandler.setAriaLabel(this.#errorElement, '');
   }
 
   #submitValueChange() {

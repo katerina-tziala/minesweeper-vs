@@ -7,6 +7,7 @@ import UsernameForm from './username-form/UsernameForm';
 import Switcher from './switcher/Switcher';
 import NumberInput from './number-input/NumberInput';
 import Dropdown from './dropdown/Dropdown';
+import ErrorMessage from './error-message/ErrorMessage';
 
 
 

@@ -13,7 +13,7 @@ export const TEMPLATE = `
     <input class='${DOM_ELEMENT_CLASS.inputField}' id='input' type='text' value='' autocomplete='off'/>
   </div>
 </div>
-<div class='${DOM_ELEMENT_CLASS.inputError}'></div>`;
+<app-error-message class='${DOM_ELEMENT_CLASS.inputError}'></app-error-message>`;
 
 export const ATTRIBUTES = {
   name: 'name',
