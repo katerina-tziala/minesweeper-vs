@@ -1,0 +1,30 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+@use 'styles/utils/state';
+@use 'styles/iconography/iconography';
+@use 'styles/components/card/card';
+@use 'styles/components/button/button';
+
+
+.app-dropdown__panel {
+  border: 2px solid red;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Animations */
+// .section.is--expanded {
+//   animation-name: var(--sectionExpandAnimation);
+// }
+
+// .is--expanded .section-item {
+//   animation-name: var(--sectionExpandContentsAnimation);
+// }
+
+// .section.is--collapsed {
+//   animation-name: var(--sectionCollapseAnimation);
+// }
+
+// .is--collapsed .section-item {
+//   animation-name: var(--sectionCollapseContentsAnimation);
+// }

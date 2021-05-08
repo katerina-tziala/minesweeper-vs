@@ -3,7 +3,9 @@ import './index.scss';
 import { App } from './app/App';
 import { AppLoaderHandler } from './app/app-loader-handler';
 
+import  './app/test/test';
 
+//will change to transform
 
 document.addEventListener('DOMContentLoaded', () => {
   //AppLoaderHandler.display();
