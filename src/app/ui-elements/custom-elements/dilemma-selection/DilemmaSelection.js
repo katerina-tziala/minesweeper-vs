@@ -20,6 +20,10 @@ export default class DilemmaSelection extends HTMLElement {
     return this.querySelector(`.${DOM_ELEMENT_CLASS.content}`);
   }
 
+  get #type() {
+    return this.getAttribute(ATTRIBUTES.type);
+  }
+
   static get observedAttributes() {
     return Object.values(ATTRIBUTES);
   }
@@ -75,11 +79,6 @@ export default class DilemmaSelection extends HTMLElement {
       contentContainer.removeEventListener('animationend', this.#shakeEndListener);
       this.#shakeEndListener = undefined;
     }
-  }
-
-
-  get #type() {
-    return this.getAttribute(ATTRIBUTES.type);
   }
 
   #onInit() {

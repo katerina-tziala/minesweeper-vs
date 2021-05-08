@@ -1,7 +1,6 @@
 import './dilemma-selection.scss';
 import { TEMPLATE, CONTENT, DOM_ELEMENT_CLASS } from './dilemma-selection.constants';
-import { ElementHandler } from '../../element-handler';
-import { TemplateGenerator } from '../../template-generator';
+import { ElementHandler, TemplateGenerator } from 'UI_ELEMENTS';
 
 export class DilemmaSelectionTemplateHelper {
 

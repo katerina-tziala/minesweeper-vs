@@ -38,7 +38,7 @@ export default class TextInput extends HTMLElement {
 
   get #label() {
     const label = this.getAttribute(ATTRIBUTES.label);
-    return  label && label.length ? label : this.#name;
+    return label && label.length ? label : this.#name;
   }
 
   get value() {
@@ -166,14 +166,6 @@ export default class TextInput extends HTMLElement {
     }
   }
 
-  #submitValueChange() {
-    let value = this.value;
-    value = value.length ? value : undefined;
-    const name = this.#name;
-    const event = new CustomEvent('onValueChange', { detail: { name, value } });
-    this.dispatchEvent(event);
-  }
-
   #onFocused() {
     this.setAttribute('focused', true);
     this.#removeClickListener();
@@ -237,6 +229,14 @@ export default class TextInput extends HTMLElement {
   #removeErrorMessage() {
     this.setAttribute('error', false);
     this.#updateElement(DOM_ELEMENT_CLASS.inputError, TemplateHelper.clearErrorMessage);
+  }
+
+  #submitValueChange() {
+    let value = this.value;
+    value = value.length ? value : undefined;
+    const name = this.#name;
+    const event = new CustomEvent('onValueChange', { detail: { name, value } });
+    this.dispatchEvent(event);
   }
 }
 

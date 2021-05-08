@@ -1,7 +1,6 @@
 import './menu-item.scss';
 import { TEMPLATE, MENU_ITEM, ATTRIBUTES } from './menu-item.constants';
-import { TemplateGenerator } from '../../template-generator';
-import { AriaHandler } from '../../aria-handler';
+import { TemplateGenerator, AriaHandler } from 'UI_ELEMENTS';
 
 export default class MenuItem extends HTMLElement {
   #attributeUpdateHandler;

@@ -1,16 +1,16 @@
 'use strict';
-import { valueDefined } from 'UTILS';
+import { numberDefined } from 'UTILS';
 
 export default class NumberValidation {
 
     static numberFromString(stringNumber) {
         const value = stringNumber ? parseInt(stringNumber, 10) : 0;
-        return valueDefined(value) ? value : 0;
+        return numberDefined(value) ? value : 0;
     }
 
     static boundaryValue(stringNumber) {
         const value = stringNumber ? parseInt(stringNumber, 10) : undefined;
-        return valueDefined(value) ? value : undefined;
+        return numberDefined(value) ? value : undefined;
     }
 
 
@@ -22,11 +22,11 @@ export default class NumberValidation {
     }
 
     static #lessThanMin(value, min) {
-        return valueDefined(min) && value < min ? true : false;
+        return numberDefined(min) && value < min ? true : false;
     }
 
     static #greaterThanMax(value, max) {
-        return valueDefined(max) && max < value ? true : false;
+        return numberDefined(max) && max < value ? true : false;
     }
 
     static equalToBoundary(value, boundaryValue) {

@@ -9,31 +9,31 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 
 document.addEventListener('DOMContentLoaded', () => {
   //AppLoaderHandler.display();
-   //new App();
+  //new App();
   AppLoaderHandler.hide();
 
 
   // -- router guard
   // on reload return to your state
 
-  
-  //const test = document.getElementsByTagName("app-dropdown-panel")[0];
 
+  const test = document.getElementsByTagName("app-dropdown")[0];
 
-    // setTimeout(() => {
-    //   //test.setAttribute('min', 5);
-    //   //test.setAttribute('type', 'friend');
-    //   test.remove();
-    // }, 3000)
+  // test.addEventListener('onExpandStateChange', (event) => {
+  //   console.log('onExpandStateChange');
+  //   console.log(event.detail);
+  // })
+  // setTimeout(() => {
+  //   //test.setAttribute('min', 5);
+  //   test.setAttribute('disabled', 'true');
+  //   //test.remove();
+  // }, 3000)
 
 
   // // test.init('kate');
   // // //   // // console.log(test);
   // // //   // test.setAttribute('name', 'username');
-  // test.addEventListener('onValueChange', (event) => {
-  //   console.log('value');
-  //   console.log(event.detail);
-  // })
+
   //   // setTimeout(() => {
   //   //   test.setAttribute('min', 5);
   //   //   //test.setAttribute('type', 'friend');
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //   setTimeout(() => {
   //     console.log('dis');
   //     test.setAttribute('disabled', true);
-      
+
   //     //test.setAttribute('type', 'friend');
   //    // test.remove();
   //   }, 5000)

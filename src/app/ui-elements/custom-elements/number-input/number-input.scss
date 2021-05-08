@@ -18,7 +18,7 @@ app-number-input {
     0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 }
 
-._app-number-input__button {
+.app-number-input-button {
   @include shapes.rectangle($input-size);
   min-width: $input-size;
   @extend ._button;
@@ -27,18 +27,20 @@ app-number-input {
 }
 
 .app-number-input__button--minus {
-  @extend ._app-number-input__button;
-  @include iconography.afterIcon("minus");
-  &[disabled="true"][aria-disabled="true"] {
-    @extend .disabled;
+  .app-number-input-button {
+    @include iconography.afterIcon("minus");
+    &[disabled="true"][aria-disabled="true"] {
+      @extend .disabled;
+    }
   }
 }
 
 .app-number-input__button--plus {
-  @extend ._app-number-input__button;
-  @include iconography.afterIcon("plus");
-  &[disabled="true"][aria-disabled="true"] {
-    @extend .disabled;
+  .app-number-input-button {
+    @include iconography.afterIcon("plus");
+    &[disabled="true"][aria-disabled="true"] {
+      @extend .disabled;
+    }
   }
 }
 

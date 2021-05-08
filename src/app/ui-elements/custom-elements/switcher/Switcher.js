@@ -1,30 +1,26 @@
 import './switcher.scss';
-import { ElementHandler } from '../../element-handler';
-import { AriaHandler } from '../../aria-handler';
-import { ATTRIBUTES } from './switcher.constants';
+import { parseBoolean } from 'UTILS';
+import { ElementHandler, AriaHandler } from 'UI_ELEMENTS';
+import { ATTRIBUTES, DOM_ELEMENT_CLASS, TEMPLATE } from './switcher.constants';
 
 export default class Switcher extends HTMLElement {
-  #eventListeners;
   #attributeUpdateHandler;
+  #button;
+  #clickListener;
 
   constructor() {
     super();
-    this.#eventListeners = new Map();
     this.#attributeUpdateHandler = new Map();
-  }
-
-  #getBooleanValue(valueToParse) {
-    return valueToParse && valueToParse.length ? JSON.parse(valueToParse) : false;
   }
 
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
-    return this.#getBooleanValue(disabled);
+    return parseBoolean(disabled);
   }
 
   get #checked() {
     const checked = this.getAttribute(ATTRIBUTES.checked);
-    return this.#getBooleanValue(checked);
+    return parseBoolean(checked);
   }
 
   get #name() {
@@ -42,69 +38,48 @@ export default class Switcher extends HTMLElement {
   }
 
   connectedCallback() {
-    AriaHandler.setTabindex(this, 0);
-    this.setAttribute('type', 'button');
-    AriaHandler.setRole(this, 'switch');
-    this.#setName();
+    this.innerHTML = TEMPLATE;
+    this.#button = this.querySelector(`.${DOM_ELEMENT_CLASS.switcher}`)
     this.#setValue();
     this.#setState();
-    this.#addListeners();
+    this.#addListener();
     this.#initUpdatesHandling();
   }
 
   disconnectedCallback() {
-    if (this.#eventListeners.size) {
-      for (const [actionType, action] of this.#eventListeners) {
-        this.removeEventListener(actionType, action);
-        this.#eventListeners.delete(actionType);
-      }
+    if (!this.#clickListener) {
+      this.#button.removeEventListener('click', this.#clickListener);
+      this.#clickListener = undefined;
     }
-    this.#eventListeners = undefined;
   }
 
   #initUpdatesHandling() {
     this.#attributeUpdateHandler.set(ATTRIBUTES.checked, this.#setValue.bind(this));
-    this.#attributeUpdateHandler.set(ATTRIBUTES.name, this.#setName.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
   }
 
   #setState() {
-    const tabindex = this.#disabled ? -1 : 1;
-    AriaHandler.setTabindex(this, tabindex);
-    AriaHandler.setAriaDisabled(this, this.#disabled);
+    ElementHandler.setDisabled(this.#button, this.#disabled);
+    AriaHandler.setAriaDisabled(this.#button, this.#disabled);
   }
 
-  #addListeners() {
-    this.#eventListeners.set('keydown', this.#onKeyDown.bind(this));
-    this.#eventListeners.set('click', this.#toggleValue.bind(this));
-    for (const [actionType, action] of this.#eventListeners) {
-      this.addEventListener(actionType, action);
-    }
-  }
-
-  #onKeyDown(event) {
-    if (event.code === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.#toggleValue();
+  #addListener() {
+    if (!this.#clickListener) {
+      this.#clickListener = this.#toggleValue.bind(this);
+      this.#button.addEventListener('click', this.#clickListener);
     }
   }
 
   #toggleValue() {
     if (!this.#disabled) {
-      this.blur();
+      this.#button.blur();
       this.setAttribute(ATTRIBUTES.checked, !this.#checked);
       this.#submitValueChange();
     }
   }
 
   #setValue() {
-    AriaHandler.setAriaChecked(this, this.#checked);
-  }
-
-  #setName() {
-    ElementHandler.setElementId(this, this.#name);
-    ElementHandler.setName(this, this.#name);
+    AriaHandler.setAriaChecked(this.#button, this.#checked);
   }
 
   #submitValueChange() {

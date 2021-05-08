@@ -1,8 +1,6 @@
 export const DOM_ELEMENT_CLASS = {
   button: 'app-dropdown__toggle-button',
-  panel: 'app-dropdown-panel',
-  panelWrapper: 'app-dropdown__panel-wrapper',
-  
+  panel: 'app-dropdown-panel'
 };
 
 

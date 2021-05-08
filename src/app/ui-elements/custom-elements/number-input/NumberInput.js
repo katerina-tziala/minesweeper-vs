@@ -3,6 +3,7 @@ import './number-input-button/NumberInputButton';
 import { ElementHandler } from '../../element-handler';
 import { TEMPLATE, ATTRIBUTES, DOM_ELEMENT_CLASS } from './number-input.constants';
 import NumberValidation from './number-validation';
+import { parseBoolean } from 'UTILS';
 
 export default class NumberInput extends HTMLElement {
   #inputListener;
@@ -15,13 +16,9 @@ export default class NumberInput extends HTMLElement {
     this.#attributeUpdateHandler = new Map();
   }
 
-  #getBooleanValue(valueToParse) {
-    return valueToParse && valueToParse.length ? JSON.parse(valueToParse) : false;
-  }
-
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
-    return this.#getBooleanValue(disabled);
+    return parseBoolean(disabled);
   }
 
   get #name() {

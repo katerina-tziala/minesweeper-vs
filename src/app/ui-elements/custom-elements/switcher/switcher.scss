@@ -28,7 +28,7 @@ $thumb-position-right: 22px;
   left: $thumb-position-right;
 }
 
-app-switcher {
+.app-switcher-button {
   @extend ._button;
   @include shapes.fullyRoundedBar($track-width);
   height: $track-height;

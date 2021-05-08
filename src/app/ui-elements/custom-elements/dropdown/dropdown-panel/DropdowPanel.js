@@ -48,10 +48,6 @@ export default class DropdowPanel extends HTMLElement {
     this.#setUpdateHandling();
   }
 
-  #setUpdateHandling() {
-    this.#attributeUpdateHandler.set(ATTRIBUTES.expanded, this.#toggle.bind(this));
-  }
-
   disconnectedCallback() {
     HeightAnimation.removeAnimationStyles(this.id);
   }
@@ -64,6 +60,10 @@ export default class DropdowPanel extends HTMLElement {
     this.#setUpAnimation();
     this.#setUpdateHandling();
     this.#toggle();
+  }
+
+  #setUpdateHandling() {
+    this.#attributeUpdateHandler.set(ATTRIBUTES.expanded, this.#toggle.bind(this));
   }
 
   #setUpAnimation() {
