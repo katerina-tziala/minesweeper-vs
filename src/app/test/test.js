@@ -8,13 +8,19 @@ class Test {
     this._menu = document.querySelector('.js-menu');
     this._menuContents = this._menu.querySelector('.js-menu-contents');
     this._menuToggleButton = this._menu.querySelector('.js-menu-toggle');
-    this._menuTitle = this._menu.querySelector('.js-menu-title');
+  
 
     this._expanded = true;
     this._animate = false;
     
 
     this.heightScale = this.#calculateScale();
+
+
+    this.animationScale = Animation.getAnimationScale(this._menu, this._menuToggleButton);
+
+    console.log(this.animationScale);
+
     this.expand = this.expand.bind(this);
     this.collapse = this.collapse.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -26,6 +32,12 @@ class Test {
     this.collapse();
     this.activate();
   }
+
+
+
+
+
+
 
   activate() {
     this._menu.classList.add('menu--active');
@@ -52,18 +64,12 @@ class Test {
     }
     this._expanded = false;
 
-    var y = this.heightScale;
-    var invY = (1 / y).toFixed(5);
-
-    this._menu.style.transform = `scaleY(${y})`;
-    this._menuContents.style.transform = `scaleY(${invY})`;
-
-
-
+    this._menu.style.transform = `scaleY(${this.animationScale.scale})`;
+    this._menuContents.style.transform = `scaleY(${this.animationScale.inverseScale})`;
+  
     if (!this._animate) {
       return;
     }
-
     this._applyAnimation({ expand: false });
   }
 
@@ -87,9 +93,6 @@ class Test {
     this._menuContents.classList.remove('menu__contents--expanded');
     this._menuContents.classList.remove('menu__contents--collapsed');
 
-    // Force a recalc styles here so the classes take hold.
-   // window.getComputedStyle(this._menu).transform;
-
     if (expand) {
       this._menu.classList.add('menu--expanded');
       this._menuContents.classList.add('menu__contents--expanded');
@@ -101,7 +104,7 @@ class Test {
   }
 
   #calculateScale() {
-    const collapsed = this._menuTitle.getBoundingClientRect();
+    const collapsed = this._menuToggleButton.getBoundingClientRect();
     const expanded = this._menu.getBoundingClientRect();
     const scale = collapsed.height / expanded.height;
     return scale;

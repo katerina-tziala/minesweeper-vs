@@ -19,16 +19,20 @@ function easeStep(step, pow = 4) {
 }
 
 function roundAnimationValue(value) {
-  return value.toFixed(5);
+  return parseFloat(value.toFixed(5));
 }
 
 function generateAnimationKeyframe(animationOffset, yScale) {
   return `${animationOffset}%{transform: scaleY(${yScale});}`
 }
 
+function getInverseScale(scale) {
+  return roundAnimationValue(1 / scale);
+}
+
 function calculateAnimationOffset(animationOffset, easedStep, heightStart, heightEnd = 1) {
   const scale = roundAnimationValue(heightStart + (heightEnd - heightStart) * easedStep);
-  const inverseScale = roundAnimationValue(1 / scale);
+  const inverseScale = getInverseScale(scale);
   const outerAnimation = generateAnimationKeyframe(animationOffset, scale);
   const innerAnimation = generateAnimationKeyframe(animationOffset, inverseScale);
   return { outerAnimation, innerAnimation };
@@ -89,4 +93,12 @@ export function setUpElementAnimation(animationId, heightScale, element) {
   styles.textContent = stylesContent;
   document.head.appendChild(styles);
   return styles;
+}
+
+export function getAnimationScale(parentElement, childElement) {
+  const expanded = parentElement.getBoundingClientRect();
+  const collapsed = childElement.getBoundingClientRect();
+  const scale = roundAnimationValue(collapsed.height / expanded.height);
+  const inverseScale = getInverseScale(scale);
+  return { scale, inverseScale };
 }
