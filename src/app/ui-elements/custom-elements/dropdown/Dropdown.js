@@ -17,13 +17,20 @@ export default class Dropdown extends HTMLElement {
     this.#attributeUpdateHandler = new Map();
   }
 
-  get #name() {
+  get name() {
     return this.getAttribute('name');
   }
 
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
     return parseBoolean(disabled);
+  }
+
+  get templateConfig() {
+    const name = this.name;
+    const expanded = this.#expanded;
+    const panelId = `${DOM_ELEMENT_CLASS.panel}-${name}`;
+    return { name, expanded, panelId };
   }
 
   static get observedAttributes() {
@@ -37,14 +44,12 @@ export default class Dropdown extends HTMLElement {
   }
 
   connectedCallback() {
-    const name = this.#name;
-    const expanded = this.#expanded;
-    if (name) {
-      this.id = `app-dropdown-${name}`;
-      const panelId = `${DOM_ELEMENT_CLASS.panel}-${name}`;
-      const template = TemplateGenerator.generate(this.template, { name, expanded, panelId });
+    if (this.name) {
+      this.id = `app-dropdown-${this.name}`;
+      const template = TemplateGenerator.generate(this.template, this.templateConfig);
+      ElementHandler.clearContent(this);
       this.append(template);
-      this.panel = this.querySelector(`.${DOM_ELEMENT_CLASS.panel}`);
+      this.initElementsVariables();
       this.#initToggleButton();
       this.#setState();
       this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
@@ -58,8 +63,9 @@ export default class Dropdown extends HTMLElement {
     this.#removeOutsideClickDetection();
   }
 
-  renderTemplate(name, expanded) {
-    this.innerHTML = TemplateGenerator.generate(this.template, { name, expanded });
+  initElementsVariables() {
+    this.panel = this.querySelector(`.${DOM_ELEMENT_CLASS.panel}`);
+    this.button = this.querySelector(`.${this.buttonClass}`);
   }
 
   updateContent(content) {
@@ -69,7 +75,6 @@ export default class Dropdown extends HTMLElement {
   }
 
   #initToggleButton() {
-    this.button = this.querySelector(`.${this.buttonClass}`);
     AriaHandler.setAriaControls(this.button, this.panel.id);
     this.#buttonListener = this.#toggle.bind(this);
     this.button.addEventListener('click', this.#buttonListener);
@@ -101,7 +106,7 @@ export default class Dropdown extends HTMLElement {
 
   #handleToggleButtonAria() {
     AriaHandler.setAriaExpanded(this.button, this.#expanded);
-    const labels = ARIA_LABEL[this.#name];
+    const labels = ARIA_LABEL[this.name];
     if (labels) {
       const labelKey = this.#expanded.toString();
       AriaHandler.setAriaLabel(this.button, labels[labelKey]);
@@ -138,7 +143,7 @@ export default class Dropdown extends HTMLElement {
   }
 
   #onExpandStateChange() {
-    const name = this.#name;
+    const name = this.name;
     const expanded = this.#expanded;
     const event = new CustomEvent('onExpandStateChange', { detail: { name, expanded } });
     this.dispatchEvent(event);

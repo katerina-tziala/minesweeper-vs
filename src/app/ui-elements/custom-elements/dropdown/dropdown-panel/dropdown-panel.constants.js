@@ -9,5 +9,5 @@ export const ATTRIBUTES = {
 
 export const TEMPLATE = `
 <div class='${DOM_ELEMENT_CLASS.content}'>
-  dropdown content
+  %panelContent%
 </div>`;

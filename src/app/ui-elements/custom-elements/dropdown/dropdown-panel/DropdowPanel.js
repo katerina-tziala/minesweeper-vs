@@ -1,7 +1,7 @@
 
 import './dropdown-panel.scss';
 import { TEMPLATE, DOM_ELEMENT_CLASS, ATTRIBUTES } from './dropdown-panel.constants';
-import { parseBoolean } from 'UTILS';
+import { parseBoolean, definedString } from 'UTILS';
 import { ElementHandler, AriaHandler, HeightAnimation, TemplateGenerator } from 'UI_ELEMENTS';
 
 export default class DropdowPanel extends HTMLElement {
@@ -36,7 +36,9 @@ export default class DropdowPanel extends HTMLElement {
 
   connectedCallback() {
     ElementHandler.addStyleClass(this, DOM_ELEMENT_CLASS.panel);
-    const template = TemplateGenerator.generate(TEMPLATE);
+    const panelContent = this.innerHTML;
+    this.innerHTML = '';
+    const template = definedString(panelContent) ? TemplateGenerator.generate(TEMPLATE, { panelContent }) : TemplateGenerator.generate(TEMPLATE);
     this.append(template);
     this.#content = this.querySelector(`.${DOM_ELEMENT_CLASS.content}`);
     this.#setUpAnimation();

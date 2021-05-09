@@ -9,17 +9,18 @@ export const ATTRIBUTES = {
 };
 
 export const TEMPLATE = `
-<button class='${DOM_ELEMENT_CLASS.button}'>
-  <span class='${DOM_ELEMENT_CLASS.buttonText}'>select ###</span>
+<button class='${DOM_ELEMENT_CLASS.button}' aria-haspopup='listbox' aria-label='%buttonText%'>
+  <span class='${DOM_ELEMENT_CLASS.buttonText}'>%buttonText%</span>
   <span class='${DOM_ELEMENT_CLASS.buttonIcon}'></span>
 </button>
-<app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'></app-dropdown-panel>
+<app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'>
+  <app-dropdown-select-list></app-dropdown-select-list>
+</app-dropdown-panel>
 `;
 
-export const ARIA_LABEL = {
-  settings: {
-    'true': 'close app settings',
-    'false': 'open app settings'
-  }
 
+
+export const ARIA_LABEL = {
+  default: 'choose an option for ',
+  level: 'choose game level'
 };
