@@ -1,8 +1,12 @@
 import './dropdown-select-list.scss';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './dropdown-select-list.constants';
-
+import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
 export default class DropdownSelectList extends HTMLElement {
+  #list;
 
+  options = [];
+  #selectedOption;
+  
   constructor() {
     super();
 
@@ -18,9 +22,15 @@ export default class DropdownSelectList extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log('connectedCallback DropdownSelectList');
-
+   // console.log('connectedCallback DropdownSelectList');
+    TemplateGenerator.setTemplate(this, TEMPLATE);
+    this.#list = this.querySelector(`.${DOM_ELEMENT_CLASS.list}`);
+    //console.log(this.#list);
+    this.setOptions();
   }
+
+
+
 
   disconnectedCallback() {
     console.log('disconnectedCallback DropdownSelectList');
@@ -29,6 +39,15 @@ export default class DropdownSelectList extends HTMLElement {
   adoptedCallback() {
     console.log('adoptedCallback DropdownSelectList');
   }
+
+
+  setOptions(options = []) {
+    console.log('DropdownSelectList setOptions');
+    console.log(options);
+  }
+
+
+
 
 }
 

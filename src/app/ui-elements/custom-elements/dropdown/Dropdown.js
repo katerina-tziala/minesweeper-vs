@@ -46,9 +46,7 @@ export default class Dropdown extends HTMLElement {
   connectedCallback() {
     if (this.name) {
       this.id = `app-dropdown-${this.name}`;
-      const template = TemplateGenerator.generate(this.template, this.templateConfig);
-      ElementHandler.clearContent(this);
-      this.append(template);
+      TemplateGenerator.setTemplate(this, this.template, this.templateConfig);
       this.initElementsVariables();
       this.#initToggleButton();
       this.#setState();

@@ -13,6 +13,10 @@ import { DropdownSelectAria } from './dropdown-select-aria/dropdown-select-aria'
 
 export default class DropdownSelect extends Dropdown {
   #buttonText;
+  #list;
+  options = [];
+  #selectedOption;
+  // #templateConfig;
 
   constructor() {
     super();
@@ -27,39 +31,42 @@ export default class DropdownSelect extends Dropdown {
   // attributeChangedCallback(attrName, oldVal, newVal) {
   //   console.log('attrName');
   // }
-  
-  get templateConfig() {
-    const config = super.templateConfig;
-    config.buttonText = DropdownSelectAria.getLabel(this.name);
-    return config;
+
+  initElementsVariables() {
+    super.initElementsVariables();
+    this.#buttonText = this.querySelector(`.${DOM_ELEMENT_CLASS.buttonText}`);
+    this.#list = this.querySelector(`.${DOM_ELEMENT_CLASS.list}`);
   }
+
+
+
+  #setNoOptionsView() {
+    this.options = [];
+    this.#selectedOption = undefined;
+
+    const text = DropdownSelectAria.getLabel(this.name);
+    AriaHandler.setAriaLabel(this.button, text);
+    ElementHandler.setContent(this.#buttonText, text);
+    this.#buttonText.innerHtml = text;
+    // init list
+    this.setAttribute('disabled', true);
+  }
+
 
   connectedCallback() {
     super.connectedCallback();
     const name = this.name;
 
-
-    //this.#buttonText.innerHtml = text;
-    // console.log(this.#buttonText);
+    
     console.log(name);
-
-    // 
-    console.log(this.button);
-    // aria-haspopup="listbox"
-    console.log(this.#buttonText);
-    // const text = DropdownSelectAria.getLabel(this.name);
-    // AriaHandler.setAriaLabel(this.button, text);
-    // ElementHandler.setContent(this.#buttonText, text);
-
-
-    // console.log(text);
-    //console.log(ARIA_LABEL);
-
-    // console.log('DropdownSelect');
-    //console.log(this.button);
-    //console.log(this.panel);
-
-    //this.setAttribute('disabled', true);
+    console.log(this.options);
+    // on update too
+    if (this.options.length) {
+      console.log(this.#buttonText);
+      console.log(this.#list);
+    } else {
+      this.#setNoOptionsView();
+    }
   }
 
 
@@ -68,15 +75,13 @@ export default class DropdownSelect extends Dropdown {
 
   // }
 
+
+
   // updateContent(content) {
   //   if (this.panel) {
   //     this.panel.updateContent(content);
   //   }
   // }
-  initElementsVariables() {
-    super.initElementsVariables();
-    this.#buttonText = this.querySelector(`.${DOM_ELEMENT_CLASS.buttonText}`);
-  }
 
 
 

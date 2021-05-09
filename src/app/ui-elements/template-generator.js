@@ -5,6 +5,14 @@ const TEMPLATE_REF_VALUE_ANGOR = '%';
 
 export class TemplateGenerator {
 
+  static setTemplate(element, template, content) {
+    if (element) {
+      const templateNode = TemplateGenerator.generate(template, content);
+      element.innerHTML = '';
+      element.append(templateNode);
+    }
+  }
+
   static generate(template, content) {
     const templateNode = document.createElement('template');
     templateNode.innerHTML = TemplateGenerator.#updateTemplateString(template, content);

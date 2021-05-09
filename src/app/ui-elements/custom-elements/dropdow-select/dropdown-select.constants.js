@@ -1,7 +1,8 @@
 export const DOM_ELEMENT_CLASS = {
   button: 'app-dropdown-select__toggle-button',
   buttonIcon: 'app-dropdown-select__toggle-button-icon',
-  buttonText: 'app-dropdown-select__toggle-button-text'
+  buttonText: 'app-dropdown-select__toggle-button-text',
+  list: 'app-dropdown-select__select-list',
 };
 
 export const ATTRIBUTES = {
@@ -14,7 +15,7 @@ export const TEMPLATE = `
   <span class='${DOM_ELEMENT_CLASS.buttonIcon}'></span>
 </button>
 <app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'>
-  <app-dropdown-select-list></app-dropdown-select-list>
+  <app-dropdown-select-list class='${DOM_ELEMENT_CLASS.list}'></app-dropdown-select-list>
 </app-dropdown-panel>
 `;
 
