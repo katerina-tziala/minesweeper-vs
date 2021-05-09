@@ -2,7 +2,7 @@
 import './dropdown-panel.scss';
 import { TEMPLATE, DOM_ELEMENT_CLASS, ATTRIBUTES } from './dropdown-panel.constants';
 import { parseBoolean } from 'UTILS';
-import { ElementHandler, AriaHandler, HeightAnimation } from 'UI_ELEMENTS';
+import { ElementHandler, AriaHandler, HeightAnimation, TemplateGenerator } from 'UI_ELEMENTS';
 
 export default class DropdowPanel extends HTMLElement {
   #content;
@@ -13,10 +13,6 @@ export default class DropdowPanel extends HTMLElement {
   constructor() {
     super();
     this.#attributeUpdateHandler = new Map();
-  }
-
-  get #name() {
-    return this.getAttribute('name');
   }
 
   get #expanded() {
@@ -40,8 +36,8 @@ export default class DropdowPanel extends HTMLElement {
 
   connectedCallback() {
     ElementHandler.addStyleClass(this, DOM_ELEMENT_CLASS.panel);
-    this.id = `${DOM_ELEMENT_CLASS.panel}-${this.#name}`;
-    this.innerHTML = TEMPLATE;
+    const template = TemplateGenerator.generate(TEMPLATE);
+    this.append(template);
     this.#content = this.querySelector(`.${DOM_ELEMENT_CLASS.content}`);
     this.#setUpAnimation();
     this.#toggle();
@@ -53,13 +49,14 @@ export default class DropdowPanel extends HTMLElement {
   }
 
   updateContent(content) {
-    this.#attributeUpdateHandler = new Map();
-    this.#collapse();
-    ElementHandler.clearContent(this.#content);
-    this.#content.append(content);
-    this.#setUpAnimation();
-    this.#setUpdateHandling();
-    this.#toggle();
+    console.log('updateContent for panel');
+    // this.#attributeUpdateHandler = new Map();
+    // this.#collapse();
+    // ElementHandler.clearContent(this.#content);
+    // this.#content.append(content);
+    // this.#setUpAnimation();
+    // this.#setUpdateHandling();
+    // this.#toggle();
   }
 
   #setUpdateHandling() {

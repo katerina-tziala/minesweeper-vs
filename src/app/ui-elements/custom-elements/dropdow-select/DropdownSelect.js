@@ -30,9 +30,9 @@ export default class DropdownSelect extends Dropdown {
 
   connectedCallback() {
     super.connectedCallback();
-    console.log('DropdownSelect');
-    console.log(this.button);
-    console.log(this.panel);
+    // console.log('DropdownSelect');
+    // console.log(this.button);
+    // console.log(this.panel);
   }
 
   // disconnectedCallback() {

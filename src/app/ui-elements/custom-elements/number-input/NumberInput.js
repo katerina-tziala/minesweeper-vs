@@ -63,7 +63,8 @@ export default class NumberInput extends HTMLElement {
   connectedCallback() {
     const name = this.#name;
     if (name) {
-      this.innerHTML = TemplateGenerator.generate(TEMPLATE, { name });
+      const template = TemplateGenerator.generate(TEMPLATE, { name })
+      this.append(template);
       this.#setName();
       this.setAttribute(ATTRIBUTES.disabled, this.#disabled);
       const startValue = NumberValidation.getValueInBoundaries(this.value, this.#minValue, this.#maxValue);

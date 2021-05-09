@@ -56,8 +56,8 @@ export default class MenuItem extends HTMLElement {
   #render() {
     AriaHandler.setRole(this, 'menuitem');
     const content = MENU_ITEM[this.#renderedType];
-    const template = TemplateGenerator.generate(TEMPLATE, content);
-    this.innerHTML = template;
+    const template = TemplateGenerator.generate(TEMPLATE, content)
+    this.append(template);
     this.#setListener('click', this.#onSelect.bind(this));
     this.#setListener('keydown', this.#onKeyDown.bind(this));
     this.#setState();

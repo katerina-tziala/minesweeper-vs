@@ -41,7 +41,9 @@ export default class Dropdown extends HTMLElement {
     const expanded = this.#expanded;
     if (name) {
       this.id = `app-dropdown-${name}`;
-      this.innerHTML = TemplateGenerator.generate(this.template, { name, expanded });
+      const panelId = `${DOM_ELEMENT_CLASS.panel}-${name}`;
+      const template = TemplateGenerator.generate(this.template, { name, expanded, panelId });
+      this.append(template);
       this.panel = this.querySelector(`.${DOM_ELEMENT_CLASS.panel}`);
       this.#initToggleButton();
       this.#setState();

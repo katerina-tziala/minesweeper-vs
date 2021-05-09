@@ -49,7 +49,8 @@ export default class UsernameForm extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = TemplateHelper.generateTemplate(this.#type);
+    const template = TemplateHelper.generateTemplate(this.#type);
+    this.appendChild(template);
     this.#setFormListener();
     this.#setInputListener();
     this.#setButtonListener(DOM_ELEMENT_CLASS.clearButton, this.#onClearForm.bind(this));

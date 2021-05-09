@@ -92,7 +92,8 @@ export default class DilemmaSelection extends HTMLElement {
 
   #render() {
     const content = CONTENT[this.#renderedType];
-    this.innerHTML = TemplateHelper.generateTemplate(content);
+    const template = TemplateHelper.generateTemplate(content);
+    this.appendChild(template);
     this.#setbuttonListeners();
   }
 

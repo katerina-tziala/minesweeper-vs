@@ -13,7 +13,7 @@ export const TEMPLATE = `
   <span class='${DOM_ELEMENT_CLASS.buttonText}'>select ###</span>
   <span class='${DOM_ELEMENT_CLASS.buttonIcon}'></span>
 </button>
-<app-dropdown-panel name='%name%' expanded='%expanded%'></app-dropdown-panel>
+<app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'></app-dropdown-panel>
 `;
 
 export const ARIA_LABEL = {
