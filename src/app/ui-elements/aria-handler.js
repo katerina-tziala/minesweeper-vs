@@ -1,7 +1,7 @@
 'use strict';
 
 export class AriaHandler {
-  
+
   static setRole(element, role) {
     if (element) {
       element.setAttribute('role', role);
@@ -70,6 +70,11 @@ export class AriaHandler {
     }
   }
 
+
+  static getAriaControls(element) {
+    return element ? element.getAttribute('aria-controls') : undefined;
+  }
+
   static setAriaHidden(element, value = false) {
     if (element) {
       element.setAttribute('aria-hidden', value);
@@ -92,7 +97,7 @@ export class AriaHandler {
   //   return element.setAttribute('aria-activedescendant', value);
   // }
 
- 
+
 
   // static getAriaExpanded(element) {
   //   return JSON.parse(element.getAttribute('aria-expanded'));

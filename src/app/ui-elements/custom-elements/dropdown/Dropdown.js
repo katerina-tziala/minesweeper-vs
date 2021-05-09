@@ -12,6 +12,8 @@ export default class Dropdown extends HTMLElement {
 
   constructor() {
     super();
+    this.template = TEMPLATE;
+    this.buttonClass = DOM_ELEMENT_CLASS.button;
     this.#attributeUpdateHandler = new Map();
   }
 
@@ -39,7 +41,7 @@ export default class Dropdown extends HTMLElement {
     const expanded = this.#expanded;
     if (name) {
       this.id = `app-dropdown-${name}`;
-      this.innerHTML = TemplateGenerator.generate(TEMPLATE, { name, expanded });
+      this.innerHTML = TemplateGenerator.generate(this.template, { name, expanded });
       this.panel = this.querySelector(`.${DOM_ELEMENT_CLASS.panel}`);
       this.#initToggleButton();
       this.#setState();
@@ -54,6 +56,10 @@ export default class Dropdown extends HTMLElement {
     this.#removeOutsideClickDetection();
   }
 
+  renderTemplate(name, expanded) {
+    this.innerHTML = TemplateGenerator.generate(this.template, { name, expanded });
+  }
+
   updateContent(content) {
     if (this.panel) {
       this.panel.updateContent(content);
@@ -61,7 +67,7 @@ export default class Dropdown extends HTMLElement {
   }
 
   #initToggleButton() {
-    this.button = this.querySelector(`.${DOM_ELEMENT_CLASS.button}`);
+    this.button = this.querySelector(`.${this.buttonClass}`);
     AriaHandler.setAriaControls(this.button, this.panel.id);
     this.#buttonListener = this.#toggle.bind(this);
     this.button.addEventListener('click', this.#buttonListener);
@@ -82,9 +88,11 @@ export default class Dropdown extends HTMLElement {
     }
   }
   #onDocumentClick(event) {
+    const paneId = this.panel ? this.panel.id : undefined;
     const panel = event.target.closest(`.${DOM_ELEMENT_CLASS.panel}`);
-    const button = event.target.closest(`.${DOM_ELEMENT_CLASS.button}`);
-    if (!panel && !button) {
+    const button = event.target.closest(`.${this.buttonClass}`);
+    const buttonControls = AriaHandler.getAriaControls(button);
+    if (!panel && paneId !== buttonControls) {
       this.#collapse();
     }
   }
@@ -98,9 +106,7 @@ export default class Dropdown extends HTMLElement {
     }
   }
 
-  #toggle(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  #toggle() {
     this.#expanded = !this.#expanded;
     this.#handleToggleButtonAria();
     this.panel.setAttribute('expanded', this.#expanded);

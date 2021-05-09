@@ -65,6 +65,11 @@
   content: fa-content($fa-var-plus);
 }
 
+.icon-caret-down {
+  @extend %icon-regular;
+  content: fa-content($fa-var-chevron-down);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};
