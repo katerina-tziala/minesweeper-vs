@@ -1,6 +1,6 @@
 import './dropdown.scss';
 import './dropdown-panel/DropdowPanel';
-import { TEMPLATE, DOM_ELEMENT_CLASS, ATTRIBUTES } from './dropdown.constants';
+import { TEMPLATE, DOM_ELEMENT_CLASS, ATTRIBUTES, ARIA_LABEL } from './dropdown.constants';
 import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
 import { parseBoolean } from 'UTILS';
 
@@ -54,6 +54,12 @@ export default class Dropdown extends HTMLElement {
     this.#removeOutsideClickDetection();
   }
 
+  updateContent(content) {
+    if (this.panel) {
+      this.panel.updateContent(content);
+    }
+  }
+
   #initToggleButton() {
     this.button = this.querySelector(`.${DOM_ELEMENT_CLASS.button}`);
     AriaHandler.setAriaControls(this.button, this.panel.id);
@@ -85,7 +91,11 @@ export default class Dropdown extends HTMLElement {
 
   #handleToggleButtonAria() {
     AriaHandler.setAriaExpanded(this.button, this.#expanded);
-    // TODO aria label
+    const labels = ARIA_LABEL[this.#name];
+    if (labels) {
+      const labelKey = this.#expanded.toString();
+      AriaHandler.setAriaLabel(this.button, labels[labelKey]);
+    }
   }
 
   #toggle(event) {

@@ -1,7 +1,7 @@
 import './menu-item.scss';
 import { TEMPLATE, MENU_ITEM, ATTRIBUTES } from './menu-item.constants';
 import { TemplateGenerator, AriaHandler } from 'UI_ELEMENTS';
-
+import { parseBoolean } from 'UTILS';
 export default class MenuItem extends HTMLElement {
   #attributeUpdateHandler;
   #eventListeners;
@@ -21,7 +21,7 @@ export default class MenuItem extends HTMLElement {
 
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
-    return disabled && disabled.length ? JSON.parse(disabled) : false;
+    return parseBoolean(disabled);
   }
 
   static get observedAttributes() {

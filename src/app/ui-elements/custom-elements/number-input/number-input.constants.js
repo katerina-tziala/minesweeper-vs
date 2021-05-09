@@ -5,9 +5,9 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const TEMPLATE = `
-  <app-number-input-button class='${DOM_ELEMENT_CLASS.minus}'></app-number-input-button>
-  <input class='${DOM_ELEMENT_CLASS.input}' id='input' type='text' value='' autocomplete='off'/>
-  <app-number-input-button type='button' class='${DOM_ELEMENT_CLASS.plus}'></app-number-input-button>
+  <app-number-input-button type='minus' name='%name%' class='${DOM_ELEMENT_CLASS.minus}'></app-number-input-button>
+  <input class='${DOM_ELEMENT_CLASS.input}' id='input' type='text' value='' name='%name%' autocomplete='off'/>
+  <app-number-input-button type='plus' name='%name%' class='${DOM_ELEMENT_CLASS.plus}'></app-number-input-button>
 `;
 
 export const ATTRIBUTES = {

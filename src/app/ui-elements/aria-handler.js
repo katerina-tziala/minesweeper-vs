@@ -34,7 +34,7 @@ export class AriaHandler {
     }
   }
 
-  static setAriaLabel(element, ariaLabel) {
+  static setAriaLabel(element, ariaLabel = '') {
     if (element) {
       element.setAttribute('aria-label', ariaLabel);
     }

@@ -15,10 +15,14 @@ export class TemplateGenerator {
     }
   
     for (const [key, value] of Object.entries(content)) {
-      const templateReference = this.#getTemplateValueReference(key);
-      template = replaceStringParameter(template, value, templateReference);
+      const templateReference = TemplateGenerator.#getTemplateValueReference(key);
+      template = TemplateGenerator.#replaceTemplateValueReference(template, templateReference, value);
     }
     return template;
   }
   
+  static #replaceTemplateValueReference(template, templateReference, value) {
+    const templateParts = template.split(templateReference);
+    return templateParts.join(value);
+  }
 }

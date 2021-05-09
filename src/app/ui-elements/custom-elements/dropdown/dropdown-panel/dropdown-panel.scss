@@ -7,6 +7,7 @@ app-dropdown-panel {
   will-change: transform;
   pointer-events: auto;
   width: 100%;
+  z-index: 300;
 }
 
 .app-dropdown-panel-content {

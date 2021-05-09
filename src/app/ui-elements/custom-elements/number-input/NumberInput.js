@@ -1,9 +1,10 @@
 import './number-input.scss';
 import './number-input-button/NumberInputButton';
-import { ElementHandler } from '../../element-handler';
+import { parseBoolean } from 'UTILS';
+import { ElementHandler, TemplateGenerator } from 'UI_ELEMENTS';
 import { TEMPLATE, ATTRIBUTES, DOM_ELEMENT_CLASS } from './number-input.constants';
 import NumberValidation from './number-validation';
-import { parseBoolean } from 'UTILS';
+
 
 export default class NumberInput extends HTMLElement {
   #inputListener;
@@ -60,32 +61,38 @@ export default class NumberInput extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = TEMPLATE;
-    this.#setName();
-    this.setAttribute('disabled', this.#disabled);
-    const startValue = NumberValidation.getValueInBoundaries(this.value, this.#minValue, this.#maxValue);
-    this.setAttribute('value', startValue);
-    this.#setInputValue();
-    this.#setState();
-
-    this.#setInputListener();
-    this.#setButtonListener(DOM_ELEMENT_CLASS.minus, this.#decreaseValue.bind(this));
-    this.#setButtonListener(DOM_ELEMENT_CLASS.plus, this.#increaseValue.bind(this));
-
-    this.#initUpdatesHandling();
-  }
-
-  #initUpdatesHandling() {
-    this.#attributeUpdateHandler.set(ATTRIBUTES.name, this.#setName.bind(this));
-    this.#attributeUpdateHandler.set(ATTRIBUTES.value, this.#onValueAttributeChange.bind(this));
-    this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
-    this.#attributeUpdateHandler.set(ATTRIBUTES.min, this.#onBoundaryChange.bind(this));
-    this.#attributeUpdateHandler.set(ATTRIBUTES.max, this.#onBoundaryChange.bind(this));
+    const name = this.#name;
+    if (name) {
+      this.innerHTML = TemplateGenerator.generate(TEMPLATE, { name });
+      this.#setName();
+      this.setAttribute(ATTRIBUTES.disabled, this.#disabled);
+      const startValue = NumberValidation.getValueInBoundaries(this.value, this.#minValue, this.#maxValue);
+      this.setAttribute(ATTRIBUTES.value, startValue);
+      this.#setInputValue();
+      this.#setState();
+      this.#setInputListener();
+      this.#initButtons();
+      this.#initUpdatesHandling();
+    } else {
+      throw new Error('name required for app-number-input');
+    }
   }
 
   disconnectedCallback() {
     this.#removeInputListener();
     this.#removeButtonListeners();
+  }
+
+  #initButtons() {
+    this.#setButtonListener(DOM_ELEMENT_CLASS.minus, this.#decreaseValue.bind(this));
+    this.#setButtonListener(DOM_ELEMENT_CLASS.plus, this.#increaseValue.bind(this));
+  }
+
+  #initUpdatesHandling() {
+    this.#attributeUpdateHandler.set(ATTRIBUTES.value, this.#onValueAttributeChange.bind(this));
+    this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
+    this.#attributeUpdateHandler.set(ATTRIBUTES.min, this.#onBoundaryChange.bind(this));
+    this.#attributeUpdateHandler.set(ATTRIBUTES.max, this.#onBoundaryChange.bind(this));
   }
 
   #onValueAttributeChange() {

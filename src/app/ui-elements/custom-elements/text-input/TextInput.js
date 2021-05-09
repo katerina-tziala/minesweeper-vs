@@ -1,5 +1,5 @@
 import './text-input.scss';
-import { TYPOGRAPHY } from 'UTILS';
+import { TYPOGRAPHY, definedString, parseBoolean } from 'UTILS';
 import { ElementHandler, AriaHandler } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, TEMPLATE, ATTRIBUTES, KEY_BLACKLIST } from './text-input.constants';
 
@@ -32,13 +32,12 @@ export default class TextInput extends HTMLElement {
 
   get #errorMessage() {
     let errorMessage = this.getAttribute(ATTRIBUTES.errorMessage);
-    errorMessage = errorMessage && errorMessage.length > 0 ? errorMessage : undefined;
-    return errorMessage;
+    return definedString(errorMessage) ? errorMessage : undefined;
   }
 
   get #label() {
     const label = this.getAttribute(ATTRIBUTES.label);
-    return label && label.length ? label : this.#name;
+    return definedString(label) ? label : this.#name;
   }
 
   get value() {
@@ -48,12 +47,12 @@ export default class TextInput extends HTMLElement {
 
   get hasError() {
     const error = this.getAttribute('error');
-    return error && error.length ? JSON.parse(error) : false;
+    return parseBoolean(error);
   }
 
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
-    return disabled && disabled.length ? JSON.parse(disabled) : false;
+    return parseBoolean(disabled);
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {

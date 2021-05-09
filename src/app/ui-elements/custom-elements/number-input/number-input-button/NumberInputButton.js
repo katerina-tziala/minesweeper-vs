@@ -1,19 +1,27 @@
-import { parseBoolean } from 'UTILS';
+import { parseBoolean, replaceStringParameter } from 'UTILS';
 import { ElementHandler, AriaHandler } from 'UI_ELEMENTS';
-import { ATTRIBUTES, DOM_ELEMENT_CLASS, TEMPLATE } from './number-input-button.constants';
+import { ATTRIBUTES, DOM_ELEMENT_CLASS, TEMPLATE, ARIA_LABEL_TYPE, ARIA_LABEL_NAME } from './number-input-button.constants';
 
 export default class NumberInputButton extends HTMLElement {
   #attributeUpdateHandler;
   #button;
   #clickListener;
-  // TODO: aria label
+
   constructor() {
     super();
     this.#attributeUpdateHandler = new Map();
   }
 
+  get #name() {
+    return this.getAttribute(ATTRIBUTES.name);
+  }
+
   get #disabled() {
     return parseBoolean(this.getAttribute(ATTRIBUTES.disabled));
+  }
+
+  get #type() {
+    return this.getAttribute('type');
   }
 
   static get observedAttributes() {
@@ -27,11 +35,17 @@ export default class NumberInputButton extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = TEMPLATE;
-    this.#button = this.querySelector(`.${DOM_ELEMENT_CLASS.button}`);
-    this.#setState();
-    this.#addListener();
-    this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
+    const type = this.#type;
+    if (type && this.#name) {
+      this.innerHTML = TEMPLATE;
+      this.#button = this.querySelector(`.${DOM_ELEMENT_CLASS.button}`);
+      this.#setAriaLabel();
+      this.#setState();
+      this.#addListener();
+      this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
+    } else {
+      throw new Error('type required for app-number-input-button');
+    }
   }
 
   disconnectedCallback() {
@@ -44,6 +58,18 @@ export default class NumberInputButton extends HTMLElement {
   #setState() {
     ElementHandler.setDisabled(this.#button, this.#disabled);
     AriaHandler.setAriaDisabled(this.#button, this.#disabled);
+    if (this.#disabled) {
+      this.#button.blur();
+    }
+  }
+
+  #setAriaLabel() {
+    const labelType = ARIA_LABEL_TYPE[this.#type];
+    const labelName = ARIA_LABEL_NAME[this.#name];
+    if (labelType && labelName) {
+      const label = replaceStringParameter(labelType, labelName);
+      AriaHandler.setAriaLabel(this.#button, label);
+    }
   }
 
   #addListener() {
@@ -54,7 +80,7 @@ export default class NumberInputButton extends HTMLElement {
   }
 
   #submitAction() {
-    this.blur();
+    this.#button.blur();
     const event = new CustomEvent('onClick');
     this.dispatchEvent(event);
   }
