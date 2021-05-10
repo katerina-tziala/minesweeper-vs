@@ -5,6 +5,7 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 
 
 
+
 //will change to transform
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,7 +18,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // on reload return to your state
 
 
-  const test = document.getElementsByTagName("app-dropdown")[0];
+  const test = document.getElementsByTagName("app-dropdown-select")[0];
+
+  const options = [
+    {
+      value: 'beginner',
+      displayValue: '<span>beginner</span>',
+      ariaLabel: 'beginner',
+      selected: true
+    },
+    {
+      value: 'intermediate',
+      displayValue: '<span>intermediate</span>',
+      ariaLabel: 'intermediate',
+      selected: false
+    },
+    {
+      value: 'expert',
+      displayValue: '<span>expert</span>',
+      ariaLabel: 'expert',
+      selected: false
+    },
+    {
+      value: 'custom',
+      displayValue: '<span>custom</span>',
+      ariaLabel: 'custom',
+      selected: false
+    }
+  ];
+
+  test.setOptions(options)
+
 
   // test.addEventListener('onExpandStateChange', (event) => {
   //   console.log('onExpandStateChange');

@@ -1,5 +1,6 @@
 export const DOM_ELEMENT_CLASS = {
-    list: 'dropdown-select-list'
+    list: 'dropdown-select-list',
+    listItem: 'dropdown-select-list-item'
 };
 
 export const ATTRIBUTES = {
@@ -17,3 +18,4 @@ aria-activedescendant=''
 >
 </ul>
 `;
+

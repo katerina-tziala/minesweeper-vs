@@ -51,14 +51,21 @@ export default class DropdowPanel extends HTMLElement {
   }
 
   updateContent(content) {
-    console.log('updateContent for panel');
-    // this.#attributeUpdateHandler = new Map();
-    // this.#collapse();
-    // ElementHandler.clearContent(this.#content);
-    // this.#content.append(content);
-    // this.#setUpAnimation();
-    // this.#setUpdateHandling();
-    // this.#toggle();
+    this.closeAndPauseUpdates();
+    ElementHandler.clearContent(this.#content);
+    this.#content.append(content);
+    this.onContentUpdated();
+  }
+
+  closeAndPauseUpdates() {
+    this.#attributeUpdateHandler = new Map();
+    this.#collapse();
+  }
+
+  onContentUpdated() {
+    this.#setUpAnimation();
+    this.#toggle();
+    this.#setUpdateHandling();
   }
 
   #setUpdateHandling() {

@@ -20,6 +20,7 @@ app-dropdown-select {
   padding: 0 10px;
   &[aria-expanded="true"] {
     .app-dropdown-select__toggle-button-icon {
+      margin-top: 4px;
       transform: rotate(-180deg);
     }
   }
@@ -37,6 +38,7 @@ app-dropdown-select {
   will-change: transform;
   transition: transform 0.3s ease-in-out;
   font-size: 1em;
+  padding-top: 4px;
   @include iconography.afterIcon("caret-down");
 }
 
@@ -48,6 +50,6 @@ app-dropdown-select {
   background: #fff;
   left: 0;
   top: 34px;
-  padding: 10px;
+  padding: 0 10px;
 }
 

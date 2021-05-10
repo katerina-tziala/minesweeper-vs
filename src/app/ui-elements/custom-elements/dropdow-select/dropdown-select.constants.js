@@ -15,11 +15,9 @@ export const TEMPLATE = `
   <span class='${DOM_ELEMENT_CLASS.buttonIcon}'></span>
 </button>
 <app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'>
-  <app-dropdown-select-list class='${DOM_ELEMENT_CLASS.list}'></app-dropdown-select-list>
+  <app-dropdown-select-list name='%name%' class='${DOM_ELEMENT_CLASS.list}'></app-dropdown-select-list>
 </app-dropdown-panel>
 `;
-
-
 
 export const ARIA_LABEL = {
   default: 'choose an option for ',
