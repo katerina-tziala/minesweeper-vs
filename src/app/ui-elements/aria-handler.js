@@ -89,13 +89,16 @@ export class AriaHandler {
   //   return JSON.parse(element.getAttribute('aria-checked'));
   // }
 
-  // static getActiveDescendant(element) {
-  //   return element.getAttribute('aria-activedescendant');
-  // }
+  static getActiveDescendant(element) {
+    return element.getAttribute('aria-activedescendant');
+  }
 
-  // static setActiveDescendant(element, value) {
-  //   return element.setAttribute('aria-activedescendant', value);
-  // }
+  static setActiveDescendant(element, value = '') {
+    if (element) {
+      return element.setAttribute('aria-activedescendant', value);
+    }
+    
+  }
 
 
 

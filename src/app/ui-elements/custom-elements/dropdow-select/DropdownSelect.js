@@ -14,6 +14,7 @@ import { DropdownSelectAria } from './dropdown-select-aria/dropdown-select-aria'
 export default class DropdownSelect extends Dropdown {
   #buttonText;
   #list;
+  #defaultLabel;
 
 
 
@@ -43,7 +44,10 @@ export default class DropdownSelect extends Dropdown {
 
   connectedCallback() {
     super.connectedCallback();
-    this.#setNoOptionsView();
+    this.#defaultLabel = DropdownSelectAria.getLabel(this.name);
+
+    this.#setButtonView();
+    this.setAttribute('disabled', true);
   }
 
 
@@ -52,18 +56,25 @@ export default class DropdownSelect extends Dropdown {
 
   // }
 
-
-
   // updateContent(content) {
   //   if (this.panel) {
   //     this.panel.updateContent(content);
   //   }
   // }
-  #setNoOptionsView() {
-    DropdownSelectAria.setDefaultLabel(this.button, this.name);
-    ElementHandler.setContent(this.#buttonText, DropdownSelectAria.getLabel(this.name));
+
+
+  #setButtonView() {
+    const selectedOption = this.#list.selectedOption;
+    let buttonLabel = this.#defaultLabel;
+    let buttonText = this.#defaultLabel;
+    if (selectedOption) {
+      buttonLabel += `: ${selectedOption.ariaLabel}`;
+      buttonText = selectedOption.displayValue;
+    }
+    AriaHandler.setAriaLabel(this.button, buttonLabel);
+    ElementHandler.setContent(this.#buttonText, buttonText);
     // init list
-    this.setAttribute('disabled', true);
+    
   }
 
   setOptions(options) {
@@ -71,10 +82,11 @@ export default class DropdownSelect extends Dropdown {
       this.panel.closeAndPauseUpdates();
       this.#list.setOptions(options);
       this.panel.onContentUpdated();
-      //  this.setAttribute('disabled', true);
-      //
     }
-    
+
+    //console.log(this.#list.options.find(option => option.selected));
+    console.log(this.#list.selectedOption);
+    this.#setButtonView();
     this.setAttribute('disabled', !this.options.length);
     // if (this.options.length) {
     //   console.log(this.#buttonText);

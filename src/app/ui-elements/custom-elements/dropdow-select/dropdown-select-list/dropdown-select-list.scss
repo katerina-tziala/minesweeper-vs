@@ -1,7 +1,7 @@
 @use 'styles/utils/flexbox/flexbox';
 
 .dropdown-select-list {
-//   border: 1px solid red;
+  //   border: 1px solid red;
   list-style-type: none;
   width: 100%;
   // height: 0px;
@@ -24,22 +24,27 @@
   height: 34px;
   cursor: pointer;
   text-transform: capitalize;
-//   border-bottom: 1px solid red;
+  //   border-bottom: 1px solid red;
   @extend %flex-start-center;
   width: 100%;
+  padding: 0 10px;
   border-bottom-width: 1px;
   border-bottom-style: dashed;
-  border-bottom-color:grey;
+  border-bottom-color: grey;
   &:last-of-type {
     border-bottom-color: transparent !important;
   }
 
-
   > span {
     display: block;
   }
-
 }
 
+.dropdown-select-list-item[aria-selected="true"] {
+  @extend .dropdown-select-list-item--selected;
+}
 
-
+.dropdown-select-list-item--selected {
+    background-color: #404040;
+    color: #fff;
+}

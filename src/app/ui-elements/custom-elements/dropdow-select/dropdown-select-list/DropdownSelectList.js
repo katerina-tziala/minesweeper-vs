@@ -9,7 +9,6 @@ export default class DropdownSelectList extends HTMLElement {
   #listId;
 
   options = [];
-  #selectedOption;
 
   constructor() {
     super();
@@ -18,6 +17,9 @@ export default class DropdownSelectList extends HTMLElement {
 
   get #name() {
     return this.getAttribute('name');
+  }
+  get selectedOption() {
+    return this.options && this.options.length ?  this.options.find(option => option.selected) : undefined;
   }
 
   static get observedAttributes() {
@@ -59,7 +61,7 @@ export default class DropdownSelectList extends HTMLElement {
     if (!this.#list) {
       return;
     }
-    this.#selectedOption = undefined;
+
     this.options = [];
 
     ElementHandler.clearContent(this.#list);
@@ -71,24 +73,36 @@ export default class DropdownSelectList extends HTMLElement {
       const optionInfo = { id, index, posinset, setsize };
       const listOption = Object.assign(option, optionInfo);
       const listItem = ListItem.generate(listOption, this.#onOptionClick.bind(this));
+
       this.options.push(listOption);
       this.#list.append(listItem);
     });
-    //this.options = listOptions;
-
-    console.log(this.options);
+    this.#setActiveDescendant();
   }
 
+
+
+
   #onOptionClick(selectedOption) {
-    
+    this.options = this.options.map(option => {
+      option.selected = option.value === selectedOption.value;
+      // aria selected
+      return option;
+    });
     console.log('onOptionClick');
     console.log(selectedOption);
+    this.#setActiveDescendant();
     // this.clearCurrentSelectedOption();
     // this.setActiveDescendant(ElementHandler.getID(selectedOption));
     // this.submitSelectedOption(selectedOption);
   }
 
-
+  #setActiveDescendant() {
+    const selected = this.selectedOption ? this.selectedOption.id : '';
+    console.log('setActiveDescendant', selected);
+  
+    AriaHandler.setActiveDescendant(this.#list, selected);
+  }
 }
 
 customElements.define('app-dropdown-select-list', DropdownSelectList);
