@@ -94,7 +94,7 @@ app-menu-item[type="original"] {
 app-menu-item {
   background-color: #fff;
   color: #1a1a1a;
-  @extend ._button--primary;
+  @extend .button--primary;
   &:hover,
   &:focus {
     .menu-item__icon {

@@ -17,6 +17,5 @@ export class DropdownSelectAria {
     AriaHandler.setAriaLabel(element, ariaLabel);
   }
 
-
 }
 

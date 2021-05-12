@@ -11,6 +11,28 @@ export function parseBoolean(stringToParse) {
   return definedString(stringToParse) ? JSON.parse(stringToParse) : false;
 };
 
+
+export function getNextPositionInArray(arrayList = [], currentIndex = 0, step = 1) {
+  const maxPosition = lastPositionInArray(arrayList);
+  const newPosition = currentIndex + step;
+  if (newPosition > maxPosition) {
+    return 0;
+  }
+  return newPosition < 0 ? maxPosition : newPosition;
+};
+
+
+export function lastPositionInArray(arrayList = []) {
+  return arrayList.length ? arrayList.length - 1 : 0;
+};
+
+
+
+
+
+
+
+
 // export const clone = (itemToClone) => {
 //   return JSON.parse(JSON.stringify(itemToClone));
 // };

@@ -12,7 +12,40 @@ app-dropdown {
 }
 
 .app-dropdown__toggle-button {
+  @extend ._button;
   height: 34px;
+  line-height: 36px;
+  min-width: 34px;
+  border-radius: 2px;
+  position: relative;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  @extend %flex-start-center;
+  width: 100%;
+  padding: 0 10px;
+
+  background-color: inherit;
+
+  border: 1px solid #404040;
+  border-radius: 6px;
+
+  overflow: hidden;
+
+  &[aria-expanded="true"] {
+    .app-dropdown-select__toggle-button-icon {
+      margin-top: 4px;
+      transform: rotate(-180deg);
+    }
+  }
+
+  &:hover,
+  &:focus {
+    background-color: #000;
+    color: #fff;
+  }
 }
 
 .app-dropdown-panel {
@@ -21,6 +54,4 @@ app-dropdown {
   background: #fff;
   left: 0;
   top: 34px;
-
 }
-

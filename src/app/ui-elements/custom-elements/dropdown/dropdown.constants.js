@@ -8,7 +8,7 @@ export const ATTRIBUTES = {
 };
 
 export const TEMPLATE = `
-<button class='${DOM_ELEMENT_CLASS.button}'>button</button>
+<button type='button' class='${DOM_ELEMENT_CLASS.button}'>button</button>
 <app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'></app-dropdown-panel>
 `;
 

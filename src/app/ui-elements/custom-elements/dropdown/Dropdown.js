@@ -21,6 +21,10 @@ export default class Dropdown extends HTMLElement {
     return this.getAttribute('name');
   }
 
+  get expanded() {
+    return this.#expanded;
+  }
+
   get #disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
     return parseBoolean(disabled);
@@ -28,7 +32,7 @@ export default class Dropdown extends HTMLElement {
 
   get templateConfig() {
     const name = this.name;
-    const expanded = this.#expanded;
+    const expanded = this.expanded;
     const panelId = `${DOM_ELEMENT_CLASS.panel}-${name}`;
     return { name, expanded, panelId };
   }
@@ -98,24 +102,24 @@ export default class Dropdown extends HTMLElement {
     const button = event.target.closest(`.${this.buttonClass}`);
     const buttonControls = AriaHandler.getAriaControls(button);
     if (!panel && paneId !== buttonControls) {
-      this.#collapse();
+      this.collapse();
     }
   }
 
   #handleToggleButtonAria() {
-    AriaHandler.setAriaExpanded(this.button, this.#expanded);
+    AriaHandler.setAriaExpanded(this.button, this.expanded);
     const labels = ARIA_LABEL[this.name];
     if (labels) {
-      const labelKey = this.#expanded.toString();
+      const labelKey = this.expanded.toString();
       AriaHandler.setAriaLabel(this.button, labels[labelKey]);
     }
   }
 
   #toggle() {
-    this.#expanded = !this.#expanded;
+    this.#expanded = !this.expanded;
     this.#handleToggleButtonAria();
-    this.panel.setAttribute('expanded', this.#expanded);
-    this.#onExpandStateChange();
+    this.panel.setAttribute('expanded', this.expanded);
+    this.onExpandStateChange();
   }
 
   #setState() {
@@ -125,24 +129,24 @@ export default class Dropdown extends HTMLElement {
   }
 
   #disable() {
-    this.#collapse();
+    this.collapse();
     this.#removeOutsideClickDetection();
   }
 
-  #collapse() {
+  collapse() {
     this.#expanded = false;
     this.#handleToggleButtonAria();
-    this.panel.setAttribute('expanded', this.#expanded);
-    this.#onExpandStateChange();
+    this.panel.setAttribute('expanded', this.expanded);
+    this.onExpandStateChange();
   }
 
   #enable() {
     this.#detectOutsideClick();
   }
 
-  #onExpandStateChange() {
+  onExpandStateChange() {
     const name = this.name;
-    const expanded = this.#expanded;
+    const expanded = this.expanded;
     const event = new CustomEvent('onExpandStateChange', { detail: { name, expanded } });
     this.dispatchEvent(event);
   }

@@ -9,7 +9,7 @@
   border: none;
   overflow: hidden;
   text-align: center;
-  display: inline-block;
+
   &:disabled {
     @extend .disabled;
   }
@@ -17,6 +17,7 @@
 
 .button-text {
   @extend ._button;
+  display: inline-block;
   height: 34px;
   line-height: 36px;
   min-width: 34px;
@@ -30,8 +31,9 @@
 }
 
 .button-icon {
+  display: inline-block;
   @extend ._button;
-  @extend ._button--primary;
+  @extend .button--primary;
   @extend %flex-center-center;
   @include shapes.circle(34px);
 }
@@ -60,7 +62,7 @@
 
 // TODO THEMING
 
-._button--primary {
+.button--primary{
   background-position: center;
   transition: background 0.5s;
   color: #f2f2f2;
@@ -82,7 +84,6 @@
 }
 
 .button-text {
-  @extend ._button--primary;
 
   box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
     0 1px 5px 0 rgb(0 0 0 / 12%);

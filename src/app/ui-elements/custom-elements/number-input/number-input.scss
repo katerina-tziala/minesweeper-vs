@@ -22,7 +22,7 @@ app-number-input {
   @include shapes.rectangle($input-size);
   min-width: $input-size;
   @extend ._button;
-  @extend ._button--primary;
+  @extend .button--primary;
   padding-top: 4px;
 }
 

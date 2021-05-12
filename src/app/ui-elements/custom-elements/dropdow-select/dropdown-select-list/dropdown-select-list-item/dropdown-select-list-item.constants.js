@@ -8,10 +8,12 @@ export const TEMPLATE = `
 class='${DOM_ELEMENT_CLASS.listItem}'
 role='option'
 id='%id%'
+value='%value%'
 aria-label='%ariaLabel%'
 aria-selected='%selected%'
 aria-posinset='%posinset%'
 aria-setsize='%setsize%'
+tabindex='-1'
 >
 %displayValue%
 </li>

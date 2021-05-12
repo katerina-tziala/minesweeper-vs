@@ -19,6 +19,7 @@ export class ButtonGenerator {
   static generateTextButton(buttonText, action) {
     const button = this.generateButton(action);
     ElementHandler.addStyleClass(button, 'button-text');
+    ElementHandler.addStyleClass(button, 'button-primary');
     ElementHandler.setContent(button, buttonText);
     return button;
   }

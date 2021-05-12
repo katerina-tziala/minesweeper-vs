@@ -13,6 +13,7 @@ export class DropdownSelectListItem {
     listItem.addEventListener('click', () => {
       action(option);
     });
+    // listItem.addEventListener('mouseenter', () => listItem.focus());
     return listItem;
   }
 

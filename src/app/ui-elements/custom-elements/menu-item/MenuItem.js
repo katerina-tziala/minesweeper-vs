@@ -65,8 +65,7 @@ export default class MenuItem extends HTMLElement {
 
   #setState() {
     AriaHandler.setAriaDisabled(this, this.#disabled);
-    const tablindex = this.#disabled ? -1 : 1;
-    AriaHandler.setTabindex(this, tablindex);
+    AriaHandler.setFocusable(this, !this.#disabled);
   }
 
   #setListener(type, action) {

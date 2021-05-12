@@ -15,8 +15,10 @@ export default class DropdownSelect extends Dropdown {
   #buttonText;
   #list;
   #defaultLabel;
+  #selectionListener;
 
-
+  //offsetParent
+  //max height
 
   constructor() {
     super();
@@ -45,16 +47,45 @@ export default class DropdownSelect extends Dropdown {
   connectedCallback() {
     super.connectedCallback();
     this.#defaultLabel = DropdownSelectAria.getLabel(this.name);
+    this.#selectionListener = this.#onValueSelected.bind(this);
 
+    this.#list.addEventListener('onSelectedValue', this.#selectionListener);
     this.#setButtonView();
+
     this.setAttribute('disabled', true);
   }
 
+  // Enter/ Space
+  //  --  button => expands the listbox and places focus on the currently selected option in the list.
 
-  // disconnectedCallback() {
-  //   console.log('disconnectedCallback');
+  // Down Arrow
+  //  --  button => If the listbox is collapsed, also expands the list.
 
-  // }
+  // Up Arrow
+  //  --  button => If the listbox is collapsed, also expands the list.
+  #onValueSelected(event) {
+    const { collapse } = event.detail;
+
+    console.log(event.detail);
+
+   // 
+    this.#setButtonView();
+  
+
+    if (collapse) {
+      this.button.focus();
+      this.collapse();
+    }
+    //
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.#selectionListener && this.#list) {
+      this.#list.removeEventListener('onSelectedValue', this.#selectionListener);
+      this.#selectionListener = undefined;
+    }
+  }
 
   // updateContent(content) {
   //   if (this.panel) {
@@ -73,8 +104,6 @@ export default class DropdownSelect extends Dropdown {
     }
     AriaHandler.setAriaLabel(this.button, buttonLabel);
     ElementHandler.setContent(this.#buttonText, buttonText);
-    // init list
-    
   }
 
   setOptions(options) {
@@ -83,21 +112,14 @@ export default class DropdownSelect extends Dropdown {
       this.#list.setOptions(options);
       this.panel.onContentUpdated();
     }
-
-    //console.log(this.#list.options.find(option => option.selected));
-    console.log(this.#list.selectedOption);
     this.#setButtonView();
     this.setAttribute('disabled', !this.options.length);
-    // if (this.options.length) {
-    //   console.log(this.#buttonText);
-    //   console.log(this.#list);
-    // } else {
-    //   this.#setNoOptionsView();
-    // }
-    //console.log(options);
   }
 
-
+  onExpandStateChange() {
+    this.#list.onExpandStateChange(this.expanded);
+    //this.button.focus();
+  }
 
 
 

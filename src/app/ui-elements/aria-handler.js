@@ -40,11 +40,20 @@ export class AriaHandler {
     }
   }
 
-  static setTabindex(element, value = 0) {
+  // static setTabindex(element, value = 0) {
+  //   if (element) {
+  //     element.setAttribute('tabindex', value);
+  //   }
+  // }
+
+  static setFocusable(element, focusable = false) {
+    const tabindex = focusable ? 1 : -1;
     if (element) {
-      element.setAttribute('tabindex', value);
+      element.setAttribute('tabindex', tabindex);
     }
   }
+
+
 
   static setAriaDisabled(element, value = false) {
     if (element) {
@@ -70,7 +79,6 @@ export class AriaHandler {
     }
   }
 
-
   static getAriaControls(element) {
     return element ? element.getAttribute('aria-controls') : undefined;
   }
@@ -81,14 +89,6 @@ export class AriaHandler {
     }
   }
 
-  // static setListTabindex(elements, value) {
-  //   elements.forEach((element) => AriaHandler.setTabindex(element, value));
-  // }
-
-  // static getAriaChecked(element) {
-  //   return JSON.parse(element.getAttribute('aria-checked'));
-  // }
-
   static getActiveDescendant(element) {
     return element.getAttribute('aria-activedescendant');
   }
@@ -97,17 +97,24 @@ export class AriaHandler {
     if (element) {
       return element.setAttribute('aria-activedescendant', value);
     }
-    
   }
 
+  static setAriaSelected(element, value = false) {
+    if (element) {
+      element.setAttribute('aria-selected', value);
+    }
+  }
+
+  static getAriaPosInset(element) {
+    if (element) {
+      return parseInt(element.getAttribute('aria-posinset'), 10);
+    }
+    return
+  }
 
 
   // static getAriaExpanded(element) {
   //   return JSON.parse(element.getAttribute('aria-expanded'));
-  // }
-
-  // static setAriaSelected(element) {
-  //   element.setAttribute('aria-selected', true);
   // }
 
   // static removeAriaSelected(element) {

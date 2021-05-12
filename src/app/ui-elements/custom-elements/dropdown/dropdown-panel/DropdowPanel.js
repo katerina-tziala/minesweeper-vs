@@ -119,9 +119,8 @@ export default class DropdowPanel extends HTMLElement {
   }
 
   #handleContentAria() {
-    const tabindex = this.#expanded ? -1 : 0;
     AriaHandler.setAriaHidden(this.#content, !this.#expanded);
-    AriaHandler.setTabindex(this.#content, tabindex);
+    AriaHandler.setFocusable(this.#content, !this.#expanded);
   }
 }
 
