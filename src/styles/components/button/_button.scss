@@ -18,9 +18,9 @@
 .button-text {
   @extend ._button;
   display: inline-block;
-  height: 34px;
-  line-height: 36px;
-  min-width: 34px;
+  height: 38px;
+  line-height: 40px;
+  min-width: 38px;
   border-radius: 2px;
   position: relative;
   padding: 0 10px;
@@ -35,7 +35,7 @@
   @extend ._button;
   @extend .button--primary;
   @extend %flex-center-center;
-  @include shapes.circle(34px);
+  @include shapes.circle(38px);
 }
 
 .button-icon--close {

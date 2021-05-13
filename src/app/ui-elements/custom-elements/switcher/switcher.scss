@@ -4,13 +4,22 @@
 @use 'styles/components/button/button';
 @use 'styles/utils/state';
 // track
-$track-height: 20px;
-$track-width: 40px;
+$track-height: 26px;
+$track-width: 44px;
 // thumb
-$thumb-size: 14px;
-$thumb-position-top: 3px;
+$thumb-size: 18px;
+$thumb-position-top: 4px;
 $thumb-position-left: 4px;
 $thumb-position-right: 22px;
+
+app-switcher {
+  height: $track-height;
+  width: $track-width;
+  margin: 0;
+  padding: 0;
+  @extend %flex-start-center;
+  line-height: 19px;
+}
 
 ._thumb {
   @include shapes.pseudoCircle($thumb-size);
@@ -35,7 +44,7 @@ $thumb-position-right: 22px;
   position: relative;
 
   &::after {
-    transition: all 0.3s linear;
+    transition: all 0.2s linear;
     @extend ._thumb;
   }
 

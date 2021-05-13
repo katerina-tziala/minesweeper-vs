@@ -89,7 +89,7 @@ export default class Dropdown extends HTMLElement {
   }
 
   #detectOutsideClick() {
-    if (!this.#clickListener) {
+    if (!this.#clickListener && this.expanded) {
       this.#clickListener = this.#onDocumentClick.bind(this);
       document.addEventListener('click', this.#clickListener);
     }
@@ -102,6 +102,7 @@ export default class Dropdown extends HTMLElement {
     }
   }
   #onDocumentClick(event) {
+    console.log('onDocumentClick');
     const paneId = this.panel ? this.panel.id : undefined;
     const panel = event.target.closest(`.${DOM_ELEMENT_CLASS.panel}`);
     const button = event.target.closest(`.${this.buttonClass}`);
