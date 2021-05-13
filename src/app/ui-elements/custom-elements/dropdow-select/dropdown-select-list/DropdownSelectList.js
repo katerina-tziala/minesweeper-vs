@@ -1,5 +1,5 @@
 import './dropdown-select-list.scss';
-import { TEMPLATE, DOM_ELEMENT_CLASS } from './dropdown-select-list.constants';
+import { TEMPLATES, DOM_ELEMENT_CLASS } from './dropdown-select-list.constants';
 import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
 import { DropdownSelectAria } from '../dropdown-select-aria/dropdown-select-aria';
 import { DropdownSelectListItem as ListItem } from './dropdown-select-list-item/dropdown-select-list-item';
@@ -34,7 +34,7 @@ export default class DropdownSelectList extends HTMLElement {
 
   connectedCallback() {
     if (this.#name) {
-      TemplateGenerator.setTemplate(this, TEMPLATE);
+      TemplateGenerator.setTemplate(this, TEMPLATES.list);
       this.#listId = `${DOM_ELEMENT_CLASS.list}-${this.#name}`;
       this.#list = this.querySelector(`.${DOM_ELEMENT_CLASS.list}`);
       ElementHandler.setElementId(this.#list, this.#listId);
@@ -76,12 +76,23 @@ export default class DropdownSelectList extends HTMLElement {
       const id = `${this.#listId}-option--${posinset}`;
       const optionInfo = { id, index, posinset, setsize };
       const listOption = Object.assign(option, optionInfo);
-      const listItem = ListItem.generate(listOption, this.#onOptionSelect.bind(this));
+      const listItem = this.#generateOption(listOption);
       this.options.push(listOption);
       this.#list.append(listItem);
     });
     this.#setActiveDescendant();
     this.#setKeyboardNavigation();
+  }
+
+  #generateOption(option) {
+    const template = TemplateGenerator.generate(TEMPLATES.listIem, option);
+    const listItem = template.children[0];
+    listItem.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.#onOptionSelect(option);
+    });
+    return listItem;
   }
 
   #onOptionSelect(selectedOption, collapse = true) {
@@ -105,16 +116,13 @@ export default class DropdownSelectList extends HTMLElement {
     AriaHandler.setActiveDescendant(this.#list, selected);
   }
 
-  #submitValueChange(collapse = true) {
-    const selectedOption = this.selectedOption;
-    const event = new CustomEvent('onSelectedValue', { detail: { selectedOption, collapse } });
-    this.dispatchEvent(event);
-  }
-
   onExpandStateChange(expanded) {
     this.#setItemsTabIndex(expanded);
     if (expanded) {
       this.#listExpanded();
+      this.#setKeyboardNavigation();
+    } else {
+      this.#removeKeyboardNavigation();
     }
   }
 
@@ -142,8 +150,23 @@ export default class DropdownSelectList extends HTMLElement {
   #setItemsTabIndex(expanded) {
     this.options.forEach(option => {
       const listItem = this.querySelector(`#${option.id}`);
+      listItem.blur();
       AriaHandler.setFocusable(listItem, expanded);
     });
+  }
+
+  selectBasedOnStep(step = 1) {
+    if (!this.options.length) {
+      return;
+    }
+    const currentPosition = this.selectedOption ? this.selectedOption.index : null;
+    this.#selectOptionByPosition(currentPosition, step);
+  }
+
+  #selectOptionByPosition(currentPosition, step = 1) {
+    const nextPosition = numberDefined(currentPosition) ? getNextPositionInArray(this.options, currentPosition, step) : 0;
+    const selectedOption = this.options[nextPosition];
+    this.#onOptionSelect({ ...selectedOption }, false);
   }
 
   #onKeyDown(event) {
@@ -170,9 +193,7 @@ export default class DropdownSelectList extends HTMLElement {
    *  When first one selected then selects the last one
    */
   #arrowUpNavigation(currentPosition) {
-    const nextPosition = getNextPositionInArray(this.options, currentPosition, -1);
-    const selectedOption = this.options[nextPosition];
-    this.#onOptionSelect({ ...selectedOption }, false);
+    this.#selectOptionByPosition(currentPosition, -1);
   }
 
   /**
@@ -180,9 +201,7 @@ export default class DropdownSelectList extends HTMLElement {
    *  When last one selected then selects the first one
    */
   #arrowDownNavigation(currentPosition) {
-    const nextPosition = getNextPositionInArray(this.options, currentPosition);
-    const selectedOption = this.options[nextPosition];
-    this.#onOptionSelect({ ...selectedOption }, false);
+    this.#selectOptionByPosition(currentPosition, 1);
   }
 
   /**
@@ -215,6 +234,13 @@ export default class DropdownSelectList extends HTMLElement {
    */
   #onTabNavigation(currentPosition, shiftKey) {
     shiftKey ? this.#arrowUpNavigation(currentPosition) : this.#arrowDownNavigation(currentPosition);
+  }
+
+
+  #submitValueChange(collapse = true) {
+    const selectedOption = this.selectedOption;
+    const event = new CustomEvent('onSelectedValue', { detail: { selectedOption, collapse } });
+    this.dispatchEvent(event);
   }
 
 }

@@ -25,7 +25,7 @@ export default class Dropdown extends HTMLElement {
     return this.#expanded;
   }
 
-  get #disabled() {
+  get disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
     return parseBoolean(disabled);
   }
@@ -61,7 +61,10 @@ export default class Dropdown extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.button.removeEventListener('click', this.#buttonListener);
+    if (this.#buttonListener) {
+      this.button.removeEventListener('click', this.#buttonListener);
+      this.#buttonListener = undefined;
+    }
     this.#removeOutsideClickDetection();
   }
 
@@ -78,8 +81,10 @@ export default class Dropdown extends HTMLElement {
 
   #initToggleButton() {
     AriaHandler.setAriaControls(this.button, this.panel.id);
-    this.#buttonListener = this.#toggle.bind(this);
-    this.button.addEventListener('click', this.#buttonListener);
+    if (!this.#buttonListener) {
+      this.#buttonListener = this.#toggle.bind(this);
+      this.button.addEventListener('click', this.#buttonListener);
+    }
     this.#handleToggleButtonAria();
   }
 
@@ -116,37 +121,34 @@ export default class Dropdown extends HTMLElement {
   }
 
   #toggle() {
-    this.#expanded = !this.expanded;
-    this.#handleToggleButtonAria();
-    this.panel.setAttribute('expanded', this.expanded);
-    this.onExpandStateChange();
+    this.expanded ? this.collapse(): this.expand();
   }
 
   #setState() {
-    ElementHandler.setDisabled(this.button, this.#disabled);
-    AriaHandler.setAriaDisabled(this.button, this.#disabled);
-    this.#disabled ? this.#disable() : this.#enable();
-  }
-
-  #disable() {
-    this.collapse();
-    this.#removeOutsideClickDetection();
+    ElementHandler.setDisabled(this.button, this.disabled);
+    AriaHandler.setAriaDisabled(this.button, this.disabled);
+    this.disabled ? this.collapse() : this.#detectOutsideClick();
   }
 
   collapse() {
     this.#expanded = false;
     this.#handleToggleButtonAria();
     this.panel.setAttribute('expanded', this.expanded);
+    this.#removeOutsideClickDetection();
     this.onExpandStateChange();
   }
 
-  #enable() {
+  expand() {
+    this.#expanded = true;
+    this.#handleToggleButtonAria();
+    this.panel.setAttribute('expanded', this.expanded);
     this.#detectOutsideClick();
+    this.onExpandStateChange();
   }
 
   onExpandStateChange() {
-    const name = this.name;
     const expanded = this.expanded;
+    const name = this.name;
     const event = new CustomEvent('onExpandStateChange', { detail: { name, expanded } });
     this.dispatchEvent(event);
   }

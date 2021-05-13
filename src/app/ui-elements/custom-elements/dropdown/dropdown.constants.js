@@ -8,7 +8,7 @@ export const ATTRIBUTES = {
 };
 
 export const TEMPLATE = `
-<button type='button' class='${DOM_ELEMENT_CLASS.button}'>button</button>
+<button type='button' class='${DOM_ELEMENT_CLASS.button}'>dropdown button</button>
 <app-dropdown-panel id='%panelId%' name='%name%' expanded='%expanded%'></app-dropdown-panel>
 `;
 
@@ -17,5 +17,4 @@ export const ARIA_LABEL = {
     'true': 'close app settings',
     'false': 'open app settings'
   }
-
 };

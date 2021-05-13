@@ -18,8 +18,3 @@ export const TEMPLATE = `
   <app-dropdown-select-list name='%name%' class='${DOM_ELEMENT_CLASS.list}'></app-dropdown-select-list>
 </app-dropdown-panel>
 `;
-
-export const ARIA_LABEL = {
-  default: 'choose an option for ',
-  level: 'choose game level'
-};

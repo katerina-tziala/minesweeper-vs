@@ -6,11 +6,12 @@ import { ATTRIBUTES, DOM_ELEMENT_CLASS, TEMPLATE } from './switcher.constants';
 export default class Switcher extends HTMLElement {
   #attributeUpdateHandler;
   #button;
-  #clickListener;
+  #buttonListeners;
 
   constructor() {
     super();
     this.#attributeUpdateHandler = new Map();
+    this.#buttonListeners = new Map();
   }
 
   get #disabled() {
@@ -42,14 +43,16 @@ export default class Switcher extends HTMLElement {
     this.#button = this.querySelector(`.${DOM_ELEMENT_CLASS.switcher}`)
     this.#setValue();
     this.#setState();
-    this.#addListener();
     this.#initUpdatesHandling();
+    this.#addListeners();
   }
 
   disconnectedCallback() {
-    if (!this.#clickListener) {
-      this.#button.removeEventListener('click', this.#clickListener);
-      this.#clickListener = undefined;
+    if (this.#buttonListeners.size && this.#button) {
+      for (const [actionType, action] of this.#buttonListeners) {
+        this.#button.removeEventListener(actionType, action);
+        this.#buttonListeners.delete(actionType);
+      }
     }
   }
 
@@ -63,10 +66,28 @@ export default class Switcher extends HTMLElement {
     AriaHandler.setAriaDisabled(this.#button, this.#disabled);
   }
 
-  #addListener() {
-    if (!this.#clickListener) {
-      this.#clickListener = this.#toggleValue.bind(this);
-      this.#button.addEventListener('click', this.#clickListener);
+  #addListeners() {
+    if (!this.#buttonListeners.size && this.#button) {
+      this.#buttonListeners.set('click', this.#toggleValue.bind(this));
+      this.#buttonListeners.set('keydown', this.#onKeyDown.bind(this));
+      for (const [actionType, action] of this.#buttonListeners) {
+        this.#button.addEventListener(actionType, action);
+      }
+    }
+  }
+
+  #onKeyDown(event) {
+    const actionKey = event.key;
+    const actions = ['ArrowRight', 'ArrowLeft'];
+    if (!actions.includes(actionKey)) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    const checked = actionKey === 'ArrowRight';
+    if (this.checked !== checked) {
+      this.#button.blur();
+      this.setAttribute('checked', checked);
     }
   }
 

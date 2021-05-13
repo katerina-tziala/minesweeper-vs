@@ -49,15 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   test.setOptions(options)
 
-//  document.addEventListener("keydown", (event) => {
-//     console.log(event.target);
-//     // DropdownSelectNavigation.manageNavigation(
-//     //   event,
-//     //   listbox,
-//     //   this.onEscape.bind(this),
-//     //   this.onEnter.bind(this),
-//     // );
-//   });
+  // test.addEventListener("onValueChange", (event) => {
+  //   console.log(event.detail);
+  //   // DropdownSelectNavigation.manageNavigation(
+  //   //   event,
+  //   //   listbox,
+  //   //   this.onEscape.bind(this),
+  //   //   this.onEnter.bind(this),
+  //   // );
+  // });
 
   // test.addEventListener('onExpandStateChange', (event) => {
   //   console.log('onExpandStateChange');

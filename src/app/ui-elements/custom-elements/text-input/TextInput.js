@@ -102,8 +102,8 @@ export default class TextInput extends HTMLElement {
   }
 
   #setFieldName() {
-    if (this.inputField) {
-      this.inputField.name = this.#name;
+    if (this.#inputField) {
+      this.#inputField.name = this.#name;
       ElementHandler.setForAttribute(this.#labelElement, this.#label);
     }
   }
@@ -128,20 +128,20 @@ export default class TextInput extends HTMLElement {
   }
 
   #setInputListeners() {
-    if (this.inputField && !this.#inputListeners.size) {
+    if (this.#inputField && !this.#inputListeners.size) {
       this.#inputListeners.set('focus', this.#focus.bind(this));
       this.#inputListeners.set('focusout', this.#focusout.bind(this));
       this.#inputListeners.set('keyup', this.#onKeyUp.bind(this));
       this.#inputListenersTypes.forEach(listenerName => {
-        inputField.addEventListener(listenerName, this.#inputListeners.get(listenerName));
+        this.#inputField.addEventListener(listenerName, this.#inputListeners.get(listenerName));
       });
     }
   }
 
   #removeInputListeners() {
-    if (this.inputField && !!this.#inputListeners.size) {
+    if (this.#inputField && !!this.#inputListeners.size) {
       this.#inputListenersTypes.forEach(listenerName => {
-        inputField.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
+        this.#inputField.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
       });
       this.#inputListeners = new Map();
     }

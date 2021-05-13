@@ -1,29 +1,25 @@
 import './dropdown-select.scss';
 import './dropdown-select-list/DropdownSelectList'
 import Dropdown from '../dropdown/Dropdown';
-
-import { TEMPLATE, DOM_ELEMENT_CLASS, ATTRIBUTES, ARIA_LABEL } from './dropdown-select.constants';
-
-import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
-import { parseBoolean } from 'UTILS';
+import { TEMPLATE, DOM_ELEMENT_CLASS, ATTRIBUTES } from './dropdown-select.constants';
+import { ElementHandler, AriaHandler } from 'UI_ELEMENTS';
 import { DropdownSelectAria } from './dropdown-select-aria/dropdown-select-aria';
-
-
-
 
 export default class DropdownSelect extends Dropdown {
   #buttonText;
   #list;
   #defaultLabel;
   #selectionListener;
-
-  //offsetParent
-  //max height
+  #onButtonKeyDownListener;
 
   constructor() {
     super();
     this.template = TEMPLATE;
     this.buttonClass = DOM_ELEMENT_CLASS.button;
+  }
+
+  get #buttonFocusable() {
+    return !this.expanded && !this.disabled;
   }
 
   get options() {
@@ -33,10 +29,6 @@ export default class DropdownSelect extends Dropdown {
   static get observedAttributes() {
     return Object.values(ATTRIBUTES);
   }
-
-  // attributeChangedCallback(attrName, oldVal, newVal) {
-  //   console.log('attrName');
-  // }
 
   initElementsVariables() {
     super.initElementsVariables();
@@ -48,35 +40,31 @@ export default class DropdownSelect extends Dropdown {
     super.connectedCallback();
     this.#defaultLabel = DropdownSelectAria.getLabel(this.name);
     this.#selectionListener = this.#onValueSelected.bind(this);
-
     this.#list.addEventListener('onSelectedValue', this.#selectionListener);
     this.#setButtonView();
 
+    if (!this.#onButtonKeyDownListener) {
+      this.#onButtonKeyDownListener = this.#onButtonKeyDown.bind(this);
+      this.button.addEventListener('keydown', this.#onButtonKeyDownListener);
+    }
     this.setAttribute('disabled', true);
   }
 
-  // Enter/ Space
-  //  --  button => expands the listbox and places focus on the currently selected option in the list.
-
-  // Down Arrow
-  //  --  button => If the listbox is collapsed, also expands the list.
-
-  // Up Arrow
-  //  --  button => If the listbox is collapsed, also expands the list.
   #onValueSelected(event) {
-    const { collapse } = event.detail;
-
-    console.log(event.detail);
-
-   // 
+    const { collapse, selectedOption } = event.detail; 
     this.#setButtonView();
-  
-
     if (collapse) {
       this.button.focus();
       this.collapse();
+      this.#submitValueChange(selectedOption);
     }
-    //
+  }
+
+  #submitValueChange(selectedOption) {
+    const name = this.name;
+    const value = selectedOption ? selectedOption.value : undefined;
+    const event = new CustomEvent('onValueChange', { detail: { name, value } });
+    this.dispatchEvent(event);
   }
 
   disconnectedCallback() {
@@ -85,14 +73,28 @@ export default class DropdownSelect extends Dropdown {
       this.#list.removeEventListener('onSelectedValue', this.#selectionListener);
       this.#selectionListener = undefined;
     }
+    if (this.#onButtonKeyDownListener && this.button) {
+      this.button.removeEventListener('keydown', this.#onButtonKeyDownListener);
+      this.#onButtonKeyDownListener = undefined;
+    }
   }
 
-  // updateContent(content) {
-  //   if (this.panel) {
-  //     this.panel.updateContent(content);
-  //   }
-  // }
+  #onButtonKeyDown(event) {
+    const actionKey = event.key;
+    const actions = ['ArrowUp', 'ArrowDown'];
+    if (this.#list && this.#buttonFocusable && actions.includes(actionKey)) {
+      event.preventDefault();
+      event.stopPropagation();
+      const direction = actionKey === 'ArrowUp' ? -1 : 1;
+      this.expand();
+      this.#list.selectBasedOnStep(direction);
+      this.#submitValueChange(this.#list.selectedOption);
+    }
+  }
 
+  updateContent(cntent) {// prevent content update
+    return;
+  }
 
   #setButtonView() {
     const selectedOption = this.#list.selectedOption;
@@ -118,11 +120,10 @@ export default class DropdownSelect extends Dropdown {
 
   onExpandStateChange() {
     this.#list.onExpandStateChange(this.expanded);
-    //this.button.focus();
+    if (this.#buttonFocusable) {
+      this.button.focus();
+    }
   }
-
-
-
 
 }
 
