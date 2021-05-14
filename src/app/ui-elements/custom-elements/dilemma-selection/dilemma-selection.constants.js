@@ -7,8 +7,8 @@ export const TEMPLATE = `<div class='${DOM_ELEMENT_CLASS.content}'>
 <h2 class='dilemma-selection__title'>%title%</h2>
 <p class='dilemma-selection__text'>%text%</p>
 <div class='buttons-container'>
-  <button class='button-text dilemma-selection__choiceA'>%choiceA%</button>
-  <button class='button-text dilemma-selection__choiceB'>%choiceB%</button>
+  <button class='button-text button--primary dilemma-selection__choiceA'>%choiceA%</button>
+  <button class='button-text button--primary dilemma-selection__choiceB'>%choiceB%</button>
 </div>
 </div>`;
 

@@ -10,7 +10,7 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 
 document.addEventListener('DOMContentLoaded', () => {
   //AppLoaderHandler.display();
-  //new App();
+  // new App();
   AppLoaderHandler.hide();
 
 

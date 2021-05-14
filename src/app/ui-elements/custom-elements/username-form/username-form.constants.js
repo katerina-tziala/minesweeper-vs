@@ -5,11 +5,11 @@ export const DOM_ELEMENT_CLASS = {
   submitButton: 'username-form__button-submit'
 };
 
-export const TEMPLATE = `<form class='username-form__form'>
-  <app-text-input class='username-form__text-input' name='username' leadingIcon='true'></app-text-input>
+export const TEMPLATE = `<form class='${DOM_ELEMENT_CLASS.form}'>
+  <app-text-input class='${DOM_ELEMENT_CLASS.input}' name='username' leadingIcon='true'></app-text-input>
   <div class='username-form__buttons'>
-    <button class='button-text username-form__button-clear'>clear</button>
-    <button class='button-text username-form__button-submit'>%type%</button>
+    <button class='button-text button--primary ${DOM_ELEMENT_CLASS.clearButton}'>clear</button>
+    <button class='button-text button--primary ${DOM_ELEMENT_CLASS.submitButton}'>%type%</button>
   </div>
 </form>`;
 

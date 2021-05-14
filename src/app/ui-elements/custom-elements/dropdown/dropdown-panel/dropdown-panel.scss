@@ -17,7 +17,7 @@ app-dropdown-panel {
   z-index: 300;
   position: absolute;
   will-change: transform, opacity;
-  transition: opacity 0.5s;
+  transition: opacity 0.4s;
   opacity: 0;
   &[expanded="true"] {
     opacity: 1;
