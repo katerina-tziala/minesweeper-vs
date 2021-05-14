@@ -5,12 +5,6 @@ app-dropdown-panel {
   box-sizing: border-box;
   position: absolute;
   background-color: inherit;
-  // will-change: opacity;
-  // transition: opacity 0.5s;
-  // opacity: 0;
-  // &[expanded="true"] {
-  //   opacity: 1;
-  // }
 }
 
 .app-dropdown-panel {
@@ -18,11 +12,16 @@ app-dropdown-panel {
   pointer-events: none;
   transform-origin: top left;
   overflow: hidden;
-  will-change: transform;
   pointer-events: auto;
   width: 100%;
   z-index: 300;
   position: absolute;
+  will-change: transform, opacity;
+  transition: opacity 0.5s;
+  opacity: 0;
+  &[expanded="true"] {
+    opacity: 1;
+  }
 }
 
 .app-dropdown-panel-content {

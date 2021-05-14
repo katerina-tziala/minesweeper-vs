@@ -1,0 +1,25 @@
+._select-option {
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+
+// TODO THEMING
+._select-option {
+  border-top-color: #e6e6e6;
+  @extend ._select-option--hovered-focused;
+}
+
+._select-option--selected {
+  background-color: #4d4d4d;
+  color: #fff;
+}
+
+._select-option--hovered-focused {
+  &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+  &:focus {
+    box-shadow: inset 0 0 4px #fff;
+  }
+}

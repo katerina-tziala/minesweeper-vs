@@ -1,44 +1,34 @@
 @use 'styles/utils/flexbox/flexbox';
+@use 'styles/components/scrollbar/scrollbar';
+@use 'styles/components/select-option/select-option';
+
+$height: 38px;
+
+app-dropdown-select-list {
+  width: 100%;
+  display: block;
+}
 
 .dropdown-select-list {
-  //   border: 1px solid red;
   list-style-type: none;
   width: 100%;
-  // height: 0px;
-  // position: absolute;
-  // top: 0px;
-  //
-
-  // border-bottom-left-radius: 3px;
-  // border-bottom-right-radius: 3px;
-  // transition: height 0.5s;
-  // z-index: 3;
-  // outline: none;
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 80px;
+  background-color: inherit;
+  @extend ._scrollbar;
 }
 
 .dropdown-select-list-item {
-  //background-color: yellow;
-  height: 32px;
-  cursor: pointer;
-  text-transform: capitalize;
-  //   border-bottom: 1px solid red;
   @extend %flex-start-center;
   width: 100%;
+  height: $height;
+  cursor: pointer;
+  text-transform: capitalize;
   padding: 0 10px;
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: #d9d9d9;
+  @extend ._select-option;
+
   &:first-of-type {
     border-top-color: transparent !important;
-  }
-  &:hover,
-  &:focus {
-    background-color: #000;
-    color: #fff;
-    border-top-color: #000;
   }
 
   > span {
@@ -47,16 +37,5 @@
 }
 
 .dropdown-select-list-item[aria-selected="true"] {
-  @extend .dropdown-select-list-item--selected;
-}
-
-.dropdown-select-list-item--selected {
-  background-color: #404040;
-  color: #fff;
-  &:hover,
-  &:focus {
-    background-color: #000;
-    color: #fff;
-    border-top-color: #000;
-  }
+  @extend ._select-option--selected;
 }
