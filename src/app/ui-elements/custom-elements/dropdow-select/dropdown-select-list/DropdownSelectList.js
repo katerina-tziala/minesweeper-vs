@@ -2,7 +2,6 @@ import './dropdown-select-list.scss';
 import { TEMPLATES, DOM_ELEMENT_CLASS } from './dropdown-select-list.constants';
 import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
 import { DropdownSelectAria } from '../dropdown-select-aria/dropdown-select-aria';
-import { DropdownSelectListItem as ListItem } from './dropdown-select-list-item/dropdown-select-list-item';
 import { getNextPositionInArray, lastPositionInArray, numberDefined } from 'UTILS';
 
 export default class DropdownSelectList extends HTMLElement {

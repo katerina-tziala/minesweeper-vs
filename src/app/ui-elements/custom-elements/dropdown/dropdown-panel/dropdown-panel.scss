@@ -1,6 +1,20 @@
 app-dropdown-panel {
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
   position: absolute;
-  opacity: 1;
+  background-color: inherit;
+  // will-change: opacity;
+  // transition: opacity 0.5s;
+  // opacity: 0;
+  // &[expanded="true"] {
+  //   opacity: 1;
+  // }
+}
+
+.app-dropdown-panel {
+  display: block;
   pointer-events: none;
   transform-origin: top left;
   overflow: hidden;
@@ -8,6 +22,7 @@ app-dropdown-panel {
   pointer-events: auto;
   width: 100%;
   z-index: 300;
+  position: absolute;
 }
 
 .app-dropdown-panel-content {

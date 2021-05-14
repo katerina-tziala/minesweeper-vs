@@ -1,46 +1,40 @@
-@use 'styles/utils/flexbox/flexbox';
 @use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
-@use 'styles/utils/state';
 @use 'styles/components/button/button';
+@use 'styles/components/input/input';
 
 $input-size: 32px;
-$border-radius: 6px;
 
 app-number-input {
-  width: 100%;
-  @extend %flex-start-center;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-  border-radius: $border-radius;
+  height: $input-size;
+  line-height: $input-size;
+  @extend ._input;
   overflow: hidden;
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
-    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 }
 
-.app-number-input-button {
+app-number-input-button {
   @include shapes.rectangle($input-size);
+  display: block;
   min-width: $input-size;
-  @extend ._button;
-  @extend .button--primary;
-  padding-top: 4px;
+
+  .app-number-input-button {
+    @include shapes.rectangle($input-size);
+    min-width: $input-size;
+    @extend ._button;
+    @extend .button--primary;
+    padding-top: 2px;
+  }
 }
 
 .app-number-input__button--minus {
   .app-number-input-button {
     @include iconography.afterIcon("minus");
-    &[disabled="true"][aria-disabled="true"] {
-      @extend .disabled;
-    }
   }
 }
 
 .app-number-input__button--plus {
   .app-number-input-button {
     @include iconography.afterIcon("plus");
-    &[disabled="true"][aria-disabled="true"] {
-      @extend .disabled;
-    }
   }
 }
 
@@ -53,7 +47,6 @@ app-number-input {
   border: none;
   min-width: 40px;
   text-align: center;
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-top: 2px;
+  padding: 0 10px;
+  background-color: inherit;
 }

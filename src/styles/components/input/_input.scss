@@ -1,0 +1,46 @@
+@use '../../utils/state';
+@use '../../utils/shapes';
+@use '../../iconography/iconography';
+@use '../../utils/flexbox/flexbox';
+
+$border-radius: 6px;
+
+._input {
+  position: relative;
+  width: 100%;
+  border-radius: $border-radius;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  @extend %flex-start-center;
+  cursor: text;
+  @extend ._input-theme;
+  &:hover,
+  &:focus {
+    @extend ._input--focused;
+  }
+}
+
+// TODO THEMING
+._input-theme {
+  background-color: #f5f5f5;
+  color: #4d4d4d;
+}
+
+
+._input--focused {
+  @extend ._input--focused-color;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+._input--focused-color {
+  color: #000;
+}
+
+._input--error {
+  color: #cc0000;
+}
+
+._input--error-caret {
+  caret-color: #cc0000;
+}

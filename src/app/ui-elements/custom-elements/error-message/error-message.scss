@@ -16,6 +16,6 @@ app-error-message {
     right: 1px;
     z-index: 4;
     @extend .icon-info-circle;
-    background-color: #fff;
+    background-color: inherit;
   }
 }

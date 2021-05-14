@@ -1,16 +1,20 @@
 @use 'styles/utils/flexbox/flexbox';
-@use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
 @use 'styles/components/button/button';
 @use 'styles/utils/state';
+
+$width: 44;
+$thumb: 16;
+$thumb-space: 4;
+
 // track
-$track-height: 26px;
-$track-width: 44px;
+$track-height: #{$thumb + 2 * $thumb-space}px;
+$track-width: #{$width}px;
 // thumb
-$thumb-size: 18px;
-$thumb-position-top: 4px;
-$thumb-position-left: 4px;
-$thumb-position-right: 22px;
+$thumb-size: #{$thumb}px;
+$thumb-position-top: #{$thumb-space}px;
+$thumb-position-left: #{$thumb-space}px;
+$thumb-position-right: #{$width - ($thumb + $thumb-space)}px;
 
 app-switcher {
   height: $track-height;
@@ -26,7 +30,7 @@ app-switcher {
   position: absolute;
   top: $thumb-position-top;
   border: none;
-  transition: all 0.3s linear;
+  transition: all 0.2s linear;
 }
 
 ._thumb--off {
@@ -48,12 +52,6 @@ app-switcher {
     @extend ._thumb;
   }
 
-  &:hover,
-  &:focus {
-    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
-      0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
-  }
-
   &[role="switch"][aria-checked="false"] {
     @extend ._track--off;
 
@@ -73,26 +71,26 @@ app-switcher {
   &[disabled="true"] {
     @extend .disabled;
   }
-
-  &:active {
-    background-color: magenta!important;
-  }
 }
 
-// TODO THEMING
 
+// TODO THEMING
 ._track--on {
+  @extend .button--primary;
   background-color: #000;
 }
 
+._thumb--on {
+  background-color: #fff;
+}
+
+
 ._track--off {
-  background-color: #737373;
+  @extend .button--primary;
+  background-color: #4d4d4d;
 }
 
 ._thumb--off {
   background-color: #fafafa;
 }
 
-._thumb--on {
-  background-color: #fff;
-}

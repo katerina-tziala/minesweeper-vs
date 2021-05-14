@@ -102,7 +102,6 @@ export default class Dropdown extends HTMLElement {
     }
   }
   #onDocumentClick(event) {
-    console.log('onDocumentClick');
     const paneId = this.panel ? this.panel.id : undefined;
     const panel = event.target.closest(`.${DOM_ELEMENT_CLASS.panel}`);
     const button = event.target.closest(`.${this.buttonClass}`);

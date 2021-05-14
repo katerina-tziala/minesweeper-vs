@@ -1,54 +1,19 @@
-@use 'styles/utils/flexbox/flexbox';
-@use 'styles/utils/animations/animations';
-@use 'styles/utils/shapes';
-@use 'styles/utils/state';
+// @use 'styles/utils/flexbox/flexbox';
+// @use 'styles/utils/animations/animations';
+// @use 'styles/utils/shapes';
+// @use 'styles/utils/state';
 @use 'styles/iconography/iconography';
 @use 'styles/components/card/card';
 @use 'styles/components/button/button';
+@use 'styles/components/input/input';
+
+$height: 38px;
+$border-radius: input.$border-radius;
 
 app-dropdown-select {
   position: relative;
   display: block;
-  width: 300px;
-}
-
-
-.app-dropdown-select__toggle-button {
-  @extend ._button;
-  height: 38px;
-  line-height: 38px;
-  min-width: 38px;
-  border-radius: 2px;
-  position: relative;
-  padding: 0 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  @extend %flex-start-center;
   width: 100%;
-  padding: 0 10px;
-
-  background-color: inherit;
-
-  border: 1px solid #404040;
-  border-radius: 6px;
-
-  overflow: hidden;
-
-
-  &[aria-expanded="true"] {
-    .app-dropdown-select__toggle-button-icon {
-      margin-top: 4px;
-      transform: rotate(-180deg);
-    }
-  }
-
-
-  &:hover, &:focus {
-    background-color: #000;
-    color: #fff;
-  }
 }
 
 .app-dropdown-select__toggle-button-text {
@@ -56,6 +21,7 @@ app-dropdown-select {
   flex-grow: 1;
   text-align: left;
   text-transform: capitalize;
+  font-weight: 600;
   padding-right: 10px;
 }
 
@@ -67,14 +33,29 @@ app-dropdown-select {
   @include iconography.afterIcon("caret-down");
 }
 
-
-
-.app-dropdown-panel {
-  border-radius: 3px;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
-  background: #fff;
-  left: 0;
-  top: 34px;
-  //padding: 5px;
+.app-dropdown-select__toggle-button {
+  height: $height;
+  line-height: $height;
+  @extend ._button;
+  @extend ._input;
+  padding: 0 10px;
+  cursor: pointer !important;
+  &[aria-expanded="true"] {
+    .app-dropdown-select__toggle-button-icon {
+      margin-top: 4px;
+      transform: rotate(-180deg);
+    }
+  }
 }
 
+.app-dropdown-panel {
+  border-radius: $border-radius;
+  // position: absolute;
+  top: 37px;
+  left: 0;
+  @extend .card-theme;
+  border-radius: $border-radius;
+  border-top-width: 1px;
+  border-top-style: solid;
+  @extend ._input-theme;
+}
