@@ -14,7 +14,7 @@ app-number-input {
 }
 
 app-number-input[disabled="true"] {
-  @extend .disabled;
+  //@extend .disabled;
 }
 
 app-number-input-button {
@@ -28,6 +28,9 @@ app-number-input-button {
     @extend ._button;
     @extend .button--primary;
     padding-top: 2px;
+    &:disabled {
+      @extend .disabled;
+    }
   }
 }
 
@@ -55,6 +58,7 @@ app-number-input-button {
   padding: 0 10px;
   background-color: inherit;
   &:disabled {
-    @extend .disabled;
+    // @extend .disabled;
+    // opacity: 0.8!important;
   }
 }

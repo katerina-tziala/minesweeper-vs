@@ -70,6 +70,27 @@
   content: fa-content($fa-var-chevron-down);
 }
 
+// ICONS FOR GAME SETTINGS
+.icon-level {
+  @extend %icon-regular;
+  content: fa-content($fa-var-layer-group);
+}
+
+.icon-stopwatch {
+  @extend %icon-regular;
+  content: fa-content($fa-var-stopwatch);
+}
+
+.icon-mode {
+  @extend %icon-regular;
+  content: fa-content($fa-var-dice-d6);
+}
+
+.icon-sliders {
+  @extend %icon-regular;
+  content: fa-content($fa-var-sliders-h);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

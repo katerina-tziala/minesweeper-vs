@@ -1,6 +1,6 @@
 @use 'styles/utils/flexbox/flexbox';
 // @use 'styles/utils/shapes';
-// @import 'styles/iconography/iconography';
+@use 'styles/iconography/iconography';
 // @import 'styles/components/card/card';
 // @import 'styles/utils/animations/animations';
 
@@ -8,7 +8,7 @@
   // border: 1px solid red;
   @extend %flex-between-center;
 
-  margin-top: 30px;
+  margin-bottom: 30px;
 
   > label {
     @extend .game-setting-label;
@@ -26,4 +26,35 @@
   font-weight: 600;
   padding-right: 10px;
   font-size: 1.1rem;
+}
+
+.game-setting-header {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 900;
+  position: relative;
+  margin-bottom: 10px;
+
+
+  &.level {
+    &::before {
+      @extend .icon-level;
+      width: 20px;
+      text-align: left;
+      margin-right: 10px;
+    }
+  }
+
+
+  &.options {
+    &::before {
+      @extend .icon-sliders;
+      width: 20px;
+      text-align: left;
+      margin-right: 10px;
+    }
+  }
+
+  
+
 }

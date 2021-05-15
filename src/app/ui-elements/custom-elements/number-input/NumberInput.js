@@ -191,10 +191,10 @@ export default class NumberInput extends HTMLElement {
 
   #checkButtons() {
     const equalToMin = NumberValidation.equalToBoundary(this.value, this.#minValue);
-    this.#setButtonDisabledProperty(this.#minusButton, equalToMin);
+    this.#setButtonDisabledProperty(this.#minusButton, !this.#disabled ? equalToMin : true);
 
     const equalToMax = NumberValidation.equalToBoundary(this.value, this.#maxValue);
-    this.#setButtonDisabledProperty(this.#plusButton, equalToMax);
+    this.#setButtonDisabledProperty(this.#plusButton, !this.#disabled ? equalToMax : true);
   }
 
   #setButtonDisabledProperty(button, disabled) {

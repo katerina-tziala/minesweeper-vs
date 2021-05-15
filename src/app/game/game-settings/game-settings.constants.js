@@ -1,9 +1,8 @@
 export const DOM_ELEMENT_CLASS = {
   setting: 'game-setting',
   label: 'game-setting-label',
+  header: 'game-setting-header',
 };
-
-
 
 export const LABELS = {
   level: 'level',
@@ -12,25 +11,7 @@ export const LABELS = {
   numberOfMines: 'number of mines',
 };
 
-// export const LIMITS = {
-//   customLevelBoard: {
-//     max: 30,
-//     min: 9,
-//   },
-//   numberOfMines: {
-//     min: 16,
-//     max: 0,
-//   },
-//   maxMinesPercentage: 0.9,
-//   minMinesPercentage: 0.12,
-// };
-
-// export const CONTENT = {
-//   title: 'game level',
-//   labels: {
-//     level: 'level',
-//     rows: 'minefield rows',
-//     columns: 'minefield columns',
-//     numberOfMines: 'number of mines',
-//   }
-// };
+export const HEADERS = {
+  level: 'game level',
+  options: 'game options',
+};

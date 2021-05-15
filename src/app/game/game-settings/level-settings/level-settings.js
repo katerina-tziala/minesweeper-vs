@@ -2,7 +2,7 @@
 import { SETTINGS_PROPERTIES, LEVEL_ARIA } from './level-settings.constants';
 import { GameLevel } from 'GAME_ENUMS';
 import { LEVEL_PARAMS, BOUNDARIES } from './level-settings-config';
-import { GameSettings } from '../game-settings';
+import GameSettings from '../game-settings';
 
 export class LevelSettings extends GameSettings {
     #levelSelect;
@@ -52,13 +52,14 @@ export class LevelSettings extends GameSettings {
 
     render() {
         this.initInputHandlers();
-
         const fragment = document.createDocumentFragment();
-        const levelContainer = this.#generateLevelInput();
-        fragment.append(levelContainer);
 
+        const header = this.generateHeader('level');
+        const levelSection = this.#generateLevelInput();
         const inputs = this.generateInputs();
-        fragment.append(inputs);
+
+        fragment.append(header, levelSection, inputs);
+
         return fragment;
     }
 

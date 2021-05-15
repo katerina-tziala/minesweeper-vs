@@ -29,17 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const gamesetup = document.getElementById("game-set-up");
 
-  // const sss = new LevelSettings();
+  const sss = new LevelSettings();
 
-  // gamesetup.append(sss.render());
+  gamesetup.append(sss.render());
 
 
-  // sss.init({
-  //   columns: 5,
-  //   level: "custom",
-  //   numberOfMines: 7,
-  //   rows: 12
-  // });
+  sss.init({
+    columns: 5,
+    level: "custom",
+    numberOfMines: 7,
+    rows: 12
+  });
   // setTimeout(() => {
   //   console.log(sss.settings);
   // }, 3000)

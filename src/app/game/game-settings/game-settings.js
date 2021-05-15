@@ -1,10 +1,9 @@
 'use strict';
 import './game-settings.scss';
-import { ElementGenerator, ButtonGenerator, ElementHandler } from 'UI_ELEMENTS';
-import { DOM_ELEMENT_CLASS, LABELS } from './game-settings.constants';
+import { ElementGenerator, ElementHandler } from 'UI_ELEMENTS';
+import { DOM_ELEMENT_CLASS, LABELS, HEADERS } from './game-settings.constants';
 
-
-export class GameSettings {
+export default class GameSettings {
     #settings;
     #inputHandlers;
 
@@ -105,4 +104,10 @@ export class GameSettings {
         }
     }
 
+    generateHeader(type) {
+        const header = document.createElement('h2');
+        ElementHandler.setStyleClass(header, [DOM_ELEMENT_CLASS.header, type]);
+        ElementHandler.setContent(header, HEADERS[type]);
+        return header;
+    }
 }
