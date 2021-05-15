@@ -13,12 +13,18 @@ export default class NumberValidation {
         return numberDefined(value) ? value : undefined;
     }
 
-
     static getValueInBoundaries(value = 0, min, max) {
         if (NumberValidation.#lessThanMin(value, min)) {
             return min;
         }
         return NumberValidation.#greaterThanMax(value, max) ? max : value;
+    }
+
+    static valueInBoundaries(value = 0, min, max) {
+        if (!min && !max) {
+            return true;
+        }
+        return NumberValidation.#lessThanMin(value, min) || NumberValidation.#greaterThanMax(value, min);
     }
 
     static #lessThanMin(value, min) {

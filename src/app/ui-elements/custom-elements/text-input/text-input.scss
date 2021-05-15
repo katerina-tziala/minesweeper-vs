@@ -99,8 +99,12 @@ app-text-input[focused="true"] {
 app-text-input[disabled="true"] {
   .app-text-input__input {
     @extend .disabled;
+  
     .app-text-input__input-field {
       cursor: not-allowed;
+      &:disabled {
+        @extend .disabled;
+      }
     }
     .app-text-input__label {
       cursor: not-allowed;

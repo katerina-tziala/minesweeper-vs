@@ -98,9 +98,7 @@ export default class NumberInput extends HTMLElement {
 
   #onValueAttributeChange() {
     const validValue = NumberValidation.getValueInBoundaries(this.value, this.#minValue, this.#maxValue);
-    if (this.value !== validValue) {
-      this.setAttribute('value', validValue.toString());
-    } else {
+    if (this.value === validValue) {
       this.#setInputValue();
       this.#checkButtons();
     }
@@ -206,10 +204,12 @@ export default class NumberInput extends HTMLElement {
   }
 
   #submitValueChange() {
-    const value = this.value;
-    const name = this.#name;
-    const event = new CustomEvent('onValueChange', { detail: { name, value } });
-    this.dispatchEvent(event);
+    if (!this.#disabled) {
+      const value = this.value;
+      const name = this.#name;
+      const event = new CustomEvent('onValueChange', { detail: { name, value } });
+      this.dispatchEvent(event);
+    }
   }
 }
 

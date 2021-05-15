@@ -1,0 +1,29 @@
+@use 'styles/utils/flexbox/flexbox';
+// @use 'styles/utils/shapes';
+// @import 'styles/iconography/iconography';
+// @import 'styles/components/card/card';
+// @import 'styles/utils/animations/animations';
+
+.game-setting {
+  // border: 1px solid red;
+  @extend %flex-between-center;
+
+  margin-top: 30px;
+
+  > label {
+    @extend .game-setting-label;
+  }
+
+  > app-number-input {
+    max-width: 114px;
+  }
+}
+
+.game-setting-label {
+  text-transform: capitalize;
+  min-width: 180px;
+  flex-grow: 1;
+  font-weight: 600;
+  padding-right: 10px;
+  font-size: 1.1rem;
+}

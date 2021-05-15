@@ -1,5 +1,6 @@
 @use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
+@use 'styles/utils/state';
 @use 'styles/components/button/button';
 @use 'styles/components/input/input';
 
@@ -10,6 +11,10 @@ app-number-input {
   line-height: $input-size;
   @extend ._input;
   overflow: hidden;
+}
+
+app-number-input[disabled="true"] {
+  @extend .disabled;
 }
 
 app-number-input-button {
@@ -49,4 +54,7 @@ app-number-input-button {
   text-align: center;
   padding: 0 10px;
   background-color: inherit;
+  &:disabled {
+    @extend .disabled;
+  }
 }

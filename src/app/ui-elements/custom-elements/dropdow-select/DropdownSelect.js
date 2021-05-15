@@ -92,12 +92,12 @@ export default class DropdownSelect extends Dropdown {
     }
   }
 
-  updateContent(cntent) {// prevent content update
+  updateContent(content) {// prevent content update
     return;
   }
 
   #setButtonView() {
-    const selectedOption = this.#list.selectedOption;
+    const selectedOption = this.#list ? this.#list.selectedOption : undefined;
     let buttonLabel = this.#defaultLabel;
     let buttonText = this.#defaultLabel;
     if (selectedOption) {

@@ -4,6 +4,8 @@ import { App } from './app/App';
 import { AppLoaderHandler } from './app/app-loader-handler';
 
 
+import { LevelSettings } from './app/game/game-settings/level-settings/level-settings';
+
 
 
 //will change to transform
@@ -18,36 +20,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // on reload return to your state
 
 
-  const test = document.getElementsByTagName("app-dropdown-select")[0];
+  // const test = document.getElementsByTagName("app-dropdown-select")[0];
 
-  const options = [
-    {
-      value: 'beginner',
-      displayValue: '<span>beginner</span>',
-      ariaLabel: 'beginner',
-      selected: true
-    },
-    {
-      value: 'intermediate',
-      displayValue: '<span>intermediate</span>',
-      ariaLabel: 'intermediate',
-      selected: false
-    },
-    {
-      value: 'expert',
-      displayValue: '<span>expert</span>',
-      ariaLabel: 'expert',
-      selected: false
-    },
-    {
-      value: 'custom',
-      displayValue: '<span>custom</span>',
-      ariaLabel: 'custom',
-      selected: false
-    }
-  ];
 
-  test.setOptions(options)
+
+  // test.setOptions(options);
+
+
+  const gamesetup = document.getElementById("game-set-up");
+
+  // const sss = new LevelSettings();
+
+  // gamesetup.append(sss.render());
+
+
+  // sss.init({
+  //   columns: 5,
+  //   level: "custom",
+  //   numberOfMines: 7,
+  //   rows: 12
+  // });
+  // setTimeout(() => {
+  //   console.log(sss.settings);
+  // }, 3000)
+
 
   // test.addEventListener("onValueChange", (event) => {
   //   console.log(event.detail);

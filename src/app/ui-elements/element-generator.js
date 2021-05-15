@@ -22,7 +22,16 @@ export class ElementGenerator {
     return loader;
   }
 
-//  <button class='button-text' disabled='true'>clear</button>
+  static generateLabel(text = '', observedId) {
+    const label = document.createElement('label');
+    label.innerHTML = text;
+    if (observedId) {
+      label.setAttribute('for', observedId);
+    }
+    return label;
+  }
+
+  //  <button class='button-text' disabled='true'>clear</button>
   // static generateButton(params, action) {
   //   params = { ...params };
 
