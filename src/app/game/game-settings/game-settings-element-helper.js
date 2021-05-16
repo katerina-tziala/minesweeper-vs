@@ -55,7 +55,7 @@ export class GameSettingsElementHelper {
     }
 
     static setNumberInputBoundaries(input, boundaries) {
-        CustomElementHelper.setInputChecked(input, boundaries);
+        CustomElementHelper.setNumberInputBoundaries(input, boundaries);
     }
 
 }

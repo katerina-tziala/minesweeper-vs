@@ -3,17 +3,17 @@ import { SETTINGS_PROPERTIES, LEVEL_ARIA } from './level-settings.constants';
 import { GameLevel } from 'GAME_ENUMS';
 import { LEVEL_PARAMS, BOUNDARIES } from './level-settings-config';
 import GameSettings from '../game-settings';
+import { GameSettingsElementHelper as ElementHandler } from '../game-settings-element-helper';
 
 export class LevelSettings extends GameSettings {
-    #levelSelect;
-    #paramListeners;
-
+    #levelProperties;
     constructor() {
         super();
-        this.#paramListeners = new Map();
-        this.#paramListeners.set('rows', this.#onBoardChange.bind(this));
-        this.#paramListeners.set('columns', this.#onBoardChange.bind(this));
-        this.#paramListeners.set('numberOfMines', this.#onMinesChange.bind(this));
+        this.#levelProperties = Object.values(SETTINGS_PROPERTIES);
+        this.inputListeners.set('level', this.#onLevelChange.bind(this));
+        this.inputListeners.set('rows', this.#onBoardChange.bind(this));
+        this.inputListeners.set('columns', this.#onBoardChange.bind(this));
+        this.inputListeners.set('numberOfMines', this.onPropertyChange.bind(this));
     }
 
     get #isCustomLevel() {
@@ -44,17 +44,8 @@ export class LevelSettings extends GameSettings {
 
     initInputHandlers() {
         super.initInputHandlers();
-        Object.keys(SETTINGS_PROPERTIES).forEach(levelProperty => {
-            const input = this.generateNumberInput(levelProperty);
-            this.setInputHandler(levelProperty, input);
-        });
-    }
-
-    generateInputs() {
-        const level = this.#generateLevelInput();
-        const inputs = super.generateInputs();
-        inputs.prepend(level);
-        return inputs;
+        this.setSelectFieldsHandlers(['level']);
+        this.setNumberFieldsHandlers(this.#levelProperties);
     }
 
     render() {
@@ -65,7 +56,7 @@ export class LevelSettings extends GameSettings {
     init(settings) {
         this.#setSettings(settings);
         const options = this.#levelOptions;
-        this.#levelSelect.setOptions(options);
+        this.resetSelectField('level', false, options);
         this.#initLevelParams();
     }
 
@@ -82,48 +73,23 @@ export class LevelSettings extends GameSettings {
         return LEVEL_PARAMS[level];
     }
 
-    #generateLevelInput() {
-        const levelContainer = this.generateSettingContainer('level');
-        this.#levelSelect = this.generateSelectInput('level', this.#onLevelChange.bind(this));
-        levelContainer.append(this.#levelSelect);
-        return levelContainer;
-    }
-
     #initLevelParams() {
         const disabled = !this.#isCustomLevel;
-        for (const [name, input] of this.inputHandlers) {
-            const value = this.settings[name];
-            const action = this.#paramListeners.get(name);
-            this.removeInputListener(input, action);
-            this.setInputDisabled(input, disabled);
-            const boundaries = name === SETTINGS_PROPERTIES.numberOfMines ? this.#numberOfMinesBoundaries : BOUNDARIES.board;
-            this.setNumberInputBoundaries(input, boundaries);
-            this.setInputValue(input, value);
-            if (!disabled) {
-                this.setInputListener(input, action);
-            }
-        }
+        this.#levelProperties.forEach(type => {
+            const boundaries = type === SETTINGS_PROPERTIES.numberOfMines ? this.#numberOfMinesBoundaries : BOUNDARIES.board;
+            this.resetNumberField(type, disabled, boundaries);
+        });
     }
 
     #checkMinesBoundaries() {
         const newBoundaries = this.#numberOfMinesBoundaries;
-        const input = this.getInputField(SETTINGS_PROPERTIES.numberOfMines);
-        this.setNumberInputBoundaries(input, newBoundaries);
+        const input = ElementHandler.getInputField(SETTINGS_PROPERTIES.numberOfMines);
+        ElementHandler.setNumberInputBoundaries(input, newBoundaries);
     }
 
     #onBoardChange({ detail }) {
-        this.#updateSettings(detail);
+        this.updateSettings(detail);
         this.#checkMinesBoundaries();
-    }
-
-    #onMinesChange({ detail }) {
-        this.#updateSettings(detail);
-    }
-
-    #updateSettings({ name, value }) {
-        const settings = { ...this.settings };
-        settings[name] = value;
-        this.settings = settings;
     }
 
     #onLevelChange({ detail }) {
