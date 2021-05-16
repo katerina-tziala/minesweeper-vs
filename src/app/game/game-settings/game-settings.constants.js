@@ -9,9 +9,14 @@ export const LABELS = {
   rows: 'minefield rows',
   columns: 'minefield columns',
   numberOfMines: 'number of mines',
+  turnTimer: "turn timer",
+  turnDuration: "turn duration (sec)",
+  missedTurnsLimit: "allowed missed turns",
+  consecutiveTurns: "consecutive missed turns"
 };
 
 export const HEADERS = {
   level: 'game level',
   options: 'game options',
+  turns: 'game turns',
 };

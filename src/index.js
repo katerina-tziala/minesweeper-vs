@@ -6,7 +6,7 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 
 import { LevelSettings } from './app/game/game-settings/level-settings/level-settings';
 
-
+import { TurnSettings } from './app/game/game-settings/turn-settings/turn-settings'
 
 //will change to transform
 
@@ -40,6 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
     numberOfMines: 7,
     rows: 12
   });
+
+
+  const turnSettings = new TurnSettings();
+  gamesetup.append(turnSettings.render());
+
+  turnSettings.init({
+    turnTimer: false,
+    turnDuration: 3,
+    missedTurnsLimit: 4,
+    consecutiveTurns: false
+  });
+
   // setTimeout(() => {
   //   console.log(sss.settings);
   // }, 3000)

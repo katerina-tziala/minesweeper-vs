@@ -33,7 +33,7 @@
   font-size: 1.2rem;
   font-weight: 900;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
 
   &.level {
@@ -54,7 +54,14 @@
       margin-right: 10px;
     }
   }
-
   
+  &.turns {
+    &::before {
+      @extend .icon-stopwatch;
+      width: 20px;
+      text-align: left;
+      margin-right: 10px;
+    }
+  }
 
 }

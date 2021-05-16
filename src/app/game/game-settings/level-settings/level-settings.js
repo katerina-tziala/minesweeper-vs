@@ -11,9 +11,9 @@ export class LevelSettings extends GameSettings {
     constructor() {
         super();
         this.#paramListeners = new Map();
-        this.#paramListeners.set('rows', this.#onBoardChange.bind(this))
-        this.#paramListeners.set('columns', this.#onBoardChange.bind(this))
-        this.#paramListeners.set('numberOfMines', this.#onMinesChange.bind(this))
+        this.#paramListeners.set('rows', this.#onBoardChange.bind(this));
+        this.#paramListeners.set('columns', this.#onBoardChange.bind(this));
+        this.#paramListeners.set('numberOfMines', this.#onMinesChange.bind(this));
     }
 
     get #isCustomLevel() {
@@ -50,17 +50,16 @@ export class LevelSettings extends GameSettings {
         });
     }
 
+    generateInputs() {
+        const level = this.#generateLevelInput();
+        const inputs = super.generateInputs();
+        inputs.prepend(level);
+        return inputs;
+    }
+
     render() {
         this.initInputHandlers();
-        const fragment = document.createDocumentFragment();
-
-        const header = this.generateHeader('level');
-        const levelSection = this.#generateLevelInput();
-        const inputs = this.generateInputs();
-
-        fragment.append(header, levelSection, inputs);
-
-        return fragment;
+        return super.render('level');
     }
 
     init(settings) {
@@ -115,14 +114,10 @@ export class LevelSettings extends GameSettings {
     #onBoardChange({ detail }) {
         this.#updateSettings(detail);
         this.#checkMinesBoundaries();
-        // console.log('onBoardChange');
-        // console.log(this.settings);
     }
 
     #onMinesChange({ detail }) {
         this.#updateSettings(detail);
-        // console.log('onMinesChange');
-        // console.log(this.settings);
     }
 
     #updateSettings({ name, value }) {
@@ -137,7 +132,6 @@ export class LevelSettings extends GameSettings {
         settings[name] = value;
         this.settings = settings;
         this.#initLevelParams();
-        // console.log(this.settings);
     }
 
 }

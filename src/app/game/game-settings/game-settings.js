@@ -1,6 +1,6 @@
 'use strict';
 import './game-settings.scss';
-import { ElementGenerator, ElementHandler } from 'UI_ELEMENTS';
+import { ElementGenerator, ElementHandler, CustomElementHelper } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, LABELS, HEADERS } from './game-settings.constants';
 
 export default class GameSettings {
@@ -54,6 +54,14 @@ export default class GameSettings {
         return input;
     }
 
+    render(type) {
+        const fragment = document.createDocumentFragment();
+        const header = this.generateHeader(type);
+        const inputs = this.generateInputs();
+        fragment.append(header, inputs);
+        return fragment;
+    }
+
     setInputListener(input, action) {
         if (input && action) {
             input.addEventListener("onValueChange", action);
@@ -84,6 +92,10 @@ export default class GameSettings {
         return this.#generateInput('app-dropdown-select', name, action);
     }
 
+    generateSwitcherInput(name, action) {
+        return this.#generateInput('app-switcher', name, action);
+    }
+
     setInputDisabled(input, disabled = false) {
         if (input) {
             input.setAttribute('disabled', disabled);
@@ -93,6 +105,12 @@ export default class GameSettings {
     setInputValue(input, value) {
         if (input) {
             input.setAttribute('value', value);
+        }
+    }
+
+    setInputChecked(input, checked = false) {
+        if (input) {
+            input.setAttribute('checked', checked);
         }
     }
 
@@ -109,5 +127,11 @@ export default class GameSettings {
         ElementHandler.setStyleClass(header, [DOM_ELEMENT_CLASS.header, type]);
         ElementHandler.setContent(header, HEADERS[type]);
         return header;
+    }
+
+    updateSettings({ name, value }) {
+        const settings = { ...this.settings };
+        settings[name] = value;
+        this.settings = settings;
     }
 }
