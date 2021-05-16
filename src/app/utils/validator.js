@@ -5,7 +5,7 @@ export function definedString(value) {
 };
 
 export function valueDefined(value) {
-  return value !== 'undefined' && value !== null ? true : false;
+  return value !== 'undefined' && value !== null && value !== undefined ? true : false;
 };
 
 export function numberDefined(value) {

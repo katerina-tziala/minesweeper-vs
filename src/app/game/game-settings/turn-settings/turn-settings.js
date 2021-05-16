@@ -44,8 +44,8 @@ export class TurnSettings extends GameSettings {
         this.settings = settings || { ...DEFAULT_SETTINGS };
         if (!this.#turnTimerSelected) {
             this.settings = { ...DEFAULT_SETTINGS_OFF };
-            this.#customSettings = undefined;
         }
+        this.#customSettings = undefined;
     }
 
     #onTimerChange({ detail }) {

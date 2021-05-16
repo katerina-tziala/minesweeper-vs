@@ -8,6 +8,10 @@ import { LevelSettings } from './app/game/game-settings/level-settings/level-set
 
 import { TurnSettings } from './app/game/game-settings/turn-settings/turn-settings'
 
+import { OptionsSettings } from './app/game/game-settings/options-settings/options-settings'
+
+
+
 //will change to transform
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,29 +33,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const gamesetup = document.getElementById("game-set-up");
 
-  const sss = new LevelSettings();
+  // const sss = new LevelSettings();
 
-  gamesetup.append(sss.render());
-
-
-  sss.init({
-    columns: 5,
-    level: "custom",
-    numberOfMines: 7,
-    rows: 12
-  });
+  // gamesetup.append(sss.render());
 
 
-  const turnSettings = new TurnSettings();
-  gamesetup.append(turnSettings.render());
+  // sss.init({
+  //   columns: 5,
+  //   level: "custom",
+  //   numberOfMines: 7,
+  //   rows: 12
+  // });
 
-  turnSettings.init({
-    turnTimer: false,
-    turnDuration: 3,
-    missedTurnsLimit: 4,
-    consecutiveTurns: false
-  });
 
+  // const turnSettings = new TurnSettings();
+  // gamesetup.append(turnSettings.render());
+
+  // turnSettings.init({
+  //   turnTimer: false,
+  //   turnDuration: 3,
+  //   missedTurnsLimit: 4,
+  //   consecutiveTurns: false
+  // });
+
+
+
+  const optionsSettings = new OptionsSettings();
+  gamesetup.append(optionsSettings.render());
+
+  optionsSettings.init();
+
+
+  
   // setTimeout(() => {
   //   console.log(sss.settings);
   // }, 3000)

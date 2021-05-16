@@ -9,10 +9,18 @@ export const LABELS = {
   rows: 'minefield rows',
   columns: 'minefield columns',
   numberOfMines: 'number of mines',
-  turnTimer: "turn timer",
-  turnDuration: "turn duration (sec)",
-  missedTurnsLimit: "allowed missed turns",
-  consecutiveTurns: "consecutive missed turns"
+  turnTimer: 'turn timer',
+  turnDuration: 'turn duration (sec)',
+  missedTurnsLimit: 'allowed missed turns',
+  consecutiveTurns: 'consecutive missed turns',
+  flagging: 'strategy',
+  revealing: 'reveal tiles',
+  unlimitedFlags: 'unlimited flags',
+  marks: 'marks',
+  misplacedFlagHint: 'misplaced flag hint',
+  identicalMines: 'identical minefield',
+  openStrategy: 'open strategy',
+  openCompetition: 'open competition'
 };
 
 export const HEADERS = {
