@@ -72,6 +72,7 @@ export default class GameWizard {
 
     #onReset() {
         console.log('onReset');
+        this.init();
     }
 
     #onPlay() {

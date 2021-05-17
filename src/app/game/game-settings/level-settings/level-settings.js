@@ -83,7 +83,7 @@ export class LevelSettings extends GameSettings {
 
     #checkMinesBoundaries() {
         const newBoundaries = this.#numberOfMinesBoundaries;
-        const input = ElementHandler.getInputField(SETTINGS_PROPERTIES.numberOfMines);
+        const input = this.getInputField(SETTINGS_PROPERTIES.numberOfMines);
         ElementHandler.setNumberInputBoundaries(input, newBoundaries);
     }
 

@@ -104,8 +104,8 @@ export default class GameSettings {
         this.removeInputListener(type);
         const input = this.getInputField(type);
         ElementHandler.setInputDisabled(input, disabled);
-        ElementHandler.setInputValue(input, this.settings[type]);
         ElementHandler.setNumberInputBoundaries(input, boundaries);
+        ElementHandler.setInputValue(input, this.settings[type]);
         this.setInputListener(type, disabled);
     }
 
