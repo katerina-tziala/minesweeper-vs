@@ -20,7 +20,9 @@ export const LABELS = {
   misplacedFlagHint: 'misplaced flag hint',
   identicalMines: 'identical minefield',
   openStrategy: 'open strategy',
-  openCompetition: 'open competition'
+  openCompetition: 'open competition',
+  sneakPeek: 'sneak peek',
+  sneakPeekDuration: 'sneak peek duration'
 };
 
 export const HEADERS = {

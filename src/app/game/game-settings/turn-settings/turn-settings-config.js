@@ -19,7 +19,7 @@ export const BOUNDARIES = {
   },
   turnDuration: {
     max: 90,
-    min: 5,
+    min: 3,
   },
   off: {
     max: 0,

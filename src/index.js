@@ -8,9 +8,13 @@ import { LevelSettings } from './app/game/game-settings/level-settings/level-set
 
 import { TurnSettings } from './app/game/game-settings/turn-settings/turn-settings'
 
-import { OptionsSettings } from './app/game/game-settings/options-settings/options-settings'
+import { OptionsSettingsOriginal } from './app/game/game-settings/options-settings/options-settings-original/options-settings-original';
+import { OptionsSettingsDetect } from './app/game/game-settings/options-settings/options-settings-detect/options-settings-detect';
+import { OptionsSettingsParallel } from './app/game/game-settings/options-settings/options-settings-parallel/options-settings-parallel';
 
+import { OptionsSettingsClear } from './app/game/game-settings/options-settings/options-settings-clear/options-settings-clear';
 
+import OptionsSettingsFactory from './app/game/game-settings/options-settings/options-settings-factory';
 
 //will change to transform
 
@@ -57,14 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // });
 
 
+  // OptionsSettingsOriginal
+  // OptionsSettingsDetect
+  // OptionsSettingsParallel
+  // OptionsSettingsClear
+  // const optionsSettings = new OptionsSettingsClear();
+  // gamesetup.append(optionsSettings.render());
 
-  const optionsSettings = new OptionsSettings();
-  gamesetup.append(optionsSettings.render());
+  // optionsSettings.init();
+  // OptionsSettingsFactory.getOptionsSettingsControllerForMode()
+  //   .then(Controller => {
+  //     const controller = new Controller();
+  //     gamesetup.append(controller.render());
+  //     controller.init();
+  //   });
 
-  optionsSettings.init();
-
-
-  
+  // const controller = OptionsSettingsFactory.getOptionsSettingsControllerForMode();
+  // gamesetup.append(controller.render());
+  // controller.init();
   // setTimeout(() => {
   //   console.log(sss.settings);
   // }, 3000)

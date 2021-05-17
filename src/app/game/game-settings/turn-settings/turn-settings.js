@@ -10,11 +10,11 @@ export class TurnSettings extends GameSettings {
     constructor() {
         super();
         this.#numberInputTypes = [SETTINGS_PROPERTIES.turnDuration, SETTINGS_PROPERTIES.missedTurnsLimit];
-
         this.inputListeners.set(SETTINGS_PROPERTIES.turnTimer, this.#onTimerChange.bind(this));
         this.inputListeners.set(SETTINGS_PROPERTIES.turnDuration, this.onPropertyChange.bind(this));
         this.inputListeners.set(SETTINGS_PROPERTIES.missedTurnsLimit, this.onPropertyChange.bind(this));
         this.inputListeners.set(SETTINGS_PROPERTIES.consecutiveTurns, this.onPropertyChange.bind(this));
+        this.initInputHandlers();
     }
 
     get #turnTimerSelected() {
@@ -29,7 +29,6 @@ export class TurnSettings extends GameSettings {
     }
 
     render() {
-        this.initInputHandlers();
         return super.render('turns');
     }
 

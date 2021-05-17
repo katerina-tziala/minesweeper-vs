@@ -58,6 +58,7 @@ app-number-input-button {
   padding: 0 10px;
   background-color: inherit;
   &:disabled {
+    cursor: not-allowed;
     // @extend .disabled;
     // opacity: 0.8!important;
   }

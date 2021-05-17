@@ -45,10 +45,12 @@ export default class GameSettings {
     }
 
     setSwitcherHandlers(fieldNames) {
-        fieldNames.forEach(type => {
-            const input = ElementHandler.generateSwitcherInput(type);
-            this.setInputHandler(type, input);
-        });
+        fieldNames.forEach(type => this.setSwitcher(type));
+    }
+
+    setSwitcher(type) {
+        const input = ElementHandler.generateSwitcherInput(type);
+        this.setInputHandler(type, input);
     }
 
     setSelectFieldsHandlers(fieldNames) {
@@ -122,6 +124,7 @@ export default class GameSettings {
     }
 
     onPropertyChange({ detail }) {
+        console.log(detail);
         this.updateSettings(detail);
     }
 }
