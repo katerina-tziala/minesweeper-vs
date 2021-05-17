@@ -9,6 +9,12 @@ export class ElementGenerator {
     return container;
   }
 
+  static generateHeader(headerText) {
+    const header = document.createElement('h1');
+    ElementHandler.setContent(header, headerText);
+    return header;
+  }
+
   static generateTitleH2(titleText) {
     const title = document.createElement('h2');
     ElementHandler.addStyleClass(title, 'title');
@@ -31,19 +37,13 @@ export class ElementGenerator {
     return label;
   }
 
-  //  <button class='button-text' disabled='true'>clear</button>
-  // static generateButton(params, action) {
-  //   params = { ...params };
 
-  //   const button = document.createElement('button');
-  //   button.type = 'button';
+  
 
-  //   button.addEventListener(params.actionType, action);
-  //   delete params.actionType;
 
-  //   ElementHandler.setParams(button, params);
-  //   return button;
-  // }
+
+
+
 
   // static generateTable() {
   //   return document.createElement('table');

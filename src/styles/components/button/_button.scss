@@ -3,7 +3,7 @@
 @use '../../iconography/iconography';
 @use '../../utils/flexbox/flexbox';
 
-$button-height: 36px;
+$button-height: 32px;
 
 
 
@@ -23,7 +23,7 @@ $button-height: 36px;
   @extend ._button;
   display: inline-block;
   height: $button-height;
-  line-height: 38px;
+  line-height: 34px;
   min-width: $button-height;
   border-radius: 3px;
   position: relative;
@@ -48,7 +48,7 @@ $button-height: 36px;
     @extend .icon-x;
     font-size: 1.4em;
     position: relative;
-    top: 1px;
+    top: 2px;
   }
 }
 

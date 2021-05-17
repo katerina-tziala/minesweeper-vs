@@ -124,7 +124,6 @@ export default class GameSettings {
     }
 
     onPropertyChange({ detail }) {
-        console.log(detail);
         this.updateSettings(detail);
     }
 }

@@ -40,3 +40,15 @@
   @extend %first-axis-start;
   @extend %second-axis-start;
 }
+
+%flex-end-center {
+  @extend %flexbox;
+  @extend %first-axis-end;
+  @extend %second-axis-center;
+}
+
+%flex-start-end {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-end;
+}

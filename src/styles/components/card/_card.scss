@@ -1,13 +1,13 @@
 @use '../../utils/flexbox/flexbox';
 
 .card {
-  padding: 15px;
+  padding: 20px;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
   @extend .card-theme;
   >.title {
-    padding-bottom: 15px;
+    padding-bottom: 20px;
   }
 }
 

@@ -42,7 +42,6 @@ export default class DropdownSelect extends Dropdown {
     this.#selectionListener = this.#onValueSelected.bind(this);
     this.#list.addEventListener('onSelectedValue', this.#selectionListener);
     this.#setButtonView();
-
     if (!this.#onButtonKeyDownListener) {
       this.#onButtonKeyDownListener = this.#onButtonKeyDown.bind(this);
       this.button.addEventListener('keydown', this.#onButtonKeyDownListener);
@@ -114,6 +113,7 @@ export default class DropdownSelect extends Dropdown {
       this.#list.setOptions(options);
       this.panel.onContentUpdated();
     }
+  
     this.#setButtonView();
     this.setAttribute('disabled', !this.options.length);
   }

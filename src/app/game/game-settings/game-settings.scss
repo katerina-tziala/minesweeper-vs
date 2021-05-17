@@ -1,14 +1,9 @@
 @use 'styles/utils/flexbox/flexbox';
-// @use 'styles/utils/shapes';
 @use 'styles/iconography/iconography';
-// @import 'styles/components/card/card';
-// @import 'styles/utils/animations/animations';
 
 .game-setting {
-  // border: 1px solid red;
-  @extend %flex-between-center;
-
-  margin-bottom: 30px;
+  @extend %flex-start-end;
+  margin-bottom: 20px;
 
   > label {
     @extend .game-setting-label;
@@ -30,11 +25,10 @@
 
 .game-setting-header {
   text-transform: uppercase;
-  font-size: 1.2rem;
   font-weight: 900;
   position: relative;
   margin-bottom: 20px;
-
+  font-size: 1.1rem;
 
   &.level {
     &::before {

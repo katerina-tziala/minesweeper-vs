@@ -5,9 +5,8 @@ import { DOM_ELEMENT_CLASS, LABELS, HEADERS } from './game-settings.constants';
 export class GameSettingsElementHelper {
 
     static generateHeader(type) {
-        const header = document.createElement('h2');
+        const header = ElementGenerator.generateTitleH2(HEADERS[type]);
         ElementHandler.setStyleClass(header, [DOM_ELEMENT_CLASS.header, type]);
-        ElementHandler.setContent(header, HEADERS[type]);
         return header;
     }
 
