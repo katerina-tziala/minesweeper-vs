@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   AppLoaderHandler.hide();
 
   // const test = document.getElementsByTagName("app-dropdown-select")[0];
-  const gamesetup = document.getElementById("game-set-up");
+  const gamesetup = document.getElementById("main-content");
 
   // const controller = OptionsSettingsFactory.getOptionsSettingsControllerForMode();
   // gamesetup.append(controller.render());

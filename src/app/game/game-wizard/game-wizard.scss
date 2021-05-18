@@ -1,23 +1,40 @@
 @use 'styles/utils/flexbox/flexbox';
-// @use 'styles/utils/shapes';
 @use 'styles/iconography/iconography';
-// @import 'styles/components/card/card';
-// @import 'styles/utils/animations/animations';
+@use 'styles/utils/animations/animations';
+@use 'styles/components/card/card';
+// @use 'styles/typography/typography';
+
+.game-wizard {
+  max-width: 380px;
+  @extend .card;
+  will-change: transform, opacity;
+  @include animations.slideIn(1);
+  position: relative;
+
+  .button-icon--close {
+    position: absolute;
+    right: 20px;
+  }
+}
+
+.game-wizard--slide-out {
+  @include animations.slideOut(1);
+}
 
 .game-wizard-header {
-  text-transform: uppercase;
-  position: relative;
-  @extend %flex-between-center;
+  text-transform: capitalize;
+  // position: relative;
+  // @extend %flex-start-start;
   margin-bottom: 30px;
+  margin-right: 40px;
 
-  > span {
+  > div {
     display: block;
     flex-grow: 1;
     font-size: 1.2rem;
-    font-weight: 900;
+    font-weight: 600;
     margin-right: 20px;
   }
-
 }
 
 .game-setting-header:not(:first-of-type) {
@@ -28,7 +45,7 @@
   margin-top: 30px;
   @extend %flex-between-center;
 
-  >.button-text {
+  > .button-text {
     min-width: 120px;
   }
 }

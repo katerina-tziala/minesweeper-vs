@@ -24,11 +24,11 @@ input {
   font-family: $font-family;
 }
 
-// %capitalize-first-letter {
-//   &::first-letter {
-//     text-transform: uppercase;
-//   }
-// }
+%capitalize-first-letter {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
 
 // %ellipsis-text {
 //   overflow: hidden;

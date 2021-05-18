@@ -40,6 +40,8 @@ $button-height: 32px;
   @extend .button--primary;
   @extend %flex-center-center;
   @include shapes.circle($button-height);
+  min-width: $button-height;
+  min-height: $button-height;
 }
 
 .button-icon--close {
