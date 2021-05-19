@@ -1,5 +1,5 @@
 @mixin slideOut($duration: 1) {
-  animation: slide-out #{$duration}s ease-in;
+  animation: slide-out #{$duration}s ease-out;
   animation-fill-mode: forwards;
   will-change: transform;
   transform-origin: top left;

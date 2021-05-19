@@ -4,17 +4,18 @@ import { ElementGenerator, ElementHandler } from 'UI_ELEMENTS';
 
 export class GameWizardHelper {
 
+    static generateWizardCard() {
+        return ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizard]);
+    }
+
     static generateHeader(title) {
-        const header = document.createElement('h1');
-        header.appendChild(this.generateTitle(title));
+        const header = ElementGenerator.generateHeader(title);
         ElementHandler.addStyleClass(header, DOM_ELEMENT_CLASS.header);
         return header;
     }
 
     static generateTitle(titleText) {
-        const title = ElementGenerator.generateContainer([], DOM_ELEMENT_CLASS.headerTitle);
-        title.innerHTML = titleText;
-        return title;
+        return `<div id ='${DOM_ELEMENT_CLASS.headerTitle}'>${titleText}</div`;
     }
 
     static updateTitle(titleText) {

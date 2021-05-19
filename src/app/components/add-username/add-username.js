@@ -55,7 +55,7 @@ export class AddUsername {
             const closeButton = this.#generateCloseButton();
             card.append(closeButton);
         }
-        const title = ElementGenerator.generateTitleH2(this.#titleText);
+        const title = ElementGenerator.generateHeader(this.#titleText);
      
         const form = this.#generateForm();
         card.append(title, form);

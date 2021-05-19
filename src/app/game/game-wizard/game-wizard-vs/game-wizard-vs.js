@@ -2,45 +2,68 @@
 import { GameType } from 'GAME_ENUMS';
 import { ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
 import { LevelSettings, OptionsSettingsOriginal } from '../../game-settings/@game-settings.module';
-import { HEADER } from '../game-wizard.constants';
-import { DOM_ELEMENT_CLASS } from './game-wizard-vs.constants';
+// import { HEADER } from '../game-wizard.constants';
+// import { DOM_ELEMENT_CLASS } from './game-wizard-vs.constants';
 import { GameWizardHelper } from '../game-wizard-helper';
+import { User } from '../../../_models/user';
+
+import { HEADER, DOM_ELEMENT_CLASS } from '../game-wizard.constants';
+import { GameWizard } from '../game-wizard';
+
 // const GameType = {
-//     Online: 'online',
-//     Bot: 'bot',
-//     Friend: 'friend',
-//     Original: 'original',
+// Online: 'online',
+// Bot: 'bot',
+// Friend: 'friend',
 //   };
+export class GameWizardVS extends GameWizard {
+    #type;
 
-export class GameWizardVS {
-    #header;
-    #gameType;
-    #submitSettings;
+    constructor(onPlay, onClose) {
+        super(onPlay, onClose);
 
-    constructor(submitSettings) {
-        this.#submitSettings = submitSettings;
-        this.#gameType = GameType.Bot;
-        this.#header = HEADER[this.#gameType];
 
+
+        this.#type = GameType.Bot;
+
+        this.header = HEADER[this.#type];
+
+        this.oppopent = new User('MineweeperBot');
+        console.log(this.oppopent);
+        // Bot: bot level, mode, level, turns,  options
+        // 
         // this.levelSettings = new LevelSettings();
         // this.optionsSettings = new OptionsSettingsOriginal();
     }
 
-    get wizardContainer() {
+    get contentContainer() {
         return document.getElementById(DOM_ELEMENT_CLASS.container);
     }
 
-    generate() {
+    generateContent() {
+        const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);
         console.log('GameWizardVS');
-        const fragment = document.createDocumentFragment();
-
-
-        fragment.append(GameWizardHelper.generateHeader(this.#header));
-        // fragment.append(this.levelSettings.render());
-        // fragment.append(this.optionsSettings.render());
-        // fragment.append(this.#generateActions());
-        return fragment;
+        console.log('stepper');
+        console.log('content');
+        console.log('steps');
+        return container;
     }
+
+    // generate() {
+    //     console.log('GameWizardVS');
+    //     const container = document.createDocumentFragment();
+
+    //     // if (!this.opponent) {
+    //     //     console.log('local playa');
+    //     //     this.usernameForm = new AddUsername('addOpponent', this.#onAddPlayer.bind(this), this.#onCloseForm.bind(this));
+    //     //     fragment.append(this.usernameForm.render());
+    //     // }
+
+    //    // fragment.append(GameWizardHelper.generateHeader(this.#header));
+    //     // fragment.append(this.levelSettings.render());
+    //     // fragment.append(this.optionsSettings.render());
+    //     // fragment.append(this.#generateActions());
+    //     return container;
+    // }
 
     init() {
         console.log('GameWizardVS');
@@ -48,25 +71,6 @@ export class GameWizardVS {
         // this.levelSettings.init();
         // this.optionsSettings.init();
     }
-    // #generateContent() {
-    //     const container = ElementGenerator.generateContainer([], DOM_ELEMENT_CLASS.wizardContent);
-    //     container.append(this.wizardHandler.generate());
-    //     return container;
-    // }
-    // #generateActions() {
-    //     const buttonsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.buttonsContainer]);
-    //     const clearbtn = ButtonGenerator.generateTextButton('reset', this.#onReset.bind(this));
-    //     buttonsContainer.append(clearbtn);
-    //     const playbtn = ButtonGenerator.generateTextButton('play', this.#onPlay.bind(this));
-    //     buttonsContainer.append(playbtn);
-    //     return buttonsContainer;
-    // }
-
-    // #onReset() {
-    //     console.log('-- reset wizard');
-    //     // TODO reset storage
-    //     this.init();
-    // }
 
     // #onPlay() {
     //     const level = { ...this.levelSettings.settings };

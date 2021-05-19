@@ -2,21 +2,16 @@
 import './game-wizard.scss';
 import { GameType } from 'GAME_ENUMS';
 import { HEADER, DOM_ELEMENT_CLASS } from './game-wizard.constants';
-import { ElementGenerator, ElementHandler, ButtonGenerator, CustomElementHelper } from 'UI_ELEMENTS';
-import { GameWizardOriginal } from './game-wizard-original/game-wizard-original';
+import { ElementGenerator, ElementHandler, ButtonGenerator } from 'UI_ELEMENTS';
+import { GameWizardHelper } from './game-wizard-helper';
 
-import { GameWizardVS } from './game-wizard-vs/game-wizard-vs';
+export class GameWizard {
+    #onPlay;
+    #onCancel;
 
-export default class GameWizard {
-
-    constructor() {
-        this.type = GameType.Original;
-        //this.wizardHandler = new GameWizardOriginal(this.#onPlay.bind(this));
-
-        this.wizardHandler = new GameWizardVS(this.#onPlay.bind(this));
-
-
-
+    constructor(onPlay, onCancel) {
+        this.#onPlay = onPlay;
+        this.#onCancel = onCancel;
     }
 
     get wizardContainer() {
@@ -25,24 +20,36 @@ export default class GameWizard {
 
     render() {
         const wizard = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.wizard], DOM_ELEMENT_CLASS.wizard);
-        const button = ButtonGenerator.generateIconButtonClose(this.#onClose.bind(this));
-        const content = this.wizardHandler.generate();
-        wizard.append(button, content);
+        const button = ButtonGenerator.generateIconButtonClose(this.onClose.bind(this));
+        const header = GameWizardHelper.generateHeader(this.header);
+        wizard.append(button, header, this.generateContent());
         return wizard;
     }
 
-    init() {
-        this.wizardHandler.init();
+    generateContent() {
+        return document.createDocumentFragment();
     }
 
-    #onClose() {
+
+    init() {
+        //this.wizardHandler.init();
+    }
+
+    onClose() {
         console.log('onClose');
     }
 
-    #onPlay(gameConfig) {
-        console.log('onPlay');
+    onPlayGame(gameConfig) {
+        console.log('onPlayGame');
         console.log(gameConfig);
         const container = this.wizardContainer;
         ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.wizardOut);
+    }
+
+
+    onReset() {
+        console.log('-- reset wizard');
+        // TODO reset storage
+        this.init();
     }
 }

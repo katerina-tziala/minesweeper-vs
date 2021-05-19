@@ -31,14 +31,17 @@
   > div {
     display: block;
     flex-grow: 1;
-    font-size: 1.2rem;
-    font-weight: 600;
+    // font-size: 1.2rem;
+    // font-weight: 900;
     margin-right: 20px;
+
+    font-size: 1.3rem;
+
   }
 }
 
-.game-setting-header:not(:first-of-type) {
-  margin-top: 60px;
+.game-setting-header:nth-of-type(2) {
+  margin-top: 30px;
 }
 
 .game-wizard-buttons-container {
