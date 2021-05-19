@@ -9,7 +9,7 @@ export const DOM_ELEMENT_CLASS = {
 
 export const HEADER = {
   original: 'Play the original minesweeper game',
-  bot: 'play minesweeperVS against bot',
-  friend: 'play minesweeperVS against ###',
-  online: 'invite ### in a minesweeperVS game'
+  bot: 'Play minesweeperVS against</br>###',
+  friend: 'Play minesweeperVS against</br>###',
+  online: 'Invite ### in a </br>minesweeperVS game'
 };

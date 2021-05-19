@@ -9,6 +9,9 @@ import { User } from '../../../_models/user';
 
 import { HEADER, DOM_ELEMENT_CLASS } from '../game-wizard.constants';
 import { GameWizard } from '../game-wizard';
+import { replaceStringParameter } from 'UTILS';
+
+
 
 // const GameType = {
 // Online: 'online',
@@ -16,28 +19,38 @@ import { GameWizard } from '../game-wizard';
 // Friend: 'friend',
 //   };
 export class GameWizardVS extends GameWizard {
-    #type;
+    type;
 
     constructor(onPlay, onClose) {
         super(onPlay, onClose);
 
 
 
-        this.#type = GameType.Bot;
-
-        this.header = HEADER[this.#type];
-
-        this.oppopent = new User('MineweeperBot');
-        console.log(this.oppopent);
+        // this.oppopent = new User('MineweeperBot');
+        // console.log(this.oppopent);
         // Bot: bot level, mode, level, turns,  options
         // 
         // this.levelSettings = new LevelSettings();
         // this.optionsSettings = new OptionsSettingsOriginal();
     }
 
+
     get contentContainer() {
         return document.getElementById(DOM_ELEMENT_CLASS.container);
     }
+
+    setConfig() {
+        this.setHeaderText();
+
+        console.log(this.mode);
+    }
+
+    setHeaderText() {
+        const header = HEADER[this.type];
+        const { username } = this.opponent;
+        this.header = replaceStringParameter(header, `<i>${username}</i>`);
+    }
+
 
     generateContent() {
         const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);
@@ -47,23 +60,6 @@ export class GameWizardVS extends GameWizard {
         console.log('buttons');
         return container;
     }
-
-    // generate() {
-    //     console.log('GameWizardVS');
-    //     const container = document.createDocumentFragment();
-
-    //     // if (!this.opponent) {
-    //     //     console.log('local playa');
-    //     //     this.usernameForm = new AddUsername('addOpponent', this.#onAddPlayer.bind(this), this.#onCloseForm.bind(this));
-    //     //     fragment.append(this.usernameForm.render());
-    //     // }
-
-    //    // fragment.append(GameWizardHelper.generateHeader(this.#header));
-    //     // fragment.append(this.levelSettings.render());
-    //     // fragment.append(this.optionsSettings.render());
-    //     // fragment.append(this.#generateActions());
-    //     return container;
-    // }
 
     init() {
         console.log('GameWizardVS');

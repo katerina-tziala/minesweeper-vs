@@ -17,7 +17,6 @@ export class GameModeSettings extends ModeSettings {
     }
 
     get explanationContent() {
-        console.log(this.selectedValue);
         return `<span>${EXPLANATION[this.selectedValue]}</span>`;
     }
 
