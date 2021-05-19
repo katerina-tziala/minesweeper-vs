@@ -10,7 +10,7 @@ export class GameWizardVSBot extends GameWizardVS {
         this.type = GameType.Bot;
         this.opponent = new User('MineweeperBot');
 
-        this.mode = GameMode.Parallel;
+        this.mode = GameMode.Clear;
         
 
         console.log('GameWizardVSBot');

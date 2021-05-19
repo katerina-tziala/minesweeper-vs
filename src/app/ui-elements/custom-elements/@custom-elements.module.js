@@ -8,6 +8,7 @@ import Switcher from './switcher/Switcher';
 import NumberInput from './number-input/NumberInput';
 import Dropdown from './dropdown/Dropdown';
 import DropdownSelect from './dropdow-select/DropdownSelect';
+import WizardStepper from './wizard-stepper/WizardStepper';
 
 
 // import what needed only

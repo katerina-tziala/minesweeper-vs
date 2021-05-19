@@ -1,16 +1,17 @@
 'use strict';
-import { GameType } from 'GAME_ENUMS';
+// import { GameType } from 'GAME_ENUMS';
 import { ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
-import { LevelSettings, OptionsSettingsOriginal } from '../../game-settings/@game-settings.module';
+// import { LevelSettings, OptionsSettingsOriginal } from '../../game-settings/@game-settings.module';
 // import { HEADER } from '../game-wizard.constants';
-// import { DOM_ELEMENT_CLASS } from './game-wizard-vs.constants';
-import { GameWizardHelper } from '../game-wizard-helper';
-import { User } from '../../../_models/user';
+import { GAME_MODE_STEPS } from './game-wizard-vs.constants';
+// import { GameWizardHelper } from '../game-wizard-helper';
+// import { User } from '../../../_models/user';
 
 import { HEADER, DOM_ELEMENT_CLASS } from '../game-wizard.constants';
 import { GameWizard } from '../game-wizard';
 import { replaceStringParameter } from 'UTILS';
 
+import { WizardStepper } from '~/components/wizard-stepper/wizard-stepper';
 
 
 // const GameType = {
@@ -23,17 +24,12 @@ export class GameWizardVS extends GameWizard {
 
     constructor(onPlay, onClose) {
         super(onPlay, onClose);
-
-
-
-        // this.oppopent = new User('MineweeperBot');
-        // console.log(this.oppopent);
-        // Bot: bot level, mode, level, turns,  options
-        // 
-        // this.levelSettings = new LevelSettings();
-        // this.optionsSettings = new OptionsSettingsOriginal();
+        this.wizardStepper = new WizardStepper();
     }
 
+    get modeSettingsTypes() {
+        return GAME_MODE_STEPS[this.mode] || [];
+    }
 
     get contentContainer() {
         return document.getElementById(DOM_ELEMENT_CLASS.container);
@@ -42,7 +38,6 @@ export class GameWizardVS extends GameWizard {
     setConfig() {
         this.setHeaderText();
 
-        console.log(this.mode);
     }
 
     setHeaderText() {
@@ -52,17 +47,35 @@ export class GameWizardVS extends GameWizard {
     }
 
 
+    get settingsSteps() {
+        const steps = this.modeSettingsTypes.map(value => {
+            return { value, selected: false };
+        });
+
+        if (steps.every(step => !step.selected)) {
+            steps[0].selected = true;
+        }
+
+        return steps;
+    }
+
+
     generateContent() {
         const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);
-        console.log('GameWizardVS');
-        console.log('stepper');
-        console.log('content');
-        console.log('buttons');
+        // console.log('GameWizardVS');
+
+        const steps = this.settingsSteps;
+        //console.log(steps);
+        this.wizardStepper.steps = steps;
+       
+        container.append(this.wizardStepper.generate());
+        // console.log('content');
+        // console.log('buttons');
         return container;
     }
 
     init() {
-        console.log('GameWizardVS');
+        console.log('init GameWizardVS');
         // // TODO: init from local storage
         // this.levelSettings.init();
         // this.optionsSettings.init();
