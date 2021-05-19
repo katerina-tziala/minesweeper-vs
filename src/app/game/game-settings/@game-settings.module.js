@@ -4,3 +4,6 @@ export { OptionsSettingsOriginal } from './options-settings/options-settings-ori
 export { OptionsSettingsDetect } from './options-settings/options-settings-detect/options-settings-detect';
 export { OptionsSettingsParallel } from './options-settings/options-settings-parallel/options-settings-parallel';
 export { OptionsSettingsClear } from './options-settings/options-settings-clear/options-settings-clear';
+export { BotSettings } from './mode-settings/bot-settings/bot-settings';
+
+

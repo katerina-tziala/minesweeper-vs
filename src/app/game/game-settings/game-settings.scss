@@ -57,5 +57,26 @@
       margin-right: 10px;
     }
   }
+ 
+  &.bot {
+    &::before {
+      @extend .icon-bot;
+      // width: 20px;
+      // text-align: left;
+      // margin-right: 10px;
+      width: 25px;
+      text-align: left;
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+  }
 
+  
+
+}
+
+.game-setting-explanation {
+  text-align: center;
+  border: 1px solid red;
+  width: 100%;
 }

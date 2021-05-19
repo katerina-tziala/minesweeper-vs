@@ -2,6 +2,7 @@ export const DOM_ELEMENT_CLASS = {
   setting: 'game-setting',
   label: 'game-setting-label',
   header: 'game-setting-header',
+  fieldExplanation: 'game-setting-explanation',
 };
 
 export const LABELS = {
@@ -22,11 +23,15 @@ export const LABELS = {
   openStrategy: 'open strategy',
   openCompetition: 'open competition',
   sneakPeek: 'sneak peek',
-  sneakPeekDuration: 'sneak peek duration'
+  sneakPeekDuration: 'sneak peek duration',
+  botLevel: 'level of difficulty',
+  gameMode: 'game goal'
 };
 
 export const HEADERS = {
   level: 'game level',
   options: 'game options',
   turns: 'game turns',
+  bot: 'bot',
+  vsMode: 'vs mode'
 };

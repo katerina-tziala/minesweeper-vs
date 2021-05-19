@@ -44,7 +44,7 @@ export class GameWizardVS extends GameWizard {
         console.log('GameWizardVS');
         console.log('stepper');
         console.log('content');
-        console.log('steps');
+        console.log('buttons');
         return container;
     }
 

@@ -17,6 +17,17 @@ export class GameSettingsElementHelper {
         return container;
     }
 
+    static generateExplanationContainer(name) {
+        const id = `${DOM_ELEMENT_CLASS.fieldExplanation}--${name}`;
+        const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.fieldExplanation], id);
+        return container;
+    }
+
+    static getExplanationContainer(name) {
+        const id = `${DOM_ELEMENT_CLASS.fieldExplanation}--${name}`;
+        return document.getElementById(id);
+    }
+
     static generateSettingLabel(name, inputId) {
         return ElementGenerator.generateLabel(LABELS[name], inputId);
     }
