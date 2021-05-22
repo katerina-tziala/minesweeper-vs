@@ -15,7 +15,6 @@ export class TemplateGenerator {
     templateNode.innerHTML = TemplateGenerator.#updateTemplateString(template, content);
     return templateNode.content.cloneNode(true);
   }
-
   static #updateTemplateString(template, content) {
     if (!content) {
       return template;

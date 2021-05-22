@@ -142,6 +142,7 @@ export default class TextInput extends HTMLElement {
     if (this.#inputField && !!this.#inputListeners.size) {
       this.#inputListenersTypes.forEach(listenerName => {
         this.#inputField.removeEventListener(listenerName, this.#inputListeners.get(listenerName));
+        this.#inputListeners.delete(listenerName);
       });
       this.#inputListeners = new Map();
     }

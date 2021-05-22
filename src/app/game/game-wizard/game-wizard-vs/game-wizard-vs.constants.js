@@ -3,6 +3,7 @@ export const DOM_ELEMENT_CLASS = {
 };
 
 export const STEPS = {
+  bot: 'bot',
   gameMode: 'gameMode',
   level: 'level',
   turns: 'turns',

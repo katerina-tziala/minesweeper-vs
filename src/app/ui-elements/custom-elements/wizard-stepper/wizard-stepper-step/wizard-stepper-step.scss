@@ -1,0 +1,114 @@
+@use 'styles/utils/shapes';
+@use 'styles/iconography/iconography';
+@use 'styles/components/button/button';
+@use 'styles/utils/flexbox/flexbox';
+
+$size: 56px;
+
+app-wizard-stepper-step {
+  flex-grow: 1;
+  height: 80px;
+  width: $size;
+  min-width: $size;
+  max-width: $size;
+  @extend %flex-between-center;
+  flex-direction: column;
+  overflow: hidden;
+  @extend ._button;
+
+  &:focus {
+    background-color: lightblue;
+  }
+}
+
+.wizard-step-indicator {
+  display: block;
+  @include shapes.circle($size);
+  position: relative;
+  font-size: 24px;
+  line-height: 57px;
+}
+
+.wizard-step-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 900;
+  width: 60px;
+  text-align: center;
+}
+
+app-wizard-stepper-step[name="level"] {
+  .wizard-step-indicator {
+    @include iconography.afterIcon("level");
+  }
+}
+
+app-wizard-stepper-step[name="options"] {
+  .wizard-step-indicator {
+    font-size: 22px;
+    @include iconography.afterIcon("sliders");
+  }
+}
+
+app-wizard-stepper-step[name="turns"] {
+  .wizard-step-indicator {
+    font-size: 26px;
+    line-height: 57px;
+    @include iconography.afterIcon("stopwatch");
+  }
+}
+
+app-wizard-stepper-step[name="bot"] {
+  .wizard-step-indicator {
+    font-size: 25px;
+    line-height: 55px;
+    @include iconography.afterIcon("bot");
+  }
+}
+
+app-wizard-stepper-step[name="gameMode"] {
+  .wizard-step-indicator {
+    font-size: 26px;
+    @include iconography.afterIcon("mode");
+  }
+}
+
+app-wizard-stepper-step[visited="true"] {
+  .wizard-step-indicator {
+    @extend ._wizard-step-indicator--visited;
+  }
+}
+
+app-wizard-stepper-step[selected="true"] {
+  .wizard-step-indicator {
+    @extend ._wizard-step-indicator--active;
+  }
+  .wizard-step-label {
+    @extend ._wizard-step-label--active;
+  }
+}
+
+// TODO: THEMING
+.wizard-step-indicator {
+  background-color: #d9d9d9;
+  color: #4d4d4d;
+}
+
+.wizard-step-label {
+  color: #4d4d4d;
+}
+
+._wizard-step-label--active {
+  color: #1a1a1a;
+}
+
+._wizard-step-indicator--visited {
+  color: #f2f2f2;
+  background-color: #4d4d4d;
+}
+
+._wizard-step-indicator--active {
+  color: #f2f2f2;
+  background-color: #1a1a1a;
+}

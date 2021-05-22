@@ -1,10 +1,17 @@
+// @use 'styles/iconography/iconography';
+// @use 'styles/components/card/card';
+@use 'styles/utils/flexbox/flexbox';
+
+
 
 app-wizard-stepper {
     display: block;
-    border: 1px solid black;
+    // border: 1px solid black;
     width: 100%;
+    
 }
 
 .wizard-stepper-container {
-    border: 1px solid red;
+    @extend %flex-between-center;
+    // border: 1px solid red;
 }

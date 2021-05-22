@@ -47,8 +47,6 @@ export class AriaHandler {
     }
   }
 
-
-
   static setAriaDisabled(element, value = false) {
     if (element) {
       element.setAttribute('aria-disabled', value);
