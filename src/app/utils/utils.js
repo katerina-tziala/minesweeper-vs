@@ -1,6 +1,5 @@
-"use strict";
+'use strict';
 
-// import { TYPOGRAPHY } from "~/_constants/typography.constants.js";
 import { definedString } from './validator';
 
 export function replaceStringParameter(stringToUpdate, value, replacePart = '###') {
@@ -11,7 +10,6 @@ export function parseBoolean(stringToParse) {
   return definedString(stringToParse) ? JSON.parse(stringToParse) : false;
 };
 
-
 export function getNextPositionInArray(arrayList = [], currentIndex = 0, step = 1) {
   const maxPosition = lastPositionInArray(arrayList);
   const newPosition = currentIndex + step;
@@ -20,7 +18,6 @@ export function getNextPositionInArray(arrayList = [], currentIndex = 0, step = 
   }
   return newPosition < 0 ? maxPosition : newPosition;
 };
-
 
 export function lastPositionInArray(arrayList = []) {
   return arrayList.length ? arrayList.length - 1 : 0;

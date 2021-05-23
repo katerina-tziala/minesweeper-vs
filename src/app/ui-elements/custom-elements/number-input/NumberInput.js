@@ -1,10 +1,8 @@
 import './number-input.scss';
 import './number-input-button/NumberInputButton';
-import { parseBoolean } from 'UTILS';
+import { parseBoolean, NumberValidation } from 'UTILS';
 import { ElementHandler, TemplateGenerator } from 'UI_ELEMENTS';
 import { TEMPLATE, ATTRIBUTES, DOM_ELEMENT_CLASS } from './number-input.constants';
-import NumberValidation from './number-validation';
-
 
 export default class NumberInput extends HTMLElement {
   #inputListener;

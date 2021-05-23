@@ -1,172 +1,85 @@
 import './wizard-stepper.scss';
-import { ATTRIBUTES, TEMPLATES, DOM_ELEMENT_CLASS } from './wizard-stepper.constants';
+import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS, ARIA_LABEL } from './wizard-stepper.constants';
 import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
 
 
-import './wizard-stepper-step/WizardStepperStep';
-
+import './stepper-list/StepperList';
+import { parseBoolean, NumberValidation } from 'UTILS';
 
 
 
 export default class WizardStepper extends HTMLElement {
   #container;
   #stepsIndex;
+  #stepsList;
+  #progressStep = 0;
+  #progressBar;
+
   constructor() {
     super();
-    this.steps = [
-      {
-        selected: true,
-        name: 'bot',
-        visited: true,
-        disabled: false,
-        ariaLabel: 'bot settings',
-      },
-      {
-        selected: false,
-        name: 'gameMode',
-        visited: false,
-        disabled: false,
-        ariaLabel: 'game goal settings',
-      },
-      {
-        selected: false,
-        name: 'level',
-        visited: false,
-        disabled: false,
-        ariaLabel: 'level settings',
-      },
-      {
-        selected: false,
-        name: 'turns',
-        visited: false,
-        disabled: false,
-        ariaLabel: 'turns settings',
-      },
-      {
-        selected: false,
-        name: 'options',
-        visited: false,
-        disabled: false,
-        ariaLabel: 'options settings',
-      }
-    ];
-
-
 
   }
 
-  // static get observedAttributes() {
-  //   return Object.values(ATTRIBUTES);
-  // }
+  get selectedStep() {
+    return this.#stepsList ? this.#stepsList.selectedStep : undefined;
+  }
 
-  attributeChangedCallback(attrName, oldVal, newVal) {
-    console.log('attributeChangedCallback WizardStepper ', attrName);
-    // upgrated
+  get #name() {
+    return this.getAttribute(ATTRIBUTES.name);
   }
 
   connectedCallback() {
-
-
-    this.innerHTML = TEMPLATES.container;
+    const ariaLabel = ARIA_LABEL[this.#name];
+    TemplateGenerator.setTemplate(this, TEMPLATE, { ariaLabel });
+    
     this.#container = this.querySelector(`.${DOM_ELEMENT_CLASS.container}`);
+    this.#stepsList = this.querySelector(`.${DOM_ELEMENT_CLASS.steps}`);
 
-
-    // console.log(this.#container);
-    // console.log(this.steps);
-    this.#container.innerHTML = '';
-
-
-    this.#stepsIndex = new Map();
-    this.steps.forEach((step, index) => {
-      const { name } = step;
-      const stepData = { ...step, index };
-      const element = this.#generateStep(step);
-      this.#stepsIndex.set(name, { ...stepData, element });
-      // Array.from(items.keys())[2]
-      // focus on first selected
-      // aria-controls="tabpanel-id" -- set from template
-
-      this.#container.append(element);
-
-
-      //app-wizard-stepper-step
+    this.#stepsList.addEventListener('onSelected', () => this.#onStepSelected());
+    this.#stepsList.addEventListener('removeFocus', () => {
+      console.log('focus on tabpanel');
     });
 
-
-
-    console.log(this.#stepsIndex);
-
-
+    this.#progressBar = this.querySelector(`.${DOM_ELEMENT_CLASS.progress}`);
   }
-
-  #generateStep(step) {
-    const template = TemplateGenerator.generate(TEMPLATES.step, step);
-    const stepItem = template.children[0];
-    stepItem.addEventListener('onSelected', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.#onOptionSelected(event);
-    });
-    return stepItem;
-  }
-
-  #onOptionSelected({ detail }) {
-    console.log('onOptionSelected');
-
-    const { name } = detail;
-    this.#updateSteps(name);
-
-
-    console.log(this.#stepsIndex.get(name));
-
-    console.log(this.#stepsIndex);
-  }
-
-  #updateSteps(selectedKey) {
-    if (!this.#stepsIndex) {
-      return;
-    }
-
-    let lastVisited = 0;
-    for (let step of this.#stepsIndex.values()) {
-      step.selected = (step.name === selectedKey) || (step.index === selectedKey);
-
-      const stepUpdate = this.#getStepUpdateData(step, lastVisited);
-      lastVisited = stepUpdate.lastVisited;
-      step = Object.assign(step, stepUpdate.state);
-
-      this.#setElementStepState(step.element, stepUpdate.state);
-    }
-  }
-
-  #getStepUpdateData(step, lastVisited) {
-    let { selected, visited, disabled, index } = step;
-    visited = selected ? true : visited;
-    if (visited) {
-      lastVisited = index;
-    }
-    disabled = index > lastVisited + 1;
-    const state = { selected, visited, disabled };
-    return { state, lastVisited };
-  }
-
-  #setElementStepState(element, state) {
-    if (element) {
-      for (const [key, value] of Object.entries(state)) {
-        element.setAttribute(key, value);
-      }
-    }
-  }
-
-
-
 
   disconnectedCallback() {
     console.log('disconnectedCallback WizardStepper');
   }
 
-  adoptedCallback() {
-    console.log('adoptedCallback WizardStepper');
+  setSteps(steps) {
+    const progressStep = 100 / (steps.length - 1);
+    this.#progressStep = Math.round(progressStep * 100) / 100;
+
+    if (this.#stepsList) {
+      this.#stepsList.setSteps(steps);
+    }
+    this.#setProgressBar();
+  }
+
+  selectNext() {
+    if (this.#stepsList) {
+      this.#stepsList.selectNext();
+    }
+  }
+
+  selectPrevious() {
+    if (this.#stepsList) {
+      this.#stepsList.selectPrevious();
+    }
+  }
+
+  #onStepSelected() {
+    console.log('onStepSelected');
+    this.#setProgressBar();
+    console.log(this.selectedStep);
+  }
+
+  #setProgressBar() {
+    if (this.#progressBar && this.selectedStep) {
+      const progress = this.#progressStep * this.selectedStep.index;
+      this.#progressBar.setAttribute('progress', progress);
+    }
   }
 
 }

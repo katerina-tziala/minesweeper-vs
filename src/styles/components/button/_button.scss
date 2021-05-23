@@ -11,7 +11,7 @@ $button-height: 32px;
   cursor: pointer;
   outline: none;
   border: none;
-  overflow: hidden;
+  // overflow: hidden;
   text-align: center;
 
   &:disabled {
@@ -40,6 +40,7 @@ $button-height: 32px;
   @extend .button--primary;
   @extend %flex-center-center;
   @include shapes.circle($button-height);
+  overflow: hidden;
   min-width: $button-height;
   min-height: $button-height;
 }

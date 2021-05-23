@@ -1,0 +1,18 @@
+app-progress-bar {
+  display: block;
+  z-index: 0;
+  width: 100%;
+  position: relative;
+}
+
+.progress-bar__track {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+}
+
+.progress-bar__progress-indicator {
+  position: relative;
+  height: 100%;
+  transition: width 0.5s linear;
+}

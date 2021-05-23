@@ -1,0 +1,78 @@
+@use '../../utils/shapes';
+
+._step-indicator {
+  background-color: #fff;
+  color: #4d4d4d;
+  border-color: #4d4d4d;
+  box-shadow: none;
+  transition: background 0s;
+}
+
+._step-label {
+  color: #4d4d4d;
+}
+
+._step-indicator--disabled {
+  background-color: #fff;
+  color: #b3b3b3;
+  border-color: #b3b3b3;
+  box-shadow: none;
+  transition: background 0s;
+}
+
+._step-label--disabled {
+  color: #b3b3b3;
+}
+
+._step-indicator--focused {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+  transition: background 0.4s;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+  background: #000 radial-gradient(circle, transparent 1%, #000 1%)
+    center/15000%;
+  &:active {
+    background-color: #fff;
+    background-size: 100%;
+    transition: background 0s;
+    box-shadow: none;
+  }
+}
+
+._step-label--focused {
+  color: #000;
+}
+
+._step-indicator--visited {
+  background-color: #4d4d4d;
+  color: #f2f2f2;
+  border-color: #fff;
+  transition: background 0s;
+}
+
+._step-label--visited {
+  color: #4d4d4d;
+}
+
+._step-label--selected {
+  background-color: #fff;
+  color: #262626;
+}
+
+._step-indicator__selected {
+  background-color: #262626;
+  color: #f2f2f2;
+  border-color: #262626;
+
+  &::before {
+    @include shapes.pseudoCircle(44px);
+    position: absolute;
+    z-index: -1;
+    top: -8px;
+    border-width: 2px;
+    border-style: solid;
+    @extend ._step-label--selected;
+  }
+}

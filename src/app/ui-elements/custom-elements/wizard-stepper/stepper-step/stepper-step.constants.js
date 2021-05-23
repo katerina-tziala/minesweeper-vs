@@ -1,6 +1,6 @@
 export const DOM_ELEMENT_CLASS = {
-    indicator: 'wizard-step-indicator',
-    label: 'wizard-step-label'
+    indicator: 'step-indicator',
+    label: 'step-label'
 };
 
 export const ATTRIBUTES = {
@@ -11,13 +11,13 @@ export const ATTRIBUTES = {
 };
 
 export const TEMPLATE = `
-<span class='${DOM_ELEMENT_CLASS.indicator}'></span>
-<span class='${DOM_ELEMENT_CLASS.label}'>%name%</span>
+<div class='${DOM_ELEMENT_CLASS.indicator}'></div>
+<div class='${DOM_ELEMENT_CLASS.label}'>%name%</div>
 `;
 
 export const TEXT = {
     bot: 'bot',
-    gameMode: 'vs mode',
+    mode: 'vs mode',
     level: 'level',
     turns: 'turns',
     options: 'options'

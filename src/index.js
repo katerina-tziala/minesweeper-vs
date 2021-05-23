@@ -31,7 +31,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
   AppLoaderHandler.hide();
 
-  // const test = document.getElementsByTagName("app-dropdown-select")[0];
+  const steps = [
+    {
+      selected: false,
+      name: 'bot',
+      visited: false,
+      disabled: false,
+      ariaLabel: 'bot settings',
+    },
+    {
+      selected: false,
+      name: 'mode',
+      visited: false,
+      disabled: false,
+      ariaLabel: 'game goal settings',
+    },
+    {
+      selected: false,
+      name: 'level',
+      visited: false,
+      disabled: false,
+      ariaLabel: 'level settings',
+    },
+    {
+      selected: false,
+      name: 'turns',
+      visited: false,
+      disabled: false,
+      ariaLabel: 'turns settings',
+    },
+    {
+      selected: false,
+      name: 'options',
+      visited: false,
+      disabled: false,
+      ariaLabel: 'options settings',
+    }
+  ];
+
+
+
+  const test = document.getElementsByTagName("app-wizard-stepper")[0];
+  test.setSteps(steps);
+
+  console.log(test);
+  setTimeout(() => {
+    const newSteps = steps.slice(0, 3);
+    // console.log(newSteps);
+
+   // test.setSteps(newSteps);
+    test.selectNext();
+
+
+  }, 1000)
+
+  setTimeout(() => {
+    const newSteps = steps.slice(0, 3);
+    // console.log(newSteps);
+
+   // test.setSteps(newSteps);
+    test.selectPrevious();
+
+
+  }, 3000)
+
   //const gamesetup = document.getElementById("main-content");
   // const gamesetup = document.getElementById("game-set-up");
 

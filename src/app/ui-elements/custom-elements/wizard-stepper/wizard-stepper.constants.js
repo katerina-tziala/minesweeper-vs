@@ -1,15 +1,19 @@
 export const DOM_ELEMENT_CLASS = {
-    container: 'wizard-stepper-container',
-    track: 'wizard-stepper-track'
+    container: 'stepper-container',
+    steps: 'stepper-steps',
+    progress: 'stepper--progress'
 };
 
 export const ATTRIBUTES = {
-
+    name: 'name'
 };
 
-export const TEMPLATES = {
-    container: `<div class='${DOM_ELEMENT_CLASS.container}'></div>`,
-    track: `<div class='${DOM_ELEMENT_CLASS.track}'></div>`,
-    step: `<app-wizard-stepper-step name='%name%' ariaLabel = '%ariaLabel%'
-    disabled='%disabled%' selected='%selected%' visited='%visited%'></app-wizard-stepper-step>`
+export const TEMPLATE = `<div class='${DOM_ELEMENT_CLASS.container}'>
+<app-progress-bar class='${DOM_ELEMENT_CLASS.progress}'></app-progress-bar>
+<app-stepper-list class='${DOM_ELEMENT_CLASS.steps}' aria-label='%ariaLabel%'></app-stepper-list>
+</div>`;
+
+
+export const ARIA_LABEL = {
+    gameSettings: 'game settings'
 };

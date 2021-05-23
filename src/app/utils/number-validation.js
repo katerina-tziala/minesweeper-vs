@@ -1,7 +1,7 @@
 'use strict';
 import { numberDefined } from 'UTILS';
 
-export default class NumberValidation {
+export class NumberValidation {
 
     static numberFromString(stringNumber) {
         const value = stringNumber ? parseInt(stringNumber, 10) : 0;
@@ -24,7 +24,11 @@ export default class NumberValidation {
         if (!min && !max) {
             return true;
         }
-        return NumberValidation.#lessThanMin(value, min) || NumberValidation.#greaterThanMax(value, min);
+        return valueInBoundariesWhenBoundaries(value, min, max) ;
+    }
+
+    static valueInBoundariesWhenBoundaries(value = 0, min, max) {
+        return NumberValidation.#lessThanMin(value, min) || NumberValidation.#greaterThanMax(value, max);
     }
 
     static #lessThanMin(value, min) {

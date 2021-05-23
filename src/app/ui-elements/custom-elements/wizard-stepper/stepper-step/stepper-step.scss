@@ -1,0 +1,135 @@
+@use 'styles/utils/shapes';
+@use 'styles/iconography/iconography';
+@use 'styles/components/button/button';
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/components/stepper-step/stepper-step';
+
+.step-indicator {
+  @extend %flex-center-center;
+  @include shapes.circle(36px);
+  position: relative;
+  border-width: 2px;
+  border-style: solid;
+  @extend ._step-indicator;
+}
+
+.step-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 6px;
+  white-space: nowrap;
+  @extend ._step-label;
+}
+
+.__step--focused {
+  .step-indicator {
+    @extend ._step-indicator--focused;
+    &::before {
+      @extend ._step-label--focused;
+    }
+  }
+  .step-label {
+    @extend ._step-label--focused;
+    font-weight: 800;
+  }
+}
+
+app-stepper-step {
+  min-width: 38px;
+  max-width: 38px;
+  height: 60px;
+  z-index: 0;
+  @extend %flex-between-center;
+  flex-direction: column;
+  position: relative;
+  @extend ._button;
+}
+
+app-stepper-step[disabled="false"][visited="false"][selected="false"] {
+  &:hover,
+  &:focus {
+    @extend .__step--focused;
+  }
+}
+
+app-stepper-step[disabled="false"][visited="true"][selected="false"] {
+  .step-indicator {
+    @extend ._step-indicator--visited;
+  }
+  .step-label {
+    @extend ._step-label--visited;
+    font-weight: 800;
+  }
+
+  &:hover,
+  &:focus {
+    @extend .__step--focused;
+  }
+}
+
+app-stepper-step[disabled="false"][selected="true"] {
+  .step-indicator {
+    @extend ._step-indicator__selected;
+  }
+
+  .step-label {
+    @extend ._step-label--selected;
+    font-weight: 900 !important;
+  }
+  &:hover,
+  &:focus {
+    @extend .__step--focused;
+  }
+}
+
+app-stepper-step[disabled="true"] {
+  cursor: not-allowed;
+
+  .step-indicator {
+    @extend ._step-indicator--disabled;
+
+    &:active {
+      @extend ._step-indicator--disabled;
+    }
+  }
+
+  .step-label {
+    @extend ._step-label--disabled ;
+  }
+}
+
+// ICONS
+app-stepper-step[name="level"] {
+  .step-indicator {
+    @include iconography.afterIcon("level");
+  }
+}
+
+app-stepper-step[name="options"] {
+  .step-indicator {
+    font-size: .9rem;
+    @include iconography.afterIcon("sliders");
+  }
+}
+
+app-stepper-step[name="turns"] {
+  .step-indicator {
+    @include iconography.afterIcon("stopwatch");
+  }
+}
+
+app-stepper-step[name="bot"] {
+  .step-indicator {
+    padding-bottom: 1px;
+    @include iconography.afterIcon("bot");
+  }
+}
+
+app-stepper-step[name="mode"] {
+  .step-indicator {
+    @include iconography.afterIcon("mode");
+  }
+}

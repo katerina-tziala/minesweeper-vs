@@ -15,6 +15,7 @@ app-dropdown-select-list {
   overflow-x: hidden;
   overflow-y: auto;
   background-color: inherit;
+  will-change: scroll-position;
   @extend ._scrollbar;
 }
 
