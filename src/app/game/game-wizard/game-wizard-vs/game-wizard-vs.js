@@ -9,7 +9,8 @@ import { STEPS, GAME_MODE_STEPS, DOM_ELEMENT_CLASS, STEPS_ARIA } from './game-wi
 
 import { HEADER } from '../game-wizard.constants';
 import { GameWizard } from '../game-wizard';
-import { replaceStringParameter } from 'UTILS';
+import { replaceStringParameter, lastPositionInArray } from 'UTILS';
+
 
 
 // const GameType = {
@@ -72,11 +73,11 @@ export class GameWizardVS extends GameWizard {
         this.wizardStepper.setAttribute('name', 'gameSettings');
         this.wizardStepper.addEventListener('onStepSelected', (event) => this.#onStepSelected(event.detail));
 
-        const settingsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.settingsContainer], DOM_ELEMENT_CLASS.settingsContainer);
+        this.settingsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.settingsContainer], DOM_ELEMENT_CLASS.settingsContainer);
          // console.log('buttons');
 
 
-        container.append(this.wizardStepper, settingsContainer);
+        container.append(this.wizardStepper, this.settingsContainer);
         return container;
     }
 
@@ -84,6 +85,9 @@ export class GameWizardVS extends GameWizard {
         console.log('init GameWizardVS');
         // // TODO: init from local storage
         const steps = this.settingsSteps;
+        console.log(steps);
+        const lastIndex = lastPositionInArray(steps);
+        console.log(lastIndex);
         this.wizardStepper.setSteps(steps);
         // this.levelSettings.init();
         // this.optionsSettings.init();
