@@ -5,7 +5,7 @@
 // @use 'styles/typography/typography';
 
 .game-wizard {
-  max-width: 380px;
+  max-width: 400px;
   @extend .card;
   will-change: transform, opacity;
   @include animations.slideIn(1);
@@ -23,9 +23,7 @@
 
 .game-wizard-header {
   text-transform: capitalize;
-  // position: relative;
-  // @extend %flex-start-start;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   margin-right: 40px;
   max-width: 300px;
   min-width: 300px;
@@ -34,10 +32,7 @@
   > div {
     display: block;
     flex-grow: 1;
-    // font-size: 1.2rem;
-    // font-weight: 900;
     margin-right: 20px;
-
     font-size: 1.3rem;
   }
 
@@ -58,4 +53,9 @@
   > .button-text {
     min-width: 120px;
   }
+}
+
+
+.game-wizard-vs__settings-container {
+  border: 1px solid green;
 }

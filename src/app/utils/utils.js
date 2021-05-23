@@ -7,7 +7,7 @@ export function replaceStringParameter(stringToUpdate, value, replacePart = '###
 };
 
 export function parseBoolean(stringToParse) {
-  return definedString(stringToParse) ? JSON.parse(stringToParse) : false;
+  return (stringToParse === 'false' || stringToParse === 'true') ? JSON.parse(stringToParse) : false;
 };
 
 export function getNextPositionInArray(arrayList = [], currentIndex = 0, step = 1) {

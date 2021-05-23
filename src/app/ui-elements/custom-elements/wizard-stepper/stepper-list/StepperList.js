@@ -52,6 +52,7 @@ export default class StepperList extends HTMLElement {
     for (let step of this.#stepsIndex.values()) {
       this.append(step.element);
     }
+    this.dispatchEvent(new CustomEvent('stepsUpdated'));
   }
 
   selectNext() {
@@ -95,9 +96,16 @@ export default class StepperList extends HTMLElement {
     let lastVisited = 0;
     for (let index = 0; index < steps.length; index++) {
       const stepData = steps[index];
+    
+      const { visited, disabled } = stepData;
+      stepData.visited = !!visited;
+      stepData.disabled = !!disabled;
+      
       let step = { ...stepData, index };
       step.id = `step-tab--${step.name}`;
       step.controls = `tab-${step.name}`;
+
+
       const stepUpdate = this.#getStepUpdateData(step, lastVisited);
       lastVisited = stepUpdate.lastVisited;
 

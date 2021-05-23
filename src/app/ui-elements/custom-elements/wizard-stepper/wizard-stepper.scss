@@ -1,40 +1,44 @@
-// @use 'styles/iconography/iconography';
-// @use 'styles/components/card/card';
 @use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/animations/animations';
 
 app-wizard-stepper {
   display: block;
-  // border: 1px solid black;
   width: 100%;
 }
 
 .stepper-container {
-  //   border: 1px solid blue;
   position: relative;
-  width: 100%;
   overflow: hidden;
+  opacity: 0;
+  width: 0%;
+}
 
-  > app-progress-bar {
-    position: absolute;
-    top: 25px;
-    height: 4px;
-    padding: 0px 40px;
-
-    .progress-bar__track {
-      background-color: #b3b3b3;
-    }
-
-    .progress-bar__progress-indicator {
-      background-color: #262626;
-    }
-  }
+.stepper-container--filled {
+  width: 0%;
+  opacity: 0;
+  @include animations.expandWidth(0.6);
 }
 
 .stepper-steps {
-  // @extend %flex-between-center;
-  // border: 1px solid red;
-  //   background: #e6e6e6;
   min-width: 360px;
   padding: 8px;
   padding-bottom: 0px;
+}
+
+.stepper--progress {
+  position: absolute;
+  top: 25px;
+  height: 4px;
+  padding: 0px 40px;
+}
+
+// TODO: THEMING
+.stepper--progress {
+  .progress-bar__track {
+    background-color: #b3b3b3;
+  }
+
+  .progress-bar__progress-indicator {
+    background-color: #262626;
+  }
 }

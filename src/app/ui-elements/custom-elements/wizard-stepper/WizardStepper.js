@@ -1,23 +1,17 @@
 import './wizard-stepper.scss';
-import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS, ARIA_LABEL } from './wizard-stepper.constants';
-import { ElementHandler, AriaHandler, TemplateGenerator } from 'UI_ELEMENTS';
-
-
 import './stepper-list/StepperList';
-import { parseBoolean, NumberValidation } from 'UTILS';
-
-
+import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS, ARIA_LABEL } from './wizard-stepper.constants';
+import { ElementHandler, TemplateGenerator } from 'UI_ELEMENTS';
 
 export default class WizardStepper extends HTMLElement {
   #container;
-  #stepsIndex;
   #stepsList;
   #progressStep = 0;
   #progressBar;
+  #timeout;
 
   constructor() {
     super();
-
   }
 
   get selectedStep() {
@@ -31,10 +25,9 @@ export default class WizardStepper extends HTMLElement {
   connectedCallback() {
     const ariaLabel = ARIA_LABEL[this.#name];
     TemplateGenerator.setTemplate(this, TEMPLATE, { ariaLabel });
-    
     this.#container = this.querySelector(`.${DOM_ELEMENT_CLASS.container}`);
     this.#stepsList = this.querySelector(`.${DOM_ELEMENT_CLASS.steps}`);
-
+    this.#stepsList.addEventListener('stepsUpdated', () => this.#onStepsInit());
     this.#stepsList.addEventListener('onSelected', () => this.#onStepSelected());
     this.#stepsList.addEventListener('removeFocus', () => {
       console.log('focus on tabpanel');
@@ -48,13 +41,22 @@ export default class WizardStepper extends HTMLElement {
   }
 
   setSteps(steps) {
+    if (!this.#container || !this.#stepsList) {
+      return;
+    }
+    clearTimeout(this.#timeout);
+    ElementHandler.removeStyleClass(this.#container, DOM_ELEMENT_CLASS.filled);
     const progressStep = 100 / (steps.length - 1);
     this.#progressStep = Math.round(progressStep * 100) / 100;
+    this.#stepsList.setSteps(steps);
+  }
 
-    if (this.#stepsList) {
-      this.#stepsList.setSteps(steps);
-    }
+  #onStepsInit() {
     this.#setProgressBar();
+    this.#timeout = setTimeout(() => {
+      ElementHandler.addStyleClass(this.#container, DOM_ELEMENT_CLASS.filled);
+      this.#submitValueChange();
+    }, 200);
   }
 
   selectNext() {
@@ -70,9 +72,8 @@ export default class WizardStepper extends HTMLElement {
   }
 
   #onStepSelected() {
-    console.log('onStepSelected');
     this.#setProgressBar();
-    console.log(this.selectedStep);
+    this.#submitValueChange();
   }
 
   #setProgressBar() {
@@ -82,6 +83,10 @@ export default class WizardStepper extends HTMLElement {
     }
   }
 
+  #submitValueChange() {
+    const event = new CustomEvent('onStepSelected', { detail: this.selectedStep });
+    this.dispatchEvent(event);
+  }
 }
 
 customElements.define('app-wizard-stepper', WizardStepper);

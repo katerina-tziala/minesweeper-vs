@@ -5,8 +5,6 @@
 
 $button-height: 32px;
 
-
-
 ._button {
   cursor: pointer;
   outline: none;
@@ -50,18 +48,10 @@ $button-height: 32px;
   &::after {
     @extend .icon-x;
     font-size: 20px;
-    // position: relative;
-    // top: 1px;
-
     height: 100%;
-    /* background: pink; */
-    line-height: 32px;
+    line-height: 33px;
   }
 }
-
-
-
-
 
 // TODO THEMING
 .button--primary {
@@ -73,7 +63,8 @@ $button-height: 32px;
   &:hover,
   &:focus {
     color: #fff;
-    background: #000 radial-gradient(circle, transparent 1%, #000 1%) center/15000%;
+    background: #000 radial-gradient(circle, transparent 1%, #000 1%)
+      center/15000%;
     box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
       0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
   }
@@ -83,11 +74,11 @@ $button-height: 32px;
     background-size: 100%;
     transition: background 0s;
     box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
-    0 1px 5px 0 rgb(0 0 0 / 12%);
+      0 1px 5px 0 rgb(0 0 0 / 12%);
   }
 
   box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
-  0 1px 5px 0 rgb(0 0 0 / 12%);
+    0 1px 5px 0 rgb(0 0 0 / 12%);
 }
 
 // .button-text {

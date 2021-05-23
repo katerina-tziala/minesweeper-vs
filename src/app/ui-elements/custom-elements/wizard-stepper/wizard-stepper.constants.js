@@ -1,7 +1,8 @@
 export const DOM_ELEMENT_CLASS = {
     container: 'stepper-container',
     steps: 'stepper-steps',
-    progress: 'stepper--progress'
+    progress: 'stepper--progress',
+    filled: 'stepper-container--filled'
 };
 
 export const ATTRIBUTES = {
