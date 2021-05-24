@@ -55,7 +55,30 @@
   }
 }
 
-
 .game-wizard-vs__settings-container {
   border: 1px solid green;
+}
+
+.game-wizard-actions {
+  // border: 1px solid red;
+  margin-top: 30px;
+  @extend %flex-between-center;
+  > .button-text {
+    min-width: 80px;
+
+    &.next {
+      &::after {
+        @extend .icon-double-right;
+        padding-left: 5px;
+      }
+    }
+
+    &.previous {
+      &::before {
+        padding-right: 5px;
+        @extend .icon-double-left;
+      }
+    }
+
+  }
 }

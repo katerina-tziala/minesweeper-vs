@@ -91,6 +91,16 @@
   content: fa-content($fa-var-sliders-h);
 }
 
+.icon-double-right {
+  @extend %icon-regular;
+  content: fa-content($fa-var-angle-double-right);
+}
+
+.icon-double-left {
+  @extend %icon-regular;
+  content: fa-content($fa-var-angle-double-left);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

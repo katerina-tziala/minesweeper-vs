@@ -61,6 +61,7 @@ export class ElementHandler {
   static setDisabled(element, disabled = true) {
     if (element) {
       element.disabled = disabled;
+      element.setAttribute('aria-disabled', disabled);
     }
   }
 
