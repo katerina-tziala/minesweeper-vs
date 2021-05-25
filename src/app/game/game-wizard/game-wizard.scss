@@ -10,11 +10,16 @@
   will-change: transform, opacity;
   @include animations.slideIn(1);
   position: relative;
-
+  @extend %flex-start-start;
+  flex-direction: column;
   .button-icon--close {
     position: absolute;
     right: 20px;
   }
+
+  overflow: hidden;
+  height: 180px;
+  transition: height 0.5s ease-in-out;
 }
 
 .game-wizard--slide-out {
@@ -46,21 +51,26 @@
   margin-top: 30px;
 }
 
-.game-wizard-buttons-container {
-  margin-top: 30px;
-  @extend %flex-between-center;
+// .game-wizard-buttons-container {
+//   margin-top: 30px;
+//   border: 1px solid green;
+//   @extend %flex-between-center;
 
-  > .button-text {
-    min-width: 120px;
-  }
+//   > .button-text {
+//     min-width: 120px;
+//   }
+// }
+
+.game-wizard-content-vs {
+  width: 100%;
 }
 
 .game-wizard-vs__settings-container {
-  border: 1px solid green;
+  padding: 30px 10px 0;
+  flex-grow: 1;
 }
 
 .game-wizard-actions {
-  // border: 1px solid red;
   margin-top: 30px;
   @extend %flex-between-center;
   > .button-text {
@@ -79,6 +89,5 @@
         @extend .icon-double-left;
       }
     }
-
   }
 }

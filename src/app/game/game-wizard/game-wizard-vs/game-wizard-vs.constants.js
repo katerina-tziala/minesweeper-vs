@@ -1,6 +1,5 @@
 export const DOM_ELEMENT_CLASS = {
   container: 'game-wizard-content-vs',
-  settingsContainer: 'game-wizard-vs__settings-container'
 };
 
 export const STEPS = {

@@ -83,6 +83,7 @@ export default class DropdowPanel extends HTMLElement {
   }
 
   #expand() {
+   // console.log(this, this.#content);
     this.#setTransformScale(this);
     this.#setTransformScale(this.#content);
     this.#animateExpand();

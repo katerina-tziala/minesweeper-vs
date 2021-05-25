@@ -10,7 +10,7 @@ import Dropdown from './dropdown/Dropdown';
 import DropdownSelect from './dropdow-select/DropdownSelect';
 import WizardStepper from './wizard-stepper/WizardStepper';
 import ProgressBar from './progress-bar/ProgressBar';
-
+import DropdowPanel from './dropdown/dropdown-panel/DropdowPanel';
 
 // import what needed only
 

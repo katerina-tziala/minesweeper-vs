@@ -27,7 +27,7 @@
   text-transform: uppercase;
   font-weight: 900;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 1.1rem;
 
   &.level {
@@ -61,9 +61,6 @@
   &.bot {
     &::before {
       @extend .icon-bot;
-      // width: 20px;
-      // text-align: left;
-      // margin-right: 10px;
       width: 25px;
       text-align: left;
       margin-right: 10px;
@@ -71,12 +68,10 @@
     }
   }
 
-  
-
 }
 
 .game-setting-explanation {
   text-align: center;
-  border: 1px solid red;
   width: 100%;
+  min-height: 40px;
 }

@@ -5,5 +5,6 @@ export { OptionsSettingsDetect } from './options-settings/options-settings-detec
 export { OptionsSettingsParallel } from './options-settings/options-settings-parallel/options-settings-parallel';
 export { OptionsSettingsClear } from './options-settings/options-settings-clear/options-settings-clear';
 export { BotSettings } from './mode-settings/bot-settings/bot-settings';
+export { GameModeSettings } from './mode-settings/game-mode-settings/game-mode-settings';
 
 

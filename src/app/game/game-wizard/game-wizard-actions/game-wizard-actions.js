@@ -1,5 +1,5 @@
 'use strict';
-import {ElementHandler, ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
+import { ElementHandler, ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, BUTTON_TYPES, BUTTON_TEXT } from './game-wizard-actions.constants';
 
 export class GameWizardActions {
@@ -7,6 +7,7 @@ export class GameWizardActions {
     #buttonsIndex = new Map();
     #finalStepIndex = 0;
     #currentIndex = 0;
+    #container;
 
     constructor(actions) {
         this.#actions = actions;
@@ -17,23 +18,27 @@ export class GameWizardActions {
     }
 
     generate() {
-        const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.buttonsContainer]);
+        this.#container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.buttonsContainer]);
         const buttons = this.#stepsHandling ? this.#generateStepsHandlingButtons() : this.#generateBasicButtons();
-        container.append(buttons);
-        return container;
+        this.#container.append(buttons);
+        ElementHandler.hide(this.#container);
+        return this.#container;
     }
 
     init(finalStepIndex, currentIndex = 0) {
-        if (!this.#stepsHandling) {
-            return;
-        }
+        ElementHandler.display(this.#container);
         ElementHandler.setDisabled(this.#buttonsIndex.get(BUTTON_TYPES.reset), false);
-        this.#finalStepIndex = finalStepIndex;
-
-        this.onIndexUpdate(currentIndex);
+        ElementHandler.setDisabled(this.#buttonsIndex.get(BUTTON_TYPES.play), false);
+        if (this.#stepsHandling) {
+            this.#finalStepIndex = finalStepIndex;
+            this.onIndexUpdate(currentIndex);
+        }
     }
 
     onIndexUpdate(currentIndex = 0) {
+        if (!this.#stepsHandling) {
+            return;
+        }
         this.#currentIndex = currentIndex;
         this.#checkPreviousButton();
         this.#checkNextButton();

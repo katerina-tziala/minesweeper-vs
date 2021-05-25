@@ -23,6 +23,9 @@ export function lastPositionInArray(arrayList = []) {
   return arrayList.length ? arrayList.length - 1 : 0;
 };
 
+export const enumKey = (enumObject, value) => {
+  return Object.keys(enumObject).find((key) => enumObject[key] === value);
+};
 
 
 

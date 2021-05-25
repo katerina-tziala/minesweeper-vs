@@ -14,8 +14,12 @@ export class GameWizard {
         this.#onCancel = onCancel;
     }
 
+    get wizardId() {
+        return DOM_ELEMENT_CLASS.wizard;
+    }
+
     get wizardContainer() {
-        return document.getElementById(DOM_ELEMENT_CLASS.wizard);
+        return document.getElementById(this.wizardId);
     }
 
     render() {
