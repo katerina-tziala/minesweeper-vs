@@ -4,8 +4,8 @@ import { GameWizardVS } from '../game-wizard-vs';
 
 export class GameWizardVSFriend extends GameWizardVS {
 
-    constructor(opponent, onComplete, onClose) {
-        super(opponent, onComplete, onClose);
+    constructor(opponent) {
+        super(opponent);
         this.type = GameType.Friend;
         this.setConfig();
         this.setHeaderText();

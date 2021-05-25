@@ -1,23 +1,24 @@
 'use strict';
 import './game-wizard.scss';
-import { GameType } from 'GAME_ENUMS';
 import { HEADER, DOM_ELEMENT_CLASS } from './game-wizard.constants';
 import { ElementGenerator, ElementHandler, ButtonGenerator } from 'UI_ELEMENTS';
 import { GameWizardHelper } from './game-wizard-helper';
 
 export class GameWizard {
-
     type;
     actionsHandler;
-
-
     #onComplete;
     #onCancel;
 
+    constructor() {
+    }
 
-    constructor(onComplete, onCancel) {
-        this.#onComplete = onComplete;
+    set onCancel(onCancel) {
         this.#onCancel = onCancel;
+    }
+
+    set onComplete(onComplete) {
+        this.#onComplete = onComplete;
     }
 
     get wizardId() {
@@ -31,7 +32,6 @@ export class GameWizard {
     get contentContainer() {
         return document.getElementById(DOM_ELEMENT_CLASS.wizardContent);
     }
-
 
     setHeaderText() {
         this.header = HEADER[this.type];
@@ -61,14 +61,20 @@ export class GameWizard {
     }
 
     onClose() {
-        console.log('onClose');
+        this.#moveOutWizard();
+        if (this.#onCancel) {
+            this.#onCancel();
+        }
     }
 
     onPlayGame(gameConfig) {
-        console.log('onPlayGame');
-        console.log(gameConfig);
-        const container = this.wizardContainer;
-        ElementHandler.addStyleClass(container, DOM_ELEMENT_CLASS.wizardOut);
+        this.#moveOutWizard();
+        if (this.#onComplete) {
+            this.#onComplete(gameConfig);
+        }
     }
 
+    #moveOutWizard() {
+        ElementHandler.addStyleClass(this.wizardContainer, DOM_ELEMENT_CLASS.wizardOut);
+    }
 }

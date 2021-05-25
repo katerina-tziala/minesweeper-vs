@@ -18,8 +18,8 @@ export class GameWizardVS extends GameWizard {
     #settingsController;
     #minHeight = 180;
 
-    constructor(opponent, onComplete, onClose) {
-        super(onComplete, onClose);
+    constructor(opponent) {
+        super();
         this.opponent = opponent;
         this.type = GameType.Bot;
         this.mode = GameMode.Clear;
@@ -48,8 +48,7 @@ export class GameWizardVS extends GameWizard {
 
         return this.stepTypes.map((name, index) => {
             const selected = index === selectedIndex;
-            // TODO: const visited = selectedIndex < 0 ? false : index <= selectedIndex;
-            const visited = true;
+            const visited = selectedIndex < 0 ? false : index <= selectedIndex;
             return { name, selected, visited, ariaLabel: STEPS_ARIA[name] };
         });
     }
@@ -226,9 +225,7 @@ export class GameWizardVS extends GameWizard {
         this.#settingsController.updateSettingsInProgress();
         LocalStorageHelper.saveGameSetUp(this.type, this.gameSettings);
         const gameConfig = this.gameSetup;
-        console.log('onPlay');
-        console.log(gameConfig);
-        //this.onPlayGame(gameConfig);
+        this.onPlayGame(gameConfig);
     }
 
 }
