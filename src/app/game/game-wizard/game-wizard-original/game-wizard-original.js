@@ -9,8 +9,8 @@ export class GameWizardOriginal extends GameWizard {
     header;
     type;
 
-    constructor(onPlay, onClose) {
-        super(onPlay, onClose);
+    constructor(onComplete, onClose) {
+        super(onComplete, onClose);
         this.type = GameType.Original;
         this.setHeaderText();
         this.levelSettings = new LevelSettings();

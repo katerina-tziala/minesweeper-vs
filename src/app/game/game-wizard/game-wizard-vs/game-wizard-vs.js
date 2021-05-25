@@ -1,12 +1,13 @@
 'use strict';
 import { GameType, GameMode } from 'GAME_ENUMS';
 import { ElementGenerator, ElementHandler } from 'UI_ELEMENTS';
-import { replaceStringParameter, lastPositionInArray } from 'UTILS';
+import { replaceStringParameter, lastPositionInArray, LocalStorageHelper } from 'UTILS';
 import { DOM_ELEMENT_CLASS, GAME_MODE_STEPS, STEPS_ARIA } from './game-wizard-vs.constants';
 import { GameWizard } from '../game-wizard';
 import { GameWizardActions } from '../game-wizard-actions/game-wizard-actions';
 import { GameWizardVsSettingsController as SettingsController } from './game-wizard-vs-settings-controller/game-wizard-vs-settings-controller';
 import { WizardSteps } from './wizard-steps.enum';
+
 
 export class GameWizardVS extends GameWizard {
     mode;
@@ -17,10 +18,10 @@ export class GameWizardVS extends GameWizard {
     #settingsController;
     #minHeight;
 
-    constructor(onPlay, onClose) {
-        super(onPlay, onClose);
+    constructor(onComplete, onClose) {
+        super(onComplete, onClose);
         this.actionsHandler = new GameWizardActions({
-            play: this.#onPlay.bind(this),
+            play: this.onPlay.bind(this),
             reset: this.#onReset.bind(this),
             next: this.#onNextStep.bind(this),
             previous: this.#onPreviousStep.bind(this)
@@ -51,6 +52,10 @@ export class GameWizardVS extends GameWizard {
         });
     }
 
+    get gameSettings() {
+        return this.#settingsController ? this.#settingsController.gameSettings : undefined;
+    }
+
     // check defaults
     setConfig() {
         this.baseSteps = [WizardSteps.Mode];
@@ -71,7 +76,11 @@ export class GameWizardVS extends GameWizard {
     }
 
     init() {
-        // // TODO: init from local storage
+        this.#settingsController.gameSettings = LocalStorageHelper.getGameSetUp(this.type);
+        const selectedMode = this.#settingsController.selectedMode;
+        if (selectedMode) {
+            this.mode = selectedMode;
+        }
         this.#setUpStepper();
     }
 
@@ -128,15 +137,12 @@ export class GameWizardVS extends GameWizard {
         }
         this.#setWizardHeight();
         this.#settingsController.updateSettingsInProgress();
-        this.#animateWizard(() => {
-            this.#selectedStep = selectedStep;
-            const { name } = selectedStep;
-
-            if (name === WizardSteps.Level) {// mode is configured
-                this.#updateMode(this.#settingsController.selectedMode);
-            }
-            this.#updateStepContent();
-        });
+        this.#selectedStep = selectedStep;
+        const { name } = selectedStep;
+        if (name === WizardSteps.Level) {// mode is configured
+            this.#updateMode(this.#settingsController.selectedMode);
+        }
+        this.#animateWizard(() => this.#updateStepContent());
     }
 
     #updateStepContent() {
@@ -192,21 +198,14 @@ export class GameWizardVS extends GameWizard {
         }
     }
 
-
-    #onPlay() {
+    onPlay() {
         this.#settingsController.updateSettingsInProgress();
-        console.log('onPlay');
-        console.log(this.#settingsController.gameSettings);
+        const gameSettings = this.gameSettings;
+        LocalStorageHelper.saveGameSetUp(this.type, gameSettings);
+
+        console.log('onPlay -- transform settings');
+        console.log(gameSettings);
         console.log(this.type);
     }
-
-    // #onPlay() {
-    //     const level = { ...this.levelSettings.settings };
-    //     const options = { ...this.optionsSettings.settings };
-    //     const settings = { mode: this.#gameType, level, options };
-    //     if (this.#submitSettings) {
-    //         this.#submitSettings(settings);
-    //     }
-    // }
 
 }

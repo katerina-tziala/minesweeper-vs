@@ -16,6 +16,17 @@ export class GameWizardVsSettingsController {
 
     }
 
+    set gameSettings(gameSettings) {
+        this.#gameSettings = new Map();
+
+        if (gameSettings) {
+            for (const [key, settings] of Object.entries(gameSettings)) {
+                this.#gameSettings.set(key, settings);
+            }
+        }
+        console.log(this.#gameSettings);
+    }
+
     get #settings() {
         const settings = this.#controller ? this.#controller.settings : undefined;
         const name = this.#settingsName;

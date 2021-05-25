@@ -11,10 +11,12 @@ export class GameWizard {
     actionsHandler;
 
 
-    #onPlay;
+    #onComplete;
     #onCancel;
-    constructor(onPlay, onCancel) {
-        this.#onPlay = onPlay;
+
+
+    constructor(onComplete, onCancel) {
+        this.#onComplete = onComplete;
         this.#onCancel = onCancel;
     }
 
