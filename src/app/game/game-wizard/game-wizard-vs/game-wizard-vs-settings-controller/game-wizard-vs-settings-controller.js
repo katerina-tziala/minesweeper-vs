@@ -11,9 +11,11 @@ export class GameWizardVsSettingsController {
     #controller;
     #settingsName;
     #gameSettings = new Map();
+    #type;
 
-    constructor() {
-
+    constructor(type) {
+        this.#type = type;
+        console.log('GameWizardVsSettingsController', this.#type);
     }
 
     set gameSettings(gameSettings) {
@@ -24,7 +26,6 @@ export class GameWizardVsSettingsController {
                 this.#gameSettings.set(key, settings);
             }
         }
-        console.log(this.#gameSettings);
     }
 
     get #settings() {

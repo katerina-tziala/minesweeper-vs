@@ -5,14 +5,14 @@ import { User } from '~/_models/user';
 
 export class GameWizardVSOnline extends GameWizardVS {
 
-    constructor(onPlay, onClose) {
-        super(onPlay, onClose);
+    constructor(onComplete, onClose) {
+        super(onComplete, onClose);
+
         console.log('GameWizardVSOnline');
 
         this.type = GameType.Online;
-        this.opponent = new User('A Friend');
+        this.opponent = new User('A Friend', 'invitedfriend');
 
-        this.mode = GameMode.Clear;
         this.setConfig();
     }
 
