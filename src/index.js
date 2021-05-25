@@ -11,9 +11,9 @@ import { GameWizardOriginal, GameWizardVSBot, GameWizardVSFriend, GameWizardVSOn
 
 document.addEventListener('DOMContentLoaded', () => {
   // AppLoaderHandler.display();
-  // new App();
+  new App();
 
-  AppLoaderHandler.hide();
+  // AppLoaderHandler.hide();
   // const test = document.getElementsByTagName("app-wizard-stepper")[0];
   // test.setSteps(steps);
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // }, 3000);
 
-  const gamesetup = document.getElementById("main-content");
+  // const gamesetup = document.getElementById("main-content");
   // const gamesetup = document.getElementById("game-set-up");
 
   
@@ -36,23 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // const wizard = new GameWizardVSBot();
 
-  const localfriend = { id: 'localfriend', username: 'local friend' };
-  const wizard = new GameWizardVSFriend(localfriend);
+  // const localfriend = { id: 'localfriend', username: 'local friend' };
+  // const wizard = new GameWizardVSFriend(localfriend);
   
-  // const FRIEND = { id: 'friend', username: 'Kate' };
-  // const wizard = new GameWizardVSOnline(FRIEND);
+  // // const FRIEND = { id: 'friend', username: 'Kate' };
+  // // const wizard = new GameWizardVSOnline(FRIEND);
 
 
-  wizard.onCancel = () => {
-    console.log('oncancel');
-  };
+  // wizard.onCancel = () => {
+  //   console.log('oncancel');
+  // };
 
-  wizard.onComplete = (gameConfig) => {
-    console.log('oncomplete');
-    console.log(gameConfig);
-  };
+  // wizard.onComplete = (gameConfig) => {
+  //   console.log('oncomplete');
+  //   console.log(gameConfig);
+  // };
 
-  gamesetup.append(wizard.render());
-  wizard.init();
+  // gamesetup.append(wizard.render());
+  // wizard.init();
 
 });
