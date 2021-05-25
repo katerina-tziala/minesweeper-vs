@@ -10,14 +10,11 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 // import OptionsSettingsFactory from './app/game/game-settings/options-settings/options-settings-factory';
 
 
-// import { GameWizardOriginal } from './app/game/game-wizard/game-wizard-original/game-wizard-original';
+import { GameWizardOriginal } from './app/game/game-wizard/game-wizard-original/game-wizard-original';
 
-
-// import { BotSettings } from './app/game/game-settings/mode-settings/bot-settings/bot-settings'
-// import { GameModeSettings } from './app/game/game-settings/mode-settings/game-mode-settings/game-mode-settings'
+import { GameWizardVSBot } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-bot/game-wizard-vs-bot';
 
 // import { GameWizardVS } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs';
- import { GameWizardVSBot } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-bot/game-wizard-vs-bot';
 // import { GameWizardVSFriend } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-friend/game-wizard-vs-friend';
 // import { GameWizardVSOnline } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-online/game-wizard-vs-online';
 
@@ -30,47 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // new App();
 
   AppLoaderHandler.hide();
-
-  // const steps = [
-  //   {
-  //     selected: false,
-  //     name: 'bot',
-  //     visited: false,
-  //     disabled: false,
-  //     ariaLabel: 'bot settings',
-  //   },
-  //   {
-  //     selected: false,
-  //     name: 'mode',
-  //     visited: false,
-  //     disabled: false,
-  //     ariaLabel: 'game goal settings',
-  //   },
-  //   {
-  //     selected: false,
-  //     name: 'level',
-  //     visited: false,
-  //     disabled: false,
-  //     ariaLabel: 'level settings',
-  //   },
-  //   {
-  //     selected: false,
-  //     name: 'turns',
-  //     visited: false,
-  //     disabled: false,
-  //     ariaLabel: 'turns settings',
-  //   },
-  //   {
-  //     selected: false,
-  //     name: 'options',
-  //     visited: false,
-  //     disabled: false,
-  //     ariaLabel: 'options settings',
-  //   }
-  // ];
-
-
-
   // const test = document.getElementsByTagName("app-wizard-stepper")[0];
   // test.setSteps(steps);
 

@@ -1,7 +1,7 @@
 'use strict';
 
 export class LocalStorageHelper {
-//state controoler
+  //state controoler
   static save(keyName, value) {
     localStorage.setItem(keyName, JSON.stringify(value));
   }
@@ -31,9 +31,19 @@ export class LocalStorageHelper {
     return LocalStorageHelper.save('peers', peers);
   }
 
- static get user() {
+  static get user() {
     return LocalStorageHelper.retrieve('user');
   }
+
+  static saveGameSetUp(type, data) {
+    LocalStorageHelper.save(`game-setup-${type}`, data);
+  }
+
+  static getGameSetUp(type) {
+    return LocalStorageHelper.retrieve(`game-setup-${type}`);
+  }
+
+
 
   // static set appSettings(data) {
   //   LocalStorageHelper.save('appSettings', data);
@@ -55,12 +65,6 @@ export class LocalStorageHelper {
   //   return localStorage.removeItem(`gameSetup-${type}`);
   // }
 
-  // static setGameSetUp(type, data) {
-  //   LocalStorageHelper.save(`gameSetup-${type}`, data);
-  // }
 
-  // static getGameSetUp(type) {
-  //   return LocalStorageHelper.retrieve(`gameSetup-${type}`);
-  // }
 
 }

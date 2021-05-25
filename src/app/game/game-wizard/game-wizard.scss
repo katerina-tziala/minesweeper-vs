@@ -2,24 +2,21 @@
 @use 'styles/iconography/iconography';
 @use 'styles/utils/animations/animations';
 @use 'styles/components/card/card';
-// @use 'styles/typography/typography';
 
 .game-wizard {
-  max-width: 400px;
-  @extend .card;
+  width: 400px;
   will-change: transform, opacity;
+  @extend .card;
   @include animations.slideIn(1);
   position: relative;
-  @extend %flex-start-start;
-  flex-direction: column;
+  overflow: hidden;
+  min-height: 180px;
+  transition: height 0.5s ease-in-out;
+
   .button-icon--close {
     position: absolute;
     right: 20px;
   }
-
-  overflow: hidden;
-  height: 180px;
-  transition: height 0.5s ease-in-out;
 }
 
 .game-wizard--slide-out {
@@ -28,10 +25,9 @@
 
 .game-wizard-header {
   text-transform: capitalize;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   margin-right: 40px;
-  max-width: 300px;
-  min-width: 300px;
+  width: 320px;
   word-break: break-all;
 
   > div {
@@ -51,28 +47,25 @@
   margin-top: 30px;
 }
 
-// .game-wizard-buttons-container {
-//   margin-top: 30px;
-//   border: 1px solid green;
-//   @extend %flex-between-center;
-
-//   > .button-text {
-//     min-width: 120px;
-//   }
-// }
+.game-wizard-content {
+  width: 100%;
+  padding: 10px;
+  will-change: contents;
+}
 
 .game-wizard-content-vs {
   width: 100%;
-}
-
-.game-wizard-vs__settings-container {
-  padding: 30px 10px 0;
-  flex-grow: 1;
+  will-change: contents;
+  .game-wizard-vs__settings-container {
+    padding-top: 15px;
+  }
 }
 
 .game-wizard-actions {
-  margin-top: 30px;
+  padding: 30px 0 5px;
   @extend %flex-between-center;
+  width: 100%;
+
   > .button-text {
     min-width: 80px;
 

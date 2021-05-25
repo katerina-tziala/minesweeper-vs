@@ -1,36 +1,36 @@
 'use strict';
 import { GameType, GameMode } from 'GAME_ENUMS';
-import { ElementHandler, ElementGenerator, HeightAnimation } from 'UI_ELEMENTS';
+import { ElementGenerator, ElementHandler } from 'UI_ELEMENTS';
 import { replaceStringParameter, lastPositionInArray } from 'UTILS';
-
-import { GAME_MODE_STEPS, DOM_ELEMENT_CLASS, STEPS_ARIA } from './game-wizard-vs.constants';
-import { HEADER } from '../game-wizard.constants';
+import { DOM_ELEMENT_CLASS, GAME_MODE_STEPS, STEPS_ARIA } from './game-wizard-vs.constants';
 import { GameWizard } from '../game-wizard';
-
 import { GameWizardActions } from '../game-wizard-actions/game-wizard-actions';
 import { GameWizardVsSettingsController as SettingsController } from './game-wizard-vs-settings-controller/game-wizard-vs-settings-controller';
 import { WizardSteps } from './wizard-steps.enum';
 
 export class GameWizardVS extends GameWizard {
-    type;
     mode;
+    opponent;
     baseSteps = [];
     #wizardStepper;
-    #actionsHandler;
     #selectedStep;
     #settingsController;
     #minHeight;
 
     constructor(onPlay, onClose) {
         super(onPlay, onClose);
-        this.#minHeight = 180;
-        this.#actionsHandler = new GameWizardActions({
+        this.actionsHandler = new GameWizardActions({
             play: this.#onPlay.bind(this),
             reset: this.#onReset.bind(this),
             next: this.#onNextStep.bind(this),
             previous: this.#onPreviousStep.bind(this)
         });
+        this.#minHeight = 180;
         this.#settingsController = new SettingsController();
+    }
+
+    get #container() {
+        return document.getElementById(DOM_ELEMENT_CLASS.container);
     }
 
     get modeSettingsTypes() {
@@ -51,33 +51,15 @@ export class GameWizardVS extends GameWizard {
         });
     }
 
-    get #container() {
-        return document.getElementById(DOM_ELEMENT_CLASS.container);
-    }
-
     // check defaults
     setConfig() {
         this.baseSteps = [WizardSteps.Mode];
     }
 
     setHeaderText() {
-        const header = HEADER[this.type];
+        super.setHeaderText();
         const { username } = this.opponent;
-        this.header = replaceStringParameter(header, `<i>${username}</i>`);
-    }
-
-    #setWizardStepper() {
-        this.#wizardStepper = document.createElement('app-wizard-stepper');
-        this.#wizardStepper.setAttribute('name', 'gameSettings');
-        this.#wizardStepper.addEventListener('onStepSelected', (event) => this.#onStepSelection(event.detail));
-    }
-
-    #generateStepContainer() {
-        const stepContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);
-        const settingsContainer = this.#settingsController.generate();
-        const buttons = this.#actionsHandler.generate();
-        stepContainer.append(settingsContainer, buttons);
-        return stepContainer;
+        this.header = replaceStringParameter(this.header, `<i>${username}</i>`);
     }
 
     generateContent() {
@@ -88,17 +70,33 @@ export class GameWizardVS extends GameWizard {
         return fragment;
     }
 
-
     init() {
         // // TODO: init from local storage
         this.#setUpStepper();
+    }
+
+    #setWizardStepper() {
+        this.#wizardStepper = document.createElement('app-wizard-stepper');
+        this.#wizardStepper.setAttribute('name', 'gameSettings');
+        this.#wizardStepper.addEventListener('onStepSelected', (event) => this.#onStepSelection(event.detail));
+        // tab navigation
+    }
+
+    #generateStepContainer() {
+        const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.container], DOM_ELEMENT_CLASS.container);
+        const stepContainer = this.generateContentContainer();
+        stepContainer.append(this.#settingsController.generate());
+
+        const buttons = this.actionsHandler.generate();
+        container.append(stepContainer, buttons);
+        return container;
     }
 
     #setUpStepper() {
         const steps = this.settingsSteps;
         const lastIndex = lastPositionInArray(steps);
         this.#wizardStepper.setSteps(steps);
-        this.#actionsHandler.init(lastIndex);
+        this.actionsHandler.init(lastIndex);
     }
 
     #modeHasTurns(mode) {
@@ -121,7 +119,7 @@ export class GameWizardVS extends GameWizard {
 
     #updateActions() {
         const index = this.#selectedStep.index;
-        this.#actionsHandler.onIndexUpdate(index);
+        this.actionsHandler.onIndexUpdate(index);
     }
 
     #checkSelectedStepUpdate(selectedStep) {
@@ -142,8 +140,8 @@ export class GameWizardVS extends GameWizard {
     }
 
     #updateStepContent() {
-        this.#updateActions();
         this.#settingsController.initController(this.#selectedStep);
+        this.#updateActions();
         this.#setWizardHeight(ElementHandler.getElementHeight(this.#container));
     }
 
@@ -195,12 +193,11 @@ export class GameWizardVS extends GameWizard {
     }
 
 
-
-    
     #onPlay() {
         this.#settingsController.updateSettingsInProgress();
         console.log('onPlay');
         console.log(this.#settingsController.gameSettings);
+        console.log(this.type);
     }
 
     // #onPlay() {

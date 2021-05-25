@@ -1,50 +1,65 @@
 'use strict';
 import { GameType } from 'GAME_ENUMS';
-import { ElementGenerator, ButtonGenerator } from 'UI_ELEMENTS';
-import { LevelSettings, OptionsSettingsOriginal } from '../../game-settings/@game-settings.module';
-import { HEADER, DOM_ELEMENT_CLASS } from '../game-wizard.constants';
+import { LevelSettings, OptionsSettingsOriginal } from 'GAME_SETTINGS';
 import { GameWizard } from '../game-wizard';
+import { GameWizardActions } from '../game-wizard-actions/game-wizard-actions';
+import { LocalStorageHelper } from 'UTILS';
 
 export class GameWizardOriginal extends GameWizard {
     header;
-    #type;
+    type;
 
     constructor(onPlay, onClose) {
         super(onPlay, onClose);
-        this.#type = GameType.Original;
-        this.header = HEADER[this.#type];
+        this.type = GameType.Original;
+        this.setHeaderText();
         this.levelSettings = new LevelSettings();
         this.optionsSettings = new OptionsSettingsOriginal();
+        this.actionsHandler = new GameWizardActions({
+            play: this.#onPlay.bind(this),
+            reset: this.#onReset.bind(this)
+        });
+    }
+
+    get #gameSettings() {
+        const level = { ...this.levelSettings.settings };
+        const options = { ...this.optionsSettings.settings };
+        return { type: this.type, mode: this.type, level, options };
     }
 
     generateContent() {
         const fragment = document.createDocumentFragment();
-        fragment.append(this.levelSettings.render());
-        fragment.append(this.optionsSettings.render());
-        fragment.append(this.#generateActions());
+        const container = this.generateContentContainer();
+        container.append(this.levelSettings.render());
+        container.append(this.optionsSettings.render());
+        const actions = this.actionsHandler.generate();
+        fragment.append(container, actions);
         return fragment;
     }
 
     init() {
-        console.log('init original');
-        // TODO: init from local storage
-        this.levelSettings.init();
-        this.optionsSettings.init();
+        super.init();
+        const initialSettings = LocalStorageHelper.getGameSetUp(this.type);
+        let level, settings;
+        if (initialSettings) {
+            level = initialSettings.level;
+            settings = initialSettings.settings;
+        }
+        this.#initSettings(level, settings);
     }
 
-    #generateActions() {
-        const buttonsContainer = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.buttonsContainer]);
-        const clearbtn = ButtonGenerator.generateTextButton('reset', this.onReset.bind(this));
-        buttonsContainer.append(clearbtn);
-        const playbtn = ButtonGenerator.generateTextButton('play', this.#submitSettings.bind(this));
-        buttonsContainer.append(playbtn);
-        return buttonsContainer;
+    #initSettings(level, options) {
+        this.levelSettings.init(level);
+        this.optionsSettings.init(options);
     }
 
-    #submitSettings() {
-        const level = { ...this.levelSettings.settings };
-        const options = { ...this.optionsSettings.settings };
-        const settings = { type: this.#type, mode: this.#type, level, options };
-        this.onPlayGame(settings);
+    #onPlay() {
+        const gameSettings = this.#gameSettings;
+        LocalStorageHelper.saveGameSetUp(this.type, gameSettings);
+        this.onPlayGame(gameSettings);
+    }
+
+    #onReset() {
+        this.#initSettings();
     }
 }
