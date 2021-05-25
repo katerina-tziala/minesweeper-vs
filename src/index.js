@@ -13,9 +13,9 @@ import { AppLoaderHandler } from './app/app-loader-handler';
 import { GameWizardOriginal } from './app/game/game-wizard/game-wizard-original/game-wizard-original';
 
 import { GameWizardVSBot } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-bot/game-wizard-vs-bot';
-
+import { GameWizardVSFriend } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-friend/game-wizard-vs-friend';
 // import { GameWizardVS } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs';
-// import { GameWizardVSFriend } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-friend/game-wizard-vs-friend';
+
 // import { GameWizardVSOnline } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-online/game-wizard-vs-online';
 
 //will change to transform
@@ -66,9 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // gamesetup.append(wiz.render());
   // // wiz.init();
 
-  const asd = new GameWizardVSBot();
-  gamesetup.append(asd.render());
-  asd.init();
+  // const wizard = new GameWizardOriginal();
+  const localfriend = { id: 'localfriend', username: 'local friend' };
+  // const wizard = new GameWizardVSFriend(localfriend);
+  const wizard = new GameWizardVSBot();
+  gamesetup.append(wizard.render());
+  wizard.init();
 
   // const aser = new GameWizardVSOnline();
   // gamesetup.append(aser.render());

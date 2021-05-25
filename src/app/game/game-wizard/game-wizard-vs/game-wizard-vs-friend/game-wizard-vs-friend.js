@@ -1,17 +1,20 @@
 'use strict';
-import { GameType } from 'GAME_ENUMS';
+import { GameMode, GameType } from 'GAME_ENUMS';
 import { GameWizardVS } from '../game-wizard-vs';
-import { User } from '~/_models/user';
 
 export class GameWizardVSFriend extends GameWizardVS {
 
-    constructor(onComplete, onClose) {
-        super(onComplete, onClose, new User('local friend'));
+    constructor(opponent, onComplete, onClose) {
+        super(opponent, onComplete, onClose);
         this.type = GameType.Friend;
-        //this.opponent = new User('local friend');
-
-        
         this.setConfig();
+        this.setHeaderText();
     }
 
+    updateMode(selectedMode = GameMode.Clear) {
+        if (this.mode === selectedMode) {
+            return;
+        }
+        this.mode = selectedMode;
+    }
 }

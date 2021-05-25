@@ -18,7 +18,7 @@ export class GameWizardVS extends GameWizard {
     #settingsController;
     #minHeight = 180;
 
-    constructor(onComplete, onClose, opponent) {
+    constructor(opponent, onComplete, onClose) {
         super(onComplete, onClose);
         this.opponent = opponent;
         this.type = GameType.Bot;
@@ -133,7 +133,7 @@ export class GameWizardVS extends GameWizard {
         return modeSteps.includes(WizardSteps.Turns);
     }
 
-    #updateMode(selectedMode = GameMode.Clear) {
+    updateMode(selectedMode = GameMode.Clear) {
         if (this.mode === selectedMode) {
             return;
         }
@@ -154,7 +154,7 @@ export class GameWizardVS extends GameWizard {
     #checkModeUpdate() {
         const selectedMode = this.#settingsController.selectedMode;
         if (this.#selectedStep.name !== WizardSteps.Mode && selectedMode) {// mode is configured
-            this.#updateMode(selectedMode);
+            this.updateMode(selectedMode);
         }
     }
 
@@ -218,7 +218,7 @@ export class GameWizardVS extends GameWizard {
     #onReset() {
         this.#settingsController.resetCurrentSettings();
         if (this.selectedStep && this.selectedStep.name === WizardSteps.Mode) {
-            this.#updateMode();
+            this.updateMode();
         }
     }
 

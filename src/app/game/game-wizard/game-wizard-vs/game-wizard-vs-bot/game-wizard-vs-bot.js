@@ -3,10 +3,12 @@ import { GameType } from 'GAME_ENUMS';
 import { GameWizardVS } from '../game-wizard-vs';
 import { WizardSteps } from '../wizard-steps.enum';
 
+const BOT = { id: 'bot', username: 'MineweeperBot' };
+
 export class GameWizardVSBot extends GameWizardVS {
 
     constructor(onComplete, onClose) {
-        super(onComplete, onClose, { id: 'bot', username: 'MineweeperBot' });
+        super(BOT, onComplete, onClose);
         this.type = GameType.Bot;
         this.setConfig();
         this.setHeaderText();

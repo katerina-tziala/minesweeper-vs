@@ -1,7 +1,7 @@
 'use strict';
 import { enumKey } from 'UTILS';
 import { ElementHandler, ElementGenerator, TemplateGenerator } from 'UI_ELEMENTS';
-import { GameMode } from 'GAME_ENUMS';
+import { GameType, GameMode } from 'GAME_ENUMS';
 import * as GAME_SETTINGS from 'GAME_SETTINGS';
 import { DOM_ELEMENT_CLASS, CONTROLLER_NAME, PANEL_TEMPLATE } from './game-wizard-vs-settings-controller.constants';
 import { WizardSteps } from '../wizard-steps.enum';
@@ -11,11 +11,11 @@ export class GameWizardVsSettingsController {
     #controller;
     #settingsName;
     #gameSettings = new Map();
-    #type;
+    #excludeParallel;
 
     constructor(type) {
-        this.#type = type;
-        console.log('GameWizardVsSettingsController', this.#type);
+        this.#excludeParallel = type === GameType.Friend;
+        console.log('GameWizardVsSettingsController', type);
     }
 
     set gameSettings(gameSettings) {
@@ -27,6 +27,7 @@ export class GameWizardVsSettingsController {
             }
         }
     }
+
 
     get #settings() {
         const settings = this.#controller ? this.#controller.settings : undefined;
@@ -88,7 +89,14 @@ export class GameWizardVsSettingsController {
         if (stepName === WizardSteps.Options) {
             return this.#getOptionsController();
         }
+        return this.#getControllerByName(stepName);
+    }
+
+    #getControllerByName(stepName) {
         const constrollerName = CONTROLLER_NAME[stepName];
+        if (stepName === WizardSteps.Mode) {
+            return new GAME_SETTINGS[constrollerName](this.#excludeParallel);
+        }
         return new GAME_SETTINGS[constrollerName]();
     }
 
