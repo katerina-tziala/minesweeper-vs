@@ -15,19 +15,7 @@ export class GameWizardVsSettingsController {
 
     constructor(type) {
         this.#excludeParallel = type === GameType.Friend;
-        console.log('GameWizardVsSettingsController', type);
     }
-
-    set gameSettings(gameSettings) {
-        this.#gameSettings = new Map();
-
-        if (gameSettings) {
-            for (const [key, settings] of Object.entries(gameSettings)) {
-                this.#gameSettings.set(key, settings);
-            }
-        }
-    }
-
 
     get #settings() {
         const settings = this.#controller ? this.#controller.settings : undefined;
@@ -40,6 +28,16 @@ export class GameWizardVsSettingsController {
 
     get #controllerSettings() {
         return this.#gameSettings.get(this.#settingsName);
+    }
+
+    set gameSettings(gameSettings) {
+        this.#gameSettings = new Map();
+
+        if (gameSettings) {
+            for (const [key, settings] of Object.entries(gameSettings)) {
+                this.#gameSettings.set(key, settings);
+            }
+        }
     }
 
     get selectedMode() {
@@ -64,16 +62,42 @@ export class GameWizardVsSettingsController {
     }
 
     initController(settingStep) {
-        const { name, ariaLabel, controls } = settingStep;
-        this.#settingsName = name;
         ElementHandler.clearContent(this.#settingsContainer);
 
+        const { name, ariaLabel, controls } = settingStep;
+        this.#settingsName = name;
         this.#controller = this.#getController(name);
         if (!this.#controller) {
             throw new Error('could not load game controller');
         }
 
-        const panel = this.#getControllerPanel({ ariaLabel, id: controls });
+        this.#renderController(ariaLabel, controls);
+    }
+
+    updateSettingsInProgress() {
+        const currentSettings = this.#settings;
+        if (currentSettings) {
+            const { name, settings } = currentSettings;
+            this.#gameSettings.set(name, settings);
+        }
+    }
+    resetCurrentSettings() {
+        if (this.#settingsName && this.#controller) {
+            this.#gameSettings.delete(this.#settingsName);
+            this.#controller.init(this.#controllerSettings);
+        }
+    }
+
+    focusOnPanel(settingStep) {
+        const id = settingStep ? settingStep.controls : '';
+        const panel = document.getElementById(id);
+        if (panel) {
+            panel.focus();
+        }
+    }
+
+    #renderController(ariaLabel, id) {
+        const panel = this.#getControllerPanel({ ariaLabel, id });
         this.#settingsContainer.append(panel);
         this.#controller.init(this.#controllerSettings);
     }
@@ -107,21 +131,6 @@ export class GameWizardVsSettingsController {
         let constrollerName = CONTROLLER_NAME[WizardSteps.Options];
         constrollerName += enumKey(GameMode, this.selectedMode);
         return new GAME_SETTINGS[constrollerName]();
-    }
-
-    updateSettingsInProgress() {
-        const currentSettings = this.#settings;
-        if (currentSettings) {
-            const { name, settings } = currentSettings;
-            this.#gameSettings.set(name, settings);
-        }
-    }
-
-    resetCurrentSettings() {
-        if (this.#settingsName && this.#controller) {
-            this.#gameSettings.delete(this.#settingsName);
-            this.#controller.init(this.#controllerSettings);
-        }
     }
 
 }

@@ -18,6 +18,10 @@
   > app-number-input {
     max-width: 114px;
   }
+
+  > app-dropdown-select {
+    min-width: 156px;
+  }
 }
 
 .game-setting-label {
@@ -84,8 +88,4 @@
   text-align: center;
   width: 100%;
   min-height: 40px;
-}
-
-#app-dropdown-gameMode {
-  min-width: 160px;
 }

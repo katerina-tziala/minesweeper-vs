@@ -41,7 +41,7 @@ export class AriaHandler {
   }
 
   static setFocusable(element, focusable = false) {
-    const tabindex = focusable ? 1 : -1;
+    const tabindex = focusable ? 0 : -1;
     if (element) {
       element.setAttribute('tabindex', tabindex);
     }

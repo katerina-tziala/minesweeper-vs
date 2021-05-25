@@ -29,15 +29,8 @@ export default class WizardStepper extends HTMLElement {
     this.#stepsList = this.querySelector(`.${DOM_ELEMENT_CLASS.steps}`);
     this.#stepsList.addEventListener('stepsUpdated', () => this.#onStepsInit());
     this.#stepsList.addEventListener('onSelected', () => this.#onStepSelected());
-    this.#stepsList.addEventListener('removeFocus', () => {
-      console.log('focus on tabpanel');
-    });
-
+    this.#stepsList.addEventListener('removeFocus', () => this.dispatchEvent(new CustomEvent('onRemoveFocus')));
     this.#progressBar = this.querySelector(`.${DOM_ELEMENT_CLASS.progress}`);
-  }
-
-  disconnectedCallback() {
-    console.log('disconnectedCallback WizardStepper');
   }
 
   setSteps(steps) {

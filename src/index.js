@@ -4,19 +4,10 @@ import { App } from './app/App';
 import { AppLoaderHandler } from './app/app-loader-handler';
 
 
-// import GameWizard from './app/game/game-wizard/game-wizard';
-
 
 // import OptionsSettingsFactory from './app/game/game-settings/options-settings/options-settings-factory';
 
-
-import { GameWizardOriginal } from './app/game/game-wizard/game-wizard-original/game-wizard-original';
-
-import { GameWizardVSBot } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-bot/game-wizard-vs-bot';
-import { GameWizardVSFriend } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-friend/game-wizard-vs-friend';
-// import { GameWizardVS } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs';
-
-// import { GameWizardVSOnline } from './app/game/game-wizard/game-wizard-vs/game-wizard-vs-online/game-wizard-vs-online';
+import { GameWizardOriginal, GameWizardVSBot, GameWizardVSFriend, GameWizardVSOnline } from 'GAME_WIZARD';
 
 //will change to transform
 // -- router guard
@@ -69,7 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // const wizard = new GameWizardOriginal();
   const localfriend = { id: 'localfriend', username: 'local friend' };
   // const wizard = new GameWizardVSFriend(localfriend);
-  const wizard = new GameWizardVSBot();
+  // const wizard = new GameWizardVSBot();
+
+  const FRIEND = { id: 'friend', username: 'Kate' };
+
+  const wizard = new GameWizardVSOnline(FRIEND);
   gamesetup.append(wizard.render());
   wizard.init();
 

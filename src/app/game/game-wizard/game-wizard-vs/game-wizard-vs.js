@@ -100,7 +100,7 @@ export class GameWizardVS extends GameWizard {
         this.#wizardStepper = document.createElement('app-wizard-stepper');
         this.#wizardStepper.setAttribute('name', 'gameSettings');
         this.#wizardStepper.addEventListener('onStepSelected', (event) => this.#onStepSelection(event.detail));
-        //TODO: tab navigation
+        this.#wizardStepper.addEventListener('onRemoveFocus', () => this.#settingsController.focusOnPanel(this.#selectedStep));
     }
 
     #generateStepContainer() {

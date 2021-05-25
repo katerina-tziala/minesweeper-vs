@@ -7,8 +7,8 @@ const BOT = { id: 'bot', username: 'MineweeperBot' };
 
 export class GameWizardVSBot extends GameWizardVS {
 
-    constructor(onComplete, onClose) {
-        super(BOT, onComplete, onClose);
+    constructor(opponent = BOT, onComplete, onClose) {
+        super(opponent, onComplete, onClose);
         this.type = GameType.Bot;
         this.setConfig();
         this.setHeaderText();
