@@ -43,7 +43,9 @@ export class LocalStorageHelper {
     return LocalStorageHelper.retrieve(`game-setup-${type}`);
   }
 
-
+  static deleteGameSetUp(type) {
+    return LocalStorageHelper.remove(`game-setup-${type}`);
+  }
 
   // static set appSettings(data) {
   //   LocalStorageHelper.save('appSettings', data);

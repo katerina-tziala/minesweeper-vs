@@ -30,17 +30,11 @@ module.exports = {
             UI_ELEMENTS: path.resolve(__dirname, 'src/app/ui-elements/@ui-elements.module.js'),
             UTILS: path.resolve(__dirname, 'src/app/utils/@utils.module.js'),
             ONLINE_CONNECTION: path.resolve(__dirname, 'src/app/state-controllers/online-connection/@online-connection.module.js'),
+            PAGES: path.resolve(__dirname, 'src/app/pages/@pages.module.js'),
             GAME_ENUMS: path.resolve(__dirname, 'src/app/game/_enums/@game-enums.module.js'),
             GAME_SETTINGS: path.resolve(__dirname, 'src/app/game/game-settings/@game-settings.module.js'),
             GAME_WIZARD: path.resolve(__dirname, 'src/app/game/game-wizard/@game-wizard.module.js'),
-            // UserInputs: path.resolve(__dirname, 'src/app/_modules/user-inputs/@user-inputs.module.js'),
-            // HTML_DOM_Manager: path.resolve(__dirname, 'src/app/_modules/html-dom-manager/@html-dom-manager.module.js'),
-             // GameModels: path.resolve(__dirname, 'src/app/game/_models/@game-models.module.js'),
-            // GameWizardComponents: path.resolve(__dirname, 'src/app/game-wizard/game-wizard-components/@game-wizard-components.module'),
-            // GameWizard: path.resolve(__dirname, 'src/app/game-wizard/@game-wizard.module.js'),
-            // GamePlayComponents: path.resolve(__dirname, 'src/app/game/game-play-components/@game-play-components.module.js'),
-            // GamePlayControllers: path.resolve(__dirname, 'src/app/game/game-play-controllers/@game-play-controllers.module.js'),
-            // GamePlayType: path.resolve(__dirname, 'src/app/game/game-play-type/@game-play-type.module.js')
+
         }
     },
     entry: {

@@ -77,6 +77,23 @@ export default class UsernameForm extends HTMLElement {
     this.#eventsIndex = undefined;
   }
 
+  disableFormButtons() {
+    ElementHandler.setDisabled(this.#submitButton);
+    ElementHandler.setDisabled(this.#clearButton);
+  }
+
+  enableFormButtons() {
+    ElementHandler.setDisabled(this.#submitButton, false);
+    ElementHandler.setDisabled(this.#clearButton, false);
+  }
+
+  setFormError(errorType) {
+    const errorText = ERROR_MESSAGE[errorType] || '';
+    TemplateHelper.setInputError(this.#input, errorText);
+    ElementHandler.setDisabled(this.#submitButton);
+    this.#checkClear();
+  }
+
   #checkEventListener(elementClass, callBack) {
     const element = this.querySelector(`.${elementClass}`);
     if (element && !this.#eventsIndex.has(elementClass)) {
@@ -130,7 +147,7 @@ export default class UsernameForm extends HTMLElement {
   #validateForm() {
     const validationError = this.#validationError;
     if (validationError) {
-      this.setFormError(ERROR_MESSAGE[validationError]);
+      this.setFormError(validationError);
     } else {
       TemplateHelper.setInputError(this.#input);
       ElementHandler.setDisabled(this.#submitButton, false);
@@ -186,21 +203,6 @@ export default class UsernameForm extends HTMLElement {
     this.dispatchEvent(event);
   }
 
-  disableFormButtons() {
-    ElementHandler.setDisabled(this.#submitButton);
-    ElementHandler.setDisabled(this.#clearButton);
-  }
-
-  enableFormButtons() {
-    ElementHandler.setDisabled(this.#submitButton, false);
-    ElementHandler.setDisabled(this.#clearButton, false);
-  }
-
-  setFormError(error) {
-    TemplateHelper.setInputError(this.#input, error);
-    ElementHandler.setDisabled(this.#submitButton);
-    this.#checkClear();
-  }
 }
 
 customElements.define('app-username-form', UsernameForm);

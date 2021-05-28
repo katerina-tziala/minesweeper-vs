@@ -17,7 +17,7 @@ export class GameWizardVS extends GameWizard {
     #selectedStep;
     #settingsController;
     #minHeight = 180;
-
+    #defaultSettings;
     constructor(opponent) {
         super();
         this.opponent = opponent;
@@ -45,10 +45,9 @@ export class GameWizardVS extends GameWizard {
 
     get settingsSteps() {
         const selectedIndex = this.#selectedStep ? this.stepTypes.indexOf(this.#selectedStep.name) : -1;
-
         return this.stepTypes.map((name, index) => {
             const selected = index === selectedIndex;
-            const visited = selectedIndex < 0 ? false : index <= selectedIndex;
+            const visited = this.#stepVisited(selectedIndex, index);
             return { name, selected, visited, ariaLabel: STEPS_ARIA[name] };
         });
     }
@@ -68,6 +67,7 @@ export class GameWizardVS extends GameWizard {
     }
 
     setConfig() {
+        this.#defaultSettings = LocalStorageHelper.getGameSetUp(this.type);
         this.#settingsController = new SettingsController(this.type);
         this.baseSteps = [WizardSteps.Mode];
     }
@@ -87,12 +87,19 @@ export class GameWizardVS extends GameWizard {
     }
 
     init() {
-        this.#settingsController.gameSettings = LocalStorageHelper.getGameSetUp(this.type);
+        this.#settingsController.gameSettings = this.#defaultSettings;
         const selectedMode = this.#settingsController.selectedMode;
         if (selectedMode) {
             this.mode = selectedMode;
         }
         this.#setUpStepper();
+    }
+
+    #stepVisited(selectedIndex, indexToCheck) {
+        if (this.#defaultSettings) {
+            return true;
+        }
+        return selectedIndex < 0 ? false : indexToCheck <= selectedIndex;
     }
 
     #setWizardStepper() {
@@ -141,6 +148,7 @@ export class GameWizardVS extends GameWizard {
         this.mode = selectedMode;
 
         if (currentModeHasTurns !== selectedModeHasTurns) {
+            this.#defaultSettings = undefined;
             this.#setUpStepper();
         }
     }

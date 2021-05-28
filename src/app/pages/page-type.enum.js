@@ -1,11 +1,10 @@
 'use strict';
 
 const PageType = {
-  JoinPage: 'join',
-  HomePage: 'home',
-  GamePage: 'game',
-  GameSetupPage: 'game-setup',
-  LobbyPage: 'lobby',
+  JoinPage: 'JoinPage',
+  HomePage: 'HomePage',
+  GamePage: 'GamePage',
+  LobbyPage: 'LobbyPage',
 };
 Object.freeze(PageType);
 

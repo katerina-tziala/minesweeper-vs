@@ -66,7 +66,7 @@ export class GameWizardVsSettingsController {
 
         const { name, ariaLabel, controls } = settingStep;
         this.#settingsName = name;
-        this.#controller = this.#getController(name);
+        this.#controller = this.#getController();
         if (!this.#controller) {
             throw new Error('could not load game controller');
         }
@@ -84,7 +84,7 @@ export class GameWizardVsSettingsController {
     resetCurrentSettings() {
         if (this.#settingsName && this.#controller) {
             this.#gameSettings.delete(this.#settingsName);
-            this.#controller.init(this.#controllerSettings);
+            this.#initControllerSettings();
         }
     }
 
@@ -99,7 +99,7 @@ export class GameWizardVsSettingsController {
     #renderController(ariaLabel, id) {
         const panel = this.#getControllerPanel({ ariaLabel, id });
         this.#settingsContainer.append(panel);
-        this.#controller.init(this.#controllerSettings);
+        this.#initControllerSettings();
     }
 
     #getControllerPanel(content) {
@@ -109,16 +109,26 @@ export class GameWizardVsSettingsController {
         return panel;
     }
 
-    #getController(stepName) {
-        if (stepName === WizardSteps.Options) {
-            return this.#getOptionsController();
+    #initControllerSettings() {
+        if (this.#settingsName === WizardSteps.Options && this.selectedMode === GameMode.Clear) {
+            const turnsSettings = this.#gameSettings.get(WizardSteps.Turns);
+            const turnDuration = turnsSettings ? turnsSettings.turnDuration : undefined;
+            this.#controller.init(this.#controllerSettings, turnDuration);
+        } else {
+            this.#controller.init(this.#controllerSettings);
         }
-        return this.#getControllerByName(stepName);
     }
 
-    #getControllerByName(stepName) {
-        const constrollerName = CONTROLLER_NAME[stepName];
-        if (stepName === WizardSteps.Mode) {
+    #getController() {
+        if (this.#settingsName === WizardSteps.Options) {
+            return this.#getOptionsController();
+        }
+        return this.#getControllerByName();
+    }
+
+    #getControllerByName() {
+        const constrollerName = CONTROLLER_NAME[this.#settingsName];
+        if (this.#settingsName === WizardSteps.Mode) {
             return new GAME_SETTINGS[constrollerName](this.#excludeParallel);
         }
         return new GAME_SETTINGS[constrollerName]();

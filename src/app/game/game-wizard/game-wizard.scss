@@ -7,7 +7,7 @@
   width: 400px;
   will-change: transform, opacity;
   @extend .card;
-  @include animations.slideIn(1);
+  @include animations.slideIn(.8);
   position: relative;
   overflow: hidden;
   min-height: 180px;

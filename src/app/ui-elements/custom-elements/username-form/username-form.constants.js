@@ -23,4 +23,5 @@ export const ERROR_MESSAGE = {
   format: 'Username must have at least 3 letters!',
   length: 'Username must have at most 16 characters!',
   usernameInUse: 'Username is taken! Please enter a different username!',
+  usernameSameAsUser: `Opponent's name is same as yours! Please enter a different username!`,
 };

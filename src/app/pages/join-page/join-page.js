@@ -22,7 +22,8 @@ export class JoinPage extends Page {
   }
 
   renderPage(mainContainer) {
-    this.#usernameForm = new AddUsername('join', this.#onJoin.bind(this));
+    this.#usernameForm = new AddUsername('join');
+    this.#usernameForm.onSubmit = this.#onJoin.bind(this);
     mainContainer.append(this.#usernameForm.render());
     //TODO: init from local storage
     this.#usernameForm.init('kate');
@@ -48,13 +49,11 @@ export class JoinPage extends Page {
   #checkOfflineJoin() {
     this.#usernameForm.clearFormSubmittionState();
     this.#usernameForm.hide();
-
     this.#displayOfflineConfirmation();
   }
 
   #onUsernameError() {
     this.#usernameForm.clearFormSubmittionState();
-    this.#user = undefined;
     this.#usernameForm.setFormError('usernameInUse');
   }
 

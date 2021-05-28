@@ -57,7 +57,8 @@ export class Page {
     return;
   }
 
-  onChangePage(nextPage = PageType.HomePage) {
-    this.#pageloaderService.nextPage(nextPage);
+  onChangePage(nextPage = PageType.HomePage, params) {
+    this.displayLoader();
+    this.#pageloaderService.nextPage(nextPage, params);
   }
 }

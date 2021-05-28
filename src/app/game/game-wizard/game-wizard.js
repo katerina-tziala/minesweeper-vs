@@ -2,6 +2,7 @@
 import './game-wizard.scss';
 import { HEADER, DOM_ELEMENT_CLASS } from './game-wizard.constants';
 import { ElementGenerator, ElementHandler, ButtonGenerator } from 'UI_ELEMENTS';
+import { LocalStorageHelper } from 'UTILS';
 import { GameWizardHelper } from './game-wizard-helper';
 
 export class GameWizard {
@@ -62,6 +63,7 @@ export class GameWizard {
 
     onClose() {
         this.#moveOutWizard();
+        this.#clearWizardSettings();
         if (this.#onCancel) {
             this.#onCancel();
         }
@@ -76,5 +78,11 @@ export class GameWizard {
 
     #moveOutWizard() {
         ElementHandler.addStyleClass(this.wizardContainer, DOM_ELEMENT_CLASS.wizardOut);
+    }
+
+    #clearWizardSettings() {
+        if (this.type) {
+            LocalStorageHelper.deleteGameSetUp(this.type);
+        }
     }
 }

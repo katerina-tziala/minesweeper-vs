@@ -13,17 +13,16 @@ export class App {
     this.#onlineConnection = OnlineConnection.getInstance();
 
     this.#initPageController();
-     this.#init();
-      this.#pageloaderService.nextPage(PageType.JoinPage);
-
-     this.#pageloaderService.nextPage(PageType.HomePage);
+    //this.#init();
+    //   this.#pageloaderService.nextPage(PageType.JoinPage);
+    this.#pageloaderService.nextPage(PageType.HomePage);
   }
 
   #initPageController() {
     this.#pageloaderService = PageLoaderService.getInstance();
     this.#pageloaderService.onPageChanged = (Page) => {
-      // console.log('page changed');
-      this.#pageController = new Page();
+
+      this.#pageController = Page;
     };
   }
 

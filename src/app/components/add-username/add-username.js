@@ -8,9 +8,15 @@ export class AddUsername {
     #onSubmit;
     #onClose;
 
-    constructor(type = 'join', onSubmit, onClose) {
+    constructor(type = 'join') {
         this.#type = type;
+    }
+
+    set onSubmit(onSubmit) {
         this.#onSubmit = onSubmit;
+    }
+
+    set onClose(onClose) {
         this.#onClose = onClose;
     }
 
@@ -56,7 +62,7 @@ export class AddUsername {
             card.append(closeButton);
         }
         const title = ElementGenerator.generateHeader(this.#titleText);
-     
+
         const form = this.#generateForm();
         card.append(title, form);
 
@@ -69,9 +75,6 @@ export class AddUsername {
 
     #onFormSubmit(data) {
         if (this.#onSubmit) {
-            if (this.type === 'addOpponent') {
-                console.log('check if opponent has same name with user');
-            }
             this.#onSubmit(data);
         }
     }
