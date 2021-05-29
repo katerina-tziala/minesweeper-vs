@@ -9,7 +9,8 @@ export default class AppUserService {
     #peers = [];
 
     constructor() {
-        this.#username = LocalStorageHelper.username;
+        this.#username = 'kate';
+        //this.#username = LocalStorageHelper.username;
         console.log('AppUser');
         console.log(this.#username);
     }

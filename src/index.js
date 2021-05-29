@@ -35,3 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
+ // window.onhashchange = this.locationHashChanged.bind(this);
+  // locationHashChanged(event) {
+  //   console.log(event);
+  //   if (location.hash === '#cool-feature') {
+  //     console.log("You're visiting a cool feature!");
+  //   }
+  // }

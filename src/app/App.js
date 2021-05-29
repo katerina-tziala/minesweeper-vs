@@ -2,7 +2,6 @@
 import { OnlineConnection, MessageErrorType } from 'ONLINE_CONNECTION';
 import PageLoaderService from './pages/page-loader.service';
 import { PageType } from './pages/page-type.enum';
-import { LocalStorageHelper } from 'UTILS';
 import AppUserService from './state-controllers/app-user.service';
 
 export class App {
@@ -24,20 +23,12 @@ export class App {
       this.#pageController = Page;
     };
 
-    this.#init();
+    // this.#init();
 
     // this.#pageloaderService.nextPage(PageType.JoinPage);
-    // this.#pageloaderService.nextPage(PageType.HomePage);
+     this.#pageloaderService.nextPage(PageType.HomePage);
     // this.#pageloaderService.nextPage(PageType.GamePage);
   }
-
-  // window.onhashchange = this.locationHashChanged.bind(this);
-  // locationHashChanged(event) {
-  //   console.log(event);
-  //   if (location.hash === '#cool-feature') {
-  //     console.log("You're visiting a cool feature!");
-  //   }
-  // }
 
   #init() {
     const username = this.#appUserService.username;
