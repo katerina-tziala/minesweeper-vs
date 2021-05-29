@@ -1,7 +1,8 @@
 let subscribers = {};
+
 module.exports = {
     publish(event, data) {
-        console.log("ppp");
+        console.log("publish");
         if (!subscribers[event]) return;
         subscribers[event].forEach(subscriberCallback =>
             subscriberCallback(data));

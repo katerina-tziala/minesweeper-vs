@@ -2,23 +2,22 @@
 
 import { URL, PROTOCOLS } from './connection.constants';
 import { MessageInType } from './online-connection-messages/connection.message-in';
-import { LocalStorageHelper } from 'UTILS';
+
 
 export default class Connection {
   #eventHandlers;
 
   #onMessage(event, webSocket, resolve, reject) {
     const message = JSON.parse(event.data);
+    this.#removeSocketListeners(webSocket);
+
     const { type, errorType, data } = message;
+
     if (errorType) {
-      this.#removeSocketListeners(webSocket);
       webSocket.close();
       reject(errorType);
     } else if (type === MessageInType.Joined) {
-      LocalStorageHelper.saveUser(data.user);
-      LocalStorageHelper.savePeers(data.peers);
-      this.#removeSocketListeners(webSocket);
-      resolve(webSocket);
+      resolve({webSocket, data});
     }
   }
 

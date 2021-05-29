@@ -1,16 +1,18 @@
 'use strict';
-import { AppLoaderHandler } from '../app-loader-handler';
 import { ElementHandler } from 'UI_ELEMENTS';
 import PageLoaderService from './page-loader.service';
 import { PageType } from './page-type.enum';
 import { OnlineConnection } from 'ONLINE_CONNECTION';
-
+import AppUserService from '../state-controllers/app-user.service';
 export class Page {
   #pageloaderService;
+  appUserService;
 
   constructor() {
+    this.appUserService = AppUserService.getInstance();
     this.#pageloaderService = PageLoaderService.getInstance();
     this.onlineConnection = OnlineConnection.getInstance();
+    this.#setConnectionListeners();
   }
 
   get mainContainer() {
@@ -33,11 +35,11 @@ export class Page {
   }
 
   displayLoader() {
-    AppLoaderHandler.display();
+    this.#pageloaderService.displayLoader();
   }
 
   hideLoader() {
-    AppLoaderHandler.hide();
+    this.#pageloaderService.hideLoader();
   }
 
   onConnectionError() {
@@ -58,7 +60,26 @@ export class Page {
   }
 
   onChangePage(nextPage = PageType.HomePage, params) {
-    this.displayLoader();
     this.#pageloaderService.nextPage(nextPage, params);
+  }
+
+  #setConnectionListeners() {
+    this.onlineConnection.onConnectionError = this.onConnectionError.bind(this);
+    this.onlineConnection.onMessage = this.onMessage.bind(this);
+    this.onlineConnection.onErrorMessage = this.onErrorMessage.bind(this);
+  }
+
+  onConnectionError() {
+    console.log("on onConnectionError from Page");
+  }
+
+  onMessage(message) {
+    console.log("on connection message from Page");
+    console.log(message);
+  }
+
+  onErrorMessage(data) {
+    console.log("on connection onErrorMessage from Page");
+    console.log(data);
   }
 }

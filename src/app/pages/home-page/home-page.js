@@ -1,6 +1,6 @@
 'use strict';
 import { Page } from '../page';
-import { enumKey, LocalStorageHelper } from 'UTILS';
+import { enumKey } from 'UTILS';
 import { GameType } from 'GAME_ENUMS';
 import { HomePageMenu as Menu } from './home-page-menu';
 import { PageType } from '../page-type.enum';
@@ -92,9 +92,8 @@ export class HomePage extends Page {
   }
 
   #opponentUsernameSameAsUser(username) {
-    const user = LocalStorageHelper.user;
-    const currentUserUsername = user ? user.username : undefined;
-    return username === currentUserUsername;
+    const appUsername = this.appUserService.username || '';
+    return username.toLowerCase() === appUsername.toLowerCase();
   }
 
 }

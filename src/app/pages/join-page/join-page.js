@@ -3,12 +3,9 @@ import './join-page.scss';
 import { Page } from '../page';
 import { MessageErrorType } from 'ONLINE_CONNECTION';
 import { AddUsername } from '~/components/@components.module';
-import { User } from '../../_models/user';
-import { LocalStorageHelper } from 'UTILS';
 
 export class JoinPage extends Page {
   #usernameForm;
-  #user;
   #offlineConfirmation;
   #offlineConfirmationActions;
 
@@ -18,20 +15,18 @@ export class JoinPage extends Page {
     this.#offlineConfirmationActions = new Map();
     this.#offlineConfirmationActions.set('choiceA', this.#onRejectOfflineJoin.bind(this));
     this.#offlineConfirmationActions.set('choiceB', this.#onJoinOffline.bind(this));
-    LocalStorageHelper.deleteUser();
   }
 
   renderPage(mainContainer) {
     this.#usernameForm = new AddUsername('join');
     this.#usernameForm.onSubmit = this.#onJoin.bind(this);
     mainContainer.append(this.#usernameForm.render());
-    //TODO: init from local storage
-    this.#usernameForm.init('kate');
+    this.#usernameForm.init(this.appUserService.username);
   }
 
   #onJoin(data) {
     const { username } = data;
-    this.#user = new User(username);
+    this.appUserService.username = username;
     this.#usernameForm.setFormSubmittionState();
     this.onlineConnection.establishConnection(username)
       .then(() => this.onChangePage())
@@ -74,7 +69,6 @@ export class JoinPage extends Page {
   }
 
   #onJoinOffline() {
-    LocalStorageHelper.saveUser(this.#user);
     this.#offlineConfirmation = undefined;
     this.onChangePage();
   }

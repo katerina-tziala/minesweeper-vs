@@ -19,20 +19,20 @@ export class LocalStorageHelper {
     return localStorage.clear();
   }
 
-  static saveUser(user) {
-    return LocalStorageHelper.save('user', user);
+  static saveUsername(username) {
+    return LocalStorageHelper.save('username', username);
   }
 
-  static deleteUser() {
-    return LocalStorageHelper.remove('user');
+  static deleteUsername() {
+    return LocalStorageHelper.remove('username');
   }
 
-  static savePeers(peers) {
-    return LocalStorageHelper.save('peers', peers);
-  }
+  // static savePeers(peers) {
+  //   return LocalStorageHelper.save('peers', peers);
+  // }
 
-  static get user() {
-    return LocalStorageHelper.retrieve('user');
+  static get username() {
+    return LocalStorageHelper.retrieve('username');
   }
 
   static saveGameSetUp(type, data) {

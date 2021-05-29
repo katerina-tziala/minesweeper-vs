@@ -2,11 +2,14 @@
 
 import { URL, PROTOCOLS } from './connection.constants';
 import Connection from './connection';
+import AppUserService from '../app-user.service';
 
 export class OnlineConnection {
+  #appUserService;
   #webSocket;
 
   constructor() {
+    this.#appUserService = AppUserService.getInstance();
     this.#webSocket = undefined;
     this.onConnectionError = undefined;
     this.onMessage = undefined;
@@ -26,21 +29,22 @@ export class OnlineConnection {
   }
 
   establishConnection(username) {
+    //disconnect => this.#webSocket.close();
     this.#webSocket = undefined;
     const connection = new Connection();
     return connection.init(username)
-    .then((webSocket) => {
-      this.#webSocket = webSocket;
-      this.#setWebsocketListeners();
-      return;
-    });
+      .then(({ webSocket, data }) => {
+        this.#webSocket = webSocket;
+        this.#appUserService.onConnected(data);
+        this.#setWebsocketListeners();
+        return;
+      });
   }
 
   #setWebsocketListeners() {
     this.#webSocket.addEventListener('error', this.#onError.bind(this));
     this.#webSocket.addEventListener('message', (event) => this.#onMessageReceived(JSON.parse(event.data)));
     this.#webSocket.addEventListener('close', this.#onClosed.bind(this));
-    // this.#webSocket.close();
   }
 
   #onError() {
@@ -65,10 +69,11 @@ export class OnlineConnection {
 
   #onMessageReceived(message) {
     const { type } = message;
-    if (!type) {
-      return;
+    console.log('online connection --- onMessageReceived');
+    console.log(message);
+    if (type) {
+      type === 'error' ? this.#submitErrorMessage(message) : this.#submitMessage(message);
     }
-    type === 'error' ? this.#submitErrorMessage(message) : this.#submitMessage(message);
   }
 
   #submitErrorMessage(message) {
@@ -78,6 +83,7 @@ export class OnlineConnection {
   }
 
   #submitMessage(message) {
+
     if (this.onMessage) {
       this.onMessage(message);
     }
