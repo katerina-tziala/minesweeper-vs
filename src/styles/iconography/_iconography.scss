@@ -101,6 +101,21 @@
   content: fa-content($fa-var-angle-double-left);
 }
 
+.icon-link {
+  @extend %icon-regular;
+  content: fa-content($fa-var-link);
+}
+
+.icon-paper-plane {
+  @extend %icon-regular;
+  content: fa-content($fa-var-paper-plane);
+}
+
+.icon-envelope {
+  @extend %icon-regular;
+  content: fa-content($fa-var-envelope);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

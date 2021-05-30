@@ -6,12 +6,12 @@
 %user-avatar {
   @include afterIcon('user');
   padding-bottom: 4px;
-  font-size: 2em;
+  font-size: 1.6em;
 }
 
 app-avatar {
   overflow: hidden;
-  @include shapes.circle(4rem);
+  @include shapes.circle(3rem);
   @extend %flex-center-center;
   @extend %user-avatar;
 }

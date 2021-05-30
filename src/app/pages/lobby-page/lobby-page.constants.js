@@ -1,15 +1,9 @@
-"use strict";
-import { JOIN_BTN } from "~/_constants/btn-text.constants";
+'use strict';
 
-export const DOM_ELEMENT_ID = {
-  loginContainer: "login-container",
-};
 
 export const DOM_ELEMENT_CLASS = {
-  loginContainer: "login-container",
+  content: 'lobby-content',
+  lintInvitationContainer: 'link-invitation-container'
 };
 
-export const FORM_PARAMS = {
-  title: "join minesweeperVS now!",
-  submitBtn: JOIN_BTN,
-};
+

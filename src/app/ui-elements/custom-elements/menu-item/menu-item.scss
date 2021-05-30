@@ -1,131 +1,44 @@
-@use 'styles/utils/flexbox/flexbox';
-@use 'styles/utils/shapes';
 @use 'styles/utils/state';
 @use 'styles/iconography/iconography';
-@use 'styles/components/card/card';
-@use 'styles/components/button/button';
-
-$size: 60px;
+@use 'styles/components/menu-item/menu-item';
 
 app-menu-item {
-  @extend .card;
-  @extend %flex-start-center;
-  cursor: pointer;
-  max-width: 340px;
-  min-width: 340px;
-  outline: none;
+  @extend .menu-item;
+
   &:not(:last-of-type) {
     margin-bottom: 20px;
   }
-}
 
-app-menu-item[disabled="true"] {
-  @extend .disabled;
-  @extend ._menu-item--disabled;
-}
-
-.menu-item__icon {
-  @extend %flex-center-center;
-  @include shapes.rectangle($size);
-  min-width: $size;
-  border-radius: 4px;
-  font-size: 2.4em;
-  border-width: 1px;
-  border-style: solid;
+  &[disabled="true"] {
+    @extend .disabled;
+  }
+  &[disabled="false"] {
+    @extend .menu-item--enabled;
+  }
 }
 
 app-menu-item[type="online"] {
   .menu-item__icon {
     font-size: 2.6em;
-    &::after {
-      @extend .icon-online;
-    }
+    @include iconography.afterIcon('online');
   }
 }
 
 app-menu-item[type="bot"] {
   .menu-item__icon {
-    &::after {
-      @extend .icon-bot;
-    }
+    padding-bottom: 3px;
+    @include iconography.afterIcon('bot');
   }
 }
 
 app-menu-item[type="friend"] {
   .menu-item__icon {
-    &::after {
-      @extend .icon-friend;
-    }
+    @include iconography.afterIcon('friend');
   }
 }
 
 app-menu-item[type="original"] {
   .menu-item__icon {
-    &::after {
-      @extend .icon-flag;
-    }
+    @include iconography.afterIcon('flag');
   }
-}
-
-.menu-item__content {
-  flex-grow: 1;
-  @extend %flex-start-start;
-  flex-direction: column;
-  height: $size;
-  padding-left: 10px;
-  > h2 {
-    line-height: 1.3rem;
-    margin-bottom: 2px;
-  }
-}
-
-.menu-item__details {
-  @extend %flex-start-center;
-  flex-grow: 1;
-  width: 100%;
-
-  > p {
-    display: block;
-    font-style: oblique;
-  }
-}
-
-// TODO THEMING
-app-menu-item {
-  background-color: #fff;
-  color: #1a1a1a;
-  @extend .button--primary;
-  &:hover,
-  &:focus {
-    .menu-item__icon {
-      background-color: transparent;
-      border-color: #fff;
-      color: #fff;
-    }
-  }
-}
-
-._menu-item--disabled {
-  transition: none !important;
-  background: #fff;
-  color: #1a1a1a;
-
-  &:hover,
-  &:focus,
-  &:active {
-    background: #fff !important;
-    color: #1a1a1a !important;
-
-    .menu-item__icon {
-      background-color: #1a1a1a;
-      border-color: #1a1a1a;
-      color: #f2f2f2;
-    }
-  }
-}
-
-.menu-item__icon {
-  background-color: #1a1a1a;
-  border-color: #1a1a1a;
-  color: #f2f2f2;
 }

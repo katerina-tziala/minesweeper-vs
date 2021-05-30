@@ -6,7 +6,6 @@ export default class AppUserService {
     #username;
     #inGame = false;
     #joinedAt;
-    #peers = [];
 
     constructor() {
         this.#username = 'kate';
@@ -28,16 +27,15 @@ export default class AppUserService {
 
     set username(username) {
         this.#username = username;
-       // LocalStorageHelper.saveUsername(this.#username);
+        // LocalStorageHelper.saveUsername(this.#username);
     }
 
-    onConnected({ user, peers }) {
+    onConnected({ user }) {
         const { id, inGame, joinedAt, username } = user;
         this.username = username;
         this.#id = id;
         this.#inGame = inGame;
         this.#joinedAt = joinedAt;
-        this.#peers = peers;
     }
 
 }

@@ -17,6 +17,12 @@
   @extend %second-axis-center;
 }
 
+%flex-center-start {
+  @extend %flexbox;
+  @extend %first-axis-center;
+  @extend %second-axis-start;
+}
+
 %flex-between-center {
   @extend %flexbox;
   @extend %first-axis-between;

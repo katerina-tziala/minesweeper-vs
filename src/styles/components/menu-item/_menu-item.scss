@@ -1,0 +1,67 @@
+@use '../../utils/flexbox/flexbox';
+@use '../../utils/shapes';
+@use '../card/card';
+@use '../button/button';
+
+$size: 64px;
+
+.menu-item {
+  @extend .card;
+  @extend %flex-start-center;
+  cursor: pointer;
+  max-width: 320px;
+  min-width: 320px;
+  outline: none;
+  border: none;
+}
+
+.menu-item__icon {
+  @extend %flex-center-center;
+  @include shapes.rectangle($size);
+  position: relative;
+  min-width: $size;
+  border-radius: 6px;
+  font-size: 2.4em;
+}
+
+.menu-item__content {
+  flex-grow: 1;
+  @extend %flex-start-start;
+  flex-direction: column;
+  height: $size;
+  padding: 2px 0px 2px 15px;
+  > h2 {
+    line-height: 1.3rem;
+    margin-bottom: 2px;
+  }
+}
+
+.menu-item__details {
+  @extend %flex-start-center;
+  flex-grow: 1;
+  width: 100%;
+
+  > p {
+    display: block;
+    font-style: oblique;
+    text-align: left;
+  }
+}
+
+// TODO THEMING
+.menu-item__icon {
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #f2f2f2;
+}
+
+.menu-item--enabled {
+  &:hover,
+  &:focus {
+    @extend .button--primary;
+    .menu-item__icon {
+      background-color:#fff;
+      color: #000;
+    }
+  }
+}

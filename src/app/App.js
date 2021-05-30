@@ -24,9 +24,9 @@ export class App {
     };
 
     // this.#init();
-
+    this.#pageloaderService.nextPage(PageType.LobbyPage);
     // this.#pageloaderService.nextPage(PageType.JoinPage);
-     this.#pageloaderService.nextPage(PageType.HomePage);
+     //this.#pageloaderService.nextPage(PageType.HomePage);
     // this.#pageloaderService.nextPage(PageType.GamePage);
   }
 

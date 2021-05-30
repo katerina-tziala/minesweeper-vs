@@ -8,6 +8,7 @@ export class OnlineConnection {
   #appUserService;
   #webSocket;
 
+  #peers = [];
   constructor() {
     this.#appUserService = AppUserService.getInstance();
     this.#webSocket = undefined;
@@ -35,7 +36,8 @@ export class OnlineConnection {
     return connection.init(username)
       .then(({ webSocket, data }) => {
         this.#webSocket = webSocket;
-        this.#appUserService.onConnected(data);
+        this.#peers = data.peers;
+        this.#appUserService.onConnected(data.user);
         this.#setWebsocketListeners();
         return;
       });
