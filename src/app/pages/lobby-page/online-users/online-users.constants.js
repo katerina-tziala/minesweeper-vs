@@ -6,14 +6,8 @@ export const DOM_ELEMENT_CLASS = {
   content: 'online-users-content',
   noUserOnline: 'online-users-message',
   onlineUser: 'online-user',
+  onlineUserInGame: 'online-user--in-game',
 };
-
-// export const DOM_ELEMENT_CLASS = {
-//   container: 'online-users-container',
-//   wrapper: 'online-users-wrapper',
-//   noUserOnline: 'online-users-message',
-//   header: 'online-users-header'
-// };
 
 export const CONTENT = {
   noUsersOnline: 'No one is online!',

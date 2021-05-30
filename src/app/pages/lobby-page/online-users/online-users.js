@@ -1,41 +1,21 @@
 'use strict';
-import { ElementGenerator, ElementHandler, ButtonGenerator, TemplateGenerator } from 'UI_ELEMENTS';
-
+import { ElementGenerator, ElementHandler, ButtonGenerator } from 'UI_ELEMENTS';
 import { DOM_ELEMENT_CLASS, CONTENT } from './online-users.constants';
 
 export class OnlineUsers {
-  // #id = 'minesweeperUser';
-  // #username;
-  // #inGame 
+  #onSelectUser;
+  #users = [];
 
-  constructor() {
-    console.log('OnlineUsers');
-    this.users = [];
-   // this.users = this.getTestPeers();
-
+  constructor(onSelectUser) {
+    this.#onSelectUser = onSelectUser;
   }
 
-  getTestPeers(inGame = false) {
-    const peers = [];
-  
-    
-    for (let index = 0; index < 20; index++) {
-      const stringNumber = index.toString();
-      
-      let username = "kate" + stringNumber;
-
-      for (let i = 0; i < index; i++) {
-        username += "kate";
-      }
-      peers.push({id: stringNumber, username, inGame});
-    }
-
-    return peers;
+  set users(users = []) {
+    this.#users = users.sort((userA, userB) => userA.inGame - userB.inGame);
   }
-
 
   get #content() {
-    if (this.users.length) {
+    if (this.#users.length) {
       return this.#onlineUsersList;
     }
     return this.#noOnlineUsersMessage;
@@ -50,25 +30,35 @@ export class OnlineUsers {
   get #onlineUsersList() {
     const fragment = document.createDocumentFragment();
 
-    
-    this.users.forEach(user => {
-      const card = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.onlineUser]);
-      const avatar = document.createElement('app-avatar');
-      const username = document.createElement('p');
-      username.innerHTML = user.username;
-
-      const button = ButtonGenerator.generateTextButton('invite', () => {
-        console.log('invite clicked');
-      })
-      console.log(user);
-
-      card.append(avatar, username, button);
-      fragment.append(card);
-      
-    })
+    this.#users.forEach(user => {
+      const userCard = this.#createOnlineUserCard(user);
+      fragment.append(userCard);
+    });
 
     return fragment;
   }
+
+  #createOnlineUserCard(user) {
+    const card = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.onlineUser]);
+    if (user.inGame) {
+      ElementHandler.addStyleClass(card, DOM_ELEMENT_CLASS.onlineUserInGame);
+    }
+
+    const avatar = document.createElement('app-avatar');
+    const username = document.createElement('p');
+    username.innerHTML = user.username;
+
+    const button = ButtonGenerator.generateTextButton('invite', () => {
+      if (this.#onSelectUser) {
+        this.#onSelectUser(user);
+      }
+    });
+    ElementHandler.setDisabled(button, user.inGame);
+
+    card.append(avatar, username, button);
+    return card;
+  }
+
 
   render() {
     const section = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.section]);
@@ -79,6 +69,13 @@ export class OnlineUsers {
     return section;
   }
 
-
+  updateOnlineUsers(users) {
+    this.#users = users;
+    const contentContainer = document.getElementById(DOM_ELEMENT_CLASS.content);
+    if (contentContainer) {
+      ElementHandler.clearContent(contentContainer);
+      contentContainer.append(this.#content);
+    }
+  }
 
 }

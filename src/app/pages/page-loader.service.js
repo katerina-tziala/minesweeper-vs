@@ -41,12 +41,12 @@ export default class PageLoaderService {
     }
 
     #loadPage(page, params) {
-        try {
+       // try {
             return new PAGES[page](params);
-        }
-        catch (err) {
-            throw new Error(`could not load page, ${page}`);
-        }
+      //  }
+      //  catch (err) {
+      //      throw new Error(`could not load page, ${page}`);
+    //    }
     }
 
 }

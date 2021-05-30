@@ -116,6 +116,11 @@
   content: fa-content($fa-var-envelope);
 }
 
+.icon-gamepad {
+  @extend %icon-regular;
+  content: fa-content($fa-var-gamepad);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};
