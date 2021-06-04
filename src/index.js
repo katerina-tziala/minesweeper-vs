@@ -8,10 +8,15 @@ import { LocalStorageHelper } from 'UTILS';
 //will change to transform
 // -- router guard
 // on reload return to your state
+import { PubSub, PubSubState } from 'UTILS';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   // AppLoaderHandler.display();
   new App();
+
+
+  
   // PageLoaderHandler.hide();
 
   // const test = document.getElementsByTagName("app-wizard-stepper")[0];

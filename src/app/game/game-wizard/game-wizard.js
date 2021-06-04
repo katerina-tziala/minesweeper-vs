@@ -62,18 +62,28 @@ export class GameWizard {
     }
 
     onClose() {
+        this.#onSlidedOut(() => {
+            this.#clearWizardSettings();
+            if (this.#onCancel) {
+                this.#onCancel();
+            }
+        });
+    }
+
+    #onSlidedOut(callBack) {
         this.#moveOutWizard();
-        this.#clearWizardSettings();
-        if (this.#onCancel) {
-            this.#onCancel();
+        const container = this.wizardContainer;
+        if (container) {
+            container.addEventListener('animationend', () => callBack());
         }
     }
 
     onPlayGame(gameConfig) {
-        this.#moveOutWizard();
-        if (this.#onComplete) {
-            this.#onComplete(gameConfig);
-        }
+        this.#onSlidedOut(() => {
+            if (this.#onComplete) {
+                this.#onComplete(gameConfig);
+            }
+        });
     }
 
     #moveOutWizard() {

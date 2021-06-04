@@ -70,6 +70,7 @@ export class JoinPage extends Page {
 
   #onJoinOffline() {
     this.#offlineConfirmation = undefined;
+    this.appUserService.joinedAt = new Date().toString();
     this.onChangePage();
   }
 }

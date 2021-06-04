@@ -75,7 +75,7 @@ export class GameWizardVS extends GameWizard {
     setHeaderText() {
         super.setHeaderText();
         const { username } = this.opponent;
-        this.header = replaceStringParameter(this.header, `<i>${username}</i>`);
+        this.header = replaceStringParameter(this.header, username);
     }
 
     generateContent() {

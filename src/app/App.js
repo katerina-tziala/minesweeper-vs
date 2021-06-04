@@ -24,9 +24,9 @@ export class App {
     };
 
     // this.#init();
-    this.#pageloaderService.nextPage(PageType.LobbyPage);
+     this.#pageloaderService.nextPage(PageType.LobbyPage);
     // this.#pageloaderService.nextPage(PageType.JoinPage);
-     //this.#pageloaderService.nextPage(PageType.HomePage);
+    //this.#pageloaderService.nextPage(PageType.HomePage);
     // this.#pageloaderService.nextPage(PageType.GamePage);
   }
 
@@ -36,9 +36,10 @@ export class App {
   }
 
   #connect(username) {
+    console.log(username);
     this.#onlineConnection.establishConnection(username).then(() => {
       this.#pageloaderService.nextPage(PageType.HomePage);
-    }).catch(() => this.#navigateToJoinPage());
+    }).catch(_ => this.#navigateToJoinPage());
   }
 
   #navigateToJoinPage() {

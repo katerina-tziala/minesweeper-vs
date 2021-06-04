@@ -3,12 +3,15 @@
 import { URL, PROTOCOLS } from './connection.constants';
 import Connection from './connection';
 import AppUserService from '../app-user.service';
+import { PubSub, PubSubState } from 'UTILS';
 
 export class OnlineConnection {
   #appUserService;
   #webSocket;
+  peers$ = new PubSubState([]);
 
-  #peers = [];
+  
+
   constructor() {
     this.#appUserService = AppUserService.getInstance();
     this.#webSocket = undefined;
@@ -17,9 +20,13 @@ export class OnlineConnection {
     this.onErrorMessage = undefined;
   }
 
+  get peers() {
+    return this.peers$.value;
+  }
+
   get live() {
-    return true;
-    //return (this.#webSocket && this.#webSocket.readyState === 1) ? true : false;
+    //return true;
+    return (this.#webSocket && this.#webSocket.readyState === 1) ? true : false;
   }
 
   static getInstance() {
@@ -36,7 +43,8 @@ export class OnlineConnection {
     return connection.init(username)
       .then(({ webSocket, data }) => {
         this.#webSocket = webSocket;
-        this.#peers = data.peers;
+        console.log(data);
+        this.peers$.next(data.peers);
         this.#appUserService.onConnected(data.user);
         this.#setWebsocketListeners();
         return;
@@ -85,10 +93,18 @@ export class OnlineConnection {
   }
 
   #submitMessage(message) {
-
-    if (this.onMessage) {
-      this.onMessage(message);
+    const { type, data } = message;
+    console.log(type, data);
+    
+    if (type === 'peers-update') {
+      this.peers$.next(data.peers);
+      return;
     }
+
+    // console.log(message);
+    // if (this.onMessage) {
+    //   this.onMessage(message);
+    // }
   }
 
   sendMessage(type, data) {

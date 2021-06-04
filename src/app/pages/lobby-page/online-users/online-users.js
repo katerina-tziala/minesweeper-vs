@@ -6,8 +6,9 @@ export class OnlineUsers {
   #onSelectUser;
   #users = [];
 
-  constructor(onSelectUser) {
+  constructor(onSelectUser, users) {
     this.#onSelectUser = onSelectUser;
+    this.users = users;
   }
 
   set users(users = []) {

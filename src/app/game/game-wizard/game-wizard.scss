@@ -7,7 +7,7 @@
   width: 400px;
   will-change: transform, opacity;
   @extend .card;
-  @include animations.slideIn(.8);
+  @include animations.slideIn(0.8);
   position: relative;
   overflow: hidden;
   min-height: 180px;
@@ -29,17 +29,26 @@
   margin-right: 40px;
   width: 320px;
   word-break: break-all;
+  @extend %flex-start-center;
+  flex-wrap: wrap;
 
-  > div {
-    display: block;
-    flex-grow: 1;
-    margin-right: 20px;
+  > span {
+    display: inline-block;
     font-size: 1.3rem;
+    &:not(:last-of-type) {
+     // background-color: lavender;
+      margin-right: 8px;
+    }
   }
 
   > i {
+    font-size: 1.3rem;
     font-size: inherit;
     font-weight: inherit;
+    display: inline-block;
+    //background: pink;
+    margin-right: 8px;
+    max-width: 260px;
   }
 }
 

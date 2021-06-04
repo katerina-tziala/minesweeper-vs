@@ -25,12 +25,16 @@ export default class AppUserService {
         return this.#username;
     }
 
+    set joinedAt(joinedAt) {
+        this.#joinedAt = joinedAt;
+    }
+
     set username(username) {
         this.#username = username;
         // LocalStorageHelper.saveUsername(this.#username);
     }
 
-    onConnected({ user }) {
+    onConnected(user) {
         const { id, inGame, joinedAt, username } = user;
         this.username = username;
         this.#id = id;
