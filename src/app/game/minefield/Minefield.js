@@ -75,9 +75,7 @@ export default class Minefield extends HTMLElement {
       if (clickedTile) {
         console.log(clickedTile);
         clickedTile.state = TileState.Revealed;
-        MinefieldUI.drawRevealedTile(this.#canvas.getContext("2d"), clickedTile);
-
-
+        MinefieldUI.drawRevealedTile(this.#canvas.getContext("2d"), clickedTile, this.#minesPositions);
       }
       
 

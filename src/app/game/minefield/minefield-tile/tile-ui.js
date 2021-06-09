@@ -1,6 +1,6 @@
 'use strict';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from '../minefield.constants';
-import { CONFIG, COLOR_THEME, } from './tile.constants';
+import { CONFIG, COLOR_THEME, MINE_ICON } from './tile.constants';
 import * as TileChecker from './tile-checker';
 import * as GameColors from '../../game-utils/game-colors';
 import { CavnasUtils, Color } from 'UTILS';
@@ -26,14 +26,12 @@ export function drawTileShadow(ctx, tile, theme) {
 
 export function drawTileContent(ctx, tileArea, content, theme) {
     if (content) {
-        const { xStart, yStart } = tileArea;
-        const xPosition = xStart + CONFIG.contentLeftPadding;
-        const yPosition = yStart + CONFIG.contentTopPadding;
+        const { xPosition, yPosition } = getContentPosition(tileArea);
         const color = GameColors.getThemeColor(theme, content);
 
         ctx.fillStyle = Color.adjustHexColorBrightness(color, CONFIG.contenColorAdjustment);
         ctx.strokeStyle = color;
-        ctx.font = CONFIG.contentFont;
+        ctx.font = CONFIG.textFont;
         ctx.lineWidth = 1;
 
         ctx.fillText(content, xPosition, yPosition);
@@ -41,8 +39,23 @@ export function drawTileContent(ctx, tileArea, content, theme) {
     }
 }
 
+export function drawMine(ctx, tileArea, theme, mineType) {
+    const { xPosition, yPosition } = getContentPosition(tileArea);
+    const iconConfig = MINE_ICON[mineType] || MINE_ICON.bomb;
+    const icon = String.fromCharCode(parseInt(iconConfig.code, 16));
+    const pallete = getThemePallete(theme);
 
+    ctx.fillStyle = pallete.mine;
+    ctx.font = CONFIG.iconFont;
+    ctx.fillText(icon, xPosition + iconConfig.adjustLeft, yPosition + iconConfig.adjustTop);
+}
 
+function getContentPosition(tileArea) {
+    const { xStart, yStart } = tileArea;
+    const xPosition = xStart + CONFIG.contentLeftPadding;
+    const yPosition = yStart + CONFIG.contentTopPadding;
+    return { xPosition, yPosition };
+};
 
 function getThemePallete(theme = 'light') {
     return COLOR_THEME[theme];
