@@ -27,10 +27,14 @@ export const enumKey = (enumObject, value) => {
   return Object.keys(enumObject).find((key) => enumObject[key] === value);
 };
 
+export const randomInteger = (maxNumber) => {
+  const value = Math.round(Math.random() * maxNumber);
+  return value > maxNumber ? 0 : value;
+};
 
-
-
-
+export const sortNumbersArrayAsc = (arrayToSort) => {
+  return [...arrayToSort].sort((itemA, itemB) => itemA - itemB);
+};
 
 
 // export const clone = (itemToClone) => {

@@ -24,11 +24,13 @@ export class NumberValidation {
         if (!min && !max) {
             return true;
         }
-        return valueInBoundariesWhenBoundaries(value, min, max) ;
+        return NumberValidation.valueInBoundariesWhenBoundaries(value, min, max) ;
     }
 
     static valueInBoundariesWhenBoundaries(value = 0, min, max) {
-        return NumberValidation.#lessThanMin(value, min) || NumberValidation.#greaterThanMax(value, max);
+        const lessThanMin = NumberValidation.#lessThanMin(value, min);
+        const greaterThanMax = NumberValidation.#greaterThanMax(value, max);
+        return !lessThanMin && !greaterThanMax;
     }
 
     static #lessThanMin(value, min) {

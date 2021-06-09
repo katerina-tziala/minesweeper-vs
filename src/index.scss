@@ -1,13 +1,13 @@
 @charset 'utf-8';
 
 // global
-@use './styles/typography/typography';
+
 @use './styles/iconography/iconography';
 
 // utilities
 @use './styles/utils/flexbox/flexbox';
 @import "./styles/utils/state";
-
+@import './styles/typography/typography';
 // components
 @import "./styles/components/header/header";
 @import "./styles/components/card/card";
@@ -71,3 +71,24 @@ body,
   }
 }
 
+#myCanvas {
+  background-color: #d9d9d9;
+  cursor: pointer;
+  margin: 0px;
+  display: block;
+  // border-width: 2px;
+  // border-style: solid;
+  // border-top-color: #a6a6a6;
+  // border-left-color: #a6a6a6;
+  // border-bottom-color: #f2f2f2;
+  // border-right-color: #f2f2f2;
+}
+#board {
+  // padding: 5px;
+  padding: 5px;
+
+  // height: 150px;
+
+  // width: 150px;
+  // overflow: scroll;
+}
