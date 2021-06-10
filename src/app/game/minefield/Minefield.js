@@ -8,10 +8,12 @@ import * as TileGenerator from './tile/tile-utils';
 import * as MinefieldHelper from './minefield-helper';
 import { TileState } from './tile/tile-state.enum';
 
+import * as TileChecker from './tile/tile-checker';
 export default class Minefield extends HTMLElement {
   #canvas;
   #minesPositions;
-  #tiles;
+  #tiles = [];
+  #revealedTiles = [];
   #MinefieldUI;
 
   constructor() {
@@ -56,9 +58,9 @@ export default class Minefield extends HTMLElement {
 
   init(minesPositions) {
     this.#minesPositions = minesPositions;
+    this.#revealedTiles = [];
     this.#tiles = this.#generateGridTiles();
     this.#MinefieldUI.initCanvas(this.#tiles);
-
 
     // console.log(this.#minesPositions);
     // console.log(this.#gridSize);
@@ -69,15 +71,24 @@ export default class Minefield extends HTMLElement {
       const canvasArea = event.target.getBoundingClientRect();
       const x = event.x - canvasArea.left;
       const y = event.y - canvasArea.top;
-      // const coordinates = { x, y };
-      // // scrollable?
-      // console.log(coordinates);
+      // scrollable?
 
       const clickedTile = MinefieldHelper.getPointedTile({ x, y }, this.#tiles);
       if (clickedTile) {
         console.log(clickedTile);
-        clickedTile.state = TileState.Revealed;
-        this.#MinefieldUI.drawRevealedTile(clickedTile, this.#minesPositions);
+
+        //
+        const untouched = TileChecker.untouched(clickedTile);
+        if (untouched) {
+          // this.revealTile(clickedTile);
+          this.flagTile(clickedTile);
+        } else {
+          this.resetTile(clickedTile);
+        }
+        // 
+
+
+
       }
 
 
@@ -87,24 +98,74 @@ export default class Minefield extends HTMLElement {
 
 
 
-  #generateGridTiles() {
-    return MinefieldHelper.generateGridTiles(this.#gridSize, this.#minesPositions);
+  revealTile(tile, playerId = null) {
+    const updatedTile = { ...tile };
+    updatedTile.state = TileState.Revealed;
+    updatedTile.modifiedBy = playerId;
+    this.#tiles = this.#tiles.filter(existingTile => existingTile.position !== tile.position);
+    this.#revealedTiles.push(updatedTile);
+
+    console.log("revealTile");
+    console.log(this.#tiles);
+    console.log(this.#revealedTiles);
+    console.log(updatedTile);
+    this.#MinefieldUI.drawRevealedTile(updatedTile, this.#minesPositions);
+  }
+
+  flagTile(tile, playerId = null, colorKey = '1', flagType = 'awesomeFlag') {
+    const updatedTile = { ...tile };
+    updatedTile.state = TileState.Flagged;
+    updatedTile.modifiedBy = playerId;
+
+    this.#updateTiles(updatedTile);
+
+    console.log("flagTile");
+    console.log(this.#tiles);
+    console.log(updatedTile);
+    this.#MinefieldUI.drawFlag(updatedTile, colorKey, flagType);
+  }
+
+  markTile(tile, playerId = null, colorKey = '1') {
+    const updatedTile = { ...tile };
+    updatedTile.state = TileState.Marked;
+    updatedTile.modifiedBy = playerId;
+
+    this.#updateTiles(updatedTile);
+
+    console.log("markTile");
+    console.log(this.#tiles);
+    console.log(updatedTile);
+    this.#MinefieldUI.drawMark(updatedTile, colorKey);
+
   }
 
 
+  resetTile(tile) {
+    const updatedTile = { ...tile };
+    updatedTile.state = TileState.Untouched;
+    updatedTile.modifiedBy = null;
+
+    this.#updateTiles(updatedTile);
+
+    console.log("resetTile");
+    console.log(this.#tiles);
+    console.log(updatedTile);
+    this.#MinefieldUI.drawUntouchedTile(updatedTile);
+
+  }
 
   disconnectedCallback() {
     console.log('disconnectedCallback Minefield');
   }
 
-  // adoptedCallback() {
-  //   console.log('adoptedCallback Minefield');
-  // }
+  #updateTiles(updatedTile) {
+    this.#tiles = this.#tiles.filter(existingTile => existingTile.position !== updatedTile.position);
+    this.#tiles.push({ ...updatedTile });
+  }
 
-
-
-
-
+  #generateGridTiles() {
+    return MinefieldHelper.generateGridTiles(this.#gridSize, this.#minesPositions);
+  }
 
 }
 

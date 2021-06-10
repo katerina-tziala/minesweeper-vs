@@ -1,16 +1,17 @@
 'use strict';
 import * as TileChecker from '../tile/tile-checker';
 import { CavnasUtils, Color } from 'UTILS';
-import { STYLES_CONFIG, MINE_ICON } from './minefield-ui.constants';
+import { STYLES_CONFIG, ICONS } from './minefield-ui-config/minefield-ui.constants';
 
 function drawShadowLine(ctx, tile) {
     const { xStart, xEnd, yStart, yEnd } = tile.area;
     ctx.beginPath();
-    ctx.moveTo(xEnd, yStart);
-    ctx.lineTo(xEnd, yEnd);
-    ctx.lineTo(xStart, yEnd);
+    ctx.moveTo(xEnd - 3, yStart + 3);
+    ctx.lineTo(xEnd - 3, yEnd - 3);
+    ctx.lineTo(xStart + 3, yEnd - 3);
     ctx.lineCap = 'round';
     ctx.stroke();
+
 };
 
 function getContentPosition(tileArea, padding) {
@@ -55,6 +56,17 @@ function drawTargetLines(ctx, detonatedMineArea) {
     ctx.stroke();
 }
 
+function drawIcon(ctx, tile, iconConfig) {
+    const { xPosition, yPosition } = getContentPosition(tile.area, iconConfig.padding);
+    const icon = String.fromCharCode(parseInt(iconConfig.code, 16));
+    ctx.font = iconConfig.font;
+    ctx.fillText(icon, xPosition, yPosition);
+}
+
+export function drawTile(ctx, tile, color) {
+    drawTileShape(ctx, tile);
+    CavnasUtils.drawBackground(ctx, color);
+}
 
 export function drawTileShape(ctx, tile) {
     CavnasUtils.drawRect(ctx, tile.area, STYLES_CONFIG.tileRadius);
@@ -86,24 +98,12 @@ export function drawEmptyTileContent(ctx, tile, pallete, minesPositions = []) {
 }
 
 export function drawMine(ctx, tile, styles) {
-    const iconConfig = MINE_ICON[styles.mineType] || MINE_ICON.bomb;
-    const { xPosition, yPosition } = getContentPosition(tile.area, iconConfig.padding);
-    const icon = String.fromCharCode(parseInt(iconConfig.code, 16));
-
-    // const pallete = getThemePallete(theme);
-    // // ctx.shadowColor = '#fff';
-    // // ctx.shadowOffsetX = 0;
-    // // ctx.shadowOffsetY = 0;
-    // // ctx.shadowBlur = 6;
-
-    ctx.fillStyle = styles.pallete.mine;
-    ctx.font = iconConfig.font;
-    ctx.fillText(icon, xPosition, yPosition);
-    //CavnasUtils.clearShadow(ctx);
-
-    //if (tile.modifiedBy) {
+    if (tile.modifiedBy) {
         drawDetonatedMineIndicator(ctx, tile, styles);
-    //}
+    }
+    const iconConfig = ICONS[styles.iconType];
+    ctx.fillStyle = styles.pallete.mine;
+    drawIcon(ctx, tile, iconConfig)
 }
 
 export function drawDetonatedMineIndicator(ctx, tile, styles) {
@@ -124,3 +124,14 @@ export function drawDetonatedMineIndicator(ctx, tile, styles) {
     CavnasUtils.clearShadow(ctx);
 }
 
+export function drawFlag(ctx, tile, styles) {
+    const iconConfig = ICONS[styles.iconType];
+    ctx.fillStyle = styles.color;
+    drawIcon(ctx, tile, iconConfig)
+}
+
+export function drawMark(ctx, tile, color) {
+    const iconConfig = ICONS.mark;
+    ctx.fillStyle = color;
+    drawIcon(ctx, tile, iconConfig);
+}

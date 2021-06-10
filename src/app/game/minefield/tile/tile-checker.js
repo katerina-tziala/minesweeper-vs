@@ -23,3 +23,7 @@ export function containsMine(tile) {
 export function revealed(tile) {
   return tile.state === TileState.Revealed;
 }
+
+export function untouched(tile) {
+  return tile.state === TileState.Untouched;
+}

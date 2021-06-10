@@ -1,5 +1,5 @@
 'use strict';
-import { STYLES_CONFIG } from '../minefield-ui/minefield-ui.constants';
+import { STYLES_CONFIG } from '../minefield-ui/minefield-ui-config/minefield-ui.constants';
 import { NumberValidation } from 'UTILS';
 import { TileState } from './tile-state.enum';
 import { TileType } from './tile-type.enum';
@@ -67,4 +67,3 @@ export function generateTile(row, column, gridSize, minesPositions) {
 
   return { position, area, neighbors, modifiedBy, type, state };
 }
-
