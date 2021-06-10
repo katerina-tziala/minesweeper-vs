@@ -1,25 +1,20 @@
 'use strict';
-import * as MinefieldUI from './minefield-ui';
-import * as TileGenerator from './minefield-tile/tile-utils';
-import * as TileChecker from './minefield-tile/tile-checker';
+import * as TileGenerator from './tile/tile-utils';
+import * as TileChecker from './tile/tile-checker';
 
-function generateRowTiles(ctx, row, gridSize, minesPositions) {
+function generateRowTiles(row, gridSize, minesPositions) {
   const rowTiles = [];
   for (let column = 1; column <= gridSize.columns; column++) {
     const tile = TileGenerator.generateTile(row, column, gridSize, minesPositions);
     rowTiles.push(tile);
-    MinefieldUI.drawTile(ctx, tile);
   }
   return rowTiles;
 }
 
-export function generateGridTiles(ctx, gridSize, minesPositions) {
-  if (!ctx) {
-    return [];
-  }
+export function generateGridTiles(gridSize, minesPositions) {
   let tiles = [];
   for (let row = 1; row <= gridSize.rows; row++) {
-    const rowTiles = generateRowTiles(ctx, row, gridSize, minesPositions);
+    const rowTiles = generateRowTiles(row, gridSize, minesPositions);
     tiles = tiles.concat(rowTiles);
   }
   return tiles;

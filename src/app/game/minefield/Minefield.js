@@ -3,19 +3,20 @@ import './minefield.scss';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './minefield.constants';
 import { TemplateGenerator } from 'UI_ELEMENTS';
 import { NumberValidation } from 'UTILS';
-import * as MinefieldUI from './minefield-ui';
-import * as TileGenerator from './minefield-tile/tile-utils';
+import { MinefieldUI } from './minefield-ui/minefield-ui';
+import * as TileGenerator from './tile/tile-utils';
 import * as MinefieldHelper from './minefield-helper';
-import { TileState } from './minefield-tile/tile-state.enum';
+import { TileState } from './tile/tile-state.enum';
 
 export default class Minefield extends HTMLElement {
   #canvas;
   #minesPositions;
   #tiles;
+  #MinefieldUI;
 
   constructor() {
     super();
-
+    this.#MinefieldUI = new MinefieldUI();
   }
 
   #getNumberAttribute(name = ATTRIBUTES.rows) {
@@ -50,14 +51,15 @@ export default class Minefield extends HTMLElement {
   connectedCallback() {
     this.innerHTML = TEMPLATE;
     this.#canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.minefield}`);
-    MinefieldUI.setCanvasHeight(this.#canvas, this.rows, this.columns);
+    this.#MinefieldUI.init(this.#canvas, this.rows, this.columns);
   }
 
   init(minesPositions) {
     this.#minesPositions = minesPositions;
     this.#tiles = this.#generateGridTiles();
+    this.#MinefieldUI.initCanvas(this.#tiles);
 
-    console.log('init Minefield');
+
     // console.log(this.#minesPositions);
     // console.log(this.#gridSize);
     // console.log(this.#canvas);
@@ -75,9 +77,9 @@ export default class Minefield extends HTMLElement {
       if (clickedTile) {
         console.log(clickedTile);
         clickedTile.state = TileState.Revealed;
-        MinefieldUI.drawRevealedTile(this.#canvas.getContext("2d"), clickedTile, this.#minesPositions);
+        this.#MinefieldUI.drawRevealedTile(clickedTile, this.#minesPositions);
       }
-      
+
 
     });
 
@@ -86,8 +88,7 @@ export default class Minefield extends HTMLElement {
 
 
   #generateGridTiles() {
-    const ctx = this.#canvas.getContext("2d");
-    return MinefieldHelper.generateGridTiles(ctx, this.#gridSize, this.#minesPositions);
+    return MinefieldHelper.generateGridTiles(this.#gridSize, this.#minesPositions);
   }
 
 

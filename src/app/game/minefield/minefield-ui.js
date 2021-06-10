@@ -1,11 +1,11 @@
 'use strict';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './minefield.constants';
-import { CONFIG } from './minefield-tile/tile.constants';
-import * as TileChecker from './minefield-tile/tile-checker';
+import { CONFIG } from './tile/tile.constants';
+import * as TileChecker from './tile/tile-checker';
 import * as GameColors from '../game-utils/game-colors';
-import * as TileUI from './minefield-tile/tile-ui';
+import * as TileUI from './tile/tile-ui';
 import { CavnasUtils, Color } from 'UTILS';
-import { TileState } from './minefield-tile/tile-state.enum';
+import { TileState } from './tile/tile-state.enum';
 
 export function setCanvasHeight(canvas, rows = 0, columns = 0) {
     if (canvas) {

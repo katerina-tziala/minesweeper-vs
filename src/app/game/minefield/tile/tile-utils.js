@@ -1,5 +1,5 @@
 'use strict';
-import { CONFIG } from './tile.constants';
+import { STYLES_CONFIG } from '../minefield-ui/minefield-ui.constants';
 import { NumberValidation } from 'UTILS';
 import { TileState } from './tile-state.enum';
 import { TileType } from './tile-type.enum';
@@ -39,7 +39,7 @@ function getPositionAndNeighbors(row, column, gridSize) {
 }
 
 function getTileArea(row, column) {
-  const size = CONFIG.tileSize;
+  const size = STYLES_CONFIG.tileSize;
 
   const xStart = ((column - 1) * size) + column;
   const xEnd = xStart + size;
@@ -67,3 +67,4 @@ export function generateTile(row, column, gridSize, minesPositions) {
 
   return { position, area, neighbors, modifiedBy, type, state };
 }
+
