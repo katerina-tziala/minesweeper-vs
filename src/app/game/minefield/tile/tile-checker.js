@@ -3,8 +3,7 @@ import { NumberValidation } from 'UTILS';
 import { TileState } from './tile-state.enum';
 import { TileType } from './tile-type.enum';
 
-export function pointerInTile(pointerX, pointerY, tile) {
-  const { area } = tile;
+export function pointerInTileArea(pointerX, pointerY, area) {
   const xPointerInArea = NumberValidation.valueInBoundaries(pointerX, area.xStart, area.xEnd);
   const yPointerInArea = NumberValidation.valueInBoundaries(pointerY, area.yStart, area.yEnd);
   return xPointerInArea && yPointerInArea;

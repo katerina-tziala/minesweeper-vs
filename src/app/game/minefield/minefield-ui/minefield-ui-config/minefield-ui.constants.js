@@ -1,3 +1,4 @@
+'use strict';
 export { PALLETE } from './minefield-pallete.constants';
 export { ICONS } from './minefield-icons.constants';
 

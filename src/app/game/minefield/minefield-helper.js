@@ -20,8 +20,8 @@ export function generateGridTiles(gridSize, minesPositions) {
   return tiles;
 }
 
-export function getPointedTile(pointerCoordinates, tiles) {
+export function getTargetedTile(pointerCoordinates, tiles) {
   const { x, y } = pointerCoordinates;
-  return tiles.find(tile => TileChecker.pointerInTile(x, y, tile));
+  return tiles.find(tile => TileChecker.pointerInTileArea(x, y, tile.area));
 }
 

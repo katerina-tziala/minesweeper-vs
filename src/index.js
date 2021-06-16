@@ -39,13 +39,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const minefield = document.getElementsByTagName('app-minefield')[0];
-
-  setTimeout(() => {
-    minefield.init(minesPositions);  
-  }, 500);
-  // console.log(minefield);
-
   
+  setTimeout(() => {
+    minefield.init(minesPositions);
+    minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
+  }, 500);
+
+
+  minefield.addEventListener('onSelectTile', (event) => {
+    console.log('onSelectTile');
+    console.log(event.detail);
+  });  
+  minefield.addEventListener('onActiveTileChange', (event) => {
+    console.log('onActiveTileChange');
+    console.log(event.detail);
+  });  
+  
+  // console.log(minefield);
+  // setTimeout(() => {
+  //   minefield.setAttribute('disabled', true);
+  //   console.log('disabled'); 
+  // }, 3000);
+  // setTimeout(() => {
+  //   minefield.setAttribute('disabled', false);
+  //   console.log('en'); 
+  // }, 5000);
 
   // PageLoaderHandler.hide();
 
@@ -62,110 +80,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-function roundRect(ctx, area, radius = 5) {
-  const { xStart, xEnd, yStart, yEnd } = area;
-
-  //console.log(x, y);
-
-  // ctx.shadowColor = "rgba(128, 128, 128, 1)";
-  // ctx.shadowOffsetX = 0; 
-  // ctx.shadowOffsetY = 0;
-  // ctx.shadowOffsetY = 0;
-  // ctx.shadowBlur = 8;
-  //ctx.save();
-
-  // ctx.save();
-
-
-  ctx.beginPath();
-  ctx.moveTo(xStart + radius, yStart);
-  ctx.lineTo(xEnd - radius, yStart);
-  ctx.quadraticCurveTo(xEnd, yStart, xEnd, yStart + radius);
-  ctx.lineTo(xEnd, yEnd - radius);
-  ctx.quadraticCurveTo(xEnd, yEnd, xEnd - radius, yEnd);
-  ctx.lineTo(xStart + radius, yEnd);
-  ctx.quadraticCurveTo(xStart, yEnd, xStart, yEnd - radius);
-  ctx.lineTo(xStart, yStart + radius);
-  ctx.quadraticCurveTo(xStart, yStart, xStart + radius, yStart);
-  ctx.closePath();
-
-
-  // ctx.fill();
-  // ctx.strokeStyle='white';
-  // ctx.lineWidth=2;
-  // ctx.shadowColor='black';
-  // ctx.shadowBlur=18;
-  // //
-  // ctx.beginPath();
-  // ctx.arc(cx,cy,r,0,PI2);
-  // ctx.clip();
-  // ctx.stroke();
-  // ctx.stroke();
-  //
-  // ctx.shadowColor='rgba(51, 51, 51,0.50)';
-  // ctx.shadowBlur=4;
-  // ctx.shadowOffsetY=3;
-  // ctx.stroke();
-  // ctx.stroke();
-
-
-  // ctx.fillStyle = "red";
-  // ctx.shadowColor = 0;
-  // ctx.shadowOffsetX = 0; 
-  // ctx.shadowOffsetY = 0;
-  // ctx.shadowBlur = 0;
-
-  // set shadowing
-  // ctx.shadowColor = 'black';
-  // ctx.shadowBlur = 10;
-
-  // // stroke the shadowed rounded rectangle
-  // ctx.lineWidth = 4;
-  // ctx.stroke();
-
-  // set compositing to erase everything outside the stroke
-
-  // ctx.globalCompositeOperation = 'destination-in';
-  // restrict new draw to cover existing pixels
-
-  ctx.fillStyle = "#fff";
-  ctx.fill();
-
-  //ctx.globalCompositeOperation = 'source-atop';
-
-  // // change the gCO
-  // ctx.globalCompositeOperation = "source-atop";
-  // ctx.shadowColor = "green";
-  // ctx.shadowBlur = 8;
-  // // now stroke to get the inner shadow
-  // ctx.stroke();
-
-  // // reset the gCO to its default
-  // ctx.globalCompositeOperation = "source-over";
-  // ctx.shadowColor = "rgba(128, 128, 128, 1)";
-  // ctx.shadowBlur = 8;
-  // ctx.shadowOffsetX = 0;
-  // ctx.shadowOffsetY = 0;
-  // shadowed stroke
-  // "source-atop" clips off the undesired outer shadow
-  // ctx.strokeStyle = "transparent";
-  // ctx.stroke();
-  // ctx.restore();
-  // always clean up -- set compsiting back to default
-  // ctx.globalCompositeOperation = 'source-over';
-
-
-  // ctx.font = '600 16px "Font Awesome 5 Free"';
-  //f1e2
-  //e074
-  //f666
-
-  // ctx.fillText(String.fromCharCode(parseInt('f666', 16)), x + 9, y + 23);
-
-  // ctx.font = '400 16px "Font Awesome 5 Brands"';
-  // ctx.fillText(String.fromCharCode(parseInt('f425', 16)), x + 12, y + 23);
-
-
-  // ctx.font = "16px Nunito";
-  // ctx.fillText('7', x + 9, y + 23);
-}

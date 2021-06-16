@@ -1,3 +1,4 @@
+'use strict';
 import './switcher.scss';
 import { parseBoolean } from 'UTILS';
 import { ElementHandler, AriaHandler } from 'UI_ELEMENTS';

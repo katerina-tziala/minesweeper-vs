@@ -1,3 +1,4 @@
+'use strict';
 export const ICONS = {
     bombMine: {
         font: '600 16px "Font Awesome 5 Free"',
