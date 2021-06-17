@@ -7,11 +7,25 @@ export default class AppUserService {
     #inGame = false;
     #joinedAt;
 
+    #appSettings = {
+        theme: 'light',
+        mineType: 'virusMine',
+        userConfig: {
+            flagType: 'awesomeFlag',
+            colorType: '1'
+        },
+        opponentConfig: {
+            flagType: 'checkeredFlag',
+            colorType: '2'
+        }
+    }
+
+
     constructor() {
         this.#username = 'kate';
         //this.#username = LocalStorageHelper.username;
-        console.log('AppUser');
-        console.log(this.#username);
+        // console.log('AppUser');
+        // console.log(this.#username);
     }
 
     static getInstance() {
@@ -21,6 +35,25 @@ export default class AppUserService {
         return AppUserService.instance;
     }
 
+    get theme() {
+        return this.#appSettings.theme;
+    }
+
+    get mineType() {
+        return this.#appSettings.mineType;
+    }
+
+    getPlayerConfig(id) {
+        if (id !== this.#id) {
+            return this.#appSettings.opponentConfig;
+        }
+        return this.#appSettings.userConfig;
+    } 
+
+    get id() {
+        return this.#id;
+    }
+    
     get username() {
         return this.#username;
     }

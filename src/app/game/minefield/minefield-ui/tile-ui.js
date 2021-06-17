@@ -125,8 +125,9 @@ export function drawDetonatedMineIndicator(ctx, tile, styles) {
 }
 
 export function drawFlag(ctx, tile, styles) {
-    const iconConfig = ICONS[styles.iconType];
-    ctx.fillStyle = styles.color;
+    const { iconType, color } = styles;
+    const iconConfig = ICONS[iconType];
+    ctx.fillStyle = color;
     drawIcon(ctx, tile, iconConfig)
 }
 

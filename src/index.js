@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const level = { level: "beginner", rows: 9, columns: 9, numberOfMines: 16 };
   // const minesPositions = generateMinesPositions(level.rows, level.columns, level.numberOfMines);
-  const minesPositions =  [9, 14, 15, 18, 22, 25, 27, 34, 49, 53, 58, 63, 64, 70, 71, 72];
+  const minesPositions = [9, 14, 15, 18, 22, 25, 27, 34, 49, 53, 58, 63, 64, 70, 71, 72];
   //console.log(minesPositions);
 
 
   const minefield = document.getElementsByTagName('app-minefield')[0];
-  
+
   setTimeout(() => {
     minefield.init(minesPositions);
     minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
@@ -47,14 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   minefield.addEventListener('onSelectTile', (event) => {
-    console.log('onSelectTile');
-    console.log(event.detail);
-  });  
-  minefield.addEventListener('onActiveTileChange', (event) => {
-    console.log('onActiveTileChange');
-    console.log(event.detail);
-  });  
-  
+    const { tile, action } = event.detail;
+    // console.log('onSelectTile');
+    // console.log(tile);
+
+    minefield.revealTiles(tile, 'dfgdfg')
+
+  });
+
+
+
+
+  // minefield.addEventListener('onActiveTileChange', (event) => {
+  //   const { activeTile} = event.detail;
+  //   console.log('onActiveTileChange');
+  //   console.log(activeTile);
+  // });
+
   // console.log(minefield);
   // setTimeout(() => {
   //   minefield.setAttribute('disabled', true);

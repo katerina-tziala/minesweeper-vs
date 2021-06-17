@@ -1,7 +1,5 @@
 'use strict';
 
-import { definedString } from './validator';
-
 export function replaceStringParameter(stringToUpdate, value, replacePart = '###') {
   return stringToUpdate.replace(replacePart, value);
 };
@@ -23,18 +21,25 @@ export function lastPositionInArray(arrayList = []) {
   return arrayList.length ? arrayList.length - 1 : 0;
 };
 
-export const enumKey = (enumObject, value) => {
+export function enumKey(enumObject, value) {
   return Object.keys(enumObject).find((key) => enumObject[key] === value);
 };
 
-export const randomInteger = (maxNumber) => {
+export function randomInteger(maxNumber) {
   const value = Math.round(Math.random() * maxNumber);
   return value > maxNumber ? 0 : value;
 };
 
-export const sortNumbersArrayAsc = (arrayToSort) => {
+export function sortNumbersArrayAsc(arrayToSort) {
   return [...arrayToSort].sort((itemA, itemB) => itemA - itemB);
 };
+
+export function arrayDifference(arrayToFilter, arrayReference) {
+  return arrayToFilter.filter((item) => !arrayReference.includes(item));
+};
+
+
+
 
 // export function debounce(func, wait, immediate) {
 // 	var timeout;
@@ -52,13 +57,13 @@ export const sortNumbersArrayAsc = (arrayToSort) => {
 // };
 
 
-export function debounce(func, timeout = 300) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
-  };
-}
+// export function debounce(func, timeout = 300) {
+//   let timer;
+//   return (...args) => {
+//     clearTimeout(timer);
+//     timer = setTimeout(() => { func.apply(this, args); }, timeout);
+//   };
+// }
 
 
 
@@ -99,9 +104,7 @@ export function debounce(func, timeout = 300) {
 //   return Array.from(new Set(arrayToClear));
 // };
 
-// export const arrayDifference = (arrayToFilter, arrayReference) => {
-//   return arrayToFilter.filter((item) => !arrayReference.includes(item));
-// };
+
 
 // export const arrayIntersection = (arrayToFilter, arrayReference) => {
 //   return arrayToFilter.filter((item) => arrayReference.includes(item));

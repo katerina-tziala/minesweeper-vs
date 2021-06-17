@@ -1,37 +1,33 @@
 'use strict';
 import './minefield.scss';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './minefield.constants';
-import { TemplateGenerator } from 'UI_ELEMENTS';
 import { NumberValidation } from 'UTILS';
 import { MinefieldUI } from './minefield-ui/minefield-ui';
 import * as MinefieldHelper from './minefield-helper';
 import { TileState } from './tile/tile-state.enum';
-import { MinefieldAction } from './minefield-action.enum';
-
-import { STYLES_CONFIG, PALLETE } from './minefield-ui/minefield-ui-config/minefield-ui.constants';
-import { parseBoolean, enumKey, debounce } from 'UTILS';
-import * as TileChecker from './tile/tile-checker';
+import { parseBoolean, arrayDifference } from 'UTILS';
 import MinefieldEventsHandler from './minefield-events-handler';
+import AppUserService from '../../state-controllers/app-user.service';
 
 export default class Minefield extends HTMLElement {
   #canvas;
-  #minesPositions = [];
-  #disabledPositions = [];
-  #unrevealedTiles = [];
-  #revealedTiles = [];
-  #attributeUpdateHandler;
+  #attributeUpdateHandler = new Map();
   #MinefieldUI;
   #eventsHandler;
   #subscribers$ = [];
+  #userService;
+
+  #minesPositions = [];
+  #disabledPositions = [];
+
+  #unrevealedTiles = [];
+  #revealedTiles = [];
   #activeTiles = [];
 
   constructor() {
     super();
-    this.#attributeUpdateHandler = new Map();
-  }
-
-  #getNumberAttribute(name = ATTRIBUTES.rows) {
-    return NumberValidation.numberFromString(this.getAttribute(name));
+    this.#userService = AppUserService.getInstance();
+    // TODO on settings update
   }
 
   get #disabled() {
@@ -76,8 +72,7 @@ export default class Minefield extends HTMLElement {
   connectedCallback() {
     this.innerHTML = TEMPLATE;
     this.#canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.minefield}`);
-    // TODO
-    this.#MinefieldUI = new MinefieldUI('light', 'virusMine');
+    this.#MinefieldUI = new MinefieldUI(this.#userService.theme, this.#userService.mineType);
     this.#MinefieldUI.init(this.#canvas, this.rows, this.columns);
     this.#eventsHandler = new MinefieldEventsHandler(this.columns, this.rows);
     this.#subscribers$ = [
@@ -94,96 +89,74 @@ export default class Minefield extends HTMLElement {
     this.#revealedTiles = [];
     this.disabledPositions = [];
     this.#unrevealedTiles = this.#generateGridTiles();
-    this.#MinefieldUI.initCanvas(this.#unrevealedTiles, this.#minesPositions);
+    this.#MinefieldUI.initMinefield(this.#unrevealedTiles, this.#minesPositions);
     this.#checkListeners();
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  revealTile(tile, playerId = null) {
-    const updatedTile = { ...tile };
+  revealTiles(tile, playerId = null) {
+    const updatedTile = this.#getUpdatedTile(tile, playerId);
     updatedTile.state = TileState.Revealed;
-    updatedTile.modifiedBy = playerId;
-    this.#unrevealedTiles = this.#unrevealedTiles.filter(existingTile => existingTile.position !== tile.position);
-    this.#revealedTiles.push(updatedTile);
 
-    console.log("revealTile");
-    console.log(this.#unrevealedTiles);
-    console.log(this.#revealedTiles);
+    console.log('revealTiles');
     console.log(updatedTile);
-    this.#MinefieldUI.drawRevealedTile(updatedTile, this.#minesPositions);
+
+
+    // this.#unrevealedTiles = this.#unrevealedTiles.filter(existingTile => existingTile.position !== tile.position);
+    // this.#revealedTiles.push(updatedTile);
+
+    // console.log("revealTile");
+    // console.log(this.#unrevealedTiles);
+    // console.log(this.#revealedTiles);
+    // console.log(updatedTile);
+    // this.#MinefieldUI.drawRevealedTile(updatedTile, this.#minesPositions);
   }
 
-  flagTile(tile, playerId = null, colorKey = '1', flagType = 'awesomeFlag') {
-    const updatedTile = { ...tile };
+  flagTile(tile, playerId = null) {
+    const updatedTile = this.#getUpdatedTile(tile, playerId);
     updatedTile.state = TileState.Flagged;
-    updatedTile.modifiedBy = playerId;
-
     this.#updateTiles(updatedTile);
-
-    console.log("flagTile");
-    console.log(this.#unrevealedTiles);
-    console.log(updatedTile);
-
-    this.#MinefieldUI.drawFlag(updatedTile, colorKey, flagType);
+    this.#MinefieldUI.drawFlaggedTile(updatedTile);
+    return updatedTile;
   }
 
-  markTile(tile, playerId = null, colorKey = '1') {
-    const updatedTile = { ...tile };
+  markTile(tile, playerId = null) {
+    const updatedTile = this.#getUpdatedTile(tile, playerId);
     updatedTile.state = TileState.Marked;
-    updatedTile.modifiedBy = playerId;
-
     this.#updateTiles(updatedTile);
-
-    console.log("markTile");
-    console.log(this.#unrevealedTiles);
-    console.log(updatedTile);
-    this.#MinefieldUI.drawMark(updatedTile, colorKey);
-
+    this.#MinefieldUI.drawMarkedTile(updatedTile);
+    return updatedTile;
   }
-
 
   resetTile(tile) {
     const updatedTile = { ...tile };
     updatedTile.state = TileState.Untouched;
     updatedTile.modifiedBy = null;
-
     this.#updateTiles(updatedTile);
-
-    console.log("resetTile");
-    console.log(this.#unrevealedTiles);
-    console.log(updatedTile);
-    this.#MinefieldUI.drawTile(updatedTile);
-
+    this.#MinefieldUI.drawUntouchedTile(updatedTile);
+    return updatedTile;
   }
-  #updateTiles(updatedTile) {
-    this.#unrevealedTiles = this.#unrevealedTiles.filter(existingTile => existingTile.position !== updatedTile.position);
-    this.#unrevealedTiles.push({ ...updatedTile });
-  }
-
-
-
-
 
   disconnectedCallback() {
     this.#removeListeners();
     this.#subscribers$.forEach(subscriber => subscriber.unsubscribe());
     this.#subscribers$ = [];
+  }
+
+  #getUpdatedTile(tile, modifiedBy = null) {
+    const updatedTile = { ...tile };
+    updatedTile.modifiedBy = modifiedBy;
+    const styles = this.#userService.getPlayerConfig(modifiedBy);
+    updatedTile.styles = styles;
+    return updatedTile;
+  }
+
+  #updateTiles(updatedTile) {
+    this.#unrevealedTiles = this.#unrevealedTiles.filter(existingTile => existingTile.position !== updatedTile.position);
+    this.#unrevealedTiles.push({ ...updatedTile });
+  }
+
+  #getNumberAttribute(name = ATTRIBUTES.rows) {
+    return NumberValidation.numberFromString(this.getAttribute(name));
   }
 
   #initUpdatesHandling() {
@@ -222,10 +195,11 @@ export default class Minefield extends HTMLElement {
   }
 
   #onSelectedTile(params) {
+    this.#resetCurrentActiveTiles();
+    this.#submitActiveTileChange();
     const { position, action } = params;
     const tile = this.#getAllowedUnrevealedTile(position);
     if (tile) {
-      this.#MinefieldUI.drawTile(tile);
       const event = new CustomEvent('onSelectTile', { detail: { tile, action } });
       this.dispatchEvent(event);
     }
@@ -246,7 +220,8 @@ export default class Minefield extends HTMLElement {
     const tile = this.fieldTiles.find(tile => tile.position === position);
     if (tile) {
       this.#activeTiles = [{ ...tile }];
-      const neighbors = this.fieldTiles.filter(fieldTile => tile.neighbors.includes(fieldTile.position));
+      const neighborsPositions = arrayDifference(tile.neighbors, this.#disabledPositions);
+      const neighbors = this.fieldTiles.filter(fieldTile => neighborsPositions.includes(fieldTile.position));
       this.#activeTiles = [...neighbors, { ...tile }];
       this.#drawActiveTiles();
     }

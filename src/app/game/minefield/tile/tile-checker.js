@@ -18,11 +18,18 @@ export function containsMine(tile) {
   return tile.type === TileType.Mine;
 }
 
-
 export function revealed(tile) {
   return tile.state === TileState.Revealed;
 }
 
 export function untouched(tile) {
   return tile.state === TileState.Untouched;
+}
+
+export function flagged(tile) {
+  return tile.state === TileState.Flagged;
+}
+
+export function marked(tile) {
+  return tile.state === TileState.Marked;
 }
