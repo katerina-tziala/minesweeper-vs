@@ -18,6 +18,14 @@ export function containsMine(tile) {
   return tile.type === TileType.Mine;
 }
 
+export function empty(tile) {
+  return tile.type === TileType.Empty;
+}
+
+export function blank(tile) {
+  return tile.type === TileType.Blank;
+}
+
 export function revealed(tile) {
   return tile.state === TileState.Revealed;
 }
@@ -32,4 +40,12 @@ export function flagged(tile) {
 
 export function marked(tile) {
   return tile.state === TileState.Marked;
+}
+
+export function detectedMine(tile) {
+  return flagged(tile) && containsMine(tile);
+}
+
+export function detonateddMine(tile) {
+  return revealed(tile) && containsMine(tile);
 }

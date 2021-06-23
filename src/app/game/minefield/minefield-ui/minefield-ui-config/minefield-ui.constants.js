@@ -6,12 +6,6 @@ export const STYLES_CONFIG = {
     canvasPadding: 1,
     tileSize: 28,
     tileRadius: 5,
-    innerShadow: {
-        shadowOffsetX: -1,
-        shadowOffsetY: -1,
-        shadowBlur: 5,
-        shadowAdjustment: 51
-    },
     content: {
         font: '16px Nunito',
         padding: {
@@ -21,10 +15,28 @@ export const STYLES_CONFIG = {
         colorAdjustment: 50
     },
     detonatedMinePadding: 3,
-    detonatedMineShadow: {
+    wrongFlagHint: {
+        width: 6,
+        startPadding: 8
+    }
+};
+
+export const SHADOWS = {
+    inner: {
+        shadowOffsetX: -1,
+        shadowOffsetY: -1,
+        shadowBlur: 5,
+        shadowAdjustment: 51
+    },
+    detonatedMine: {
         shadowOffsetX: 0,
         shadowOffsetY: 0,
         shadowBlur: 8,
         shadowAdjustment: -51
+    },
+    wrongFlagHint: {
+        shadowOffsetX: 1,
+        shadowOffsetY: 1,
+        shadowBlur: 3
     },
 };

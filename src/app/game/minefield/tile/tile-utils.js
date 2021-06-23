@@ -65,5 +65,5 @@ export function generateTile(row, column, gridSize, minesPositions) {
   const type = getTileType(position, neighbors, minesPositions);
   const state = TileState.Untouched;
 
-  return { position, area, neighbors, modifiedBy, type, state };
+  return { position, area, neighbors, modifiedBy, type, state, row, column };
 }

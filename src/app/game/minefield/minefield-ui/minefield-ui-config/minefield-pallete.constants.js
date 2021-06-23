@@ -3,17 +3,25 @@ export const PALLETE = {
     light: {
         unrevealed: '#ffffff',
         revealed: '#e6e6e6',
-        active: '#e6e6e6',
+        active: '#e8e8e8',
         innerShadow: '#bfbfbf',
         mine: '#1a1a1a',
         detonatedMine: '#ff0000',
+        wrongFlagHint: {
+            color: '#ff0000',
+            shadowColor: '#808080',
+        }
     },
     dark: {
-        unrevealed: '#fff',
-        revealed: '#f2f2f2',
-        active: '#f2f2f2',
-        innerShadow: '#595959',
+        unrevealed: '#ffffff',
+        revealed: '#e6e6e6',
+        active: '#e8e8e8',
+        innerShadow: '#bfbfbf',
         mine: '#1a1a1a',
         detonatedMine: '#ff0000',
+        wrongFlagHint: {
+            color: '#ff0000',
+            shadowColor: '#808080',
+        }
     }
 };

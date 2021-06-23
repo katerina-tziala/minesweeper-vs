@@ -1,18 +1,10 @@
 'use strict';
-import * as TileChecker from '../tile/tile-checker';
+import * as TileChecker from '../tile-checker';
 import { CavnasUtils, Color } from 'UTILS';
-import { STYLES_CONFIG, ICONS } from './minefield-ui-config/minefield-ui.constants';
+import { STYLES_CONFIG, SHADOWS, ICONS } from '../../minefield-ui/minefield-ui-config/minefield-ui.constants';
+import * as TileShapes from './tile-shapes';
 
-function drawShadowLine(ctx, tile) {
-    const { xStart, xEnd, yStart, yEnd } = tile.area;
-    ctx.beginPath();
-    ctx.moveTo(xEnd - 3, yStart + 3);
-    ctx.lineTo(xEnd - 3, yEnd - 3);
-    ctx.lineTo(xStart + 3, yEnd - 3);
-    ctx.lineCap = 'round';
-    ctx.stroke();
 
-};
 
 function getContentPosition(tileArea, padding) {
     const { xStart, yStart } = tileArea;
@@ -38,22 +30,22 @@ function drawTargetLines(ctx, detonatedMineArea) {
     const topLeftStart = { x: targetOuter.xStart, y: targetOuter.yStart };
     const topLeftEnd = { x: targetInner.xStart, y: targetInner.yStart };
     CavnasUtils.drawRoundedLine(ctx, topLeftStart, topLeftEnd);
-    ctx.stroke();
+    // ctx.stroke();
 
     const topRightStart = { x: targetOuter.xEnd, y: targetOuter.yStart };
     const topRightEnd = { x: targetInner.xEnd, y: targetInner.yStart };
     CavnasUtils.drawRoundedLine(ctx, topRightStart, topRightEnd);
-    ctx.stroke();
+    // ctx.stroke();
 
     const bottomLeftStart = { x: targetOuter.xStart, y: targetOuter.yEnd };
     const bottomLeftEnd = { x: targetInner.xStart, y: targetInner.yEnd };
     CavnasUtils.drawRoundedLine(ctx, bottomLeftStart, bottomLeftEnd);
-    ctx.stroke();
+    // ctx.stroke();
 
     const bottomRightStart = { x: targetOuter.xEnd, y: targetOuter.yEnd };
     const bottomRightEnd = { x: targetInner.xEnd, y: targetInner.yEnd };
     CavnasUtils.drawRoundedLine(ctx, bottomRightStart, bottomRightEnd);
-    ctx.stroke();
+    // ctx.stroke();
 }
 
 function drawIcon(ctx, tile, iconConfig) {
@@ -73,15 +65,15 @@ export function drawTileShape(ctx, tile) {
 }
 
 export function drawTileShadow(ctx, tile, color) {
-    const strokeColor = Color.adjustHexColorBrightness(color, STYLES_CONFIG.innerShadow.shadowAdjustment);
-    const shadowParams = { ...STYLES_CONFIG.innerShadow, color };
+    const strokeColor = Color.adjustHexColorBrightness(color, SHADOWS.inner.shadowAdjustment);
+    const shadowParams = { ...SHADOWS.inner, color };
     ctx.strokeStyle = strokeColor;
     CavnasUtils.setShadow(ctx, shadowParams);
-    drawShadowLine(ctx, tile);
+    TileShapes.drawShadowLine(ctx, tile);
     CavnasUtils.clearShadow(ctx);
 }
 
-export function drawEmptyTileContent(ctx, tile, pallete, minesPositions = []) {
+export function drawNonMineTileContent(ctx, tile, pallete, minesPositions = []) {
     const minesAround = TileChecker.getNumberOfMinesAround(tile.neighbors, minesPositions);
     const content = minesAround ? minesAround.toString() : undefined;
     if (content) {
@@ -98,9 +90,6 @@ export function drawEmptyTileContent(ctx, tile, pallete, minesPositions = []) {
 }
 
 export function drawMine(ctx, tile, styles) {
-    if (tile.modifiedBy) {
-        drawDetonatedMineIndicator(ctx, tile, styles);
-    }
     const iconConfig = ICONS[styles.iconType];
     ctx.fillStyle = styles.pallete.mine;
     drawIcon(ctx, tile, iconConfig)
@@ -109,7 +98,7 @@ export function drawMine(ctx, tile, styles) {
 export function drawDetonatedMineIndicator(ctx, tile, styles) {
     const detonatedMineArea = getResizedTileArea({ ...tile.area }, STYLES_CONFIG.detonatedMinePadding, -STYLES_CONFIG.detonatedMinePadding);
     const strokeStyle = styles.pallete.detonatedMine;
-    const shadowParams = { ...STYLES_CONFIG.detonatedMineShadow };
+    const shadowParams = { ...SHADOWS.detonatedMine };
     shadowParams.color = strokeStyle;
 
     CavnasUtils.setShadow(ctx, shadowParams);
@@ -121,6 +110,16 @@ export function drawDetonatedMineIndicator(ctx, tile, styles) {
 
     CavnasUtils.drawRect(ctx, detonatedMineArea, 1);
     ctx.stroke();
+    CavnasUtils.clearShadow(ctx);
+}
+
+export function drawWrongFlagHint(ctx, tile, styles) {
+    const { color, shadowColor } = styles;
+    const shadowParams = { ...SHADOWS.wrongFlagHint };
+    shadowParams.color = shadowColor;
+    CavnasUtils.setShadow(ctx, shadowParams);
+    ctx.fillStyle = color;
+    TileShapes.drawWrongFlagHint(ctx, tile.area);
     CavnasUtils.clearShadow(ctx);
 }
 

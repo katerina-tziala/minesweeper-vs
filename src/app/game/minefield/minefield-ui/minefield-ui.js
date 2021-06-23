@@ -1,9 +1,10 @@
 'use strict';
 import { STYLES_CONFIG, PALLETE } from './minefield-ui-config/minefield-ui.constants';
 import * as GameColors from '../../game-utils/game-colors';
-import * as TileUI from './tile-ui';
+import * as TileUI from '../tile/tile-ui/tile-ui';
 import * as TileChecker from '../tile/tile-checker';
 import { TileState } from '../tile/tile-state.enum';
+import { CavnasUtils } from 'UTILS';
 
 export class MinefieldUI {
     #mineType;
@@ -76,6 +77,7 @@ export class MinefieldUI {
         TileUI.drawTile(this.#ctx, tile, this.#pallete.revealed);
         this.#drawTileContent(tile);
     }
+
     drawFlaggedTile(tile) {
         if (!this.#ctx || !tile) {
             return;
@@ -120,16 +122,34 @@ export class MinefieldUI {
     #drawTileContent(tile) {
         const containsMine = TileChecker.containsMine(tile);
         if (containsMine) {
-            const styles = { pallete: this.#pallete, iconType: this.#mineType };
-            TileUI.drawMine(this.#ctx, tile, styles);
+            this.#drawRevealedMine(tile);
         } else {
-            TileUI.drawEmptyTileContent(this.#ctx, tile, this.#pallete, this.#minesPositions);
+            TileUI.drawNonMineTileContent(this.#ctx, tile, this.#pallete, this.#minesPositions);
+        }
+    }
+
+    #drawRevealedMine(tile) {
+        if (TileChecker.detonateddMine(tile)) {
+            this.#ctx.globalAlpha = 0.8;
+            CavnasUtils.drawBackground(this.#ctx, this.#pallete.detonatedMine);
+            this.#ctx.globalAlpha = 1;
+        }
+    
+        const styles = { pallete: this.#pallete, iconType: this.#mineType };
+        TileUI.drawMine(this.#ctx, tile, styles);
+
+        if (TileChecker.detectedMine(tile)) {
+            console.log("draw revealed detected mine");
         }
     }
 
     #drawFlag(tile, colorType = '1', flagType = 'awesomeFlag') {
         const styles = { color: this.#pallete[colorType], iconType: flagType };
         TileUI.drawFlag(this.#ctx, tile, styles);
+
+        if (tile.wrongFlagHint && !TileChecker.detectedMine(tile)) {
+            TileUI.drawWrongFlagHint(this.#ctx, tile, this.#pallete.wrongFlagHint);
+        }
     }
 
     #drawMark(tile, colorType = '1') {

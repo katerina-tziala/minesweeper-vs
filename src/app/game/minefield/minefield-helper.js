@@ -1,7 +1,9 @@
 'use strict';
 import * as TileGenerator from './tile/tile-utils';
 import * as TileChecker from './tile/tile-checker';
+import { parseBoolean, arrayDifference } from 'UTILS';
 
+import { TileState } from './tile/tile-state.enum';
 function generateRowTiles(row, gridSize, minesPositions) {
   const rowTiles = [];
   for (let column = 1; column <= gridSize.columns; column++) {
@@ -20,8 +22,33 @@ export function generateGridTiles(gridSize, minesPositions) {
   return tiles;
 }
 
-export function getTargetedTile(pointerCoordinates, tiles) {
-  const { x, y } = pointerCoordinates;
-  return tiles.find(tile => TileChecker.pointerInTileArea(x, y, tile.area));
+
+export function getGridArea(targettedTile, fieldTiles = [], disabledPositions = []) {
+  let tiles = [];
+  if (targettedTile) {
+    const neighborsPositions = arrayDifference(targettedTile.neighbors, disabledPositions);
+    const neighbors = fieldTiles.filter(tile => neighborsPositions.includes(tile.position));
+    tiles = [...neighbors, { ...targettedTile }];
+  }
+  return tiles;
 }
 
+export function getUpdatedTile(tile, modifiedBy = null, state = TileState.Untouched) {
+  const updatedTile = { ...tile };
+  updatedTile.modifiedBy = modifiedBy;
+  updatedTile.state = !!updatedTile.modifiedBy ? state : TileState.Untouched;
+  return updatedTile;
+}
+
+export function getTilesPositions(tiles) {
+  return tiles.map(tile => tile.position);
+}
+
+export function allMinesFlagged(tiles, minesPositions = []) {
+  const mineTiles = tiles.filter(tile => minesPositions.includes(tile.position));
+  return mineTiles.every(tile => TileChecker.flagged(tile));
+}
+
+export function getUntouchedAndMarkedTiles(tiles) {
+  return tiles.filter(tile => TileChecker.untouched(tile) || TileChecker.untouched(tile));
+}

@@ -51,5 +51,5 @@ export function drawRoundedLine(ctx, start, end) {
   ctx.moveTo(start.x, start.y);
   ctx.lineTo(end.x, end.y);
   ctx.closePath();
-  ctx.closePath();
+  ctx.stroke();
 };

@@ -6,7 +6,10 @@ export const ATTRIBUTES = {
     rows: 'rows',
     columns: 'columns',
     mines: 'mines',
-    disabled: 'disabled'
+    disabled: 'disabled',
+    revealing: 'revealing',
+    flagging: 'flagging',
+    wrongFlagHint: 'wrongFlagHint'
 };
 
 export const TEMPLATE = `

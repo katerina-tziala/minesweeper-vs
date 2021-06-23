@@ -3,7 +3,7 @@ import { STYLES_CONFIG } from './minefield-ui/minefield-ui-config/minefield-ui.c
 import { MinefieldAction } from './minefield-action.enum';
 import { PubSub } from 'UTILS';
 const DEBOUNCE_TIME = 80;
-const TILE_SIZE = STYLES_CONFIG.tileSize;
+const TILE_SIZE = STYLES_CONFIG.tileSize + STYLES_CONFIG.canvasPadding;
 
 export default class MinefieldEventsHandler {
   #primaryListeners;
@@ -17,7 +17,7 @@ export default class MinefieldEventsHandler {
   #gridPosition;
   #columns;
   #rows;
-
+ 
   constructor(columns, rows) {
     this.#columns = columns;
     this.#rows = rows;
@@ -157,10 +157,13 @@ export default class MinefieldEventsHandler {
 
   #getGridPosition(event) {
     const { x, y } = this.#getCoordinatesOnCanvas(event);
-    let row = Math.ceil(y / TILE_SIZE);
-    row = this.#validGridPosition(row, this.#rows);
-    let column = Math.ceil(x / TILE_SIZE);
-    column = this.#validGridPosition(column, this.#columns);
+
+    const rowCalculation = Math.ceil(y / TILE_SIZE);
+    const row = this.#validGridPosition(rowCalculation, this.#rows);
+
+    const colCalculation = Math.ceil(x / TILE_SIZE);
+    const column = this.#validGridPosition(colCalculation, this.#columns);
+    
     return { row, column };
   }
 
