@@ -130,7 +130,7 @@ export class MinefieldUI {
 
     #drawRevealedMine(tile) {
         if (TileChecker.detonateddMine(tile)) {
-            this.#ctx.globalAlpha = 0.8;
+            this.#ctx.globalAlpha = 0.7;
             CavnasUtils.drawBackground(this.#ctx, this.#pallete.detonatedMine);
             this.#ctx.globalAlpha = 1;
         }

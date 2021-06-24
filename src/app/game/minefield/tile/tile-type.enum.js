@@ -1,7 +1,7 @@
 'use strict';
 
 const TileType = {
-  Blank: 'b',
+  Blank: 'b', // no mines around
   Empty: 'e',
   Mine: 'm'
 };

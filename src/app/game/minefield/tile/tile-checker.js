@@ -49,3 +49,7 @@ export function detectedMine(tile) {
 export function detonateddMine(tile) {
   return revealed(tile) && containsMine(tile);
 }
+
+export function allowedInArea(tile) {
+  return !containsMine(tile) && !flagged(tile);
+}

@@ -3,7 +3,8 @@
 const MinefieldState = {
   InProgress: 'in-progress',
   MinesDetected: 'mines-detected',
-  FieldCleared: 'field-cleared'
+  FieldCleared: 'field-cleared',
+  DetonatedMine: 'detonated-mine',
 };
 
 Object.freeze(MinefieldState);
