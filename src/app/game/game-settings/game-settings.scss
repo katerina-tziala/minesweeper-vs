@@ -1,0 +1,92 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/iconography/iconography';
+
+.game-setting {
+  @extend %flex-start-end;
+  margin-bottom: 20px;
+  width: 100%;
+
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  > label {
+    @extend .game-setting-label;
+  }
+
+  > app-number-input {
+    max-width: 114px;
+  }
+
+  > app-dropdown-select {
+    min-width: 156px;
+  }
+}
+
+.game-setting-label {
+  text-transform: capitalize;
+  min-width: 180px;
+  flex-grow: 1;
+  font-weight: 600;
+  padding-right: 10px;
+  font-size: 1.1rem;
+}
+
+.game-setting-header {
+  text-transform: uppercase;
+  font-weight: 900;
+  position: relative;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  text-align: left;
+
+  &.level {
+    &::before {
+      @extend .icon-level;
+      width: 20px;
+      margin-right: 10px;
+    }
+  }
+
+  &.options {
+    &::before {
+      @extend .icon-sliders;
+      width: 20px;
+      margin-right: 10px;
+    }
+  }
+  
+  &.turns {
+    &::before {
+      @extend .icon-stopwatch;
+      width: 20px;
+      margin-right: 10px;
+    }
+  }
+ 
+  &.bot {
+    &::before {
+      @extend .icon-bot;
+      width: 25px;
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+  }
+
+  &.vsMode {
+    &::before {
+      @extend .icon-mode;
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.game-setting-explanation {
+  text-align: center;
+  width: 100%;
+  min-height: 40px;
+  margin-top: 30px;
+}

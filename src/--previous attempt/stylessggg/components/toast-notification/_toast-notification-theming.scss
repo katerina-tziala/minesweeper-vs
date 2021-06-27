@@ -1,0 +1,36 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setErrorNotificationStyles($theme) {
+  .toast-notification--error {
+    $background: theming.getThemeColor($theme, "error-pale");
+    $color: theming.getThemeColor($theme, "error-pale-contrast");
+    @include theming.setBoxTheming($background, $color);
+  }
+}
+
+@mixin setWarningNotificationStyles($theme) {
+  .toast-notification--warning {
+    $background: theming.getThemeColor($theme, "warning-pale");
+    $color: theming.getThemeColor($theme, "warning-pale-contrast");
+    @include theming.setBoxTheming($background, $color);
+  }
+}
+
+@mixin setThemeStyles($theme) {
+  .toast-notification {
+    @include theming.setThemeBoxShadow($theme);
+  }
+  @include setErrorNotificationStyles($theme);
+  @include setWarningNotificationStyles($theme);
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

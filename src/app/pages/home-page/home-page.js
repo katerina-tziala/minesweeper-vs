@@ -1,76 +1,99 @@
-"use strict";
-
-import "../../../styles/pages/_home.scss";
-
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import {
-  ElementHandler,
-  ElementGenerator,
-  AriaHandler,
-} from "HTML_DOM_Manager";
-
-import { Page } from "../page";
-import { DOM_ELEMENT_CLASS, MENU_CONTENT } from "./home-page.constants";
-import { GameType } from "GameEnums";
+'use strict';
+import { Page } from '../page';
+import { enumKey } from 'UTILS';
+import { GameType } from 'GAME_ENUMS';
+import { HomePageMenu as Menu } from './home-page-menu';
+import { PageType } from '../page-type.enum';
+import * as GAME_WIZARD from 'GAME_WIZARD';
+import { WIZARD_NAME } from './home-page.constants';
+import { AddUsername } from '~/components/@components.module';
 
 export class HomePage extends Page {
-  constructor(selectGameType) {
+  #menu;
+  #selectedGameType;
+  #opponent;
+  #contentController;
+
+  constructor() {
     super();
-    self.settingsController.gameSettingsHidden = false;
     this.init();
-    this.selectGameType = selectGameType;
   }
 
   renderPage(mainContainer) {
-    mainContainer.append(this.generateMenu());
-    this.hideLoader();
+    if (this.#selectedGameType) {
+      this.#renderSelectedOptionContent(mainContainer);
+    } else {
+      mainContainer.append(this.#generateMenu());
+    }
   }
 
-  generateMenu() {
-    const menu = document.createElement("menu");
-    ElementHandler.addStyleClass(menu, DOM_ELEMENT_CLASS.menu);
-    Object.values(GameType).forEach((gameType) =>
-      menu.append(this.generateMenuItem(gameType)),
-    );
-    return menu;
+  #generateMenu() {
+    this.#menu = new Menu();
+    return this.#menu.generateMenu(this.#onMenuSelection.bind(this));
   }
 
-  generateMenuItem(gameType) {
-    const menuItem = document.createElement("menuitem");
-    ElementHandler.addStyleClass(menuItem, DOM_ELEMENT_CLASS.menuItem);
-    AriaHandler.setTabindex(menuItem, 1);
-    menuItem.append(this.generateMenuItemIcon(gameType));
-    menuItem.append(this.generateMenuItemContent(gameType));
-    menuItem.addEventListener("click", () => this.selectGameType(gameType));
-    menuItem.addEventListener("keydown", (event) => {
-      if (event.keyCode === 13 || event.which === 13) {
-        this.selectGameType(gameType);
-      }
-    });
-    return menuItem;
+  #onMenuSelection(selectedOption) {
+    if (selectedOption === GameType.Online) {
+      this.onChangePage(PageType.LobbyPage);
+    } else {
+      this.#selectedGameType = selectedOption;
+      this.init();
+    }
   }
 
-  generateMenuItemIcon(gameType) {
-    const iconStyleClass =
-      DOM_ELEMENT_CLASS.menuItemIcon + TYPOGRAPHY.doubleHyphen + gameType;
-    return ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.menuItemIcon,
-      iconStyleClass,
-    ]);
+  #renderSelectedOptionContent(mainContainer) {
+    this.#contentController = this.#loadContentController();
+    mainContainer.append(this.#contentController.render());
+    this.#contentController.init();
   }
 
-  generateMenuItemContent(gameType) {
-    const content = ElementGenerator.generateContainer([
-      DOM_ELEMENT_CLASS.menuItemContent,
-    ]);
-    const itemContent = MENU_CONTENT[gameType];
-    content.innerHTML = `<h2>${itemContent.title}</h2><p><span>${itemContent.details}</span></p>`;
-    return content;
+  #loadContentController() {
+    if (this.#selectedGameType === GameType.Friend && !this.#opponent) {
+      return this.#loadUsernameForm();
+    }
+    return this.#loadWizard();
   }
 
-  // Overridden functions
-  onConnectionError(errorMessage) {
-    console.log(errorMessage);
-    // super.onConnectionError(errorMessage);
+  #loadWizard() {
+    const selectedType = enumKey(GameType, this.#selectedGameType);
+    const wizardName = WIZARD_NAME[selectedType];
+    const wizard = new GAME_WIZARD[wizardName](this.#opponent);
+    wizard.onCancel = this.#onBackToMenu.bind(this);
+    wizard.onComplete = this.#onPlayGame.bind(this);
+    return wizard;
   }
+
+  #loadUsernameForm() {
+    const usernameForm = new AddUsername('addOpponent');
+    usernameForm.onSubmit = this.#onAddOpponent.bind(this);
+    usernameForm.onClose = this.#onBackToMenu.bind(this);
+    return usernameForm;
+  }
+
+  #onBackToMenu() {
+    this.#selectedGameType = undefined;
+    this.#contentController = undefined;
+    this.#opponent = undefined;
+    this.init();
+  }
+
+  #onPlayGame(gameConfig) {
+    this.onChangePage(PageType.GamePage, gameConfig);
+  }
+
+  #onAddOpponent(data) {
+    const { username } = data;
+    if (this.#opponentUsernameSameAsUser(username)) {
+      this.#contentController.setFormError('usernameSameAsUser');
+    } else {
+      this.#opponent = { id: 'localfriend', username };
+      this.init();
+    }
+  }
+
+  #opponentUsernameSameAsUser(username) {
+    const appUsername = this.appUserService.username || '';
+    return username.toLowerCase() === appUsername.toLowerCase();
+  }
+
 }

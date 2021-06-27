@@ -1,0 +1,53 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setMenuIconThemeStyles($theme) {
+  .menu-item-icon {
+    $background: theming.getThemeColor($theme, "theme-primary");
+    $color: theming.getThemeColor($theme, "theme-secondary");
+    @include theming.setBoxTheming($background, $color);
+  }
+}
+@mixin setMenuIconFocusedThemeStyles($theme) {
+  .menu-item-icon {
+    $background: theming.getThemeColor($theme, "theme-secondary");
+    $color: theming.getThemeColor($theme, "theme-primary-intense");
+    @include theming.setBoxTheming($background, $color);
+  }
+}
+
+@mixin setDefaultMenuItemThemeStyles($theme) {
+  @include theming.setThemeCard($theme);
+  @include theming.setThemeBoxShadow($theme);
+  @include setMenuIconThemeStyles($theme);
+}
+
+@mixin setMenuItemThemeStyles($theme) {
+  .menu-item {
+    @include setDefaultMenuItemThemeStyles($theme);
+
+    &:hover,
+    &:focus {
+      color: theming.getThemeColor($theme, "theme-secondary-intense");
+      background-color: theming.getThemeColor($theme, "theme-primary-intense");
+      @include setMenuIconFocusedThemeStyles($theme);
+    }
+  }
+
+  .menu-item.menu-item--disabled {
+    &:hover,
+    &:focus {
+      @include setDefaultMenuItemThemeStyles($theme);
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setMenuItemThemeStyles($theme);
+    }
+  }
+}

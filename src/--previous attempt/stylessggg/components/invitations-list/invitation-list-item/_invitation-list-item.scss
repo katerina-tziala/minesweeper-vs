@@ -1,0 +1,110 @@
+@use "./invitation-list-item-theming";
+@import "../../button/button";
+@import "../../toggle/toggle";
+@import "../../game-option-explanation/game-option-explanation";
+
+.__invitation-toggle-button {
+  @extend ._btn;
+  @extend .btn-primary;
+  @include circle(56px);
+  &::after {
+    @extend .icon-gamepad;
+    font-size: 30px;
+    margin-top: 2px;
+  }
+}
+
+.invitation-list-item {
+  width: 340px;
+  padding: 10px;
+  padding-bottom: 14px;
+  .invitation__header {
+    font-size: 1rem;
+  }
+  border-top: 1px solid;
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.invitation__content-container {
+  @extend %start-start;
+
+  > .toggle {
+    margin-left: 0 !important;
+    margin-right: 5px;
+
+    > .toggle-btn {
+      @extend .__invitation-toggle-button;
+      &::before {
+        left: 21px !important;
+      }
+      &.toggle-btn.toggle-btn--expanded::before {
+        left: 19px !important;
+      }
+    }
+
+    > .toggle-panel {
+      right: auto;
+      left: 0;
+      top: 66px;
+      box-shadow: none !important;
+    }
+  }
+}
+
+.invitation__details {
+  flex-grow: 1;
+  width: 226px;
+
+  .invitation__sender {
+    font-weight: 600;
+    @extend %ellipsis-text;
+    text-transform: initial;
+    width: 100%;
+  }
+
+  .invitation__text {
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 1px;
+    text-transform: lowercase;
+  }
+
+  .invitation__created-at {
+    font-style: italic;
+  }
+}
+
+.invitation__actions {
+  width: 24px;
+  height: 58px;
+  margin-left: 5px;
+  flex-direction: column;
+  @extend %between-center;
+  flex-direction: column;
+}
+
+.invitation__btn {
+  @extend .btn-icon;
+  @extend .btn-icon--small;
+  background-color: transparent;
+}
+
+.invitation__btn--play {
+  @include afterIcon("play");
+}
+
+.invitation__btn--reject {
+  @include afterIcon("trash");
+}
+
+.invitation__game-info-container {
+  width: 320px;
+  padding: 5px 15px;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  margin: 5px 0px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include invitation-list-item-theming.setTheming();

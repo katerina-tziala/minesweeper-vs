@@ -1,0 +1,42 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/components/scrollbar/scrollbar';
+@use 'styles/components/select-option/select-option';
+
+$height: 32px;
+
+app-dropdown-select-list {
+  width: 100%;
+  display: block;
+}
+
+.dropdown-select-list {
+  list-style-type: none;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: inherit;
+  will-change: scroll-position;
+  @extend ._scrollbar;
+}
+
+.dropdown-select-list-item {
+  @extend %flex-start-center;
+  width: 100%;
+  height: $height;
+  cursor: pointer;
+  text-transform: capitalize;
+  padding: 0 10px;
+  @extend ._select-option;
+
+  &:first-of-type {
+    border-top-color: transparent !important;
+  }
+
+  > span {
+    display: block;
+  }
+}
+
+.dropdown-select-list-item[aria-selected="true"] {
+  @extend ._select-option--selected;
+}

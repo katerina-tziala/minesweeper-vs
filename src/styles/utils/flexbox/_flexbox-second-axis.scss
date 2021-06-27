@@ -1,0 +1,20 @@
+%second-axis-center {
+  align-items: center;
+}
+
+%second-axis-start {
+  align-items: flex-start;
+}
+
+%second-axis-end {
+  align-items: flex-end;
+}
+
+%second-axis-between {
+  align-items: space-between;
+}
+
+%second-axis-around {
+  align-items: space-around;
+  // align-content: space-around;
+}

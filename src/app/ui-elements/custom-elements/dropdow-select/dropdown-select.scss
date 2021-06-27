@@ -1,0 +1,56 @@
+@use 'styles/iconography/iconography';
+@use 'styles/components/card/card';
+@use 'styles/components/button/button';
+@use 'styles/components/input/input';
+
+$height: 32px;
+$border-radius: input.$border-radius;
+
+app-dropdown-select {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.app-dropdown-select__toggle-button-text {
+  display: block;
+  flex-grow: 1;
+  text-align: left;
+  text-transform: capitalize;
+  font-weight: 600;
+  padding-right: 10px;
+}
+
+.app-dropdown-select__toggle-button-icon {
+  will-change: transform;
+  transition: transform 0.3s ease-in-out;
+  font-size: 1em;
+  padding-top: 4px;
+  @include iconography.afterIcon("caret-down");
+}
+
+.app-dropdown-select__toggle-button {
+  height: $height;
+  line-height: $height;
+  @extend ._button;
+  @extend ._input;
+  padding: 0 10px;
+  cursor: pointer !important;
+  &[aria-expanded="true"] {
+    .app-dropdown-select__toggle-button-icon {
+      margin-top: 4px;
+      transform: rotate(-180deg);
+    }
+  }
+}
+
+.app-dropdown-panel {
+  border-radius: $border-radius;
+  top: 30px;
+  left: 0;
+  @extend .card-theme;
+  border-radius: $border-radius;
+  border-top-width: 2px;
+  border-top-style: solid;
+  @extend ._input-theme;
+}

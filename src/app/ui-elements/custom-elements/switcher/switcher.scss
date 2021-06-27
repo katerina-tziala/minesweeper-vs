@@ -1,0 +1,96 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+@use 'styles/components/button/button';
+@use 'styles/utils/state';
+
+$width: 44;
+$thumb: 16;
+$thumb-space: 4;
+
+// track
+$track-height: #{$thumb + 2 * $thumb-space}px;
+$track-width: #{$width}px;
+// thumb
+$thumb-size: #{$thumb}px;
+$thumb-position-top: #{$thumb-space}px;
+$thumb-position-left: #{$thumb-space}px;
+$thumb-position-right: #{$width - ($thumb + $thumb-space)}px;
+
+app-switcher {
+  height: $track-height;
+  width: $track-width;
+  margin: 0;
+  padding: 0;
+  @extend %flex-start-center;
+  line-height: 19px;
+}
+
+._thumb {
+  @include shapes.pseudoCircle($thumb-size);
+  position: absolute;
+  top: $thumb-position-top;
+  border: none;
+  transition: all 0.2s linear;
+}
+
+._thumb--off {
+  left: $thumb-position-left;
+}
+
+._thumb--on {
+  left: $thumb-position-right;
+}
+
+.app-switcher-button {
+  @extend ._button;
+  @include shapes.fullyRoundedBar($track-width);
+  height: $track-height;
+  position: relative;
+
+  &::after {
+    transition: all 0.2s linear;
+    @extend ._thumb;
+  }
+
+  &[role="switch"][aria-checked="false"] {
+    @extend ._track--off;
+
+    &::after {
+      @extend ._thumb--off;
+    }
+  }
+
+  &[role="switch"][aria-checked="true"] {
+    @extend ._track--on;
+
+    &::after {
+      @extend ._thumb--on;
+    }
+  }
+
+  &[disabled="true"] {
+    @extend .disabled;
+  }
+}
+
+
+// TODO THEMING
+._track--on {
+  @extend .button--primary;
+  background-color: #000;
+}
+
+._thumb--on {
+  background-color: #fff;
+}
+
+
+._track--off {
+  @extend .button--primary;
+  background-color: #4d4d4d;
+}
+
+._thumb--off {
+  background-color: #fafafa;
+}
+

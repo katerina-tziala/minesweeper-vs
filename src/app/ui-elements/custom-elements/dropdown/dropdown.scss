@@ -1,0 +1,12 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+@use 'styles/utils/state';
+@use 'styles/iconography/iconography';
+@use 'styles/components/card/card';
+@use 'styles/components/button/button';
+
+app-dropdown {
+  position: relative;
+  display: block;
+  width: 100%;
+}

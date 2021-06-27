@@ -1,14 +1,15 @@
-@use "../../theming/theming";
-@use "./button-theming";
+@use '../../utils/state';
+@use '../../utils/shapes';
+@use '../../iconography/iconography';
+@use '../../utils/flexbox/flexbox';
 
-@import "../../utils/_module-utils";
-@import "../../global/_module-global";
+$button-height: 32px;
 
-._btn {
+._button {
   cursor: pointer;
   outline: none;
   border: none;
-  overflow: hidden;
+  // overflow: hidden;
   text-align: center;
 
   &:disabled {
@@ -16,100 +17,86 @@
   }
 }
 
-.btn-text {
-  @extend ._btn;
+.button-text {
+  @extend ._button;
   display: inline-block;
-  height: getSize("btn-height");
-  min-width: 46px;
+  height: $button-height;
+  line-height: 34px;
+  min-width: $button-height;
+  border-radius: 3px;
+  position: relative;
   padding: 0 10px;
-  border-radius: 6px;
   font-size: 0.9rem;
-  line-height: 28px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-weight: 900;
 }
 
-.btn-icon {
-  @extend ._btn;
-  @extend %center-center;
+.button-icon {
+  display: inline-block;
+  @extend ._button;
+  @extend .button--primary;
+  @extend %flex-center-center;
+  @include shapes.circle($button-height);
+  overflow: hidden;
+  min-width: $button-height;
+  min-height: $button-height;
 }
 
-.btn-icon--normal {
-  @include circle(getSize("btn-height"));
-  font-size: 20px;
-}
-
-.btn-icon--small {
-  @include circle(getSize("btn-height-small"));
-  font-size: 15px;
-  line-height: 15px;
-}
-
-.btn-icon--close {
-  @include afterIcon(x);
+.button-icon--close {
+  @extend .button-icon;
   &::after {
-    width: 14px;
-    height: 14px;
-    line-height: 14px;
-    font-size: 18px;
+    @extend .icon-x;
+    font-size: 20px;
+    height: 100%;
+    line-height: 33px;
   }
 }
 
-.btn-gameplay {
-  @extend .btn-icon;
-  @extend .btn-icon--normal;
-  @extend .btn-primary;
-  @include setGamePlayIcons("&.btn-icon");
+// TODO THEMING
+.button--primary {
+  background-position: center;
+  transition: background 0.5s;
+  color: #f2f2f2;
+  background-color: #4d4d4d;
 
-  &.btn-icon--previous {
-    padding-right: 2px;
-    line-height: 20px;
-    font-size: 1.3rem;
+  &:hover,
+  &:focus {
+    color: #fff;
+    background: #000 radial-gradient(circle, transparent 1%, #000 1%)
+      center/15000%;
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+      0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
   }
 
-  &.btn-icon--reset {
-    font-size: 16px;
+  &:active {
+    background-color: #b3b3b3;
+    background-size: 100%;
+    transition: background 0s;
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+      0 1px 5px 0 rgb(0 0 0 / 12%);
   }
 
-  &.btn-icon--play {
-    font-size: 14px;
-
-    &::after {
-      width: 10px;
-    }
-  }
-
-  &.btn-icon--next {
-    padding-left: 2px;
-    line-height: 20px;
-    font-size: 1.3rem;
-  }
-
-  &.btn-icon--send {
-    font-size: 1rem;
-    line-height: 26px;
-    padding-right: 1px;
-  }
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-.theme-light {
-  .btn-primary {
-    @include button-theming.applyPrimaryButtonThemeStyles("light");
-  }
+// .button-text {
+//   box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+//     0 1px 5px 0 rgb(0 0 0 / 12%);
 
-  .btn-secondary {
-    @include button-theming.applySecondaryButtonThemeStyles("light");
-  }
-}
+//   &:active {
+//     box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+//       0 1px 5px 0 rgb(0 0 0 / 12%);
+//   }
+// }
 
-.theme-dark {
-  .btn-primary {
-    @include button-theming.applyPrimaryButtonThemeStyles("dark");
-  }
+// .button-icon {
+//   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 16%),
+//     0px 1px 2px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 
-  .btn-secondary {
-    @include button-theming.applySecondaryButtonThemeStyles("dark");
-  }
-}
+//   &:active {
+//     box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 16%),
+//       0px 1px 2px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+//   }
+// }

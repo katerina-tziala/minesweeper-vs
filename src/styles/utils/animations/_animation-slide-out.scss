@@ -1,0 +1,17 @@
+@mixin slideOut($duration: 1) {
+  animation: slide-out #{$duration}s ease-out;
+  animation-fill-mode: forwards;
+  will-change: transform;
+  transform-origin: top left;
+}
+
+@keyframes slide-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+}

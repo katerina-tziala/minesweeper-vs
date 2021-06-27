@@ -1,0 +1,34 @@
+@use "./game-settings-theming";
+@import "../dropdown-select/dropdown-select";
+
+@function getSettingItemIndex($index) {
+  @return 500 - ($index * 100);
+}
+
+@mixin applySettingItemIndex() {
+  @for $index from 1 through 3 {
+    .settings-item:nth-child(#{$index}) {
+      padding-top: 0px;
+      .dropdown-listbox {
+        z-index: getSettingItemIndex($index);
+      }
+    }
+  }
+}
+
+.game-settings {
+  @include applySettingItemIndex();
+
+  .mine-type-option {
+    @include circle(20px);
+    line-height: 20px;
+    font-size: 1.1rem;
+    @include setMineTypeIcons("&.mine-type-option");
+  }
+
+  .game-color-option {
+    @include circle(20px);
+  }
+}
+
+@include game-settings-theming.setTheming();

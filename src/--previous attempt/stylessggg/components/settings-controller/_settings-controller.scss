@@ -1,0 +1,56 @@
+
+@use "../../theming/theming";
+@use "./settings-controller-theming";
+@import "../toggle/toggle";
+@import "../switcher/switcher";
+@import "../dropdown-select/dropdown-select";
+
+.settings {
+  position: relative;
+  border: 1px solid red!important;
+  margin-left: 15px;
+}
+
+.settings-panel {
+  position: absolute;
+  top: 35px;
+  right: -15px;
+  z-index: getIndex("settings-panel");
+  height: 0;
+  transition: height 0.5s;
+  right: 0;
+}
+
+.settings-section {
+  @extend %start-center;
+  min-width: 200px;
+  justify-content: space-between !important;
+  padding: 10px;
+
+  &:not(:last-of-type) {
+    padding-bottom: 0px;
+  }
+
+  @include settings-controller-theming.applySettingSectionIndex();
+}
+
+.settings-tag {
+  text-transform: capitalize;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.mine-type-option {
+  @include circle(22px);
+  line-height: 22px;
+  font-size: 1.1rem;
+  @include setMineTypeIcons("&.mine-type-option");
+}
+
+.game-color-option {
+  @include circle(22px);
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include settings-controller-theming.setTheming();

@@ -1,0 +1,28 @@
+@use "../../theming/theming";
+
+@mixin setIconThemeStyles($theme) {
+  .online-indicator-icon {
+    color: theming.getThemeColor($theme, "success-primary");
+  }
+}
+
+@mixin setButtonThemeStyles($theme) {
+  .online-indicator-button {
+    color: theming.getThemeColor($theme, "error-secondary");
+
+    &:hover, &:focus {
+        color: theming.getThemeColor($theme, "error-primary");
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setIconThemeStyles($theme);
+      @include setButtonThemeStyles($theme);
+    }
+  }
+}

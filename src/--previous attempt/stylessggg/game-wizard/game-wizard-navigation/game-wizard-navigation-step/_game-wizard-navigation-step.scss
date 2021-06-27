@@ -1,0 +1,72 @@
+
+@use "./game-wizard-navigation-step-theming";
+
+@mixin navigationStepButton($icon, $line-height: 40, $font-size: 24) {
+  &::after {
+    @include circle(40px);
+    overflow: hidden;
+    line-height: 40px;
+    line-height: #{$line-height}px;
+    font-size: #{$font-size}px;
+    @extend .icon-#{$icon};
+  }
+}
+
+.game-wizard-navigation-step {
+  height: 100%;
+  width: 50px;
+  position: relative;
+}
+
+.game-wizard-navigation-step-button {
+  cursor: pointer;
+  outline: none;
+  @include circle(50px);
+  overflow: visible;
+  position: relative;
+
+  &.game-wizard-navigation-step-button--botMode {
+    @include navigationStepButton("bot", 39, 22);
+  }
+
+  &.game-wizard-navigation-step-button--vsModeSettings {
+    @include navigationStepButton("mode", 39);
+  }
+
+  &.game-wizard-navigation-step-button--levelSettings {
+    @include navigationStepButton("level", 41, 21);
+  }
+
+  &.game-wizard-navigation-step-button--turnSettings {
+    @include navigationStepButton("stopwatch", 39);
+  }
+
+  &.game-wizard-navigation-step-button--optionsSettings {
+    @include navigationStepButton("sliders", 42, 20);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+  
+}
+
+.game-wizard__navigation-step-label {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  width: 100%;
+  background-color: inherit;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 900;
+  margin-top: 3px;
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include game-wizard-navigation-step-theming.setTheming();

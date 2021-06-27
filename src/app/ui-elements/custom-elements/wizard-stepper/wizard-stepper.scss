@@ -1,0 +1,45 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/animations/animations';
+
+app-wizard-stepper {
+  display: block;
+  width: 100%;
+  min-height: 70px;
+}
+
+.stepper-container {
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  width: 0%;
+}
+
+.stepper-container--filled {
+  width: 0%;
+  opacity: 0;
+  @include animations.expandWidth(0.6);
+}
+
+.stepper-steps {
+  min-width: 360px;
+  padding: 8px;
+  padding-bottom: 0px;
+}
+
+.stepper--progress {
+  position: absolute;
+  top: 25px;
+  height: 4px;
+  padding: 0px 40px;
+}
+
+// TODO: THEMING
+.stepper--progress {
+  .progress-bar__track {
+    background-color: #b3b3b3;
+  }
+
+  .progress-bar__progress-indicator {
+    background-color: #262626;
+  }
+}

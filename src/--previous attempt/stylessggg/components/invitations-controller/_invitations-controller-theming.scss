@@ -1,0 +1,18 @@
+@use "../../theming/theming";
+
+@mixin setButtonIndicatorThemeStyles($theme) {
+  .invitations__button-indicator {
+    background-color: theming.getThemeColor($theme, "error-secondary");
+    color: theming.getThemeColor($theme, "error-secondary-contrast");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setButtonIndicatorThemeStyles($theme);
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@import "styles/iconography/iconography";
+
+app-error-message {
+  color: #cc0000;
+  position: relative;
+  width: 100%;
+  display: block;
+
+  &::after {
+    width: 30px;
+    height: 24px;
+    font-size: 20px;
+    line-height: 24px;
+    position: absolute;
+    top: 0px;
+    right: 1px;
+    z-index: 4;
+    @extend .icon-info-circle;
+    background-color: inherit;
+  }
+}

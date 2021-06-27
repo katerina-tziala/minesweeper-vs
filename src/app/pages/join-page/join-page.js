@@ -1,85 +1,76 @@
-"use strict";
-
-import "../../../styles/pages/_login.scss";
-
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementHandler, ElementGenerator } from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-
-import { Page } from "../page";
-import {
-  DOM_ELEMENT_ID,
-  DOM_ELEMENT_CLASS,
-  FORM_PARAMS,
-} from "./join-page.constants";
-
-import { FormUsername } from "~/components/form/form-username/form-username";
-
-
-
-import { IconLoader } from "~/components/loaders/icon-loader/icon-loader";
-
-
-
-import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
+'use strict';
+import './join-page.scss';
+import { Page } from '../page';
+import { MessageErrorType } from 'ONLINE_CONNECTION';
+import { AddUsername } from '~/components/@components.module';
 
 export class JoinPage extends Page {
-  #loginForm;
+  #usernameForm;
+  #offlineConfirmation;
+  #offlineConfirmationActions;
 
   constructor() {
     super();
-    const username = LocalStorageHelper.retrieve("username");
-    if (username) {
-      self.onlineConnection.establishConnection({ username });
-    }
-    this.#loginForm = new FormUsername(
-      this.login.bind(this),
-      username ? username : TYPOGRAPHY.emptyString,
-    );
     this.init();
-  }
-
-  get loginContainer() {
-    return ElementHandler.getByID(DOM_ELEMENT_ID.loginContainer);
+    this.#offlineConfirmationActions = new Map();
+    this.#offlineConfirmationActions.set('choiceA', this.#onRejectOfflineJoin.bind(this));
+    this.#offlineConfirmationActions.set('choiceB', this.#onJoinOffline.bind(this));
   }
 
   renderPage(mainContainer) {
-    mainContainer.append(this.renderLoginForm());
-    this.hideLoader();
+    this.#usernameForm = new AddUsername('join');
+    this.#usernameForm.onSubmit = this.#onJoin.bind(this);
+    mainContainer.append(this.#usernameForm.render());
+    this.#usernameForm.init(this.appUserService.username);
   }
 
-  renderLoginForm() {
-    const container = ElementGenerator.generateContainer(
-      [DOM_ELEMENT_CLASS.loginContainer],
-      DOM_ELEMENT_ID.loginContainer,
-    );
-    container.append(this.#loginForm.renderForm(FORM_PARAMS));
-    return container;
+  #onJoin(data) {
+    const { username } = data;
+    this.appUserService.username = username;
+    this.#usernameForm.setFormSubmittionState();
+    this.onlineConnection.establishConnection(username)
+      .then(() => this.onChangePage())
+      .catch(error => this.#onConnectionFailed(error));
   }
 
-  login(formValues) {
-    if (self.onlineConnection) {
-      this.#displayLoader().then(() => {
-        self.onlineConnection.establishConnection(formValues);
-      });
+  #onConnectionFailed(errorType) {
+    if (errorType && errorType === MessageErrorType.UsernameInUse) {
+      this.#onUsernameError();
     } else {
-      self.toastNotifications.show(NOTIFICATION_MESSAGE.connectionErrorRefresh);
+      this.#checkOfflineJoin();
     }
   }
 
-  #displayLoader() {
-    return this.loginContainer.then((container) => {
-      container.append(IconLoader.generate());
-      return;
+  #checkOfflineJoin() {
+    this.#usernameForm.clearFormSubmittionState();
+    this.#usernameForm.hide();
+    this.#displayOfflineConfirmation();
+  }
+
+  #onUsernameError() {
+    this.#usernameForm.clearFormSubmittionState();
+    this.#usernameForm.setFormError('usernameInUse');
+  }
+
+  #displayOfflineConfirmation() {
+    this.#offlineConfirmation = document.createElement('app-dilemma-selection');
+    this.#offlineConfirmation.setAttribute('type', 'continue-offline');
+    this.#offlineConfirmation.addEventListener('onChoiceSelected', (event) => {
+      const selectedCoice = event.detail.value;
+      this.#offlineConfirmationActions.get(selectedCoice)();
     });
+    this.mainContainer.append(this.#offlineConfirmation);
   }
 
-  #hideLoader() {
-    return this.loginContainer.then((container) => IconLoader.remove(container));
+  #onRejectOfflineJoin() {
+    this.#usernameForm.display();
+    this.#offlineConfirmation.remove();
+    this.#offlineConfirmation = undefined;
   }
 
-  onConnectionError(errorMessage) {
-    super.onConnectionError(errorMessage);
-    this.#hideLoader();
+  #onJoinOffline() {
+    this.#offlineConfirmation = undefined;
+    this.appUserService.joinedAt = new Date().toString();
+    this.onChangePage();
   }
 }

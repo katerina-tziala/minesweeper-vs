@@ -1,0 +1,31 @@
+app-dropdown-panel {
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  position: absolute;
+  background-color: inherit;
+}
+
+.app-dropdown-panel {
+  display: block;
+  pointer-events: none;
+  transform-origin: top left;
+  overflow: hidden;
+  pointer-events: auto;
+  width: 100%;
+  z-index: 300;
+  position: absolute;
+  will-change: transform, opacity;
+  transition: opacity 0.4s;
+  opacity: 0;
+  &[expanded="true"] {
+    opacity: 1;
+  }
+}
+
+.app-dropdown-panel-content {
+  transform-origin: top left;
+  will-change: transform;
+  width: 100%;
+}

@@ -1,0 +1,19 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .online-users-header {
+    color: theming.getThemeColor($theme, "header-color");
+    background-color: theming.getThemeColor($theme, "app-primary");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

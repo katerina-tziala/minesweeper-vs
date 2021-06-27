@@ -1,0 +1,134 @@
+@import './iconography_utils';
+
+.icon-user {
+  @extend %icon-regular;
+  content: fa-content($fa-var-user);
+}
+
+.icon-bot {
+  @extend %icon-regular;
+  content: fa-content($fa-var-robot);
+}
+
+.icon-exclamation {
+  @extend %icon-regular;
+  content: fa-content($fa-var-exclamation);
+}
+
+.icon-info-circle {
+  @extend %icon-regular;
+  content: fa-content($fa-var-info-circle);
+}
+
+.icon-eraser {
+  @extend %icon-regular;
+  content: fa-content($fa-var-eraser);
+}
+
+.icon-x {
+  @extend %icon-regular;
+  content: fa-content($fa-var-times);
+}
+
+.icon-spinner {
+  @extend %icon-regular;
+  content: fa-content($fa-var-spinner);
+}
+
+.icon-online {
+  @extend %icon-regular;
+  content: fa-content($fa-var-globe);
+}
+
+.icon-friend {
+  @extend %icon-regular;
+  content: fa-content($fa-var-user-friends);
+}
+
+.icon-flag {
+  @extend %icon-brand;
+  content: fa-content($fa-var-font-awesome-flag);
+}
+
+.icon-bot {
+  @extend %icon-regular;
+  content: fa-content($fa-var-robot);
+}
+
+.icon-minus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-minus);
+}
+
+.icon-plus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-plus);
+}
+
+.icon-caret-down {
+  @extend %icon-regular;
+  content: fa-content($fa-var-chevron-down);
+}
+
+// ICONS FOR GAME SETTINGS
+.icon-level {
+  @extend %icon-regular;
+  content: fa-content($fa-var-layer-group);
+}
+
+.icon-stopwatch {
+  @extend %icon-regular;
+  content: fa-content($fa-var-stopwatch);
+}
+
+.icon-mode {
+  @extend %icon-regular;
+  content: fa-content($fa-var-dice-d6);
+}
+
+.icon-sliders {
+  @extend %icon-regular;
+  content: fa-content($fa-var-sliders-h);
+}
+
+.icon-double-right {
+  @extend %icon-regular;
+  content: fa-content($fa-var-angle-double-right);
+}
+
+.icon-double-left {
+  @extend %icon-regular;
+  content: fa-content($fa-var-angle-double-left);
+}
+
+.icon-link {
+  @extend %icon-regular;
+  content: fa-content($fa-var-link);
+}
+
+.icon-paper-plane {
+  @extend %icon-regular;
+  content: fa-content($fa-var-paper-plane);
+}
+
+.icon-envelope {
+  @extend %icon-regular;
+  content: fa-content($fa-var-envelope);
+}
+
+.icon-gamepad {
+  @extend %icon-regular;
+  content: fa-content($fa-var-gamepad);
+}
+
+@mixin beforeIcon($key) {
+  &::before {
+    @extend .icon-#{$key};
+  }
+}
+
+@mixin afterIcon($key) {
+  &::after {
+    @extend .icon-#{$key};
+  }
+}

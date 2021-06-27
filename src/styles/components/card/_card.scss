@@ -1,0 +1,19 @@
+@use '../../utils/flexbox/flexbox';
+
+.card {
+  padding: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  @extend .card-theme;
+  >.title {
+    padding-bottom: 20px;
+  }
+}
+
+// TODO THEMING
+.card-theme {
+  background-color: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}

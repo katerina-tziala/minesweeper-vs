@@ -1,0 +1,42 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@function getSettingSectionIndex($index) {
+  @return 500 - ($index * 100);
+}
+
+@mixin applySettingSectionIndex() {
+  @for $index from 1 through 3 {
+    &:nth-of-type(#{$index}) {
+      > .dropdown-container > .dropdown-listbox-container > .dropdown-listbox {
+        z-index: getSettingSectionIndex($index);
+      }
+    }
+  }
+}
+
+@mixin applySettingsControllerThemeStyle($theme) {
+  .settings-panel {
+    @include theming.setThemeCard($theme);
+    @include theming.setThemeBoxShadow($theme);
+  }
+
+  @include theming.applyGameColorsStyle($theme, ".color-type");
+}
+
+@mixin setThemeStyles($theme) {
+  @include settings-controller-theming.applySettingsControllerThemeStyle($theme);
+  .game-color-option {
+    border: 1px solid theming.getThemeColor($theme, "theme-secondary-intense");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

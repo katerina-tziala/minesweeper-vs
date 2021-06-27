@@ -1,0 +1,44 @@
+@use 'styles/utils/state';
+@use 'styles/iconography/iconography';
+@use 'styles/components/menu-item/menu-item';
+
+app-menu-item {
+  @extend .menu-item;
+
+  &:not(:last-of-type) {
+    margin-bottom: 20px;
+  }
+
+  &[disabled="true"] {
+    @extend .disabled;
+  }
+  &[disabled="false"] {
+    @extend .menu-item--enabled;
+  }
+}
+
+app-menu-item[type="online"] {
+  .menu-item__icon {
+    font-size: 2.6em;
+    @include iconography.afterIcon('online');
+  }
+}
+
+app-menu-item[type="bot"] {
+  .menu-item__icon {
+    padding-bottom: 3px;
+    @include iconography.afterIcon('bot');
+  }
+}
+
+app-menu-item[type="friend"] {
+  .menu-item__icon {
+    @include iconography.afterIcon('friend');
+  }
+}
+
+app-menu-item[type="original"] {
+  .menu-item__icon {
+    @include iconography.afterIcon('flag');
+  }
+}

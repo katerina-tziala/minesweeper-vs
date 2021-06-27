@@ -1,0 +1,10 @@
+@import "styles/utils/animations/animations";
+
+.main-content {
+
+  app-dilemma-selection {
+    .card {
+      @include slideIn(0.6);
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .game-option-explanation--unchecked {
+    color: theming.getThemeColor($theme, "error-primary");
+  }
+
+  .game-option-explanation--checked {
+    color: theming.getThemeColor($theme, "success-primary");
+  }
+
+  .game-option-explanation-table {
+    $color: theming.getThemeColor($theme, "board-grid");
+    
+    tbody > tr:not(:last-of-type) > td {
+      border-bottom: 1px solid $color;
+    }
+    tbody > tr:not(:last-of-type) > th {
+      border-bottom: 1px solid $color;
+    }
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

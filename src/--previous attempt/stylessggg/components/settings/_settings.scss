@@ -1,0 +1,15 @@
+@import "../toggle/toggle";
+@import "../switcher/switcher";
+@import "../game-settings/game-settings";
+
+.settings-item {
+  @extend %between-center;
+  min-width: 220px;
+  padding: 15px;
+}
+
+.settings-tag {
+  text-transform: capitalize;
+  font-style: italic;
+  font-weight: 600;
+}

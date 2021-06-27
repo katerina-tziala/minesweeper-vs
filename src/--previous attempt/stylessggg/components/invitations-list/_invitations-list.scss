@@ -1,0 +1,17 @@
+@import "./invitations-list-theming";
+@import "./invitation-list-item/invitation-list-item";
+@import "../scrollbar/scrollbar";
+
+.invitations-list {
+  list-style-type: none;
+  overflow: hidden;
+  padding: 0 8px;
+  width: 358px;
+  transition: all 0.5s ease-in-out;
+}
+
+.invitations-list--scrollable {
+  overflow: auto;
+  @extend ._scrollbar;
+  padding-right: 0px;
+}

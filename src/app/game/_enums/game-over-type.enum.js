@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 const GameOverType = {
-  DetonatedMine: "detonatedMine",
-  Cleared: "clearedMinefield",
-  ExceededTurnsLimit: "exceededTurnsLimit",
-  Detected: "detectedAllMines"
+  DetonatedMine: 'detonatedMine',
+  Cleared: 'clearedMinefield',
+  ExceededTurnsLimit: 'exceededTurnsLimit',
+  Detected: 'detectedAllMines'
 };
 
 Object.freeze(GameOverType);

@@ -1,0 +1,54 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+@import 'styles/iconography/iconography';
+@import 'styles/components/card/card';
+@import 'styles/utils/animations/animations';
+
+.add-username {
+  @extend .card;
+  min-width: 300px;
+  width: 100%;
+  max-width: 380px;
+  @include slideIn(0.8);
+
+  > h1 {
+    padding-right: 50px;
+    text-transform: capitalize;
+    // font-size: 1.3rem;
+  }
+
+  > .button-icon--close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+
+}
+
+form {
+  padding: 0 5px;
+  padding-top: 30px;
+
+  .app-text-input__input {
+    &::before {
+      @extend .icon-user;
+    }
+  }
+
+  .form-buttons {
+    margin-top: 20px;
+    @extend %flex-between-center;
+
+    > .button-text {
+      min-width: 116px;
+    }
+  }
+}
+
+//TODO: STYLES
+.add-username {
+  app-loader {
+    background: rgba(251, 251, 251, 0.5);
+    color: #1a1a1a;
+  }
+}

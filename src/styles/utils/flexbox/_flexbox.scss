@@ -1,0 +1,63 @@
+@import './flexbox-first-axis';
+@import './flexbox-second-axis';
+
+%flexbox {
+  display: flex;
+}
+
+%flex-center-center {
+  @extend %flexbox;
+  @extend %first-axis-center;
+  @extend %second-axis-center;
+}
+
+%flex-start-center {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-center;
+}
+
+%flex-center-start {
+  @extend %flexbox;
+  @extend %first-axis-center;
+  @extend %second-axis-start;
+}
+
+%flex-between-center {
+  @extend %flexbox;
+  @extend %first-axis-between;
+  @extend %second-axis-center;
+}
+
+%flex-around-center {
+  @extend %flexbox;
+  @extend %first-axis-around;
+  @extend %second-axis-center;
+}
+
+%flex-start-start {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-start;
+}
+
+%flex-end-center {
+  @extend %flexbox;
+  @extend %first-axis-end;
+  @extend %second-axis-center;
+}
+
+%flex-start-end {
+  @extend %flexbox;
+  @extend %first-axis-start;
+  @extend %second-axis-end;
+}
+
+
+
+
+// %flex-start-between {
+//   @extend %flexbox;
+//   @extend %first-axis-start;
+//   @extend %second-axis-between;
+// }

@@ -1,0 +1,51 @@
+// @use "sass:map";
+// @use "sass:color";
+@use "./toggle-theming";
+// @use "../../theming/theming";
+// @use "../button/button-theming";
+@import "../../utils/z-index";
+// @import "../button/button";
+
+.toggle {
+  // border: 1px solid red;
+  position: relative;
+}
+
+.toggle-btn {
+  &::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    border-radius: 4px;
+    width: 0;
+    height: 0;
+    transition: all 0.3s ease;
+  }
+}
+
+.toggle-panel {
+  position: absolute;
+  top: 35px;
+  right: 2px;
+  z-index: getIndex("settings-panel");
+
+  // height: 0;
+  // width: 20px;
+  // height: 20px;
+  // border: 1px solid red;
+  //overflow: hidden;
+  transition: height 0.5s;
+}
+
+
+.toggle-content {
+ 
+  // border: 1px solid blue;
+  //padding-bottom: 10px;
+  // transition: height 0.5s;
+}
+
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include toggle-theming.setTheming();

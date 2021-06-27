@@ -1,0 +1,37 @@
+@use "./online-users-theming";
+@import "./online-user-card/online-user-card";
+@import "../scrollbar/scrollbar";
+
+.online-users-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  @extend ._scrollbar;
+}
+
+.online-users-header {
+  text-align: center;
+  text-transform: uppercase;
+  padding: 5px;
+}
+
+.online-users-wrapper {
+  position: relative;
+  @extend %center-center;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 500px;
+}
+
+.online-users-message {
+  font-weight: 900;
+  font-size: 2rem;
+  padding: 20px;
+  width: 100vw;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@include online-users-theming.setTheming();

@@ -1,111 +1,99 @@
-"use strict";
-
-import "../../../styles/pages/_lobby.scss";
-import { valueDefined } from "~/_utils/validator";
-import { TYPOGRAPHY } from "~/_constants/typography.constants";
-import { ElementGenerator } from "HTML_DOM_Manager";
-import { LocalStorageHelper } from "~/_utils/local-storage-helper";
-
-import { Page } from "../page";
-import {
-  DOM_ELEMENT_CLASS
-} from "./lobby-page.constants";
-
-import { OnlineUsers } from "../../components/online-users/online-users";
-
-import { User } from "../../_models/user";
-import { LinkInvitationButton } from "../../components/link-invitation-button/link-invitation-button";
-
-// import { NOTIFICATION_MESSAGE } from "~/components/toast-notification/toast-notification.constants";
+'use strict';
+import './lobby-page.scss';
+import { Page } from '../page';
+import { PageType } from '../page-type.enum';
+import { LinkInvitationButton } from './link-invitation-button/link-invitation-button';
+import { OnlineUsers } from './online-users/online-users';
+import { DOM_ELEMENT_CLASS } from './lobby-page.constants';
+import { GameWizardVSOnline } from 'GAME_WIZARD';
+import { ElementGenerator } from 'UI_ELEMENTS';
 
 export class LobbyPage extends Page {
-  #GameWizard;
-  #OnlineUsers;
+  #onlineUsersController;
+  #gameWizard;
+  #invitationBased = false;
+  #peersUpdate;
 
-  constructor(onPlayGame) {
+  constructor() {
     super();
-    this.onPlayGame = onPlayGame;
-    self.settingsController.gameSettingsHidden = false;
-
-    this.#OnlineUsers = new OnlineUsers(self.onlineConnection.peers, this.#onUserSelected.bind(this));
     this.init();
+    this.#peersUpdate = this.onlineConnection.peers$.subscribe(this.#onOnlineUsersUpdate.bind(this));
+  }
+
+  get #peers() {
+    return this.onlineConnection.peers;
   }
 
   renderPage(mainContainer) {
-    const fragment = document.createDocumentFragment();
-    fragment.append(this.#renderLinkInvitationSection(), this.#OnlineUsers.generateView());
-    mainContainer.append(fragment);
-    this.hideLoader();
-  }
-
-
-
-  #onSendInvitation(game) {
-    console.log("#onSendInvitation");
-    console.log(game);
-    
-    if (game.players.length === 2) {
-      console.log("online user");
-      console.log("send invitation");
-      //this.onPlayGame(game);
-      //close wizard join game
+    if (this.#gameWizard) {
+      mainContainer.append(this.#gameWizard.render());
+      this.#gameWizard.init();
     } else {
-      console.log("generate link");
-      //do not close modal
+      const section = this.#generateMainSection();
+      mainContainer.append(section);
     }
-
-    this.#wizardClosed();
   }
 
-
-  onConnectionError(errorMessage) {
-    //super.onConnectionError(errorMessage);
-    console.log("onConnectionError");
-  }
-
-
-
-  #wizardClosed() {
-    this.#GameWizard = undefined;
-    self.modal.close();
-  }
-
-  #renderLinkInvitationSection() {
-    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.linkInvitationContainer]);
-    const button = LinkInvitationButton.generate(this.#onGenerateLink.bind(this));
+  #generateLinkInvitationSection() {
+    const container = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.lintInvitationContainer]);
+    const button = LinkInvitationButton.generate(this.#inviteWithLink.bind(this));
     container.append(button);
     return container;
   }
 
-  #loadWizard(user) {
-    return import("GameWizard").then((module) => {
-      this.#GameWizard = new module.GameWizardOnline(this.#wizardClosed.bind(this), this.#onSendInvitation.bind(this), user);
-      return this.#GameWizard.generateView();
-    });
+  #generateMainSection() {
+    this.#onlineUsersController = new OnlineUsers(this.#onInviteUser.bind(this), this.#peers);
+    const section = ElementGenerator.generateContainer([DOM_ELEMENT_CLASS.content]);
+    const linkInvitation = this.#generateLinkInvitationSection();
+    const onlineUsersSection = this.#onlineUsersController.render();
+    section.append(linkInvitation, onlineUsersSection);
+    return section;
   }
 
-  #onGenerateLink() {
-    this.#displayWizard();
+  #onOnlineUsersUpdate(onlineUsers) {
+    if (this.#onlineUsersController) {
+      this.#onlineUsersController.updateOnlineUsers(onlineUsers);
+      return;
+    }
+    // TODO: opened wizard and in the meantime peer left! show a notification that this user left!
+    console.log('onOnlineUsersUpdate');
+    console.log(onlineUsers);
+    console.log(this.#gameWizard);
+    console.log(this.#invitationBased);
   }
 
-  #onUserSelected(user) {
-    this.#displayWizard(user);
+  #inviteWithLink() {
+    this.#invitationBased = false;
+    this.#setGameWizard();
+    this.init();
   }
 
-  #displayWizard(user) {
-    Promise.all([self.modal.displayModal(), this.#loadWizard(user)])
-      .then(([modalBox, wizard]) => {
-        modalBox.append(wizard);
-        return;
-      })
-      .then(() => {
-        this.#GameWizard.expandWizard();
-      })
-      .catch(err => {
-        console.log(err);
-        console.log("modal err");
-        this.#wizardClosed();
-      });
+  #onInviteUser(user) {
+    this.#invitationBased = true;
+    this.#setGameWizard(user);
+    this.init();
+  }
+
+  #setGameWizard(opponent) {
+    this.#gameWizard = new GameWizardVSOnline(opponent);
+    this.#gameWizard.onCancel = this.#onCancelWizard.bind(this);
+    this.#gameWizard.onComplete = this.#onGameSetUpComplete.bind(this);
+  }
+
+  #onCancelWizard() {
+    this.#gameWizard = undefined;
+    this.#invitationBased = false;
+    this.init();
+  }
+
+  #onGameSetUpComplete(gameConfig) {
+    gameConfig.invitationBased = this.#invitationBased;
+    this.onChangePage(PageType.GamePage, gameConfig);
+  }
+
+  onChangePage(nextPage = PageType.HomePage, params) {
+    this.#peersUpdate.unsubscribe();
+    super.onChangePage(nextPage, params);
   }
 
 }

@@ -1,0 +1,51 @@
+@use "sass:list";
+@use "../../../theming/theming";
+@use "../../toggle/toggle-theming";
+
+@mixin setActionButtonStyles($theme) {
+  .invitation__btn {
+    color: theming.getThemeColor($theme, "theme-primary-subtle");
+    &:hover,
+    &:focus {
+      color: theming.getThemeColor($theme, "theme-primary-intense");
+    }
+  }
+}
+
+@mixin setToggleStyles($theme) {
+  $color: theming.getThemeColor($theme, "theme-primary-subtle");
+  $color-darker: theming.getThemeColor($theme, "theme-primary-intense");
+
+  .invitation__content-container {
+    > .toggle {
+      @include toggle-theming.setButtonCollapsedStyles($color, $color-darker, -6px);
+      @include toggle-theming.setButtonExpandedStyles($color, $color-darker, -10px);
+    }
+  }
+}
+
+@mixin setThemeStyles($theme) {
+  .invitation-list-item:not(:first-of-type) {
+    border-top: 1px solid theming.getThemeColor($theme, "board-grid-light");
+  }
+  .invitation-list-item:first-of-type {
+    border-top: 1px solid transparent;
+  }
+
+  @include setActionButtonStyles($theme);
+  @include setToggleStyles($theme);
+
+  .invitation__game-info-container {
+    border: 1px dashed theming.getThemeColor($theme, "board-grid");
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

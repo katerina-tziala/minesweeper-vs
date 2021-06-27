@@ -1,0 +1,23 @@
+@use "sass:list";
+@use "../../theming/theming";
+
+@mixin setThemeStyles($theme) {
+  .modal-window {
+    @include theming.setPrimaryBackground($theme, 0.5);
+  }
+
+  .modal-dialog-content-container {
+    @include theming.setThemeCard($theme);
+    @include theming.setThemeBoxShadow($theme);
+  }
+}
+
+@mixin setTheming() {
+  $themes: "light", "dark";
+
+  @each $theme in $themes {
+    .theme-#{$theme} {
+      @include setThemeStyles($theme);
+    }
+  }
+}

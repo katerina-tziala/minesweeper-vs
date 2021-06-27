@@ -1,0 +1,7 @@
+@use 'styles/utils/flexbox/flexbox';
+
+app-stepper-list {
+  @extend %flex-between-center;
+  z-index: 0;
+  position: relative;
+}

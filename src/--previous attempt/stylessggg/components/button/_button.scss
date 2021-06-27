@@ -1,0 +1,116 @@
+@use "../../theming/theming";
+@use "./button-theming";
+
+@import "../../utils/_module-utils";
+@import "../../global/_module-global";
+
+._btn {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  overflow: hidden;
+  text-align: center;
+
+  &:disabled {
+    @extend .disabled;
+  }
+}
+
+.btn-text {
+  @extend ._btn;
+  display: inline-block;
+  height: getSize("btn-height");
+  min-width: 46px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 28px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+
+.btn-icon {
+  @extend ._btn;
+  @extend %center-center;
+}
+
+.btn-icon--normal {
+  @include circle(getSize("btn-height"));
+  font-size: 20px;
+}
+
+.btn-icon--small {
+  @include circle(getSize("btn-height-small"));
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.btn-icon--close {
+  @include afterIcon(x);
+  &::after {
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 18px;
+  }
+}
+
+.btn-gameplay {
+  @extend .btn-icon;
+  @extend .btn-icon--normal;
+  @extend .btn-primary;
+  @include setGamePlayIcons("&.btn-icon");
+
+  &.btn-icon--previous {
+    padding-right: 2px;
+    line-height: 20px;
+    font-size: 1.3rem;
+  }
+
+  &.btn-icon--reset {
+    font-size: 16px;
+  }
+
+  &.btn-icon--play {
+    font-size: 14px;
+
+    &::after {
+      width: 10px;
+    }
+  }
+
+  &.btn-icon--next {
+    padding-left: 2px;
+    line-height: 20px;
+    font-size: 1.3rem;
+  }
+
+  &.btn-icon--send {
+    font-size: 1rem;
+    line-height: 26px;
+    padding-right: 1px;
+  }
+
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ COLOR THEME ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.theme-light {
+  .btn-primary {
+    @include button-theming.applyPrimaryButtonThemeStyles("light");
+  }
+
+  .btn-secondary {
+    @include button-theming.applySecondaryButtonThemeStyles("light");
+  }
+}
+
+.theme-dark {
+  .btn-primary {
+    @include button-theming.applyPrimaryButtonThemeStyles("dark");
+  }
+
+  .btn-secondary {
+    @include button-theming.applySecondaryButtonThemeStyles("dark");
+  }
+}

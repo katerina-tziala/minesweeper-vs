@@ -1,5 +1,9 @@
-"use strict";
+'use strict';
+
 
 export const DOM_ELEMENT_CLASS = {
-  linkInvitationContainer: "link-invitation-container",
+  content: 'lobby-content',
+  lintInvitationContainer: 'link-invitation-container'
 };
+
+

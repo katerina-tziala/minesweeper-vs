@@ -1,0 +1,52 @@
+@use "sass:map";
+
+$theme-pallete: (
+  theme-base: #262626,
+  theme-primary: #00cccc,
+  theme-primary-intense: #00ffff,
+  theme-primary-subtle: #009999,
+  theme-secondary: #1a1a1a,
+  theme-secondary-intense: #000000,
+  theme-secondary-subtle: #c0c0c0,
+  header-color: #00cccc,
+  header-color-intense: #00ffff,
+  table-background-highlight: #1a1a1a,
+);
+
+$game-pallete: (
+  game-type-1: #00ffff,
+  game-type-2: #00ff00,
+  game-type-3: #ff0000,
+  game-type-4: #ff8300,
+  game-type-5: #ffff00,
+  game-type-6: #b84dff,
+  game-type-7: #ff00bf,
+  game-type-8: #ffffff,
+  board-background: #0d0d0d,
+  board-color: #d9d9d9,
+  board-grid: #004d4d,
+  board-grid-light: #006666,
+  board-grid-dark: #003333,
+  board-button-background: #000000,
+  board-button-color: #d9d9d9,
+  dashboard-icon-background: #00ffff,
+  dashboard-icon-color: #000000,
+  dashboard-icon-user-background: #000000,
+  digit-off: #001a1a,
+  digit-on: #00e6e6,
+  digit-background: #000000,
+  game-card-details-intense: #009999,
+  game-card-details: #009999,
+  game-card-circle-shadow: rgba(#00ffff, 0.8),
+  board-stripe: #00ffff,
+  winner-indicator: #ffd633,
+);
+
+$wizard-step: (
+  wizard-step-completed-background: #009999,
+  wizard-step-completed-color: #1a1a1a,
+  wizard-step-selected-background: #00ffff,
+  wizard-step-selected-color: #000000,
+  wizard-step-background: #008080,
+  wizard-step-color: #1a1a1a,
+);

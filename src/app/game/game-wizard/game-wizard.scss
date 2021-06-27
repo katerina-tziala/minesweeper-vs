@@ -1,0 +1,99 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/iconography/iconography';
+@use 'styles/utils/animations/animations';
+@use 'styles/components/card/card';
+
+.game-wizard {
+  width: 400px;
+  will-change: transform, opacity;
+  @extend .card;
+  @include animations.slideIn(0.8);
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  transition: height 0.5s ease-in-out;
+
+  .button-icon--close {
+    position: absolute;
+    right: 20px;
+  }
+}
+
+.game-wizard--slide-out {
+  @include animations.slideOut(1);
+}
+
+.game-wizard-header {
+  text-transform: capitalize;
+  margin-bottom: 20px;
+  margin-right: 40px;
+  width: 320px;
+  word-break: break-all;
+  @extend %flex-start-center;
+  flex-wrap: wrap;
+
+  > span {
+    display: inline-block;
+    font-size: 1.3rem;
+    &:not(:last-of-type) {
+     // background-color: lavender;
+      margin-right: 8px;
+    }
+  }
+
+  > i {
+    font-size: 1.3rem;
+    font-size: inherit;
+    font-weight: inherit;
+    display: inline-block;
+    //background: pink;
+    margin-right: 8px;
+    max-width: 260px;
+  }
+}
+
+.game-setting-header:nth-of-type(2) {
+  margin-top: 30px;
+}
+
+.game-wizard-content {
+  width: 100%;
+  padding: 10px;
+  will-change: contents;
+}
+
+.game-wizard-content-vs {
+  width: 100%;
+  will-change: contents;
+  .game-wizard-vs__settings-container {
+    padding-top: 15px;
+  }
+}
+
+.game-wizard-actions {
+  padding: 30px 0 5px;
+  @extend %flex-between-center;
+  width: 100%;
+
+  > .button-text {
+    min-width: 80px;
+
+    &.next {
+      &::after {
+        @extend .icon-double-right;
+        padding-left: 5px;
+      }
+    }
+
+    &.previous {
+      &::before {
+        padding-right: 5px;
+        @extend .icon-double-left;
+      }
+    }
+  }
+}
+
+.settings-panel {
+  outline: none;
+}

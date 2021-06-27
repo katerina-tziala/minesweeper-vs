@@ -1,0 +1,17 @@
+@use "sass:map";
+
+$_indexes: (
+  input: 500,
+  settings-panel: 2200,
+  header-panel: 2200,
+  confetti: 2000,
+  modal: 3000,
+  loader: 4000,
+  toast-notification: 5000,
+  game-message: 1800,
+  minefield-freezer: 1500
+);
+
+@function getIndex($key) {
+  @return map-get($_indexes, $key);
+}

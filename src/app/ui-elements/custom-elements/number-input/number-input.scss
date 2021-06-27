@@ -1,0 +1,65 @@
+@use 'styles/iconography/iconography';
+@use 'styles/utils/shapes';
+@use 'styles/utils/state';
+@use 'styles/components/button/button';
+@use 'styles/components/input/input';
+
+$input-size: 32px;
+
+app-number-input {
+  height: $input-size;
+  line-height: $input-size;
+  @extend ._input;
+  overflow: hidden;
+}
+
+app-number-input[disabled="true"] {
+  //@extend .disabled;
+}
+
+app-number-input-button {
+  @include shapes.rectangle($input-size);
+  display: block;
+  min-width: $input-size;
+
+  .app-number-input-button {
+    @include shapes.rectangle($input-size);
+    min-width: $input-size;
+    @extend ._button;
+    @extend .button--primary;
+    padding-top: 2px;
+    &:disabled {
+      @extend .disabled;
+    }
+  }
+}
+
+.app-number-input__button--minus {
+  .app-number-input-button {
+    @include iconography.afterIcon("minus");
+  }
+}
+
+.app-number-input__button--plus {
+  .app-number-input-button {
+    @include iconography.afterIcon("plus");
+  }
+}
+
+.app-number-input__input-field {
+  display: block;
+  flex-grow: 1;
+  height: $input-size;
+  border-radius: 0px;
+  outline: none;
+  border: none;
+  min-width: 40px;
+  text-align: center;
+  padding: 0 10px;
+  background-color: inherit;
+  &:disabled {
+    cursor: not-allowed;
+    // @extend .disabled;
+    // opacity: 0.8!important;
+  }
+}

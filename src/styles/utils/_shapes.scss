@@ -1,10 +1,6 @@
 @mixin rectangle($size) {
   width: $size;
   height: $size;
-  min-width: $size;
-  max-width: $size;
-  min-height: $size;
-  max-height: $size;
 }
 
 @mixin circle($size) {
@@ -13,37 +9,15 @@
 }
 
 @mixin fullyRoundedBar($size) {
-  width: #{$size}px;
-  border-radius: #{$size}px;
-}
-
-@mixin pseudoRectangle($size, $color: "transparent") {
-  content: "";
-  width: #{$size}px;
-  height: #{$size}px;
-  background-color: $color;
+  width: $size;
+  border-radius: $size;
 }
 
 @mixin pseudoCircle($size, $color: "transparent") {
   content: "";
-  width: #{$size}px;
-  height: #{$size}px;
+  width: $size;
+  height: $size;
   border-radius: 50%;
   background-color: $color;
-}
-
-@mixin pseudoIsoscelesTriangle($base, $height, $color: "transparent") {
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: #{$base}px solid transparent;
-  border-right: #{$base}px solid transparent;
-  border-bottom: #{$height}px solid $color;
-}
-
-@mixin pseudoIsoscelesTrapezoid($height, $width) {
-  content: "";
-  border-bottom: #{$height}px solid transparent;
-  border-left: #{$width}px solid transparent;
-  border-right: #{$width}px solid transparent;
+  display: block;
 }

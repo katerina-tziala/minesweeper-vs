@@ -1,0 +1,22 @@
+@mixin rotate($duration: 0.5, $degrees: 360) {
+  animation: rotate #{$duration}s ease-in;
+  animation-fill-mode: forwards;
+  will-change: transform;
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(#{$degrees}deg);
+    }
+  }
+}
+
+// @keyframes rotate {
+//   0% {
+//     transform: rotate(0);
+//   }
+//   100% {
+//     transform: rotate(180deg);
+//   }
+// }
