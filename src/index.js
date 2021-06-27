@@ -45,30 +45,82 @@ document.addEventListener('DOMContentLoaded', () => {
     // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
   }, 500);
 
+  setTimeout(() => {
+    minefield.setAttribute('theme', 'dark');
+    minefield.setAttribute('mine-type', 'virusMine');
+    // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
+  }, 1500);
 
   minefield.addEventListener('onRevealTile', (event) => {
     const { tile } = event.detail;
-    
-     minefield.revealTile(tile, 'dfgdfg')
+
+    if (tile.state !== 'flagged') {
+      minefield.revealTile(tile, 'dfgdfg')
+    }
+
 
   });
 
   minefield.addEventListener('onChangeTileState', (event) => {
     const { tile } = event.detail;
-    // console.log('onChangeTileState');
-    // console.log(tile);
-    minefield.flagTile(tile, 'dfgdfg')
+    //console.log('onChangeTileState');
+    if (tile.state === 'untouched') {
+      minefield.flagTile(tile, 'dfgdfg');
+    }
+    else if (tile.state === 'flagged') {
+      minefield.markTile(tile, 'dfgdfg');
+    }
+    else if (tile.state === 'marked') {
+      minefield.resetTile(tile, 'dfgdfg');
+    }
 
     // minefield.revealTiles(tile, 'dfgdfg')
 
   });
-  // minefield.addEventListener('onDetonatedMine', (event) => {
-  //   const { tile } = event.detail;
-  //   console.log('onDetonatedMine');
-  //   console.log(tile);
+
+  // minefield.addEventListener('onTilesUpdate', (event) => {
+  //   const { updatedTiles } = event.detail;
+  //   console.log('onTilesUpdate');
+  //   console.log(updatedTiles);
+
+  //   // minefield.revealTiles(tile, 'dfgdfg')
+
   // });
 
+  //
+  minefield.addEventListener('onFlaggedTile', (event) => {
+    const { flaggedTile, allMinesDetected } = event.detail;
+    console.log('onFlaggedTile');
+    console.log(flaggedTile, allMinesDetected);
+  });
 
+  minefield.addEventListener('onDetonatedMine', (event) => {
+    const { detonatedMine } = event.detail;
+    console.log('onTilesUpdate');
+    console.log(detonatedMine);
+    minefield.revealMines();
+    // minefield.revealTiles(tile, 'dfgdfg')
+
+  });
+  minefield.addEventListener('onRevealedTiles', (event) => {
+    const { revealedTiles, minefieldCleared } = event.detail;
+    console.log('onRevealedTiles');
+    console.log(revealedTiles, minefieldCleared);
+
+  });
+  minefield.addEventListener('onMarkedTile', (event) => {
+    const { markedTile } = event.detail;
+    console.log('onMarkedTile');
+    console.log(markedTile);
+
+  });
+  minefield.addEventListener('onResetedTile', (event) => {
+    const { resetedTile } = event.detail;
+    console.log('onResetedTile');
+    console.log(resetedTile);
+
+  });
+  
 
   // minefield.addEventListener('onActiveTileChange', (event) => {
   //   const { activeTile} = event.detail;

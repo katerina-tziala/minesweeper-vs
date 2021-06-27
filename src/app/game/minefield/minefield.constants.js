@@ -9,7 +9,9 @@ export const ATTRIBUTES = {
     disabled: 'disabled',
     revealing: 'revealing',
     flagging: 'flagging',
-    wrongFlagHint: 'wrongFlagHint'
+    wrongFlagHint: 'wrong-flag-hint',
+    theme: 'theme',
+    mineType: 'mine-type'
 };
 
 export const TEMPLATE = `

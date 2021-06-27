@@ -10,7 +10,8 @@ export const PALLETE = {
         wrongFlagHint: {
             color: '#ff0000',
             shadowColor: '#808080',
-        }
+        },
+        targetShadow: '#808080',
     },
     dark: {
         unrevealed: '#ffffff',
@@ -22,6 +23,7 @@ export const PALLETE = {
         wrongFlagHint: {
             color: '#ff0000',
             shadowColor: '#808080',
-        }
+        },
+        targetShadow: '#808080',
     }
 };

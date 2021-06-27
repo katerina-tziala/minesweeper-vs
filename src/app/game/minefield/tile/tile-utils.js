@@ -67,3 +67,11 @@ export function generateTile(row, column, gridSize, minesPositions) {
 
   return { position, area, neighbors, modifiedBy, type, state, row, column };
 }
+
+export function getTileCenter(area) {
+  const { xStart, xEnd, yStart } = area;
+  const halfSize = (xEnd - xStart) / 2;
+  const x = xStart + halfSize;
+  const y = yStart + halfSize;
+  return { x, y };
+}
