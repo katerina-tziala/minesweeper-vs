@@ -15,5 +15,5 @@ export const ATTRIBUTES = {
 };
 
 export const TEMPLATE = `
-<canvas class='${DOM_ELEMENT_CLASS.minefield}' width=0 height=0 style="font-family: Nunito"></canvas>
+<canvas class='${DOM_ELEMENT_CLASS.minefield}' width=0 height=0 style='font-family: Nunito'></canvas>
 `;

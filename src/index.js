@@ -18,7 +18,7 @@ import { generateMinesPositions } from './app/game/game-utils/game-utils';
 import Minefield from './app/game/minefield/Minefield';
 
 
-
+import AppUserService from './app/state-controllers/app-user.service';
 
 
 
@@ -31,13 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   PageLoaderHandler.hide();
   //new App();
 
+  const userService = AppUserService.getInstance();
 
   const level = { level: "beginner", rows: 9, columns: 9, numberOfMines: 16 };
   // const minesPositions = generateMinesPositions(level.rows, level.columns, level.numberOfMines);
   ///const minesPositions = [9, 14, 15, 18, 22, 25, 27, 34, 49, 53, 58, 63, 64, 70, 71, 72];
   //console.log(minesPositions);
   const minesPositions = [1, 2, 3, 80, 81];
-
+  
   const minefield = document.getElementsByTagName('app-minefield')[0];
 
   setTimeout(() => {
@@ -53,9 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   minefield.addEventListener('onRevealTile', (event) => {
     const { tile } = event.detail;
-
+    const styles = userService.getPlayerConfig('dfgdfg');
     if (tile.state !== 'flagged') {
-      minefield.revealTile(tile, 'dfgdfg')
+      minefield.revealTile(tile, 'dfgdfg', styles)
     }
 
 
@@ -64,14 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
   minefield.addEventListener('onChangeTileState', (event) => {
     const { tile } = event.detail;
     //console.log('onChangeTileState');
+    const styles = userService.getPlayerConfig('dfgdfg');
     if (tile.state === 'untouched') {
-      minefield.flagTile(tile, 'dfgdfg');
+      minefield.flagTile(tile, 'dfgdfg', styles);
     }
     else if (tile.state === 'flagged') {
-      minefield.markTile(tile, 'dfgdfg');
+      minefield.markTile(tile, 'dfgdfg', styles);
     }
     else if (tile.state === 'marked') {
-      minefield.resetTile(tile, 'dfgdfg');
+      minefield.resetTile(tile, 'dfgdfg', styles);
     }
 
     // minefield.revealTiles(tile, 'dfgdfg')
@@ -120,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(resetedTile);
 
   });
-  
+
 
   // minefield.addEventListener('onActiveTileChange', (event) => {
   //   const { activeTile} = event.detail;

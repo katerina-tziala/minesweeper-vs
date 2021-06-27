@@ -1,11 +1,11 @@
 'use strict';
-import { STYLES_CONFIG } from './minefield-ui/minefield-ui-config/minefield-ui.constants';
-import { MinefieldAction } from './minefield-action.enum';
+import { STYLES_CONFIG } from '../minefield-ui/minefield-ui-config/minefield-ui.constants';
+import { MinefieldEventType } from './minefield-event-type.enum';
 import { PubSub } from 'UTILS';
 const DEBOUNCE_TIME = 80;
 const TILE_SIZE = STYLES_CONFIG.tileSize + STYLES_CONFIG.canvasPadding;
 
-export default class MinefieldEventsHandler {
+export class MinefieldEventsHandler {
   #primaryListeners;
   #secondaryListeners;
   #moveTimer;
@@ -97,7 +97,7 @@ export default class MinefieldEventsHandler {
     }
     const position = this.#selectedPosition;
 
-    if (this.#action === MinefieldAction.Neighbors) {
+    if (this.#action === MinefieldEventType.Neighbors) {
       this.resetRevealedArea$.publish(position);
     } else {
       const params = { position };
@@ -131,7 +131,7 @@ export default class MinefieldEventsHandler {
 
   #onActivateGridArea() {
     const position = this.#selectedPosition;
-    if (this.#action === MinefieldAction.Neighbors) {
+    if (this.#action === MinefieldEventType.Neighbors) {
       this.activeArea$.publish(position);
     } else {
       this.activeTile$.publish(position);

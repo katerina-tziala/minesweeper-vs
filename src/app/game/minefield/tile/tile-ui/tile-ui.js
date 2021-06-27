@@ -83,7 +83,7 @@ export function drawMark(ctx, tile, color) {
 }
 
 export function drawDetectedMineTarget(ctx, tile, styles) {
-    const { shadowColor, color, opponentColor } = styles;
+    const { shadowColor, color, secondaryColor } = styles;
 
     let shadowParams = { ...SHADOWS.detectedMineTarget.left };
     shadowParams.color = shadowColor;
@@ -93,7 +93,7 @@ export function drawDetectedMineTarget(ctx, tile, styles) {
 
     shadowParams = Object.assign(shadowParams, {...SHADOWS.detectedMineTarget.right});
     CavnasUtils.setShadow(ctx, shadowParams);
-    ctx.strokeStyle = opponentColor;
+    ctx.strokeStyle = secondaryColor;
     TileShapes.drawRightSideOfTarget(ctx, tile.area);
 
     CavnasUtils.clearShadow(ctx);

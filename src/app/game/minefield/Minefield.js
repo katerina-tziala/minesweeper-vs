@@ -1,13 +1,10 @@
 'use strict';
 import './minefield.scss';
-import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './minefield.constants';
 import { NumberValidation, parseBoolean } from 'UTILS';
+import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './minefield.constants';
 import { MinefieldUI } from './minefield-ui/minefield-ui';
 import * as MinefieldHelper from './minefield-helper';
-
-import MinefieldEventsHandler from './minefield-events-handler';
-
-import { MinefieldAction } from './minefield-action.enum';
+import { MinefieldEventsHandler, MinefieldEventType } from './minefield-events/@minefield-events.module';
 import { TileType, TileState, TileChecker } from './tile/@tile.module';
 
 export default class Minefield extends HTMLElement {
@@ -16,7 +13,6 @@ export default class Minefield extends HTMLElement {
   #MinefieldUI;
   #eventsHandler;
   #subscribers$ = [];
-  #userService;
   #minesPositions = [];
   #disabledPositions = [];
   #unrevealedTiles = [];
@@ -24,11 +20,12 @@ export default class Minefield extends HTMLElement {
   #activeTiles = [];
   #actionHandler = new Map();
   #tileRevealingHandler = new Map();
+  #tileStyles = {};
 
   constructor() {
     super();
-    this.#actionHandler.set(MinefieldAction.Primary, this.#onPrimaryAction.bind(this));
-    this.#actionHandler.set(MinefieldAction.Secondary, this.#onSecondaryAction.bind(this));
+    this.#actionHandler.set(MinefieldEventType.Primary, this.#onPrimaryAction.bind(this));
+    this.#actionHandler.set(MinefieldEventType.Secondary, this.#onSecondaryAction.bind(this));
     this.#tileRevealingHandler.set(TileType.Blank, this.#revealBlankTile.bind(this));
     this.#tileRevealingHandler.set(TileType.Empty, this.#revealEmptyTile.bind(this));
     this.#tileRevealingHandler.set(TileType.Mine, this.#detonateMine.bind(this));
@@ -157,7 +154,8 @@ export default class Minefield extends HTMLElement {
     // console.log(this.#unrevealedTiles);
   }
 
-  flagTile(tile, playerId) {
+  flagTile(tile, playerId, styles = {}) {
+    this.#tileStyles = {...styles};
     this.#removeListeners();
     const flaggedTile = this.#getUpdatedTile(tile, playerId, TileState.Flagged);
     flaggedTile.wrongFlagHint = this.#wrongFlagHint;
@@ -168,7 +166,8 @@ export default class Minefield extends HTMLElement {
     this.#setListeners();
   }
 
-  markTile(tile, playerId = null) {
+  markTile(tile, playerId = null, styles = {}) {
+    this.#tileStyles = {...styles};
     const markedTile = this.#getUpdatedTile(tile, playerId, TileState.Marked);
     this.#updateTiles([markedTile], false);
     this.#MinefieldUI.drawMarkedTile(markedTile);
@@ -182,7 +181,8 @@ export default class Minefield extends HTMLElement {
     this.#emitEvent('onResetedTile', { resetedTile });
   }
 
-  revealTile(tile, playerId = null) {
+  revealTile(tile, playerId = null, styles = {}) {
+    this.#tileStyles = {...styles};
     this.#removeListeners();
     const updatedTile = this.#getUpdatedTile(tile, playerId, TileState.Revealed);
     const { type } = tile;
@@ -212,9 +212,8 @@ export default class Minefield extends HTMLElement {
   }
 
   #getUpdatedTile(tile, modifiedBy, state) {
-    const styles = this.#userService.getPlayerConfig(modifiedBy);
     const updatedTile = MinefieldHelper.getUpdatedTile(tile, modifiedBy, state);
-    updatedTile.styles = styles;
+    updatedTile.styles = {...this.#tileStyles};
     return updatedTile;
   }
 

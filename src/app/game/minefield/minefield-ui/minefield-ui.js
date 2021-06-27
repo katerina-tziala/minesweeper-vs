@@ -42,18 +42,18 @@ export class MinefieldUI {
     }
 
     initMinefield(tiles = [], minesPositions = []) {
-        // if (!this.#ctx) {
-        //     return;
-        // }
+        if (!this.#ctx) {
+            return;
+        }
         this.#minesPositions = minesPositions;
         this.#ctx.clearRect(0, 0, this.#width, this.#height);
         tiles.forEach(tile => this.drawUntouchedTile(tile));
     }
 
     drawRevealedTiles(tiles = []) {
-        // if (!this.#ctx || !!tiles.length) {
-        //     return;
-        // }
+        if (!this.#ctx || !tiles.length) {
+            return;
+        }
 
         for (let index = 0; index < tiles.length; index++) {
             const tile = tiles[index];
@@ -80,27 +80,27 @@ export class MinefieldUI {
     }
 
     drawRevealedTile(tile) {
-        // if (!this.#ctx || !tile) {
-        //     return;
-        // }
+        if (!this.#ctx || !tile) {
+            return;
+        }
         this.#clearTileArea(tile);
         TileUI.drawTile(this.#ctx, tile, this.#pallete.revealed);
         this.#drawTileContent(tile);
     }
 
     drawFlaggedTile(tile) {
-        // if (!this.#ctx || !tile) {
-        //     return;
-        // }
+        if (!this.#ctx || !tile) {
+            return;
+        }
         this.drawUntouchedTile(tile);
         const { colorType, flagType } = tile.styles;
         this.#drawFlag(tile, colorType, flagType);
     }
 
     drawActiveTile(tile) {
-        // if (!this.#ctx || !tile) {
-        //     return;
-        // }
+        if (!this.#ctx || !tile) {
+            return;
+        }
         this.#clearTileArea(tile);
         TileUI.drawTile(this.#ctx, tile, this.#pallete.active);
         const { state } = tile;
@@ -111,9 +111,9 @@ export class MinefieldUI {
     }
 
     drawMarkedTile(tile) {
-        // if (!this.#ctx || !tile) {
-        //     return;
-        // }
+        if (!this.#ctx || !tile) {
+            return;
+        }
         this.drawUntouchedTile(tile);
         const { colorType } = tile.styles;
         this.#drawMark(tile, colorType);
@@ -156,14 +156,11 @@ export class MinefieldUI {
     }
 
     #drawDetectedMineIndicator(tile) {
-        const { colorType, opponentColorType } = tile.styles;
+        const { colorType, secondaryColorType } = tile.styles;
         const color = this.#getColor(colorType);
-        const opponentColor = opponentColorType ? this.#getColor(opponentColorType) : color;
-        const pallete = {
-            shadowColor: this.#pallete.targetShadow,
-            color,
-            opponentColor
-        };
+        const secondaryColor = secondaryColorType ? this.#getColor(secondaryColorType) : color;
+        const pallete = { color, secondaryColor };
+        pallete.shadowColor = this.#pallete.targetShadow;
         TileUI.drawDetectedMineTarget(this.#ctx, tile, pallete);
     }
 
