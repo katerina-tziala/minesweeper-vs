@@ -83,10 +83,6 @@ export default class Minefield extends HTMLElement {
     return this.#getNumberAttribute(ATTRIBUTES.columns);
   }
 
-  get mines() {
-    return this.#getNumberAttribute(ATTRIBUTES.mines);
-  }
-
   set disabledPositions(disabledPositions = []) {
     this.#disabledPositions = disabledPositions;
   }

@@ -1,53 +1,59 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
+  <head>
+    <title>MinesweeperVS</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="wap-font-scale" content="yes" />
+    <!-- <link href="./assets/fonts/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet"> -->
+  </head>
 
-<head>
-  <title>MinesweeperVS</title>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <meta name='wap-font-scale' content='yes'>
-  <!-- <link href="./assets/fonts/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet"> -->
-</head>
- 
-<body>
+  <body>
+    <div id="app" class="theme-dark">
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="header-title">MinesweeperVS</h1>
+        <div id="header-content" class="header-content hidden"></div>
+      </header>
 
-  <div id='app' class='theme-dark'>
-    <!-- HEADER -->
-    <header class='header'>
-      <h1 class='header-title'>MinesweeperVS</h1>
-      <div id='header-content' class='header-content hidden'></div>
-    </header>
-
-    <main class='main'>
-      <div id='main-content' class='main-content'>
-
-        <!-- <div id='game-set-up' class='card' style="min-width: 400px;min-height: 400px;">
+      <main class="main">
+        <div id="main-content" class="main-content">
+          <!-- <div id='game-set-up' class='card' style="min-width: 400px;min-height: 400px;">
 
           <app-wizard-stepper name='gameSettings'></app-wizard-stepper>
 
  <p><i class="fa fa-car"></i> Force Font to load.</p>
         </div>  -->
-       
-        <!-- <div style="font-family: Font Awesome 5 Free"></div> -->
 
-        <!-- <div id="board" class='card'>
+          <!-- <div style="font-family: Font Awesome 5 Free"></div> -->
+
+          <!-- <div id="board" class='card'>
           <canvas id="myCanvas" style="font-family: Nunito"></canvas>
         </div> -->
-        <div id="board" class='card'>
-          <app-minefield rows='9' columns='9' mines='16' disabled='false' revealing='true' flagging='true' wrong-flag-hint='true'
-          theme='light' mine-type='bahaiMine'></app-minefield>
-        </div> 
-        
 
+            <div id="board" class="card">
+              <app-minefield
+                rows="9"
+                columns="9"
+                disabled="false"
+                revealing="true"
+                flagging="true"
+                wrong-flag-hint="true"
+                theme="light"
+                mine-type="bahaiMine"
+              ></app-minefield>
+            </div>
+         
 
-        <p><i class="fa fa-car"></i> Force Font to load.<i class="fab fa-font-awesome-flag"></i></p>
-       
-      </div>
+          <p>
+            <i class="fa fa-car"></i> Force Font to load.<i
+              class="fab fa-font-awesome-flag"
+            ></i>
+          </p>
+        </div>
         <!-- <i class="fas fa-spinner fa-pulse"></i> -->
-      <app-loader id='main-loader'></app-loader>
-    </main>
-
-  </div>
-
-</body>
+        <app-loader id="main-loader"></app-loader>
+      </main>
+    </div>
+  </body>
 </html>

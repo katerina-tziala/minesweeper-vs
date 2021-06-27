@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
   }, 500);
 
-  setTimeout(() => {
-    minefield.setAttribute('theme', 'dark');
-    minefield.setAttribute('mine-type', 'virusMine');
-    // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
-  }, 1500);
+  // setTimeout(() => {
+  //   minefield.setAttribute('theme', 'dark');
+  //   minefield.setAttribute('mine-type', 'virusMine');
+  //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
+  // }, 1500);
 
   minefield.addEventListener('onRevealTile', (event) => {
     const { tile } = event.detail;

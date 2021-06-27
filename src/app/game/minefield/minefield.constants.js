@@ -5,7 +5,6 @@ export const DOM_ELEMENT_CLASS = {
 export const ATTRIBUTES = {
     rows: 'rows',
     columns: 'columns',
-    mines: 'mines',
     disabled: 'disabled',
     revealing: 'revealing',
     flagging: 'flagging',
