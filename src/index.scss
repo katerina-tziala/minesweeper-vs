@@ -83,13 +83,26 @@ body,
 //   // border-bottom-color: #f2f2f2;
 //   // border-right-color: #f2f2f2;
 // }
+.board-info {
+  padding: 5px;
+}
+.board-section {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: #cccccc;
+  border-left-color: #cccccc;
+  border-bottom-color: #e6e6e6;
+  border-right-color: #e6e6e6;
+}
 #board {
   // padding: 5px;
-  padding: 5px;
+  
   // width: 150px;
   // height: 150px;
-  // height: 150px;
+  
 
+
+  background-color: #b3b3b3;
   // width: 150px;
   // overflow: scroll;
 }

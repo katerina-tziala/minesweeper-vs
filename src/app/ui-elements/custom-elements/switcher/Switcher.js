@@ -64,7 +64,6 @@ export default class Switcher extends HTMLElement {
 
   #setState() {
     ElementHandler.setDisabled(this.#button, this.#disabled);
-    AriaHandler.setAriaDisabled(this.#button, this.#disabled);
   }
 
   #addListeners() {

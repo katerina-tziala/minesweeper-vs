@@ -31,7 +31,15 @@
           <canvas id="myCanvas" style="font-family: Nunito"></canvas>
         </div> -->
 
-            <div id="board" class="card">
+          <div class="card">
+            <div class='board-info'>
+
+              <app-board-face id="board-face" state='smile'></app-board-face>
+            </div>
+
+
+          
+            <div id="board" class='board-section'>
               <app-minefield
                 rows="9"
                 columns="9"
@@ -43,7 +51,7 @@
                 mine-type="bahaiMine"
               ></app-minefield>
             </div>
-         
+          </div>
 
           <p>
             <i class="fa fa-car"></i> Force Font to load.<i

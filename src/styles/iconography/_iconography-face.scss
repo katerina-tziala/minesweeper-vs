@@ -1,0 +1,26 @@
+@import './iconography_utils';
+
+.icon-face-smile {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-smile);
+}
+
+.icon-face-surprise {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-surprise);
+}
+
+.icon-face-winner {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-grin-stars);
+}
+
+.icon-face-looser {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-frown);
+}
+
+.icon-face-rolling-eyes {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-meh-rolling-eyes);
+}

@@ -16,7 +16,7 @@ import { PubSub, PubSubState } from 'UTILS';
 
 import { generateMinesPositions } from './app/game/game-utils/game-utils';
 import Minefield from './app/game/minefield/Minefield';
-
+import BoardFace from './app/game/board-face/BoardFace';
 
 import AppUserService from './app/state-controllers/app-user.service';
 
@@ -38,19 +38,38 @@ document.addEventListener('DOMContentLoaded', () => {
   ///const minesPositions = [9, 14, 15, 18, 22, 25, 27, 34, 49, 53, 58, 63, 64, 70, 71, 72];
   //console.log(minesPositions);
   const minesPositions = [1, 2, 3, 80, 81];
-  
-  const minefield = document.getElementsByTagName('app-minefield')[0];
 
+  const minefield = document.getElementsByTagName('app-minefield')[0];
+  const boardFace = document.getElementById('board-face');
+  boardFace.addEventListener('onBoardFaceClick', (event) => {
+    console.log('onBoardFaceClick');
+  });
+  
   setTimeout(() => {
     minefield.init(minesPositions);
     // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
   }, 500);
 
   // setTimeout(() => {
+  //   const styles = userService.getPlayerConfig('dfgdfg');
+  //   boardFace.setAttribute('color', '#0000ff');
+  //   console.log(styles);
+  //   console.log('ddd');
+  //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
+  // }, 3000);
+
+
+  // setTimeout(() => {
   //   minefield.setAttribute('theme', 'dark');
   //   minefield.setAttribute('mine-type', 'virusMine');
   //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
   // }, 1500);
+  minefield.addEventListener('onActiveTileChange', (event) => {
+    const { activeTile } = event.detail;
+    const face = activeTile ? 'surprise' : 'smile';
+    boardFace.setAttribute('state', face);
+  });
+
 
   minefield.addEventListener('onRevealTile', (event) => {
     const { tile } = event.detail;
@@ -80,14 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   });
 
-  // minefield.addEventListener('onTilesUpdate', (event) => {
-  //   const { updatedTiles } = event.detail;
-  //   console.log('onTilesUpdate');
-  //   console.log(updatedTiles);
 
-  //   // minefield.revealTiles(tile, 'dfgdfg')
 
-  // });
 
   //
   minefield.addEventListener('onFlaggedTile', (event) => {
@@ -102,14 +115,18 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(detonatedMine);
     minefield.revealMines();
     // minefield.revealTiles(tile, 'dfgdfg')
-
+    boardFace.setAttribute('state', 'looser');
   });
+
   minefield.addEventListener('onRevealedTiles', (event) => {
     const { revealedTiles, minefieldCleared } = event.detail;
     console.log('onRevealedTiles');
     console.log(revealedTiles, minefieldCleared);
-
+    if (minefieldCleared) {
+      boardFace.setAttribute('state', 'winner');
+    }
   });
+
   minefield.addEventListener('onMarkedTile', (event) => {
     const { markedTile } = event.detail;
     console.log('onMarkedTile');
@@ -124,11 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // minefield.addEventListener('onActiveTileChange', (event) => {
-  //   const { activeTile} = event.detail;
-  //   console.log('onActiveTileChange');
-  //   console.log(activeTile);
-  // });
 
   // console.log(minefield);
   // setTimeout(() => {

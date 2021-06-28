@@ -1,5 +1,5 @@
-import './dropdown-select.scss';
-import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './custom-element.constantss';
+import './custom-element.scss';
+import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './custom-element.constants';
 
 export default class CustomElement extends HTMLElement {
 

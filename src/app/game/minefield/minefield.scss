@@ -9,15 +9,10 @@ app-minefield {
   overflow: auto;
 
   @extend ._scrollbar;
-  border-width: 2px;
-  border-style: solid;
-  border-top-color: #cccccc;
-  border-left-color: #cccccc;
-  border-bottom-color: #e6e6e6;
-  border-right-color: #e6e6e6;
-  &[disabled="true"] {
-    //border: 1px solid red;
 
+
+
+  &[disabled="true"] {
     .minefield {
       cursor: not-allowed !important;
     }
@@ -25,12 +20,7 @@ app-minefield {
 }
 
 .minefield {
-  // border: 1px solid salmon;
-
-  background-color: #cccccc;
-
   margin: 0;
   display: block;
-
   cursor: pointer;
 }
