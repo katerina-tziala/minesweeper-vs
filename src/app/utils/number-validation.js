@@ -14,10 +14,10 @@ export class NumberValidation {
     }
 
     static getValueInBoundaries(value = 0, min, max) {
-        if (NumberValidation.#lessThanMin(value, min)) {
+        if (NumberValidation.lessThanMin(value, min)) {
             return min;
         }
-        return NumberValidation.#greaterThanMax(value, max) ? max : value;
+        return NumberValidation.greaterThanMax(value, max) ? max : value;
     }
 
     static valueInBoundaries(value = 0, min, max) {
@@ -28,16 +28,16 @@ export class NumberValidation {
     }
 
     static valueInBoundariesWhenBoundaries(value = 0, min, max) {
-        const lessThanMin = NumberValidation.#lessThanMin(value, min);
-        const greaterThanMax = NumberValidation.#greaterThanMax(value, max);
+        const lessThanMin = NumberValidation.lessThanMin(value, min);
+        const greaterThanMax = NumberValidation.greaterThanMax(value, max);
         return !lessThanMin && !greaterThanMax;
     }
 
-    static #lessThanMin(value, min) {
+    static lessThanMin(value, min) {
         return numberDefined(min) && value < min ? true : false;
     }
 
-    static #greaterThanMax(value, max) {
+    static greaterThanMax(value, max) {
         return numberDefined(max) && max < value ? true : false;
     }
 

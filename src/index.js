@@ -12,7 +12,7 @@ import { LocalStorageHelper } from 'UTILS';
 // on reload return to your state
 import { PubSub, PubSubState } from 'UTILS';
 
-import CounterDigit from './app/game/game-ui/counter-digit/CounterDigit';
+import './app/ui-elements/custom-elements/digital-counters/digital-counter/DigitalCounter';
 
 
 import { generateMinesPositions } from './app/game/game-utils/game-utils';
@@ -39,25 +39,29 @@ document.addEventListener('DOMContentLoaded', () => {
   ///const minesPositions = [9, 14, 15, 18, 22, 25, 27, 34, 49, 53, 58, 63, 64, 70, 71, 72];
   //console.log(minesPositions);
   const minesPositions = [1, 2, 3, 80, 81];
+  const minesCounter = document.getElementsByTagName('app-digital-counter')[0];
 
   const minefield = document.getElementsByTagName('app-minefield')[0];
   const boardFace = document.getElementById('board-face');
   boardFace.addEventListener('onBoardFaceClick', (event) => {
     console.log('onBoardFaceClick');
   });
-  
+
   setTimeout(() => {
     minefield.init(minesPositions);
     // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
   }, 500);
 
-  // setTimeout(() => {
-  //   const styles = userService.getPlayerConfig('dfgdfg');
-  //   boardFace.setAttribute('color', '#0000ff');
-  //   console.log(styles);
-  //   console.log('ddd');
-  //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
-  // }, 3000);
+  setTimeout(() => {
+    // const styles = userService.getPlayerConfig('dfgdfg');
+    // boardFace.setAttribute('color', '#0000ff');
+    // console.log(styles);
+    // console.log('ddd');
+    minesCounter.setAttribute('value', '-5');
+    // const test = document.querySelectorAll('[theme="light"]');
+    // console.log(test);
+    // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
+  }, 3000);
 
 
   // setTimeout(() => {

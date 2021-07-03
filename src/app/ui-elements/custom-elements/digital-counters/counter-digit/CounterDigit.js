@@ -41,6 +41,7 @@ export default class CounterDigit extends HTMLElement {
     TemplateGenerator.setTemplate(this, TEMPLATE, { width, height });
     const canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.digit}`);
     this.#ctx = canvas.getContext('2d');
+    this.setAttribute('theme', this.#theme);
     this.#setTheming(this.#theme);
     this.#draw();
     this.#initUpdatesHandling();

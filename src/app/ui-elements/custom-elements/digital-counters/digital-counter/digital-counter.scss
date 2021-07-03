@@ -1,0 +1,5 @@
+@use 'styles/utils/flexbox/flexbox';
+
+app-digital-counter {
+    @extend %flex-start-center;
+}

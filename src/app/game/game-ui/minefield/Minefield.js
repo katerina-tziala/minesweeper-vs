@@ -1,6 +1,6 @@
 'use strict';
 import './minefield.scss';
-import { NumberValidation, parseBoolean } from 'UTILS';
+import { NumberValidation, parseBoolean, definedString } from 'UTILS';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './minefield.constants';
 import { MinefieldUI } from './minefield-ui/minefield-ui';
 import * as MinefieldHelper from './minefield-helper';
@@ -52,7 +52,8 @@ export default class Minefield extends HTMLElement {
   }
 
   get #theme() {
-    return this.getAttribute(ATTRIBUTES.theme);
+    const theme = this.getAttribute(ATTRIBUTES.theme);
+    return definedString(theme) ? theme : 'light';
   }
 
   get #mineType() {
@@ -100,6 +101,7 @@ export default class Minefield extends HTMLElement {
   connectedCallback() {
     this.innerHTML = TEMPLATE;
     this.#canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.minefield}`);
+    this.setAttribute(ATTRIBUTES.theme, this.#theme);
     this.#MinefieldUI = new MinefieldUI(this.#theme, this.#mineType);
     this.#MinefieldUI.init(this.#canvas, this.rows, this.columns);
     this.#eventsHandler = new MinefieldEventsHandler(this.columns, this.rows);
