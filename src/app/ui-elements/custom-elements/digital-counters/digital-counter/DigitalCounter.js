@@ -1,7 +1,7 @@
 import '../counter-digit/CounterDigit';
 import './digital-counter.scss';
 import { ATTRIBUTES } from './digital-counter.constants';
-import {numberDefined } from 'UTILS';
+import { numberDefined } from 'UTILS';
 import { numberOfDigits, getValueArray } from './value-to-digit-converter';
 
 export default class DigitalCounter extends HTMLElement {

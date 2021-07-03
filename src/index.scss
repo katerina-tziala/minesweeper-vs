@@ -85,7 +85,9 @@ body,
 // }
 .board-info {
   padding: 5px;
+  @extend %flex-between-center;
 }
+
 .board-section {
   border-width: 2px;
   border-style: solid;

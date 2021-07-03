@@ -1,7 +1,8 @@
 app-counter-digit {
-    display: block;
+  display: block;
+  overflow: hidden;
 }
-
+// TODO: THEMING
 .counter-digit-canvas {
-    background-color: #330000;
+  background-color: #330000;
 }

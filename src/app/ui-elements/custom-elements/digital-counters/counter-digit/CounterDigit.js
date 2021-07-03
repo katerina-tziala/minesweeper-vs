@@ -1,6 +1,6 @@
 import './counter-digit.scss';
 import { CavnasUtils, definedString } from 'UTILS';
-import { TemplateGenerator } from 'UI_ELEMENTS';
+import { TemplateGenerator, ElementHandler } from 'UI_ELEMENTS';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS, CONFIG, DIGIT_POSITIONS, PALETTE } from './counter-digit.constants';
 import { getDrawHandler } from './digit-lines';
 
@@ -39,9 +39,10 @@ export default class CounterDigit extends HTMLElement {
   connectedCallback() {
     const { width, height } = CONFIG;
     TemplateGenerator.setTemplate(this, TEMPLATE, { width, height });
+    ElementHandler.updateElementStyles(this, { height: `${height}px` });
     const canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.digit}`);
     this.#ctx = canvas.getContext('2d');
-    this.setAttribute('theme', this.#theme);
+    this.setAttribute(ATTRIBUTES.theme, this.#theme);
     this.#setTheming(this.#theme);
     this.#draw();
     this.#initUpdatesHandling();
@@ -59,7 +60,6 @@ export default class CounterDigit extends HTMLElement {
   }
 
   #onThemeChange() {
-    console.log('onThemeChange');
     this.#setTheming(this.#theme);
     this.#draw();
   }
