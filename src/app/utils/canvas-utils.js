@@ -1,10 +1,10 @@
 'use strict';
 
-export function setShadow(ctx, shadowProperties) {
-  ctx.shadowColor = shadowProperties.color;
-  ctx.shadowOffsetX = shadowProperties.shadowOffsetX;
-  ctx.shadowOffsetY = shadowProperties.shadowOffsetY;
-  ctx.shadowBlur = shadowProperties.shadowBlur;
+export function setShadow(ctx, properties) {
+  ctx.shadowColor = properties.color;
+  ctx.shadowOffsetX = properties.shadowOffsetX || 0;
+  ctx.shadowOffsetY = properties.shadowOffsetY || 0;
+  ctx.shadowBlur = properties.shadowBlur || 0;
 };
 
 export function clearShadow(ctx) {
@@ -52,4 +52,17 @@ export function drawRoundedLine(ctx, start, end) {
   ctx.lineTo(end.x, end.y);
   ctx.closePath();
   ctx.stroke();
+};
+
+
+export function drawShape(ctx, points) {
+  const [startingPoint, ...shapePoints] = points;
+  ctx.beginPath();
+  ctx.moveTo(startingPoint.x, startingPoint.y);
+  for (let index = 0; index < shapePoints.length; index++) {
+    const canvasPoint = shapePoints[index];
+    ctx.lineTo(canvasPoint.x, canvasPoint.y);
+  }
+  ctx.lineTo(startingPoint.x, startingPoint.y);
+  ctx.closePath();
 };

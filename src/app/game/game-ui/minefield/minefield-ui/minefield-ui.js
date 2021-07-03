@@ -1,9 +1,7 @@
 'use strict';
 import { STYLES_CONFIG, PALLETE } from './minefield-ui-config/minefield-ui.constants';
-import * as GameColors from '../../game-utils/game-colors';
-import * as TileUI from '../tile/tile-ui/tile-ui';
-import * as TileChecker from '../tile/tile-checker';
-import { TileState } from '../tile/tile-state.enum';
+import * as GameColors from '../../../game-utils/game-colors';
+import { TileUI, TileState, TileChecker } from '../tile/@tile.module';
 
 export class MinefieldUI {
     #mineType;

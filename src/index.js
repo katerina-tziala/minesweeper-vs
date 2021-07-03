@@ -12,11 +12,12 @@ import { LocalStorageHelper } from 'UTILS';
 // on reload return to your state
 import { PubSub, PubSubState } from 'UTILS';
 
+import CounterDigit from './app/game/game-ui/counter-digit/CounterDigit';
 
 
 import { generateMinesPositions } from './app/game/game-utils/game-utils';
-import Minefield from './app/game/minefield/Minefield';
-import BoardFace from './app/game/board-face/BoardFace';
+import Minefield from './app/game/game-ui/minefield/Minefield';
+import BoardFace from './app/game/game-ui/board-face/BoardFace';
 
 import AppUserService from './app/state-controllers/app-user.service';
 
