@@ -21,10 +21,10 @@ const COLORS = {
   }
 };
 
-export function getThemePallete(theme = 'light') {
+export function getThemePalette(theme = 'light') {
   return COLORS[theme];
 };
 
 export function getThemeColor(theme = 'light', colorKey = '0') {
-  return getThemePallete(theme)[colorKey];
+  return getThemePalette(theme)[colorKey];
 };

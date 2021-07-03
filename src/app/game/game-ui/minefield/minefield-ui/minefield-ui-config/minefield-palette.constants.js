@@ -1,5 +1,5 @@
 'use strict';
-export const PALLETE = {
+export const PALETTE = {
     light: {
         unrevealed: '#ffffff',
         revealed: '#e6e6e6',

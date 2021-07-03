@@ -1,21 +1,19 @@
 import './counter-digit.scss';
-import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS, CONFIG, DIGIT_POSITIONS } from './counter-digit.constants';
+import { CavnasUtils, definedString } from 'UTILS';
+import { TemplateGenerator } from 'UI_ELEMENTS';
+import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS, CONFIG, DIGIT_POSITIONS, PALETTE } from './counter-digit.constants';
 import { getDrawHandler } from './digit-lines';
-import { CavnasUtils } from 'UTILS';
+
 export default class CounterDigit extends HTMLElement {
-  #canvas;
-  #ctx;
-  #digitLines = new Map();
-  #pallette = {
-    on: "#e60000",
-    off: "#660000",
-    shadow: "#ff0000",
-  };
   #attributeUpdateHandler;
+  #DigitLinesDrawHandler;
+  #palette;
+  #ctx;
+  #lineShadow;
 
   constructor() {
     super();
-    this.#digitLines = getDrawHandler();
+    this.#DigitLinesDrawHandler = getDrawHandler();
     this.#attributeUpdateHandler = new Map();
   }
 
@@ -23,36 +21,46 @@ export default class CounterDigit extends HTMLElement {
     return this.getAttribute(ATTRIBUTES.value);
   }
 
+  get #theme() {
+    const theme = this.getAttribute(ATTRIBUTES.theme);
+    return definedString(theme) ? theme : 'light';
+  }
+
   static get observedAttributes() {
     return Object.values(ATTRIBUTES);
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
-    console.log('attributeChangedCallback CustomElement ', attrName);
     if (this.#attributeUpdateHandler.has(attrName) && oldVal !== newVal) {
       this.#attributeUpdateHandler.get(attrName)();
     }
   }
 
   connectedCallback() {
-    console.log('connectedCallback Digit');
-
-
-    this.innerHTML = TEMPLATE;
-    this.#canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.digit}`);
-    this.#ctx = this.#canvas.getContext('2d');
-
+    const { width, height } = CONFIG;
+    TemplateGenerator.setTemplate(this, TEMPLATE, { width, height });
+    const canvas = this.querySelector(`.${DOM_ELEMENT_CLASS.digit}`);
+    this.#ctx = canvas.getContext('2d');
+    this.#setTheming(this.#theme);
     this.#draw();
     this.#initUpdatesHandling();
   }
 
-  disconnectedCallback() {
-    console.log('disconnectedCallback Digit');
-  }
-
   #initUpdatesHandling() {
     this.#attributeUpdateHandler.set(ATTRIBUTES.value, this.#draw.bind(this));
-    // this.#attributeUpdateHandler.set(ATTRIBUTES.disabled, this.#setState.bind(this));
+    this.#attributeUpdateHandler.set(ATTRIBUTES.theme, this.#onThemeChange.bind(this));
+  }
+
+  #setTheming(theme = 'light') {
+    this.#palette = { ...PALETTE[theme] };
+    this.#lineShadow = { ...CONFIG.lineShadow };
+    this.#lineShadow.color = this.#palette.shadow;
+  }
+
+  #onThemeChange() {
+    console.log('onThemeChange');
+    this.#setTheming(this.#theme);
+    this.#draw();
   }
 
   #draw() {
@@ -66,19 +74,21 @@ export default class CounterDigit extends HTMLElement {
 
   #drawDigit(positions = []) {
     this.#ctx.clearRect(0, 0, CONFIG.width, CONFIG.height);
-    const shadow = { ...CONFIG.lineShadow };
-    shadow.color = this.#pallette.shadow;
 
-    for (const [index, drawLineFunction] of this.#digitLines) {
-      const lineOn = positions.includes(index);
-      this.#ctx.fillStyle = this.#pallette.off;
-      if (lineOn) {
-        this.#ctx.fillStyle = this.#pallette.on;
-        CavnasUtils.setShadow(this.#ctx, shadow);
-      }
-      drawLineFunction(this.#ctx);
-      CavnasUtils.clearShadow(this.#ctx, shadow);
+    for (const [index, drawLineFunction] of this.#DigitLinesDrawHandler) {
+      const highlightedLine = positions.includes(index);
+      this.#drawDigitLine(drawLineFunction, highlightedLine);
     }
+  }
+
+  #drawDigitLine(drawLineFunction, highlightedLine) {
+    this.#ctx.fillStyle = this.#palette.off;
+    if (highlightedLine) {
+      this.#ctx.fillStyle = this.#palette.on;
+      CavnasUtils.setShadow(this.#ctx, this.#lineShadow);
+    }
+    drawLineFunction(this.#ctx);
+    CavnasUtils.clearShadow(this.#ctx);
   }
 
 }

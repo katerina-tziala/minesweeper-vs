@@ -1,11 +1,11 @@
 'use strict';
-import { STYLES_CONFIG, PALLETE } from './minefield-ui-config/minefield-ui.constants';
+import { STYLES_CONFIG, PALETTE } from './minefield-ui-config/minefield-ui.constants';
 import * as GameColors from '../../../game-utils/game-colors';
 import { TileUI, TileState, TileChecker } from '../tile/@tile.module';
 
 export class MinefieldUI {
     #mineType;
-    #pallete;
+    #palette;
     #ctx;
     #width = 0;
     #height = 0;
@@ -15,7 +15,7 @@ export class MinefieldUI {
 
     constructor(theme = 'light', mineType = 'bombMine') {
         this.#mineType = mineType;
-        this.pallete = theme;
+        this.palette = theme;
         this.#stateDisplay.set(TileState.Flagged, this.drawFlaggedTile.bind(this));
         this.#stateDisplay.set(TileState.Marked, this.drawMarkedTile.bind(this));
         this.#stateDisplay.set(TileState.Revealed, this.drawRevealedTile.bind(this));
@@ -25,8 +25,8 @@ export class MinefieldUI {
         this.#stateContentDisplay.set(TileState.Revealed, this.#drawTileContent.bind(this));
     }
 
-    set pallete(theme) {
-        this.#pallete = Object.assign({ ...PALLETE[theme] }, { ...GameColors.getThemePallete(theme) });
+    set palette(theme) {
+        this.#palette = Object.assign({ ...PALETTE[theme] }, { ...GameColors.getThemePalette(theme) });
     }
 
     init(canvas, rows = 0, columns = 0) {
@@ -73,8 +73,8 @@ export class MinefieldUI {
             return;
         }
         this.#clearTileArea(tile);
-        TileUI.drawTile(this.#ctx, tile, this.#pallete.unrevealed);
-        TileUI.drawTileShadow(this.#ctx, tile, this.#pallete.innerShadow);
+        TileUI.drawTile(this.#ctx, tile, this.#palette.unrevealed);
+        TileUI.drawTileShadow(this.#ctx, tile, this.#palette.innerShadow);
     }
 
     drawRevealedTile(tile) {
@@ -82,7 +82,7 @@ export class MinefieldUI {
             return;
         }
         this.#clearTileArea(tile);
-        TileUI.drawTile(this.#ctx, tile, this.#pallete.revealed);
+        TileUI.drawTile(this.#ctx, tile, this.#palette.revealed);
         this.#drawTileContent(tile);
     }
 
@@ -100,7 +100,7 @@ export class MinefieldUI {
             return;
         }
         this.#clearTileArea(tile);
-        TileUI.drawTile(this.#ctx, tile, this.#pallete.active);
+        TileUI.drawTile(this.#ctx, tile, this.#palette.active);
         const { state } = tile;
         if (this.#stateContentDisplay.has(state)) {
             const { colorType, flagType } = tile.styles;
@@ -132,19 +132,19 @@ export class MinefieldUI {
         if (containsMine) {
             this.#drawRevealedMine(tile);
         } else {
-            TileUI.drawNonMineTileContent(this.#ctx, tile, this.#pallete, this.#minesPositions);
+            TileUI.drawNonMineTileContent(this.#ctx, tile, this.#palette, this.#minesPositions);
         }
     }
 
     #drawMine(tile) {
-        const styles = { pallete: this.#pallete, iconType: this.#mineType };
+        const styles = { palette: this.#palette, iconType: this.#mineType };
         TileUI.drawMine(this.#ctx, tile, styles);
     }
 
     #drawRevealedMine(tile) {
         if (TileChecker.detonateddMine(tile)) {
             this.#ctx.globalAlpha = 0.7;
-            TileUI.drawTile(this.#ctx, tile, this.#pallete.detonatedMine);
+            TileUI.drawTile(this.#ctx, tile, this.#palette.detonatedMine);
             this.#ctx.globalAlpha = 1;
         }
         this.#drawMine(tile);
@@ -157,9 +157,9 @@ export class MinefieldUI {
         const { colorType, secondaryColorType } = tile.styles;
         const color = this.#getColor(colorType);
         const secondaryColor = secondaryColorType ? this.#getColor(secondaryColorType) : color;
-        const pallete = { color, secondaryColor };
-        pallete.shadowColor = this.#pallete.targetShadow;
-        TileUI.drawDetectedMineTarget(this.#ctx, tile, pallete);
+        const palette = { color, secondaryColor };
+        palette.shadowColor = this.#palette.targetShadow;
+        TileUI.drawDetectedMineTarget(this.#ctx, tile, palette);
     }
 
     #drawFlag(tile, colorType, flagType = 'awesomeFlag') {
@@ -167,7 +167,7 @@ export class MinefieldUI {
         TileUI.drawFlag(this.#ctx, tile, styles);
 
         if (tile.wrongFlagHint && !TileChecker.detectedMine(tile)) {
-            TileUI.drawWrongFlagHint(this.#ctx, tile, this.#pallete.wrongFlagHint);
+            TileUI.drawWrongFlagHint(this.#ctx, tile, this.#palette.wrongFlagHint);
         }
     }
 
@@ -176,7 +176,7 @@ export class MinefieldUI {
     }
 
     #getColor(colorType = '1') {
-        return this.#pallete[colorType];
+        return this.#palette[colorType];
     }
 
 }

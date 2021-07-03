@@ -22,7 +22,6 @@ function getStepChange() {
     return Math.ceil(CONFIG.lineChange / 2);
 }
 
-
 function getVerticalBottomCapPoints(x, y, direction = 1) {
     const { lineSize, lineThickness, lineChange } = CONFIG;
     const step = getStepChange();
@@ -96,9 +95,6 @@ function getHorizontalLinePoints(x, y, direction = 1) {
     return points;
 }
 
-
-
-
 function getTopLineY() {
     return CONFIG.padding;
 }
@@ -122,28 +118,30 @@ function getRightLineX() {
     return width - padding;
 }
 
-export function drawTopLeftLine(ctx) {
+/* LEFT LINES */
+function drawTopLeftLine(ctx) {
     const x = getLeftLineX();
     const y = getTopLineY();
     const points = getVerticalBottomCapPoints(x, y, 1);
     drawDigitLine(ctx, points);
 }
 
-export function drawBottomLeftLine(ctx) {
+function drawBottomLeftLine(ctx) {
     const x = getLeftLineX();
     const y = getBottomLineY();
     const points = getVerticalTopCapPoints(x, y, 1);
     drawDigitLine(ctx, points);
 }
 
-export function drawTopRightLine(ctx) {
+/* RIGHT LINES */
+function drawTopRightLine(ctx) {
     const x = getRightLineX();
     const y = getTopLineY();
     const points = getVerticalBottomCapPoints(x, y, -1);
     drawDigitLine(ctx, points);
 }
 
-export function drawBottomRightLine(ctx) {
+function drawBottomRightLine(ctx) {
     const x = getRightLineX();
     const y = getBottomLineY();
     const points = getVerticalTopCapPoints(x, y, -1);
@@ -151,15 +149,14 @@ export function drawBottomRightLine(ctx) {
 }
 
 /* MIDDLE LINES */
-
-export function drawTopMiddleLine(ctx) {
+function drawTopMiddleLine(ctx) {
     const x = getMiddleLineX();
     const y = getTopLineY();
     const points = getHorizontalLinePoints(x, y);
     drawDigitLine(ctx, points);
 }
 
-export function drawBottomMiddleLine(ctx) {
+function drawBottomMiddleLine(ctx) {
     const { height, padding } = CONFIG;
     const x = getMiddleLineX();
     const y = height - padding;
@@ -167,7 +164,7 @@ export function drawBottomMiddleLine(ctx) {
     drawDigitLine(ctx, points);
 }
 
-export function drawMiddleLine(ctx) {
+function drawMiddleLine(ctx) {
     const { lineSize, padding, topSpace } = CONFIG;
     const x = getMiddleLineX();
     const y = padding + lineSize + topSpace;

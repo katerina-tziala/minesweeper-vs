@@ -1,5 +1,5 @@
 'use strict';
-export { PALLETE } from './minefield-pallete.constants';
+export { PALETTE } from './minefield-palette.constants';
 export { ICONS } from './minefield-icons.constants';
 export { SHADOWS } from './minefield-shadows.constants';
 
