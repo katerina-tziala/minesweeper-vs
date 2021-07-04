@@ -1,0 +1,29 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+
+app-digital-timer {
+  @extend %flex-start-center;
+  padding: 2px;
+  background-color: #330000;
+  max-width: 180px;
+}
+
+.time-separator {
+  width: 10px;
+  height: 12px;
+  @extend %flex-between-center;
+  flex-direction: column;
+
+  &::after {
+    @extend ._time-separator-box;
+  }
+  &::before {
+    @extend ._time-separator-box;
+  }
+}
+
+._time-separator-box {
+  @include shapes.pseudoRectangle(4px, 1px);
+  background-color: #e60000;
+  box-shadow: 0 0 3px #ff0000;
+}

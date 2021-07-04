@@ -18,27 +18,19 @@
 
       <main class="main">
         <div id="main-content" class="main-content">
-          <!-- <div id='game-set-up' class='card' style="min-width: 400px;min-height: 400px;">
-
-          <app-wizard-stepper name='gameSettings'></app-wizard-stepper>
-
- <p><i class="fa fa-car"></i> Force Font to load.</p>
-        </div>  -->
-
-          <!-- <div style="font-family: Font Awesome 5 Free"></div> -->
-
-          <!-- <div id="board" class='card'>
-          <canvas id="myCanvas" style="font-family: Nunito"></canvas>
-        </div> -->
-
+      
+          
           <div class="card">
+            
+          
+            <!-- pass color to digit instead of theme -->
             <div class='board-info'>
               <app-digital-counter min='-99' max='999' value='25'></app-digital-counter>
               <app-board-face id="board-face" state='smile'></app-board-face>
-
               
             </div>
 
+            <app-digital-timer></app-digital-timer>
 
           
             <div id="board" class='board-section'>

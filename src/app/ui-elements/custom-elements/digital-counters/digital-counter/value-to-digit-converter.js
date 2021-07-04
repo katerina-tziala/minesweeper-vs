@@ -1,5 +1,5 @@
 'use strict';
-import { NumberValidation } from 'UTILS';
+import { NumberValidation, numberDefined } from 'UTILS';
 
 function getFillValueOutOfBoundaries(value, max) {
     if (NumberValidation.greaterThanMax(value, max)) {
@@ -32,7 +32,7 @@ function valueLength(value) {
 }
 
 export function getValueArray(value, min, max) {
-    if (!value) {
+    if (!numberDefined(value)) {
         return [];
     }
     const digitsLength = numberOfDigits(min, max);

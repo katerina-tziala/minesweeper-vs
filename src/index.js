@@ -13,6 +13,7 @@ import { LocalStorageHelper } from 'UTILS';
 import { PubSub, PubSubState } from 'UTILS';
 
 import './app/ui-elements/custom-elements/digital-counters/digital-counter/DigitalCounter';
+import './app/ui-elements/custom-elements/digital-counters/digital-timer/DigitalTimer';
 
 
 import { generateMinesPositions } from './app/game/game-utils/game-utils';

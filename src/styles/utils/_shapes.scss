@@ -21,3 +21,11 @@
   background-color: $color;
   display: block;
 }
+
+@mixin pseudoRectangle($size, $radius: "0px") {
+  content: "";
+  display: block;
+  width: $size;
+  height: $size;
+  border-radius: $radius;
+}
