@@ -14,8 +14,8 @@ import { generateMinesPositions } from './app/game/game-utils/game-utils';
 import Minefield from './app/game/game-ui/minefield/Minefield';
 import BoardFace from './app/game/game-ui/board-face/BoardFace';
 import GameTimer from './app/game/game-ui/game-timer/GameTimer';
-import './app/game/game-ui/flags-counter/FlagsCounter';
-
+// import './app/game/game-ui/flags-counter/FlagsCounter';
+import '~/ui-elements/custom-elements/digital-counters/digital-counter/DigitalCounter';
 import AppUserService from './app/state-controllers/app-user.service';
 
 
@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
   //console.log(minesPositions);
   const minesPositions = [1, 2, 3, 80, 81];
   //const minesCounter = document.getElementsByTagName('app-digital-counter')[0];
+  // const minesCounter = document.getElementsByTagName('app-flags-counter')[0];
 
+  
   const minefield = document.getElementsByTagName('app-minefield')[0];
   const boardFace = document.getElementById('board-face');
   const gameTimer = document.getElementsByTagName('app-game-timer')[0];
@@ -64,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //   // boardFace.setAttribute('color', '#0000ff');
   //   // console.log(styles);
   //   // console.log('ddd');
-  //   minesCounter.setAttribute('value', '-5');
+  //   minesCounter.setValue(-5);
   //   // const test = document.querySelectorAll('[theme="light"]');
   //   // console.log(test);
   //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];

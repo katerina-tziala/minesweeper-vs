@@ -9,7 +9,7 @@ export default class AppUserService {
 
     #appSettings = {
         theme: 'light',
-        mineType: 'virusMine',
+        mineType: 'virus',
         userConfig: {
             flagType: 'awesome',
             colorType: '1'

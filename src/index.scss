@@ -72,20 +72,9 @@ body,
   }
 }
 
-// #myCanvas {
-//   background-color: #d9d9d9;
-//   cursor: pointer;
-//   margin: 0px;
-//   display: block;
-//   // border-width: 2px;
-//   // border-style: solid;
-//   // border-top-color: #a6a6a6;
-//   // border-left-color: #a6a6a6;
-//   // border-bottom-color: #f2f2f2;
-//   // border-right-color: #f2f2f2;
-// }
+
 .board-info {
-  padding: 5px;
+  // padding: 5px;
   @extend %flex-between-center;
   //min-width: 400px;
 }

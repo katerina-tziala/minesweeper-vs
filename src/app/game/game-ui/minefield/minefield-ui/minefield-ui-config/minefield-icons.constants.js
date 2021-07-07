@@ -1,6 +1,6 @@
 'use strict';
 export const ICONS = {
-    bombMine: {
+    bomb: {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'f1e2',
         padding: {
@@ -8,7 +8,7 @@ export const ICONS = {
             top: 20,
         },
     },
-    bahaiMine: {
+    bahai: {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'f666',
         padding: {
@@ -16,7 +16,7 @@ export const ICONS = {
             top: 20,
         },
     },
-    virusMine: {
+    virus: {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'e074',
         padding: {
@@ -24,7 +24,7 @@ export const ICONS = {
             top: 20,
         },
     },
-    biohazardMine: {
+    biohazard: {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'f780',
         padding: {

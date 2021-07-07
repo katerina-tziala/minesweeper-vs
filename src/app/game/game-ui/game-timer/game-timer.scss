@@ -1,7 +1,5 @@
 @use 'styles/iconography/iconography';
 @use 'styles/utils/flexbox/flexbox';
-@use 'styles/utils/shapes';
-@use 'styles/utils/animations/animations';
 @use 'styles/game/board-utils';
 @use 'styles/theming/theming';
 
@@ -31,11 +29,10 @@ app-game-timer {
 
   > app-digital-timer {
     @extend ._board-section-borders;
-    // border-top-right-radius: 5px;
-    // border-bottom-right-radius: 5px;
     border-radius: 5px;
     padding: 2px 4px;
   }
+
   // TODO: THEMING
   color: #595959;
   @include setThemeColors('light');
