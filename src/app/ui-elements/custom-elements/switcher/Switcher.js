@@ -15,17 +15,17 @@ export default class Switcher extends HTMLElement {
     this.#buttonListeners = new Map();
   }
 
-  get #disabled() {
+  get disabled() {
     const disabled = this.getAttribute(ATTRIBUTES.disabled);
     return parseBoolean(disabled);
   }
 
-  get #checked() {
+  get checked() {
     const checked = this.getAttribute(ATTRIBUTES.checked);
     return parseBoolean(checked);
   }
 
-  get #name() {
+  get name() {
     return this.getAttribute(ATTRIBUTES.name);
   }
 
@@ -63,7 +63,7 @@ export default class Switcher extends HTMLElement {
   }
 
   #setState() {
-    ElementHandler.setDisabled(this.#button, this.#disabled);
+    ElementHandler.setDisabled(this.#button, this.disabled);
   }
 
   #addListeners() {
@@ -92,20 +92,20 @@ export default class Switcher extends HTMLElement {
   }
 
   #toggleValue() {
-    if (!this.#disabled) {
+    if (!this.disabled) {
       this.#button.blur();
-      this.setAttribute(ATTRIBUTES.checked, !this.#checked);
+      this.setAttribute(ATTRIBUTES.checked, !this.checked);
       this.#submitValueChange();
     }
   }
 
   #setValue() {
-    AriaHandler.setAriaChecked(this.#button, this.#checked);
+    AriaHandler.setAriaChecked(this.#button, this.checked);
   }
 
   #submitValueChange() {
-    const value = this.#checked;
-    const name = this.#name;
+    const value = this.checked;
+    const name = this.name;
     const event = new CustomEvent('onValueChange', { detail: { name, value } });
     this.dispatchEvent(event);
   }

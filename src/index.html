@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <div id="app" class="theme-dark">
+    <div id="app" class="theme-light">
       <!-- HEADER -->
       <header class="header">
         <h1 class="header-title">MinesweeperVS</h1>
@@ -18,22 +18,25 @@
 
       <main class="main">
         <div id="main-content" class="main-content">
-      
-          
           <div class="card">
-            
-          
-            <!-- pass color to digit instead of theme -->
-            <div class='board-info'>
-              <app-digital-counter min='-99' max='999' value='25'></app-digital-counter>
-              <app-board-face id="board-face" state='smile'></app-board-face>
-              
+            <div>
+              <!-- turn-duration='5' color-type='type-1'-->
+              <app-game-timer></app-game-timer>
             </div>
 
-            <app-digital-timer></app-digital-timer>
+            <div class="board-info">
+              <app-board-face id="board-face" state="smile"></app-board-face>
+              <!-- <app-digital-counter
+                min="-99"
+                max="999"
+                value="25"
+              ></app-digital-counter> -->
+              <app-flags-counter mine-type="bahaiMine" flags="checkered,awesome"></app-flags-counter>
+            </div>
 
-          
-            <div id="board" class='board-section'>
+            <!-- <app-digital-timer format="h:m:s"></app-digital-timer> -->
+
+            <div id="board" class="board-section">
               <app-minefield
                 rows="9"
                 columns="9"
@@ -42,7 +45,7 @@
                 flagging="true"
                 wrong-flag-hint="true"
                 theme="light"
-                mine-type="bahaiMine"
+                mine-type="biohazardMine"
               ></app-minefield>
             </div>
           </div>

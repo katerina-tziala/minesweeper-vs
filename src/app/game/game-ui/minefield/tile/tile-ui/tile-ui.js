@@ -37,11 +37,11 @@ export function drawTileShadow(ctx, tile, color) {
     CavnasUtils.clearShadow(ctx);
 }
 
-export function drawNonMineTileContent(ctx, tile, pallete, minesPositions = []) {
+export function drawNonMineTileContent(ctx, tile, palette, minesPositions = []) {
     const minesAround = TileChecker.getNumberOfMinesAround(tile.neighbors, minesPositions);
     const content = minesAround ? minesAround.toString() : undefined;
     if (content) {
-        const color = pallete[content];
+        const color = palette[content];
         const styles = STYLES_CONFIG.content;
         const { xPosition, yPosition } = getContentPosition(tile.area, styles.padding);
         ctx.fillStyle = Color.adjustHexColorBrightness(color, styles.colorAdjustment);
@@ -55,7 +55,7 @@ export function drawNonMineTileContent(ctx, tile, pallete, minesPositions = []) 
 
 export function drawMine(ctx, tile, styles) {
     const iconConfig = ICONS[styles.iconType];
-    ctx.fillStyle = styles.pallete.mine;
+    ctx.fillStyle = styles.palette.mine;
     drawIcon(ctx, tile, iconConfig)
 }
 

@@ -39,6 +39,22 @@ export function arrayDifference(arrayToFilter, arrayReference) {
 };
 
 
+export function isOddNumber(num) {
+  return num % 2 === 0 ? false : true;
+};
+
+export function convertedTimeParts(value) {
+  const actual = Math.floor(value / 60);
+  const remainder = value % 60;
+  return [actual, remainder];
+};
+
+export function secondsToTimeObject(secondsToConvert = 0) {
+  const [allMinutes, s] = convertedTimeParts(secondsToConvert);
+  const [h, m] = convertedTimeParts(allMinutes);
+  return { h, m, s };
+};
+
 
 
 // export function debounce(func, wait, immediate) {

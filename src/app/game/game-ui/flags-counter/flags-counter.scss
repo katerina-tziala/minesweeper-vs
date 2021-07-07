@@ -1,0 +1,53 @@
+@use 'styles/iconography/iconography';
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+@use 'styles/utils/animations/animations';
+@use 'styles/game/board-utils';
+@use 'styles/theming/theming';
+
+@mixin setFlagIcons() {
+  $flag-types: "basic", "checkered", "outline", "awesome";
+  @each $type in $flag-types {
+    .flags-counter__flag--#{$type} {
+      &::after {
+        @extend .icon-flag-#{$type};
+      }
+    }
+  }
+}
+
+app-flags-counter {
+  // &[mine-type="bahaiMine"] {
+  //   .flags-counter-icon {
+  //     &::after {
+  //       @extend .icon-flag-checkered;
+  //     }
+  //   }
+  // }
+  @include setFlagIcons();
+}
+
+.flags-counter-icon {
+  @include shapes.rectangle(46px);
+  position: relative;
+  //mine-type="bahaiMine"
+
+  border: 1px solid salmon;
+}
+
+.flags-counter__flag {
+  display: inline-block;
+  text-align: center;
+  &.flags-counter__flag--1 {
+    transform: scaleX(-1);
+  }
+}
+
+// @extend .icon-biohazard;
+// @extend .icon-bomb;
+// @extend .icon-bahai;
+// @extend .icon-virus;
+
+// @extend .icon-flag-awesome;
+// @extend .icon-flag-basic;
+// @extend .icon-flag-outline;

@@ -1,0 +1,9 @@
+@mixin blink($duration: 1) {
+  animation: blink #{$duration}s ease-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}

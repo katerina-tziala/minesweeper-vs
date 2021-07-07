@@ -12,6 +12,7 @@
 @import "./styles/components/header/header";
 @import "./styles/components/card/card";
 @import "./styles/components/button/button";
+// @import "./styles/theming/theming";
 
 * {
   box-sizing: border-box;
@@ -86,6 +87,7 @@ body,
 .board-info {
   padding: 5px;
   @extend %flex-between-center;
+  //min-width: 400px;
 }
 
 .board-section {

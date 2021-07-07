@@ -1,3 +1,4 @@
+'use strict';
 import '../counter-digit/CounterDigit';
 import './digital-counter.scss';
 import { ATTRIBUTES } from './digital-counter.constants';
@@ -14,7 +15,7 @@ export default class DigitalCounter extends HTMLElement {
     this.#attributeUpdateHandler = new Map();
   }
 
-  get #value() {
+  get value() {
     const value = parseInt(this.getAttribute(ATTRIBUTES.value), 10)
     return numberDefined(value) ? value : undefined;
   }
@@ -31,8 +32,8 @@ export default class DigitalCounter extends HTMLElement {
     return numberOfDigits(this.#min, this.#max);
   }
 
-  get #valueInArray() {
-    return getValueArray(this.#value, this.#min, this.#max);
+  get valueInArray() {
+    return getValueArray(this.value, this.#min, this.#max);
   }
 
   static get observedAttributes() {
@@ -46,12 +47,12 @@ export default class DigitalCounter extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#init();
+    this.#render();
     this.#attributeUpdateHandler.set(ATTRIBUTES.value, this.#onValueChange.bind(this));
   }
 
   #onValueChange() {
-    const valueArray = this.#valueInArray;
+    const valueArray = this.valueInArray;
     for (const [index, digitElement] of this.#digitsHandler) {
       const digitValue = valueArray[index];
       digitElement.setAttribute('value', digitValue);
@@ -62,18 +63,21 @@ export default class DigitalCounter extends HTMLElement {
     return parseInt(this.getAttribute(attribute), 10) || 0;
   }
 
-  #init() {
-    const valueArray = this.#valueInArray;
+  #render() {
+    const valueArray = this.valueInArray;
     const numberOfDigits = this.#numberOfDigits;
     for (let index = 0; index < numberOfDigits; index++) {
-      const digitValue = valueArray[index];
-      const digitElement = document.createElement('app-counter-digit');
-      digitElement.setAttribute('value', digitValue);
+      const digitElement = this.#generateDigitElement(valueArray[index]);
       this.append(digitElement);
       this.#digitsHandler.set(index, digitElement);
     }
   }
 
+  #generateDigitElement(value) {
+    const digitElement = document.createElement('app-counter-digit');
+    digitElement.setAttribute('value', value);
+    return digitElement;
+  }
 }
 
 customElements.define('app-digital-counter', DigitalCounter);

@@ -1,0 +1,10 @@
+@use 'sass:map';
+@use 'sass:list';
+
+@use '../palletes/light-palette';
+
+$paletteList: light-palette.$game-palette, ();
+
+$theme: (
+  game-colors: light-palette.$game-palette,
+);

@@ -3,22 +3,18 @@ import './index.scss';
 import { App } from './app/App';
 import * as PageLoaderHandler from './app/pages/page-loader-handler';
 import { LocalStorageHelper } from 'UTILS';
-// import './styles/iconography/fontawesome/fontawesome.scss';
-// import './styles/iconography/fontawesome/regular.scss';
-// import './styles/iconography/fontawesome/solid.scss';
+
 
 //will change to transform
 // -- router guard
 // on reload return to your state
 import { PubSub, PubSubState } from 'UTILS';
 
-import './app/ui-elements/custom-elements/digital-counters/digital-counter/DigitalCounter';
-import './app/ui-elements/custom-elements/digital-counters/digital-timer/DigitalTimer';
-
-
 import { generateMinesPositions } from './app/game/game-utils/game-utils';
 import Minefield from './app/game/game-ui/minefield/Minefield';
 import BoardFace from './app/game/game-ui/board-face/BoardFace';
+import GameTimer from './app/game/game-ui/game-timer/GameTimer';
+import './app/game/game-ui/flags-counter/FlagsCounter';
 
 import AppUserService from './app/state-controllers/app-user.service';
 
@@ -44,6 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const minefield = document.getElementsByTagName('app-minefield')[0];
   const boardFace = document.getElementById('board-face');
+  const gameTimer = document.getElementsByTagName('app-game-timer')[0];
+
+
+ // gameTimer.start();
+  gameTimer.addEventListener('onTurnEnd', (event) => {
+    console.log('onTurnEnd');
+  });
+
+
+  // 
   boardFace.addEventListener('onBoardFaceClick', (event) => {
     console.log('onBoardFaceClick');
   });

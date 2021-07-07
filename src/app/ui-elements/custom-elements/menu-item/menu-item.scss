@@ -39,6 +39,6 @@ app-menu-item[type="friend"] {
 
 app-menu-item[type="original"] {
   .menu-item__icon {
-    @include iconography.afterIcon('flag');
+    @include iconography.afterIcon('flag-awesome');
   }
 }

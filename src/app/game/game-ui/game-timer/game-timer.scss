@@ -1,0 +1,55 @@
+@use 'styles/iconography/iconography';
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+@use 'styles/utils/animations/animations';
+@use 'styles/game/board-utils';
+@use 'styles/theming/theming';
+
+@mixin setThemeColors($theme) {
+  $game-colors: theming.getThemePallette($theme, 'game-colors');
+
+  @each $type, $color in $game-colors {
+    &[color-type='#{$type}'] {
+      color: $color;
+    }
+  }
+}
+
+// @mixin setTheming() {
+//   $themes: 'light', 'dark';
+
+//   @each $theme in $themes {
+//     .theme-#{$theme} {
+//       @include setThemeColors($theme);
+//     }
+//   }
+// }
+
+app-game-timer {
+  @extend %flex-start-center;
+  width: fit-content;
+
+  > app-digital-timer {
+    @extend ._board-section-borders;
+    // border-top-right-radius: 5px;
+    // border-bottom-right-radius: 5px;
+    border-radius: 5px;
+    padding: 2px 4px;
+  }
+  // TODO: THEMING
+  color: #595959;
+  @include setThemeColors('light');
+}
+
+.game-timer-icon {
+  @extend %flex-center-center;
+  height: 46px;
+  margin-right: 8px;
+  font-size: 1.8em;
+  overflow: hidden;
+  padding-right: 1px;
+  text-align: center;
+  @include iconography.afterIcon('stopwatch');
+  border-radius: 5px;
+  border-right: 0px;
+}

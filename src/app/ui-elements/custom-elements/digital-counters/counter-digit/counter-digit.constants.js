@@ -1,3 +1,4 @@
+'use strict';
 export { PALETTE } from './counter-digit-constants/counter-digit-palette';
 export { CONFIG } from './counter-digit-constants/counter-digit-config';
 export { DIGIT_POSITIONS } from './counter-digit-constants/counter-digit-positions';

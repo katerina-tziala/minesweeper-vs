@@ -1,3 +1,4 @@
+'use strict';
 import './counter-digit.scss';
 import { CavnasUtils, definedString } from 'UTILS';
 import { TemplateGenerator, ElementHandler } from 'UI_ELEMENTS';

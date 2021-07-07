@@ -1,5 +1,7 @@
 @import './iconography_utils';
 @import './iconography-face';
+@import './iconography-mine-type';
+@import './iconography-flag-type';
 
 .icon-user {
   @extend %icon-regular;
@@ -44,11 +46,6 @@
 .icon-friend {
   @extend %icon-regular;
   content: fa-content($fa-var-user-friends);
-}
-
-.icon-flag {
-  @extend %icon-brand;
-  content: fa-content($fa-var-font-awesome-flag);
 }
 
 .icon-bot {

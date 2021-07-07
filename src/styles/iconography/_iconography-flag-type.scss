@@ -1,0 +1,21 @@
+@import './iconography_utils';
+
+.icon-flag-awesome {
+  @extend %icon-brand;
+  content: fa-content($fa-var-font-awesome-flag);
+}
+
+.icon-flag-checkered {
+  @extend %icon-regular;
+  content: fa-content($fa-var-flag-checkered);
+}
+
+.icon-flag-outline {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-flag);
+}
+
+.icon-flag-basic {
+  @extend %icon-regular;
+  content: fa-content($fa-var-flag);
+}

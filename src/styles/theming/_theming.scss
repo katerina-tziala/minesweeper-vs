@@ -1,0 +1,18 @@
+@use 'sass:map';
+@use 'sass:list';
+
+@use './themes/light';
+
+
+$_themes: (
+  light: light.$theme,
+);
+
+@function getTheme($key) {
+  @return map-get($_themes, $key);
+}
+
+@function getThemePallette($theme-key, $pallette-key) {
+  $theme: getTheme($theme-key);
+  @return map-get($theme, $pallette-key);
+}

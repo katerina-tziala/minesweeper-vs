@@ -1,0 +1,21 @@
+@import './iconography_utils';
+
+.icon-bomb {
+  @extend %icon-regular;
+  content: fa-content($fa-var-bomb);
+}
+
+.icon-biohazard {
+  @extend %icon-regular;
+  content: fa-content($fa-var-biohazard);
+}
+
+.icon-bahai {
+  @extend %icon-regular;
+  content: fa-content($fa-var-bahai);
+}
+
+.icon-virus {
+  @extend %icon-regular;
+  content: fa-content($fa-var-virus);
+}

@@ -24,7 +24,15 @@ export const ICONS = {
             top: 20,
         },
     },
-    basicFlag: {
+    biohazardMine: {
+        font: '600 16px "Font Awesome 5 Free"',
+        code: 'f780',
+        padding: {
+            left: 6,
+            top: 20,
+        },
+    },
+    basic: {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'f024',
         padding: {
@@ -32,7 +40,7 @@ export const ICONS = {
             top: 20,
         },
     },
-    checkeredFlag: {
+    checkered: {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'f11e',
         padding: {
@@ -40,7 +48,7 @@ export const ICONS = {
             top: 20,
         },
     },
-    outlineFlag: {
+    outline: {
         font: '400 16px "Font Awesome 5 Free"',
         code: 'f024',
         padding: {
@@ -48,7 +56,7 @@ export const ICONS = {
             top: 20,
         },
     },
-    awesomeFlag: {
+    awesome: {
         font: '600 16px "Font Awesome 5 Brands"',
         code: 'f425',
         padding: {

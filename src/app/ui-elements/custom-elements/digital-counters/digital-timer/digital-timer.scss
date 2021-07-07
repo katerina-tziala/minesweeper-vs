@@ -1,11 +1,13 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/utils/shapes';
+@use 'styles/utils/animations/animations';
 
 app-digital-timer {
   @extend %flex-start-center;
   padding: 2px;
   background-color: #330000;
-  max-width: 180px;
+  width: fit-content;
+  box-sizing: border-box;
 }
 
 .time-separator {
@@ -13,7 +15,6 @@ app-digital-timer {
   height: 12px;
   @extend %flex-between-center;
   flex-direction: column;
-
   &::after {
     @extend ._time-separator-box;
   }
@@ -22,8 +23,20 @@ app-digital-timer {
   }
 }
 
+.time-separator--blink {
+  @include animations.blink(1.1);
+}
+
 ._time-separator-box {
   @include shapes.pseudoRectangle(4px, 1px);
   background-color: #e60000;
   box-shadow: 0 0 3px #ff0000;
 }
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// TODO: THEMING

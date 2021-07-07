@@ -1,3 +1,4 @@
+'use strict';
 import './custom-element.scss';
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './custom-element.constants';
 

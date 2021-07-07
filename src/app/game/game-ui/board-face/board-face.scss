@@ -1,40 +1,37 @@
+@use 'sass:map';
 @use 'styles/utils/shapes';
 @use 'styles/iconography/iconography';
 @use 'styles/utils/flexbox/flexbox';
-
-$size: 36px;
+@use 'styles/game/board-utils';
+$size: 40px;
 $icon-size: 26;
 $icon-shape: #{$icon-size - 2}px;
 
 @mixin faceIcon($type) {
   .board-face-icon {
-    @include iconography.afterIcon($type);
+    &:after {
+      margin-left: -1px;
+      @extend .icon-#{$type};
+    }
   }
 }
 
-._board-face-state {
-  @include faceIcon("face-smile");
-  &[state="surprise"] {
-    @include faceIcon("face-surprise");
-  }
+@mixin setFaceIcons() {
+  $states: "smile", "surprise", "winner", "looser", "rolling-eyes";
 
-  &[state="winner"] {
-    @include faceIcon("face-winner");
-  }
-
-  &[state="looser"] {
-    @include faceIcon("face-looser");
-  }
-
-  &[state="rolling-eyes"] {
-    @include faceIcon("face-rolling-eyes");
+  @each $state in $states {
+    &[state="#{$state}"] {
+      @include faceIcon("face-" +#{$state});
+    }
   }
 }
 
 ._board-face-button-enabled {
   cursor: pointer;
   &:active {
-    box-shadow: none;
+    // TODO: THEMING
+    background-color: #f2f2f2;
+    @extend ._board-section-borders;
     > .board-face-icon {
       box-shadow: none;
     }
@@ -46,7 +43,8 @@ app-board-face {
   height: $size;
   display: block;
   margin: auto;
-  @extend ._board-face-state;
+  @include faceIcon("face-smile");
+  @include setFaceIcons();
 }
 
 .board-face-button {
@@ -55,14 +53,11 @@ app-board-face {
   @extend %flex-center-center;
   overflow: hidden;
   outline: none;
-  border-radius: 5px;
-  border-width: 1px;
-  border-style: solid;
 
+  @extend ._board-button-borders;
+  border-radius: 5px;
   // TODO: THEMING
-  background-color: #f2f2f2;
-  border-color: #b3b3b3;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+  background-color: inherit;
   color: #000;
 
   &[aria-disabled="true"] {
