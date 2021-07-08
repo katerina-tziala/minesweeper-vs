@@ -17,11 +17,11 @@ $icon-shape: #{$icon-size - 2}px;
 }
 
 @mixin setFaceIcons() {
-  $states: "smile", "surprise", "winner", "looser", "rolling-eyes";
+  $states: 'smile', 'surprise', 'winner', 'looser', 'rolling-eyes';
 
   @each $state in $states {
-    &[state="#{$state}"] {
-      @include faceIcon("face-" +#{$state});
+    &[state='#{$state}'] {
+      @include faceIcon('face-' +#{$state});
     }
   }
 }
@@ -43,7 +43,7 @@ app-board-face {
   height: $size;
   display: block;
   margin: auto;
-  @include faceIcon("face-smile");
+  @include faceIcon('face-smile');
   @include setFaceIcons();
 }
 
@@ -60,10 +60,10 @@ app-board-face {
   background-color: inherit;
   color: #000;
 
-  &[aria-disabled="true"] {
+  &[aria-disabled='true'] {
     cursor: default;
   }
-  &[aria-disabled="false"] {
+  &[aria-disabled='false'] {
     @extend ._board-face-button-enabled;
   }
 }

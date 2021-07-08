@@ -73,46 +73,46 @@ body,
 }
 
 
-.board-info {
-  // padding: 5px;
-  @extend %flex-between-center;
-  //min-width: 400px;
-  // border-width: 2px;
-  // border-style: solid;
-  // border-top-color: #cccccc;
-  // border-left-color: #cccccc;
-  // border-bottom-color: #e6e6e6;
-  // border-right-color: #e6e6e6;
-  margin-bottom: 10px;
+// .board-info {
+//   // padding: 5px;
+//   @extend %flex-between-center;
+//   //min-width: 400px;
+//   // border-width: 2px;
+//   // border-style: solid;
+//   // border-top-color: #cccccc;
+//   // border-left-color: #cccccc;
+//   // border-bottom-color: #e6e6e6;
+//   // border-right-color: #e6e6e6;
+//   margin-bottom: 10px;
 
-  >app-flags-counter {
-    transform: scale(0.7);
-    transform-origin: top right;
-  }
-  >app-game-timer  {
-    transform: scale(0.7);
-    transform-origin: top left;
-  }
-  // background-color: #e6e6e6;
-}
+//   >app-flags-counter {
+//     transform: scale(0.7);
+//     transform-origin: top right;
+//   }
+//   >app-game-timer  {
+//     transform: scale(0.7);
+//     transform-origin: top left;
+//   }
+//   // background-color: #e6e6e6;
+// }
 
-.board-section {
-  border-width: 2px;
-  border-style: solid;
-  border-top-color: #cccccc;
-  border-left-color: #cccccc;
-  border-bottom-color: #e6e6e6;
-  border-right-color: #e6e6e6;
-}
-#board {
-  // padding: 5px;
+// .board-section {
+//   border-width: 2px;
+//   border-style: solid;
+//   border-top-color: #cccccc;
+//   border-left-color: #cccccc;
+//   border-bottom-color: #e6e6e6;
+//   border-right-color: #e6e6e6;
+// }
+// #board {
+//   // padding: 5px;
   
-  // width: 150px;
-  // height: 150px;
-  display: inline-block;
+//   // width: 150px;
+//   // height: 150px;
+//   display: inline-block;
 
 
-  background-color: #b3b3b3;
-  // width: 150px;
-  // overflow: scroll;
-}
+//   background-color: #b3b3b3;
+//   // width: 150px;
+//   // overflow: scroll;
+// }

@@ -18,24 +18,17 @@
 
       <main class="main">
         <div id="main-content" class="main-content">
-          <div class="card">
+         
+          <app-game-board></app-game-board>
+          <!-- <div class="card">
+          
             <div class="board-info">
-              
-               <!-- color-type='type-1' -->
-             
-            </div>
-
-            <div class="board-info">
-              <!-- <app-game-timer turn-duration='0'></app-game-timer> -->
-              <!-- <app-digital-counter min='-99' max='999' value='-5'></app-digital-counter> -->
               <app-game-timer turn-duration='0'></app-game-timer>
-              
               <app-board-face id="board-face" state="smile"></app-board-face>
               <app-flags-counter flags="checkered" color-types="type-2"></app-flags-counter>
             </div>
-
-            <!-- <app-digital-timer format="h:m:s"></app-digital-timer> -->
-
+            
+          
             <div id="board" class="board-section">
               <app-minefield
                 rows="9"
@@ -48,7 +41,10 @@
                 mine-type="biohazard"
               ></app-minefield>
             </div>
-          </div>
+          
+          </div> -->
+
+
         </div>
         <!-- <i class="fas fa-spinner fa-pulse"></i> -->
         <app-loader id="main-loader"></app-loader>

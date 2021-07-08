@@ -5,9 +5,9 @@
 
 .game-wizard {
   width: 400px;
- // will-change: transform, opacity;
+  will-change: transform, opacity;
   @extend .card;
-  @include animations.slideIn(0.8);
+  @include animations.slideIn(0.6);
   position: relative;
   overflow: hidden;
   min-height: 180px;
@@ -36,7 +36,7 @@
     display: inline-block;
     font-size: 1.3rem;
     &:not(:last-of-type) {
-     // background-color: lavender;
+      // background-color: lavender;
       margin-right: 8px;
     }
   }

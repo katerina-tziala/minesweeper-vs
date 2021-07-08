@@ -43,17 +43,22 @@ export default class AppUserService {
         return this.#appSettings.mineType;
     }
 
+    get gameStyles() {
+        const { theme, mineType } = this.#appSettings;
+        return { theme, mineType };
+    }
+
     getPlayerConfig(id) {
         if (id !== this.#id) {
             return this.#appSettings.opponentConfig;
         }
         return this.#appSettings.userConfig;
-    } 
+    }
 
     get id() {
         return this.#id;
     }
-    
+
     get username() {
         return this.#username;
     }
