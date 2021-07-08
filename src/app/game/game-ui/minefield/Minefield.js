@@ -269,7 +269,10 @@ export default class Minefield extends HTMLElement {
   }
 
   #resetCurrentActiveTiles() {
-    this.#activeTiles.forEach(tile => this.#MinefieldUI.drawTile(tile));
+    for (let index = 0; index < this.#activeTiles.length; index++) {
+      const tile = this.#activeTiles[index];
+      this.#MinefieldUI.drawUntouchedTile(tile);
+    }
     this.#activeTiles = [];
   }
 

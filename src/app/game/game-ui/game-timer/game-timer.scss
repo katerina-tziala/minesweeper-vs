@@ -34,19 +34,22 @@ app-game-timer {
   }
 
   // TODO: THEMING
-  color: #595959;
+  color: #330000;
   @include setThemeColors('light');
+
 }
 
 .game-timer-icon {
   @extend %flex-center-center;
-  height: 46px;
-  margin-right: 8px;
+  height: 44px;
   font-size: 1.8em;
   overflow: hidden;
-  padding-right: 1px;
-  text-align: center;
   @include iconography.afterIcon('stopwatch');
   border-radius: 5px;
   border-right: 0px;
+  padding: 0 8px;
+  @extend ._board-section-borders;
+
+
+  background-color: #f2f2f2;
 }

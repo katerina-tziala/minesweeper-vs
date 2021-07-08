@@ -14,7 +14,7 @@ import { generateMinesPositions } from './app/game/game-utils/game-utils';
 import Minefield from './app/game/game-ui/minefield/Minefield';
 import BoardFace from './app/game/game-ui/board-face/BoardFace';
 import GameTimer from './app/game/game-ui/game-timer/GameTimer';
-// import './app/game/game-ui/flags-counter/FlagsCounter';
+import './app/game/game-ui/flags-counter/FlagsCounter';
 import '~/ui-elements/custom-elements/digital-counters/digital-counter/DigitalCounter';
 import AppUserService from './app/state-controllers/app-user.service';
 

@@ -28,7 +28,7 @@ export const ICONS = {
         font: '600 16px "Font Awesome 5 Free"',
         code: 'f780',
         padding: {
-            left: 6,
+            left: 5,
             top: 20,
         },
     },

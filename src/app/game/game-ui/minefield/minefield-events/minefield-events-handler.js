@@ -17,7 +17,7 @@ export class MinefieldEventsHandler {
   #gridPosition;
   #columns;
   #rows;
- 
+
   constructor(columns, rows) {
     this.#columns = columns;
     this.#rows = rows;
@@ -36,6 +36,13 @@ export class MinefieldEventsHandler {
     }
     const { row, column } = this.#gridPosition;
     return (row - 1) * this.#columns + column;
+  }
+
+  get #moveActionAllowed() {
+    if (!this.#action) {
+      return false;
+    }
+    return !!this.#gridPosition;
   }
 
   setListeners(canvas) {
@@ -70,33 +77,37 @@ export class MinefieldEventsHandler {
     this.#preventDefaultAction(event);
     if (this.#gridPosition) {
       const position = this.#selectedPosition;
+      this.#initParams();
       this.resetRevealedArea$.publish(position);
     }
     if (!event.buttons) {
-      this.#initParams();
-      this.#removeSecondaryListeners(event.target);
+      this.#resetAndClearSecondaryActions(event)
     }
+  }
+
+  #resetAndClearSecondaryActions(event) {
+    this.#initParams();
+    this.#removeSecondaryListeners(event.target);
   }
 
   #onMouseEnter(event) {
     this.#preventDefaultAction(event);
-    if (!event.buttons) {
-      this.#initParams();
-      this.#removeSecondaryListeners(event.target);
-      return;
-    }
-    this.#onMouseDown(event);
+    !event.buttons
+      ? this.#resetAndClearSecondaryActions(event)
+      : this.#onMouseDown(event);
   }
 
   #onMouseUp(event) {
     this.#preventDefaultAction(event);
     this.#removeSecondaryListeners(event.target);
-
-    if (!this.#action || !this.#gridPosition) {
+    if (!this.#moveActionAllowed) {
       return;
     }
-    const position = this.#selectedPosition;
+    this.#submitMouseUp();
+  }
 
+  #submitMouseUp() {
+    const position = this.#selectedPosition;
     if (this.#action === MinefieldEventType.Neighbors) {
       this.resetRevealedArea$.publish(position);
     } else {
@@ -110,14 +121,13 @@ export class MinefieldEventsHandler {
   #onMouseMove(event) {
     event.preventDefault();
     clearTimeout(this.#moveTimer);
-    if (!this.#action) {
-      return;
+    if (this.#moveActionAllowed) {
+      this.#moveTimer = setTimeout(() => { this.#handleMouseMove(event) }, DEBOUNCE_TIME);
     }
-    this.#moveTimer = setTimeout(() => { this.#handleMouseMove(event) }, DEBOUNCE_TIME);
   }
 
   #handleMouseMove(event) {
-    if (!this.#action) {
+    if (!this.#moveActionAllowed) {
       clearTimeout(this.#moveTimer);
       return;
     }
@@ -131,11 +141,8 @@ export class MinefieldEventsHandler {
 
   #onActivateGridArea() {
     const position = this.#selectedPosition;
-    if (this.#action === MinefieldEventType.Neighbors) {
-      this.activeArea$.publish(position);
-    } else {
-      this.activeTile$.publish(position);
-    }
+    const activateArea = this.#action === MinefieldEventType.Neighbors;
+    activateArea ? this.activeArea$.publish(position) : this.activeTile$.publish(position);
   }
 
   #setFieldListeners(canvas, listeners) {
@@ -163,7 +170,7 @@ export class MinefieldEventsHandler {
 
     const colCalculation = Math.ceil(x / TILE_SIZE);
     const column = this.#validGridPosition(colCalculation, this.#columns);
-    
+
     return { row, column };
   }
 

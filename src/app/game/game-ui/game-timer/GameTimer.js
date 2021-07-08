@@ -71,7 +71,7 @@ export default class GameTimer extends HTMLElement {
   }
 
   #checkTimerEnd() {
-    if (this.#currentValue === 0) {
+   if (this.#currentValue === 0) {
       this.stop();
       this.dispatchEvent(new CustomEvent('onTurnEnd'));
     }
