@@ -5,21 +5,16 @@ import * as PageLoaderHandler from './app/pages/page-loader-handler';
 // import { LocalStorageHelper } from 'UTILS';
 
 import './app/ui-elements/custom-elements/loader/Loader';
+
 //will change to transform
 // -- router guard
 // on reload return to your state
-// import { PubSub, PubSubState } from 'UTILS';
 
-// import { generateMinesPositions } from './app/game/game-utils/game-utils';
-// import Minefield from './app/game/game-ui/minefield/Minefield';
-// import BoardFace from './app/game/game-ui/board-face/BoardFace';
-// import GameTimer from './app/game/game-ui/game-timer/GameTimer';
-// import './app/game/game-ui/flags-counter/FlagsCounter';
-// import '~/ui-elements/custom-elements/digital-counters/digital-counter/DigitalCounter';
 import AppUserService from './app/state-controllers/app-user.service';
 
 
-import './app/game/game-board/GameBoard';
+// import './app/game/game-board/GameBoard';
+import './app/game/game-board-original/GameBoardOriginal';
 
 //  const loadStyles = () => import("./index.scss");
 
@@ -54,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const config = { level, options, gameStyles };
-  const board = document.getElementsByTagName('app-game-board')[0];
+  const board = document.getElementsByTagName('app-game-board-original')[0];
   board.init(config, player);
   board.start(config)
   //console.log(config);

@@ -7,11 +7,11 @@ import '../game-ui/flags-counter/FlagsCounter';
 import { BoardFaceType } from '../game-ui/board-face/@board-face.module';
 import { generateMinesPositions } from '../game-utils/game-utils';
 
-import './game-board.scss';
-import { TEMPLATE } from './game-board.constants';
+import './game-board-original.scss';
+import { TEMPLATE } from './game-board-original.constants';
 import { GameEndType } from './game-end-type.enum';
 
-export default class GameBoard extends HTMLElement {
+export default class GameBoardOriginal extends HTMLElement {
   #level = {};
   #options = {};
   #gameStyles = {};
@@ -212,4 +212,4 @@ export default class GameBoard extends HTMLElement {
 
 }
 
-customElements.define('app-game-board', GameBoard);
+customElements.define('app-game-board-original', GameBoardOriginal);

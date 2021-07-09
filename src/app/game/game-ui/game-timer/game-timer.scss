@@ -41,7 +41,8 @@ app-game-timer {
 
 .game-timer-icon {
   @extend %flex-center-center;
-  height: 44px;
+  height: 46px;
+  width: 46px;
   font-size: 1.8em;
   overflow: hidden;
   @include iconography.afterIcon('stopwatch');

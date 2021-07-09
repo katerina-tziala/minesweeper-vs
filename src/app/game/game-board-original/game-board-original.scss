@@ -2,7 +2,7 @@
 @use 'styles/game/board-utils';
 @use 'styles/utils/flexbox/flexbox';
 
-app-game-board {
+app-game-board-original {
   @extend .card;
   padding: 10px;
   @extend %flex-start-center;
@@ -21,6 +21,7 @@ app-game-board {
   width: 162px;
   overflow: hidden;
 }
+
 
 .board-info-timer-container {
   @extend ._board-counter-container;
