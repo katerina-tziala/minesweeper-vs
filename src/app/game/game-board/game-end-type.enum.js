@@ -1,12 +1,11 @@
 'use strict';
 
-const MinefieldState = {
-  InProgress: 'in-progress',
+const GameEndType = {
   MinesDetected: 'mines-detected',
   FieldCleared: 'field-cleared',
   DetonatedMine: 'detonated-mine',
 };
 
-Object.freeze(MinefieldState);
+Object.freeze(GameEndType);
 
-export { MinefieldState };
+export { GameEndType };

@@ -1,15 +1,10 @@
 'use strict';
-export const DOM_ELEMENT_CLASS = {
+const DOM_ELEMENT_CLASS = {
     minefield: 'board-minefield',
     boardInfo: 'board-info',
     timerContainer: 'board-info-timer-container',
     flagsContainer: 'board-info-flags-container'
 };
-
-export const ATTRIBUTES = {
-
-};
-
 
 export const TEMPLATE = `
 <div class='${DOM_ELEMENT_CLASS.boardInfo}'>
@@ -26,8 +21,3 @@ export const TEMPLATE = `
     wrong-flag-hint='%misplacedFlagHint%' disabled='%disabled%' theme='%theme%' mine-type='%mineType%'></app-minefield>
 </div>
 `;
-
-
-{/* <app-game-timer turn-duration='0'></app-game-timer>
-
-<app-flags-counter flags='checkered' color-types='type-2'></app-flags-counter> */}

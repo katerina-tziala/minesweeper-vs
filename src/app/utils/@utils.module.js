@@ -8,3 +8,5 @@ export { PubSub } from './pub-sub';
 export { PubSubState } from './pub-sub-state';
 export * as CavnasUtils from './canvas-utils';
 export * as Color from './color';
+
+export * as DATES from './dates';

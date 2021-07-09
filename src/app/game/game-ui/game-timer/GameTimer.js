@@ -39,10 +39,17 @@ export default class GameTimer extends HTMLElement {
     this.#clearTimer();
   }
 
-  start() {
+  start(initialValue = this.#config.startValue) {
     this.#clearTimer();
-    this.#resetValue();
+    this.#currentValue = initialValue;
+    this.#setTimerValue();
     this.#startTimer();
+  }
+
+  reset(initialValue = this.#config.startValue) {
+    this.stop();
+    this.#currentValue = initialValue;
+    this.#setTimerValue();
   }
 
   stop() {

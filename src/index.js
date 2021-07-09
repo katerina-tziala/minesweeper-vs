@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const options = {
     marks: true,
-    misplacedFlagHint: false
+    misplacedFlagHint: true
   };
 
   const config = { level, options, gameStyles };
@@ -126,79 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
   // }, 1500);
   
-  
-
-
-  // minefield.addEventListener('onRevealTile', (event) => {
-  //   const { tile } = event.detail;
-  //   const styles = userService.getPlayerConfig('dfgdfg');
-  //   if (tile.state !== 'flagged') {
-  //     minefield.revealTile(tile, 'dfgdfg', styles)
-  //   }
-  // });
-
-  // minefield.addEventListener('onChangeTileState', (event) => {
-  //   const { tile } = event.detail;
-  //   //console.log('onChangeTileState');
-  //   const styles = userService.getPlayerConfig('dfgdfg');
-  //   if (tile.state === 'untouched') {
-  //     minefield.flagTile(tile, 'dfgdfg', styles);
-  //   }
-  //   else if (tile.state === 'flagged') {
-  //     minefield.markTile(tile, 'dfgdfg', styles);
-  //   }
-  //   else if (tile.state === 'marked') {
-  //     minefield.resetTile(tile, 'dfgdfg', styles);
-  //   }
-
-  //   // minefield.revealTiles(tile, 'dfgdfg')
-
-  // });
-
-
-
-
-  // //
-  // minefield.addEventListener('onFlaggedTile', (event) => {
-  //   const { flaggedTile, allMinesDetected } = event.detail;
-  //   console.log('onFlaggedTile');
-  //   console.log(flaggedTile, allMinesDetected);
-  // });
-
-  // minefield.addEventListener('onDetonatedMine', (event) => {
-  //   const { detonatedMine } = event.detail;
-  //   console.log('onTilesUpdate');
-  //   console.log(detonatedMine);
-  //   minefield.revealMines();
-  //   // minefield.revealTiles(tile, 'dfgdfg')
-  //   boardFace.setAttribute('state', 'looser');
-  // });
-
-  // minefield.addEventListener('onRevealedTiles', (event) => {
-  //   const { revealedTiles, minefieldCleared } = event.detail;
-  //   console.log('onRevealedTiles');
-  //   console.log(revealedTiles, minefieldCleared);
-  //   if (minefieldCleared) {
-  //     boardFace.setAttribute('state', 'winner');
-  //   }
-  // });
-
-  // minefield.addEventListener('onMarkedTile', (event) => {
-  //   const { markedTile } = event.detail;
-  //   console.log('onMarkedTile');
-  //   console.log(markedTile);
-
-  // });
-  // minefield.addEventListener('onResetedTile', (event) => {
-  //   const { resetedTile } = event.detail;
-  //   console.log('onResetedTile');
-  //   console.log(resetedTile);
-
-  // });
-
-
-
-  // console.log(minefield);
   // setTimeout(() => {
   //   minefield.setAttribute('disabled', true);
   //   console.log('disabled'); 
