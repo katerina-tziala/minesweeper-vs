@@ -46,9 +46,9 @@ export default class GameTimer extends HTMLElement {
     this.#startTimer();
   }
 
-  reset(initialValue = this.#config.startValue) {
+  reset() {
     this.stop();
-    this.#currentValue = initialValue;
+    this.#currentValue = this.#config.startValue;
     this.#setTimerValue();
   }
 

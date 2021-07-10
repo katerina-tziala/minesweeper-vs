@@ -58,7 +58,6 @@ export default class BoardFace extends HTMLElement {
     } else {
       ElementHandler.removeStyleClass(this.#button, DOM_ELEMENT_CLASS.player);
     }
-    ElementHandler.updateElementStyles(this.#button, {color});
   }
 
   #onClick() {

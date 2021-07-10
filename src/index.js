@@ -14,7 +14,8 @@ import AppUserService from './app/state-controllers/app-user.service';
 
 
 // import './app/game/game-board/GameBoard';
-import './app/game/game-board-original/GameBoardOriginal';
+// import './app/game/game-board-original/GameBoardOriginal';
+import './app/game/game-ui/game-board/game-board-vs/GameBoardVS';
 
 //  const loadStyles = () => import("./index.scss");
 
@@ -30,12 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const player = { id: userService.id, name: userService.username };
   const playerStyles = userService.getPlayerConfig(player.id);
   player.styles = playerStyles;
-
+  const opponent = { id: 'opponent', name: 'Angie' };
+  const opponentStyles = userService.getPlayerConfig(opponent.id);
+  opponent.styles = opponentStyles;
 
   const gameStyles = userService.gameStyles;
-  gameStyles.flagTypes = playerStyles.flagType;
-  gameStyles.flagColors = `type-${playerStyles.colorType}`;
-  
+  gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
+  gameStyles.flagColors = `type-${playerStyles.colorType},type-${opponentStyles.colorType}`;
+
 
   // console.log(player);
   // console.log(playerStyles);
@@ -45,24 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const options = {
     marks: true,
-    misplacedFlagHint: true
+    misplacedFlagHint: false,
+    revealing: false,
+    unlimitedFlags: true,
+    turnDuration: 5,
+    gameTimer: true,
+    flagsCounterRight:false
   };
-
-  const config = { level, options, gameStyles };
-  const board = document.getElementsByTagName('app-game-board-original')[0];
-  board.init(config, player);
-  board.start(config)
-  //console.log(config);
-  // rows="9"
-  // columns="9"
-  // disabled="false"
-  // revealing="true"
-  // flagging="true"
-  // wrong-flag-hint="true"
-  // theme="light"
-  // mine-type="biohazard"
-
-
 
   // const options = {
   //   flagging: true,
@@ -73,64 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
   //   sneakPeekDuration: 0,
   //   unlimitedFlags: true
   // }
-  // const turns = {
-  //   consecutiveTurns: true,
-  //   missedTurnsLimit: 10,
-  //   turnDuration: 5,
-  //   turnTimer: true
-  // }
-  //   const level = { level: "beginner", rows: 9, columns: 9, numberOfMines: 16 };
-  //   // const minesPositions = generateMinesPositions(level.rows, level.columns, level.numberOfMines);
-  //   ///const minesPositions = [9, 14, 15, 18, 22, 25, 27, 34, 49, 53, 58, 63, 64, 70, 71, 72];
-  //   //console.log(minesPositions);
-  //   const minesPositions = [1, 2, 3, 80, 81];
-  //   //const minesCounter = document.getElementsByTagName('app-digital-counter')[0];
-  //   // const minesCounter = document.getElementsByTagName('app-flags-counter')[0];
+  const turns = {
+    consecutiveTurns: true,
+    missedTurnsLimit: 10,
+    turnDuration: 5,
+    turnTimer: true
+  }
+  const config = { level, options, turns, gameStyles };
+  const board = document.getElementById('board');
+  //console.log(board);
+  board.init(config);
+  board.start(player)
 
 
-  //   const minefield = document.getElementsByTagName('app-minefield')[0];
-  //   const gameTimer = document.getElementsByTagName('app-game-timer')[0];
-
-  //  // gameTimer.start();
-  //   gameTimer.addEventListener('onTurnEnd', (event) => {
-  //     console.log('onTurnEnd');
-  //   });
-
-
- 
-  //   setTimeout(() => {
-  //     minefield.init(minesPositions);
-  //     // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
-  //   }, 500);
-
-  // setTimeout(() => {
-  //   // const styles = userService.getPlayerConfig('dfgdfg');
-  //   // boardFace.setAttribute('color', '#0000ff');
-  //   // console.log(styles);
-  //   // console.log('ddd');
-  //   minesCounter.setValue(-5);
-  //   // const test = document.querySelectorAll('[theme="light"]');
-  //   // console.log(test);
-  //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
-  // }, 3000);
-
-
-  // setTimeout(() => {
-  //   minefield.setAttribute('theme', 'dark');
-  //   minefield.setAttribute('mine-type', 'virusMine');
-  //   // minefield.disabledPositions = [1, 3, 4, 5, 6, 8, 9];
-  // }, 1500);
-  
-  // setTimeout(() => {
-  //   minefield.setAttribute('disabled', true);
-  //   console.log('disabled'); 
-  // }, 3000);
-  // setTimeout(() => {
-  //   minefield.setAttribute('disabled', false);
-  //   console.log('en'); 
-  // }, 5000);
-
-  // PageLoaderHandler.hide();
 
 
 });

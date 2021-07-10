@@ -3,6 +3,7 @@
 @use 'styles/iconography/iconography';
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/game/board-utils';
+@use 'styles/theming/theming';
 $size: 40px;
 $icon-size: 26;
 $icon-shape: #{$icon-size - 2}px;
@@ -26,6 +27,15 @@ $icon-shape: #{$icon-size - 2}px;
   }
 }
 
+@mixin setColors($theme) {
+  $game-colors: theming.getThemePallette($theme, "game-colors");
+  @each $type, $color in $game-colors {
+    &[color='#{$type}'] {
+      color: $color;
+    }
+  }
+}
+
 ._board-face-button-enabled {
   cursor: pointer;
   &:active {
@@ -45,6 +55,9 @@ app-board-face {
   margin: auto;
   @include faceIcon('face-smile');
   @include setFaceIcons();
+  // TODO: THEMING
+  color: #000;
+  @include setColors('light');
 }
 
 .board-face-button {
@@ -53,13 +66,10 @@ app-board-face {
   @extend %flex-center-center;
   overflow: hidden;
   outline: none;
-
+  color: inherit;
+  background-color: inherit;
   @extend ._board-button-borders;
   border-radius: 5px;
-  // TODO: THEMING
-  background-color: inherit;
-  color: #000;
-
   &[aria-disabled='true'] {
     cursor: default;
   }
@@ -80,15 +90,16 @@ app-board-face {
   line-height: $icon-shape;
   @include shapes.circle($icon-shape);
   @extend ._default-background;
-  // TODO: THEMING
-  box-shadow: 0 0 5px rgb(0 0 0 / 70%);
+  color: inherit;
 }
 
 // TODO: THEMING
 ._default-background {
   background-color: #ffff00;
+  box-shadow: 0 0 5px rgb(0 0 0 / 70%);
 }
 
 ._player-background {
   background-color: #fff;
+  box-shadow: 0 0 5px rgb(0 0 0 / 70%);
 }
