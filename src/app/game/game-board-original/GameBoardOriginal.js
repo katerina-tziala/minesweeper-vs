@@ -188,7 +188,9 @@ export default class GameBoardOriginal extends HTMLElement {
   }
 
   #onBoardFaceClick() {
-    this.start();
+    if (this.#startedAt) {
+      this.start();
+    }
   }
 
   #setFaceState(faceType) {
