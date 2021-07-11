@@ -12,7 +12,8 @@ export const DOM_ELEMENT_CLASS = {
 
 export const ATTRIBUTES = {
     flags: 'flags',
-    colorTypes: 'color-types'
+    colorTypes: 'color-types',
+    value: 'value'
 };
 
 export const TEMPLATES = {

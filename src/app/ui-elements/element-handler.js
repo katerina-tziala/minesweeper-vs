@@ -86,6 +86,15 @@ export class ElementHandler {
     }
   }
 
+  static setElementAttributes(element, attributes) {
+    const attributesKeys = Object.keys(attributes) || [];
+    if (element) {
+      attributesKeys.forEach(key => {
+        element.setAttribute(key, attributes[key]);
+      });
+    }
+  }
+
   static getElementHeight(element) {
     if (element) {
       return element.getBoundingClientRect().height;

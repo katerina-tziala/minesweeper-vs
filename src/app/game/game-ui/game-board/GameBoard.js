@@ -9,7 +9,7 @@ import '../board-face/BoardFace';
 
 import { BoardFaceType } from '../board-face/board-face-type.enum';
 import { generateMinesPositions } from '../../game-utils/game-utils';
-
+import { ElementHandler } from 'UI_ELEMENTS';
 import './game-board.scss';
 
 import { GameEndType } from './game-end-type.enum';
@@ -89,11 +89,7 @@ export default class GameBoard extends HTMLElement {
     this.resetTimer();
   }
 
-  setBoardDisabledState(disabled) {
-    if (this.Minefield) {
-      this.Minefield.setAttribute('disabled', disabled);
-    }
-  }
+
 
   setPlayer(player = null) {
     this.player = player;
@@ -118,13 +114,12 @@ export default class GameBoard extends HTMLElement {
 
   onRevealTile(event) {
     if (!this.player) return;
-
-    console.log('onRevealTile');
-    console.log('checkStart');
-
     const { detail: { tile } } = event;
     const { id } = this.player;
     if (!TileChecker.flagged(tile)) {
+      console.log('onRevealTile');
+      console.log('checkStart');
+
       //this.#checkStart();
       this.Minefield.revealTile(tile, id);
     }
@@ -219,21 +214,21 @@ export default class GameBoard extends HTMLElement {
 
   setFaceColor() {
     if (this.player) {
-      this.#BoardFace.setAttribute('color', this.player.styles.colorType);
+      const color = this.player.styles.colorType;
+      ElementHandler.setElementAttributes(this.#BoardFace, { color });
     }
   }
 
-  setFaceState(faceType) {
-    if (this.#BoardFace) {
-      this.#BoardFace.setAttribute('state', faceType);
-    }
+  setFaceState(state) {
+    ElementHandler.setElementAttributes(this.#BoardFace, { state });
   }
 
-  setFlagsCounterIcon(flagTypes, colorTypes) {
-    if (this.#FlagsCounter) {
-      this.#FlagsCounter.setAttribute('flags', flagTypes);
-      this.#FlagsCounter.setAttribute('colorTypes', colorTypes);
-    }
+  setFlagsCounterIcon(flags, colorTypes) {
+    ElementHandler.setElementAttributes(this.#FlagsCounter, { flags, colorTypes });
+  }
+
+  setBoardDisabledState(disabled) {
+    ElementHandler.setElementAttributes(this.Minefield, { disabled });
   }
 
   initTurnTimer() {
@@ -244,12 +239,8 @@ export default class GameBoard extends HTMLElement {
   }
 
   #setTimerColor() {
-    if (this.GameTimer) {
-      const colorType = this.player ? this.player.styles.colorType : null;
-      colorType
-        ? this.GameTimer.setAttribute('color-type', colorType)
-        : this.GameTimer.removeAttribute('color-type');
-    }
+    const color_type = this.player ? this.player.styles.colorType : '';
+    ElementHandler.setElementAttributes(this.GameTimer, { color_type });
   }
 
   #render() {
@@ -296,9 +287,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   #setFlagsCounter(value) {
-    if (this.#FlagsCounter) {
-      this.#FlagsCounter.setValue(value);
-    }
+    ElementHandler.setElementAttributes(this.#FlagsCounter, { value });
   }
 
   #onActiveTileChange(event) {

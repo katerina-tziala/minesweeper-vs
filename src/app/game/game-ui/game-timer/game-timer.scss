@@ -7,7 +7,7 @@
   $game-colors: theming.getThemePallette($theme, 'game-colors');
 
   @each $type, $color in $game-colors {
-    &[color-type='#{$type}'] {
+    &[color_type='#{$type}'] {
       color: $color;
     }
   }

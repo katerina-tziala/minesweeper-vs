@@ -16,6 +16,10 @@ export default class FlagsCounter extends HTMLElement {
     return this.getAttribute(ATTRIBUTES.flags).split(',');
   }
 
+  get value() {
+    return this.getAttribute(ATTRIBUTES.value);
+  }
+
   get colorTypes() {
     return this.getAttribute(ATTRIBUTES.colorTypes).split(',');
   }
@@ -30,10 +34,9 @@ export default class FlagsCounter extends HTMLElement {
     }
   }
 
-  setValue(value = 0) {
-    if (this.#counter) {
-      this.#counter.setAttribute('value', value.toString());
-    }
+  #setCounterValue() {
+    const value = this.value;
+    ElementHandler.setElementAttributes(this.#counter, { value });
   }
 
   connectedCallback() {
@@ -44,6 +47,7 @@ export default class FlagsCounter extends HTMLElement {
 
   #initUpdatesHandling() {
     this.#attributeUpdateHandler.set(ATTRIBUTES.flags, this.#updateIcon.bind(this));
+    this.#attributeUpdateHandler.set(ATTRIBUTES.value, this.#setCounterValue.bind(this));
     this.#attributeUpdateHandler.set(ATTRIBUTES.colorTypes, this.#updateIcon.bind(this));
   }
 
