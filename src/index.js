@@ -34,11 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const playerStyles = userService.getPlayerConfig(player.id);
   player.styles = playerStyles;
   player.flagsPositions = [];
+  player.onTurn = true;
+  player.missedTurns = 0;
 
   const opponent = { id: 'opponent', name: 'Angie' };
   const opponentStyles = userService.getPlayerConfig(opponent.id);
   opponent.styles = opponentStyles;
   opponent.flagsPositions = [];
+  opponent.onTurn = true;
+  opponent.missedTurns = 0;
+
 
   const gameStyles = userService.gameStyles;
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
@@ -72,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
   const turns = {
     consecutiveTurns: true,
-    missedTurnsLimit: 10,
+    missedTurnsLimit: 1,
     turnDuration: 5,
     turnTimer: true
   }

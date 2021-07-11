@@ -13,7 +13,6 @@ import { ElementHandler } from 'UI_ELEMENTS';
 import './game-board.scss';
 
 import { GameEndType } from './game-end-type.enum';
-
 import { PlayerGameStatus } from './player-game-status';
 import { generateTemplate } from './game-board-generator/game-board-generator';
 
@@ -26,9 +25,9 @@ export default class GameBoard extends HTMLElement {
   player = null;
   #boardFaceListener;
   #minefieldListeners;
+  #tileUpdateHandler;
   #startedAt = null;
   #endedAt = null;
-
 
   constructor() {
     super();
@@ -55,10 +54,6 @@ export default class GameBoard extends HTMLElement {
     return this.config ? this.config.numberOfMines : 0;
   }
 
-  get turnsTimer() {
-    return !!this.config.turnDuration;
-  }
-
   get unlimitedFlags() {
     return !!this.config.unlimitedFlags;
   }
@@ -70,16 +65,17 @@ export default class GameBoard extends HTMLElement {
     };
   }
 
+  get idle() {
+    return (!this.#startedAt && !this.#endedAt) ? true : false;
+  }
+
   connectedCallback() {
     this.#minefieldListeners = new Map();
     this.#minefieldListeners.set('onActiveTileChange', this.#onActiveTileChange.bind(this));
     this.#minefieldListeners.set('onRevealTile', this.onRevealTile.bind(this));
-    this.#minefieldListeners.set('onTilesRevealed', this.onTilesRevealed.bind(this));
     this.#minefieldListeners.set('onChangeTileState', this.onChangeTileState.bind(this));
-    this.#minefieldListeners.set('onDetonatedMine', this.#onDetonatedMine.bind(this));
-    this.#minefieldListeners.set('onFlaggedTile', this.onFlaggedTile.bind(this));
-    this.#minefieldListeners.set('onMarkedTile', this.onRestoredTile.bind(this));
-    this.#minefieldListeners.set('onResetedTile', this.onRestoredTile.bind(this));
+    this.#minefieldListeners.set('onUpdatedTiles', this.#onUpdatedTiles.bind(this));
+    this.#setTileUpdateHandler();
   }
 
   disconnectedCallback() {
@@ -95,6 +91,33 @@ export default class GameBoard extends HTMLElement {
     this.#initBoard();
   }
 
+  start(player, minesPositions = []) {
+    this.#startedAt = this.config.gameTimer ? null : DATES.nowTimestamp();
+    this.#endedAt = null;
+    minesPositions = minesPositions.length ? minesPositions : this.#minesPositions;
+    this.#initBoard(minesPositions);
+    this.setPlayer(player);
+  }
+
+  onTilesRevealed(params) {
+    const { minefieldCleared, tilesPositions } = params;
+    if (minefieldCleared) {
+      this.onGameEnd(GameEndType.FieldCleared, { revealedTiles: tilesPositions });
+    }
+  }
+
+  onFlaggedTile(params) {
+    const { tilesPositions } = params;
+    this.addToPlayerFlags(tilesPositions);
+    this.checkFlaggedTiles();
+  }
+
+  onRestoredTile(params) {
+    const { tilesPositions } = params;
+    this.removeFromPlayerFlags(tilesPositions);
+    this.checkFlaggedTiles();
+  }
+
   #initBoard(minesPositions = []) {
     this.Minefield.init(minesPositions);
     this.#setFlagsCounter(this.numberOfMines);
@@ -105,16 +128,10 @@ export default class GameBoard extends HTMLElement {
   setPlayer(player = null) {
     this.player = player;
     this.#setPlayerFlagIcon();
-    this.setBoardDisabledState(true);
-  }
-
-  start(player, minesPositions = []) {
-    this.setPlayer(player);
-    this.#startedAt = null;
-    this.#endedAt = null;
-    minesPositions = minesPositions.length ? minesPositions : this.#minesPositions;
-    this.#initBoard(minesPositions);
     this.setBoardDisabledState(!this.player);
+    if (!this.player) {
+      this.stopTimer();
+    }
   }
 
   resetTimer() {
@@ -128,24 +145,9 @@ export default class GameBoard extends HTMLElement {
     const { detail: { tile } } = event;
     const { id } = this.player;
     if (!TileChecker.flagged(tile)) {
-      console.log('onRevealTile');
-      console.log('checkStart');
-      //this.#checkStart();
+      this.checkTimerStart();
       this.Minefield.revealTile(tile, id);
     }
-  }
-
-  onTilesRevealed(event) {
-    const { detail: { revealedTiles, minefieldCleared } } = event;
-    if (minefieldCleared) {
-      this.onGameEnd(GameEndType.FieldCleared, { revealedTiles });
-    }
-  }
-
-  #onDetonatedMine({ detail: { tile } }) {
-    const revealedTiles = [tile];
-    this.player.gameStatus = PlayerGameStatus.Looser;
-    this.onGameEnd(GameEndType.DetonatedMine, { revealedTiles });
   }
 
   onChangeTileState(event) {
@@ -156,9 +158,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   flagTile(tile) {
-    console.log('flagTile');
-    console.log('checkStart');
-    //   this.#checkStart();
+    this.checkTimerStart();
     const { id, styles } = this.player;
     this.Minefield.flagTile(tile, id, styles);
   }
@@ -169,18 +169,6 @@ export default class GameBoard extends HTMLElement {
     markTile ? this.Minefield.markTile(tile, id, styles) : this.Minefield.resetTile(tile);
   }
 
-  onFlaggedTile(event) {
-    const { detail: { flaggedTile } } = event;
-    this.addToPlayerFlags([flaggedTile.position]);
-    this.checkFlaggedTiles();
-  }
-
-  onRestoredTile(event) {
-    const { detail: { tile } } = event;
-    this.removeFromPlayerFlags([tile.position]);
-    this.checkFlaggedTiles();
-  }
-
   onRestart() {
     console.log('onRestart');
     // if (this.#startedAt) {
@@ -188,12 +176,12 @@ export default class GameBoard extends HTMLElement {
     // }
   }
 
-  // #checkStart() {
-  //   if (!this.#startedAt && !this.#endedAt) {
-  //     this.#startedAt = DATES.nowTimestamp();
-  //     this.GameTimer.start(1);
-  //   }
-  // }
+  checkTimerStart() {
+    if (this.idle) {
+      this.#startedAt = DATES.nowTimestamp();
+      this.GameTimer.start(1);
+    }
+  }
 
   removeFromPlayerFlags(tilesPositions) {
     const { flagsPositions } = this.player;
@@ -314,6 +302,27 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
+  #setTileUpdateHandler() {
+    this.#tileUpdateHandler = new Map();
+    this.#tileUpdateHandler.set('flagged', this.onFlaggedTile.bind(this));
+    this.#tileUpdateHandler.set('revealed', this.onTilesRevealed.bind(this));
+    this.#tileUpdateHandler.set('detonatedMine', this.#onDetonatedMine.bind(this));
+  }
+
+  #onUpdatedTiles({ detail }) {
+    const { type } = detail;
+    if (this.#tileUpdateHandler.has(type)) {
+      this.#tileUpdateHandler.get(type)(detail);
+    } else {
+      this.onRestoredTile(detail);
+    }
+  }
+
+  #onDetonatedMine(params) {
+    const { tilesPositions } = params;
+    this.player.gameStatus = PlayerGameStatus.Looser;
+    this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
+  }
 }
 
 customElements.define('app-game-board', GameBoard);

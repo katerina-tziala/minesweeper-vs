@@ -37,36 +37,37 @@ export default class GameBoardDetect extends GameBoardVS {
     }
   }
 
-  onTilesRevealed(event) {
-    if (!this.player) return;
-    const { detail: { revealedTiles, minefieldCleared } } = event;
-    minefieldCleared ? this.onMinefieldCleared(revealedTiles) : this.onPlayerMove({ revealedTiles });
+  onTilesRevealed(params) {
+    const { minefieldCleared, tilesPositions } = params;
+    if (minefieldCleared) {
+      minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onPlayerMove({ revealed: tilesPositions });
+    }
   }
 
-  onMinefieldCleared(revealedTiles) {
+  onMinefieldCleared(revealed) {
     const { id, styles } = this.player;
-    const flaggedTiles = this.Minefield.flagUntouchedMines(id, styles);
-    const flaggedPositions = MinefieldHelper.getTilesPositions(flaggedTiles);
-    this.addToPlayerFlags(flaggedPositions);
+    const flagged = this.Minefield.flagUntouchedMines(id, styles);
+    this.addToPlayerFlags(flagged);
     this.player.gameStatus = this.playerStatusOnGameGoal;
-    this.onGameEnd(GameEndType.FieldCleared, { revealedTiles, flaggedTiles });
+    this.onGameEnd(GameEndType.FieldCleared, { revealed, flagged });
   }
 
-  onFlaggedTile(event) {
-    super.onFlaggedTile(event);
-    const { detail: { flaggedTile, allMinesDetected } } = event;
-    const flaggedTiles = [flaggedTile];
-    this.player.gameStatus = allMinesDetected ? this.playerStatusOnGameGoal : null;
-    allMinesDetected
-      ? this.onGameEnd(GameEndType.MinesDetected, { flaggedTiles })
-      : this.onRoundMove({ flaggedTiles });
+  onFlaggedTile(params) {
+    super.onFlaggedTile(params);
+    const { allMinesDetected, tilesPositions } = params;
+    const flagged = tilesPositions;
+    if (allMinesDetected) {
+      this.player.gameStatus = this.playerStatusOnGameGoal;
+      this.onGameEnd(GameEndType.MinesDetected, { flagged });
+    } else {
+      this.onRoundEnd({ flagged });
+    }
   }
 
-  onRestoredTile(event) {
-    super.onRestoredTile(event);
-    const { detail: { tile } } = event;
-    const restoredTiles = [tile];
-    this.onPlayerMove({ restoredTiles });
+  onRestoredTile(params) {
+    super.onRestoredTile(params);
+    const { tilesPositions } = params;
+    this.onPlayerMove({ restoredTiles: tilesPositions });
   }
 
 }

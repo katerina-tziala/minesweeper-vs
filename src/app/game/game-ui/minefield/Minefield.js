@@ -92,7 +92,6 @@ export default class Minefield extends HTMLElement {
     return this.#wrongFlagHint ? this.#detectedMines.length : this.#flaggedTiles.length;
   }
 
-
   get rows() {
     return this.#getNumberAttribute(ATTRIBUTES.rows);
   }
@@ -149,7 +148,7 @@ export default class Minefield extends HTMLElement {
 
 
   revealMines() {
-
+    const mineTiles = this.#unrevealedMines;
     console.log('reveal mines -- show double targets');
     // console.log(mineTiles);
     this.#updateTiles(mineTiles, true);
@@ -169,7 +168,7 @@ export default class Minefield extends HTMLElement {
     }
 
     this.#updateTiles(flaggedTiles, false);
-    return flaggedTiles;
+    return MinefieldHelper.getTilesPositions(flaggedTiles);
   }
 
   revealMineField() {
@@ -194,7 +193,8 @@ export default class Minefield extends HTMLElement {
     this.#updateTiles([flaggedTile], false);
 
     const allMinesDetected = this.#allMinesDetected;
-    this.#emitEvent('onFlaggedTile', { flaggedTile, allMinesDetected });
+    this.#emitUpdatedTiles([flaggedTile], 'flagged', { allMinesDetected });
+
     this.#setListeners();
   }
 
@@ -203,14 +203,14 @@ export default class Minefield extends HTMLElement {
     const tile = this.#getUpdatedTile(tileToMark, playerId, TileState.Marked);
     this.#updateTiles([tile], false);
     this.#MinefieldUI.drawMarkedTile(tile);
-    this.#emitEvent('onMarkedTile', { tile });
+    this.#emitUpdatedTiles([tile], 'marked');
   }
 
   resetTile(tileToReset) {
     const { wrongFlagHint, styles, ...tile } = MinefieldHelper.getUpdatedTile(tileToReset, null, TileState.Untouched);
     this.#updateTiles([tile], false);
     this.#MinefieldUI.drawUntouchedTile(tile);
-    this.#emitEvent('onResetedTile', { tile });
+    this.#emitUpdatedTiles([tile], 'reseted');
   }
 
   revealTile(tile, playerId = null, styles = {}) {
@@ -226,8 +226,7 @@ export default class Minefield extends HTMLElement {
   #detonateMine(tile) {
     this.#updateTiles([tile]);
     this.#MinefieldUI.drawRevealedTile(tile);
-    const event = new CustomEvent('onDetonatedMine', { detail: { tile } });
-    this.dispatchEvent(event);
+    this.#emitUpdatedTiles([tile], 'detonatedMine');
   }
 
   #revealEmptyTile(updatedTile) {
@@ -387,7 +386,7 @@ export default class Minefield extends HTMLElement {
     if (!minefieldCleared) {
       this.#setListeners();
     }
-    this.#emitEvent('onTilesRevealed', { revealedTiles, minefieldCleared });
+    this.#emitUpdatedTiles(revealedTiles, 'revealed', { minefieldCleared });
   }
 
   #emitEvent(eventType, data) {
@@ -397,6 +396,11 @@ export default class Minefield extends HTMLElement {
     }
   }
 
+  #emitUpdatedTiles(tiles, type, options = {}) {
+    const tilesPositions = MinefieldHelper.getTilesPositions(tiles);
+    const data = { ...options, type, tilesPositions }
+    this.#emitEvent('onUpdatedTiles', data);
+  }
 }
 
 customElements.define('app-minefield', Minefield);
