@@ -144,17 +144,27 @@ export default class Minefield extends HTMLElement {
 
 
   revealMines() {
-    const mineTiles = this.#unrevealedMines;
+    
     console.log('reveal mines -- show double targets');
     // console.log(mineTiles);
     this.#updateTiles(mineTiles, true);
     this.#MinefieldUI.drawRevealedTiles(mineTiles);
   }
 
-  flagUntouchedMines() {
-    console.log('flagUntouchedMines');
+  flagUntouchedMines(playerId, styles = {}) {
+    this.#tileStyles = { ...styles };
+    const untouchedMines = this.#unrevealedMines.filter(tile => !TileChecker.flagged(tile));
 
-    // console.log(this.#unrevealedTiles);
+    const flaggedTiles = [];
+
+    for (let index = 0; index < untouchedMines.length; index++) {
+      const tile = untouchedMines[index];
+      const flaggedTile = this.#getFlaggedTile(tile, playerId);
+      flaggedTiles.push(flaggedTile);
+    }
+    
+    this.#updateTiles(flaggedTiles, false);
+    return flaggedTiles;
   }
 
   revealMineField() {
@@ -164,13 +174,20 @@ export default class Minefield extends HTMLElement {
     // console.log(this.#unrevealedTiles);
   }
 
-  flagTile(tile, playerId, styles = {}) {
-    this.#tileStyles = { ...styles };
-    this.#removeListeners();
+  #getFlaggedTile(tile, playerId) {
     const flaggedTile = this.#getUpdatedTile(tile, playerId, TileState.Flagged);
     flaggedTile.wrongFlagHint = this.#wrongFlagHint;
     this.#MinefieldUI.drawFlaggedTile(flaggedTile);
+    return flaggedTile;
+  }
+
+  flagTile(tile, playerId, styles = {}) {
+    this.#removeListeners();
+    this.#tileStyles = { ...styles };
+    
+    const flaggedTile = this.#getFlaggedTile(tile, playerId);
     this.#updateTiles([flaggedTile], false);
+
     const allMinesDetected = this.#allMinesDetected;
     this.#emitEvent('onFlaggedTile', { flaggedTile, allMinesDetected });
     this.#setListeners();

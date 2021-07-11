@@ -13,10 +13,12 @@ import './app/ui-elements/custom-elements/loader/Loader';
 import AppUserService from './app/state-controllers/app-user.service';
 
 
-// import './app/game/game-board/GameBoard';
-// import './app/game/game-board-original/GameBoardOriginal';
-import './app/game/game-ui/game-board/game-board-vs/GameBoardVS';
+//import './app/game/game-ui/game-board/game-board-vs/GameBoardVS';
+import './app/game/game-ui/game-board/game-board-original/GameBoardOriginal';
 
+import './app/game/game-ui/game-board/game-board-vs/game-board-detect/GameBoardDetect';
+
+import './app/game/game-ui/game-board/game-board-vs/game-board-clear/GameBoardClear';
 //  const loadStyles = () => import("./index.scss");
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const gameStyles = userService.gameStyles;
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
-  gameStyles.flagColors = `type-${playerStyles.colorType},type-${opponentStyles.colorType}`;
+  gameStyles.flagColors = `${playerStyles.colorType},${opponentStyles.colorType}`;
 
 
   // console.log(player);
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const options = {
     marks: true,
     misplacedFlagHint: false,
-    revealing: false,
+    revealing: true,
     unlimitedFlags: true,
     turnDuration: 5,
     gameTimer: true,
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const board = document.getElementById('board');
   //console.log(board);
   board.init(config);
-  board.start(player)
+  board.start(player, [1, 2, 3, 80, 81])
 
 
 

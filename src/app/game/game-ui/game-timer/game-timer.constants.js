@@ -19,7 +19,8 @@ const DOM_ELEMENT_CLASS = {
 
 export const ATTRIBUTES = {
     turnTimer: 'turn-timer',
-    turnDuration: 'turn-duration'
+    turnDuration: 'turn-duration',
+    colorType: 'color-type',
 };
 
 export const TEMPLATE = `

@@ -1,10 +1,13 @@
 'use strict';
 import { DATES } from 'UTILS';
 
-import { TileChecker } from '../minefield/@minefield.module';
+import { TileChecker } from '../minefield/tile/@tile.module';
+import '../minefield/Minefield';
 import '../game-timer/GameTimer';
 import '../flags-counter/FlagsCounter';
-import { BoardFaceType } from '../board-face/@board-face.module';
+import '../board-face/BoardFace';
+
+import { BoardFaceType } from '../board-face/board-face-type.enum';
 import { generateMinesPositions } from '../../game-utils/game-utils';
 
 import './game-board.scss';
@@ -18,11 +21,11 @@ export default class GameBoard extends HTMLElement {
   #gameStyles = {};
 
   Minefield;
-  #GameTimer;
+  GameTimer;
   #FlagsCounter;
   #BoardFace;
 
-  #player = null;
+  player = null;
   #boardFaceListener;
   #minefieldListeners;
   #startedAt = null;
@@ -33,17 +36,22 @@ export default class GameBoard extends HTMLElement {
   }
 
   get #minesPositions() {
-    return generateMinesPositions(this.#level.rows, this.#level.columns, this.#level.numberOfMines);
+    return generateMinesPositions(this.#level.rows, this.#level.columns, this.numberOfMines);
   }
 
   get boardConfig() {
     const { rows, columns } = this.#level;
     const config = { ...this.#gameStyles, ...this.#options, rows, columns };
-    // config.revealing = true;
-    // config.flagging = true;
     config.disabled = true;
-    // config.turnDuration = 0;
     return config;
+  }
+
+  get numberOfMines() {
+    return this.#level ? this.#level.numberOfMines : 0;
+  }
+
+  get turnsTimer() {
+    return !!this.#options.turnDuration;
   }
 
   connectedCallback() {
@@ -76,7 +84,7 @@ export default class GameBoard extends HTMLElement {
 
   #initBoard(minesPositions = []) {
     this.Minefield.init(minesPositions);
-    this.#setFlagsCounter(this.#level.numberOfMines);
+    this.#setFlagsCounter(this.numberOfMines);
     this.setFaceState(BoardFaceType.Smile);
     this.resetTimer();
   }
@@ -88,8 +96,9 @@ export default class GameBoard extends HTMLElement {
   }
 
   setPlayer(player = null) {
-    this.#player = player;
-    this.setBoardDisabledState(!this.#player);
+    this.player = player;
+    this.#setPlayerFlagIcon();
+    this.setBoardDisabledState(true);
   }
 
   start(player, minesPositions = []) {
@@ -97,50 +106,56 @@ export default class GameBoard extends HTMLElement {
     this.#startedAt = null;
     this.#endedAt = null;
     minesPositions = minesPositions.length ? minesPositions : this.#minesPositions;
-    this.#initBoard();
+    this.#initBoard(minesPositions);
+    this.setBoardDisabledState(!this.player);
   }
 
   resetTimer() {
-    if (this.#GameTimer) {
-      this.#GameTimer.reset();
+    if (this.GameTimer) {
+      this.GameTimer.reset();
     }
   }
 
   onRevealTile(event) {
+    if (!this.player) return;
+
     console.log('onRevealTile');
-    //   const { detail: { tile } } = event;
-    //   const { id } = this.#player;
-    //   if (!TileChecker.flagged(tile)) {
-    //     this.#checkStart();
-    //     this.#Minefield.revealTile(tile, id);
-    //   }
+    console.log('checkStart');
+
+    const { detail: { tile } } = event;
+    const { id } = this.player;
+    if (!TileChecker.flagged(tile)) {
+      //this.#checkStart();
+      this.Minefield.revealTile(tile, id);
+    }
   }
 
   onTilesRevealed(event) {
-    console.log('onTilesRevealed');
-    //   const { detail: { revealedTiles, minefieldCleared } } = event;
-    //   if (minefieldCleared) {
-    //     this.#onGameEnd(GameEndType.FieldCleared);
-    //   }
+    const { detail: { revealedTiles, minefieldCleared } } = event;
+    if (minefieldCleared) {
+      this.onGameEnd(GameEndType.FieldCleared, revealedTiles);
+    }
   }
 
   onChangeTileState(event) {
-    console.log('onChangeTileState');
-    //   this.#checkStart();
-    //   const { detail: { tile } } = event;
-    //   const { id, styles } = this.#player;
-    //   if (TileChecker.untouched(tile)) {
-    //     this.#Minefield.flagTile(tile, id, styles);
-    //   } else {
-    //     this.#changeTouchedTileState(tile);
-    //   }
+    if (!this.player) return;
+    const { detail: { tile } } = event;
+    const untouchedTile = TileChecker.untouched(tile);
+    untouchedTile ? this.flagTile(tile) : this.#changeFlaggedTileState(tile);
   }
 
-  // #changeTouchedTileState(tile) {
-  //   const markTile = TileChecker.flagged(tile) && this.#options.marks;
-  //   const { id, styles } = this.#player;
-  //   markTile ? this.#Minefield.markTile(tile, id, styles) : this.#Minefield.resetTile(tile);
-  // }
+  flagTile(tile) {
+    //   this.#checkStart();
+    const { id, styles } = this.player;
+    this.Minefield.flagTile(tile, id, styles);
+  }
+
+  #changeFlaggedTileState(tile) {
+    //   this.#checkStart();
+    const markTile = TileChecker.flagged(tile) && this.#options.marks;
+    const { id, styles } = this.player;
+    markTile ? this.Minefield.markTile(tile, id, styles) : this.Minefield.resetTile(tile);
+  }
 
   onDetonatedMine(event) {
     console.log('onDetonatedMine');
@@ -148,14 +163,17 @@ export default class GameBoard extends HTMLElement {
   }
 
   onMarkedTile(event) {
+    this.checkFlaggedTiles();
     console.log('onMarkedTile')
   }
 
   onFlaggedTile(event) {
+    this.checkFlaggedTiles();
     console.log('onFlaggedTile')
   }
 
   onResetedTile(event) {
+    this.checkFlaggedTiles();
     console.log('onResetedTile')
   }
 
@@ -169,37 +187,39 @@ export default class GameBoard extends HTMLElement {
   // #checkStart() {
   //   if (!this.#startedAt && !this.#endedAt) {
   //     this.#startedAt = DATES.nowTimestamp();
-  //     this.#GameTimer.start(1);
+  //     this.GameTimer.start(1);
   //   }
   // }
 
-  // #checkFlaggedTiles() {
-  //   const { misplacedFlagHint } = this.#options;
-  //   let flagsCounterValue = this.#level.numberOfMines;
-  //   flagsCounterValue -= misplacedFlagHint ? this.#Minefield.detectedMines.length : this.#Minefield.flaggedTiles.length;
-  //   this.#setFlagsCounter(flagsCounterValue);
-  // }
+  checkFlaggedTiles() {
+    const { misplacedFlagHint } = this.#options;
+    let flagsCounterValue = this.numberOfMines;
+    flagsCounterValue -= misplacedFlagHint ? this.Minefield.detectedMines.length : this.Minefield.flaggedTiles.length;
+    this.#setFlagsCounter(flagsCounterValue);
+  }
 
-  // #onGameEnd(gameEndType) {
-  //   this.#endedAt = DATES.nowTimestamp();
-  //   this.#GameTimer.stop();
-  //   this.#Minefield.revealMines();
-  //   const faceType = gameEndType === GameEndType.DetonatedMine ? BoardFaceType.Looser : BoardFaceType.Winner;
-  //   this.#setFaceState(faceType);
-  //   const data = {
-  //     startedAt: this.#startedAt,
-  //     endedAt: this.#endedAt,
-  //     gameEndType
-  //   };
-  //   console.log(data);
-  // }
+  onGameEnd(gameEndType, tiles = []) {
+    this.#endedAt = DATES.nowTimestamp();
+    this.stopTimer();
+    const data = {
+      startedAt: this.#startedAt,
+      endedAt: this.#endedAt,
+      gameEndType,
+      tiles
+    };
+    console.log('onGameEnd');
+    console.log(data);
+  }
 
-
-
+  stopTimer() {
+    if (this.GameTimer) {
+      this.GameTimer.stop();
+    }
+  }
 
   setFaceColor() {
-    if (this.#player) {
-      this.#BoardFace.setAttribute('color', `type-${this.#player.styles.colorType}`);
+    if (this.player) {
+      this.#BoardFace.setAttribute('color', this.player.styles.colorType);
     }
   }
 
@@ -209,11 +229,34 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
+  setFlagsCounterIcon(flagTypes, colorTypes) {
+    if (this.#FlagsCounter) {
+      this.#FlagsCounter.setAttribute('flags', flagTypes);
+      this.#FlagsCounter.setAttribute('colorTypes', colorTypes);
+    }
+  }
+
+  initTurnTimer() {
+    if (this.turnsTimer) {
+      this.resetTimer();
+      this.#setTimerColor();
+    }
+  }
+
+  #setTimerColor() {
+    if (this.GameTimer) {
+      const colorType = this.player ? this.player.styles.colorType : null;
+      colorType
+        ? this.GameTimer.setAttribute('color-type', colorType)
+        : this.GameTimer.removeAttribute('color-type');
+    }
+  }
+
   #render() {
     const template = generateTemplate(this.boardConfig);
     this.append(template);
     this.Minefield = this.#getBoardElement('app-minefield');
-    this.#GameTimer = this.#getBoardElement('app-game-timer');
+    this.GameTimer = this.#getBoardElement('app-game-timer');
     this.#FlagsCounter = this.#getBoardElement('app-flags-counter');
     this.#BoardFace = this.#getBoardElement('app-board-face');
   }
@@ -264,6 +307,12 @@ export default class GameBoard extends HTMLElement {
     this.setFaceState(faceType);
   }
 
+  #setPlayerFlagIcon() {
+    if (this.player) {
+      const { styles: { flagType, colorType } } = this.player;
+      this.setFlagsCounterIcon(flagType, colorType);
+    }
+  }
 }
 
 customElements.define('app-game-board', GameBoard);

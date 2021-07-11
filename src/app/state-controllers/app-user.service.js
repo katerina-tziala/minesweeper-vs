@@ -12,11 +12,11 @@ export default class AppUserService {
         mineType: 'virus',
         userConfig: {
             flagType: 'awesome',
-            colorType: '1'
+            colorType: 'type-1'
         },
         opponentConfig: {
             flagType: 'checkered',
-            colorType: '2'
+            colorType: 'type-2'
         }
     }
 

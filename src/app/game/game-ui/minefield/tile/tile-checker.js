@@ -53,3 +53,7 @@ export function detonateddMine(tile) {
 export function allowedInArea(tile) {
   return !containsMine(tile) && !flagged(tile);
 }
+
+export function modifiedByPlayer(tile, playerId) {
+  return tile.modifiedBy === playerId;
+}

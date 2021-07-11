@@ -41,7 +41,8 @@ export function drawNonMineTileContent(ctx, tile, palette, minesPositions = []) 
     const minesAround = TileChecker.getNumberOfMinesAround(tile.neighbors, minesPositions);
     const content = minesAround ? minesAround.toString() : undefined;
     if (content) {
-        const color = palette[content];
+        const colorType = `type-${content}`
+        const color = palette[colorType];
         const styles = STYLES_CONFIG.content;
         const { xPosition, yPosition } = getContentPosition(tile.area, styles.padding);
         ctx.fillStyle = Color.adjustHexColorBrightness(color, styles.colorAdjustment);
