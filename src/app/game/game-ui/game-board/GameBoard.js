@@ -90,32 +90,6 @@ export default class GameBoard extends HTMLElement {
     this.setPlayer(player);
   }
 
-  onTilesRevealed(params) {
-    const { minefieldCleared, tilesPositions } = params;
-    if (minefieldCleared) {
-      this.onGameEnd(GameEndType.FieldCleared, { revealedTiles: tilesPositions });
-    }
-  }
-
-  onFlaggedTile(params) {
-    const { tilesPositions } = params;
-    this.addToPlayerFlags(tilesPositions);
-    this.checkFlaggedTiles();
-  }
-
-  onRestoredTile(params) {
-    const { tilesPositions } = params;
-    this.removeFromPlayerFlags(tilesPositions);
-    this.checkFlaggedTiles();
-  }
-
-  #initBoard(minesPositions = []) {
-    this.Minefield.init(minesPositions);
-    this.#setFlagsCounter(this.numberOfMines);
-    this.setFaceState(BoardFaceType.Smile);
-    this.resetTimer();
-  }
-
   setPlayer(player = null) {
     this.player = player;
     this.#setPlayerFlagIcon();
@@ -141,6 +115,19 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
+  onDetonatedMine(params) {
+    const { tilesPositions } = params;
+    this.player.gameStatus = PlayerGameStatusType.Looser;
+    this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
+  }
+
+  onTilesRevealed(params) {
+    const { minefieldCleared, tilesPositions } = params;
+    if (minefieldCleared) {
+      this.onGameEnd(GameEndType.FieldCleared, { revealedTiles: tilesPositions });
+    }
+  }
+
   onChangeTileState(event) {
     if (!this.player) return;
     const { detail: { tile } } = event;
@@ -154,16 +141,16 @@ export default class GameBoard extends HTMLElement {
     this.Minefield.flagTile(tile, id, styles);
   }
 
-  #changeFlaggedTileState(tile) {
-    const markTile = TileChecker.flagged(tile) && this.config.marks;
-    const { id, styles } = this.player;
-    markTile ? this.Minefield.markTile(tile, id, styles) : this.Minefield.resetTile(tile);
+  onFlaggedTile(params) {
+    const { tilesPositions } = params;
+    this.addToPlayerFlags(tilesPositions);
+    this.checkFlaggedTiles();
   }
 
-  #onRestart() {
-    if (!this.idle) {
-      this.emitEvent('onRestart');
-    }
+  onRestoredTile(params) {
+    const { tilesPositions } = params;
+    this.removeFromPlayerFlags(tilesPositions);
+    this.checkFlaggedTiles();
   }
 
   setGameStart() {
@@ -229,6 +216,14 @@ export default class GameBoard extends HTMLElement {
 
   setBoardDisabledState(disabled) {
     ElementHandler.setElementAttributes(this.Minefield, { disabled });
+  }
+
+  emitEvent(eventType, data = {}) {
+    data.player = this.player;
+    if (eventType) {
+      const event = new CustomEvent(eventType, { detail: data });
+      this.dispatchEvent(event);
+    }
   }
 
   #render() {
@@ -307,19 +302,25 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
-  onDetonatedMine(params) {
-    const { tilesPositions } = params;
-    this.player.gameStatus = PlayerGameStatusType.Looser;
-    this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
+  #initBoard(minesPositions = []) {
+    this.Minefield.init(minesPositions);
+    this.#setFlagsCounter(this.numberOfMines);
+    this.setFaceState(BoardFaceType.Smile);
+    this.resetTimer();
   }
 
-  emitEvent(eventType, data = {}) {
-    data.player = this.player;
-    if (eventType) {
-      const event = new CustomEvent(eventType, { detail: data });
-      this.dispatchEvent(event);
+  #changeFlaggedTileState(tile) {
+    const markTile = TileChecker.flagged(tile) && this.config.marks;
+    const { id, styles } = this.player;
+    markTile ? this.Minefield.markTile(tile, id, styles) : this.Minefield.resetTile(tile);
+  }
+
+  #onRestart() {
+    if (!this.idle) {
+      this.emitEvent('onRestart');
     }
   }
+
 }
 
 customElements.define('app-game-board', GameBoard);

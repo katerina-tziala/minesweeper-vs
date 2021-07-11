@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const turns = {
     consecutiveTurns: true,
     missedTurnsLimit: 10,
-    turnDuration: 5,
+    turnDuration: 0,
     turnTimer: true
   }
   const config = { ...level, ...options, ...turns, ...gameStyles };

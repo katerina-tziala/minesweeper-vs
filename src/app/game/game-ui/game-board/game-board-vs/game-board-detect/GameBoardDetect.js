@@ -20,6 +20,19 @@ export default class GameBoardDetect extends GameBoardVS {
     return flagsPositions.length > flagsThreshold ? PlayerGameStatusType.Winner : PlayerGameStatusType.Draw;
   }
 
+  onTilesRevealed(params) {
+    const { minefieldCleared, tilesPositions } = params;
+    minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onPlayerMove({ revealed: tilesPositions });
+  }
+
+  onMinefieldCleared(revealed) {
+    const { id, styles } = this.player;
+    const flagged = this.Minefield.flagUntouchedMines(id, styles);
+    this.addToPlayerFlags(flagged);
+    this.player.gameStatus = this.playerStatusOnGameGoal;
+    this.onGameEnd(GameEndType.FieldCleared, { revealed, flagged });
+  }
+
   onChangeTileState(event) {
     const { detail: { tile } } = event;
     if (!this.player || this.tileFlaggedByOpponent(tile)) return;
@@ -32,19 +45,6 @@ export default class GameBoardDetect extends GameBoardVS {
     if (this.unlimitedFlags || flagsPositions.length < this.numberOfMines) {
       super.flagTile(tile);
     }
-  }
-
-  onTilesRevealed(params) {
-    const { minefieldCleared, tilesPositions } = params;
-    minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onPlayerMove({ revealed: tilesPositions });
-  }
-
-  onMinefieldCleared(revealed) {
-    const { id, styles } = this.player;
-    const flagged = this.Minefield.flagUntouchedMines(id, styles);
-    this.addToPlayerFlags(flagged);
-    this.player.gameStatus = this.playerStatusOnGameGoal;
-    this.onGameEnd(GameEndType.FieldCleared, { revealed, flagged });
   }
 
   onFlaggedTile(params) {

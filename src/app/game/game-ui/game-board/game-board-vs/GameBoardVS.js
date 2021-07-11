@@ -36,7 +36,7 @@ export default class GameBoardVS extends GameBoard {
 
   start(player, minesPositions = []) {
     super.start(player, minesPositions);
-    !this.turnsTimer ? this.checkTimerStart() : this.setGameStart();
+   // !this.turnsTimer ? this.checkTimerStart() : this.setGameStart();
   }
 
   setPlayer(player = null) {
