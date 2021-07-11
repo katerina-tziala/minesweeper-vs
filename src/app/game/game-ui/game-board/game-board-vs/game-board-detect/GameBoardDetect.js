@@ -1,6 +1,6 @@
 'use strict';
 import GameBoardVS from '../GameBoardVS';
-import { GameEndType, PlayerGameStatusType } from '../../@game-board-utils.module';
+import { GameEndType } from '../../@game-board-utils.module';
 
 export default class GameBoardDetect extends GameBoardVS {
   constructor() {
