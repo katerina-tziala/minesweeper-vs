@@ -1,7 +1,7 @@
 'use strict';
 import { randomInteger, sortNumbersArrayAsc } from 'UTILS';
 
-export const generateMinesPositions = (rows, columns, numberOfMines) => {
+export const generateMinesPositions = (rows = 0, columns = 0, numberOfMines = 0) => {
   const maxPosition = rows * columns;
   const mineList = [];
   while (mineList.length < numberOfMines) {

@@ -6,6 +6,7 @@ const BoardFaceType = {
   Winner: 'winner',
   Looser: 'looser',
   RollingEyes: 'rolling-eyes',
+  Draw: 'draw'
 };
 Object.freeze(BoardFaceType);
 

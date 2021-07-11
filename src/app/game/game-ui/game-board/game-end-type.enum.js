@@ -1,9 +1,9 @@
 'use strict';
 
 const GameEndType = {
-  MinesDetected: 'mines-detected',
-  FieldCleared: 'field-cleared',
-  DetonatedMine: 'detonated-mine',
+  MinesDetected: 'MinesDetected',
+  FieldCleared: 'FieldCleared',
+  DetonatedMine: 'DetonatedMine',
 };
 
 Object.freeze(GameEndType);

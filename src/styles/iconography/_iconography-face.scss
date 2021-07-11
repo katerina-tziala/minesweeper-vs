@@ -12,7 +12,7 @@
 
 .icon-face-winner {
   @extend %icon-regular-outline;
-  content: fa-content($fa-var-grin-tongue);
+  content: fa-content($fa-var-grin-tongue-wink);
 }
 
 .icon-face-looser {
@@ -23,4 +23,9 @@
 .icon-face-rolling-eyes {
   @extend %icon-regular-outline;
   content: fa-content($fa-var-meh-rolling-eyes);
+}
+
+.icon-face-draw {
+  @extend %icon-regular-outline;
+  content: fa-content($fa-var-meh-blank);
 }

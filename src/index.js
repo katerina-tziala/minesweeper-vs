@@ -33,9 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const player = { id: userService.id, name: userService.username };
   const playerStyles = userService.getPlayerConfig(player.id);
   player.styles = playerStyles;
+  player.flagsPositions = [];
+
   const opponent = { id: 'opponent', name: 'Angie' };
   const opponentStyles = userService.getPlayerConfig(opponent.id);
   opponent.styles = opponentStyles;
+  opponent.flagsPositions = [];
 
   const gameStyles = userService.gameStyles;
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     unlimitedFlags: true,
     turnDuration: 5,
     gameTimer: true,
-    flagsCounterRight:false
+    flagsCounterRight: false
   };
 
   // const options = {
@@ -73,11 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
     turnDuration: 5,
     turnTimer: true
   }
-  const config = { level, options, turns, gameStyles };
+  const config = { ...level, ...options, ...turns, ...gameStyles };
   const board = document.getElementById('board');
   //console.log(board);
   board.init(config);
-  board.start(player, [1, 2, 3, 80, 81])
+  board.start(player, [1, 2, 3, 4, 5, 6, 7, 80, 81])
 
 
 

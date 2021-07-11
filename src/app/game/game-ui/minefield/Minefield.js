@@ -80,13 +80,18 @@ export default class Minefield extends HTMLElement {
     return [...this.#unrevealedTiles, this.#revealedTiles];
   }
 
-  get flaggedTiles() {
+  get #flaggedTiles() {
     return this.#unrevealedTiles.filter(tile => TileChecker.flagged(tile));
   }
 
-  get detectedMines() {
+  get #detectedMines() {
     return this.#unrevealedMines.filter(tile => TileChecker.flagged(tile));
   }
+
+  get flagsCount() {
+    return this.#wrongFlagHint ? this.#detectedMines.length : this.#flaggedTiles.length;
+  }
+
 
   get rows() {
     return this.#getNumberAttribute(ATTRIBUTES.rows);
@@ -144,7 +149,7 @@ export default class Minefield extends HTMLElement {
 
 
   revealMines() {
-    
+
     console.log('reveal mines -- show double targets');
     // console.log(mineTiles);
     this.#updateTiles(mineTiles, true);
@@ -162,7 +167,7 @@ export default class Minefield extends HTMLElement {
       const flaggedTile = this.#getFlaggedTile(tile, playerId);
       flaggedTiles.push(flaggedTile);
     }
-    
+
     this.#updateTiles(flaggedTiles, false);
     return flaggedTiles;
   }
@@ -184,7 +189,7 @@ export default class Minefield extends HTMLElement {
   flagTile(tile, playerId, styles = {}) {
     this.#removeListeners();
     this.#tileStyles = { ...styles };
-    
+
     const flaggedTile = this.#getFlaggedTile(tile, playerId);
     this.#updateTiles([flaggedTile], false);
 
@@ -193,19 +198,19 @@ export default class Minefield extends HTMLElement {
     this.#setListeners();
   }
 
-  markTile(tile, playerId = null, styles = {}) {
+  markTile(tileToMark, playerId = null, styles = {}) {
     this.#tileStyles = { ...styles };
-    const markedTile = this.#getUpdatedTile(tile, playerId, TileState.Marked);
-    this.#updateTiles([markedTile], false);
-    this.#MinefieldUI.drawMarkedTile(markedTile);
-    this.#emitEvent('onMarkedTile', { markedTile });
+    const tile = this.#getUpdatedTile(tileToMark, playerId, TileState.Marked);
+    this.#updateTiles([tile], false);
+    this.#MinefieldUI.drawMarkedTile(tile);
+    this.#emitEvent('onMarkedTile', { tile });
   }
 
-  resetTile(tile) {
-    const { wrongFlagHint, styles, ...resetedTile } = MinefieldHelper.getUpdatedTile(tile, null, TileState.Untouched);
-    this.#updateTiles([resetedTile], false);
-    this.#MinefieldUI.drawUntouchedTile(resetedTile);
-    this.#emitEvent('onResetedTile', { resetedTile });
+  resetTile(tileToReset) {
+    const { wrongFlagHint, styles, ...tile } = MinefieldHelper.getUpdatedTile(tileToReset, null, TileState.Untouched);
+    this.#updateTiles([tile], false);
+    this.#MinefieldUI.drawUntouchedTile(tile);
+    this.#emitEvent('onResetedTile', { tile });
   }
 
   revealTile(tile, playerId = null, styles = {}) {
@@ -218,10 +223,10 @@ export default class Minefield extends HTMLElement {
     }
   }
 
-  #detonateMine(detonatedMine) {
-    this.#updateTiles([detonatedMine]);
-    this.#MinefieldUI.drawRevealedTile(detonatedMine);
-    const event = new CustomEvent('onDetonatedMine', { detail: { detonatedMine } });
+  #detonateMine(tile) {
+    this.#updateTiles([tile]);
+    this.#MinefieldUI.drawRevealedTile(tile);
+    const event = new CustomEvent('onDetonatedMine', { detail: { tile } });
     this.dispatchEvent(event);
   }
 

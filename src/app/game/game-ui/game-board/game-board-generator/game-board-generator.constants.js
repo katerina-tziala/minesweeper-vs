@@ -10,7 +10,7 @@ export const DOM_ELEMENT_CLASS = {
 export const TEMPLATES = {
     minefield: `<div class='${DOM_ELEMENT_CLASS.minefield}'>
     <app-minefield rows='%rows%' columns='%columns%' revealing='%revealing%' flagging='%flagging%' 
-    wrong-flag-hint='%misplacedFlagHint%' disabled='%disabled%' theme='%theme%' mine-type='%mineType%'></app-minefield>
+    wrong-flag-hint='%misplacedFlagHint%' disabled='true' theme='%theme%' mine-type='%mineType%'></app-minefield>
     </div>`,
     boardFace: `<app-board-face state='smile'></app-board-face>`,
     flagsCounter: `<div class='${DOM_ELEMENT_CLASS.flagsContainer}'>

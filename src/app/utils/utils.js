@@ -38,7 +38,6 @@ export function arrayDifference(arrayToFilter, arrayReference) {
   return arrayToFilter.filter((item) => !arrayReference.includes(item));
 };
 
-
 export function isOddNumber(num) {
   return num % 2 === 0 ? false : true;
 };

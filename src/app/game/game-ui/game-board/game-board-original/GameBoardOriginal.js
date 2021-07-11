@@ -1,7 +1,6 @@
 'use strict';
 import GameBoard from '../GameBoard';
-import { BoardFaceType } from '../../board-face/board-face-type.enum';
-import { GameEndType } from '../game-end-type.enum';
+import { PlayerGameStatus } from '../player-game-status';
 
 export default class GameBoardOriginal extends GameBoard {
 
@@ -9,20 +8,22 @@ export default class GameBoardOriginal extends GameBoard {
     super();
   }
 
-  get boardConfig() {
-    const config = super.boardConfig;
-    config.flagging = true;
-    config.revealing = true;
-    config.turnDuration = 0;
-    return config;
+  get defaultConfig() {
+    return { flagging: true, revealing: true, turnDuration: 0 };
+  }
+
+  onTilesRevealed(event) {
+    const { detail: { minefieldCleared  } } = event;
+    this.player.gameStatus = minefieldCleared ? PlayerGameStatus.Winner : null;
+    super.onTilesRevealed(event);
   }
 
   onGameEnd(gameEndType, tiles) {
+    this.endGame();
     this.Minefield.revealMines();
-    const faceType = gameEndType === GameEndType.DetonatedMine ? BoardFaceType.Looser : BoardFaceType.Winner;
-    this.setFaceState(faceType);
-    super.onGameEnd(gameEndType, tiles);
+    super.onGameEnd(gameEndType, { tiles });
   }
+
 }
 
 customElements.define('app-game-board-original', GameBoardOriginal);

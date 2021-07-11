@@ -1,5 +1,5 @@
 'use strict';
-import { DATES } from 'UTILS';
+import { DATES, arrayDifference } from 'UTILS';
 
 import { TileChecker } from '../minefield/tile/@tile.module';
 import '../minefield/Minefield';
@@ -13,45 +13,61 @@ import { ElementHandler } from 'UI_ELEMENTS';
 import './game-board.scss';
 
 import { GameEndType } from './game-end-type.enum';
+
+import { PlayerGameStatus } from './player-game-status';
 import { generateTemplate } from './game-board-generator/game-board-generator';
 
 export default class GameBoard extends HTMLElement {
-  #level = {};
-  #options = {};
-  #gameStyles = {};
-
+  #config = {};
   Minefield;
   GameTimer;
   #FlagsCounter;
   #BoardFace;
-
   player = null;
   #boardFaceListener;
   #minefieldListeners;
   #startedAt = null;
   #endedAt = null;
 
+
   constructor() {
     super();
   }
 
-  get #minesPositions() {
-    return generateMinesPositions(this.#level.rows, this.#level.columns, this.numberOfMines);
+  get defaultConfig() {
+    return {};
   }
 
-  get boardConfig() {
-    const { rows, columns } = this.#level;
-    const config = { ...this.#gameStyles, ...this.#options, rows, columns };
-    config.disabled = true;
-    return config;
+  set config(config = {}) {
+    this.#config = Object.assign(config, this.defaultConfig);
+  }
+
+  get config() {
+    return this.#config;
+  }
+
+  get #minesPositions() {
+    const { rows, columns, numberOfMines } = this.config;
+    return generateMinesPositions(rows, columns, numberOfMines);
   }
 
   get numberOfMines() {
-    return this.#level ? this.#level.numberOfMines : 0;
+    return this.config ? this.config.numberOfMines : 0;
   }
 
   get turnsTimer() {
-    return !!this.#options.turnDuration;
+    return !!this.config.turnDuration;
+  }
+
+  get unlimitedFlags() {
+    return !!this.config.unlimitedFlags;
+  }
+
+  get gameDuration() {
+    return {
+      startedAt: this.#startedAt,
+      endedAt: this.#endedAt,
+    };
   }
 
   connectedCallback() {
@@ -60,10 +76,10 @@ export default class GameBoard extends HTMLElement {
     this.#minefieldListeners.set('onRevealTile', this.onRevealTile.bind(this));
     this.#minefieldListeners.set('onTilesRevealed', this.onTilesRevealed.bind(this));
     this.#minefieldListeners.set('onChangeTileState', this.onChangeTileState.bind(this));
-    this.#minefieldListeners.set('onDetonatedMine', this.onDetonatedMine.bind(this));
-    this.#minefieldListeners.set('onMarkedTile', this.onMarkedTile.bind(this));
+    this.#minefieldListeners.set('onDetonatedMine', this.#onDetonatedMine.bind(this));
     this.#minefieldListeners.set('onFlaggedTile', this.onFlaggedTile.bind(this));
-    this.#minefieldListeners.set('onResetedTile', this.onResetedTile.bind(this));
+    this.#minefieldListeners.set('onMarkedTile', this.onRestoredTile.bind(this));
+    this.#minefieldListeners.set('onResetedTile', this.onRestoredTile.bind(this));
   }
 
   disconnectedCallback() {
@@ -71,11 +87,8 @@ export default class GameBoard extends HTMLElement {
     this.#removeMinefieldListeners();
   }
 
-  init(config) {
-    const { level, options, gameStyles } = config;
-    this.#level = level;
-    this.#options = options;
-    this.#gameStyles = gameStyles;
+  init(params = {}) {
+    this.config = params;
     this.#render();
     this.#setMinefieldListeners();
     this.#setFaceListener();
@@ -88,8 +101,6 @@ export default class GameBoard extends HTMLElement {
     this.setFaceState(BoardFaceType.Smile);
     this.resetTimer();
   }
-
-
 
   setPlayer(player = null) {
     this.player = player;
@@ -119,7 +130,6 @@ export default class GameBoard extends HTMLElement {
     if (!TileChecker.flagged(tile)) {
       console.log('onRevealTile');
       console.log('checkStart');
-
       //this.#checkStart();
       this.Minefield.revealTile(tile, id);
     }
@@ -128,8 +138,14 @@ export default class GameBoard extends HTMLElement {
   onTilesRevealed(event) {
     const { detail: { revealedTiles, minefieldCleared } } = event;
     if (minefieldCleared) {
-      this.onGameEnd(GameEndType.FieldCleared, revealedTiles);
+      this.onGameEnd(GameEndType.FieldCleared, { revealedTiles });
     }
+  }
+
+  #onDetonatedMine({ detail: { tile } }) {
+    const revealedTiles = [tile];
+    this.player.gameStatus = PlayerGameStatus.Looser;
+    this.onGameEnd(GameEndType.DetonatedMine, { revealedTiles });
   }
 
   onChangeTileState(event) {
@@ -140,36 +156,29 @@ export default class GameBoard extends HTMLElement {
   }
 
   flagTile(tile) {
+    console.log('flagTile');
+    console.log('checkStart');
     //   this.#checkStart();
     const { id, styles } = this.player;
     this.Minefield.flagTile(tile, id, styles);
   }
 
   #changeFlaggedTileState(tile) {
-    //   this.#checkStart();
-    const markTile = TileChecker.flagged(tile) && this.#options.marks;
+    const markTile = TileChecker.flagged(tile) && this.config.marks;
     const { id, styles } = this.player;
     markTile ? this.Minefield.markTile(tile, id, styles) : this.Minefield.resetTile(tile);
   }
 
-  onDetonatedMine(event) {
-    console.log('onDetonatedMine');
-    // this.#onGameEnd(GameEndType.DetonatedMine);
-  }
-
-  onMarkedTile(event) {
-    this.checkFlaggedTiles();
-    console.log('onMarkedTile')
-  }
-
   onFlaggedTile(event) {
+    const { detail: { flaggedTile } } = event;
+    this.addToPlayerFlags([flaggedTile.position]);
     this.checkFlaggedTiles();
-    console.log('onFlaggedTile')
   }
 
-  onResetedTile(event) {
+  onRestoredTile(event) {
+    const { detail: { tile } } = event;
+    this.removeFromPlayerFlags([tile.position]);
     this.checkFlaggedTiles();
-    console.log('onResetedTile')
   }
 
   onRestart() {
@@ -186,24 +195,41 @@ export default class GameBoard extends HTMLElement {
   //   }
   // }
 
+  removeFromPlayerFlags(tilesPositions) {
+    const { flagsPositions } = this.player;
+    this.player.flagsPositions = arrayDifference(flagsPositions, tilesPositions);
+  }
+
+  addToPlayerFlags(flaggedPositions) {
+    const { flagsPositions } = this.player;
+    this.player.flagsPositions = flagsPositions.concat(flaggedPositions);
+  }
+
   checkFlaggedTiles() {
-    const { misplacedFlagHint } = this.#options;
-    let flagsCounterValue = this.numberOfMines;
-    flagsCounterValue -= misplacedFlagHint ? this.Minefield.detectedMines.length : this.Minefield.flaggedTiles.length;
+    const flagsCounterValue = this.numberOfMines - this.Minefield.flagsCount;
     this.#setFlagsCounter(flagsCounterValue);
   }
 
-  onGameEnd(gameEndType, tiles = []) {
+  endGame() {
     this.#endedAt = DATES.nowTimestamp();
     this.stopTimer();
-    const data = {
-      startedAt: this.#startedAt,
-      endedAt: this.#endedAt,
-      gameEndType,
-      tiles
-    };
+    this.setBoardDisabledState(true);
+  }
+
+  onGameEnd(gameEndType, params) {
+    this.setBoardFaceOnGameEnd();
+
+    // todo
     console.log('onGameEnd');
-    console.log(data);
+    console.log(gameEndType);
+    console.log(params);
+    console.log(this.player);
+    console.log(this.gameDuration);
+  }
+
+  setBoardFaceOnGameEnd() {
+    const { gameStatus } = this.player;
+    this.setFaceState(BoardFaceType[gameStatus]);
   }
 
   stopTimer() {
@@ -212,11 +238,8 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
-  setFaceColor() {
-    if (this.player) {
-      const color = this.player.styles.colorType;
-      ElementHandler.setElementAttributes(this.#BoardFace, { color });
-    }
+  setFaceColor(color = '') {
+    ElementHandler.setElementAttributes(this.#BoardFace, { color });
   }
 
   setFaceState(state) {
@@ -231,20 +254,8 @@ export default class GameBoard extends HTMLElement {
     ElementHandler.setElementAttributes(this.Minefield, { disabled });
   }
 
-  initTurnTimer() {
-    if (this.turnsTimer) {
-      this.resetTimer();
-      this.#setTimerColor();
-    }
-  }
-
-  #setTimerColor() {
-    const color_type = this.player ? this.player.styles.colorType : '';
-    ElementHandler.setElementAttributes(this.GameTimer, { color_type });
-  }
-
   #render() {
-    const template = generateTemplate(this.boardConfig);
+    const template = generateTemplate(this.config);
     this.append(template);
     this.Minefield = this.#getBoardElement('app-minefield');
     this.GameTimer = this.#getBoardElement('app-game-timer');
@@ -302,6 +313,7 @@ export default class GameBoard extends HTMLElement {
       this.setFlagsCounterIcon(flagType, colorType);
     }
   }
+
 }
 
 customElements.define('app-game-board', GameBoard);
