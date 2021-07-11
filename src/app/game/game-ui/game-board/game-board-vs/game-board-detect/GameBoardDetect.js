@@ -1,10 +1,7 @@
 'use strict';
 import GameBoardVS from '../GameBoardVS';
-import { BoardFaceType } from '../../../board-face/board-face-type.enum';
-import { GameEndType } from '../../game-end-type.enum';
-import {PlayerGameStatus} from '../../player-game-status';
-import { TileChecker } from '../../../minefield/tile/@tile.module';
-import * as MinefieldHelper from '../../../minefield/minefield-helper'
+import { GameEndType, PlayerGameStatusType } from '../../@game-board-utils.module';
+
 export default class GameBoardDetect extends GameBoardVS {
   constructor() {
     super();
@@ -18,9 +15,9 @@ export default class GameBoardDetect extends GameBoardVS {
     const { flagsPositions } = this.player;
     const flagsThreshold = this.numberOfMines / 2;
     if (flagsPositions.length < flagsThreshold) {
-      return PlayerGameStatus.Looser;
+      return PlayerGameStatusType.Looser;
     }
-    return flagsPositions.length > flagsThreshold ? PlayerGameStatus.Winner : PlayerGameStatus.Draw;
+    return flagsPositions.length > flagsThreshold ? PlayerGameStatusType.Winner : PlayerGameStatusType.Draw;
   }
 
   onChangeTileState(event) {
@@ -39,9 +36,7 @@ export default class GameBoardDetect extends GameBoardVS {
 
   onTilesRevealed(params) {
     const { minefieldCleared, tilesPositions } = params;
-    if (minefieldCleared) {
-      minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onPlayerMove({ revealed: tilesPositions });
-    }
+    minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onPlayerMove({ revealed: tilesPositions });
   }
 
   onMinefieldCleared(revealed) {
@@ -60,6 +55,7 @@ export default class GameBoardDetect extends GameBoardVS {
       this.player.gameStatus = this.playerStatusOnGameGoal;
       this.onGameEnd(GameEndType.MinesDetected, { flagged });
     } else {
+      this.resetPlayerMissedTurns();
       this.onRoundEnd({ flagged });
     }
   }
@@ -67,7 +63,7 @@ export default class GameBoardDetect extends GameBoardVS {
   onRestoredTile(params) {
     super.onRestoredTile(params);
     const { tilesPositions } = params;
-    this.onPlayerMove({ restoredTiles: tilesPositions });
+    this.onPlayerMove({ restored: tilesPositions });
   }
 
 }

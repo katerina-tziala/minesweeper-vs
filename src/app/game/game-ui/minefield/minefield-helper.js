@@ -1,7 +1,7 @@
 'use strict';
 import * as TileGenerator from './tile/tile-utils';
 import * as TileChecker from './tile/tile-checker';
-import { arrayDifference } from 'UTILS';
+import { arrayDifference, uniqueArrayValues } from 'UTILS';
 import { TileState } from './tile/tile-state.enum';
 import { TileType } from './tile/tile-type.enum';
 
@@ -73,7 +73,7 @@ export function getAreaToReveal(blankTiles, tilesToSearch = [], emptyArea = []) 
     newSearch = newSearch.concat(neighborsSearch[TileType.Blank]);
     emptyArea = emptyArea.concat(neighborsSearch[TileType.Empty]);
   }
-  newSearch = Array.from(new Set(newSearch));
+  newSearch = uniqueArrayValues(newSearch);
 
   return newSearch.length ? getAreaToReveal(newSearch, tilesToSearch, emptyArea) : Array.from(new Set(emptyArea));
 }

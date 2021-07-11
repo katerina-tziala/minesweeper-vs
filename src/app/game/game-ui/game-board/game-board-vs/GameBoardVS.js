@@ -1,17 +1,15 @@
 'use strict';
 import GameBoard from '../GameBoard';
-import { PlayerGameStatus } from '../player-game-status';
-import { ElementHandler } from 'UI_ELEMENTS';
-import { TileChecker } from '../../minefield/tile/@tile.module';
-import { GameEndType } from '../game-end-type.enum';
-
+import { ElementHandler, GameEndType, PlayerGameStatusType, TileChecker } from '../@game-board-utils.module';
+import GameRound from './game-round';
 
 export default class GameBoardVS extends GameBoard {
-  #turnTiles = {};
+  #RoundHandler;
   #timerListener;
 
   constructor() {
     super();
+    this.#RoundHandler = new GameRound();
   }
 
   get turnsTimer() {
@@ -20,6 +18,10 @@ export default class GameBoardVS extends GameBoard {
 
   get missedTurnsLimit() {
     return this.config.missedTurnsLimit || 0;
+  }
+
+  get consecutiveTurns() {
+    return !!this.config.consecutiveTurns;
   }
 
   disconnectedCallback() {
@@ -33,20 +35,19 @@ export default class GameBoardVS extends GameBoard {
   }
 
   start(player, minesPositions = []) {
-    if (!this.turnsTimer) {
-      this.checkTimerStart();
-    }
     super.start(player, minesPositions);
+    !this.turnsTimer ? this.checkTimerStart() : this.setGameStart();
   }
 
   setPlayer(player = null) {
     super.setPlayer(player);
     this.#setPlayerColorFace();
-    // if (this.player) {
-    //   const { onTurn } = this.player;
-    //   this.initTurnTimer();
-    //   this.setBoardDisabledState(!onTurn);
-    // }
+    if (this.player) {
+      const { onTurn } = this.player;
+      this.initTurnTimer();
+      this.#RoundHandler.init();
+      this.setBoardDisabledState(!onTurn);
+    }
   }
 
   initTurnTimer() {
@@ -54,6 +55,13 @@ export default class GameBoardVS extends GameBoard {
       this.resetTimer();
       this.#setTimerColor(this.player);
       this.GameTimer.start();
+    }
+  }
+
+  stopTurnTimer() {
+    if (this.turnsTimer) {
+      this.setBoardDisabledState(true);
+      this.stopTimer();
     }
   }
 
@@ -65,23 +73,35 @@ export default class GameBoardVS extends GameBoard {
     return TileChecker.marked(tile) && !TileChecker.modifiedByPlayer(tile, this.player.id);
   }
 
-  onPlayerMove(params) {
-    console.log('on player move');
-    console.log(params);
-    console.log(this.player);
+  onDetonatedMine(params) {
+    this.resetPlayerMissedTurns();
+    super.onDetonatedMine(params);
   }
 
-  onRoundEnd(params) {
-    console.log('onRoundEnd');
-    console.log(params);
-    console.log(this.player);
+  onPlayerMove(moveTiles) {
+    this.#RoundHandler.update(moveTiles);
+    this.resetPlayerMissedTurns();
+    this.emitEvent('onMove', moveTiles);
   }
 
-  onGameEnd(gameEndType, tiles) {
+  onRoundEnd(moveTiles = {}) {
+    this.stopTurnTimer();
+    const roundResults = this.#RoundHandler.onRoundEnd(moveTiles);
+    this.emitEvent('onRoundEnd', { moveTiles, roundResults });
+  }
+
+  onGameEnd(gameEndType, moveTiles = {}) {
     this.endGame();
+    const roundResults = this.#RoundHandler.onRoundEnd(moveTiles);
     this.#setCounterIconOnGameEnd();
     this.#setTimerColor();
-    super.onGameEnd(gameEndType, tiles);
+    super.onGameEnd(gameEndType, { moveTiles, roundResults });
+  }
+
+  resetPlayerMissedTurns() {
+    if (this.turnsTimer && this.consecutiveTurns) {
+      this.player.missedTurns = 0;
+    }
   }
 
   setBoardFaceOnGameEnd() {
@@ -101,7 +121,7 @@ export default class GameBoardVS extends GameBoard {
 
   #setFaceColorOnGameEnd() {
     const { gameStatus } = this.player;
-    const color = gameStatus === PlayerGameStatus.Draw ? '' : this.player.styles.colorType;
+    const color = gameStatus === PlayerGameStatusType.Draw ? '' : this.player.styles.colorType;
     this.setFaceColor(color);
   }
 
@@ -111,39 +131,27 @@ export default class GameBoardVS extends GameBoard {
   }
 
   #setTimerListener() {
-    // if (this.GameTimer) {
-    //   this.#timerListener = this.#onTurnEnd.bind(this);
-    //   this.GameTimer.addEventListener('onTurnEnd', this.#timerListener);
-    // }
+    if (this.GameTimer) {
+      this.#timerListener = this.#onTurnEnd.bind(this);
+      this.GameTimer.addEventListener('onTurnEnd', this.#timerListener);
+    }
   }
 
   #removeTimerListener() {
-    // if (this.GameTimer) {
-    //   this.GameTimer.removeEventListener('onTurnEnd', this.#timerListener);
-    // }
-    // this.#timerListener = undefined;
+    if (this.GameTimer) {
+      this.GameTimer.removeEventListener('onTurnEnd', this.#timerListener);
+    }
+    this.#timerListener = undefined;
   }
 
   #onTurnEnd() {
-    // this.player.missedTurns += 1;
-    // if (this.player.missedTurns < this.missedTurnsLimit) {
-      
-    //   console.log('missed turn');
-    // } else {
-    //  // this.player.gameStatus = PlayerGameStatus.Looser;
-    //  // this.onGameEnd(GameEndType.ExceededTurnsLimit, {});
-    //   console.log('lost game based on turns');
-    // }
-    
-    console.log('onTurnEnd');
-    // console.log(this.player);
-    // console.log(this.config);
-    // console.log(this.missedTurnsLimit);
-
-    //     consecutiveTurns: true
-    // missedTurnsLimit: 10
-
-
+    this.player.missedTurns += 1;
+    if (this.player.missedTurns < this.missedTurnsLimit) {
+      this.onRoundEnd({});
+    } else {
+      this.player.gameStatus = PlayerGameStatusType.Looser;
+      this.onGameEnd(GameEndType.ExceededTurnsLimit, {});
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 'use strict';
 import GameBoard from '../GameBoard';
-import { PlayerGameStatus } from '../player-game-status';
+import { PlayerGameStatusType } from '../@game-board-utils.module';
 
 export default class GameBoardOriginal extends GameBoard {
 
@@ -12,10 +12,10 @@ export default class GameBoardOriginal extends GameBoard {
     return { flagging: true, revealing: true, turnDuration: 0 };
   }
 
-  onTilesRevealed(event) {
-    const { detail: { minefieldCleared  } } = event;
-    this.player.gameStatus = minefieldCleared ? PlayerGameStatus.Winner : null;
-    super.onTilesRevealed(event);
+  onTilesRevealed(params) {
+    const { minefieldCleared } = params;
+    this.player.gameStatus = minefieldCleared ? PlayerGameStatusType.Winner : null;
+    super.onTilesRevealed(params);
   }
 
   onGameEnd(gameEndType, tiles) {

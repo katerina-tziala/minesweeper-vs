@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
   const turns = {
     consecutiveTurns: true,
-    missedTurnsLimit: 1,
+    missedTurnsLimit: 10,
     turnDuration: 5,
     turnTimer: true
   }
@@ -87,8 +87,25 @@ document.addEventListener('DOMContentLoaded', () => {
   board.init(config);
   board.start(player, [1, 2, 3, 4, 5, 6, 7, 80, 81])
 
-
-
+  board.addEventListener('onMove', (event) => {
+    console.log('onMove');
+    console.log(event.detail);
+  })
+  board.addEventListener('onRoundEnd', (event) => {
+    console.log('onRoundEnd');
+    console.log(event.detail);
+  })
+  board.addEventListener('onGameEnd', (event) => {
+    console.log('onGameEnd');
+    console.log(event.detail);
+  })
+  
+  board.addEventListener('onRestart', (event) => {
+    console.log('onRestart');
+    console.log(event.detail);
+  })
+  
+  
 
 });
 // window.onhashchange = this.locationHashChanged.bind(this);

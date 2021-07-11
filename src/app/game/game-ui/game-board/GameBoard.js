@@ -1,20 +1,11 @@
 'use strict';
-import { DATES, arrayDifference } from 'UTILS';
-
-import { TileChecker } from '../minefield/tile/@tile.module';
-import '../minefield/Minefield';
-import '../game-timer/GameTimer';
-import '../flags-counter/FlagsCounter';
-import '../board-face/BoardFace';
-
-import { BoardFaceType } from '../board-face/board-face-type.enum';
-import { generateMinesPositions } from '../../game-utils/game-utils';
-import { ElementHandler } from 'UI_ELEMENTS';
 import './game-board.scss';
-
-import { GameEndType } from './game-end-type.enum';
-import { PlayerGameStatus } from './player-game-status';
-import { generateTemplate } from './game-board-generator/game-board-generator';
+import {
+  DATES, arrayDifference, ElementHandler,
+  BoardFaceType, GameEndType, PlayerGameStatusType,
+  TileChecker,
+  generateTemplate, generateMinesPositions
+} from './@game-board-utils.module';
 
 export default class GameBoard extends HTMLElement {
   #config = {};
@@ -169,16 +160,19 @@ export default class GameBoard extends HTMLElement {
     markTile ? this.Minefield.markTile(tile, id, styles) : this.Minefield.resetTile(tile);
   }
 
-  onRestart() {
-    console.log('onRestart');
-    // if (this.#startedAt) {
-    //   this.start();
-    // }
+  #onRestart() {
+    if (!this.idle) {
+      this.emitEvent('onRestart');
+    }
+  }
+
+  setGameStart() {
+    this.#startedAt = DATES.nowTimestamp();
   }
 
   checkTimerStart() {
     if (this.idle) {
-      this.#startedAt = DATES.nowTimestamp();
+      this.setGameStart();
       this.GameTimer.start(1);
     }
   }
@@ -204,15 +198,10 @@ export default class GameBoard extends HTMLElement {
     this.setBoardDisabledState(true);
   }
 
-  onGameEnd(gameEndType, params) {
+  onGameEnd(gameEndType, params = {}) {
     this.setBoardFaceOnGameEnd();
-
-    // todo
-    console.log('onGameEnd');
-    console.log(gameEndType);
-    console.log(params);
-    console.log(this.player);
-    console.log(this.gameDuration);
+    const data = { ...params, ...this.gameDuration, gameEndType };
+    this.emitEvent('onGameEnd', data);
   }
 
   setBoardFaceOnGameEnd() {
@@ -273,7 +262,7 @@ export default class GameBoard extends HTMLElement {
 
   #setFaceListener() {
     if (this.#BoardFace) {
-      this.#boardFaceListener = this.onRestart.bind(this);
+      this.#boardFaceListener = this.#onRestart.bind(this);
       this.#BoardFace.addEventListener('onBoardFaceClick', this.#boardFaceListener);
     }
   }
@@ -306,7 +295,7 @@ export default class GameBoard extends HTMLElement {
     this.#tileUpdateHandler = new Map();
     this.#tileUpdateHandler.set('flagged', this.onFlaggedTile.bind(this));
     this.#tileUpdateHandler.set('revealed', this.onTilesRevealed.bind(this));
-    this.#tileUpdateHandler.set('detonatedMine', this.#onDetonatedMine.bind(this));
+    this.#tileUpdateHandler.set('detonatedMine', this.onDetonatedMine.bind(this));
   }
 
   #onUpdatedTiles({ detail }) {
@@ -318,10 +307,18 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
-  #onDetonatedMine(params) {
+  onDetonatedMine(params) {
     const { tilesPositions } = params;
-    this.player.gameStatus = PlayerGameStatus.Looser;
+    this.player.gameStatus = PlayerGameStatusType.Looser;
     this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
+  }
+
+  emitEvent(eventType, data = {}) {
+    data.player = this.player;
+    if (eventType) {
+      const event = new CustomEvent(eventType, { detail: data });
+      this.dispatchEvent(event);
+    }
   }
 }
 

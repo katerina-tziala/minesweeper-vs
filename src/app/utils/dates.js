@@ -4,13 +4,13 @@ export function nowTimestamp() {
   return new Date().toISOString();
 };
 
-// export const dateDifferenceInSeconds = (endDate, startDate) => {
-//   if (!endDate || !startDate) {
-//     return 0;
-//   }
-//   const durationInMilliseconds = Math.abs(new Date(endDate).getTime() - new Date(startDate).getTime());
-//   return Math.ceil(durationInMilliseconds / 1000);
-// };
+export const dateDifferenceInSeconds = (endDate, startDate) => {
+  if (!endDate || !startDate) {
+    return 0;
+  }
+  const durationInMilliseconds = Math.abs(new Date(endDate).getTime() - new Date(startDate).getTime());
+  return Math.ceil(durationInMilliseconds / 1000);
+};
 
 // export const secondsToHoursMinutesSeconds = (seconds) => {
 //   const hours = Math.floor(seconds / 3600);
