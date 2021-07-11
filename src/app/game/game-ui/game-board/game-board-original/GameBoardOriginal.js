@@ -14,10 +14,10 @@ export default class GameBoardOriginal extends GameBoard {
 
   onTilesRevealed(params) {
     super.onTilesRevealed(params);
-    const { minefieldCleared } = params;
+    const { minefieldCleared, tilesPositions } = params;
     if (minefieldCleared) {
       this.player.gameStatus = PlayerGameStatusType.Winner;
-      this.onGameEnd(GameEndType.FieldCleared, { revealed });
+      this.onGameEnd(GameEndType.FieldCleared, { revealed: tilesPositions });
     }
   }
 
