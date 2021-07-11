@@ -11,17 +11,15 @@ export default class GameBoardDetect extends GameBoardVS {
     return { flagging: true };
   }
 
-  get playerStatusOnGameGoal() {
+  getPlayerStatusOnGameGoal() {
     const { flagsPositions } = this.player;
-    const flagsThreshold = this.numberOfMines / 2;
-    if (flagsPositions.length < flagsThreshold) {
-      return PlayerGameStatusType.Looser;
-    }
-    return flagsPositions.length > flagsThreshold ? PlayerGameStatusType.Winner : PlayerGameStatusType.Draw;
+    const flagsBoundary = this.numberOfMines / 2;
+    return super.getPlayerStatusOnGameGoal(flagsPositions, flagsBoundary);
   }
-
+  
   onTilesRevealed(params) {
     const { minefieldCleared, tilesPositions } = params;
+    super.onTilesRevealed(params);
     minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onPlayerMove({ revealed: tilesPositions });
   }
 
@@ -29,22 +27,8 @@ export default class GameBoardDetect extends GameBoardVS {
     const { id, styles } = this.player;
     const flagged = this.Minefield.flagUntouchedMines(id, styles);
     this.addToPlayerFlags(flagged);
-    this.player.gameStatus = this.playerStatusOnGameGoal;
+    this.player.gameStatus = this.getPlayerStatusOnGameGoal();
     this.onGameEnd(GameEndType.FieldCleared, { revealed, flagged });
-  }
-
-  onChangeTileState(event) {
-    const { detail: { tile } } = event;
-    if (!this.player || this.tileFlaggedByOpponent(tile)) return;
-    this.tileMarkedByOpponent(tile) ? this.flagTile(tile) : super.onChangeTileState(event);
-  }
-
-  flagTile(tile) {
-    // flags limit -> max number of flags === number of mines
-    const { flagsPositions } = this.player;
-    if (this.unlimitedFlags || flagsPositions.length < this.numberOfMines) {
-      super.flagTile(tile);
-    }
   }
 
   onFlaggedTile(params) {
@@ -52,18 +36,11 @@ export default class GameBoardDetect extends GameBoardVS {
     const { allMinesDetected, tilesPositions } = params;
     const flagged = tilesPositions;
     if (allMinesDetected) {
-      this.player.gameStatus = this.playerStatusOnGameGoal;
+      this.player.gameStatus = this.getPlayerStatusOnGameGoal();
       this.onGameEnd(GameEndType.MinesDetected, { flagged });
     } else {
-      this.resetPlayerMissedTurns();
       this.onRoundEnd({ flagged });
     }
-  }
-
-  onRestoredTile(params) {
-    super.onRestoredTile(params);
-    const { tilesPositions } = params;
-    this.onPlayerMove({ restored: tilesPositions });
   }
 
 }

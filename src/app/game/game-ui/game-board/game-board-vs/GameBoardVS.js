@@ -24,6 +24,13 @@ export default class GameBoardVS extends GameBoard {
     return !!this.config.consecutiveTurns;
   }
 
+  getPlayerStatusOnGameGoal(playerTiles, boundary) {
+    if (playerTiles.length < boundary) {
+      return PlayerGameStatusType.Looser;
+    }
+    return playerTiles.length > boundary ? PlayerGameStatusType.Winner : PlayerGameStatusType.Draw;
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     this.#removeTimerListener();
@@ -36,18 +43,23 @@ export default class GameBoardVS extends GameBoard {
 
   start(player, minesPositions = []) {
     super.start(player, minesPositions);
-   // !this.turnsTimer ? this.checkTimerStart() : this.setGameStart();
+    // TODO: UNCOMMENT
+    // !this.turnsTimer ? this.checkTimerStart() : this.setGameStart();
   }
 
   setPlayer(player = null) {
     super.setPlayer(player);
     this.#setPlayerColorFace();
     if (this.player) {
-      const { onTurn } = this.player;
-      this.initTurnTimer();
-      this.#RoundHandler.init();
-      this.setBoardDisabledState(!onTurn);
+      this.initBoardForPlayer();
     }
+  }
+
+  initBoardForPlayer() {
+    const { onTurn } = this.player;
+    this.initTurnTimer();
+    this.#RoundHandler.init();
+    this.setBoardDisabledState(!onTurn);
   }
 
   initTurnTimer() {
@@ -73,14 +85,53 @@ export default class GameBoardVS extends GameBoard {
     return TileChecker.marked(tile) && !TileChecker.modifiedByPlayer(tile, this.player.id);
   }
 
+  onChangeTileState(event) {
+    const { detail: { tile } } = event;
+    if (!this.player || this.tileFlaggedByOpponent(tile)) return;
+    this.tileMarkedByOpponent(tile) ? this.flagTile(tile) : super.onChangeTileState(event);
+  }
+
+  flagTile(tile) {
+    // flags limit -> max number of flags === number of mines
+    const { flagsPositions } = this.player;
+    if (this.unlimitedFlags || flagsPositions.length < this.numberOfMines) {
+      super.flagTile(tile);
+    }
+  }
+
+  onTilesRevealed(params) {
+    super.onTilesRevealed(params);
+    this.resetPlayerMissedTurns();
+  }
+
   onDetonatedMine(params) {
     this.resetPlayerMissedTurns();
     super.onDetonatedMine(params);
   }
 
+  onFlaggedTile(params) {
+    super.onFlaggedTile(params);
+    this.resetPlayerMissedTurns();
+  }
+
+  onResetedTile(params) {
+    super.onResetedTile(params);
+    this.#onMarkedResetedTile(params);
+  }
+
+  onMarkedTile(params) {
+    super.onMarkedTile(params);
+    this.#onMarkedResetedTile(params);
+  }
+
+  #onMarkedResetedTile(params) {
+    const { tilesPositions } = params;
+    this.resetPlayerMissedTurns();
+    this.onPlayerMove({ restored: tilesPositions });
+  }
+
   onPlayerMove(moveTiles) {
     this.#RoundHandler.update(moveTiles);
-    this.resetPlayerMissedTurns();
     this.emitEvent('onMove', moveTiles);
   }
 
@@ -90,11 +141,16 @@ export default class GameBoardVS extends GameBoard {
     this.emitEvent('onRoundEnd', { moveTiles, roundResults });
   }
 
+  endGame() {
+    super.endGame();
+    this.#setCounterIconOnGameEnd();
+    this.#setTimerColor();
+    console.log('show revealed areas per player');
+  }
+
   onGameEnd(gameEndType, moveTiles = {}) {
     this.endGame();
     const roundResults = this.#RoundHandler.onRoundEnd(moveTiles);
-    this.#setCounterIconOnGameEnd();
-    this.#setTimerColor();
     super.onGameEnd(gameEndType, { moveTiles, roundResults });
   }
 

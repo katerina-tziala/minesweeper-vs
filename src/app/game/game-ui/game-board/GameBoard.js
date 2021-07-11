@@ -117,15 +117,16 @@ export default class GameBoard extends HTMLElement {
 
   onDetonatedMine(params) {
     const { tilesPositions } = params;
+    this.removeFromPlayerMarks(tilesPositions);
+    this.removeFromPlayerFlags(tilesPositions);
     this.player.gameStatus = PlayerGameStatusType.Looser;
     this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
   }
 
   onTilesRevealed(params) {
-    const { minefieldCleared, tilesPositions } = params;
-    if (minefieldCleared) {
-      this.onGameEnd(GameEndType.FieldCleared, { revealedTiles: tilesPositions });
-    }
+    const { tilesPositions } = params;
+    this.removeFromPlayerMarks(tilesPositions);
+    this.removeFromPlayerFlags(tilesPositions);
   }
 
   onChangeTileState(event) {
@@ -144,12 +145,21 @@ export default class GameBoard extends HTMLElement {
   onFlaggedTile(params) {
     const { tilesPositions } = params;
     this.addToPlayerFlags(tilesPositions);
+    this.removeFromPlayerMarks(tilesPositions);
     this.checkFlaggedTiles();
   }
 
-  onRestoredTile(params) {
+  onMarkedTile(params) {
     const { tilesPositions } = params;
     this.removeFromPlayerFlags(tilesPositions);
+    this.addToPlayerMarks(tilesPositions);
+    this.checkFlaggedTiles();
+  }
+
+  onResetedTile(params) {
+    const { tilesPositions } = params;
+    this.removeFromPlayerFlags(tilesPositions);
+    this.removeFromPlayerMarks(tilesPositions);
     this.checkFlaggedTiles();
   }
 
@@ -164,14 +174,28 @@ export default class GameBoard extends HTMLElement {
     }
   }
 
+  // in player class
   removeFromPlayerFlags(tilesPositions) {
-    const { flagsPositions } = this.player;
-    this.player.flagsPositions = arrayDifference(flagsPositions, tilesPositions);
+    const { flagedPositions } = this.player;
+    this.player.flagedPositions = arrayDifference(flagedPositions, tilesPositions);
   }
 
-  addToPlayerFlags(flaggedPositions) {
-    const { flagsPositions } = this.player;
-    this.player.flagsPositions = flagsPositions.concat(flaggedPositions);
+  // in player class
+  addToPlayerFlags(tilesPositions) {
+    const { flagedPositions } = this.player;
+    this.player.flagedPositions = flagedPositions.concat(tilesPositions);
+  }
+
+  // in player class
+  removeFromPlayerMarks(tilesPositions) {
+    const { markedPositions } = this.player;
+    this.player.markedPositions = arrayDifference(markedPositions, tilesPositions);
+  }
+
+  // in player class
+  addToPlayerMarks(tilesPositions) {
+    const { markedPositions } = this.player;
+    this.player.markedPositions = markedPositions.concat(tilesPositions);
   }
 
   checkFlaggedTiles() {
@@ -182,7 +206,12 @@ export default class GameBoard extends HTMLElement {
   endGame() {
     this.#endedAt = DATES.nowTimestamp();
     this.stopTimer();
+    this.revealMinesOnBoard();
     this.setBoardDisabledState(true);
+  }
+
+  revealMinesOnBoard() {
+    this.Minefield.revealMines();
   }
 
   onGameEnd(gameEndType, params = {}) {
@@ -291,6 +320,7 @@ export default class GameBoard extends HTMLElement {
     this.#tileUpdateHandler.set('flagged', this.onFlaggedTile.bind(this));
     this.#tileUpdateHandler.set('revealed', this.onTilesRevealed.bind(this));
     this.#tileUpdateHandler.set('detonatedMine', this.onDetonatedMine.bind(this));
+    this.#tileUpdateHandler.set('marked', this.onMarkedTile.bind(this));
   }
 
   #onUpdatedTiles({ detail }) {
@@ -298,7 +328,7 @@ export default class GameBoard extends HTMLElement {
     if (this.#tileUpdateHandler.has(type)) {
       this.#tileUpdateHandler.get(type)(detail);
     } else {
-      this.onRestoredTile(detail);
+      this.onResetedTile(detail);
     }
   }
 

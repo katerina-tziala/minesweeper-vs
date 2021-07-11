@@ -33,17 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const player = { id: userService.id, name: userService.username };
   const playerStyles = userService.getPlayerConfig(player.id);
   player.styles = playerStyles;
-  player.flagsPositions = [];
+  player.flagedPositions = [];
   player.onTurn = true;
   player.missedTurns = 0;
+  player.markedPositions = [];
 
   const opponent = { id: 'opponent', name: 'Angie' };
   const opponentStyles = userService.getPlayerConfig(opponent.id);
   opponent.styles = opponentStyles;
-  opponent.flagsPositions = [];
+  opponent.flagedPositions = [];
   opponent.onTurn = true;
   opponent.missedTurns = 0;
-
+  opponent.markedPositions = [];
 
   const gameStyles = userService.gameStyles;
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
@@ -59,11 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const options = {
     marks: true,
     misplacedFlagHint: false,
+    flagging: true,
     revealing: true,
     unlimitedFlags: true,
-    turnDuration: 5,
     gameTimer: true,
-    flagsCounterRight: false
+    flagsCounterRight: false,
+    openStrategy: true,
+    sneakPeek: false,
+    sneakPeekDuration: 0
   };
 
   // const options = {
@@ -99,13 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('onGameEnd');
     console.log(event.detail);
   })
-  
+
   board.addEventListener('onRestart', (event) => {
     console.log('onRestart');
     console.log(event.detail);
   })
-  
-  
+
+
 
 });
 // window.onhashchange = this.locationHashChanged.bind(this);

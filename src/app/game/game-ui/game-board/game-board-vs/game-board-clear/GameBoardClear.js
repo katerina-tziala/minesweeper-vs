@@ -1,8 +1,9 @@
 'use strict';
 import GameBoardVS from '../GameBoardVS';
-import { GameEndType, PlayerGameStatusType } from '../../@game-board-utils.module';
+import { GameEndType, TileChecker } from '../../@game-board-utils.module';
 
 export default class GameBoardClear extends GameBoardVS {
+  // flagged tiles by opponent can be revealed but cannot be flagged
 
   constructor() {
     super();
@@ -11,67 +12,68 @@ export default class GameBoardClear extends GameBoardVS {
   get defaultConfig() {
     return { revealing: true };
   }
-  
-  start(player, minesPositions = []) {
-    super.start(player, minesPositions);
-    //!this.turnsTimer ? this.checkTimerStart() : this.setGameStart();
+
+  get hiddenStrategy() {
+    return !this.config.openStrategy;
+  }
+
+  get tilesToReveal() {
+    const { rows, columns } = this.config;
+    const numberOfBoardTiles = rows * columns;
+    return numberOfBoardTiles - this.numberOfMines;
+  }
+
+  initBoardForPlayer() {
+    super.initBoardForPlayer();
+    if (this.hiddenStrategy) {
+      console.log('hide opponets strategy');
+    }
+  }
+
+  getPlayerStatusOnGameGoal() {
+    const playerRevealedTiles = this.Minefield.getRevealedTilesOfPlayer(this.player.id);
+    const cleanTilesBoundary = this.tilesToReveal / 2;
+    return super.getPlayerStatusOnGameGoal(playerRevealedTiles, cleanTilesBoundary);
+  }
+
+  #tileFlaggedByPlayer(tile) {
+    return TileChecker.flagged(tile) && TileChecker.modifiedByPlayer(tile, this.player.id)
   }
 
   onRevealTile(event) {
-    console.log('onRevealTile');
-    // if (!this.player) return;
-    // const { detail: { tile } } = event;
-    // const { id } = this.player;
-    // if (!TileChecker.flagged(tile)) {
-    //   this.checkTimerStart();
-    //   this.Minefield.revealTile(tile, id);
-    // }
-  }
+    if (!this.player) return;
 
-  onDetonatedMine(params) {
-    console.log('onDetonatedMine');
-    // const { tilesPositions } = params;
-    // this.player.gameStatus = PlayerGameStatusType.Looser;
-    // this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
+    const { detail: { tile } } = event;
+
+    if (!this.#tileFlaggedByPlayer(tile)) {
+      const { id } = this.player;
+      this.checkTimerStart();
+      this.Minefield.revealTile(tile, id);
+    }
   }
 
   onTilesRevealed(params) {
-    console.log('onTilesRevealed');
-    // const { minefieldCleared, tilesPositions } = params;
-    // if (minefieldCleared) {
-    //   this.onGameEnd(GameEndType.FieldCleared, { revealedTiles: tilesPositions });
-    // }
+    const { minefieldCleared, tilesPositions } = params;
+    super.onTilesRevealed(params);
+    minefieldCleared ? this.onMinefieldCleared(tilesPositions) : this.onRoundEnd({ revealed: tilesPositions });
   }
 
-  onChangeTileState(event) {
-    console.log('onChangeTileState');
-    // if (!this.player) return;
-    // const { detail: { tile } } = event;
-    // const untouchedTile = TileChecker.untouched(tile);
-    // untouchedTile ? this.flagTile(tile) : this.#changeFlaggedTileState(tile);
-  }
-
-  flagTile(tile) {
-    console.log('flagTile');
-    // this.checkTimerStart();
-    // const { id, styles } = this.player;
-    // this.Minefield.flagTile(tile, id, styles);
+  onMinefieldCleared(revealed) {
+    this.player.gameStatus = this.getPlayerStatusOnGameGoal();
+    this.onGameEnd(GameEndType.FieldCleared, { revealed });
   }
 
   onFlaggedTile(params) {
-    console.log('onFlaggedTile');
-    // const { tilesPositions } = params;
-    // this.addToPlayerFlags(tilesPositions);
-    // this.checkFlaggedTiles();
+    super.onFlaggedTile(params);
+    const { tilesPositions } = params;
+    this.onPlayerMove({ revealed: tilesPositions })
   }
 
-  onRestoredTile(params) {
-    console.log('onRestoredTile');
-    // const { tilesPositions } = params;
-    // this.removeFromPlayerFlags(tilesPositions);
-    // this.checkFlaggedTiles();
+  revealMinesOnBoard() {
+    this.Minefield.revealMines();
+    console.log('double targets/flags/strategy');
   }
-  
+
 }
 
 customElements.define('app-game-board-clear', GameBoardClear);

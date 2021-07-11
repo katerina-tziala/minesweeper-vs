@@ -146,6 +146,9 @@ export default class Minefield extends HTMLElement {
     this.#checkListeners();
   }
 
+  getRevealedTilesOfPlayer(playerId) {
+    return this.#revealedTiles.filter(tile => TileChecker.modifiedByPlayer(tile, playerId));
+  }
 
   revealMines() {
     const mineTiles = this.#unrevealedMines;
@@ -312,6 +315,7 @@ export default class Minefield extends HTMLElement {
   #drawActiveTiles() {
     this.#activeTiles.forEach(tile => this.#MinefieldUI.drawActiveTile(tile));
   }
+
   #getAllowedUnrevealedTile(position) {
     if (this.#disabledPositions.includes(position)) {
       return;
