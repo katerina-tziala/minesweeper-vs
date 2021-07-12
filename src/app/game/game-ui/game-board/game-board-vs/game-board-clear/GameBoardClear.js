@@ -27,6 +27,7 @@ export default class GameBoardClear extends GameBoardVS {
     super.initBoardForPlayer();
     if (this.hiddenStrategy) {
       console.log('hide opponets strategy');
+      console.log('button to sneak peak');
     }
   }
 
