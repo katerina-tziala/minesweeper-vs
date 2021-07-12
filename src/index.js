@@ -15,11 +15,10 @@ import AppUserService from './app/state-controllers/app-user.service';
 
 //import './app/game/game-ui/game-board/game-board-vs/GameBoardVS';
 import './app/game/game-ui/game-board/game-board-original/GameBoardOriginal';
-
 import './app/game/game-ui/game-board/game-board-vs/game-board-detect/GameBoardDetect';
-
 import './app/game/game-ui/game-board/game-board-vs/game-board-clear/GameBoardClear';
 //  const loadStyles = () => import("./index.scss");
+import { Player } from './app/game/players/player';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -30,21 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // new App();
   const userService = AppUserService.getInstance();
 
-  const player = { id: userService.id, name: userService.username };
+  const player = new Player(userService.id, userService.username);
   const playerStyles = userService.getPlayerConfig(player.id);
   player.styles = playerStyles;
-  player.flagedPositions = [];
   player.onTurn = true;
-  player.missedTurns = 0;
-  player.markedPositions = [];
+  console.log(player);
 
-  const opponent = { id: 'opponent', name: 'Angie' };
+
+  const opponent = new Player('opponent', 'Angie' );
   const opponentStyles = userService.getPlayerConfig(opponent.id);
   opponent.styles = opponentStyles;
-  opponent.flagedPositions = [];
-  opponent.onTurn = true;
-  opponent.missedTurns = 0;
-  opponent.markedPositions = [];
+  opponent.onTurn = false;
+  
 
   const gameStyles = userService.gameStyles;
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;

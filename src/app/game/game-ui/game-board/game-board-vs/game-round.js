@@ -6,6 +6,8 @@ export default class GameRound {
   #endedAt = null;
   #roundTiles;
 
+  // moves in round
+
   get duration() {
     const seconds = DATES.dateDifferenceInSeconds(this.#endedAt, this.#startedAt);
     return secondsToTimeObject(seconds);

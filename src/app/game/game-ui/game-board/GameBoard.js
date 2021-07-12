@@ -116,6 +116,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   onDetonatedMine(params) {
+    this.player.increaseMoves();
     const { tilesPositions } = params;
     this.removeFromPlayerMarks(tilesPositions);
     this.removeFromPlayerFlags(tilesPositions);
@@ -124,6 +125,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   onTilesRevealed(params) {
+    this.player.increaseMoves();
     const { tilesPositions } = params;
     this.removeFromPlayerMarks(tilesPositions);
     this.removeFromPlayerFlags(tilesPositions);
@@ -143,6 +145,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   onFlaggedTile(params) {
+    this.player.increaseMoves();
     const { tilesPositions } = params;
     this.addToPlayerFlags(tilesPositions);
     this.removeFromPlayerMarks(tilesPositions);
@@ -150,6 +153,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   onMarkedTile(params) {
+    this.player.increaseMoves();
     const { tilesPositions } = params;
     this.removeFromPlayerFlags(tilesPositions);
     this.addToPlayerMarks(tilesPositions);
@@ -157,6 +161,7 @@ export default class GameBoard extends HTMLElement {
   }
 
   onResetedTile(params) {
+    this.player.increaseMoves();
     const { tilesPositions } = params;
     this.removeFromPlayerFlags(tilesPositions);
     this.removeFromPlayerMarks(tilesPositions);
