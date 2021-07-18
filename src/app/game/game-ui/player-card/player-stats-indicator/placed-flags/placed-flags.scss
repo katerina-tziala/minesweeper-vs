@@ -1,0 +1,38 @@
+@use 'styles/game/flag-icons';
+@use 'styles/theming/theming';
+
+@mixin setColors($theme) {
+  $game-colors: theming.getThemePallette($theme, "game-colors");
+  @each $type, $color in $game-colors {
+    &[color-type="#{$type}"] {
+      color: $color;
+    }
+  }
+}
+
+app-placed-flags {
+  //TODO: THEMING
+  @include setColors("light");
+  @include flag-icons.setFlagTypeIcons();
+
+  .placed-flags__number {
+    //TODO: THEMING
+    background-color: #fff;
+    color: #33cc00;
+
+    &.placed-flags__number--0 {
+      color: #ff0000;
+    }
+    &.placed-flags__number--1 {
+      color: #ff6600;
+    }
+  }
+}
+
+.placed-flags__infinite {
+  font-size: 20px;
+  height: 14px;
+  line-height: 12px;
+  // TODO: THEMING
+  color: #999999;
+}

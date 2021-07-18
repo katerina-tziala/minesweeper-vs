@@ -1,0 +1,5 @@
+@use 'styles/iconography/iconography';
+
+app-cleared-tiles {
+  @include iconography.afterIcon('grid-tiles');
+}

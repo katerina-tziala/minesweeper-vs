@@ -4,8 +4,8 @@ import './player-card.scss';
 import '~/ui-elements/custom-elements/avatar/Avatar';
 
 import './player-turns/PlayerTurns';
-import './placed-flags/PlacedFlags';
-import './cleared-tiles/ClearedTiles';
+import './player-stats-indicator/@player-stats.module';
+
 
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './player-card.constants';
 
