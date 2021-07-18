@@ -10,6 +10,6 @@ export { DATES, arrayDifference } from 'UTILS';
 export { ElementHandler } from 'UI_ELEMENTS';
 
 export { GameEndType } from './game-end-type.enum';
-export { PlayerGameStatusType } from './player-game-status-type.enum';
+export { PlayerGameStatusType } from '../../players/player-game-status-type.enum';
 export { generateTemplate } from './game-board-generator/game-board-generator';
 export { generateMinesPositions } from '../../game-utils/game-utils';

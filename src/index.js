@@ -17,16 +17,26 @@ import AppUserService from './app/state-controllers/app-user.service';
 import './app/game/game-ui/game-board/game-board-original/GameBoardOriginal';
 import './app/game/game-ui/game-board/game-board-vs/game-board-detect/GameBoardDetect';
 import './app/game/game-ui/game-board/game-board-vs/game-board-clear/GameBoardClear';
+
+// import './app/game/game-ui/player-card/PlayerCard';
+import './app/game/game-ui/player-turns/PlayerTurns';
+
 //  const loadStyles = () => import("./index.scss");
 import { Player } from './app/game/players/player';
+// window.onhashchange = this.locationHashChanged.bind(this);
+// locationHashChanged(event) {
+//   console.log(event);
+//   if (location.hash === '#cool-feature') {
+//     console.log("You're visiting a cool feature!");
+//   }
+// }
 
 document.addEventListener('DOMContentLoaded', () => {
 
-
-
   PageLoaderHandler.hide();
-  //
   // new App();
+
+
   const userService = AppUserService.getInstance();
 
   const player = new Player(userService.id, userService.username);
@@ -46,12 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
   gameStyles.flagColors = `${playerStyles.colorType},${opponentStyles.colorType}`;
 
+  const tttt = document.getElementsByTagName('app-player-turns')[0];
 
-  // console.log(player);
-  // console.log(playerStyles);
-  // console.log(gameStyles);
+  setTimeout(() => {
+    tttt.setAttribute('missed-turns', 6);
+    console.log('ooo');
+  }, 2000)
+  // testBoard(player, gameStyles);
+});
+
+
+function testBoard(player, gameStyles) {
+
   const level = { level: "beginner", rows: 9, columns: 9, numberOfMines: 16 };
-  const { rows, columns, numberOfMines } = { level };
 
   const options = {
     marks: true,
@@ -66,21 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
     sneakPeekDuration: 0
   };
 
-  // const options = {
-  //   flagging: true,
-  //   marks: true,
-  //   misplacedFlagHint: false,
-  //   openStrategy: true,
-  //   sneakPeek: false,
-  //   sneakPeekDuration: 0,
-  //   unlimitedFlags: true
-  // }
   const turns = {
     consecutiveTurns: true,
     missedTurnsLimit: 10,
     turnDuration: 0,
     turnTimer: true
-  }
+  };
   const config = { ...level, ...options, ...turns, ...gameStyles };
   const board = document.getElementById('board');
   //console.log(board);
@@ -106,16 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
 
-
-});
-// window.onhashchange = this.locationHashChanged.bind(this);
-// locationHashChanged(event) {
-//   console.log(event);
-//   if (location.hash === '#cool-feature') {
-//     console.log("You're visiting a cool feature!");
-//   }
-// }
-
+}
 
 
 

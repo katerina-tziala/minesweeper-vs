@@ -57,3 +57,8 @@ export function secondsToTimeObject(secondsToConvert = 0) {
   const [h, m] = convertedTimeParts(allMinutes);
   return { h, m, s };
 };
+
+export function roundTo(value = 0, decimals = 2) {
+  return parseFloat(value.toFixed(decimals));
+};
+

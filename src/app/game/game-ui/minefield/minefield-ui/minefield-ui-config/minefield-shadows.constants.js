@@ -1,32 +1,32 @@
 'use strict';
 export const SHADOWS = {
     inner: {
-        shadowOffsetX: -1,
-        shadowOffsetY: -1,
-        shadowBlur: 5,
+        offsetX: -1,
+        offsetY: -1,
+        blur: 5,
         shadowAdjustment: 51
     },
     detonatedMine: {
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowBlur: 8,
+        offsetX: 0,
+        offsetY: 0,
+        blur: 8,
         shadowAdjustment: -51
     },
     wrongFlagHint: {
-        shadowOffsetX: 1,
-        shadowOffsetY: 1,
-        shadowBlur: 3
+        offsetX: 1,
+        offsetY: 1,
+        blur: 3
     },
     detectedMineTarget: {
         left: {
-            shadowOffsetX: 1,
-            shadowOffsetY: 0,
-            shadowBlur: 3
+            offsetX: 1,
+            offsetY: 0,
+            blur: 3
         },
         right: {
-            shadowOffsetX: -1,
-            shadowOffsetY: 0,
-            shadowBlur: 3
+            offsetX: -1,
+            offsetY: 0,
+            blur: 3
         }
     },
 };

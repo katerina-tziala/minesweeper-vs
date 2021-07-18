@@ -11,10 +11,10 @@ export default class GameBoardDetect extends GameBoardVS {
     return { flagging: true };
   }
 
-  getPlayerStatusOnGameGoal() {
+  #setPlayerStatusOnGameGoal() {
     const { flagedPositions } = this.player;
     const flagsBoundary = this.numberOfMines / 2;
-    return super.getPlayerStatusOnGameGoal(flagedPositions, flagsBoundary);
+    this.player.setStatusOnGameGoal(flagedPositions, flagsBoundary);
   }
   
   onTilesRevealed(params) {
@@ -26,8 +26,8 @@ export default class GameBoardDetect extends GameBoardVS {
   onMinefieldCleared(revealed) {
     const { id, styles } = this.player;
     const flagged = this.Minefield.flagUntouchedMines(id, styles);
-    this.addToPlayerFlags(flagged);
-    this.player.status = this.getPlayerStatusOnGameGoal();
+    this.player.addToFlags(flagged);
+    this.#setPlayerStatusOnGameGoal();
     this.onGameEnd(GameEndType.FieldCleared, { revealed, flagged });
   }
 
@@ -36,7 +36,7 @@ export default class GameBoardDetect extends GameBoardVS {
     const { allMinesDetected, tilesPositions } = params;
     const flagged = tilesPositions;
     if (allMinesDetected) {
-      this.player.status = this.getPlayerStatusOnGameGoal();
+      this.#setPlayerStatusOnGameGoal();
       this.onGameEnd(GameEndType.MinesDetected, { flagged });
     } else {
       this.onRoundEnd({ flagged });

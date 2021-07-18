@@ -31,10 +31,10 @@ export default class GameBoardClear extends GameBoardVS {
     }
   }
 
-  getPlayerStatusOnGameGoal() {
+  #setPlayerStatusOnGameGoal() {
     const playerRevealedTiles = this.Minefield.getRevealedTilesOfPlayer(this.player.id);
     const cleanTilesBoundary = this.tilesToReveal / 2;
-    return super.getPlayerStatusOnGameGoal(playerRevealedTiles, cleanTilesBoundary);
+    this.player.setStatusOnGameGoal(playerRevealedTiles, cleanTilesBoundary);
   }
 
   #tileFlaggedByPlayer(tile) {
@@ -60,7 +60,7 @@ export default class GameBoardClear extends GameBoardVS {
   }
 
   onMinefieldCleared(revealed) {
-    this.player.gameStatus = this.getPlayerStatusOnGameGoal();
+    this.#setPlayerStatusOnGameGoal();
     this.onGameEnd(GameEndType.FieldCleared, { revealed });
   }
 

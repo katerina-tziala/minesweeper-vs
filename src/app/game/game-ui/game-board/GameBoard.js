@@ -116,19 +116,16 @@ export default class GameBoard extends HTMLElement {
   }
 
   onDetonatedMine(params) {
-    this.player.increaseMoves();
     const { tilesPositions } = params;
-    this.removeFromPlayerMarks(tilesPositions);
-    this.removeFromPlayerFlags(tilesPositions);
-    this.player.gameStatus = PlayerGameStatusType.Looser;
+    this.player.addToDetonated(tilesPositions);
+    this.player.increaseMoves();
     this.onGameEnd(GameEndType.DetonatedMine, { revealed: tilesPositions });
   }
 
   onTilesRevealed(params) {
-    this.player.increaseMoves();
     const { tilesPositions } = params;
-    this.removeFromPlayerMarks(tilesPositions);
-    this.removeFromPlayerFlags(tilesPositions);
+    this.player.addToRevealed(tilesPositions);
+    this.player.increaseMoves();
   }
 
   onChangeTileState(event) {
@@ -145,26 +142,23 @@ export default class GameBoard extends HTMLElement {
   }
 
   onFlaggedTile(params) {
-    this.player.increaseMoves();
     const { tilesPositions } = params;
-    this.addToPlayerFlags(tilesPositions);
-    this.removeFromPlayerMarks(tilesPositions);
+    this.player.addToFlags(tilesPositions);
+    this.player.increaseMoves();
     this.checkFlaggedTiles();
   }
 
   onMarkedTile(params) {
-    this.player.increaseMoves();
     const { tilesPositions } = params;
-    this.removeFromPlayerFlags(tilesPositions);
-    this.addToPlayerMarks(tilesPositions);
+    this.player.addToMarks(tilesPositions);
+    this.player.increaseMoves();
     this.checkFlaggedTiles();
   }
 
   onResetedTile(params) {
-    this.player.increaseMoves();
     const { tilesPositions } = params;
-    this.removeFromPlayerFlags(tilesPositions);
-    this.removeFromPlayerMarks(tilesPositions);
+    this.player.removeFromStrategy(tilesPositions);
+    this.player.increaseMoves();
     this.checkFlaggedTiles();
   }
 
@@ -177,30 +171,6 @@ export default class GameBoard extends HTMLElement {
       this.setGameStart();
       this.GameTimer.start(1);
     }
-  }
-
-  // in player class
-  removeFromPlayerFlags(tilesPositions) {
-    const { flagedPositions } = this.player;
-    this.player.flagedPositions = arrayDifference(flagedPositions, tilesPositions);
-  }
-
-  // in player class
-  addToPlayerFlags(tilesPositions) {
-    const { flagedPositions } = this.player;
-    this.player.flagedPositions = flagedPositions.concat(tilesPositions);
-  }
-
-  // in player class
-  removeFromPlayerMarks(tilesPositions) {
-    const { markedPositions } = this.player;
-    this.player.markedPositions = arrayDifference(markedPositions, tilesPositions);
-  }
-
-  // in player class
-  addToPlayerMarks(tilesPositions) {
-    const { markedPositions } = this.player;
-    this.player.markedPositions = markedPositions.concat(tilesPositions);
   }
 
   checkFlaggedTiles() {

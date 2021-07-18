@@ -1,10 +1,8 @@
 'use strict';
-// import { valueDefined } from '~/_utils/validator';
-// import { clone } from '~/_utils/utils.js';
 
-export { arrayDifference } from 'UTILS';
-// import { AppModel } from '~/_models/app-model';
-// import { GameVSMode } from 'GameEnums';
+import { arrayDifference } from 'UTILS';
+import { PlayerGameStatusType } from './player-game-status-type.enum';
+
 // update(updateData) {
 //   if (updateData) {
 //     Object.keys(updateData).forEach(
@@ -12,12 +10,14 @@ export { arrayDifference } from 'UTILS';
 //     );
 //   }
 // }
+
 export class Player {
   #id;
   #name;
 
   styles = {};
 
+  gameStatus;
   onTurn;
   missedTurns;
   moves;
@@ -27,15 +27,9 @@ export class Player {
   markedPositions;
   detonatedPositions;
 
-  gameStatus;
-
   constructor(id, name) {
     this.#id = id;
     this.#name = name;
-    // this.entered = false;
-    // this.isBot = false;
-    // this.entered = entered;
-    // this.goal = GameVSMode.Clear;
     this.initState();
   }
 
@@ -48,237 +42,76 @@ export class Player {
   }
 
   initState() {
+    this.gameStatus = null;
     this.onTurn = false;
-    this.missedTurns = 0;
+    this.resetMissedTurns();
     this.moves = 0;
     this.markedPositions = [];
     this.flagedPositions = [];
     this.revealedPositions = [];
-    this.gameStatus = null;
+    this.detonatedPositions = [];
   }
-
-  // get detectGoal() {
-  //   return this.goal === GameVSMode.Detect;
-  // }
-
-  // initState(goalTargetNumber = 0, allowedTurns = null, maxAllowedFlags = null) {
-  //   this.goalTargetNumber = goalTargetNumber;
-  //   this.maxAllowedFlags = maxAllowedFlags;
-  //   this.allowedTurns = allowedTurns;
-  //   this.turn = false;
-  //   this.moves = 0;
-  //   this.lostGame = false;
-  //   this.resetMissedTurns();
-  //   // minefield statistics
-  //   this.redundantFlagsPositions = [];
-  //   this.detectedMinesPositions = [];
-  //   this.revealedPositions = [];
-  //   this.marksPositions = [];
-  //   this.detonatedMinesPositions = [];
-  // }
 
   increaseMoves() {
     this.moves++;
   }
 
-  // /* TURN PARAMETERS */
-  // get unlimitedTurns() {
-  //   return !valueDefined(this.allowedTurns);
-  // }
+  resetMissedTurns() {
+    this.missedTurns = 0;
+  }
 
-  // get turnsLeft() {
-  //   if (!valueDefined(this.missedTurns)) {
-  //     return this.allowedTurns;
-  //   }
-  //   return this.allowedTurns - this.missedTurns;
-  // }
+  increaseMissedTurns() {
+    this.missedTurns++;
+  }
 
-  // checkTurnsLimit() {
-  //   const exceededLimits = this.exceededTurnsLimit;
-  //   this.lostGame = exceededLimits;
-  // }
+  setStatusOnGameGoal(playerTiles, boundary) {
+    if (playerTiles.length < boundary) {
+      this.gameStatus = PlayerGameStatusType.Looser;
+      return;
+    }
+    this.gameStatus = playerTiles.length > boundary ? PlayerGameStatusType.Winner : PlayerGameStatusType.Draw;
+  }
 
-  // get exceededTurnsLimit() {
-  //   if (this.unlimitedTurns) {
-  //     return false;
-  //   }
-  //   if (!valueDefined(this.missedTurns)) {
-  //     return false;
-  //   }
-  //   return this.allowedTurns === this.missedTurns;
-  // }
-
-  // toggleTurn() {
-  //   this.turn = !this.turn;
-  // }
-
-  // resetMissedTurns() {
-  //   this.missedTurns = !this.unlimitedTurns ? 0 : undefined;
-  // }
-
-  // increaseMissedTurns() {
-  //   if (!valueDefined(this.missedTurns)) {
-  //     this.missedTurns = 0;
+  // setStatusBasedOnOpponentStatus(opponentStatus) {
+  //   if (opponentStatus === PlayerGameStatusType.Draw) {
+  //     this.gameStatus = PlayerGameStatusType.Draw;
   //     return;
   //   }
-
-  //   if (!this.exceededTurnsLimit && valueDefined(this.missedTurns)) {
-  //     this.missedTurns++;
-  //   }
+  //   this.gameStatus = opponentStatus === PlayerGameStatusType.Looser ? PlayerGameStatusType.Winner : PlayerGameStatusType.Looser;
   // }
 
-  // /* CHECKS BASED ON MINEFIELD ACTIONS */
-  // get unlimitedFlags() {
-  //   return !valueDefined(this.maxAllowedFlags);
-  // }
+  addToDetonated(tilesPositions) {
+    this.gameStatus = PlayerGameStatusType.Looser;
+    this.detonatedPositions = this.#addToPositions(this.detonatedPositions, tilesPositions);
+    this.removeFromStrategy(tilesPositions);
+  }
 
-  // get hasFlags() {
-  //   return this.unlimitedFlags ? true : this.allowedFlags !== 0;
-  // }
+  addToRevealed(tilesPositions) {
+    this.revealedPositions = this.#addToPositions(this.revealedPositions, tilesPositions);
+    this.removeFromStrategy(tilesPositions);
+  }
 
-  // get allowedFlags() {
-  //   return this.unlimitedFlags ? null : this.maxAllowedFlags - this.placedFlags;
-  // }
+  addToFlags(tilesPositions) {
+    this.flagedPositions = this.#addToPositions(this.flagedPositions, tilesPositions);
+    this.markedPositions = this.#removeFromPositions(this.markedPositions, tilesPositions);
+  }
 
-  // get placedFlags() {
-  //   return this.entered ? this.flagsPositions.length : 0;
-  // }
+  addToMarks(tilesPositions) {
+    this.markedPositions = this.#addToPositions(this.markedPositions, tilesPositions);
+    this.flagedPositions = this.#removeFromPositions(this.flagedPositions, tilesPositions);
+  }
 
-  // get flagsPositions() {
-  //   return [...this.redundantFlagsPositions, ...this.detectedMinesPositions];
-  // }
+  removeFromStrategy(tilesPositions) {
+    this.markedPositions = this.#removeFromPositions(this.markedPositions, tilesPositions);
+    this.flagedPositions = this.#removeFromPositions(this.flagedPositions, tilesPositions);
+  }
 
-  // get detonatedMine() {
-  //   return this.detonatedMinesPositions.length ? true : false;
-  // }
+  #addToPositions(currentPositions, positionsToRemove) {
+    return currentPositions.concat(positionsToRemove);
+  }
 
-  // get minesDetected() {
-  //   return this.entered ? this.detectedMinesPositions.length : 0;
-  // }
+  #removeFromPositions(currentPositions, positionsToRemove) {
+    return arrayDifference(currentPositions, positionsToRemove);
+  }
 
-  // get revealedTiles() {
-  //   return this.entered ? this.revealedPositions.length : 0;
-  // }
-
-  // get clearedMinefield() {
-  //   const cleared = this.goalTargetNumber
-  //     ? this.goalTargetNumber === this.revealedTiles
-  //     : false;
-  //   return cleared;
-  // }
-
-  // inStrategyPositions(positionsToCheck) {
-  //   const alreadyToutchedPositions = this.strategyPositions.filter((position) =>
-  //     positionsToCheck.includes(position),
-  //   );
-  //   return alreadyToutchedPositions.length > 0;
-  // }
-
-  // get strategyPositions() {
-  //   return [
-  //     ...this.marksPositions,
-  //     ...this.redundantFlagsPositions,
-  //     ...this.detectedMinesPositions,
-  //   ];
-  // }
-
-  // get hasStrategy() {
-  //   return this.strategyPositions.length > 0;
-  // }
-
-  // get data() {
-  //   return clone(this);
-  // }
-
-  // get reportData() {
-  //   return {
-  //     id: this.id,
-  //     name: this.name,
-  //     isBot: this.isBot,
-  //     colorType: this.colorType,
-  //     lostGame: this.lostGame,
-  //     moves: this.moves,
-  //     clearedTiles: this.revealedTiles,
-  //     detectedMines: this.minesDetected,
-  //     flags: this.placedFlags,
-  //     marks: this.marksPositions.length,
-  //     clearedMinefield: this.clearedMinefield,
-  //     detonatedMine: this.detonatedMine,
-  //     exceededTurnsLimit: this.exceededTurnsLimit,
-  //   };
-  // }
-
-  // /* UPDATE PLAYER AFTER MINEFIELD ACTIONS */
-  // set detonatedTile(position) {
-  //   this.detonatedMinesPositions = [position];
-  //   this.removeFromStrategyPositions = [position];
-  //   this.increaseMoves();
-  //   this.lostGame = true;
-  // }
-
-  // set revealedTiles(movePositions) {
-  //   this.revealedPositions = this.revealedPositions.concat(movePositions);
-  //   this.removeFromStrategyPositions = movePositions;
-  //   this.increaseMoves();
-  // }
-
-  // flaggedTile(position, wronglyPlaced) {
-  //   wronglyPlaced
-  //     ? (this.#inRedundantFlagsPositions = position)
-  //     : (this.#inDetectedMinesPositions = position);
-  //   this.increaseMoves();
-  // }
-
-  // set markedTile(position) {
-  //   this.#inMarksPositions = position;
-  //   this.increaseMoves();
-  //   this.removeFromFlaggedPositions = [position];
-  // }
-
-  // set resetedTile(position) {
-  //   this.removeFromStrategyPositions = [position];
-  //   this.increaseMoves();
-  // }
-
-  // set removeFromStrategyPositions(movePositions) {
-  //   this.removeFromMarkedPositions = movePositions;
-  //   this.removeFromFlaggedPositions = movePositions;
-  // }
-
-  // set removeFromMarkedPositions(movePositions) {
-  //   this.marksPositions = this.#removeFromPositions(
-  //     this.marksPositions,
-  //     movePositions,
-  //   );
-  // }
-
-  // set removeFromFlaggedPositions(movePositions) {
-  //   this.redundantFlagsPositions = this.#removeFromPositions(
-  //     this.redundantFlagsPositions,
-  //     movePositions,
-  //   );
-  //   this.detectedMinesPositions = this.#removeFromPositions(
-  //     this.detectedMinesPositions,
-  //     movePositions,
-  //   );
-  // }
-
-  // // PRIVATE FUNCTIONS
-  // set #inRedundantFlagsPositions(position) {
-  //   this.redundantFlagsPositions.push(position);
-  // }
-
-  // set #inDetectedMinesPositions(position) {
-  //   this.detectedMinesPositions.push(position);
-  // }
-
-  // set #inMarksPositions(position) {
-  //   this.marksPositions.push(position);
-  // }
-
-  // #removeFromPositions(positionsArray, positionsToRemove) {
-  //   return positionsArray.filter(
-  //     (position) => !positionsToRemove.includes(position),
-  //   );
-  // }
 }

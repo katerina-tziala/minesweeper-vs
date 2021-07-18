@@ -24,13 +24,6 @@ export default class GameBoardVS extends GameBoard {
     return !!this.config.consecutiveTurns;
   }
 
-  getPlayerStatusOnGameGoal(playerTiles, boundary) {
-    if (playerTiles.length < boundary) {
-      return PlayerGameStatusType.Looser;
-    }
-    return playerTiles.length > boundary ? PlayerGameStatusType.Winner : PlayerGameStatusType.Draw;
-  }
-
   disconnectedCallback() {
     super.disconnectedCallback();
     this.#removeTimerListener();
@@ -156,7 +149,7 @@ export default class GameBoardVS extends GameBoard {
 
   resetPlayerMissedTurns() {
     if (this.turnsTimer && this.consecutiveTurns) {
-      this.player.missedTurns = 0;
+      this.player.resetMissedTurns();
     }
   }
 
@@ -201,7 +194,7 @@ export default class GameBoardVS extends GameBoard {
   }
 
   #onTurnEnd() {
-    this.player.missedTurns += 1;
+    this.player.increaseMissedTurns();
     if (this.player.missedTurns < this.missedTurnsLimit) {
       this.onRoundEnd({});
     } else {
