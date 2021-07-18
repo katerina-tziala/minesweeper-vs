@@ -1,6 +1,6 @@
 'use strict';
 export const CONFIG = {
-    size: 160,
+    size: 140,
     indicatorSize: 5,
     strokeWidth: 2,
     shadow: {

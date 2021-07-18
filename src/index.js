@@ -18,8 +18,8 @@ import './app/game/game-ui/game-board/game-board-original/GameBoardOriginal';
 import './app/game/game-ui/game-board/game-board-vs/game-board-detect/GameBoardDetect';
 import './app/game/game-ui/game-board/game-board-vs/game-board-clear/GameBoardClear';
 
-// import './app/game/game-ui/player-card/PlayerCard';
-import './app/game/game-ui/player-turns/PlayerTurns';
+import './app/game/game-ui/player-card/PlayerCard';
+// import './app/game/game-ui/player-turns/PlayerTurns';
 
 //  const loadStyles = () => import("./index.scss");
 import { Player } from './app/game/players/player';
@@ -56,12 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
   gameStyles.flagTypes = playerStyles.flagType + ',' + opponentStyles.flagType;
   gameStyles.flagColors = `${playerStyles.colorType},${opponentStyles.colorType}`;
 
-  const tttt = document.getElementsByTagName('app-player-turns')[0];
+  // const tttt = document.getElementsByTagName('app-player-turns')[0];
+  // setTimeout(() => {
+  //   tttt.setAttribute('missed-turns', 6);
+  //   console.log('ooo');
+  // }, 2000)
 
-  setTimeout(() => {
-    tttt.setAttribute('missed-turns', 6);
-    console.log('ooo');
-  }, 2000)
+
   // testBoard(player, gameStyles);
 });
 

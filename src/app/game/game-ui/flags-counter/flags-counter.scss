@@ -48,12 +48,9 @@ app-flags-counter {
   overflow: hidden;
   @extend %flex-center-center;
   position: relative;
-  // margin-right: 8px;
-
+  //TODO: THEMING
   background-color: #f2f2f2;
   border-radius: 5px;
-  // border-right: 0px;
-  // padding: 0 8px;
   @extend ._board-section-borders;
 }
 

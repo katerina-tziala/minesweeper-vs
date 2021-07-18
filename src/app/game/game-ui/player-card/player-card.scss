@@ -1,7 +1,50 @@
+@use 'styles/theming/theming';
 
+@mixin setAvatarColor($color) {
+  .player-card__player-container {
+    app-avatar {
+      background-color: $color;
+    }
+  }
+}
 
+@mixin setPlayerColors($theme) {
+  $game-colors: theming.getThemePallette($theme, "game-colors");
+  @each $type, $color in $game-colors {
+    &[color-type="#{$type}"] {
+      @include setAvatarColor($color);
+    }
+  }
+}
 
 app-player-card {
-    border: 1px solid red;
-    display: block;
+  display: block;
+
+  padding: 5px;
+  background-color: #fff;
+
+
+  //TODO: THEMING
+  @include setPlayerColors("light");
+}
+
+.player-card__player-container {
+  position: relative;
+
+  app-avatar {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 90px;
+    height: 90px;
+    font-size: 40px;
+    border: 2px solid #b3b3b3;
+    color: #e6e6e6;
+    box-shadow: inset 0 0 10px #000000;
+    text-shadow: 0px 0px 2px #000;
+  }
 }
