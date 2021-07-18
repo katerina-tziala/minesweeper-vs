@@ -1,16 +1,19 @@
 'use strict';
-import { numberDefined } from 'UTILS';
+import { valueDefined } from 'UTILS';
 
 export class NumberValidation {
+    static numberDefined(value) {
+        return valueDefined(value) && !isNaN(value) ? true : false;
+    }
 
     static numberFromString(stringNumber) {
         const value = stringNumber ? parseInt(stringNumber, 10) : 0;
-        return numberDefined(value) ? value : 0;
+        return NumberValidation.numberDefined(value) ? value : 0;
     }
 
     static boundaryValue(stringNumber) {
         const value = stringNumber ? parseInt(stringNumber, 10) : undefined;
-        return numberDefined(value) ? value : undefined;
+        return NumberValidation.numberDefined(value) ? value : undefined;
     }
 
     static getValueInBoundaries(value = 0, min, max) {
@@ -24,7 +27,7 @@ export class NumberValidation {
         if (!min && !max) {
             return true;
         }
-        return NumberValidation.valueInBoundariesWhenBoundaries(value, min, max) ;
+        return NumberValidation.valueInBoundariesWhenBoundaries(value, min, max);
     }
 
     static valueInBoundariesWhenBoundaries(value = 0, min, max) {
@@ -34,11 +37,11 @@ export class NumberValidation {
     }
 
     static lessThanMin(value, min) {
-        return numberDefined(min) && value < min ? true : false;
+        return NumberValidation.numberDefined(min) && value < min ? true : false;
     }
 
     static greaterThanMax(value, max) {
-        return numberDefined(max) && max < value ? true : false;
+        return NumberValidation.numberDefined(max) && max < value ? true : false;
     }
 
     static equalToBoundary(value, boundaryValue) {

@@ -1,9 +1,10 @@
 'use strict';
 import './player-card.scss';
 
-import './player-turns/PlayerTurns';
 import '~/ui-elements/custom-elements/avatar/Avatar';
 
+import './player-turns/PlayerTurns';
+import './placed-flags/PlacedFlags';
 
 import { ATTRIBUTES, TEMPLATE, DOM_ELEMENT_CLASS } from './player-card.constants';
 
@@ -27,7 +28,7 @@ export default class PlayerCard extends HTMLElement {
     console.log('connectedCallback PlayerCard');
     this.innerHTML = TEMPLATE;
 
-    
+
   }
 
   disconnectedCallback() {

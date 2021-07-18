@@ -1,7 +1,7 @@
 'use strict';
 export const PALETTE = {
     light: {
-        on: "#39e600",
+        on: "#33cc00",
         off: "#ff0000",
         strokeColor: "#b3b3b3",
         shadowColor: "#b3b3b3",

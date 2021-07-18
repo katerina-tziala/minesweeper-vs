@@ -3,6 +3,7 @@
 @use 'styles/game/board-utils';
 @use 'styles/theming/theming';
 
+// from flag icons
 @mixin setFlagIcons() {
   $flag-types: "basic", "checkered", "outline", "awesome";
   @each $type in $flag-types {

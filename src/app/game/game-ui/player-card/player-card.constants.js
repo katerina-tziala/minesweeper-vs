@@ -12,4 +12,7 @@ export const TEMPLATE = `
     <app-player-turns direction='rtl' turns=10></app-player-turns>
     <app-avatar></app-avatar>
 </div>
+<div>
+    <app-placed-flags flag-type="checkered" color-type="type-4" value="3"></app-placed-flags>
+</div>
 `;

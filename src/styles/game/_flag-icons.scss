@@ -1,0 +1,20 @@
+@use 'styles/iconography/iconography';
+
+@mixin setFlagTypeIcons() {
+  $flag-types: "basic", "checkered", "outline", "awesome";
+  @each $type in $flag-types {
+    &[flag-type="#{$type}"] {
+      @include iconography.afterIcon("flag-" +#{$type});
+    }
+  }
+}
+
+@mixin setFlagIcon($selector, $type) {
+  #{$selector} {
+    @include iconography.afterIcon("flag-" +#{$type});
+  }
+}
+
+@mixin setDefaultFlagIcon($selector) {
+  @include setFlagIcon($selector, "basic");
+}

@@ -1,3 +1,6 @@
+@use 'styles/utils/flexbox/flexbox';
+@use 'styles/utils/shapes';
+
 @use 'styles/theming/theming';
 
 @mixin setAvatarColor($color) {
@@ -18,14 +21,18 @@
 }
 
 app-player-card {
-  display: block;
-
+  // display: block;
+  @extend %flex-start-center;
   padding: 5px;
   background-color: #fff;
 
-
   //TODO: THEMING
   @include setPlayerColors("light");
+
+  app-placed-flags {
+    border: 2px solid #b3b3b3;
+    @include shapes.circle(40px);
+  }
 }
 
 .player-card__player-container {
