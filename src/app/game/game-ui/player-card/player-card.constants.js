@@ -15,5 +15,6 @@ export const TEMPLATE = `
 </div>
 <div class='${DOM_ELEMENT_CLASS.indicators}'>
     <app-placed-flags flag-type="checkered" color-type="type-4" value="3"></app-placed-flags>
+    <app-cleared-tiles></app-cleared-tiles>
 </div>
 `;

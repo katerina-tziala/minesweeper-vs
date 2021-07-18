@@ -119,6 +119,11 @@
   content: fa-content($fa-var-gamepad);
 }
 
+.icon-grid-tiles {
+  @extend %icon-regular;
+  content: fa-content($fa-var-th);
+}
+
 @mixin beforeIcon($key) {
   &::before {
     @extend .icon-#{$key};

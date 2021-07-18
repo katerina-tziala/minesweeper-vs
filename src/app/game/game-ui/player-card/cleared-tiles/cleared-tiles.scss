@@ -1,8 +1,8 @@
 @use 'styles/utils/flexbox/flexbox';
 @use 'styles/game/flag-icons';
 @use 'styles/theming/theming';
+@use 'styles/iconography/iconography';
 @use 'styles/utils/shapes';
-
 @mixin setColors($theme) {
   $game-colors: theming.getThemePallette($theme, "game-colors");
   @each $type, $color in $game-colors {
@@ -12,19 +12,19 @@
   }
 }
 
-app-placed-flags {
+app-cleared-tiles {
   position: relative;
   @extend %flex-center-center;
   text-align: center;
   font-size: 18px;
   padding-bottom: 4px;
-  background-color: inherit;
-  //TODO: THEMING
-  @include setColors("light");
-  @include flag-icons.setFlagTypeIcons();
+
+  border: 2px solid red;
   margin-bottom: 10px;
   border: 2px solid #b3b3b3;
   @include shapes.circle(40px);
+  @include iconography.afterIcon('grid-tiles');
+  color: #bfbfbf;
 }
 
 .placed-flags__number {
@@ -36,20 +36,12 @@ app-placed-flags {
   line-height: 14px;
   //TODO: THEMING
   background-color: #fff;
-  color: #33cc00;
-  text-shadow: 0px 0px 1px #999999;
-  &.placed-flags__number--0 {
-      color: #ff0000;
-  }
-  &.placed-flags__number--1 {
-    color: #ff6600;
-}
-}
-
-.placed-flags__infinite {
-  font-size: 20px;
-  height: 14px;
-  line-height: 12px;
-  // TODO: THEMING
-  color: #999999;
+  // color: #33cc00;
+  // text-shadow: 0px 0px 1px #999999;
+  // &.placed-flags__number--0 {
+  //   color: #ff0000;
+  // }
+  // &.placed-flags__number--1 {
+  //   color: #ff6600;
+  // }
 }

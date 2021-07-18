@@ -29,10 +29,8 @@ app-player-card {
   //TODO: THEMING
   @include setPlayerColors("light");
 
-  app-placed-flags {
-    border: 2px solid #b3b3b3;
-    @include shapes.circle(40px);
-  }
+ 
+  
 }
 
 .player-card__player-container {
@@ -59,4 +57,6 @@ app-player-card {
 .player-card__indicators {
   @extend %flex-between-center;
   flex-direction: column;
+  height: 100%;
+  padding-top: 10px;
 }
